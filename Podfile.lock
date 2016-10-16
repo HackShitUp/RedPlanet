@@ -1,0 +1,40 @@
+PODS:
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.8.4)
+  - KILabel (1.0.0)
+  - Mixpanel (3.0.4):
+    - Mixpanel/Mixpanel (= 3.0.4)
+  - Mixpanel/Mixpanel (3.0.4)
+  - Onboard (2.3.1)
+  - OneSignal (2.1.16)
+  - Parse (1.14.2):
+    - Bolts/Tasks (~> 1.8)
+  - ParseUI (1.2.0):
+    - Bolts/Tasks (~> 1.3)
+    - Parse (~> 1.9)
+
+DEPENDENCIES:
+  - Bolts
+  - KILabel (= 1.0.0)
+  - Mixpanel
+  - Onboard
+  - OneSignal
+  - Parse
+  - ParseUI
+
+SPEC CHECKSUMS:
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  KILabel: 84049969642d4ac1061ebe38ad4c0da37fed108b
+  Mixpanel: 4a2330c26556109d2f42b01e36a05eb9e2caf25e
+  Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
+  OneSignal: 7a4272f857d3005949f83a373868c5c98d02f203
+  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
+  ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
+
+PODFILE CHECKSUM: 92b30a0462b2ab7a6051add6fa72557cfd1ae31d
+
+COCOAPODS: 1.0.1
