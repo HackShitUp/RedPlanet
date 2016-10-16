@@ -23,7 +23,7 @@
                                     <constraint firstAttribute="height" constant="243" id="flo-xx-VJA"/>
                                     <constraint firstAttribute="width" constant="375" id="io8-LV-qij"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-DemiBoldItalic" family="Avenir Next" pointSize="30"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-BoldItalic" family="Avenir Next" pointSize="30"/>
                                 <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>

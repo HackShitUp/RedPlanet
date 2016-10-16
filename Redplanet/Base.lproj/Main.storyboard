@@ -94,7 +94,7 @@
                     <connections>
                         <segue destination="9yP-UM-1LF" kind="relationship" relationship="viewControllers" id="u8y-rD-AKq"/>
                         <segue destination="frc-a6-KQI" kind="relationship" relationship="viewControllers" id="POG-Bt-ZFz"/>
-                        <segue destination="EfW-Yr-oiH" kind="relationship" relationship="viewControllers" id="eQj-zu-X3h"/>
+                        <segue destination="WTP-zy-fAV" kind="relationship" relationship="viewControllers" id="ybZ-5f-Z38"/>
                         <segue destination="0uc-BW-PCz" kind="relationship" relationship="viewControllers" id="dzm-2q-D4i"/>
                         <segue destination="ha0-l4-bqf" kind="relationship" relationship="viewControllers" id="oxM-Ej-R2r"/>
                     </connections>
@@ -177,22 +177,52 @@
             </objects>
             <point key="canvasLocation" x="3196" y="11.244377811094454"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Chats-->
         <scene sceneID="IlI-vH-jan">
             <objects>
-                <tableViewController id="Ac7-BO-mTV" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NNO-32-DNi">
+                <tableViewController id="Ac7-BO-mTV" customClass="Chats" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="50" sectionHeaderHeight="28" sectionFooterHeight="28" id="NNO-32-DNi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="F1A-fN-SuO">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="chatsCell" rowHeight="50" id="F1A-fN-SuO" customClass="ChatsCell" customModule="Redplanet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1A-fN-SuO" id="aA9-1T-kvs">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YrE-2n-d00">
+                                            <frame key="frameInset" minX="8" minY="4" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brr-h1-9yM">
+                                            <frame key="frameInset" minX="56" minY="4" width="273" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gEm-mw-oVd">
+                                            <frame key="frameInset" minX="337" minY="9" width="30" height="30"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDn-qD-UdY">
+                                            <frame key="frameInset" minX="56" minY="24" width="273" height="20"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                            <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="rpUserProPic" destination="YrE-2n-d00" id="SIT-KD-ewH"/>
+                                    <outlet property="rpUsername" destination="brr-h1-9yM" id="7O6-QB-LfA"/>
+                                    <outlet property="status" destination="gEm-mw-oVd" id="SMR-du-hxQ"/>
+                                    <outlet property="time" destination="kDn-qD-UdY" id="MfS-fp-YaT"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -204,7 +234,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1fc-1t-7XL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5055" y="384"/>
+            <point key="canvasLocation" x="5053.6000000000004" y="383.65817091454278"/>
         </scene>
         <!--Newsfeeds-->
         <scene sceneID="2Ng-3Y-pnq">
@@ -258,7 +288,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tr1-GA-ZAK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4116" y="1134.7826086956522"/>
+            <point key="canvasLocation" x="5055.1999999999998" y="1134.7826086956522"/>
         </scene>
         <!--Chats-->
         <scene sceneID="3nD-Oc-X6H">
@@ -296,7 +326,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rU5-ed-zNW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3176.8000000000002" y="1134.7826086956522"/>
+            <point key="canvasLocation" x="4116" y="1134.7826086956522"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="sA8-Aa-G9o">
@@ -331,7 +361,53 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGR-WB-qOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4029.5999999999999" y="1835.5322338830586"/>
+            <point key="canvasLocation" x="4968.8000000000002" y="1835.5322338830586"/>
+        </scene>
+        <!--Create Front-->
+        <scene sceneID="fpp-Uo-z9S">
+            <objects>
+                <viewController id="aSj-NK-ud8" customClass="CreateFront" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="p5t-Yt-Ri8"/>
+                        <viewControllerLayoutGuide type="bottom" id="A9R-d6-Sfn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DfY-9X-qRM">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YB3-dg-Thu">
+                                <frame key="frameInset" minX="163" minY="477" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="SLR Camera Filled"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3nz-M6-xy8">
+                                <frame key="frameInset" minX="90" minY="503" width="48" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="iOS Photos-96"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xd0-va-E3P">
+                                <frame key="frameInset" minX="239" minY="503" width="48" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.78566444609999997" blue="0.13542309390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" image="Compose"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="Cgs-Ze-POb"/>
+                    <connections>
+                        <outlet property="cameraButton" destination="YB3-dg-Thu" id="rVg-Sl-Bgl"/>
+                        <outlet property="photoLibrary" destination="3nz-M6-xy8" id="RZi-G3-hM9"/>
+                        <outlet property="textPost" destination="Xd0-va-E3P" id="BlH-Kf-d3G"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G8T-Oa-J2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1991" y="1468"/>
         </scene>
         <!--Custom Camera-->
         <scene sceneID="KXw-jy-Crd">
@@ -423,7 +499,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1YD-Ak-7Lc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1930" y="1468"/>
+            <point key="canvasLocation" x="2868" y="1467.616191904048"/>
         </scene>
         <!--Explore-->
         <scene sceneID="y6y-X2-aOf">
@@ -442,32 +518,32 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1lK-gO-mTP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3090.4000000000001" y="1835.5322338830586"/>
+            <point key="canvasLocation" x="4029.5999999999999" y="1835.5322338830586"/>
         </scene>
         <!--Create-->
-        <scene sceneID="kJw-qA-Pca">
+        <scene sceneID="OpB-o2-4dn">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0SO-s0-i56" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="EfW-Yr-oiH" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Create" image="NewColored" id="rcR-aE-Rzr"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WTP-zy-fAV" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Create" image="NewColored" id="62J-wv-tvA"/>
                     <toolbarItems/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lpb-7a-WUj">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="z6K-DS-z5f">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="sCf-VT-dx7" kind="relationship" relationship="rootViewController" id="sYx-aT-WSG"/>
+                        <segue destination="aSj-NK-ud8" kind="relationship" relationship="rootViewController" id="cGn-cR-ApX"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Dd-0b-14J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1088.8" y="1467.616191904048"/>
+            <point key="canvasLocation" x="1152.8" y="1470.3148425787108"/>
         </scene>
     </scenes>
     <resources>
         <image name="CLEAN" width="125" height="125"/>
         <image name="Chat Filled-50" width="25" height="25"/>
+        <image name="Compose" width="50" height="50"/>
         <image name="Download" width="50" height="50"/>
         <image name="Exit" width="50" height="50"/>
         <image name="Home" width="24" height="24"/>
@@ -475,8 +551,10 @@
         <image name="NewColored" width="25" height="25"/>
         <image name="Notification" width="25" height="25"/>
         <image name="Refresh-96" width="48" height="48"/>
+        <image name="SLR Camera Filled" width="50" height="50"/>
         <image name="Search-50" width="25" height="25"/>
         <image name="SlideMenu" width="25" height="25"/>
         <image name="Unchecked Circle-100" width="100" height="100"/>
+        <image name="iOS Photos-96" width="48" height="48"/>
     </resources>
 </document>
