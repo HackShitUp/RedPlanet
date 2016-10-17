@@ -7,8 +7,37 @@
 //
 
 import UIKit
+import CoreData
 
-class Notifications: UITableViewController {
+import Parse
+import ParseUI
+import Bolts
+
+
+
+class Notifications: UITableViewController, UINavigationControllerDelegate {
+    
+    
+    // Variable to hold notification objects
+    var activityObjects = [PFObject]()
+    
+    // Query Notifications
+    func queryNotifications() {
+        let notifications = PFQuery(className: "Notifications")
+        notifications.whereKey("toUser", equalTo: PFUser.current()!)
+        notifications.order(byDescending: "createdAt")
+        notifications.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+            
+            // Reload Data
+            self.tableView!.reloadData()
+        })
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

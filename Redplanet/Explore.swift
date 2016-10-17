@@ -14,12 +14,18 @@ import ParseUI
 import Bolts
 
 
-class Explore: UICollectionViewController {
-    
+class Explore: UICollectionViewController, UISearchBarDelegate {
     
     
     // Variable to hold objects to explore
     var exploreObjects = [PFObject]()
+    
+    
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    // Search Bar
+    var searchBar = UISearchBar()
     
     
     // Fetch Public Users
@@ -37,6 +43,9 @@ class Explore: UICollectionViewController {
                     self.exploreObjects.append(object)
                 }
                 
+                // Print results
+                print("Explore objects: \(self.exploreObjects.count)")
+                
             } else {
                 print(error?.localizedDescription)
             }
@@ -50,6 +59,27 @@ class Explore: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        
+        // Query Public accounts
+        // $$$ MONETIZE ON THIS
+        queryExplore()
+        
+        
+        // Set collectionView's backgroundColor
+        self.collectionView!.backgroundColor = UIColor.white
+        
+        
+        // SearchbarDelegates
+        searchBar.delegate = self
+        searchBar.showsCancelButton = true
+        searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        searchBar.frame.size.width = UIScreen.main.bounds.width - 75
+        let searchItem = UIBarButtonItem(customView: searchBar)
+        self.navigationItem.rightBarButtonItem = searchItem
+        
+        
+        // Set navigationbar's backgroundColor
+        self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
 
     }
 
@@ -60,21 +90,78 @@ class Explore: UICollectionViewController {
 
     
     
+    // MARK: - SearchBarDelegate
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        // Resign first responder
+        self.searchBar.resignFirstResponder()
+    }
+    
+    
+    
 
     // MARK: UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        print("Returning count: \(exploreObjects.count)")
+        return exploreObjects.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
+        
+        
+//        // (1) Set username
+//        cell.rpUsername.text! = exploreObjects[indexPath.row].value(forKey: "username") as! String
+//        
+//        // (2) Get user's Profile Photo 
+//        // Handle optional chaining
+//        if let proPic = exploreObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+//            proPic.getDataInBackground(block: {
+//                (data: Data?, error: Error?) in
+//                if error == nil {
+//                    // Set user's profile photo
+//                    cell.rpUserProPic.image = UIImage(data: data!)
+//                    
+//                } else {
+//                    print(error?.localizedDescription)
+//                    
+//                    // If not found, set default profile photo
+//                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+//                }
+//            })
+//        }
+
+        
+        // Fetch Explore Objects
+        exploreObjects[indexPath.row].fetchInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Get username
+                cell.rpUsername.text! = object!["username"] as! String
+                
+                // (2) Get profile photo
+                // Handle optional chaining
+                if let proPic = object!["userProfilePicture"] as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set profile photo
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription)
+                            
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                        }
+                    })
+                }
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+        
+        
     
     
         return cell

@@ -264,6 +264,9 @@ class Newsfeeds: UITableViewController {
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
                                 print(error?.localizedDescription)
+                                
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
                         })
                     }
@@ -279,7 +282,7 @@ class Newsfeeds: UITableViewController {
 
                 // logic what to show : Seconds, minutes, hours, days, or weeks
                 if difference.second! <= 0 {
-                    cell.rpTime.text = "NOW"
+                    cell.rpTime.text = "just now"
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {

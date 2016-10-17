@@ -8,22 +8,52 @@
 
 import UIKit
 
-class SearchEngine: UITableViewController {
+class SearchEngine: UITableViewController, UISearchBarDelegate {
+    
+    // SearchBar
+    let searchBar = UISearchBar()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Make first responder
+        searchBar.becomeFirstResponder()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        // SearchbarDelegates
+        searchBar.delegate = self
+        searchBar.showsCancelButton = true
+        searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        searchBar.frame.size.width = UIScreen.main.bounds.width - 75
+        let searchItem = UIBarButtonItem(customView: searchBar)
+        self.navigationItem.rightBarButtonItem = searchItem
     }
+    
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    // MARK: - UISearchBar Delegates
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if searchBar.text!.hasPrefix("#") {
+            // Looking for hashtags...
+        } else {
+            // Looking for humans...
+        }
+        
+        return true
+    }
+    
+    
+    
 
     // MARK: - Table view data source
 

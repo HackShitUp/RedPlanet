@@ -7,21 +7,76 @@
 //
 
 import UIKit
+import CoreData
 
-private let reuseIdentifier = "Cell"
+import Parse
+import ParseUI
+import Bolts
 
-class OtherUserProfile: UICollectionViewController {
 
+
+// Global variable to hold other user's object
+var otherObject = [PFObject]()
+// Global variable to hold other user's username
+var otherName = [String]()
+
+
+class OtherUserProfile: UICollectionViewController, UINavigationControllerDelegate {
+    
+
+    // Other User's Friends
+    var oFriends = [PFObject]()
+    
+    // Other User's Followers
+    var oFollowers = [PFObject]()
+    
+    // Other User's Following
+    var oFollowing = [PFObject]()
+    
+
+    
+    // Variable to hold other user's space posts
+    var spaceObjects = [PFObject]()
+    
+    
+    // Function to query other user's Space Posts
+    func querySpace() {
+        let wall = PFQuery(className: "Wall")
+        wall.whereKey("toUser", equalTo: otherObject.last!)
+        wall.order(byDescending: "createdAt")
+        wall.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear array
+                self.spaceObjects.removeAll(keepingCapacity: false)
+                
+                
+                for object in objects! {
+                    self.spaceObjects.append(object)
+                }
+                
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+            
+            // Reload data
+            self.collectionView!.reloadData()
+        })
+    }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
 
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,11 +104,11 @@ class OtherUserProfile: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return self.spaceObjects.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "otherContentCell", for: indexPath) as! OtherContentCell
     
         // Configure the cell
     

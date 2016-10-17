@@ -19,12 +19,13 @@ class Chats: UITableViewController, UISearchBarDelegate {
     // Boolean to determine what to show in UITableView
     var searchActive: Bool = false
     
-    // User's friends
-    var friendProfiles = [PFObject]()
-    
+    // People the current user is chatting with
+    // other user's objects
+    // initial
+    var initialChatObjects = [PFObject]()
     // Chatting with...
-    var chatProfiles = [PFObject]()
-    
+    // Final list; removed duplicate values
+    var finalChatObjects = [PFObject]()
     
     
     // Search
@@ -37,10 +38,11 @@ class Chats: UITableViewController, UISearchBarDelegate {
     // Search Bar
     var searchBar = UISearchBar()
 
-    @IBAction func newChat(sender: AnyObject) {
+
+    @IBAction func newChat(_ sender: AnyObject) {
         // Show new view controller
-//        let newChat = self.storyboard?.instantiateViewControllerWithIdentifier("newChat") as! NewChat
-//        self.navigationController!.pushViewController(newChat, animated: true)
+        //        let newChat = self.storyboard?.instantiateViewControllerWithIdentifier("newChat") as! NewChat
+        //        self.navigationController!.pushViewController(newChat, animated: true)
     }
     
     // Refresh function
@@ -64,7 +66,6 @@ class Chats: UITableViewController, UISearchBarDelegate {
         
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.order(byDescending: "createdAt")
-        //        chats.orderByAscending("createdAt")
         chats.includeKey("receiver")
         chats.includeKey("sender")
         chats.findObjectsInBackground(block: {
@@ -72,16 +73,16 @@ class Chats: UITableViewController, UISearchBarDelegate {
             if error == nil {
                 
                 // Clear array
-                self.friendProfiles.removeAll(keepingCapacity: false)
+                self.initialChatObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     
                     if object["receiver"] as! PFUser == PFUser.current()! {
-                        self.friendProfiles.append(object["sender"] as! PFUser)
+                        self.initialChatObjects.append(object["sender"] as! PFUser)
                     }
                     
                     if object["sender"] as! PFUser == PFUser.current()! {
-                        self.friendProfiles.append(object["receiver"] as! PFUser)
+                        self.initialChatObjects.append(object["receiver"] as! PFUser)
                     }
                 }
                 
@@ -248,20 +249,20 @@ class Chats: UITableViewController, UISearchBarDelegate {
         } else {
             
             // Clear array
-            self.chatProfiles.removeAll(keepingCapacity: false)
+            self.finalChatObjects.removeAll(keepingCapacity: false)
             
             
             // Remove duplicate values in array
-            let talkingProfiles = Array(Set(friendProfiles))
+            let talkingProfiles = Array(Set(initialChatObjects))
             
             // Run for loop to append new non-duplicated array
             for profiles in talkingProfiles {
-                chatProfiles.append(profiles)
+                finalChatObjects.append(profiles)
             }
             
-            print("Returning: \(self.chatProfiles.count)")
+            print("Returning: \(self.finalChatObjects.count)")
             // Return friends
-            return chatProfiles.count
+            return finalChatObjects.count
         }
     }
     
@@ -350,12 +351,11 @@ class Chats: UITableViewController, UISearchBarDelegate {
             // Read reciepts
             let sender = PFQuery(className: "Chats")
             sender.whereKey("sender", equalTo: PFUser.current()!)
-            sender.whereKey("receiver", equalTo: self.chatProfiles[indexPath.row])
+            sender.whereKey("receiver", equalTo: self.finalChatObjects[indexPath.row])
             
             let receiver = PFQuery(className: "Chats")
             receiver.whereKey("receiver", equalTo: PFUser.current()!)
-            receiver.whereKey("sender", equalTo: self.chatProfiles[indexPath.row])
-            
+            receiver.whereKey("sender", equalTo: self.finalChatObjects[indexPath.row])
             
             let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
             chats.includeKey("sender")
@@ -364,12 +364,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
             chats.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
-                    
-                    
-                    
-                    //                    print("\n===\(object!["Message"] as! String)===\n")
-                    
-                    
+
                     // Set time
                     let from = object!.createdAt!
                     let now = Date()
@@ -403,7 +398,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                     
                     
                     // If PFUser.currentUser()! received last message
-                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.chatProfiles[indexPath.row] {
+                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.finalChatObjects[indexPath.row] {
                         // Handle optional chaining for OtherUser's Object
                         // SENDER
                         if let theSender = object!["sender"] as? PFUser {
@@ -442,7 +437,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                     
                     
                     // If PFUser.currentUser()! sent last message
-                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.chatProfiles[indexPath.row] {
+                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.finalChatObjects[indexPath.row] {
                         if let theReceiver = object!["receiver"] as? PFUser {
                             // Set username
                             cell.rpUsername.text! = theReceiver["username"] as! String
@@ -488,73 +483,73 @@ class Chats: UITableViewController, UISearchBarDelegate {
     }
     
  
-    /*
+    
     // Mark: UITableviewDelegate methods
-    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let cell = tableView.dequeueReusableCellWithIdentifier("chatsCell", forIndexPath: indexPath) as! ChatsCell
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        // Delete action
-        let delete = UITableViewRowAction(style: .Normal, title: "   ") { (action: UITableViewRowAction, indexPath: NSIndexPath) -> Void in
+        // Swipe to Delete Messages
+        let delete = UITableViewRowAction(style: .normal, title: "Delete") {
+            (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             // Present alert
             let alert = UIAlertController(title: "Delete?",
-                                          message: "Both you AND \(self.chatProfiles[indexPath.row].valueForKey("username") as! String) cannot restore this conversation once it's forever deleted.",
-                preferredStyle: .Alert)
+                                          message: "Both you AND \(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String) cannot restore this conversation once it's forever deleted.",
+                preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
-                                    style: .Destructive,
+                                    style: .destructive,
                                     handler: { (alertAction: UIAlertAction!) in
                                         
                                         // Show Progress
-                                        SVProgressHUD.show()
+//                                        SVProgressHUD.show()
                                         
                                         // Delete in Parse class: "Chats"
                                         let chats = PFQuery(className: "Chats")
                                         chats.includeKey("receiver")
                                         chats.includeKey("sender")
-                                        chats.findObjectsInBackgroundWithBlock({
-                                            (objects: [PFObject]?, error: NSError?) in
+                                        chats.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
                                                 
                                                 // Dismiss
-                                                SVProgressHUD.dismiss()
+//                                                SVProgressHUD.dismiss()
                                                 
                                                 for object in objects! {
                                                     
                                                     // If recipient is PFUser.currentUser()! && sender is OtherUser()
-                                                    if object["receiver"] as! PFUser == PFUser.currentUser()! && object["sender"] as! PFUser == self.chatProfiles[indexPath.row] {
-                                                        object.deleteInBackgroundWithBlock({
-                                                            (success: Bool, error: NSError?) in
+                                                    if object["receiver"] as! PFUser == PFUser.current()! && object["sender"] as! PFUser == self.finalChatObjects[indexPath.row] {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
                                                             if success {
                                                                 print("Successfully deleted chats: \(object)")
                                                                 
                                                                 // Dismiss
-                                                                SVProgressHUD.dismiss()
+                                                                //                                                                SVProgressHUD.dismiss()
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription)
                                                                 
                                                                 // Dismiss
-                                                                SVProgressHUD.dismiss()
+                                                                //                                                                SVProgressHUD.dismiss()
                                                             }
                                                         })
                                                         
                                                     }
                                                     
                                                     // If sender is PFUser.currentUser()! && recipient is OtherUser()
-                                                    if object["sender"] as! PFUser == PFUser.currentUser()! && object["receiver"] as! PFUser == self.chatProfiles[indexPath.row] {
-                                                        object.deleteInBackgroundWithBlock({
-                                                            (success: Bool, error: NSError?) in
+                                                    if object["sender"] as! PFUser == PFUser.current()! && object["receiver"] as! PFUser == self.finalChatObjects[indexPath.row] {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
                                                             if success {
                                                                 print("Successfully deleted chats: \(object)")
                                                                 
                                                                 // Dismiss
-                                                                SVProgressHUD.dismiss()
+//                                                                SVProgressHUD.dismiss()
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription)
                                                                 
                                                                 // Dismiss
-                                                                SVProgressHUD.dismiss()
+//                                                                SVProgressHUD.dismiss()
                                                             }
                                                         })
                                                         
@@ -574,7 +569,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                                 print(error?.localizedDescription)
                                                 
                                                 // Dismiss
-                                                SVProgressHUD.dismiss()
+//                                                SVProgressHUD.dismiss()
                                             }
                                         })
                                         
@@ -583,68 +578,68 @@ class Chats: UITableViewController, UISearchBarDelegate {
             })
             
             let no = UIAlertAction(title: "no",
-                                   style: .Default,
+                                   style: .default,
                                    handler: nil)
             
             alert.addAction(yes)
             alert.addAction(no)
-            self.presentViewController(alert, animated: true, completion: nil)
+            self.present(alert, animated: true, completion: nil)
         }
         
-        delete.backgroundColor = UIColor(patternImage: UIImage(named: "Delete.png")!)
+        delete.backgroundColor = UIColor.red
         
         return [delete]
         
     }
-    */
     
     
-    /*
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = self.tableView!.dequeueReusableCellWithIdentifier("chatsCell", forIndexPath: indexPath) as! ChatsCell
-        
+        // If user is searching...
         if searchActive == true && searchBar.text != "" {
-            // Append to chatObject
+            // Append to <chatUserObject>
+            // and <chatUsername>
             let user = PFUser.query()!
             user.whereKey("username", equalTo: searchNames[indexPath.row])
-            user.findObjectsInBackgroundWithBlock {
-                (objects: [PFObject]?, error: NSError?) in
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
                         // Append user's object
-                        chatObject.append(object)
+                        chatUserObject.append(object)
                         // Append user's username
-                        chatWith.append(self.searchNames[indexPath.row])
+                        chatUsername.append(self.searchNames[indexPath.row])
                     }
                     
                     // Push View controller
-                    let chatRoom = self.storyboard?.instantiateViewControllerWithIdentifier("slackChat") as! SlackChatRoom
+                    let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
                     self.navigationController!.pushViewController(chatRoom, animated: true)
+                    
                     
                 } else {
                     print(error?.localizedDescription)
                 }
-            }
+            })
             
         } else {
             
-            
-            // Load VC
-            chatObject.append(self.chatProfiles[indexPath.row])
-            // Append username
-            chatWith.append(self.chatProfiles[indexPath.row].valueForKey("username") as! String)
+
+            // Append...
+            // (1) User's Object
+            chatUserObject.append(self.finalChatObjects[indexPath.row])
+            // (2) Username
+            chatUsername.append(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String)
             
             // Push View controller
-            let chatRoom = self.storyboard?.instantiateViewControllerWithIdentifier("slackChat") as! SlackChatRoom
+            let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
             self.navigationController!.pushViewController(chatRoom, animated: true)
             
             
-            
         }
-        
     }
- */
+ 
 
 
 }
