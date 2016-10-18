@@ -13,8 +13,15 @@ import Parse
 import ParseUI
 import Bolts
 
+//import Agrume
+
+
 
 class RPChatMediaCell: UITableViewCell {
+    
+    
+    // Initialize Parent View Controller
+    var delegate: UIViewController?
     
     
     @IBOutlet weak var rpUserProPic: PFImageView!
@@ -22,9 +29,30 @@ class RPChatMediaCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
 
+    
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        // Black
+        let black = UIViewController()
+        black.view.backgroundColor = UIColor.black
+        
+//        // Mark: - Agrume
+//        let agrume = Agrume(image: self.rpMediaAsset.image!)
+//        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+//        agrume.showFrom(self.delegate!.self, backgroundSnapshotVC: black)
+        print("ZOOM!")
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        // Add tap gesture to zoom in
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.rpMediaAsset.isUserInteractionEnabled = true
+        self.rpMediaAsset.addGestureRecognizer(zoomTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

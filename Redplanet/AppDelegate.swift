@@ -98,10 +98,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let payload = result?.notification.payload
                 let fullMessage = payload?.title
                 
-                //Try to fetch the action selected
-//                if let additionalData = payload.additionalData, actionSelected = additionalData["actionSelected"] as? String {
-//                    fullMessage =  fullMessage + "\nPressed ButtonId:\(actionSelected)"
-//                }
+                print("\(fullMessage)")
+                
+                // Banner for notification
+                if fullMessage!.hasPrefix("\(PFUser.current()!.username!)") {
+                    // If PFUser.currentUser()! caused
+                    // Sent notification
+                    // Set "invisible banner"
+                    let banner = Banner(title: "",
+                                        subtitle: "",
+                                        image: nil,
+                                        backgroundColor: UIColor.clear
+                    )
+                    banner.dismissesOnTap = true
+                    banner.show(duration: 3.0)
+                    
+                } else if fullMessage!.hasPrefix("from") && chatUsername.count != 0 && fullMessage!.hasSuffix(chatUsername.last!) {
+                    // if notificaiton titles: "from <Username>"
+                    // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
+                    // Reload data for SlackChat
+
+                    // Post notification
+                    NotificationCenter.default.post(name: rpChat, object: nil)
+                    
+                } else {
+                    // Set visible banner
+                    let banner = Banner(title: "\(fullMessage)",
+                        subtitle: "",
+                        image: nil,
+                        backgroundColor: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    )
+                    banner.dismissesOnTap = true
+                    banner.show(duration: 3.0)
+                }
+
                 
                 print(fullMessage)
             }, settings: [kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInFocusDisplayOption : false])

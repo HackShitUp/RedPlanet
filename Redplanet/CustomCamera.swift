@@ -30,11 +30,18 @@ class CustomCamera: UIViewController {
     var stillImageOutput: AVCaptureStillImageOutput?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     
-    
     // UIView for front facing camera flash
     let flashView = UIView()
     
     @IBOutlet weak var collectionView: UICollectionView!
+
+    // Outlets
+    @IBOutlet weak var retakeButton: UIButton!
+    @IBOutlet weak var previewView: UIView!
+    @IBOutlet weak var imageTaken: UIImageView!
+    @IBOutlet weak var captureButton: UIButton!
+    
+    
     
     @IBOutlet weak var saveButton: UIButton!
     @IBAction func saveButton(_ sender: AnyObject) {
@@ -53,10 +60,8 @@ class CustomCamera: UIViewController {
 
     
     @IBAction func exit(_ sender: AnyObject) {
-//        // Post NSNotification to reload collection
-//        NSNotificationCenter.defaultCenter().postNotificationName("collection", object: nil)
-        // Show tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Dismiss Camera
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func retake(_ sender: AnyObject) {
@@ -141,26 +146,7 @@ class CustomCamera: UIViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    // Outlets
-    @IBOutlet weak var retakeButton: UIButton!
-    @IBOutlet weak var previewView: UIView!
-    @IBOutlet weak var imageTaken: UIImageView!
-    @IBOutlet weak var captureButton: UIButton!
-    
-    
-    
-    
-    
-    
-    
+
     
     @IBAction func didTakePhoto(_ sender: UIButton) {
         
@@ -198,7 +184,7 @@ class CustomCamera: UIViewController {
                         } else {
                             // BACK CAMERA
                             // Don't flip image
-                            var normalImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
+                            let normalImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
                             self.imageTaken.isHidden = false
                             self.imageTaken.image = normalImage
                         }
@@ -255,7 +241,6 @@ class CustomCamera: UIViewController {
     // Release UIView with alpha
     // To brighten up front camera
     func flashScreen() {
-//        flashView.frame = CGRectMake(0, 0, UIScreen.main.bounds.size.width, UIScreen.main.bounds.size.height)
         flashView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
         flashView.alpha = 1.0
         flashView.backgroundColor = UIColor.white
@@ -270,42 +255,7 @@ class CustomCamera: UIViewController {
         flashView.removeFromSuperview()
     }
     
-    
-    
-    // Hold image to save
-    // and share???
-    // TODO:: ^
-    func longPressed(sender: AnyObject) {
-        let options = UIAlertController(title: nil,
-                                        message: nil,
-                                        preferredStyle: .actionSheet)
-        let save = UIAlertAction(title: "Save",
-                                 style: .default,
-                                 handler: {(alertAction: UIAlertAction!) in
-                                    
-                                    // Check which camera was used
-                                    if self.frontBack == "front" {
-                                        // Save image
-                                        // Process flipped image
-                                        let flippedImage = UIImage(cgImage: self.imageTaken.image!.cgImage!, scale: 1.0, orientation: UIImageOrientation.rightMirrored)
-                                        UIImageWriteToSavedPhotosAlbum(flippedImage, nil, nil, nil)
-                                    } else {
-                                        // Save image
-                                        // No need to process flip-rendering
-                                        UIImageWriteToSavedPhotosAlbum(self.imageTaken.image!, nil, nil, nil)
-                                    }
-                                    
-        })
-        
-        let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel,
-                                   handler: nil)
-        options.addAction(save)
-        options.addAction(cancel)
-        self.present(options, animated: true, completion: nil)
-    }
-    
-    
+
     
     // Swipe for filters
     func filterSwipe(sender: AnyObject) {
@@ -389,24 +339,8 @@ class CustomCamera: UIViewController {
     }
     
     
-//    override func prefersStatusBarHidden() -> Bool {
-//        return true
-//    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Clear back button
-//        self.navigationItem.hidesBackButton = true
-//        let backButton = UIBarButtonItem(title: "back", style: .plain, target: self, action: #selector(exit))
-        
-        // Transparent navigation bar
-        self.navigationController!.navigationBar.isTranslucent = true
-        
-        // Hide navigation bar
-        self.navigationController!.setNavigationBarHidden(true, animated: false)
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Double tap to switch cameras
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
@@ -414,19 +348,9 @@ class CustomCamera: UIViewController {
         self.previewView.isUserInteractionEnabled = true
         self.previewView.addGestureRecognizer(doubleTap)
         
-        
-        // Hide collectionView
-        
         // Set frame sizes
         self.previewView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
         self.imageTaken.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-        
-        
-        // Hold to save image
-        let hold = UILongPressGestureRecognizer(target: self, action: #selector(longPressed))
-        hold.minimumPressDuration = 0.20
-        self.imageTaken.isUserInteractionEnabled = true
-        self.imageTaken.addGestureRecognizer(hold)
         
         // Hide UIImageView()
         self.imageTaken.isHidden = true
@@ -498,18 +422,18 @@ class CustomCamera: UIViewController {
         super.viewWillAppear(animated)
         
         // Hide navigation bar
-        self.navigationController!.setNavigationBarHidden(true, animated: false)
+//        self.navigationController!.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+//        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Hide navigation bar
-        self.navigationController!.setNavigationBarHidden(true, animated: false)
+//        self.navigationController!.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+//        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override var prefersStatusBarHidden: Bool {

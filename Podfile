@@ -10,7 +10,6 @@ target 'Redplanet' do
 	pod ‘Bolts’
 	pod ‘OneSignal’
 	pod ‘Mixpanel’
-	pod 'Onboard'
 	pod 'KILabel', '1.0.0'
 
 

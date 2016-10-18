@@ -8,8 +8,20 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
+import MobileCoreServices
+import Photos
+import PhotosUI
+
+import Parse
+import ParseUI
+import Bolts
+
 
 class CreateFront: UIViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var photoLibrary: UIButton!
@@ -18,8 +30,57 @@ class CreateFront: UIViewController {
     
     // Function to access camera
     func takePhoto() {
-        self.performSegue(withIdentifier: "camera", sender: self)
+        // Check Auhorization
+        cameraAuthorization()
+        // and show camera depending on status...
     }
+    
+    
+    // Function to check authorization
+    func cameraAuthorization() {
+        if AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) ==  AVAuthorizationStatus.authorized {
+            // Already Authorized
+            print("Already Authroized")
+            
+            let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+            self.present(cameraVC, animated: true, completion: nil)
+            
+        } else {
+            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in
+                if granted == true {
+                    // User granted camera access
+                    print("Authorized")
+                    
+                    let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+                    self.present(cameraVC, animated: true, completion: nil)
+                    
+                } else {
+                    // User denied camera access
+                    print("Denied")
+                    let alert = UIAlertController(title: "Camera Access Denied",
+                                                  message: "Please allow Redplanet to use your camera.",
+                                                  preferredStyle: .alert)
+                    
+                    let settings = UIAlertAction(title: "Settings",
+                                                 style: .default,
+                                                 handler: {(alertAction: UIAlertAction!) in
+                                                    
+                                                    let url = URL(string: UIApplicationOpenSettingsURLString)
+                                                    UIApplication.shared.openURL(url!)
+                    })
+                    
+                    let deny = UIAlertAction(title: "Later",
+                                             style: .destructive,
+                                             handler: nil)
+                    
+                    alert.addAction(settings)
+                    alert.addAction(deny)
+                    self.present(alert, animated: true, completion: nil)
+                }
+            })
+        }
+    }
+    
     
     
     // Function to create new text post
@@ -27,6 +88,62 @@ class CreateFront: UIViewController {
         // TODO::
         // Load new Text Post View Controller
     }
+    
+    // Function to load user's photos
+    func loadLibrary() {
+        // Request access to Photos
+        photosAuthorization()
+        // and load view controllers depending on status
+    }
+    
+    
+    // Function to ask for permission to the PhotoLibrary
+    func photosAuthorization() {
+        PHPhotoLibrary.requestAuthorization({(status:PHAuthorizationStatus) in
+            switch status{
+            case .authorized:
+                print("Authorized")
+                
+                // TODO::
+                // Load user's photos
+
+                break
+            case .denied:
+                print("Denied")
+                let alert = UIAlertController(title: "Photos Access Denied",
+                                              message: "Please allow Redplanet access your Photos.",
+                                              preferredStyle: .alert)
+                
+                let settings = UIAlertAction(title: "Settings",
+                                             style: .default,
+                                             handler: {(alertAction: UIAlertAction!) in
+                                                
+                                                let url = URL(string: UIApplicationOpenSettingsURLString)
+                                                UIApplication.shared.openURL(url!)
+                })
+                
+                let deny = UIAlertAction(title: "Later",
+                                         style: .destructive,
+                                         handler: nil)
+                
+                alert.addAction(settings)
+                alert.addAction(deny)
+                self.present(alert, animated: true, completion: nil)
+
+                break
+            default:
+                print("Default")
+
+                break
+            }
+        })
+    }
+    
+    
+    
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,13 +169,17 @@ class CreateFront: UIViewController {
         self.cameraButton.isUserInteractionEnabled = true
         self.cameraButton.addGestureRecognizer(cameraTap)
         
-        
         // (2) TEXT POST
         let tpTap = UITapGestureRecognizer(target: self, action: #selector(newTextPost))
         tpTap.numberOfTapsRequired = 1
         self.textPost.isUserInteractionEnabled = true
         self.textPost.addGestureRecognizer(tpTap)
         
+        // (3) PHOTO LIBRARY
+        let libraryTap = UITapGestureRecognizer(target: self, action: #selector(loadLibrary))
+        libraryTap.numberOfTapsRequired = 1
+        self.photoLibrary.isUserInteractionEnabled = true
+        self.photoLibrary.addGestureRecognizer(libraryTap)
         
         
     }

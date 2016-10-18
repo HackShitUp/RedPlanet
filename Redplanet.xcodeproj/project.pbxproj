@@ -21,6 +21,16 @@
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
+		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
+		7EC05B061DB5E37C0039B357 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B051DB5E37C0039B357 /* Home.swift */; };
+		7EC05B081DB5E4910039B357 /* Followers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B071DB5E4910039B357 /* Followers.swift */; };
+		7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B091DB5EC6D0039B357 /* Friends.swift */; };
+		7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B0B1DB5ECAE0039B357 /* Following.swift */; };
+		7EC05B0F1DB5EE6C0039B357 /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */; };
+		7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B101DB5EE730039B357 /* FollowingCell.swift */; };
+		7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B141DB5FAA70039B357 /* MyHeader.swift */; };
+		7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B161DB5FAB70039B357 /* MyContentCell.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
 		7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D1361DB2FE4F00437219 /* Main.storyboard */; };
 		7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1391DB2FE4F00437219 /* Redplanet.xcdatamodeld */; };
@@ -86,6 +96,16 @@
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoomCell.swift; sourceTree = "<group>"; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
+		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
+		7EC05B051DB5E37C0039B357 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		7EC05B071DB5E4910039B357 /* Followers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Followers.swift; sourceTree = "<group>"; };
+		7EC05B091DB5EC6D0039B357 /* Friends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
+		7EC05B0B1DB5ECAE0039B357 /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
+		7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
+		7EC05B101DB5EE730039B357 /* FollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingCell.swift; sourceTree = "<group>"; };
+		7EC05B141DB5FAA70039B357 /* MyHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHeader.swift; sourceTree = "<group>"; };
+		7EC05B161DB5FAB70039B357 /* MyContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentCell.swift; sourceTree = "<group>"; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7EC5D1371DB2FE4F00437219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -215,20 +235,67 @@
 			name = TextPost;
 			sourceTree = "<group>";
 		};
-		7EAB4EB01DB4608300059DB1 /* ChatRoom */ = {
+		7EAB4EB01DB4608300059DB1 /* RPChatRoom */ = {
 			isa = PBXGroup;
 			children = (
 				7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */,
 				7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */,
 				7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */,
 			);
-			name = ChatRoom;
+			name = RPChatRoom;
+			sourceTree = "<group>";
+		};
+		7EC05AE51DB5B7B00039B357 /* BRYXBanner */ = {
+			isa = PBXGroup;
+			children = (
+				7EC05AE31DB5B7A60039B357 /* Banner.swift */,
+			);
+			name = BRYXBanner;
+			sourceTree = "<group>";
+		};
+		7EC05B0D1DB5EE460039B357 /* Newsfeeds */ = {
+			isa = PBXGroup;
+			children = (
+				7EC05B051DB5E37C0039B357 /* Home.swift */,
+				7EC05B121DB5EE7E0039B357 /* Friends */,
+				7EC05B131DB5EE830039B357 /* Following */,
+			);
+			name = Newsfeeds;
+			sourceTree = "<group>";
+		};
+		7EC05B121DB5EE7E0039B357 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				7EC05B091DB5EC6D0039B357 /* Friends.swift */,
+				7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */,
+			);
+			name = Friends;
+			sourceTree = "<group>";
+		};
+		7EC05B131DB5EE830039B357 /* Following */ = {
+			isa = PBXGroup;
+			children = (
+				7EC05B101DB5EE730039B357 /* FollowingCell.swift */,
+				7EC05B0B1DB5ECAE0039B357 /* Following.swift */,
+			);
+			name = Following;
+			sourceTree = "<group>";
+		};
+		7EC05B181DB5FABF0039B357 /* MyProfile */ = {
+			isa = PBXGroup;
+			children = (
+				7EC5D19D1DB3566600437219 /* MyProfile.swift */,
+				7EC05B141DB5FAA70039B357 /* MyHeader.swift */,
+				7EC05B161DB5FAB70039B357 /* MyContentCell.swift */,
+			);
+			name = MyProfile;
 			sourceTree = "<group>";
 		};
 		7EC5D1261DB2FE4F00437219 = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1311DB2FE4F00437219 /* Redplanet */,
+				7EC5D19F1DB3566D00437219 /* MyProfile */,
 				7EC5D1491DB2FE4F00437219 /* RedplanetTests */,
 				7EC5D1541DB2FE4F00437219 /* RedplanetUITests */,
 				7EC5D1301DB2FE4F00437219 /* Products */,
@@ -251,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
+				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
 				7EC5D1701DB3321E00437219 /* RamotionFoldingCell */,
 				7EC5D1361DB2FE4F00437219 /* Main.storyboard */,
 				7EC5D13C1DB2FE4F00437219 /* Assets.xcassets */,
@@ -262,8 +330,10 @@
 				7EC5D16E1DB32F3800437219 /* TabBar&Navigation */,
 				7EC5D19A1DB3541900437219 /* InitialViews */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
-				7E4CFF951DB4393A0087454E /* SingleContent */,
+				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7EC5D1911DB33C1400437219 /* Home */,
+				7E4CFF951DB4393A0087454E /* SingleContent */,
+				7EC05B0D1DB5EE460039B357 /* Newsfeeds */,
 				7EC5D1991DB3541000437219 /* Chats */,
 				7EC5D1B41DB36EB800437219 /* Create */,
 				7EC5D1B91DB36EEE00437219 /* Notifications */,
@@ -311,8 +381,8 @@
 		7EC5D1911DB33C1400437219 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D19F1DB3566D00437219 /* MyProfile */,
 				7EC5D18D1DB3388600437219 /* Newsfeeds.swift */,
+				7EC05B071DB5E4910039B357 /* Followers.swift */,
 				7EC5D18F1DB33C0E00437219 /* NewsfeedsCell.swift */,
 			);
 			name = Home;
@@ -323,7 +393,7 @@
 			children = (
 				7EC5D1951DB353E000437219 /* Chats.swift */,
 				7EC5D1971DB353F300437219 /* ChatsCell.swift */,
-				7EAB4EB01DB4608300059DB1 /* ChatRoom */,
+				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
 			);
 			name = Chats;
 			sourceTree = "<group>";
@@ -340,11 +410,12 @@
 		7EC5D19F1DB3566D00437219 /* MyProfile */ = {
 			isa = PBXGroup;
 			children = (
+				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7EC5D19D1DB3566600437219 /* MyProfile.swift */,
 				7EC5D19B1DB3561100437219 /* ProfileEdit.swift */,
 			);
 			name = MyProfile;
+			path = Redplanet;
 			sourceTree = "<group>";
 		};
 		7EC5D1A41DB356A500437219 /* Explore */ = {
@@ -378,8 +449,8 @@
 		7EC5D1B41DB36EB800437219 /* Create */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
+				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
 			);
 			name = Create;
 			sourceTree = "<group>";
@@ -686,14 +757,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E4CFF941DB439170087454E /* SpacePost.swift in Sources */,
+				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
+				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7EC5D1901DB33C0E00437219 /* NewsfeedsCell.swift in Sources */,
 				7E4CFF991DB439540087454E /* MediaAssetCell.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
+				7EC05B081DB5E4910039B357 /* Followers.swift in Sources */,
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E4CFF901DB439060087454E /* MediaAsset.swift in Sources */,
+				7EC05B0F1DB5EE6C0039B357 /* FriendsCell.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7EC5D1A11DB3568A00437219 /* Explore.swift in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
@@ -704,13 +779,18 @@
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
+				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
+				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
+				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
 				7EC5D1AF1DB359EE00437219 /* OtherContentCell.swift in Sources */,
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,
+				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
+				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */,
@@ -720,6 +800,7 @@
 				7EC5D1B61DB36EDD00437219 /* Notifications.swift in Sources */,
 				7EC5D18E1DB3388600437219 /* Newsfeeds.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
+				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

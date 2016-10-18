@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import OneSignal
+
 
 // TODO::
 // NOTE: That when you're sending an image, make sure you just send the image ONLY, so the database can distinguish it
@@ -23,6 +25,11 @@ var chatUserObject = [PFObject]()
 
 // Global variabel to hold username
 var chatUsername = [String]()
+
+
+// Add Notification to reload data
+let rpChat = Notification.Name("rpChat")
+
 
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
     
@@ -101,6 +108,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Clear newChat
                 self.newChat.text!.removeAll()
                 
+                // Send Push Notification to user
+                // Handle optional chaining
+                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "from \(PFUser.current()!.username!)"],
+                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                        ]
+                    )
+                }
+                
                 // Reload data
                 self.queryChats()
                 
@@ -142,11 +160,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
 
         // Set placeholder for newChat
-        self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
+        self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)..."
         
         // Add notifications to hide chatBox
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(self.queryChats), name: rpChat, object: nil)
 
         
     }
@@ -228,8 +251,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatRoomCell", for: indexPath) as! RPChatRoomCell
         let mCell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatMediaCell", for: indexPath) as! RPChatMediaCell
+        
+        // Set mCell's delegate
+        mCell.delegate = self
         
         
         if messageObjects[indexPath.row].value(forKey: "mediaAsset") == nil {
