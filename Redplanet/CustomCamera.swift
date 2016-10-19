@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import CoreImage
 
-class CustomCamera: UIViewController {
+class CustomCamera: UIViewController, CLImageEditorDelegate {
 
     // todo::
     // (1) add front face flash
@@ -233,9 +233,29 @@ class CustomCamera: UIViewController {
             //            self.presentViewController(shareVC, animated: true, completion: nil)
             // Perform segueue
 //            self.performSegueWithIdentifier("shareMedia", sender: self)
+            
+            
+            
+            editPhoto()
         }
         
     }
+    
+    
+    // CLImageEditor
+    func editPhoto() {
+        let editor = CLImageEditor(image: self.imageTaken.image!)
+        editor?.delegate = self
+        self.present(editor!, animated: true, completion: nil)
+    }
+    
+    
+    func imageEditor(editor: CLImageEditor, didFinishEdittingWithImage image: UIImage) {
+        self.imageTaken.image = image
+        editor.dismiss(animated: true, completion: nil)
+    }
+    
+    
     
     // Mimic front flash
     // Release UIView with alpha
