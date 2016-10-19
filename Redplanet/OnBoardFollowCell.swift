@@ -1,5 +1,5 @@
 //
-//  FriendsCell.swift
+//  OnBoardFollowCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/18/16.
@@ -7,22 +7,9 @@
 //
 
 import UIKit
-import CoreData
 
-import Parse
-import ParseUI
-import Bolts
+class OnBoardFollowCell: UITableViewCell {
 
-class FriendsCell: UITableViewCell {
-    
-    // Instantiate parent vc
-    var delegate: UIViewController?
-    
-    @IBOutlet weak var rpUserProPic: PFImageView!
-    @IBOutlet weak var rpUsername: UILabel!
-    @IBOutlet weak var time: UILabel!
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

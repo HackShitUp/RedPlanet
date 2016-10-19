@@ -1,8 +1,8 @@
 //
-//  FriendsCell.swift
+//  TextFocusCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/18/16.
+//  Created by Joshua Choi on 10/19/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -13,16 +13,20 @@ import Parse
 import ParseUI
 import Bolts
 
-class FriendsCell: UITableViewCell {
-    
-    // Instantiate parent vc
-    var delegate: UIViewController?
-    
+import KILabel
+
+
+class TextFocusCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
+
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     
+    @IBOutlet weak var textPost: KILabel!
     
+    @IBOutlet weak var numberOfLikes: UIButton!
+    
+    @IBOutlet weak var numberOfComments: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

@@ -139,14 +139,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Ask to register for push notifications
         OneSignal.registerForPushNotifications()
-
         
         
         // Call Login Function...
         // Which also calls <queryRelationships()>
         login()
-        
-
         
         
         return true
@@ -232,6 +229,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Call relationships function
             queryRelationships()
+            
+            // Check anonymity
+            anonymous()
             
             // Check birthday
             checkBirthday()
@@ -395,36 +395,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    // (2) Anonymity Function
+    // (3) Anonymity Function
     func anonymous() -> Bool {
         
-        if username.isEmpty {
-            print("User hasn't logged in yet!")
-            anonymity = true
-        } else {
-            let user = PFUser.query()!
-            user.whereKey("username", equalTo: PFUser.current()!.username!)
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    for object in objects! {
-                        if object["anonymous"] as! Bool == true {
-                            // User is anonymous
-                            anonymity = true
-                            
-                        } else {
-                            // User is identified
-                            anonymity = false
-                        }
-                    }
-                } else {
-                    print(error?.localizedDescription)
-                }
-            })
-        }
         
+        // Set global variable
+        anonymity = PFUser.current()!.value(forKey: "anonymous") as! Bool
         
-        print("Your anonymity is: \(anonymity)")
         return anonymity
     }
     

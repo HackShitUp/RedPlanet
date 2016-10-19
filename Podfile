@@ -12,7 +12,6 @@ target 'Redplanet' do
 	pod ‘Mixpanel’
 	pod 'KILabel', '1.0.0'
 
-
   target 'RedplanetTests' do
     inherit! :search_paths
     # Pods for testing

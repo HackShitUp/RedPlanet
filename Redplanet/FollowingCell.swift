@@ -14,6 +14,9 @@ import ParseUI
 import Bolts
 
 class FollowingCell: UITableViewCell {
+    
+    // Instantiate parent vc
+    var delegate: UIViewController?
 
     override func awakeFromNib() {
         super.awakeFromNib()

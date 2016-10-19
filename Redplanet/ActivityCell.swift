@@ -7,12 +7,27 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
 
 class ActivityCell: UITableViewCell {
+    
+    
+    // Instantiate parent view controller
+    var delegate: UIViewController?
+
+    
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpUsername: UIButton!
+    @IBOutlet weak var activity: UIButton!
+    @IBOutlet weak var time: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

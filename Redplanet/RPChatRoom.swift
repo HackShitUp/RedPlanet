@@ -340,28 +340,29 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             
             // logic what to show : Seconds, minutes, hours, days, or weeks
+            // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
-                cell.time.text = "right now"
+                cell.time.text = "now"
             }
             
             if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!) s ago"
+                cell.time.text = "\(difference.second!)s ago"
             }
             
             if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!) m ago"
+                cell.time.text = "\(difference.minute!)m ago"
             }
             
             if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!) hrs ago"
+                cell.time.text = "\(difference.hour!)h ago"
             }
             
             if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!) d ago"
+                cell.time.text = "\(difference.day!)d ago"
             }
             
             if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!) w ago"
+                cell.time.text = "\(difference.weekOfMonth!)w ago"
             }
             
             if difference.weekOfMonth! > 0 {
@@ -479,28 +480,29 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             
             // logic what to show : Seconds, minutes, hours, days, or weeks
+            // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
-                mCell.time.text = "right now"
+                cell.time.text = "now"
             }
             
             if difference.second! > 0 && difference.minute! == 0 {
-                mCell.time.text = "\(difference.second!) s ago"
+                cell.time.text = "\(difference.second!)s ago"
             }
             
             if difference.minute! > 0 && difference.hour! == 0 {
-                mCell.time.text = "\(difference.minute!) m ago"
+                cell.time.text = "\(difference.minute!)m ago"
             }
             
             if difference.hour! > 0 && difference.day! == 0 {
-                mCell.time.text = "\(difference.hour!) hrs ago"
+                cell.time.text = "\(difference.hour!)h ago"
             }
             
             if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                mCell.time.text = "\(difference.day!) d ago"
+                cell.time.text = "\(difference.day!)d ago"
             }
             
             if difference.weekOfMonth! > 0 {
-                mCell.time.text = "\(difference.weekOfMonth!) w ago"
+                cell.time.text = "\(difference.weekOfMonth!)w ago"
             }
             
             if difference.weekOfMonth! > 0 {

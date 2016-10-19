@@ -1,8 +1,8 @@
 //
-//  Notifications.swift
+//  OnboardFollow.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/16/16.
+//  Created by Joshua Choi on 10/18/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -13,31 +13,13 @@ import Parse
 import ParseUI
 import Bolts
 
-
-
-class Notifications: UITableViewController, UINavigationControllerDelegate {
+class OnboardFollow: UITableViewController {
+    
+    // Array of accounts to fetch
+    let names = ["Redplanet", "The New York Times"]
     
     
-    // Variable to hold notification objects
-    var activityObjects = [PFObject]()
     
-    // Query Notifications
-    func queryNotifications() {
-        let notifications = PFQuery(className: "Notifications")
-        notifications.whereKey("toUser", equalTo: PFUser.current()!)
-        notifications.order(byDescending: "createdAt")
-        notifications.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-            } else {
-                print(error?.localizedDescription)
-            }
-            
-            // Reload Data
-            self.tableView!.reloadData()
-        })
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

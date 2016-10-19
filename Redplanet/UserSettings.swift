@@ -7,7 +7,11 @@
 //
 
 import UIKit
+import CoreData
 
+import Parse
+import ParseUI
+import Bolts
 
 // Global variable to dictate what to send to notifications....
 // State of user's anonymity

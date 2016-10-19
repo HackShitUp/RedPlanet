@@ -28,11 +28,11 @@ class Home: UIViewController {
         // (Can be any UIViewController subclass)
         // Make sure the title property of all view controllers is set
         // Example:
-        let friends = self.storyboard?.instantiateViewController(withIdentifier: "homeVC") as! Newsfeeds
+        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsVC") as! Friends
         friends.title = "Friends"
         controllerArray.append(friends)
         
-        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Followers
+        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
         followingVC.title = "Following"
         controllerArray.append(followingVC)
         
@@ -45,7 +45,7 @@ class Home: UIViewController {
             .selectionIndicatorColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
             .selectedMenuItemLabelColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
-            .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 15)!),
+            .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.0)!),
             .unselectedMenuItemLabelColor(UIColor.black)
         ]
         

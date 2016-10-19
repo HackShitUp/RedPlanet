@@ -14,15 +14,42 @@ import ParseUI
 import Bolts
 
 class Following: UITableViewController {
+    
+    // Array to hold following's content
+    var followingContent = [PFObject]()
+    
+    // Query Following
+    func queryFollowing() {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("byUser", containedIn: myFollowing)
+        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear array
+                self.followingContent.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    self.followingContent.append(object)
+                }
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+            
+            // Reload data
+            self.tableView!.reloadData()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        // Query Following
+        self.queryFollowing()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,7 +58,6 @@ class Following: UITableViewController {
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
@@ -39,18 +65,23 @@ class Following: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return followingContent.count
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "followingCell", for: indexPath) as! FollowingCell
+        
+        
+        // Initiliaze and set parent VC
+        cell.delegate = self
+        
 
         // Configure the cell...
 
         return cell
     }
-    */
+ 
 
     /*
     // Override to support conditional editing of the table view.
