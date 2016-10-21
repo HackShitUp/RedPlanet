@@ -13,20 +13,10 @@ import Parse
 import ParseUI
 import Bolts
 
-import KILabel
 
-
-class TextFocusCell: UITableViewCell {
-    @IBOutlet weak var rpUserProPic: PFImageView!
-
+class TextFocusCell: FoldingCell {
     @IBOutlet weak var rpUsername: UILabel!
-    @IBOutlet weak var time: UILabel!
-    
-    @IBOutlet weak var textPost: KILabel!
-    
-    @IBOutlet weak var numberOfLikes: UIButton!
-    
-    @IBOutlet weak var numberOfComments: UIButton!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -37,5 +27,5 @@ class TextFocusCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }

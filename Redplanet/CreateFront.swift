@@ -19,7 +19,7 @@ import ParseUI
 import Bolts
 
 
-class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, IGCMenuDelegate {
+class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate {
     
     @IBOutlet weak var activityType: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
@@ -284,39 +284,42 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     let menuButton = UIButton()
     
     
-//    func igcMenuSelected(_ selectedMenuName: String, at index: Int) {
-//        
-//        // Hide Grid Menu
-//        if index == 0 {
-//            photosAuthorization()
-//        } else if index == 1 {
-//            cameraAuthorization()
-//        } else {
-//            igcMenu.hideGridMenu()
-//
-//        }
-//        
-//    }
+    func igcMenuSelected(_ selectedMenuName: String, at index: Int) {
+        
+        // Hide Grid Menu
+        if index == 0 {
+            photosAuthorization()
+        } else if index == 1 {
+            cameraAuthorization()
+        } else {
+            igcMenu.hideCircularMenu()
+
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        self.navigationController?.tabBarController?.delegate = self
-//
-//        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height - 80 , width: 60, height: 60)
-//        menuButton.backgroundColor = UIColor.white
-//        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
-//        menuButton.clipsToBounds = true
-//        igcMenu.menuButton = self.menuButton
-//        igcMenu.menuSuperView = self.view!
-//        self.view!.bringSubview(toFront: menuButton)
-//        igcMenu.disableBackground = true
-//        igcMenu.numberOfMenuItem = 3
-//        igcMenu.menuItemsNameArray = ["Photo Library", "Camera", "Text Post"]
-//        igcMenu.delegate = self
-//        igcMenu.menuImagesNameArray = ["cLibrary", "cCamera", "cText"]
-//        igcMenu.showGridMenu()
+        self.navigationController?.tabBarController?.delegate = self
+
+        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height - 80 , width: 60, height: 60)
+        menuButton.backgroundColor = UIColor.white
+        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
+        menuButton.clipsToBounds = true
+        igcMenu.menuButton = self.menuButton
+        igcMenu.menuSuperView = self.view!
+        self.view!.bringSubview(toFront: menuButton)
+        igcMenu.disableBackground = true
+        igcMenu.numberOfMenuItem = 3
+        igcMenu.delegate = self
+        igcMenu.menuImagesNameArray = ["cLibrary", "cCamera", "cText"]
+        igcMenu.showCircularMenu()
+
         
+        
+        
+
         
         
         // Set initial queries
@@ -329,9 +332,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         
         
-//        self.cameraButton.isHidden = true
-//        self.photoLibrary.isHidden = true
-//        self.textPost.isHidden = true
+        
+        
+        
+        
+        
+        self.cameraButton.isHidden = true
+        self.photoLibrary.isHidden = true
+        self.textPost.isHidden = true
 
         // Make buttons circular...
         // (1) Camera
@@ -372,7 +380,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewWillAppear(animated)
 
         
-        igcMenu.showCircularMenu()
+//        igcMenu.showCircularMenu()
 
         
         // Show tabBar

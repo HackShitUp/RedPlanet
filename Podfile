@@ -11,6 +11,7 @@ target 'Redplanet' do
 	pod ‘OneSignal’
 	pod ‘Mixpanel’
 	pod 'KILabel', '1.0.0'
+	pod 'SVProgressHUD'
 
   target 'RedplanetTests' do
     inherit! :search_paths

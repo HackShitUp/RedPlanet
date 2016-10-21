@@ -11,7 +11,7 @@
 
 #import "IGCMenu.h"
 #import "CLImageEditor.h"
-
+#import "WZDraggableSwitchHeaderView.h"
 
 
 #endif /* Redplanet_Bridging_Header_h */

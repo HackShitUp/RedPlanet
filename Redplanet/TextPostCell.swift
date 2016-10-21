@@ -13,8 +13,23 @@ import Parse
 import ParseUI
 import Bolts
 
-class TextPostCell: UITableViewCell {
+import KILabel
 
+class TextPostCell: UITableViewCell {
+    
+    // Initialize parent vc
+    var delegate: UIViewController?
+    
+
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    
+    @IBOutlet weak var rpUsername: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var textPost: KILabel!
+    
+    @IBAction func moreButton(_ sender: AnyObject) {
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

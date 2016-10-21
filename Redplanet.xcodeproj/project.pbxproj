@@ -10,8 +10,12 @@
 		090B69CFA86151527653FBDE /* Pods_RedplanetUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */; };
 		28FCAF4B5E65BA65AB5D8BF4 /* Pods_RedplanetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */; };
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
-		7E3626E51DB72B3600AB14F4 /* MediaFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626E41DB72B3600AB14F4 /* MediaFocusCell.swift */; };
-		7E3626E71DB72B3F00AB14F4 /* TextFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626E61DB72B3F00AB14F4 /* TextFocusCell.swift */; };
+		7E030CB61DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E030CB51DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.m */; };
+		7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E31DB981E3003011FA /* FriendsCell.swift */; };
+		7E2235E61DB98AFC003011FA /* InteractCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E51DB98AFC003011FA /* InteractCell.swift */; };
+		7E2235E91DB9DBE1003011FA /* FriendsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E81DB9DBE1003011FA /* FriendsNavigation.swift */; };
+		7E2235EB1DB9DBED003011FA /* FollowingNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235EA1DB9DBED003011FA /* FollowingNavigation.swift */; };
+		7E2235ED1DB9E346003011FA /* TPNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235EC1DB9E346003011FA /* TPNavigator.swift */; };
 		7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */; };
 		7E3626F21DB73D5000AB14F4 /* Creator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626F11DB73D5000AB14F4 /* Creator.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
@@ -76,12 +80,15 @@
 		7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EBF78271DB8571400727CB3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBF78261DB8571400727CB3 /* CurrentUser.swift */; };
+		7EBF78301DB8BBF300727CB3 /* FoldingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBF782F1DB8BBF300727CB3 /* FoldingCell.swift */; };
+		7EBF783B1DB8C32E00727CB3 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBF783A1DB8C32E00727CB3 /* MainTableViewController.swift */; };
+		7EBF783D1DB8C33800727CB3 /* DemoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBF783C1DB8C33800727CB3 /* DemoCell.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
 		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
 		7EC05B061DB5E37C0039B357 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B051DB5E37C0039B357 /* Home.swift */; };
 		7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B091DB5EC6D0039B357 /* Friends.swift */; };
 		7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B0B1DB5ECAE0039B357 /* Following.swift */; };
-		7EC05B0F1DB5EE6C0039B357 /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */; };
 		7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B101DB5EE730039B357 /* FollowingCell.swift */; };
 		7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B141DB5FAA70039B357 /* MyHeader.swift */; };
 		7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B161DB5FAB70039B357 /* MyContentCell.swift */; };
@@ -96,7 +103,6 @@
 		7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1681DB31B2500437219 /* SignUp.swift */; };
 		7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D16A1DB32F0D00437219 /* MasterTab.swift */; };
 		7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D16C1DB32F3300437219 /* Navigator.swift */; };
-		7EC5D1721DB3321E00437219 /* FoldingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1711DB3321E00437219 /* FoldingCell.swift */; };
 		7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1921DB33CD400437219 /* UserSettings.swift */; };
 		7EC5D1961DB353E000437219 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1951DB353E000437219 /* Chats.swift */; };
 		7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1971DB353F300437219 /* ChatsCell.swift */; };
@@ -112,6 +118,10 @@
 		7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B11DB35B6900437219 /* CustomCamera.swift */; };
 		7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B71DB36EE900437219 /* ActivityCell.swift */; };
 		7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1BC1DB3766200437219 /* CreateFront.swift */; };
+		7EE5DAEB1DB7DC7000800A2A /* MediaFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5DAE91DB7DC7000800A2A /* MediaFocusCell.swift */; };
+		7EE5DAEC1DB7DC7000800A2A /* MediaFocusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5DAEA1DB7DC7000800A2A /* MediaFocusCell.xib */; };
+		7EE5DAEF1DB7DC7C00800A2A /* TextFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5DAED1DB7DC7C00800A2A /* TextFocusCell.swift */; };
+		7EE5DAF01DB7DC7C00800A2A /* TextFocusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE5DAEE1DB7DC7C00800A2A /* TextFocusCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,8 +146,13 @@
 		636456C61CF2B3F8852F3B93 /* Pods-RedplanetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.debug.xcconfig"; sourceTree = "<group>"; };
 		671F731F63BF43A12743B080 /* Pods-RedplanetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.release.xcconfig"; sourceTree = "<group>"; };
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E3626E41DB72B3600AB14F4 /* MediaFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFocusCell.swift; sourceTree = "<group>"; };
-		7E3626E61DB72B3F00AB14F4 /* TextFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFocusCell.swift; sourceTree = "<group>"; };
+		7E030CB41DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WZDraggableSwitchHeaderView.h; sourceTree = "<group>"; };
+		7E030CB51DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WZDraggableSwitchHeaderView.m; sourceTree = "<group>"; };
+		7E2235E31DB981E3003011FA /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
+		7E2235E51DB98AFC003011FA /* InteractCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractCell.swift; sourceTree = "<group>"; };
+		7E2235E81DB9DBE1003011FA /* FriendsNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsNavigation.swift; sourceTree = "<group>"; };
+		7E2235EA1DB9DBED003011FA /* FollowingNavigation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingNavigation.swift; sourceTree = "<group>"; };
+		7E2235EC1DB9E346003011FA /* TPNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPNavigator.swift; sourceTree = "<group>"; };
 		7E3626ED1DB7367A00AB14F4 /* IGCMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGCMenu.h; sourceTree = "<group>"; };
 		7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGCMenu.m; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
@@ -250,12 +265,15 @@
 		7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCell.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoomCell.swift; sourceTree = "<group>"; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EBF78261DB8571400727CB3 /* CurrentUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		7EBF782F1DB8BBF300727CB3 /* FoldingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldingCell.swift; sourceTree = "<group>"; };
+		7EBF783A1DB8C32E00727CB3 /* MainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		7EBF783C1DB8C33800727CB3 /* DemoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DemoCell.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
 		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		7EC05B051DB5E37C0039B357 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		7EC05B091DB5EC6D0039B357 /* Friends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
 		7EC05B0B1DB5ECAE0039B357 /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
-		7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		7EC05B101DB5EE730039B357 /* FollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingCell.swift; sourceTree = "<group>"; };
 		7EC05B141DB5FAA70039B357 /* MyHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHeader.swift; sourceTree = "<group>"; };
 		7EC05B161DB5FAB70039B357 /* MyContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentCell.swift; sourceTree = "<group>"; };
@@ -276,7 +294,6 @@
 		7EC5D1681DB31B2500437219 /* SignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		7EC5D16A1DB32F0D00437219 /* MasterTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterTab.swift; sourceTree = "<group>"; };
 		7EC5D16C1DB32F3300437219 /* Navigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
-		7EC5D1711DB3321E00437219 /* FoldingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoldingCell.swift; sourceTree = "<group>"; };
 		7EC5D1921DB33CD400437219 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		7EC5D1951DB353E000437219 /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
 		7EC5D1971DB353F300437219 /* ChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsCell.swift; sourceTree = "<group>"; };
@@ -293,6 +310,10 @@
 		7EC5D1B71DB36EE900437219 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redplanet.entitlements; sourceTree = "<group>"; };
 		7EC5D1BC1DB3766200437219 /* CreateFront.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFront.swift; sourceTree = "<group>"; };
+		7EE5DAE91DB7DC7000800A2A /* MediaFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFocusCell.swift; sourceTree = "<group>"; };
+		7EE5DAEA1DB7DC7000800A2A /* MediaFocusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaFocusCell.xib; sourceTree = "<group>"; };
+		7EE5DAED1DB7DC7C00800A2A /* TextFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFocusCell.swift; sourceTree = "<group>"; };
+		7EE5DAEE1DB7DC7C00800A2A /* TextFocusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFocusCell.xib; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -338,6 +359,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7E030CB31DB9677E0081EBE8 /* WZDraggableSwitchHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				7E030CB41DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.h */,
+				7E030CB51DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.m */,
+			);
+			path = WZDraggableSwitchHeaderView;
+			sourceTree = "<group>";
+		};
 		7E3626EC1DB7367A00AB14F4 /* IGCMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -354,6 +384,7 @@
 				7E4CFFA01DB439780087454E /* MediaAsset */,
 				7E4CFF9F1DB439720087454E /* ProfilePhoto */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
+				7E2235E51DB98AFC003011FA /* InteractCell.swift */,
 			);
 			name = SingleContent;
 			sourceTree = "<group>";
@@ -389,6 +420,7 @@
 			isa = PBXGroup;
 			children = (
 				7E4CFF8D1DB438FD0087454E /* TextPost.swift */,
+				7E2235EC1DB9E346003011FA /* TPNavigator.swift */,
 				7E4CFF961DB4394A0087454E /* TextPostCell.swift */,
 			);
 			name = TextPost;
@@ -700,8 +732,8 @@
 			isa = PBXGroup;
 			children = (
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
-				7E3626E41DB72B3600AB14F4 /* MediaFocusCell.swift */,
-				7E3626E61DB72B3F00AB14F4 /* TextFocusCell.swift */,
+				7EE5DAF11DB7DC8700800A2A /* MediaFocusCell */,
+				7EE5DAF21DB7DC8E00800A2A /* TextFocusCell */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
 			);
@@ -712,7 +744,8 @@
 			isa = PBXGroup;
 			children = (
 				7EC05B091DB5EC6D0039B357 /* Friends.swift */,
-				7EC05B0E1DB5EE6C0039B357 /* FriendsCell.swift */,
+				7E2235E81DB9DBE1003011FA /* FriendsNavigation.swift */,
+				7E2235E31DB981E3003011FA /* FriendsCell.swift */,
 			);
 			name = Friends;
 			sourceTree = "<group>";
@@ -721,6 +754,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC05B0B1DB5ECAE0039B357 /* Following.swift */,
+				7E2235EA1DB9DBED003011FA /* FollowingNavigation.swift */,
 				7EC05B101DB5EE730039B357 /* FollowingCell.swift */,
 			);
 			name = Following;
@@ -761,6 +795,7 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
+				7E030CB31DB9677E0081EBE8 /* WZDraggableSwitchHeaderView */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E3626EC1DB7367A00AB14F4 /* IGCMenu */,
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
@@ -774,7 +809,7 @@
 				7EC5D1A91DB357C600437219 /* SearchEngine */,
 				7EC5D1B01DB359F300437219 /* OtherUser */,
 				7EC5D16E1DB32F3800437219 /* TabBar&Navigation */,
-				7EC5D19A1DB3541900437219 /* InitialViews */,
+				7EC5D19A1DB3541900437219 /* Login&SignUp */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
@@ -819,7 +854,9 @@
 		7EC5D1701DB3321E00437219 /* RamotionFoldingCell */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D1711DB3321E00437219 /* FoldingCell.swift */,
+				7EBF783C1DB8C33800727CB3 /* DemoCell.swift */,
+				7EBF783A1DB8C32E00727CB3 /* MainTableViewController.swift */,
+				7EBF782F1DB8BBF300727CB3 /* FoldingCell.swift */,
 			);
 			name = RamotionFoldingCell;
 			path = FoldingCell;
@@ -835,7 +872,7 @@
 			name = Chats;
 			sourceTree = "<group>";
 		};
-		7EC5D19A1DB3541900437219 /* InitialViews */ = {
+		7EC5D19A1DB3541900437219 /* Login&SignUp */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */,
@@ -844,7 +881,7 @@
 				7EA45CC91DB6A1B900A466D9 /* NewUser.swift */,
 				7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */,
 			);
-			name = InitialViews;
+			name = "Login&SignUp";
 			sourceTree = "<group>";
 		};
 		7EC5D19F1DB3566D00437219 /* MyProfile */ = {
@@ -852,6 +889,7 @@
 			children = (
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
+				7EBF78261DB8571400727CB3 /* CurrentUser.swift */,
 				7EC5D19B1DB3561100437219 /* ProfileEdit.swift */,
 			);
 			name = MyProfile;
@@ -894,6 +932,24 @@
 				7EA45CD41DB6BD7B00A466D9 /* PhotoLibrary */,
 			);
 			name = Create;
+			sourceTree = "<group>";
+		};
+		7EE5DAF11DB7DC8700800A2A /* MediaFocusCell */ = {
+			isa = PBXGroup;
+			children = (
+				7EE5DAE91DB7DC7000800A2A /* MediaFocusCell.swift */,
+				7EE5DAEA1DB7DC7000800A2A /* MediaFocusCell.xib */,
+			);
+			name = MediaFocusCell;
+			sourceTree = "<group>";
+		};
+		7EE5DAF21DB7DC8E00800A2A /* TextFocusCell */ = {
+			isa = PBXGroup;
+			children = (
+				7EE5DAED1DB7DC7C00800A2A /* TextFocusCell.swift */,
+				7EE5DAEE1DB7DC7C00800A2A /* TextFocusCell.xib */,
+			);
+			name = TextFocusCell;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1042,6 +1098,8 @@
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
+				7EE5DAEC1DB7DC7000800A2A /* MediaFocusCell.xib in Resources */,
+				7EE5DAF01DB7DC7C00800A2A /* TextFocusCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,7 +1251,6 @@
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
 				7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */,
-				7E3626E71DB72B3F00AB14F4 /* TextFocusCell.swift in Sources */,
 				7EA45CD11DB6BB0500A466D9 /* PhotoLibrary.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
@@ -1204,11 +1261,15 @@
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
+				7E2235E61DB98AFC003011FA /* InteractCell.swift in Sources */,
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
+				7E2235EB1DB9DBED003011FA /* FollowingNavigation.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
+				7EE5DAEF1DB7DC7C00800A2A /* TextFocusCell.swift in Sources */,
+				7EBF783B1DB8C32E00727CB3 /* MainTableViewController.swift in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
@@ -1216,20 +1277,18 @@
 				7E4CFF991DB439540087454E /* MediaAssetCell.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
-				7E3626E51DB72B3600AB14F4 /* MediaFocusCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
+				7EBF783D1DB8C33800727CB3 /* DemoCell.swift in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E4CFF901DB439060087454E /* MediaAsset.swift in Sources */,
-				7EC05B0F1DB5EE6C0039B357 /* FriendsCell.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC5D1A11DB3568A00437219 /* Explore.swift in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,
-				7EC5D1721DB3321E00437219 /* FoldingCell.swift in Sources */,
 				7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
@@ -1239,14 +1298,17 @@
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
+				7E2235ED1DB9E346003011FA /* TPNavigator.swift in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
+				7E030CB61DB9677E0081EBE8 /* WZDraggableSwitchHeaderView.m in Sources */,
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
 				7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */,
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
+				7E2235E91DB9DBE1003011FA /* FriendsNavigation.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3626F21DB73D5000AB14F4 /* Creator.swift in Sources */,
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
@@ -1257,6 +1319,7 @@
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
 				7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */,
+				7EBF78301DB8BBF300727CB3 /* FoldingCell.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
@@ -1265,6 +1328,7 @@
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */,
+				7EBF78271DB8571400727CB3 /* CurrentUser.swift in Sources */,
 				7E98E9411DB75057001B7329 /* CLClippingTool.m in Sources */,
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,
 				7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */,
@@ -1278,8 +1342,10 @@
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
+				7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
+				7EE5DAEB1DB7DC7000800A2A /* MediaFocusCell.swift in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,

@@ -9,10 +9,13 @@
 import UIKit
 import CoreData
 
-class Home: UIViewController {
-    
-    var pageMenu : CAPSPageMenu?
 
+
+// Global Initialization
+var pageMenu : CAPSPageMenu?
+
+
+class Home: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,12 +30,13 @@ class Home: UIViewController {
         // page menu, initialize them, and add each to the controller array.
         // (Can be any UIViewController subclass)
         // Make sure the title property of all view controllers is set
-        // Example:
-        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsVC") as! Friends
+//        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsVC") as! Friends
+        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsNavigation") as! FriendsNavigation
         friends.title = "Friends"
         controllerArray.append(friends)
         
-        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
+//        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
+        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingNavigation") as! FollowingNavigation
         followingVC.title = "Following"
         controllerArray.append(followingVC)
         

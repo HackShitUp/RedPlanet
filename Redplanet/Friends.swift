@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
+
 class Friends: UITableViewController, UINavigationControllerDelegate {
     
     // Array to hold friends
@@ -22,8 +24,15 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
     var friendsContent = [PFObject]()
     
     
+    let navigator = Navigator()
+
+    
     // Query Current User's Friends
     func queryFriends() {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
         
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
@@ -71,6 +80,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         
+                        // Dismiss
+                        SVProgressHUD.dismiss()
+                        
                         // Clear array
                         self.friendsContent.removeAll(keepingCapacity: false)
                         
@@ -95,8 +107,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
                         print("Friends feed count: \(self.friendsContent.count)")
                         
                     } else {
-                        print("ERROR")
                         print(error?.localizedDescription)
+                        
+                        
+                        // Dismiss
+                        SVProgressHUD.dismiss()
                         
                     }
                     
@@ -107,6 +122,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
                 
             } else {
                 print(error?.localizedDescription)
+                
+                // Dismiss
+                SVProgressHUD.dismiss()
             }
         })
         
@@ -128,11 +146,19 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
     }
 
     // MARK: - Table view data source
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return friendsContent.count
     }
 
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath!) -> CGFloat {
+        return 60
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "friendsCell", for: indexPath) as! FriendsCell
@@ -156,12 +182,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
         friendsContent[indexPath.row].fetchInBackground { (object: PFObject?, error: Error?) in
             if error == nil {
                 
-                // Get user's object
+                // (1) Get user's object
                 if let user = object!["byUser"] as? PFUser {
-                    // (1) Username
+                    // (A) Username
                     cell.rpUsername.text! = user.value(forKey: "username") as! String
                     
-                    // (2) Profile Photo
+                    // (B) Profile Photo
                     // Handle optional chaining for user's profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {
                         proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
@@ -178,9 +204,18 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
                     }
                 }
                 
+
+                // (2) Determine Content Type
+                if object!["mediaAsset"] == nil {
+                    cell.contentColor.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    cell.contentType.image = UIImage(named: "Text Height-96")
+                } else {
+                    cell.contentColor.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+                    cell.contentType.image = UIImage(named: "Stack of Photos-96")
+                }
                 
                 
-                // Set time
+                // (3) Set time
                 let from = object!.createdAt!
                 let now = Date()
                 let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
@@ -233,6 +268,32 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
         
 
         return cell
+    }
+    
+    
+    
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
+            
+            print("Tapped")
+            // TODO:
+            // Save to Views
+            let view = PFObject(className: "Views")
+            
+            // Append Object
+            textPostObject.append(friendsContent[indexPath.row])
+            
+            
+            
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TPNavigator
+            self.present(textPostVC, animated: true, completion: nil)
+            
+            
+        } else {
+
+        }
     }
 
 }

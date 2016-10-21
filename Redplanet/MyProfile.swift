@@ -41,22 +41,41 @@ class MyProfile: UICollectionViewController {
     
     
     // MARK: UICollectionViewHeaderSection datasource
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        // ofSize should be the same size of the headerView's label size:
-//        return CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
-        return CGSize(width: self.view.frame.size.width, height: 400)
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        // ofSize should be the same size of the headerView's label size:
+////        return CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+//        return CGSize(width: self.view.frame.size.width, height: 400)
+//    }
+    
+    // flowLayout.headerReferenceSize = CGSizeMake(self.collectionView.frame.size.width, 100.f);
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
-        let myHeader = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "myHeader", for: indexPath as IndexPath) as! MyHeader
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "myHeader", for: indexPath as IndexPath) as! MyHeader
         
-//        if let myProfilePhoto = PFUser.current()!["userProfilePicture"] as? PFFile {
-//            
-//        }
-        myHeader.myProPic.image = UIImage(named: "Gender Neutral User-96")
+        
+        // Get Profile Photo
+        if let myProfilePhoto = PFUser.current()!["userProfilePicture"] as? PFFile {
+            myProfilePhoto.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    // Set profile photo
+                    header.myProPic.image = UIImage(data: data!)
+                    
+                    print("FIRED")
+                    
+                } else {
+                    print(error?.localizedDescription)
+                    
+                    print("ERROR")
+                    
+                    // Set default
+                    header.myProPic.image = UIImage(named: "Gender Neutral User-96")
+                }
+            })
+        }
 
-        return myHeader
+        return header
     }
 
 
