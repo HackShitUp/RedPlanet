@@ -141,8 +141,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Function to create new text post
     func newTextPost() {
-        // TODO::
-        // Load new Text Post View Controller
+        // Load New TextPost
+        let newTP = self.storyboard?.instantiateViewController(withIdentifier: "newTextPost") as! NewTextPost
+        self.navigationController?.pushViewController(newTP, animated: true)
     }
     
     // Function to load user's photos
@@ -303,18 +304,18 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         self.navigationController?.tabBarController?.delegate = self
 
-        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height - 80 , width: 60, height: 60)
-        menuButton.backgroundColor = UIColor.white
-        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
-        menuButton.clipsToBounds = true
-        igcMenu.menuButton = self.menuButton
-        igcMenu.menuSuperView = self.view!
-        self.view!.bringSubview(toFront: menuButton)
-        igcMenu.disableBackground = true
-        igcMenu.numberOfMenuItem = 3
-        igcMenu.delegate = self
-        igcMenu.menuImagesNameArray = ["cLibrary", "cCamera", "cText"]
-        igcMenu.showCircularMenu()
+//        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height - 80, width: 60, height: 60)
+//        menuButton.backgroundColor = UIColor.white
+//        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
+//        menuButton.clipsToBounds = true
+//        igcMenu.menuButton = self.menuButton
+//        igcMenu.menuSuperView = self.view!
+//        self.view!.bringSubview(toFront: menuButton)
+//        igcMenu.disableBackground = true
+//        igcMenu.numberOfMenuItem = 3
+//        igcMenu.delegate = self
+//        igcMenu.menuImagesNameArray = ["cLibrary", "cCamera", "cText"]
+//        igcMenu.showCircularMenu()
 
         
         
@@ -337,9 +338,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         
         
-        self.cameraButton.isHidden = true
-        self.photoLibrary.isHidden = true
-        self.textPost.isHidden = true
+//        self.cameraButton.isHidden = true
+//        self.photoLibrary.isHidden = true
+//        self.textPost.isHidden = true
 
         // Make buttons circular...
         // (1) Camera

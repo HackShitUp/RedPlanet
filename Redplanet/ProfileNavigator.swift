@@ -1,14 +1,14 @@
 //
-//  CurrentUser.swift
+//  ProfileNavigator.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/19/16.
+//  Created by Joshua Choi on 10/21/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
 
-class CurrentUser: UIViewController {
+class ProfileNavigator: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

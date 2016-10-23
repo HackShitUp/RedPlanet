@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
+
 class Following: UITableViewController {
     
     // Array to hold following's content
@@ -20,12 +22,19 @@ class Following: UITableViewController {
     
     // Query Following
     func queryFollowing() {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
                 
                 // Clear array
                 self.followingContent.removeAll(keepingCapacity: false)
@@ -37,6 +46,9 @@ class Following: UITableViewController {
                 
             } else {
                 print(error?.localizedDescription)
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
             }
             
             // Reload data
@@ -60,8 +72,13 @@ class Following: UITableViewController {
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -76,12 +93,157 @@ class Following: UITableViewController {
         // Initiliaze and set parent VC
         cell.delegate = self
         
+        
+        // LayoutViews
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        // Fetch content
+        followingContent[indexPath.row].fetchInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Get and set user's object
+                if let user = object!["byUser"] as? PFUser {
+                    // (A) Set usrername
+                    cell.rpUsername.text! = user["username"] as! String
+                    
+                    // (B) Get user's profile photo
+                    if let proPic = user["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            }
+                        })
+                    }
+                }
+                
+                
+                
+                // (2) Determine Content Type
+                if object!["mediaAsset"] == nil {
+                    cell.contentColor.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    cell.contentType.image = UIImage(named: "Text Height-96")
+                } else {
+                    cell.contentColor.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+                    cell.contentType.image = UIImage(named: "Stack of Photos-96")
+                }
+                
+                
+                
+                // (3) Set time
+                let from = object!.createdAt!
+                let now = Date()
+                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                
+                // logic what to show : Seconds, minutes, hours, days, or weeks
+                if difference.second! <= 0 {
+                    cell.time.text = "now"
+                }
+                
+                if difference.second! > 0 && difference.minute! == 0 {
+                    cell.time.text = "\(difference.second!)s ago"
+                }
+                
+                if difference.minute! > 0 && difference.hour! == 0 {
+                    cell.time.text = "\(difference.minute!)m ago"
+                }
+                
+                if difference.hour! > 0 && difference.day! == 0 {
+                    cell.time.text = "\(difference.hour!)h ago"
+                }
+                
+                if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                    cell.time.text = "\(difference.day!)d ago"
+                }
+                
+                if difference.weekOfMonth! > 0 {
+                    cell.time.text = "\(difference.weekOfMonth!)w ago"
+                }
+                
+                
+                
+                /////
+                // USER FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
+                /////
+                //                let dateFormatter = DateFormatter()
+                //                dateFormatter.dateFormat = "EEEE"
+                //                let timeFormatter = DateFormatter()
+                //                timeFormatter.dateFormat = "h:mm a"
+                //                let time = "\(dateFormatter.string(from: object!.createdAt!)) \(timeFormatter.string(from: object!.createdAt!))"
+                //                cell.rpTime.text! = time
 
-        // Configure the cell...
+                
+                
+                
+            } else{
+                print(error?.localizedDescription)
+            }
+        }
+        
 
         return cell
     }
  
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
+        if self.followingContent[indexPath.row].value(forKey: "mediaAsset") == nil {
+            
+            print("Tapped")
+            /*
+            // Save to Views
+            let view = PFObject(className: "Views")
+            view["byUser"] = PFUser.current()!
+            view["username"] = PFUser.current()!.username!
+            view["forObjectId"] = followingContent[indexPath.row].objectId!
+            view.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
+                    
+                    
+                } else {
+                    print(error?.localizedDescription)
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
+                }
+            })
+            */
+            
+            // Append Object
+            textPostObject.append(self.followingContent[indexPath.row])
+            
+            // Present VC
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TextPostNavigator
+            self.present(textPostVC, animated: true, completion: nil)
+            
+            
+        } else {
+            
+        }
+        
+    }
+    
 
     /*
     // Override to support conditional editing of the table view.

@@ -220,11 +220,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // By setting their username
         let username: String? = UserDefaults.standard.string(forKey: "username")
         if PFUser.current() != nil {
+
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
             self.window?.makeKeyAndVisible()
             window?.rootViewController = masterTab
-            print("User is pushed to the main UI")
             
             
             // Call relationships function

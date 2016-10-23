@@ -18,6 +18,14 @@ class FollowingCell: UITableViewCell {
     // Instantiate parent vc
     var delegate: UIViewController?
 
+    @IBOutlet weak var contentColor: UIView!
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpUsername: UILabel!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var contentType: UIImageView!
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

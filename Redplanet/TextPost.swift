@@ -33,7 +33,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     func fetchInteractions() {
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
-        likes.order(byAscending: "createdAt")
+        likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -56,6 +56,27 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+        comments.order(byDescending: "createdAt")
+        comments.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear array
+                self.comments.removeAll(keepingCapacity: false)
+                
+                // Append objects
+                for object in objects! {
+                    self.comments.append(object)
+                }
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+            
+            
+            // Reload data
+            self.tableView!.reloadData()
+        }
     }
     
 
@@ -73,16 +94,24 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.reloadData()
         
         
-//        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
     }
+
     
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        
-//        // reload data
-//        self.tableView!.reloadData()
-//    }
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = "Text Post"
+        }
+    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,10 +120,15 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Reload data
         self.tableView!.reloadData()
         
-        // Hide TabBar
-//        self.navigationController?.navigationBar.isHidden = false
-        // Show toolBar
-//        self.navigationController?.toolbar.isHidden = false
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Stylize title
+        configureView()
+        
     }
     
     
@@ -104,7 +138,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Reload Data
         self.tableView!.reloadData()
         
-//        self.navigationController?.navigationBar.isHidden = false
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
 
     }
     
@@ -120,7 +155,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     
@@ -131,124 +166,147 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        if indexPath.section == 0 {
-            return UITableViewAutomaticDimension
-        } else {
-            return 75
-        }
-//        return UITableViewAutomaticDimension
+
+        return UITableViewAutomaticDimension
     }
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if indexPath.section == 0 {
-            
-            // Content
-            let cell = tableView.dequeueReusableCell(withIdentifier: "textPostCell", for: indexPath) as! TextPostCell
-            
-            // Instantiate parent vc
-            cell.delegate = self
-            
-            
-            // LayoutViews
-            cell.rpUserProPic.layoutIfNeeded()
-            cell.rpUserProPic.layoutSubviews()
-            cell.rpUserProPic.setNeedsLayout()
-            
-            // Make Profile Photo Circular
-            cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-            cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            cell.rpUserProPic.layer.borderWidth = 0.5
-            cell.rpUserProPic.clipsToBounds = true
-            
-            
-            textPostObject.last!.fetchInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
+        
+        // Content
+        let cell = tableView.dequeueReusableCell(withIdentifier: "textPostCell", for: indexPath) as! TextPostCell
+        
+        // Instantiate parent vc
+        cell.delegate = self
+        
+        
+        cell.userObject = textPostObject.last!.value(forKey: "byUser") as! PFUser
+        
+        
+        // LayoutViews
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        textPostObject.last!.fetchInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                
+                
+                // (1) Point to User's Object
+                if let user = object!["byUser"] as? PFUser {
+                    // (A) Set username
+                    cell.rpUsername.text! = user["username"] as! String
                     
-                    
-                    // (1) Point to User's Object
-                    if let user = object!["byUser"] as? PFUser {
-                        // (A) Set username
-                        cell.rpUsername.text! = user["username"] as! String
-                        
-                        // (B) Get profile photo
-                        if let proPic = user["userProfilePicture"] as? PFFile {
-                            proPic.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    // (B1) Set profile photo
-                                    cell.rpUserProPic.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription)
-                                    // (B2) Set default
-                                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
-                                }
-                            })
-                        }
+                    // (B) Get profile photo
+                    if let proPic = user["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // (B1) Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                                // (B2) Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            }
+                        })
                     }
+                }
+                
+                // (2) Set Text Post
+                cell.textPost.text! = object!["textPost"] as! String
+                
+                // (3) Set time
+                let from = object!.createdAt!
+                let now = Date()
+                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                
+                // logic what to show : Seconds, minutes, hours, days, or weeks
+                if difference.second! <= 0 {
+                    cell.time.text = "now"
+                }
+                
+                if difference.second! > 0 && difference.minute! == 0 {
+                    cell.time.text = "\(difference.second!)s ago"
+                }
+                
+                if difference.minute! > 0 && difference.hour! == 0 {
+                    cell.time.text = "\(difference.minute!)m ago"
+                }
+                
+                if difference.hour! > 0 && difference.day! == 0 {
+                    cell.time.text = "\(difference.hour!)h ago"
+                }
+                
+                if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                    cell.time.text = "\(difference.day!)d ago"
+                }
+                
+                if difference.weekOfMonth! > 0 {
+                    cell.time.text = "\(difference.weekOfMonth!)w ago"
+                }
+                
+                
+                
+                // (4) Determine whether the current user has liked this object or not
+                if self.likes.contains(PFUser.current()!) {
+                    // Set button title
+                    cell.likeButton.setTitle("like", for: .normal)
+                    // Set/ button image
+                    cell.likeButton.setImage(UIImage(named: "Like Filled=100"), for: .normal)
+                } else {
+                    // Set button title
+                    cell.likeButton.setTitle("unlike", for: .normal)
                     
-                    // (2) Set Text Post
-                    cell.textPost.text! = object!["textPost"] as! String
+                    // Set button image
+                    cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                }
+                
+                
+                // Set number of likes
+                if self.likes.count == 0 {
+                    cell.numberOfLikes.setTitle("likes", for: .normal)
                     
-                    // (3) Set time
-                    let from = object!.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    
-                    // logic what to show : Seconds, minutes, hours, days, or weeks
-                    if difference.second! <= 0 {
-                        cell.time.text = "now"
-                    }
-                    
-                    if difference.second! > 0 && difference.minute! == 0 {
-                        cell.time.text = "\(difference.second!)s ago"
-                    }
-                    
-                    if difference.minute! > 0 && difference.hour! == 0 {
-                        cell.time.text = "\(difference.minute!)m ago"
-                    }
-                    
-                    if difference.hour! > 0 && difference.day! == 0 {
-                        cell.time.text = "\(difference.hour!)h ago"
-                    }
-                    
-                    if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        cell.time.text = "\(difference.day!)d ago"
-                    }
-                    
-                    if difference.weekOfMonth! > 0 {
-                        cell.time.text = "\(difference.weekOfMonth!)w ago"
-                    }
-                    
-                    
+                } else if self.likes.count == 1 {
+                    cell.numberOfLikes.setTitle("1 like", for: .normal)
                     
                 } else {
-                    print(error?.localizedDescription)
+                    cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
                 }
+                
+                // Set number of comments
+                if self.comments.count == 0 {
+                    cell.numberOfComments.setTitle("comments", for: .normal)
+                    
+                } else if self.comments.count == 1 {
+                    cell.numberOfComments.setTitle("1 comment", for: .normal)
+                    
+                } else {
+                    cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                    
+                }
+                
+                
+                
+            } else {
+                print(error?.localizedDescription)
             }
-            
-            tableView.rowHeight = UITableViewAutomaticDimension
-            return cell
-
-            
-        } else {
-            
-            
-            // Interactions
-            let iCell = tableView.dequeueReusableCell(withIdentifier: "interactCell", for: indexPath) as! InteractCell
-            
-            tableView.rowHeight = 100
-            
-            
-            return iCell
-            
         }
+        
+        tableView.rowHeight = UITableViewAutomaticDimension
+        return cell
+        
 
-    } // End 
+    } // End
 
 
 } // END

@@ -80,7 +80,21 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         
         // Set navigationbar's backgroundColor
         self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
-
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Clear searchBar text
+        self.searchBar.text! = ""
+        
+        // Resign frist responder
+        self.searchBar.resignFirstResponder()
+        
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Make navigationBar's color clear
+        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,6 +105,12 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     
     
     // MARK: - SearchBarDelegate
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Push to SearchEngine
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController?.pushViewController(searchVC, animated: true)
+    }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         // Resign first responder
         self.searchBar.resignFirstResponder()
@@ -109,28 +129,6 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
         
-        
-//        // (1) Set username
-//        cell.rpUsername.text! = exploreObjects[indexPath.row].value(forKey: "username") as! String
-//        
-//        // (2) Get user's Profile Photo 
-//        // Handle optional chaining
-//        if let proPic = exploreObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-//            proPic.getDataInBackground(block: {
-//                (data: Data?, error: Error?) in
-//                if error == nil {
-//                    // Set user's profile photo
-//                    cell.rpUserProPic.image = UIImage(data: data!)
-//                    
-//                } else {
-//                    print(error?.localizedDescription)
-//                    
-//                    // If not found, set default profile photo
-//                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
-//                }
-//            })
-//        }
-
         
         // Fetch Explore Objects
         exploreObjects[indexPath.row].fetchInBackground {
@@ -168,34 +166,14 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     }
 
     // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // Append to otherObject
+        otherObject.append(exploreObjects[indexPath.row])
+        
+        // Push to VC
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        self.navigationController?.pushViewController(otherVC, animated: true)
     }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

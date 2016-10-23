@@ -1,5 +1,5 @@
 //
-//  TPNavigator.swift
+//  TextPostNavigator.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/21/16.
@@ -8,11 +8,7 @@
 
 import UIKit
 
-class TPNavigator: UINavigationController {
-    @IBAction func backButton(_ sender: AnyObject) {
-        
-        self.popViewController(animated: true)
-    }
+class TextPostNavigator: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

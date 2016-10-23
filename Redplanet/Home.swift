@@ -15,7 +15,7 @@ import CoreData
 var pageMenu : CAPSPageMenu?
 
 
-class Home: UIViewController {
+class Home: UIViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,13 +30,12 @@ class Home: UIViewController {
         // page menu, initialize them, and add each to the controller array.
         // (Can be any UIViewController subclass)
         // Make sure the title property of all view controllers is set
-//        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsVC") as! Friends
-        let friends = self.storyboard?.instantiateViewController(withIdentifier: "friendsNavigation") as! FriendsNavigation
+
+        let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
         friends.title = "Friends"
         controllerArray.append(friends)
         
-//        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
-        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingNavigation") as! FollowingNavigation
+        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
         followingVC.title = "Following"
         controllerArray.append(followingVC)
         
@@ -59,6 +58,22 @@ class Home: UIViewController {
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
         self.view.addSubview(pageMenu!.view)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Hide menu
+        pageMenu?.hideTopMenuBar = true
+        
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        // Hide menu
+        pageMenu?.hideTopMenuBar = true
+        
     }
 
     override func didReceiveMemoryWarning() {

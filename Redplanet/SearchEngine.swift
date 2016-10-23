@@ -7,12 +7,31 @@
 //
 
 import UIKit
+import CoreData
 
-class SearchEngine: UITableViewController, UISearchBarDelegate {
+
+import Parse
+import ParseUI
+import Bolts
+
+
+class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
     // SearchBar
     let searchBar = UISearchBar()
     
+    // Array to hold usernames
+    var users = [PFObject]()
+    
+    // Arrays to hold hashtag searches
+    var searchHashes = [String]()
+    var dataHash = [String]()
+    
+    
+    @IBAction func backButton(_ sender: AnyObject) {
+        // Pop view controller
+        self.navigationController!.popViewController(animated: true)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +66,32 @@ class SearchEngine: UITableViewController, UISearchBarDelegate {
             // Looking for hashtags...
         } else {
             // Looking for humans...
+            // Search for user
+            let theUsername = PFQuery(className: "_User")
+            theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+            
+            let realName = PFQuery(className: "_User")
+            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+            
+            let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+            search.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    
+                    // USERNAME: Clear arrays
+                    self.users.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.users.append(object)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+            })
         }
         
         return true
@@ -56,70 +101,84 @@ class SearchEngine: UITableViewController, UISearchBarDelegate {
     
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        
+        if searchBar.text!.hasPrefix("#") {
+            return searchHashes.count
+        } else {
+            return users.count
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchCell
+        
+        // Set cell's parent vc
+        cell.delegate = self
 
-        // Configure the cell...
+        if searchBar.text!.hasPrefix("#") {
+            
+            cell.userObject = nil
+            
+        } else {
+            
+            cell.userObject = users[indexPath.row]
+            
+            // Layout views
+            cell.rpUserProPic.layoutSubviews()
+            cell.rpUserProPic.layoutIfNeeded()
+            cell.rpUserProPic.setNeedsLayout()
+            
+            
+            // Make profile photo circular
+            cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+            cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            cell.rpUserProPic.layer.borderWidth = 0.5
+            cell.rpUserProPic.clipsToBounds = true
+            
+            
+            // Get user's object
+            users[indexPath.row].fetchInBackground(block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (1) Get user's full name
+                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                    
+                    
+                    // (2) Get username
+                    cell.rpUsername.text! = object!["username"] as! String
+                    
+                    // (3) Fetch user's profile photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                                
+                            } else {
+                                print(error?.localizedDescription)
+                                
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            }
+                        })
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+            })
+        }
 
         return cell
     }
-    */
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

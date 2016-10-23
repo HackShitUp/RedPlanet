@@ -16,6 +16,7 @@ PODS:
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
   - SVProgressHUD (2.0.3)
+  - TTTAttributedLabel (2.0.0)
 
 DEPENDENCIES:
   - Bolts
@@ -25,6 +26,7 @@ DEPENDENCIES:
   - Parse
   - ParseUI
   - SVProgressHUD
+  - TTTAttributedLabel
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -34,7 +36,8 @@ SPEC CHECKSUMS:
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
+  TTTAttributedLabel: 8cffe8e127e4e82ff3af1e5386d4cd0ad000b656
 
-PODFILE CHECKSUM: 971d9c05a25c26d33452d062782004fea3206376
+PODFILE CHECKSUM: 806f17c2669fa65d6878303f7363a44be8e672e6
 
 COCOAPODS: 1.0.1

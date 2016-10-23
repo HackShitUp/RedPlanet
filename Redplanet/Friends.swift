@@ -15,7 +15,7 @@ import Bolts
 
 import SVProgressHUD
 
-class Friends: UITableViewController, UINavigationControllerDelegate {
+class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMenuDelegate {
     
     // Array to hold friends
     var friends = [PFObject]()
@@ -24,8 +24,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
     var friendsContent = [PFObject]()
     
     
-    let navigator = Navigator()
-
+    // Initialize UINavigationController
+    weak var friendsNavigator: UINavigationController?
+    
     
     // Query Current User's Friends
     func queryFriends() {
@@ -138,6 +139,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
         // Query Friends
         self.queryFriends()
         
+        // Declare UINavigationController
+        self.friendsNavigator = parent?.navigationController
     }
 
     override func didReceiveMemoryWarning() {
@@ -156,7 +159,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
     }
 
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath!) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
@@ -185,7 +188,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
                 // (1) Get user's object
                 if let user = object!["byUser"] as? PFUser {
                     // (A) Username
-                    cell.rpUsername.text! = user.value(forKey: "username") as! String
+                    cell.rpUsername.text! = user.value(forKey: "realNameOfUser") as! String
                     
                     // (B) Profile Photo
                     // Handle optional chaining for user's profile photo
@@ -275,22 +278,33 @@ class Friends: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
         if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
             
-            print("Tapped")
-            // TODO:
+            /*
             // Save to Views
             let view = PFObject(className: "Views")
+            view["byUser"] = PFUser.current()!
+            view["username"] = PFUser.current()!.username!
+            view["forObjectId"] = friendsContent[indexPath.row].objectId!
+            view.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+            })
+            */
+            
             
             // Append Object
-            textPostObject.append(friendsContent[indexPath.row])
+            textPostObject.append(self.friendsContent[indexPath.row])
             
-            
-            
-            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TPNavigator
-            self.present(textPostVC, animated: true, completion: nil)
-            
-            
+            // Present VC
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TextPostNavigator
+            self.present(textPostVC, animated: true)
+
         } else {
 
         }

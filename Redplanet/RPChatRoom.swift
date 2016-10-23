@@ -189,7 +189,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
-            self.frontView.frame.origin.y = self.tableView.frame.size.height - self.keyboard.height
+//            self.frontView.frame.origin.y = self.tableView.frame.size.height - self.keyboard.height
+            self.frontView.frame.origin.y -= self.keyboard.height
             
 
             print("TABLEVIEW HEIGHT: \(self.tableView!.frame.size.height)")
@@ -204,7 +205,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
-            self.frontView.frame.origin.y = self.tableView.frame.size.height
+//            self.frontView.frame.origin.y = self.tableView.frame.size.height
+            self.frontView.frame.origin.y += self.keyboard.height
+
             
             print("newchat frame: \(self.newChat.frame.origin.y)")
             print("Scroll view's frame: \(self.tableView.frame)")

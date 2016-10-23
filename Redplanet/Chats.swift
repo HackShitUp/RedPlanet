@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
+
 class Chats: UITableViewController, UISearchBarDelegate {
     
 
@@ -116,7 +118,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
     
     
     // MARK: - UISearchBarDelegate methods
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Set boolean
         searchActive = true
         
@@ -491,8 +493,8 @@ class Chats: UITableViewController, UISearchBarDelegate {
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             // Present alert
-            let alert = UIAlertController(title: "Delete?",
-                                          message: "Both you AND \(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String) cannot restore this conversation once it's forever deleted.",
+            let alert = UIAlertController(title: "Delete Conversation Forever?",
+                                          message: "You AND \(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String) cannot restore this conversation once it's forever deleted.",
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
@@ -500,7 +502,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                     handler: { (alertAction: UIAlertAction!) in
                                         
                                         // Show Progress
-//                                        SVProgressHUD.show()
+                                        SVProgressHUD.show()
                                         
                                         // Delete in Parse class: "Chats"
                                         let chats = PFQuery(className: "Chats")
@@ -511,7 +513,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                             if error == nil {
                                                 
                                                 // Dismiss
-//                                                SVProgressHUD.dismiss()
+                                                SVProgressHUD.dismiss()
                                                 
                                                 for object in objects! {
                                                     
@@ -523,13 +525,13 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                                                 print("Successfully deleted chats: \(object)")
                                                                 
                                                                 // Dismiss
-                                                                //                                                                SVProgressHUD.dismiss()
+                                                                SVProgressHUD.dismiss()
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription)
                                                                 
                                                                 // Dismiss
-                                                                //                                                                SVProgressHUD.dismiss()
+                                                                SVProgressHUD.dismiss()
                                                             }
                                                         })
                                                         
@@ -543,24 +545,19 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                                                 print("Successfully deleted chats: \(object)")
                                                                 
                                                                 // Dismiss
-//                                                                SVProgressHUD.dismiss()
+                                                                SVProgressHUD.dismiss()
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription)
                                                                 
                                                                 // Dismiss
-//                                                                SVProgressHUD.dismiss()
+                                                                SVProgressHUD.dismiss()
                                                             }
                                                         })
                                                         
                                                     }
                                                     
                                                 } // end for loop
-                                                
-                                                
-                                                
-                                                // Reload data
-                                                self.queryChats()
                                                 
                                                 // Reload
                                                 self.refresh()
@@ -569,7 +566,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                                                 print(error?.localizedDescription)
                                                 
                                                 // Dismiss
-//                                                SVProgressHUD.dismiss()
+                                                SVProgressHUD.dismiss()
                                             }
                                         })
                                         
