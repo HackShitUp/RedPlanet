@@ -36,6 +36,8 @@
 		7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */; };
 		7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */; };
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
+		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
+		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
 		7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8CE1DB75057001B7329 /* CLImageEditor.m */; };
 		7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8D01DB75057001B7329 /* CLImageEditorTheme.m */; };
@@ -194,6 +196,8 @@
 		7E5837F41DBC70A00049ED18 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
 		7E5837F51DBC70A00049ED18 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
+		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
+		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
 		7E98E8CD1DB75057001B7329 /* CLImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLImageEditor.h; sourceTree = "<group>"; };
 		7E98E8CE1DB75057001B7329 /* CLImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLImageEditor.m; sourceTree = "<group>"; };
@@ -493,6 +497,15 @@
 				7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */,
 			);
 			name = NewTextPost;
+			sourceTree = "<group>";
+		};
+		7E7037C81DBD5FF100F03E0C /* NewChats */ = {
+			isa = PBXGroup;
+			children = (
+				7E7037C41DBD5E6400F03E0C /* NewChats.swift */,
+				7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */,
+			);
+			name = NewChats;
 			sourceTree = "<group>";
 		};
 		7E98E8CB1DB75057001B7329 /* CLImageEditor */ = {
@@ -934,6 +947,7 @@
 			children = (
 				7EC5D1951DB353E000437219 /* Chats.swift */,
 				7EC5D1971DB353F300437219 /* ChatsCell.swift */,
+				7E7037C81DBD5FF100F03E0C /* NewChats */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
 			);
 			name = Chats;
@@ -1352,6 +1366,7 @@
 				7E4CFF991DB439540087454E /* MediaAssetCell.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
+				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7EBF783D1DB8C33800727CB3 /* DemoCell.swift in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
@@ -1387,6 +1402,7 @@
 				7E05E4541DBAB1D800A86049 /* ProfileNavigator.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3626F21DB73D5000AB14F4 /* Creator.swift in Sources */,
+				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,

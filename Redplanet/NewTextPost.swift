@@ -25,32 +25,57 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var directButton: UIButton!
     @IBOutlet weak var fbShare: UIButton!
     @IBOutlet weak var twitterShare: UIButton!
     
     // Share
     func postTextPost() {
-        let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["byUser"]  = PFUser.current()!
-        newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["textPost"] = self.textView!.text!
-        newsfeeds.saveInBackground {
-            (success: Bool, error: Error?) in
-            if error == nil {
-                print("Saved \(newsfeeds)")
-            } else {
-                print(error?.localizedDescription)
+        // Check if textView is empty
+        if textView.text!.isEmpty {
+            let alert = UIAlertController(title: "No Text?",
+                                          message: "Please share your thoughts.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true)
+            
+        } else {
+            
+            let newsfeeds = PFObject(className: "Newsfeeds")
+            newsfeeds["byUser"]  = PFUser.current()!
+            newsfeeds["username"] = PFUser.current()!.username!
+            newsfeeds["textPost"] = self.textView!.text!
+            newsfeeds.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    print("Saved \(newsfeeds)")
+                } else {
+                    print(error?.localizedDescription)
+                }
             }
+            
         }
+    }
+    
+    
+    // Functino to share privately
+    func sharePrivate() {
+        // Show Chats
+        let newChatVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
+//        self.present(newChatVC, animated: true, completion: nil)
+        self.navigationController?.pushViewController(newChatVC, animated: true)
     }
     
     
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -70,10 +95,16 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.textView!.becomeFirstResponder()
         
         // Tap to save
-        let tap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
-        tap.numberOfTapsRequired = 1
+        let shareTap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
+        shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
-        self.shareButton.addGestureRecognizer(tap)
+        self.shareButton.addGestureRecognizer(shareTap)
+        
+        // Tap to share privately
+        let privateShare = UITapGestureRecognizer(target: self, action: #selector(sharePrivate))
+        privateShare.numberOfTapsRequired = 1
+        self.directButton.isUserInteractionEnabled = true
+        self.directButton.addGestureRecognizer(privateShare)
     }
     
 

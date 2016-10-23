@@ -163,7 +163,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
     }
 
     
-    
+    // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
