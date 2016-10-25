@@ -1,14 +1,38 @@
 //
-//  ProfileNavigator.swift
+//  Comments.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/21/16.
+//  Created by Joshua Choi on 10/25/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
+import CoreData
 
-class ProfileNavigator: UINavigationController {
+import Parse
+import ParseUI
+import Bolts
+
+import SVProgressHUD
+import DZNEmptyDataSet
+
+
+// Array to hold comments
+var commentsObjectId = [String]()
+
+
+class Comments: UIViewController, UINavigationControllerDelegate {
+    
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var frontView: UIView!
+    @IBOutlet weak var newComment: UITextView!
+    
+    // Query comments
+    func queryComments() {
+        let comments = PFQuery(className: "Comments")
+        comments.whereKey("forObjectId", equalTo: commentsObjectId.last!)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -112,8 +112,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Stylize and set title
         configureView()
         
-        //
-        
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
 
@@ -121,6 +119,15 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        
+        
+        // TODO::
+        // Show which button to tap!
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
             print("Not first launch.")

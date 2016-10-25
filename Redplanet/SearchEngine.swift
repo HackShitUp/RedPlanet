@@ -46,6 +46,12 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         searchBar.frame.size.width = UIScreen.main.bounds.width - 75
         let searchItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = searchItem
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
     

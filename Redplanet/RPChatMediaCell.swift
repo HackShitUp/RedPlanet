@@ -37,7 +37,6 @@ class RPChatMediaCell: UITableViewCell {
         let agrume = Agrume(image: self.rpMediaAsset.image!)
         agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self.delegate!.self)
-        print("ZOOM!")
     }
     
     // Save

@@ -70,6 +70,27 @@ class OtherUserHeader: UICollectionReusableView {
     }
     
     
+    // Function to show profile photo
+    func showProPic() {
+
+        // Push VC
+        let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+        self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+    }
+    
+    
+    
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.rpUserProPic.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self.delegate!.self)
+    }
+    
+    
+    
     // Function to friend
     func friendUser() {
         let friendMe = PFObject(className: "FriendMe")
@@ -250,6 +271,25 @@ class OtherUserHeader: UICollectionReusableView {
         followingTap.numberOfTapsRequired = 1
         self.numberOfFollowing.isUserInteractionEnabled = true
         self.numberOfFollowing.addGestureRecognizer(followingTap)
+        
+        
+        
+        // (6) Add tap method to show profile photo
+        // Show Profile photo if friends
+        if myFriends.contains(otherObject.last!) {
+            let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))
+            proPicTap.numberOfTapsRequired = 1
+            self.rpUserProPic.isUserInteractionEnabled = true
+            self.rpUserProPic.addGestureRecognizer(proPicTap)
+        } else {
+            // Add tap gesture to zoom in
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.rpUserProPic.isUserInteractionEnabled = true
+            self.rpUserProPic.addGestureRecognizer(zoomTap)
+        }
+        
+        
 
     }
         
