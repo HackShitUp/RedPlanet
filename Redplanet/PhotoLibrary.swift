@@ -54,6 +54,19 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
     }
     
     
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = "Photo Library"
+        }
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,11 +76,14 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
         
         
         // Set title
-        self.title = "Photos"
+        self.title = "Photo Library"
         
         
         // Hide TabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func didReceiveMemoryWarning() {

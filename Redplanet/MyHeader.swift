@@ -16,7 +16,13 @@ import Bolts
 import KILabel
 
 class MyHeader: UICollectionReusableView {
-        
+    
+    // Initialize parent VC
+    var delegate: UIViewController?
+    
+    // Initiliaze AppDelegate
+    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    
 
     @IBOutlet weak var myProPic: PFImageView!
     @IBOutlet weak var numberOfFriends: UIButton!
@@ -27,6 +33,44 @@ class MyHeader: UICollectionReusableView {
     @IBOutlet weak var relationState: UIButton!
     @IBOutlet weak var userBio: KILabel!
     
+    
+    
+    // Function to show friends
+    func showFriends() {
+        // Append to forFriends
+        forFriends.append(PFUser.current()!)
+        
+        // Push VC
+        let friendsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFriendsVC") as! RFriends
+        self.delegate?.navigationController?.pushViewController(friendsVC, animated: true)
+    }
+    
+    
+    // Function to show followers
+    func showFollowers() {
+        // Append to forFriends
+        forFollowers.append(PFUser.current()!)
+        
+        // Push VC
+        let followersVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowersVC") as! RFollowers
+        self.delegate?.navigationController?.pushViewController(followersVC, animated: true)
+    }
+    
+    // Function to show followers
+    func showFollowing() {
+        // Append to forFriends
+        forFollowing.append(PFUser.current()!)
+        
+        // Push VC
+        let followingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowingVC") as! RFollowing
+        self.delegate?.navigationController?.pushViewController(followingVC, animated: true)
+    }
+    
+    
+    
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -34,6 +78,60 @@ class MyHeader: UICollectionReusableView {
         numberOfFriends.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
+        
+        // (1) Add tap methods to show friends, followers, and following
+        // (a) Friends
+        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(showFriends))
+        friendsTap.numberOfTapsRequired = 1
+        self.numberOfFriends.isUserInteractionEnabled = true
+        self.numberOfFriends.addGestureRecognizer(friendsTap)
+        
+        // (b) Followers
+        let followersTap = UITapGestureRecognizer(target: self, action: #selector(showFollowers))
+        followersTap.numberOfTapsRequired = 1
+        self.numberOfFollowers.isUserInteractionEnabled = true
+        self.numberOfFollowers.addGestureRecognizer(followersTap)
+        
+        // (c) Following
+        let followingTap = UITapGestureRecognizer(target: self, action: #selector(showFollowing))
+        followingTap.numberOfTapsRequired = 1
+        self.numberOfFollowing.isUserInteractionEnabled = true
+        self.numberOfFollowing.addGestureRecognizer(followingTap)
+        
+        
+        
+        // (2) Count relationships
+        
+        // Query Relationships
+        appDelegate.queryRelationships()
+        
+        // COUNT FRIENDS
+        if myFriends.count == 0 {
+            self.numberOfFriends.setTitle("friends", for: .normal)
+        } else if myFriends.count == 1 {
+            self.numberOfFriends.setTitle("1\nfriend", for: .normal)
+        } else {
+            self.numberOfFriends.setTitle("\(myFriends.count)\nfriends", for: .normal)
+        }
+        
+        // COUNT FOLLOWERS
+        if myFollowers.count == 0 {
+            self.numberOfFollowers.setTitle("followers", for: .normal)
+        } else if myFollowers.count == 1 {
+            self.numberOfFollowers.setTitle("1\nfollower", for: .normal)
+        } else {
+            self.numberOfFollowers.setTitle("\(myFollowers.count)\nfollowers", for: .normal)
+        }
+        
+        // COUNT FOLLOWING
+        if myFollowing.count == 0 {
+            self.numberOfFollowing.setTitle("following", for: .normal)
+        } else if myFollowing.count == 1 {
+            self.numberOfFollowing.setTitle("1\nfollowing", for: .normal)
+        } else {
+            self.numberOfFollowing.setTitle("\(myFollowing.count)\nfollowing", for: .normal)
+        }
+        
         
         
     }// end awakeFromNib

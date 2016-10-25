@@ -29,10 +29,11 @@ class SearchCell: UITableViewCell {
     
     // Go to user
     func goUser() {
-        print("TRIGGERED")
         
         // Append other user
         otherObject.append(self.userObject!)
+        // Append otherName
+        otherName.append(self.rpUsername.text!)
         
         // Push VC
         let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
@@ -50,6 +51,7 @@ class SearchCell: UITableViewCell {
         self.rpUserProPic.addGestureRecognizer(tap)
         self.rpFullName.addGestureRecognizer(tap)
         self.rpUsername.addGestureRecognizer(tap)
+        self.contentView.addGestureRecognizer(tap)
         
     }
 

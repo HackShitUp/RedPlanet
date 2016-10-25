@@ -52,6 +52,7 @@ class MyProfile: UICollectionViewController {
 
     // Function to stylize and set title of navigation bar
     func configureView() {
+        let myUsername = PFUser.current()!.username!
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
@@ -59,7 +60,7 @@ class MyProfile: UICollectionViewController {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            self.navigationController?.navigationBar.topItem?.title = myUsername.uppercased()
         }
     }
     
@@ -91,39 +92,47 @@ class MyProfile: UICollectionViewController {
     }
 
     // MARK: UICollectionViewHeaderSection datasource
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        
-//        let label:UILabel = UILabel(frame: CGRect(8, 304, self.collectionView!.frame.size.width - 16, CGFloat.max))
-//        label.numberOfLines = 0
-//        label.lineBreakMode = NSLineBreakMode.ByWordWrapping
-//        label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
-//        label.text = PFUser.current()!.value(forKey: "userBiography") as! String
-//        label.sizeToFit()
-//
-//        
-//        // ofSize should be the same size of the headerView's label size:
-//        return CGSize(width: self.view.frame.size.width, height: 425 + label.frame.size.height)
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 304, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        // Get user's info and bio
+        if PFUser.current()!.value(forKey: "userBiography") != nil {
+            // Set fullname
+            let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+            
+            label.text = "\(fullName.uppercased())\n\(PFUser.current()!.value(forKey: "userBiography") as! String)"
+        } else {
+            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
+        }
+        
+        label.sizeToFit()
+        
+        
+        // ofSize should be the same size of the headerView's label size:
+        return CGSize(width: self.view.frame.size.width, height: 425 + label.frame.size.height)
+    }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "myHeader", for: indexPath as IndexPath) as! MyHeader
         
-//        header.setNeedsUpdateConstraints()
-//        header.updateConstraintsIfNeeded()
-//        
-//        header.setNeedsLayout()
-//        header.layoutIfNeeded()
-//        
-//        header.userBio.setNeedsLayout()
-//        header.userBio.layoutIfNeeded()
-//        header.userBio.setNeedsUpdateConstraints()
-//        header.userBio.updateConstraintsIfNeeded()
         
+        // Declare delegate
+        header.delegate = self
         
-        print("HeaderHeight: \(header.frame.size.height)")
-        // 374
+        header.setNeedsUpdateConstraints()
+        header.updateConstraintsIfNeeded()
         
+        header.setNeedsLayout()
+        header.layoutIfNeeded()
+        
+        header.userBio.setNeedsLayout()
+        header.userBio.layoutIfNeeded()
+        header.userBio.setNeedsUpdateConstraints()
+        header.userBio.updateConstraintsIfNeeded()
         
         // Query relationships
         appDelegate.queryRelationships()

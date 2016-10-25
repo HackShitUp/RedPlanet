@@ -14,6 +14,8 @@ import ParseUI
 import Bolts
 
 class MediaAssetCell: UITableViewCell {
+    
+    @IBOutlet weak var rpMedia: PFImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()

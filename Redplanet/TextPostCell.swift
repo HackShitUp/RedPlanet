@@ -46,6 +46,9 @@ class TextPostCell: UITableViewCell {
         
         // Append user's object
         otherObject.append(self.userObject!)
+        // Append username
+        otherName.append(self.rpUsername.text!)
+        
         // Push VC
         let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
         delegate?.navigationController?.pushViewController(otherVC, animated: true)

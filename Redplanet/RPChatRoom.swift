@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import Photos
+import PhotosUI
 
 import Parse
 import ParseUI
@@ -31,7 +33,7 @@ var chatUsername = [String]()
 let rpChat = Notification.Name("rpChat")
 
 
-class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate {
+class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate {
     
     
     
@@ -42,11 +44,23 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // Keyboard frame
     var keyboard = CGRect()
     
+    // Variable to hold UIImagePickerController
+    var imagePicker: UIImagePickerController!
+    
     
     // Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
     @IBOutlet weak var newChat: UITextView!
+    
+    @IBOutlet weak var photosButton: UIButton!
+    @IBOutlet weak var cameraButton: UIButton!
+    
+    
+    @IBAction func backButton(_ sender: AnyObject) {
+        // Pop view controller
+        self.navigationController!.popViewController(animated: true)
+    }
     
     
     // Query all of the user's chats
@@ -137,10 +151,123 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     
-    @IBAction func backButton(_ sender: AnyObject) {
-        // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+    
+    // Function to access photos
+    func accessPhotos() {
+        PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
+            switch status{
+            case .authorized:
+                print("Authorized")
+                
+                // Load Photo Library
+                DispatchQueue.main.async(execute: {
+                    self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+                })
+                
+                
+                break
+            case .denied:
+                print("Denied")
+                let alert = UIAlertController(title: "Photos Access Denied",
+                                              message: "Please allow Redplanet access your Photos.",
+                                              preferredStyle: .alert)
+                
+                let settings = UIAlertAction(title: "Settings",
+                                             style: .default,
+                                             handler: {(alertAction: UIAlertAction!) in
+                                                
+                                                let url = URL(string: UIApplicationOpenSettingsURLString)
+                                                UIApplication.shared.openURL(url!)
+                })
+                
+                let deny = UIAlertAction(title: "Later",
+                                         style: .destructive,
+                                         handler: nil)
+                
+                alert.addAction(settings)
+                alert.addAction(deny)
+                self.present(alert, animated: true, completion: nil)
+                
+                break
+            default:
+                print("Default")
+                
+                break
+            }
+        })
     }
+    
+    
+    
+    // UIImagePickercontroller Delegate Method
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    
+        // Selected image
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+
+        // Convert UIImage to NSData
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
+        // Change UIImage to PFFile
+        let parseFile = PFFile(data: imageData!)
+        
+        
+        // Send to Chats
+        let chat = PFObject(className: "Chats")
+        chat["sender"] = PFUser.current()!
+        chat["senderUsername"] = PFUser.current()!.username!
+        chat["receiver"] = chatUserObject.last!
+        chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+        chat["mediaAsset"] = parseFile
+        chat["read"] = false
+        chat.saveInBackground {
+            (success: Bool, error: Error?) in
+            if error == nil {
+                print("Successfully sent chat: \(chat)")
+                
+                // Clear newChat
+                self.newChat.text!.removeAll()
+                
+                // TODO::
+                // Send Push Notification to user
+                // Handle optional chaining
+//                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+//                    OneSignal.postNotification(
+//                        ["contents":
+//                            ["en": "from \(PFUser.current()!.username!)"],
+//                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+//                        ]
+//                    )
+//                }
+                
+                // Reload data
+                self.queryChats()
+                
+                
+                // Dismiss view controller
+                self.dismiss(animated: true, completion: nil)
+                
+                
+            } else {
+                print(error?.localizedDescription)
+                
+                print("Network Error")
+                
+                // Failed
+                // TODO::??
+                // Show Alert?
+                
+                // Reload data
+                self.queryChats()
+                
+                // Dismiss view controller
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+        
+    }
+    
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -166,12 +293,24 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
-        
-        
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.queryChats), name: rpChat, object: nil)
-
         
+        
+        
+        // Open photo library
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = false
+        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        
+        // Add Photo Library method to photosButton
+        let photosTap = UITapGestureRecognizer(target: self, action: #selector(accessPhotos))
+        photosTap.numberOfTapsRequired = 1
+        self.photosButton.isUserInteractionEnabled = true
+        self.photosButton.addGestureRecognizer(photosTap)
     }
 
     override func didReceiveMemoryWarning() {
@@ -189,6 +328,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
+            // Raise Text View
 //            self.frontView.frame.origin.y = self.tableView.frame.size.height - self.keyboard.height
             self.frontView.frame.origin.y -= self.keyboard.height
             
@@ -205,6 +345,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
+            // Lower Text View
 //            self.frontView.frame.origin.y = self.tableView.frame.size.height
             self.frontView.frame.origin.y += self.keyboard.height
 
@@ -277,18 +418,21 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             cell.rpUserProPic.layer.borderWidth = 0.5
             cell.rpUserProPic.clipsToBounds = true
+
             
             
-            // Fetch objects
             // (1) Set usernames depending on who sent what
             if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
                 // Set Current user's username
-                cell.rpUsername.text! = PFUser.current()!.username!
+                cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             } else {
                 // Set username
-                cell.rpUsername.text! = chatUserObject.last!.value(forKey: "username") as! String
+                cell.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
             }
             
+            
+            
+            // Fetch Objects
             // (2) Get and set user's profile photos
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
@@ -395,7 +539,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             mCell.rpUserProPic.clipsToBounds = true
             
             
-            // (1) Fetch Media Asset
+            // (1) Set usernames depending on who sent what
+            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+                // Set Current user's username
+                mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+            } else {
+                // Set username
+                mCell.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
+            }
+            
+            
+            // (2) Fetch Media Asset
             messageObjects[indexPath.row].fetchInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
@@ -424,16 +578,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             
             // Fetch objects
-            // (2) Set usernames depending on who sent what
+            // (3) Set usernames depending on who sent what
             if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
                 // Set Current user's username
-                mCell.rpUsername.text! = PFUser.current()!.username!
+                mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             } else {
                 // Set username
-                mCell.rpUsername.text! = chatUserObject.last!.value(forKey: "username") as! String
+                mCell.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
             }
             
-            // (3) Get and set user's profile photos
+            // (4) Get and set user's profile photos
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
             //
@@ -476,7 +630,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
             
             
-            // (4) Set time
+            // (5) Set time
             let from = self.messageObjects[indexPath.row].createdAt!
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
@@ -485,27 +639,27 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // logic what to show : Seconds, minutes, hours, days, or weeks
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
-                cell.time.text = "now"
+                mCell.time.text = "now"
             }
             
             if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!)s ago"
+                mCell.time.text = "\(difference.second!)s ago"
             }
             
             if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!)m ago"
+                mCell.time.text = "\(difference.minute!)m ago"
             }
             
             if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!)h ago"
+                mCell.time.text = "\(difference.hour!)h ago"
             }
             
             if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!)d ago"
+                mCell.time.text = "\(difference.day!)d ago"
             }
             
             if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!)w ago"
+                mCell.time.text = "\(difference.weekOfMonth!)w ago"
             }
             
             if difference.weekOfMonth! > 0 {

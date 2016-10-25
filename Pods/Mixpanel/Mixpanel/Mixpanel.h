@@ -7,7 +7,15 @@
     #define MIXPANEL_TVOS_EXTENSION 1
 #endif
 
-#define MIXPANEL_LIMITED_SUPPORT (defined(MIXPANEL_APP_EXTENSION) || defined(MIXPANEL_TVOS_EXTENSION))
+#if TARGET_OS_WATCH
+    #define MIXPANEL_WATCH_EXTENSION 1
+#endif
+
+#define MIXPANEL_NO_EXCEPTION_HANDLING (defined(MIXPANEL_APP_EXTENSION))
+#define MIXPANEL_FLUSH_IMMEDIATELY (defined(MIXPANEL_APP_EXTENSION) || defined(MIXPANEL_WATCH_EXTENSION))
+#define MIXPANEL_NO_REACHABILITY_SUPPORT (defined(MIXPANEL_APP_EXTENSION) || defined(MIXPANEL_TVOS_EXTENSION) || defined(MIXPANEL_WATCH_EXTENSION))
+#define MIXPANEL_NO_AUTOMATIC_EVENTS_SUPPORT (defined(MIXPANEL_APP_EXTENSION) || defined(MIXPANEL_TVOS_EXTENSION) || defined(MIXPANEL_WATCH_EXTENSION))
+#define MIXPANEL_NO_SURVEY_NOTIFICATION_AB_TEST_SUPPORT (defined(MIXPANEL_APP_EXTENSION) || defined(MIXPANEL_TVOS_EXTENSION) || defined(MIXPANEL_WATCH_EXTENSION))
 
 @class    MixpanelPeople, MPSurvey;
 @protocol MixpanelDelegate;
@@ -65,9 +73,11 @@ NS_ASSUME_NONNULL_BEGIN
 
  @discussion
  A distinct ID is a string that uniquely identifies one of your users.
- Typically, this is the user ID from your database. By default, we'll use a
- hash of the MAC address of the device. To change the current distinct ID,
- use the <code>identify:</code> method.
+ Typically, this is the user ID from your database. By default, we'll use
+ the device's advertisingIdentifier UUIDString, if that is not available
+ we'll use the device's identifierForVendor UUIDString, and finally if that
+ is not available we will generate a new random UUIDString. To change the
+ current distinct ID, use the <code>identify:</code> method.
  */
 @property (atomic, readonly, copy) NSString *distinctId;
 
@@ -694,7 +704,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)libVersion;
 
 
-#if !MIXPANEL_LIMITED_SUPPORT
+#if !MIXPANEL_NO_SURVEY_NOTIFICATION_AB_TEST_SUPPORT
 #pragma mark - Mixpanel Surveys
 
 /*!
@@ -790,7 +800,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)joinExperimentsWithCallback:(nullable void (^)())experimentsLoadedCallback;
 
-#endif
+#endif // MIXPANEL_NO_SURVEY_NOTIFICATION_AB_TEST_SUPPORT
 
 #pragma mark - Deprecated
 /*!

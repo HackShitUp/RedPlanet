@@ -32,15 +32,36 @@ class RPChatMediaCell: UITableViewCell {
     
     // Function to zoom
     func zoom(sender: AnyObject) {
-        // Black
-        let black = UIViewController()
-        black.view.backgroundColor = UIColor.black
         
-//        // Mark: - Agrume
-//        let agrume = Agrume(image: self.rpMediaAsset.image!)
-//        agrume.statusBarStyle = UIStatusBarStyle.lightContent
-//        agrume.showFrom(self.delegate!.self, backgroundSnapshotVC: black)
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.rpMediaAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self.delegate!.self)
         print("ZOOM!")
+    }
+    
+    // Save
+    func savePhoto(sender: UILongPressGestureRecognizer) {
+        
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        let save = UIAlertAction(title: "Save",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+                                    
+                                    UIImageWriteToSavedPhotosAlbum(self.rpMediaAsset.image!, nil, nil, nil)
+                                    
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        options.addAction(save)
+        options.addAction(cancel)
+        self.delegate?.present(options, animated: true, completion: nil)
+        
     }
     
     
@@ -53,6 +74,14 @@ class RPChatMediaCell: UITableViewCell {
         zoomTap.numberOfTapsRequired = 1
         self.rpMediaAsset.isUserInteractionEnabled = true
         self.rpMediaAsset.addGestureRecognizer(zoomTap)
+        
+        
+        // Hold to save
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(savePhoto))
+        hold.minimumPressDuration = 0.50
+        self.rpMediaAsset.isUserInteractionEnabled = true
+        self.rpMediaAsset.addGestureRecognizer(hold)
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

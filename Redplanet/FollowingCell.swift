@@ -17,8 +17,10 @@ class FollowingCell: UITableViewCell {
     
     // Instantiate parent vc
     var delegate: UIViewController?
+    
+    // Initialize user's object
+    var userObject: PFObject?
 
-    @IBOutlet weak var contentColor: UIView!
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -29,6 +31,7 @@ class FollowingCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -18,25 +18,31 @@ import SVProgressHUD
 
 class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate {
     
-    // Variable to hold friends
-    var friends = [PFObject]()
-    
     // Boolean variable to check whether search bar is active
     var searchActive: Bool = false
-    
-    // SEARCH
-    var searchObjects = [PFObject]()
-    
     // Search Bar
     var searchBar = UISearchBar()
     
+    // Array to hold friends
+    var friends = [PFObject]()
+    // Array to hold searched users
+    var searchObjects = [PFObject]()
+    
     
     // Limit query
-    var page: Int = 100
+    var page: Int = 50
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         self.navigationController!.popViewController(animated: true)
+    }
+    
+    @IBAction func refresh(_ sender: AnyObject) {
+        // If search is not active, and searchBar's text is empty
+        if searchActive == false && searchBar.text!.isEmpty {
+            // Reload data
+            queryFriends()
+        }
     }
     
     
@@ -53,6 +59,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.whereKey("isFriends", equalTo: true)
+        friends.limit = self.page
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -223,6 +230,10 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
                         })
+                    } else {
+                        print(error?.localizedDescription)
+                        // Set default
+                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }
                     
                     // (2) Set username
@@ -243,7 +254,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
             cell.userObject = friends[indexPath.row]
             
             // Get user's object
-            friends[indexPath.row].fetchInBackground(block: {
+            friends[indexPath.row].fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // (1) Get profile photo
@@ -259,6 +270,10 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
                         })
+                    } else {
+                        print(error?.localizedDescription)
+                        // Set default
+                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }
                     
                     
@@ -290,6 +305,29 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Reload data
         queryFriends()
     }
+    
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= friends.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryFriends()
+        }
+    }
+    
     
 
 }

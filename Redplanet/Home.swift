@@ -48,7 +48,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
             .selectionIndicatorColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
             .selectedMenuItemLabelColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
-            .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.0)!),
+            .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.00)!),
             .unselectedMenuItemLabelColor(UIColor.black)
         ]
         

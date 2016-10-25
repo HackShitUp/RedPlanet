@@ -13,6 +13,11 @@ import Parse
 import ParseUI
 import Bolts
 
+
+// Share content
+var privateText = [String]()
+var privatePhoto = [UIImage]()
+
 class NewChatsCell: UITableViewCell {
     
     // Initialize parent vc
@@ -29,24 +34,14 @@ class NewChatsCell: UITableViewCell {
     // Share With
     func showAlert() {
         
-        let alert = UIAlertController(title: "Private Chat",
-                                      message: "Share privately with \(self.userObject!.value(forKey: "realNameOfUser") as! String)",
-            preferredStyle: .alert)
+        // Append chat objects
+        chatUsername.append(self.userObject!.value(forKey: "username") as! String)
+        // Show chat
+        chatUserObject.append(self.userObject!)
         
-        let yes = UIAlertAction(title: "yes",
-                                style: .default,
-                                handler: {(alertAction: UIAlertAction!) in
-                                    // Share to friend
-                                    // TODO::
-        })
-        
-        let no = UIAlertAction(title: "no",
-                               style: .destructive,
-                               handler: nil)
-        
-        alert.addAction(no)
-        alert.addAction(yes)
-        self.delegate?.present(alert, animated: true, completion: nil)
+        // Push to RPChat Room
+        let chatRoom = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+        self.delegate?.navigationController?.pushViewController(chatRoom, animated: true)
         
     }
     
@@ -58,12 +53,18 @@ class NewChatsCell: UITableViewCell {
         // Add alert function
         let alertTap = UITapGestureRecognizer(target: self, action: #selector(showAlert))
         alertTap.numberOfTapsRequired = 1
-        self.rpUsername.isUserInteractionEnabled = true
-        self.rpFullName.isUserInteractionEnabled = true
-        self.rpUserProPic.isUserInteractionEnabled = true
-        self.rpUsername.addGestureRecognizer(alertTap)
-        self.rpFullName.addGestureRecognizer(alertTap)
-        self.rpUserProPic.addGestureRecognizer(alertTap)
+        self.contentView.addGestureRecognizer(alertTap)
+        
+        // Set layouts
+        rpUserProPic.layoutIfNeeded()
+        rpUserProPic.layoutSubviews()
+        rpUserProPic.setNeedsLayout()
+        
+        // Make pro pic ciruclar
+        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
+        self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        self.rpUserProPic.layer.borderWidth = 0.5
+        self.rpUserProPic.clipsToBounds = true
         
     }
 

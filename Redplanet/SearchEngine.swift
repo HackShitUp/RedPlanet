@@ -35,8 +35,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
         // Make first responder
         searchBar.becomeFirstResponder()
 

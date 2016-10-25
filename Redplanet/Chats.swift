@@ -14,8 +14,10 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import DZNEmptyDataSet
 
-class Chats: UITableViewController, UISearchBarDelegate {
+
+class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
 
     // Boolean to determine what to show in UITableView
@@ -42,9 +44,9 @@ class Chats: UITableViewController, UISearchBarDelegate {
 
 
     @IBAction func newChat(_ sender: AnyObject) {
-        // Show new view controller
-        //        let newChat = self.storyboard?.instantiateViewControllerWithIdentifier("newChat") as! NewChat
-        //        self.navigationController!.pushViewController(newChat, animated: true)
+         // Show new view controller
+        let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
+        self.navigationController!.pushViewController(newChatsVC, animated: true)
     }
     
     // Refresh function
@@ -57,6 +59,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
     
     // Query Chats
     func queryChats() {
+        
         // SubQueries
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
@@ -86,15 +89,35 @@ class Chats: UITableViewController, UISearchBarDelegate {
                     if object["sender"] as! PFUser == PFUser.current()! {
                         self.initialChatObjects.append(object["receiver"] as! PFUser)
                     }
+                }// end for loop
+                
+                
+                
+                // Clear array
+                self.finalChatObjects.removeAll(keepingCapacity: false)
+                
+                
+                // Remove duplicate values in array
+                let talkingProfiles = Array(Set(self.initialChatObjects))
+                
+                // Run for loop to append new non-duplicated array
+                for profiles in talkingProfiles {
+                    self.finalChatObjects.append(profiles)
+                }
+                
+                
+                // Initialize DZNEmptyDataset
+                if self.finalChatObjects.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView!.tableFooterView = UIView()
                 }
                 
                 
                 
             } else {
                 print(error?.localizedDescription)
-                
-                // Dismiss Progress
-//                SVProgressHUD.dismiss()
+
             }
             
             // Reload data
@@ -177,15 +200,77 @@ class Chats: UITableViewController, UISearchBarDelegate {
     }
     
     
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if finalChatObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "🤔\nNo Chats"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "Create a new chat with your friends by tapping the '+' icon on the top right"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Create a new chat."
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Show new chat VC
+        let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
+        self.navigationController!.pushViewController(newChatsVC, animated: true)
+    }
+    
+    
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Show Progress
-//        SVProgressHUD.show()
         
         
         // Set design of navigation bar
         configureView()
+        
+        // Get chats
+        queryChats()
         
         // Add searchbar to header
         self.searchBar.text! = "Search"
@@ -194,8 +279,8 @@ class Chats: UITableViewController, UISearchBarDelegate {
         self.tableView.tableHeaderView = self.searchBar
         
         
-        // Get chats
-        queryChats()
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
         
         
         // Pull to refresh action
@@ -250,17 +335,17 @@ class Chats: UITableViewController, UISearchBarDelegate {
             
         } else {
             
-            // Clear array
-            self.finalChatObjects.removeAll(keepingCapacity: false)
-            
-            
-            // Remove duplicate values in array
-            let talkingProfiles = Array(Set(initialChatObjects))
-            
-            // Run for loop to append new non-duplicated array
-            for profiles in talkingProfiles {
-                finalChatObjects.append(profiles)
-            }
+//            // Clear array
+//            self.finalChatObjects.removeAll(keepingCapacity: false)
+//            
+//            
+//            // Remove duplicate values in array
+//            let talkingProfiles = Array(Set(initialChatObjects))
+//            
+//            // Run for loop to append new non-duplicated array
+//            for profiles in talkingProfiles {
+//                finalChatObjects.append(profiles)
+//            }
             
             print("Returning: \(self.finalChatObjects.count)")
             // Return friends
@@ -270,7 +355,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
     
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 60
     }
 
     
@@ -301,9 +386,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
             user.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
-                    
-                    // Dismiss Progress
-//                    SVProgressHUD.dismiss()
+
                     
                     for object in objects! {
                         if let proPic = object["userProfilePicture"] as? PFFile {
@@ -338,8 +421,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                     
                 } else {
                     print(error?.localizedDescription)
-                    // Dismiss Progress
-//                    SVProgressHUD.dismiss()
+
                 }
             })
         } else {
@@ -366,6 +448,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
             chats.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
+
 
                     // Set time
                     let from = object!.createdAt!
@@ -476,6 +559,7 @@ class Chats: UITableViewController, UISearchBarDelegate {
                     
                 } else {
                     print(error?.localizedDescription)
+                    
                 }
             })
         }

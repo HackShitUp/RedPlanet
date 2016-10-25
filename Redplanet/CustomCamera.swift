@@ -198,7 +198,7 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
                         self.switchCameraButton.isHidden = true
                         
                         // Change button's title
-                        self.captureButton.setImage(UIImage(named: "UsePhoto"), for: .normal)
+                        self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
                         
                         
                         
@@ -215,7 +215,7 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
             }
         }
         
-        if sender.image(for: .normal) == UIImage(named: "UsePhoto") {
+        if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
             
             // Clear arrays
 //            mediaAssets.removeAll(keepCapacity: false)

@@ -141,6 +141,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
         
         // Declare UINavigationController
         self.friendsNavigator = parent?.navigationController
+        
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -187,6 +190,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
                 
                 // (1) Get user's object
                 if let user = object!["byUser"] as? PFUser {
+                    
+                    
+                    
                     // (A) Username
                     cell.rpUsername.text! = user.value(forKey: "realNameOfUser") as! String
                     
@@ -205,15 +211,17 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
                             }
                         })
                     }
+                    
+                    
+                    // (C) Set user's object
+                    cell.userObject = user
                 }
                 
 
                 // (2) Determine Content Type
                 if object!["mediaAsset"] == nil {
-                    cell.contentColor.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
                     cell.contentType.image = UIImage(named: "Text Height-96")
                 } else {
-                    cell.contentColor.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
                     cell.contentType.image = UIImage(named: "Stack of Photos-96")
                 }
                 
@@ -278,7 +286,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
         if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
             
             /*
@@ -301,11 +308,37 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
             // Append Object
             textPostObject.append(self.friendsContent[indexPath.row])
             
+            
             // Present VC
             let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TextPostNavigator
             self.present(textPostVC, animated: true)
 
         } else {
+            
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            mediaAssetObject.append(self.friendsContent[indexPath.row])
+            
+            // Present VC
+            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaNavigator") as! MediaNavigator
+            self.present(mediaVC, animated: true)
+            
 
         }
     }

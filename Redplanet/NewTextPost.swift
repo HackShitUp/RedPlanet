@@ -94,6 +94,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Set textView to first responder
         self.textView!.becomeFirstResponder()
         
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
         // Tap to save
         let shareTap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
         shareTap.numberOfTapsRequired = 1

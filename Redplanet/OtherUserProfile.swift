@@ -43,8 +43,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     
     @IBAction func backButton(_ sender: AnyObject) {
+        // Remove last values in arrays
+        otherObject.removeLast()
+        // Remove last value in array
+        otherName.removeLast()
+        
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController!.popViewController(animated: true)
     }
     
     
@@ -87,7 +92,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
+            self.title = "\(otherName.last!.uppercased())"
         }
     }
     
@@ -114,6 +119,16 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
 
         // Show navigationController
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore  {
+            print("Not first launch.")
+        }
+        else {
+            print("First launch, setting NSUserDefault.")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,6 +142,33 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    // MARK: UICollectionViewHeaderSection datasource
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 356, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        // Get user's info and bio
+        if otherObject.last!.value(forKey: "userBiography") != nil {
+            // Set fullname
+            let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
+            
+            label.text = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
+        } else {
+            label.text = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "birthday") as! String)"
+        }
+        
+        label.sizeToFit()
+        
+        
+        // ofSize should be the same size of the headerView's label size:
+        return CGSize(width: self.view.frame.size.width, height: 425 + label.frame.size.height)
+    }
 
 
     
@@ -139,6 +181,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // Query relationships
         appDelegate.queryRelationships()
+        
+        // Declare parent VC
+        header.delegate = self
         
         
         // Layout views
@@ -181,7 +226,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // (2) Get user's bio and information
         if otherObject.last!.value(forKey: "userBiography") != nil {
-            header.userBio.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
+            // Set fullname
+            let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
+            
+            header.userBio.text! = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
         } else {
             header.userBio.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "birthday") as! String)"
         }

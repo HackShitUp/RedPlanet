@@ -13,6 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
+
+
 
 class Explore: UICollectionViewController, UISearchBarDelegate {
     
@@ -30,12 +33,20 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     
     // Fetch Public Users
     func queryExplore() {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
         let user = PFUser.query()!
         user.whereKey("private", equalTo: false)
         user.order(byDescending: "createdAt")
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // Dismiss progress
+                SVProgressHUD.dismiss()
+                
                 // Clear arrays
                 self.exploreObjects.removeAll(keepingCapacity: false)
                 
@@ -48,6 +59,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
                 
             } else {
                 print(error?.localizedDescription)
+                
+                // Dismiss progress
+                SVProgressHUD.dismiss()
             }
             
             // Reload data
@@ -170,6 +184,8 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         
         // Append to otherObject
         otherObject.append(exploreObjects[indexPath.row])
+        // Append to otherName
+        otherName.append(exploreObjects[indexPath.row].value(forKey: "username") as! String)
         
         // Push to VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile

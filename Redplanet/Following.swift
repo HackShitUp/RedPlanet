@@ -14,8 +14,10 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import DZNEmptyDataSet
 
-class Following: UITableViewController {
+
+class Following: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold following's content
     var followingContent = [PFObject]()
@@ -44,6 +46,14 @@ class Following: UITableViewController {
                 }
                 
                 
+                // DZNEmptyDataSet
+                if self.followingContent.count == 0 {
+                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.tableFooterView = UIView()
+                }
+                
+                
             } else {
                 print(error?.localizedDescription)
                 
@@ -62,6 +72,8 @@ class Following: UITableViewController {
         // Query Following
         self.queryFollowing()
         
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -128,16 +140,17 @@ class Following: UITableViewController {
                             }
                         })
                     }
+                    
+                    // (C) Set user's object
+                    cell.userObject = user
                 }
                 
                 
                 
                 // (2) Determine Content Type
                 if object!["mediaAsset"] == nil {
-                    cell.contentColor.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
                     cell.contentType.image = UIImage(named: "Text Height-96")
                 } else {
-                    cell.contentColor.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
                     cell.contentType.image = UIImage(named: "Stack of Photos-96")
                 }
                 
@@ -201,10 +214,10 @@ class Following: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Show Progress
-        SVProgressHUD.show()
-        
         if self.followingContent[indexPath.row].value(forKey: "mediaAsset") == nil {
+            
+            // Show Progress
+//            SVProgressHUD.show()
             
             print("Tapped")
             /*
@@ -239,6 +252,30 @@ class Following: UITableViewController {
             
             
         } else {
+            
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = followingContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            mediaAssetObject.append(self.followingContent[indexPath.row])
+            
+            // Present VC
+            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaNavigator") as! MediaNavigator
+            self.present(mediaVC, animated: true)
             
         }
         

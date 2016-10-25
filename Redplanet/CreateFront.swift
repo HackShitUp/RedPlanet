@@ -23,13 +23,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var activityType: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
-
-    @IBOutlet weak var cameraButton: UIButton!
-    @IBOutlet weak var photoLibrary: UIButton!
-    @IBOutlet weak var textPost: UIButton!
-    @IBOutlet weak var menuBlurView: UIView!
-    @IBOutlet weak var actionContainer: UIView!
-
     
     
     // FRIENDS
@@ -53,6 +46,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    
+    // IGCMenu!!!
+    let igcMenu = IGCMenu()
+    let menuButton = UIButton()
     
     
     // Page size
@@ -281,47 +279,65 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     
-    let igcMenu = IGCMenu()
-    let menuButton = UIButton()
+    // Show Grid menu on tap
+    // MARK: - UITabBarControllerDelegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        if self.navigationController?.tabBarController?.selectedIndex == 2 {
+            // Hide navigationbar
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
+            // Show Grid Menu
+            igcMenu.showGridMenu()
+        }
+    }
+
     
-    
+    // MARK: - IGCMenuDelegate Method
     func igcMenuSelected(_ selectedMenuName: String, at index: Int) {
         
-        // Hide Grid Menu
         if index == 0 {
+            // Load photo library
             photosAuthorization()
-        } else if index == 1 {
-            cameraAuthorization()
-        } else {
-            igcMenu.hideCircularMenu()
 
+        } else if index == 1 {
+            // Access Camera
+            cameraAuthorization()
+            
+        } else if index == 2{
+            // Create new text post
+            newTextPost()
+            
+        } else {
+            // Show navigationbar
+            self.navigationController?.setNavigationBarHidden(false, animated: true)
+            
+            // Hide menu
+            igcMenu.hideGridMenu()
         }
-        
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set tabBarController's delegate to self
         self.navigationController?.tabBarController?.delegate = self
+        // Hide navigationbar
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
 
-//        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height - 80, width: 60, height: 60)
-//        menuButton.backgroundColor = UIColor.white
-//        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
-//        menuButton.clipsToBounds = true
-//        igcMenu.menuButton = self.menuButton
-//        igcMenu.menuSuperView = self.view!
-//        self.view!.bringSubview(toFront: menuButton)
-//        igcMenu.disableBackground = true
-//        igcMenu.numberOfMenuItem = 3
-//        igcMenu.delegate = self
-//        igcMenu.menuImagesNameArray = ["cLibrary", "cCamera", "cText"]
-//        igcMenu.showCircularMenu()
+        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
+        menuButton.backgroundColor = UIColor.white
+        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
+        menuButton.clipsToBounds = true
+        igcMenu.menuButton = self.menuButton
+        igcMenu.menuSuperView = self.view!
+        self.view!.bringSubview(toFront: menuButton)
+        igcMenu.disableBackground = true
+        igcMenu.numberOfMenuItem = 4
+        igcMenu.delegate = self
+        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText", "igcExit"]
+        igcMenu.showGridMenu()
 
-        
-        
-        
-
-        
         
         // Set initial queries
         if self.activityType.selectedSegmentIndex == 0 {
@@ -331,58 +347,18 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Friends
             self.queryActivity()
         }
-        
-        
-        
-        
-        
-        
-        
-//        self.cameraButton.isHidden = true
-//        self.photoLibrary.isHidden = true
-//        self.textPost.isHidden = true
 
-        // Make buttons circular...
-        // (1) Camera
-        self.cameraButton.layer.cornerRadius = self.cameraButton.frame.size.width/2
-        self.cameraButton.clipsToBounds = true
-        // (2) Photo library
-        self.photoLibrary.layer.cornerRadius = self.photoLibrary.frame.size.width/2
-        self.photoLibrary.clipsToBounds = true
-        // (3) Text Post
-        // (2) Photo library
-        self.textPost.layer.cornerRadius = self.textPost.frame.size.width/2
-        self.textPost.clipsToBounds = true
         
-        
-        // Add tap methods...
-        
-        // (1) CAMERA
-        let cameraTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
-        cameraTap.numberOfTapsRequired = 1
-        self.cameraButton.isUserInteractionEnabled = true
-        self.cameraButton.addGestureRecognizer(cameraTap)
-        
-        // (2) TEXT POST
-        let tpTap = UITapGestureRecognizer(target: self, action: #selector(newTextPost))
-        tpTap.numberOfTapsRequired = 1
-        self.textPost.isUserInteractionEnabled = true
-        self.textPost.addGestureRecognizer(tpTap)
-        
-        // (3) PHOTO LIBRARY
-        let libraryTap = UITapGestureRecognizer(target: self, action: #selector(loadLibrary))
-        libraryTap.numberOfTapsRequired = 1
-        self.photoLibrary.isUserInteractionEnabled = true
-        self.photoLibrary.addGestureRecognizer(libraryTap)
+        // Give tableView rounded corners
+        self.tableView!.layer.cornerRadius = 10.00
+        self.tableView!.layer.borderColor = UIColor.white.cgColor
+        self.tableView!.layer.borderWidth = 0.75
+        self.tableView!.clipsToBounds = true
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        
-//        igcMenu.showCircularMenu()
-
         
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
@@ -420,7 +396,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 60
         return 55
     }
     
@@ -449,8 +424,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // =======================================================================================================================
         if activityType.selectedSegmentIndex == 0 {
             
+            // Set user's object
+            cell.userObject = fromUsers[indexPath.row]
+            
+            
             // Fetch User Object
-            fromUsers[indexPath.row].fetchInBackground(block: {
+            fromUsers[indexPath.row].fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // (1) Set Username
@@ -622,6 +601,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Point to User Object
             
             
+            // Set user's object
+            cell.userObject = friendFromUsers[indexPath.row]
+            
+            
             // (1) Set username
             cell.rpUsername.setTitle("\(friendFromUsers[indexPath.row].value(forKey: "username") as! String)", for: .normal)
             
@@ -642,7 +625,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             
             // (3) Set activity titles...
-            toUsers[indexPath.row].fetchInBackground(block: {
+            toUsers[indexPath.row].fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // Friended, Followed,

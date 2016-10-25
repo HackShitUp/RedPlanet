@@ -31,6 +31,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     // Function to count likes
     func fetchInteractions() {
+        // Likes
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
         likes.order(byDescending: "createdAt")
@@ -53,7 +54,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             self.tableView!.reloadData()
         }
         
-        
+        // Comments
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
         comments.order(byDescending: "createdAt")
@@ -79,25 +80,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         }
     }
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Fetch Likes and Comments
-        fetchInteractions()
-
-        // Set estimated row height
-        self.tableView!.estimatedRowHeight = 180
-        self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        // Reload data
-        self.tableView!.reloadData()
-        
-        
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-    }
-
+    
     
     
     // Function to stylize and set title of navigation bar
@@ -113,6 +96,27 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         }
     }
     
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Fetch Likes and Comments
+        fetchInteractions()
+
+        // Set estimated row height
+        self.tableView!.estimatedRowHeight = 180
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
+        // Reload data
+        self.tableView!.reloadData()
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
+    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -122,15 +126,13 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-
+        
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         
         // Stylize title
         configureView()
-        
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -140,18 +142,21 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-
+        
     }
     
     override var prefersStatusBarHidden: Bool {
         return true
     }
-
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -194,7 +199,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
+        // Get Text Post Object
         textPostObject.last!.fetchInBackground {
             (object: PFObject?, error: Error?) in
             if error == nil {
@@ -309,4 +314,4 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     } // End
 
 
-} // END
+} // End

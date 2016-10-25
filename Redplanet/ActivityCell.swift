@@ -18,15 +18,40 @@ class ActivityCell: UITableViewCell {
     
     // Instantiate parent view controller
     var delegate: UIViewController?
+    
+    // Initialize user's object
+    var userObject: PFObject?
 
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var activity: UIButton!
     @IBOutlet weak var time: UILabel!
+    
+    
+    // Function to go to user's profile
+    func goUser() {
+        // Append user's object
+        otherObject.append(self.userObject!)
+        // Append user's name
+        otherName.append(self.rpUsername.titleLabel!.text!)
+        
+        // Push VC
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        
+        // Add userProfile tap
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        userTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(userTap)
+        self.rpUserProPic.addGestureRecognizer(userTap)
 
     }
 
