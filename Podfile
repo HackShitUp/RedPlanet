@@ -12,7 +12,6 @@ target 'Redplanet' do
 	pod ‘Mixpanel’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
-	pod 'TTTAttributedLabel'
 	pod 'DZNEmptyDataSet'
 
   target 'RedplanetTests' do

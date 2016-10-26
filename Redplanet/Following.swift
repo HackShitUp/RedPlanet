@@ -17,10 +17,14 @@ import SVProgressHUD
 import DZNEmptyDataSet
 
 
-class Following: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Following: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold following's content
     var followingContent = [PFObject]()
+    
+    
+    // Initialize Parent navigationController
+    var parentNavigator: UINavigationController!
     
     // Query Following
     func queryFollowing() {
@@ -247,8 +251,8 @@ class Following: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDe
             textPostObject.append(self.followingContent[indexPath.row])
             
             // Present VC
-            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TextPostNavigator
-            self.present(textPostVC, animated: true, completion: nil)
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+            self.parentNavigator.pushViewController(textPostVC, animated: true)
             
             
         } else {
@@ -274,8 +278,8 @@ class Following: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDe
             mediaAssetObject.append(self.followingContent[indexPath.row])
             
             // Present VC
-            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaNavigator") as! MediaNavigator
-            self.present(mediaVC, animated: true)
+            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
+            self.parentNavigator.pushViewController(mediaVC, animated: true)
             
         }
         

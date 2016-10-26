@@ -54,14 +54,14 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>TTTAttributedLabel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>14746ACAA57BEE593F670ACB72EDA9E0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>162B59B96FF1F5B6B21CF89AC9E41170</key>
 		<dict>
 			<key>primary</key>
@@ -82,17 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5CB34DB6EE55A11E3A401DBE8E8BA207</key>
+		<key>3D4FD65720F550C4D5719C0BB35F1931</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8EFE724FDDAA2478F44F082C05BA272C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9063F0F2C0D5F3D900EFF6C7BA7CC875</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -103,11 +98,6 @@
 			<true/>
 		</dict>
 		<key>B6C24B1347797090F1CB11354C5ABA6B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C3504D7558C4A866809A85739CED58BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

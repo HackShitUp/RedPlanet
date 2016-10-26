@@ -23,9 +23,12 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     var likes = [PFObject]()
     var comments = [PFObject]()
     
+    
+    let navigator = UINavigationController()
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Dismiss view controller
-        self.dismiss(animated: true, completion: nil)
+        self.navigationController!.popViewController(animated: true)
     }
     
     
@@ -88,7 +91,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -115,9 +118,32 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        
+        // Hide tabbarcontroller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+     
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -132,10 +158,16 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Stylize title
+        configureView()
         
         // Reload Data
         self.tableView!.reloadData()
@@ -143,11 +175,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -184,8 +215,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Instantiate parent vc
         cell.delegate = self
         
-        
+        // Declare user's object
         cell.userObject = textPostObject.last!.value(forKey: "byUser") as! PFUser
+        
+        // Declare content's object
+        cell.contentObject = textPostObject.last!
         
         
         // LayoutViews
@@ -311,7 +345,19 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         return cell
         
 
-    } // End
+    } // End cellForRowAt
+    
+    
+    
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y < -70 {
+            // Pop view controller
+            self.navigationController!.popViewController(animated: true)
+        }
+    }
+    
 
 
 } // End

@@ -73,9 +73,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -108,6 +108,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         privateShare.numberOfTapsRequired = 1
         self.directButton.isUserInteractionEnabled = true
         self.directButton.addGestureRecognizer(privateShare)
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
 

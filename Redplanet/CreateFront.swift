@@ -286,8 +286,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
             // Hide navigationbar
             self.navigationController?.setNavigationBarHidden(true, animated: true)
+            // Hide tabBarController
+            self.navigationController?.tabBarController?.tabBar.isHidden = true
             // Show Grid Menu
             igcMenu.showGridMenu()
+//            igcMenu.showCircularMenu()
+
         }
     }
 
@@ -310,10 +314,18 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         } else {
             // Show navigationbar
             self.navigationController?.setNavigationBarHidden(false, animated: true)
+            // Show tabBarController
+            self.navigationController?.tabBarController?.tabBar.isHidden = false
             
             // Hide menu
             igcMenu.hideGridMenu()
+//            igcMenu.hideCircularMenu()
         }
+    }
+    
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     
@@ -322,9 +334,16 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Set tabBarController's delegate to self
         self.navigationController?.tabBarController?.delegate = self
+        
         // Hide navigationbar
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        
+        
+        // MARK: - IGCMenuDataSource and Delegates
         menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
         menuButton.backgroundColor = UIColor.white
         menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
@@ -337,6 +356,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         igcMenu.delegate = self
         igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText", "igcExit"]
         igcMenu.showGridMenu()
+//        igcMenu.showCircularMenu()
 
         
         // Set initial queries

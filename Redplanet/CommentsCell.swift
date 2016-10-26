@@ -13,9 +13,18 @@ import Parse
 import ParseUI
 import Bolts
 
+import KILabel
+
 
 class CommentsCell: UITableViewCell {
 
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpUsername: UIButton!
+    @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var comment: KILabel!
+    @IBOutlet weak var numberOfLikes: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

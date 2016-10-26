@@ -103,7 +103,7 @@
         [self.menuSuperView insertSubview:pMenuButtonSuperView belowSubview:self.menuButton];
     if (self.disableBackground) {
         pMenuButtonSuperView.userInteractionEnabled = YES;
-        pMenuButtonSuperView.layer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8].CGColor;
+        pMenuButtonSuperView.layer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.95].CGColor;
     }
     else{
         pMenuButtonSuperView.userInteractionEnabled = NO;

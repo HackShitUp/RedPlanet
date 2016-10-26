@@ -14,16 +14,31 @@ import MobileCoreServices
 import Photos
 import PhotosUI
 
-class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
+class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
-    @IBAction func backButton(_ sender: AnyObject) {
-        // Dismiss View Controller
-//        self.dismiss(animated: true, completion: nil)
-        self.navigationController!.popViewController(animated: true)
-    }
+    // Variable to hold UIImagePickerController
+    var imagePicker: UIImagePickerController!
+    
     
     // Array to hold PHAssets
     var photoAssets = [PHAsset]()
+    
+    
+    
+    @IBAction func backButton(_ sender: AnyObject) {
+        // Pop View Controller
+        self.navigationController!.popViewController(animated: true)
+    }
+    
+    @IBAction func iosPhotos(_ sender: AnyObject) {
+        // Load Photo Library
+        DispatchQueue.main.async(execute: {
+            self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+        })
+    }
+    
+    
+    
     
     // Function to fetch PHAsset
     // P H O T O S
@@ -54,16 +69,29 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
     }
     
     
+    
+    
+    // UIImagePickercontroller Delegate Method
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        // Selected image
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        // TODO::
+    }
+    
+    
+    
+    
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "Photo Library"
+            self.title = "Photos Library"
         }
     }
     
@@ -74,9 +102,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
         // Fetch Photos
         fetchPhotos()
         
-        
-        // Set title
-        self.title = "Photo Library"
+        // Stylize title
+        configureView()
         
         
         // Hide TabBarController
@@ -84,6 +111,22 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate {
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        
+        // Open photo library
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
 
     override func didReceiveMemoryWarning() {

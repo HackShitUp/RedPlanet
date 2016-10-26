@@ -89,6 +89,22 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Show navigationbar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+
+        // Set estimated row height
+        self.tableView!.estimatedRowHeight = 180
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
+        // Reload data
+        self.tableView!.reloadData()
+        
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
+
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
 
     override func didReceiveMemoryWarning() {

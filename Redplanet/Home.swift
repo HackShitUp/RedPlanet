@@ -32,12 +32,14 @@ class Home: UIViewController, UINavigationControllerDelegate {
         // Make sure the title property of all view controllers is set
 
         let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
+        friends.parentNavigator = self.navigationController
         friends.title = "Friends"
         controllerArray.append(friends)
         
-        let followingVC = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
-        followingVC.title = "Following"
-        controllerArray.append(followingVC)
+        let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
+        following.parentNavigator = self.navigationController
+        following.title = "Following"
+        controllerArray.append(following)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         // Example:
@@ -60,12 +62,23 @@ class Home: UIViewController, UINavigationControllerDelegate {
         self.view.addSubview(pageMenu!.view)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Hide navigation Bar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide navigation Bar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         // Hide menu
         pageMenu?.hideTopMenuBar = true
-        
     }
     
     override func viewDidDisappear(_ animated: Bool) {

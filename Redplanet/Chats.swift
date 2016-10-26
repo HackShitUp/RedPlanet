@@ -215,7 +215,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🤔\nNo Chats"
+        let str = "🙊\nNo Active Chats"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
@@ -225,9 +225,11 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
+    
+    // Description for empty data set
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Create a new chat with your friends by tapping the '+' icon on the top right"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let str = "Start conversations with your friends by tapping the ✚ icon on the top right."
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
@@ -236,26 +238,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-    
-    // Button title
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
-        // Title for button
-        let str = "Create a new chat."
-        let font = UIFont(name: "AvenirNext-Demibold", size: 15.0)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    // Delegate method
-    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // Show new chat VC
-        let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
-        self.navigationController!.pushViewController(newChatsVC, animated: true)
-    }
-    
     
     
     

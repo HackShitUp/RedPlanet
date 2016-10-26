@@ -296,6 +296,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(self.queryChats), name: rpChat, object: nil)
         
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
         
         
         // Open photo library

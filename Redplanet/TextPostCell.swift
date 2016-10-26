@@ -23,16 +23,17 @@ class TextPostCell: UITableViewCell {
     // Variabel to hold user's object
     var userObject: PFObject?
     
+    // Variable to hold content object
+    var contentObject: PFObject?
+    
 
     @IBOutlet weak var rpUserProPic: PFImageView!
-    
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var textPost: KILabel!
     @IBOutlet weak var numberOfLikes: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     
@@ -54,15 +55,35 @@ class TextPostCell: UITableViewCell {
         delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
     
+    
+    // Function to view comments
+    @IBAction func comments(_ sender: AnyObject) {
+        // Append object
+        commentsObject.append(self.contentObject!)
+        
+        // Push VC
+        let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
+        self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        // Add tap
+        // (1) Add tap to go to user's profile
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
         userTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(userTap)
+        
+        // (2) Add comment tap
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
+        commentTap.numberOfTapsRequired = 1
+        self.numberOfComments.isUserInteractionEnabled = true
+        self.numberOfComments.addGestureRecognizer(commentTap)
+        
+        
         
         
         // Handle @username tap

@@ -23,9 +23,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
     // Array to hold friends' content
     var friendsContent = [PFObject]()
     
-    
-    // Initialize UINavigationController
-    weak var friendsNavigator: UINavigationController?
+    // Initialize parent vc
+    var parentNavigator: UINavigationController!
     
     
     // Query Current User's Friends
@@ -138,13 +137,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
 
         // Query Friends
         self.queryFriends()
-        
-        // Declare UINavigationController
-        self.friendsNavigator = parent?.navigationController
+    
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -310,8 +308,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
             
             
             // Present VC
-            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "tpNavigator") as! TextPostNavigator
-            self.present(textPostVC, animated: true)
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+            self.parentNavigator.pushViewController(textPostVC, animated: true)
 
         } else {
             
@@ -336,8 +334,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
             mediaAssetObject.append(self.friendsContent[indexPath.row])
             
             // Present VC
-            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaNavigator") as! MediaNavigator
-            self.present(mediaVC, animated: true)
+            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
+            self.parentNavigator.pushViewController(mediaVC, animated: true)
+
             
 
         }
