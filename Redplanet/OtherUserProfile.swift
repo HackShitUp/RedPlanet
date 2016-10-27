@@ -36,9 +36,14 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     // Other User's Following
     var oFollowing = [PFObject]()
     
+    
+    
+
+    // Array to hold other user's content
+    var contentObjects = [PFObject]()
 
     
-    // Variable to hold other user's space posts
+    // Array to hold other user's space posts
     var spaceObjects = [PFObject]()
     
     
@@ -52,6 +57,30 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController!.popViewController(animated: true)
     }
     
+    // Function to query other user's content
+    func queryContent() {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("byUser", equalTo: otherObject.last!)
+        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // clear array
+                self.contentObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    self.contentObjects.append(object)
+                }
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+            
+            // Reload data
+            self.collectionView!.reloadData()
+        }
+    }
     
     
     // Function to query other user's Space Posts

@@ -22,15 +22,29 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     // Array to hold following's content
     var followingContent = [PFObject]()
     
-    
     // Initialize Parent navigationController
     var parentNavigator: UINavigationController!
     
+    
+    // Page size
+    var page: Int = 50
+    
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    
+    // Function to refresh data
+    func refresh() {
+        // Query following
+        queryFollowing()
+        // End refresher
+        refresher.endRefreshing()
+    }
+    
+    
+    
     // Query Following
     func queryFollowing() {
-        
-        // Show Progress
-        SVProgressHUD.show()
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
@@ -72,12 +86,20 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Show Progress
+        SVProgressHUD.show()
 
         // Query Following
         self.queryFollowing()
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,7 +114,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
     
 
@@ -109,7 +131,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Initiliaze and set parent VC
         cell.delegate = self
         
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -120,6 +141,19 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
+        
+        // LayoutViews for mediaPreview
+        cell.mediaPreview.layoutIfNeeded()
+        cell.mediaPreview.layoutSubviews()
+        cell.mediaPreview.setNeedsLayout()
+        
+        // Make mediaPreview cornered square
+        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.clipsToBounds = true
+        
+        
+        // Set bounds for textPreview
+        cell.textPreview.clipsToBounds = true
         
         // Fetch content
         followingContent[indexPath.row].fetchInBackground {
@@ -153,10 +187,30 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // (2) Determine Content Type
                 if object!["mediaAsset"] == nil {
-                    cell.contentType.image = UIImage(named: "Text Height-96")
+                    // Hide mediaPreview
+                    cell.mediaPreview.isHidden = true
+                    
+                    // Set text post preview
+                    cell.textPreview.text! = object!["textPost"] as! String
                 } else {
-                    cell.contentType.image = UIImage(named: "Stack of Photos-96")
+                    // Hide textPreview
+                    cell.textPreview.isHidden = true
+                    
+                    // Set image for mediaPreview
+                    if let preview = object!["mediaAsset"] as? PFFile {
+                        preview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set image
+                                cell.mediaPreview.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                                // Set default
+                            }
+                        })
+                    }
                 }
+                
                 
                 
                 
@@ -172,23 +226,23 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    cell.time.text = "\(difference.minute!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    cell.time.text = "\(difference.hour!) hours ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    cell.time.text = "\(difference.day!) days ago"
                 }
                 
                 if difference.weekOfMonth! > 0 {
-                    cell.time.text = "\(difference.weekOfMonth!)w ago"
+                    cell.time.text = "\(difference.weekOfMonth!) weeks ago"
                 }
                 
                 

@@ -12,6 +12,7 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
+import KILabel
 
 class FollowingCell: UITableViewCell {
     
@@ -24,8 +25,8 @@ class FollowingCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var contentType: UIImageView!
-    
+    @IBOutlet weak var mediaPreview: PFImageView!
+    @IBOutlet weak var textPreview: KILabel!
     
     
     override func awakeFromNib() {

@@ -69,8 +69,7 @@ class TextPostCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
-        
+
         // (1) Add tap to go to user's profile
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
         userTap.numberOfTapsRequired = 1
@@ -82,7 +81,6 @@ class TextPostCell: UITableViewCell {
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
-        
         
         
         

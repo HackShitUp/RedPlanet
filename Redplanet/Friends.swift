@@ -26,13 +26,25 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
     // Initialize parent vc
     var parentNavigator: UINavigationController!
     
+    // Page size
+    var page: Int = 50
+    
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    
+    
+    // Function to refresh data
+    func refresh() {
+        // Query friends
+        queryFriends()
+        // End refresher
+        refresher.endRefreshing()
+    }
+    
     
     // Query Current User's Friends
     func queryFriends() {
-        
-        // Show Progress
-        SVProgressHUD.show()
-        
         
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
@@ -76,6 +88,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
                 newsfeeds.whereKey("byUser", containedIn: self.friends)
                 newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.includeKey("byUser")
+                newsfeeds.limit = self.page
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
@@ -134,6 +147,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Show Progress
+        SVProgressHUD.show()
 
         // Query Friends
         self.queryFriends()
@@ -141,6 +158,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
     }
     
 
@@ -161,7 +183,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -170,7 +192,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
         // Set cell's parent VC
         cell.delegate = self
         
-        // LayoutViews
+        // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
         cell.rpUserProPic.setNeedsLayout()
@@ -181,6 +203,20 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
+        
+        // LayoutViews for mediaPreview
+        cell.mediaPreview.layoutIfNeeded()
+        cell.mediaPreview.layoutSubviews()
+        cell.mediaPreview.setNeedsLayout()
+        
+        // Make mediaPreview cornered square
+        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.clipsToBounds = true
+        
+        
+        // Set bounds for textPreview
+        cell.textPreview.clipsToBounds = true
+        
 
         // Fetch objects
         friendsContent[indexPath.row].fetchInBackground { (object: PFObject?, error: Error?) in
@@ -188,8 +224,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
                 
                 // (1) Get user's object
                 if let user = object!["byUser"] as? PFUser {
-                    
-                    
                     
                     // (A) Username
                     cell.rpUsername.text! = user.value(forKey: "realNameOfUser") as! String
@@ -218,9 +252,28 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
 
                 // (2) Determine Content Type
                 if object!["mediaAsset"] == nil {
-                    cell.contentType.image = UIImage(named: "Text Height-96")
+                    // Hide mediaPreview
+                    cell.mediaPreview.isHidden = true
+                    
+                    // Set text post preview
+                    cell.textPreview.text! = object!["textPost"] as! String
                 } else {
-                    cell.contentType.image = UIImage(named: "Stack of Photos-96")
+                    // Hide textPreview
+                    cell.textPreview.isHidden = true
+                    
+                    // Set image for mediaPreview
+                    if let preview = object!["mediaAsset"] as? PFFile {
+                        preview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set image
+                                cell.mediaPreview.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                                // Set default
+                            }
+                        })
+                    }
                 }
                 
                 
@@ -236,23 +289,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    cell.time.text = "\(difference.minute!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    cell.time.text = "\(difference.hour!) hours ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    cell.time.text = "\(difference.day!) days ago"
                 }
                 
                 if difference.weekOfMonth! > 0 {
-                    cell.time.text = "\(difference.weekOfMonth!)w ago"
+                    cell.time.text = "\(difference.weekOfMonth!) weeks ago"
                 }
                 
                 
@@ -281,7 +334,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
     
     
     
-    
+    // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
@@ -341,5 +394,26 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
 
         }
     }
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= friends.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryFriends()
+        }
+    }
 
-}
+} // End class

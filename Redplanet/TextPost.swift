@@ -27,7 +27,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     let navigator = UINavigationController()
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Dismiss view controller
+        // Pop view controller
         self.navigationController!.popViewController(animated: true)
     }
     
@@ -102,19 +102,26 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+
+        // Set estimated row height
+        self.tableView!.setNeedsLayout()
+        self.tableView!.layoutIfNeeded()
+        self.tableView!.estimatedRowHeight = 220
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
         
         // Fetch Likes and Comments
         fetchInteractions()
-
-        // Set estimated row height
-        self.tableView!.estimatedRowHeight = 180
-        self.tableView!.rowHeight = UITableViewAutomaticDimension
         
-        // Reload data
-        self.tableView!.reloadData()
+        // Stylize title
+        configureView()
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        // Hide tabbarcontroller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -124,9 +131,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
-        
-        // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     
@@ -147,20 +151,14 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Reload data
-        self.tableView!.reloadData()
-        
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Stylize title
         configureView()
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -168,9 +166,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
-        
-        // Reload Data
-        self.tableView!.reloadData()
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -202,7 +197,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-
         return UITableViewAutomaticDimension
     }
     
@@ -232,6 +226,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
+        
+        // LayoutViews
+        cell.textPost.layoutIfNeeded()
+        cell.textPost.layoutSubviews()
+        cell.textPost.setNeedsLayout()
         
         // Get Text Post Object
         textPostObject.last!.fetchInBackground {
@@ -341,7 +340,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             }
         }
         
-        tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Grow height
+        cell.layoutIfNeeded()
+        
         return cell
         
 
