@@ -1,0 +1,6 @@
+framework module Pods_Redplanet {
+  umbrella header "Pods-Redplanet-umbrella.h"
+
+  export *
+  module * { export * }
+}

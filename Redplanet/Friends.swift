@@ -406,7 +406,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, CAPSPageMe
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= friends.count {
+        if page <= friendsContent.count {
             
             // Increase page size to load more posts
             page = page + 50
