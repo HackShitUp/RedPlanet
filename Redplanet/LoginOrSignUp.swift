@@ -33,6 +33,12 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                  password: thePassword) {
                                     (user: PFUser?, error: Error?) in
                                     if user != nil {
+                                        print("Logging user in...")
+                                        
+                                        // Resign keyboard
+                                        self.rpPassword.resignFirstResponder()
+                                        
+                                        
                                         // Get phone disk to remember if
                                         // User has logged in or not
                                         UserDefaults.standard.set(PFUser.current()!.username!, forKey: "username")

@@ -144,6 +144,18 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
         
         
+        // LayoutViews
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
         // Fetch Explore Objects
         exploreObjects[indexPath.row].fetchInBackground {
             (object: PFObject?, error: Error?) in

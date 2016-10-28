@@ -53,6 +53,7 @@ class ActivityCell: UITableViewCell {
         self.rpUsername.addGestureRecognizer(userTap)
         self.rpUserProPic.addGestureRecognizer(userTap)
 
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

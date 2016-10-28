@@ -20,6 +20,7 @@ var anonymity = true
 class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSignatureDelegate {
 
     @IBAction func backButton(_ sender: AnyObject) {
+        // Pop view controller
         self.navigationController!.popViewController(animated: true)
     }
     
@@ -80,7 +81,9 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             
             
             if indexPath.row == 0 {
-                
+                // Edit Profile
+                let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
+                self.navigationController?.pushViewController(editProfileVC, animated: true)
             }
             
             if indexPath.row == 1 {
@@ -92,7 +95,9 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             }
             
             if indexPath.row == 3 {
-                
+                // Reset Password
+                let passwordVC = self.storyboard?.instantiateViewController(withIdentifier: "passwordVC") as! ResetPassword
+                self.navigationController?.pushViewController(passwordVC, animated: true)
             }
             
             if indexPath.row == 4 {
@@ -100,7 +105,26 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             }
             
             if indexPath.row == 5 {
+                // LOGOUT
                 
+                // Remove logged in user from app memory
+                PFUser.logOutInBackground(block: {
+                    (error: Error?) in
+                    if error == nil {
+                        // Remove logged in user from App Memory
+                        UserDefaults.standard.removeObject(forKey: "username")
+                        UserDefaults.standard.synchronize()
+
+                        DispatchQueue.main.async(execute: { 
+                            let logoutToStart: LoginOrSignUp = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! LoginOrSignUp
+                            self.present(logoutToStart, animated: true, completion: nil)
+                        })
+                        
+                        // Clear array
+                        username.removeAll()
+                    }
+
+                })
             }
             
         } else {

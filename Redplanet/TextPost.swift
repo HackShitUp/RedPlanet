@@ -274,23 +274,25 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    cell.time.text = "\(difference.minute!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    cell.time.text = "\(difference.hour!) hours ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    cell.time.text = "\(difference.day!) days ago"
                 }
                 
                 if difference.weekOfMonth! > 0 {
-                    cell.time.text = "\(difference.weekOfMonth!)w ago"
+                    let createdDate = DateFormatter()
+                    createdDate.dateFormat = "MMM d"
+                    cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
                 
                 

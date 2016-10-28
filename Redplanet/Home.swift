@@ -15,7 +15,24 @@ import CoreData
 var pageMenu : CAPSPageMenu?
 
 
-class Home: UIViewController, UINavigationControllerDelegate {
+class Home: UIViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+    
+    
+    
+    
+    
+    
+    
+    // MARK: - UITabBarControllerDelegate Method
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        var previousController: UIViewController? = nil
+//        
+//        if previousController == viewController {
+//
+//        }
+//        
+//        previousController = viewController
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

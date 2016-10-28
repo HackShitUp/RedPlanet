@@ -149,95 +149,98 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
 
     
     @IBAction func didTakePhoto(_ sender: UIButton) {
-        
-        if sender.image(for: .normal) == UIImage(named: "Unchecked Circle-100") {
+
+        DispatchQueue.main.async(execute: {
             
-            if let videoConnection = stillImageOutput!.connection(withMediaType: AVMediaTypeVideo) {
-                // ...
-                // Code for photo capture goes here...
-                stillImageOutput?.captureStillImageAsynchronously(from: videoConnection, completionHandler: { (sampleBuffer, error) -> Void in
+            if sender.image(for: .normal) == UIImage(named: "Unchecked Circle-100") {
+                
+                if let videoConnection = self.stillImageOutput!.connection(withMediaType: AVMediaTypeVideo) {
                     // ...
-                    // Process the image data (sampleBuffer) here to get an image file we can put in our captureImageView
-                    
-                    if sampleBuffer != nil {
-                        let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
-                        let dataProvider = CGDataProvider(data: imageData as! CFData)
-                        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)
+                    // Code for photo capture goes here...
+                    self.stillImageOutput?.captureStillImageAsynchronously(from: videoConnection, completionHandler: { (sampleBuffer, error) -> Void in
+                        // ...
+                        // Process the image data (sampleBuffer) here to get an image file we can put in our captureImageView
                         
-                        // Check whether the camera is the front or the back
-                        // If front, flip the image once photo is captured and add flash
-                        // FRONT CAMERA
-                        if self.frontBack == "front" {
-                            // Flip image
-                            let flippedImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
-                            self.imageTaken.isHidden = false
-                            self.imageTaken.image = flippedImage
+                        if sampleBuffer != nil {
+                            let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
+                            let dataProvider = CGDataProvider(data: imageData as! CFData)
+                            let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)
                             
-                            // Set Front flash??
-                            // Currently not working... :/
-                            /*
-                             if self.flashButton.imageForState(.Normal) == UIImage(named: "FilledFlash100") {
-                             self.flashScreen()
-                             }
-                             */
+                            // Check whether the camera is the front or the back
+                            // If front, flip the image once photo is captured and add flash
+                            // FRONT CAMERA
+                            if self.frontBack == "front" {
+                                // Flip image
+                                let flippedImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
+                                self.imageTaken.isHidden = false
+                                self.imageTaken.image = flippedImage
+                                
+                                // Set Front flash??
+                                // Currently not working... :/
+                                /*
+                                 if self.flashButton.imageForState(.Normal) == UIImage(named: "FilledFlash100") {
+                                 self.flashScreen()
+                                 }
+                                 */
+                                
+                            } else {
+                                // BACK CAMERA
+                                // Don't flip image
+                                let normalImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
+                                self.imageTaken.isHidden = false
+                                self.imageTaken.image = normalImage
+                            }
                             
-                        } else {
-                            // BACK CAMERA
-                            // Don't flip image
-                            let normalImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
-                            self.imageTaken.isHidden = false
-                            self.imageTaken.image = normalImage
+                            
+                            
+                            // Hide flashButton
+                            self.flashButton.isHidden = true
+                            
+                            // Hide switchCameraButton
+                            self.switchCameraButton.isHidden = true
+                            
+                            // Change button's title
+                            self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
+                            
+                            
+                            
+                            
+                            // Show retake button
+                            self.retakeButton.isHidden = false
+                            
+                            // Show save Button
+                            self.saveButton.isHidden = false
                         }
                         
                         
-                        
-                        // Hide flashButton
-                        self.flashButton.isHidden = true
-                        
-                        // Hide switchCameraButton
-                        self.switchCameraButton.isHidden = true
-                        
-                        // Change button's title
-                        self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
-                        
-                        
-                        
-                        
-                        // Show retake button
-                        self.retakeButton.isHidden = false
-                        
-                        // Show save Button
-                        self.saveButton.isHidden = false
-                    }
-                    
-                    
-                })
+                    })
+                }
             }
-        }
-        
-        if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
             
-            // Clear arrays
-//            mediaAssets.removeAll(keepCapacity: false)
-//            imageAssets.removeAll(keepCapacity: false)
+            if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
+                
+                // Clear arrays
+                //            mediaAssets.removeAll(keepCapacity: false)
+                //            imageAssets.removeAll(keepCapacity: false)
+                
+                // Append image
+                //            imageAssets.append(self.imageTaken.image!)
+                
+                // set mediaType
+                //            mediaType = "photo"
+                
+                // Push to next ShareMedia view controller
+                //            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("shareMedia") as! ShareMedia
+                //            self.navigationController!.pushViewController(shareVC, animated: true)
+                //            self.presentViewController(shareVC, animated: true, completion: nil)
+                // Perform segueue
+                //            self.performSegueWithIdentifier("shareMedia", sender: self)
+                
+                UIApplication.shared.setStatusBarHidden(false, with: .none)
+                self.editPhoto()
+            }
             
-            // Append image
-//            imageAssets.append(self.imageTaken.image!)
-            
-            // set mediaType
-//            mediaType = "photo"
-            
-            // Push to next ShareMedia view controller
-            //            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("shareMedia") as! ShareMedia
-            //            self.navigationController!.pushViewController(shareVC, animated: true)
-            //            self.presentViewController(shareVC, animated: true, completion: nil)
-            // Perform segueue
-//            self.performSegueWithIdentifier("shareMedia", sender: self)
-            
-            
-            
-            editPhoto()
-        }
+        })
         
     }
     

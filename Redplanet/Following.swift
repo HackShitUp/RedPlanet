@@ -115,7 +115,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 65
     }
     
 
@@ -157,7 +157,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         cell.textPreview.clipsToBounds = true
         
         // Fetch content
-        followingContent[indexPath.row].fetchInBackground {
+        self.followingContent[indexPath.row].fetchIfNeededInBackground {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 // (1) Get and set user's object
@@ -187,29 +187,34 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 
                 // (2) Determine Content Type
-                if object!["mediaAsset"] == nil {
-                    // Hide mediaPreview
-                    cell.mediaPreview.isHidden = true
-                    
-                    // Set text post preview
-                    cell.textPreview.text! = object!["textPost"] as! String
+                if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                    mediaPreview.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Show media
+                            cell.mediaPreview.isHidden = false
+                            // Set media
+                            cell.mediaPreview.image = UIImage(data: data!)
+                            // Hide text
+                            cell.textPreview.isHidden = true
+                        } else {
+                            print(error?.localizedDescription)
+                            
+//                            // Show text
+//                            cell.textPreview.isHidden = false
+//                            // Hide media
+//                            cell.mediaPreview.isHidden = true
+//                            // Set text
+//                            cell.textPreview.text! = object!["textPost"] as! String
+                        }
+                    })
                 } else {
-                    // Hide textPreview
-                    cell.textPreview.isHidden = true
-                    
-                    // Set image for mediaPreview
-                    if let preview = object!["mediaAsset"] as? PFFile {
-                        preview.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set image
-                                cell.mediaPreview.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription)
-                                // Set default
-                            }
-                        })
-                    }
+                    // Show text
+                    cell.textPreview.isHidden = false
+                    // Hide media
+                    cell.mediaPreview.isHidden = true
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
                 }
                 
                 
@@ -227,26 +232,26 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!) seconds ago"
+                    cell.time.text = "\(difference.second!)s ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!) minutes ago"
+                    cell.time.text = "\(difference.minute!)m ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!) hours ago"
+                    cell.time.text = "\(difference.hour!)h ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!) days ago"
+                    cell.time.text = "\(difference.day!)d ago"
                 }
-                
+
                 if difference.weekOfMonth! > 0 {
-                    cell.time.text = "\(difference.weekOfMonth!) weeks ago"
+                    let createdDate = DateFormatter()
+                    createdDate.dateFormat = "MMM d"
+                    cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
-                
-                
                 
                 /////
                 // USER FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS

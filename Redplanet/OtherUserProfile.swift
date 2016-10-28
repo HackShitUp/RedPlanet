@@ -354,6 +354,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: self.view.frame.size.width, height: 205)
+    }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
