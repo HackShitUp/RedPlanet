@@ -76,7 +76,37 @@ class TextPostCell: UITableViewCell {
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
                                             // TODO:
+                                            // Add option to share to followers
                                             // Share to public ***FRIENDS ONLY***
+                                            let newsfeeds = PFObject(className: "Newsfeeds")
+                                            newsfeeds["byUser"] = PFUser.current()!
+                                            newsfeeds["username"] = PFUser.current()!.username!
+                                            newsfeeds["textPost"] = "Shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
+                                            newsfeeds["contentType"] = "sh"
+                                            newsfeeds.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if error == nil {
+                                                    print("Successfully shared text post: \(newsfeeds)")
+                                                    
+                                                    // Show alert
+                                                    let alert = UIAlertController(title: "Shared With Friends",
+                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Text Post.",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: {(alertAction: UIAlertAction!) in
+                                                                            // Pop view controller
+                                                                            self.delegate?.navigationController?.popViewController(animated: true)
+                                                    })
+                                                    
+                                                    alert.addAction(ok)
+                                                    self.delegate?.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription)
+                                                }
+                                            })
                                             
                                             
         })

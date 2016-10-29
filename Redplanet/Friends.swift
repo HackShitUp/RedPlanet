@@ -269,28 +269,61 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
 
                 // (2) Determine Content Type
-                // (2) Determine Content Type
-                if let mediaPreview = object!["mediaAsset"] as? PFFile {
-                    mediaPreview.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Show media
-                            cell.mediaPreview.isHidden = false
-                            // Set media
-                            cell.mediaPreview.image = UIImage(data: data!)
-                            // Hide text
-                            cell.textPreview.isHidden = true
-                        } else {
-                            print(error?.localizedDescription)
-                            
-                            //                            // Show text
-                            //                            cell.textPreview.isHidden = false
-                            //                            // Hide media
-                            //                            cell.mediaPreview.isHidden = true
-                            //                            // Set text
-                            //                            cell.textPreview.text! = object!["textPost"] as! String
-                        }
-                    })
+//                // (A) Photo
+//                if object!["contentType"] as! String == "pv" {
+//                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+//                        mediaPreview.getDataInBackground(block: {
+//                            (data: Data?, error: Error?) in
+//                            if error == nil {
+//                                // Show media
+//                                cell.mediaPreview.isHidden = false
+//                                // Set media
+//                                cell.mediaPreview.image = UIImage(data: data!)
+//                                // Hide text
+//                                cell.textPreview.isHidden = true
+//                            } else {
+//                                print(error?.localizedDescription)
+//                            }
+//                        })
+//                    }
+//                }
+//                
+//                // (B) Text Post
+//                if object!["contentType"] as! String == "tp" {
+//                    // Show text
+//                    cell.textPreview.isHidden = false
+//                    // Hide media
+//                    cell.mediaPreview.isHidden = true
+//                    // Set text
+//                    cell.textPreview.text! = object!["textPost"] as! String
+//                }
+//                
+//                
+//                // (C) SHARED
+//                if object!["contentType"] as! String == "sh" {
+//                    // Set SHARED ICON
+//                    cell.mediaPreview.image = UIImage(named: "Shared")
+//                    // Set text
+//                    cell.textPreview.text! = object!["textPost"] as! String
+//                }
+                
+                
+                if object!["mediaType"] != nil {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show media
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                // Hide text
+                                cell.textPreview.isHidden = true
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
                 } else {
                     // Show text
                     cell.textPreview.isHidden = false
@@ -298,7 +331,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.mediaPreview.isHidden = true
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
+
                 }
+                
+
+                
                 
                 
                 // (3) Set time
@@ -362,6 +399,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         
         if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
             

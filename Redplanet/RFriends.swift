@@ -129,7 +129,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "😁\nNo Followers"
+        let str = "☹️\nNo Friends Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
@@ -141,7 +141,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     }
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "Redplanet is more fun with your friends!"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
@@ -155,7 +155,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Find My Friends"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 15.0)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
             NSFontAttributeName: font!

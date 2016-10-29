@@ -203,7 +203,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // ofSize should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 425 + label.frame.size.height)
+        return CGSize(width: self.view.frame.size.width, height: CGFloat(425 + label.frame.size.height))
     }
 
 
@@ -221,6 +221,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Declare parent VC
         header.delegate = self
         
+        //set contentView frame and autoresizingMask
+        header.frame = header.frame
+        
         
         // Layout views
         header.rpUserProPic.layoutIfNeeded()
@@ -228,7 +231,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         header.rpUserProPic.setNeedsLayout()
         
         // Set header
-        header.rpUserProPic.layer.cornerRadius = 125.00
+        header.rpUserProPic.layer.cornerRadius = header.rpUserProPic.frame.size.width/2.0
         header.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         header.rpUserProPic.layer.borderWidth = 0.5
         header.rpUserProPic.clipsToBounds = true
