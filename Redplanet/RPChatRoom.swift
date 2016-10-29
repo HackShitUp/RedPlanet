@@ -404,6 +404,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatRoomCell", for: indexPath) as! RPChatRoomCell
         let mCell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatMediaCell", for: indexPath) as! RPChatMediaCell
         
+        
+        // Set cell's delegate
+        cell.delegate = self
+        
         // Set mCell's delegate
         mCell.delegate = self
         
@@ -419,12 +423,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             cell.rpUserProPic.layoutIfNeeded()
             cell.rpUserProPic.layoutSubviews()
             cell.rpUserProPic.setNeedsLayout()
+            
+            // Make profile photo circular
             cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
             cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             cell.rpUserProPic.layer.borderWidth = 0.5
             cell.rpUserProPic.clipsToBounds = true
 
-            
             
             // (1) Set usernames depending on who sent what
             if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {

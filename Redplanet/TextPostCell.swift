@@ -66,6 +66,42 @@ class TextPostCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
     }
     
+    // Function to share
+    func shareOptions() {
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        let publicShare = UIAlertAction(title: "All Friends",
+                                        style: .default,
+                                        handler: {(alertAction: UIAlertAction!) in
+                                            // TODO:
+                                            // Share to public ***FRIENDS ONLY***
+                                            
+                                            
+        })
+        
+        let privateShare = UIAlertAction(title: "One Friend",
+                                         style: .default,
+                                         handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Append to contentObject
+                                            shareObject.append(self.contentObject!)
+                                            
+                                            // Share to chats
+                                            let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                            self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        options.addAction(publicShare)
+        options.addAction(privateShare)
+        options.addAction(cancel)
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -82,6 +118,12 @@ class TextPostCell: UITableViewCell {
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
+        // (3) Add direct share tap
+        let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
+        dmTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(dmTap)
+        
         
         
         // Handle @username tap
@@ -90,26 +132,27 @@ class TextPostCell: UITableViewCell {
             var mention = handle
             mention = String(mention.characters.dropFirst())
             
-//            // Query data
-//            let user = PFUser.query()!
-//            user.whereKey("username", equalTo: mention.lowercaseString)
-//            user.findObjectsInBackgroundWithBlock({
-//                (objects: [PFObject]?, error: NSError?) in
-//                if error == nil {
-//                    for object in objects! {
-//                        // Append user's username
-//                        otherName.append(mention)
-//                        // Append user object
-//                        otherObject.append(object)
-//                        
-//                        
-//                        let otherUser = self.delegate?.storyboard?.instantiateViewControllerWithIdentifier("otherUser") as! OtherUserProfile
-//                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
-//                    }
-//                } else {
-//                    print(error?.localizedDescription)
-//                }
-//            })
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription)
+                }
+            })
         }
         
         

@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
+
 
 class ShareToCell: UITableViewCell {
 
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpUsername: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

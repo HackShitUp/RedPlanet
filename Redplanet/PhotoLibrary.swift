@@ -112,6 +112,14 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
+        
         
         // Open photo library
         imagePicker = UIImagePickerController()

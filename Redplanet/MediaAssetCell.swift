@@ -43,6 +43,21 @@ class MediaAssetCell: UITableViewCell {
     @IBAction func moreButton(_ sender: AnyObject) {
     }
     
+    // Function to go to OtherUser
+    func goOther() {
+        print("\(userObject)")
+        
+        // Append user's object
+        otherObject.append(self.userObject!)
+        // Append username
+        otherName.append(self.rpUsername.text!)
+        
+        // Push VC
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    
     // Function to zoom
     func zoom(sender: AnyObject) {
         
@@ -51,15 +66,66 @@ class MediaAssetCell: UITableViewCell {
         agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self.delegate!.self)
     }
+    
+    
+    // Function to share
+    func shareOptions() {
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        let publicShare = UIAlertAction(title: "All Friends",
+                                        style: .default,
+                                        handler: {(alertAction: UIAlertAction!) in
+                                            // TODO:
+                                            // Share to public ***FRIENDS ONLY***
+                                            
+        })
+        
+        let privateShare = UIAlertAction(title: "One Friend",
+                                         style: .default,
+                                         handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Append to contentObject
+                                            shareObject.append(self.contentObject!)
+                                            
+                                            // Share to chats
+                                            let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                            self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        options.addAction(publicShare)
+        options.addAction(privateShare)
+        options.addAction(cancel)
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
+
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Add tap gesture to zoom in
+        // (1) Add tap to go to user's profile
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        userTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(userTap)
+        
+        // (2) Add tap gesture to zoom in
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
         self.rpMedia.isUserInteractionEnabled = true
         self.rpMedia.addGestureRecognizer(zoomTap)
+        
+        
+        // (3) Add direct share tap
+        let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
+        dmTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(dmTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

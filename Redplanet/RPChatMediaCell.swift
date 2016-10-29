@@ -30,7 +30,7 @@ class RPChatMediaCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
 
     
-    // Function to zoom
+    // Function to zoom/
     func zoom(sender: AnyObject) {
         
         // Mark: - Agrume

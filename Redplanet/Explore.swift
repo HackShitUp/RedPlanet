@@ -82,6 +82,14 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // Set collectionView's backgroundColor
         self.collectionView!.backgroundColor = UIColor.white
         
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
+        
         
         // SearchbarDelegates
         searchBar.delegate = self
@@ -95,6 +103,8 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // Set navigationbar's backgroundColor
         self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
     }
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -139,10 +149,18 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         print("Returning count: \(exploreObjects.count)")
         return exploreObjects.count
     }
+    
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: 125, height: 125)
+    }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
         
+        //set contentView frame and autoresizingMask
+        cell.contentView.frame = cell.bounds
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
@@ -150,7 +168,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         cell.rpUserProPic.setNeedsLayout()
         
         // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2.0
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
@@ -185,8 +203,6 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
             }
         }
         
-        
-    
     
         return cell
     }

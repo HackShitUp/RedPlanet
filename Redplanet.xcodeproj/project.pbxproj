@@ -1006,7 +1006,7 @@
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7EC05B0D1DB5EE460039B357 /* Newsfeeds */,
 				7EC5D1991DB3541000437219 /* Chats */,
-				7EC5D1B41DB36EB800437219 /* Create */,
+				7EC5D1B41DB36EB800437219 /* Create-Redplanet */,
 				7EC5D1A41DB356A500437219 /* Explore */,
 				7EC5D19F1DB3566D00437219 /* MyProfile */,
 			);
@@ -1105,7 +1105,7 @@
 			name = OtherUserProfile;
 			sourceTree = "<group>";
 		};
-		7EC5D1B41DB36EB800437219 /* Create */ = {
+		7EC5D1B41DB36EB800437219 /* Create-Redplanet */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
@@ -1115,7 +1115,7 @@
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,
 			);
-			name = Create;
+			name = "Create-Redplanet";
 			sourceTree = "<group>";
 		};
 		7ED4A9131DBEB4F60016698F /* RFriends */ = {
