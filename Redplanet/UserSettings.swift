@@ -141,13 +141,19 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             }
             
             if indexPath.row == 1 {
-                // Push to AboutUs
-                let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
-                self.navigationController!.pushViewController(aboutVC, animated: true)
+                // Show Activity
+                let textToShare = "🤗 Let's be friends on Redplanet, my username is \(PFUser.current()!.username!)"
+                if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+                    let objectsToShare = [textToShare, myWebsite] as [Any]
+                    let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                    self.present(activityVC, animated: true, completion: nil)
+                }
             }
             
             if indexPath.row == 2 {
-                
+                // Push to AboutUs
+                let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
+                self.navigationController!.pushViewController(aboutVC, animated: true)
             }
             
             if indexPath.row == 3 {

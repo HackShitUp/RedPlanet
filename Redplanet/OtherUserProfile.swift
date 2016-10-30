@@ -141,6 +141,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Stylize and set title
         configureView()
         
+        // Query content
+        queryContent()
+        
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
 
@@ -153,7 +156,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
-        
         
         // TODO::
         // Show which button to tap!
@@ -359,20 +361,162 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        return CGSize(width: self.view.frame.size.width, height: 205)
+//        return CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        return CGSize(width: self.view.frame.size.width, height: 65)
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.spaceObjects.count
+        return self.contentObjects.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        print("Returning: \(contentObjects.count) count")
+        return CGSize(width: self.view.frame.size.width, height: 60)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "otherContentCell", for: indexPath) as! OtherContentCell
+        
+        
+        
+        // LayoutViews for rpUserProPic
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // LayoutViews for mediaPreview
+        cell.mediaPreview.layoutIfNeeded()
+        cell.mediaPreview.layoutSubviews()
+        cell.mediaPreview.setNeedsLayout()
+        
+        // Make mediaPreview cornered square
+        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.clipsToBounds = true
+        
+        
+        // Set bounds for textPreview
+        cell.textPreview.clipsToBounds = true
+        
+        
     
         // Configure the cell
+        contentObjects[indexPath.row].fetchIfNeededInBackground(block: {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                
+                // (1) Get user's object
+                if let user = object!["byUser"] as? PFUser {
+                    
+                    // (A) Username
+                    cell.rpUsername.text! = user.value(forKey: "realNameOfUser") as! String
+                    
+                    // (B) Profile Photo
+                    // Handle optional chaining for user's profile photo
+                    if let proPic = user["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                                
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            }
+                        })
+                    }
+                    
+                    
+                    // (C) Set user's object
+//                    cell.userObject = user
+                }
+                
+                
+                
+                // (2) Set content
+                // Determine what to show
+                if object!["mediaAsset"] != nil {
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Hide textPreview
+                    cell.textPreview.isHidden = true
+                    
+                    // Fetch photo
+                    if let media = object!["mediaAsset"] as? PFFile {
+                        media.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set photo
+                                cell.mediaPreview.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
+                    
+                } else {
+                    // Show textPreview
+                    cell.textPreview.isHidden = false
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = true
+                    
+                    
+                    // Set text
+                    cell.textPreview.text! = "\(object!["textPost"] as! String)"
+                }
+                
+                
+                
+                
+                // (3) Set time
+                let from = object!.createdAt!
+                let now = Date()
+                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                
+                // logic what to show : Seconds, minutes, hours, days, or weeks
+                if difference.second! <= 0 {
+                    cell.time.text = "now"
+                }
+                
+                if difference.second! > 0 && difference.minute! == 0 {
+                    cell.time.text = "\(difference.second!)s ago"
+                }
+                
+                if difference.minute! > 0 && difference.hour! == 0 {
+                    cell.time.text = "\(difference.minute!)m ago"
+                }
+                
+                if difference.hour! > 0 && difference.day! == 0 {
+                    cell.time.text = "\(difference.hour!)h ago"
+                }
+                
+                if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                    cell.time.text = "\(difference.day!)d ago"
+                }
+                
+                if difference.weekOfMonth! > 0 {
+                    let createdDate = DateFormatter()
+                    createdDate.dateFormat = "MMM d"
+                    cell.time.text = createdDate.string(from: object!.createdAt!)
+                }
+                
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        })
     
         return cell
     }

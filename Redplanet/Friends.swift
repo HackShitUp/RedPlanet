@@ -167,7 +167,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         self.tableView!.addSubview(refresher)
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -308,22 +307,47 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 //                }
                 
                 
-                if object!["mediaType"] != nil {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Show media
-                                cell.mediaPreview.isHidden = false
-                                // Set media
-                                cell.mediaPreview.image = UIImage(data: data!)
-                                // Hide text
-                                cell.textPreview.isHidden = true
-                            } else {
-                                print(error?.localizedDescription)
-                            }
-                        })
-                    }
+//                if object!["mediaType"] != nil {
+//                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+//                        mediaPreview.getDataInBackground(block: {
+//                            (data: Data?, error: Error?) in
+//                            if error == nil {
+//                                // Show media
+//                                cell.mediaPreview.isHidden = false
+//                                // Set media
+//                                cell.mediaPreview.image = UIImage(data: data!)
+//                                // Hide text
+//                                cell.textPreview.isHidden = true
+//                            } else {
+//                                print(error?.localizedDescription)
+//                            }
+//                        })
+//                    }
+//                } else {
+//                    // Show text
+//                    cell.textPreview.isHidden = false
+//                    // Hide media
+//                    cell.mediaPreview.isHidden = true
+//                    // Set text
+//                    cell.textPreview.text! = object!["textPost"] as! String
+//                }
+                
+
+                // (2) Determine Content Type
+                if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                    mediaPreview.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Show media
+                            cell.mediaPreview.isHidden = false
+                            // Set media
+                            cell.mediaPreview.image = UIImage(data: data!)
+                            // Hide text
+                            cell.textPreview.isHidden = true
+                        } else {
+                            print(error?.localizedDescription)
+                        }
+                    })
                 } else {
                     // Show text
                     cell.textPreview.isHidden = false
@@ -331,9 +355,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.mediaPreview.isHidden = true
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
-
                 }
-                
 
                 
                 

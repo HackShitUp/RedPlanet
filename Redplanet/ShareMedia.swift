@@ -26,13 +26,20 @@ var shareImageAssets = [UIImage]()
 
 
 class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
+
+    
+    // Variable to hold parseFile
+    // Only done to allow videos to be shared in the future
+    var parseFile: PFFile?
+    
     
     @IBOutlet weak var mediaAsset: PFImageView!
     @IBOutlet weak var mediaCaption: UITextView!
+
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController!.popViewController(animated: false)
     }
     
     
@@ -95,9 +102,51 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
         UIImageWriteToSavedPhotosAlbum(self.mediaAsset.image!, self, nil, nil)
     }
     
+    
+    // Function to share photo
+    func shareMedia() {
+        // Convert UIImage to NSData
+        let imageData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
+        // Change UIImage to PFFile
+        parseFile = PFFile(data: imageData!)
+        
+        
+        // Save to "Photos_Videos"
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["mediaAsset"] = parseFile
+        newsfeeds["textPost"] = self.mediaCaption.text
+        newsfeeds["contentType"] = "pv"
+        if self.mediaCaption.text! == "Say something about this photo..." {
+            newsfeeds["textPost"] = ""
+        }
+        newsfeeds.saveInBackground {
+            (success: Bool, error: Error?) in
+            if error == nil {
+                print("Successfully shared object: \(newsfeeds)")
+                
+                
+                // Push Show MasterTab
+                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                UIApplication.shared.keyWindow?.rootViewController = masterTab
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // * Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
 
         
         // (1) Make shareButton circular
@@ -163,6 +212,12 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
         saveTap.numberOfTapsRequired = 1
         self.saveButton.isUserInteractionEnabled = true
         self.saveButton.addGestureRecognizer(saveTap)
+        
+        // (7) Add tap to share photo
+        let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareMedia))
+        shareTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(shareTap)
 
     }
 

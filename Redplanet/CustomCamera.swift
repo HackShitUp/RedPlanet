@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import CoreImage
 
-class CustomCamera: UIViewController, CLImageEditorDelegate {
+class CustomCamera: UIViewController {
 
     // todo::
     // (1) add front face flash
@@ -61,7 +61,9 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
     
     @IBAction func exit(_ sender: AnyObject) {
         // Dismiss Camera
-        self.dismiss(animated: true, completion: nil)
+//        self.dismiss(animated: true, completion: nil)
+        // Pop view controller
+        self.navigationController!.popViewController(animated: true)
     }
     
     @IBAction func retake(_ sender: AnyObject) {
@@ -219,43 +221,16 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
             
             if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
                 
-                // Clear arrays
-                //            mediaAssets.removeAll(keepCapacity: false)
-                //            imageAssets.removeAll(keepCapacity: false)
+                // Append Image
+                shareImageAssets.append(self.imageTaken.image!)
                 
-                // Append image
-                //            imageAssets.append(self.imageTaken.image!)
-                
-                // set mediaType
-                //            mediaType = "photo"
-                
-                // Push to next ShareMedia view controller
-                //            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("shareMedia") as! ShareMedia
-                //            self.navigationController!.pushViewController(shareVC, animated: true)
-                //            self.presentViewController(shareVC, animated: true, completion: nil)
-                // Perform segueue
-                //            self.performSegueWithIdentifier("shareMedia", sender: self)
-                
-                UIApplication.shared.setStatusBarHidden(false, with: .none)
-                self.editPhoto()
+                // Push VC
+                let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+                self.navigationController!.pushViewController(shareMediaVC, animated: true)
             }
             
         })
         
-    }
-    
-    
-    // CLImageEditor
-    func editPhoto() {
-        let editor = CLImageEditor(image: self.imageTaken.image!)
-        editor?.delegate = self
-        self.present(editor!, animated: true, completion: nil)
-    }
-    
-    
-    func imageEditor(editor: CLImageEditor, didFinishEdittingWithImage image: UIImage) {
-        self.imageTaken.image = image
-        editor.dismiss(animated: true, completion: nil)
     }
     
     
@@ -445,18 +420,18 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
         super.viewWillAppear(animated)
         
         // Hide navigation bar
-//        self.navigationController!.setNavigationBarHidden(true, animated: false)
+        self.navigationController!.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
-//        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Hide navigation bar
-//        self.navigationController!.setNavigationBarHidden(true, animated: false)
+        self.navigationController!.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
-//        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override var prefersStatusBarHidden: Bool {

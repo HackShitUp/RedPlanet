@@ -51,6 +51,13 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 (success: Bool, error: Error?) in
                 if error == nil {
                     print("Saved \(newsfeeds)")
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                    
                 } else {
                     print(error?.localizedDescription)
                 }

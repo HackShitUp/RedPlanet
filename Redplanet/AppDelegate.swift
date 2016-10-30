@@ -32,6 +32,8 @@
 
 // IDEAS
 // (1) Show who's active on the app???
+// (2) Show IF friends, who the end user talks to the most
+// (3)
 
 import UIKit
 import CoreData

@@ -121,7 +121,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -155,7 +155,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
         // Stylize title
         configureView()
@@ -171,7 +171,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     

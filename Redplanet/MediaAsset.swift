@@ -118,7 +118,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
 
         // Back swipe implementation
@@ -149,7 +149,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
         // Stylize title
         configureView()
@@ -165,7 +165,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -219,7 +219,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 // (1) Point to User's Object
                 if let user = object!["byUser"] as? PFUser {
                     // (A) Set username
-                    cell.rpUsername.text! = user["username"] as! String
+                    cell.rpUsername.text! = user["realNameOfUser"] as! String
                     
                     // (B) Get profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {

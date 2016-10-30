@@ -199,13 +199,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                             cell.textPreview.isHidden = true
                         } else {
                             print(error?.localizedDescription)
-                            
-//                            // Show text
-//                            cell.textPreview.isHidden = false
-//                            // Hide media
-//                            cell.mediaPreview.isHidden = true
-//                            // Set text
-//                            cell.textPreview.text! = object!["textPost"] as! String
                         }
                     })
                 } else {
