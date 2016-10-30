@@ -92,7 +92,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Load Camera
             DispatchQueue.main.async(execute: {
                 let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
-                self.present(cameraVC, animated: true, completion: nil)
+                self.navigationController!.present(cameraVC, animated: true, completion: nil)
+//                self.present(cameraVC, animated: true, completion: nil)
             })
             
             

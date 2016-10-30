@@ -107,18 +107,10 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         
         
         // Hide TabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+//        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        // Do any additional setup after loading the view, typically from a nib.
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        collectionView!.collectionViewLayout = layout
         
         
         // Open photo library
@@ -182,7 +174,14 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // TODO::
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoLibraryCell", for: indexPath) as! PhotoLibraryCell
+
+        // Append PHAsset
+        shareMediaAsset.append(photoAssets[indexPath.item])
+        
+        // Push VC
+        let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+        self.navigationController!.pushViewController(shareMediaVC, animated: true)
     }
 
 }

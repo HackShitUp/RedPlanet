@@ -25,7 +25,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var directButton: UIButton!
     @IBOutlet weak var fbShare: UIButton!
     @IBOutlet weak var twitterShare: UIButton!
     
@@ -33,10 +32,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     func postTextPost() {
         // Check if textView is empty
         if textView.text!.isEmpty {
-            let alert = UIAlertController(title: "No Text?",
-                                          message: "Please share your thoughts.",
+            let alert = UIAlertController(title: "No Text Post?",
+                                          message: "We think you forgot something.",
                                           preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
+            let ok = UIAlertAction(title: "oops",
                                    style: .default,
                                    handler: nil)
             alert.addAction(ok)
@@ -65,7 +64,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     func sharePrivate() {
         // Show Chats
         let newChatVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
-//        self.present(newChatVC, animated: true, completion: nil)
         self.navigationController?.pushViewController(newChatVC, animated: true)
     }
     
@@ -97,6 +95,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
+        
+        // Make shareButton circular
+        self.shareButton.layer.cornerRadius = self.shareButton.frame.size.width/2
+        self.shareButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.shareButton.layer.borderWidth = 0.5
+        self.shareButton.clipsToBounds = true
+        
+        
         // Tap to save
         let shareTap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
         shareTap.numberOfTapsRequired = 1
@@ -106,8 +112,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Tap to share privately
         let privateShare = UITapGestureRecognizer(target: self, action: #selector(sharePrivate))
         privateShare.numberOfTapsRequired = 1
-        self.directButton.isUserInteractionEnabled = true
-        self.directButton.addGestureRecognizer(privateShare)
+//        self.directButton.isUserInteractionEnabled = true
+//        self.directButton.addGestureRecognizer(privateShare)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

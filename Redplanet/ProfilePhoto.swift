@@ -19,11 +19,15 @@ import Bolts
 let profileNotification = Notification.Name("profileLike")
 
 
+// ProfilePhoto's Object Id
+var proPicObject = [PFObject]()
+
 class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     
-    // Array to hold likers, and commentators
+    // Array to hold likes, comments, and shares
     var likes = [PFObject]()
     var comments = [PFObject]()
+    var shares = [PFObject]()
     
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -33,17 +37,21 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     
     
     @IBAction func refresh(_ sender: AnyObject) {
+        // Fetch interactions
+        fetchInteractions()
+        
         // Reload data
         self.tableView!.reloadData()
     }
-    
-    
+
         
     // Fetch interactions
     func fetchInteractions() {
-        // Likes
+        
+        // (1) Likes
         let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+        likes.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+        likes.includeKey("fromUser")
         likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -53,7 +61,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 self.likes.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.likes.append(object)
+                    self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
             } else {
@@ -64,9 +72,10 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             self.tableView!.reloadData()
         }
         
-        // Comments
+        // (2) Comments
         let comments = PFQuery(className: "Comments")
-        comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+        comments.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+        comments.includeKey("byUser")
         comments.order(byDescending: "createdAt")
         comments.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -77,13 +86,36 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 
                 // Append objects
                 for object in objects! {
-                    self.comments.append(object)
+                    self.comments.append(object["byUser"] as! PFUser)
                 }
                 
             } else {
                 print(error?.localizedDescription)
             }
-            
+            // Reload data
+            self.tableView!.reloadData()
+        }
+        
+        
+        // (3) Shares
+        let shares = PFQuery(className: "Shares")
+        shares.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+        shares.includeKey("fromUser")
+        shares.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear array
+                self.shares.removeAll(keepingCapacity: false)
+                
+                // Append object
+                for object in objects! {
+                    self.shares.append(object["fromUser"] as! PFUser)
+                }
+                
+            } else {
+                print(error?.localizedDescription)
+            }
             
             // Reload data
             self.tableView!.reloadData()
@@ -118,7 +150,15 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
+        // Fetch interactions
+        fetchInteractions()
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
+
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -152,9 +192,73 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // Declare parent VC
         cell.delegate = self
+        
 
-
-        // (1) Set likes
+        // (A) Get profile photo
+        if let proPic = proPicObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+            proPic.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    // Set profile photo
+                    cell.rpUserProPic.image = UIImage(data: data!)
+                } else {
+                    print(error?.localizedDescription)
+                    // Set default
+                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                }
+            })
+        } else {
+            // Set default
+            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+        }
+        
+        // (B) Set caption
+        if let caption = proPicObject.last!.value(forKey: "proPicCaption") as? String {
+            cell.caption.text! = caption
+        } else {
+            cell.caption.isHidden = true
+        }
+        
+        
+        // (C) Set user's fullName
+        cell.rpUsername.text! = otherObject.last!.value(forKey: "realNameOfUser") as! String
+        
+        
+        // (D) Set time
+        let from = proPicObject.last!.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
+        // (E) Logic what to show : Seconds, minutes, hours, days, or weeks
+        if difference.second! <= 0 {
+            cell.time.text = "now"
+        }
+        
+        if difference.second! > 0 && difference.minute! == 0 {
+            cell.time.text = "\(difference.second!) seconds ago"
+        }
+        
+        if difference.minute! > 0 && difference.hour! == 0 {
+            cell.time.text = "\(difference.minute!) minutes ago"
+        }
+        
+        if difference.hour! > 0 && difference.day! == 0 {
+            cell.time.text = "\(difference.hour!) hours ago"
+        }
+        
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            cell.time.text = "\(difference.day!) days ago"
+        }
+        
+        if difference.weekOfMonth! > 0 {
+            cell.time.text = "\(difference.weekOfMonth!) weeks ago"
+        }
+        
+        
+        
+        
+        // (F) Set likes
         if self.likes.count == 0 {
             cell.numberOfLikes.setTitle("likes", for: .normal)
         } else if self.likes.count == 1 {
@@ -163,17 +267,20 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
         }
         
-        // (1A) Manipulate likes
+        // (FA) Manipulate likes
         if self.likes.contains(PFUser.current()!) {
+            // liked
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
             cell.likeButton.setTitle("liked", for: .normal)
         } else {
+            // notliked
             cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             cell.likeButton.setTitle("notLiked", for: .normal)
         }
         
-
-        // (2) Count comments
+        
+        
+        // (G) Count comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
         } else if self.likes.count == 1 {
@@ -181,6 +288,21 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfComments.setTitle("\(self.likes.count) comments", for: .normal)
         }
+        
+        
+        // (H) Count shares
+        if self.shares.count == 0 {
+            cell.numberOfShares.setTitle("shares", for: .normal)
+        } else if self.shares.count == 1 {
+            cell.numberOfShares.setTitle("1 share", for: .normal)
+        } else {
+            cell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+        }
+
+
+
+
+
         
         
         return cell

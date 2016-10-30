@@ -18,10 +18,6 @@ import SVProgressHUD
 import DZNEmptyDataSet
 
 
-
-// Array to hold shareObjectId
-var shareObject = [PFObject]()
-
 class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
     

@@ -72,10 +72,30 @@ class OtherUserHeader: UICollectionReusableView {
     
     // Function to show profile photo
     func showProPic() {
-
-        // Push VC
-        let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-        self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+        
+        
+        // Get user's profile photo
+        let proPic = PFQuery(className: "ProfilePhoto")
+        proPic.whereKey("fromUser", equalTo: otherObject.last!)
+        proPic.order(byDescending: "createdAt")
+        proPic.getFirstObjectInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                
+                // Append object
+                proPicObject.append(object!)
+                
+                
+                // Push VC
+                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+        
     }
     
     
@@ -104,9 +124,10 @@ class OtherUserHeader: UICollectionReusableView {
             if error == nil {
                 print("Successfully sent Friend request: \(friendMe)")
                 
-                // TODO:: 
-                // Send push notification
+                // TODO::
                 // Save to notifications
+                // Send push notification
+                
             } else {
                 print(error?.localizedDescription)
             }
@@ -276,7 +297,7 @@ class OtherUserHeader: UICollectionReusableView {
         
         // (6) Add tap method to show profile photo
         // Show Profile photo if friends
-        if myFriends.contains(otherObject.last!) {
+        if myFriends.contains(otherObject.last!) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
             let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))
             proPicTap.numberOfTapsRequired = 1
             self.rpUserProPic.isUserInteractionEnabled = true
