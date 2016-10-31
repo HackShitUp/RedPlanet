@@ -417,7 +417,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 55
+        return 60
     }
     
     
@@ -454,7 +454,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // (1) Set Username
-                    cell.rpUsername.setTitle("\(object!["username"] as! String)", for: .normal)
+                    cell.rpUsername.setTitle("\(object!["realNameOfUser"] as! String)", for: .normal)
                     
                     // (2) Get and user's profile photo
                     if let proPic = object!["userProfilePicture"] as? PFFile {
@@ -627,7 +627,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             
             // (1) Set username
-            cell.rpUsername.setTitle("\(friendFromUsers[indexPath.row].value(forKey: "username") as! String)", for: .normal)
+            cell.rpUsername.setTitle("\(friendFromUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)", for: .normal)
             
             // (2) Get and set user's profile photo
             if let proPic = friendFromUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {

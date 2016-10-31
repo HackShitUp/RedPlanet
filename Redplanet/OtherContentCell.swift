@@ -25,11 +25,11 @@ class OtherContentCell: UICollectionViewCell {
     
     
     override func awakeFromNib() {
-        // Set color around the border
-//        self.contentView.layer.cornerRadius = 10.00
-//        self.contentView.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
-//        self.contentView.layer.borderColor = UIColor.black.cgColor
-//        self.contentView.layer.borderWidth = 0.50
-//        self.contentView.clipsToBounds = true
+        // Add top border to distinguish content
+        let upperBorder = CALayer()
+        upperBorder.backgroundColor = UIColor.black.cgColor
+        upperBorder.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0.50)
+        self.layer.addSublayer(upperBorder)
     }
+    
 }

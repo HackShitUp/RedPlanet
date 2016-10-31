@@ -92,7 +92,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-//                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
@@ -278,10 +277,10 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                     
                     
                     // (2) Set username
-                    cell.rpUsername.text! = object!["username"] as! String
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
                     
                     // (3) Set fullname
-                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                    cell.rpFullName.text! = object!["username"] as! String
                     
                 } else {
                     print(error?.localizedDescription)

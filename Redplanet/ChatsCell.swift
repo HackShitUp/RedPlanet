@@ -22,12 +22,7 @@ class ChatsCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // Circular profile photos
-        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        self.rpUserProPic.layer.borderWidth = 0.5
-        self.rpUserProPic.clipsToBounds = true
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

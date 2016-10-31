@@ -345,10 +345,20 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "chatsCell", for: indexPath as IndexPath) as! ChatsCell
         
+        
+        //set contentView frame and autoresizingMask
+        cell.contentView.frame = cell.bounds
+        
         // Set layout
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
         cell.rpUserProPic.setNeedsLayout()
+        
+        // Circular profile photos
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
         
         // Show read receipts by default
         cell.status.isHidden = false

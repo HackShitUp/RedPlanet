@@ -38,6 +38,7 @@ class TextPostCell: UITableViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     @IBAction func moreButton(_ sender: AnyObject) {
+        // Show views
     }
     
     
@@ -72,16 +73,19 @@ class TextPostCell: UITableViewCell {
                                         message: nil,
                                         preferredStyle: .actionSheet)
         
+        // TODO:
+        // Add option to share to followers
+        
         let publicShare = UIAlertAction(title: "All Friends",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
-                                            // TODO:
-                                            // Add option to share to followers
+
                                             // Share to public ***FRIENDS ONLY***
                                             let newsfeeds = PFObject(className: "Newsfeeds")
                                             newsfeeds["byUser"] = PFUser.current()!
                                             newsfeeds["username"] = PFUser.current()!.username!
-                                            newsfeeds["textPost"] = "Shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
+                                            newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
+                                            newsfeeds["pointObject"] = textPostObject.last!
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
@@ -133,6 +137,168 @@ class TextPostCell: UITableViewCell {
     }
     
     
+    // Function to like content
+    func like(sender: UIButton) {
+        
+        // Re-enable buttons
+        self.likeButton.isUserInteractionEnabled = false
+        self.likeButton.isEnabled = false
+        
+        if self.likeButton.title(for: .normal) == "liked" {
+            
+            // UNLIKE
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+            likes.whereKey("fromUser", equalTo: PFUser.current()!)
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully deleted like: \(object)")
+                                
+                                // Re-enable buttons
+                                self.likeButton.isUserInteractionEnabled = true
+                                self.likeButton.isEnabled = true
+                                
+                                
+                                // Change button title and image
+                                self.likeButton.setTitle("notLiked", for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                
+                                // Send Notification
+                                NotificationCenter.default.post(name: textPostNotification, object: nil)
+                                
+                                // Animate like button
+                                UIView.animate(withDuration: 0.6 ,
+                                               animations: {
+                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                                    },
+                                               completion: { finish in
+                                                UIView.animate(withDuration: 0.5){
+                                                    self.likeButton.transform = CGAffineTransform.identity
+                                                }
+                                })
+                                
+                                
+                                
+                                // Delete "Notifications"
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully deleted notification: \(object)")
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription)
+                                    }
+                                })
+                                
+                                
+                                
+                                
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+            })
+            
+        } else {
+            // LIKE
+            let likes = PFObject(className: "Likes")
+            likes["fromUser"] = PFUser.current()!
+            likes["from"] = PFUser.current()!.username!
+            likes["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
+            likes["to"] = self.rpUsername.text!
+            likes["forObjectId"] = textPostObject.last!.objectId!
+            likes.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved like \(likes)")
+                    
+                    
+                    // Re-enable buttons
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.likeButton.isEnabled = true
+                    
+                    
+                    // Change button title and image
+                    self.likeButton.setTitle("liked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: textPostNotification, object: nil)
+                    
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: {
+                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                        },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5){
+                                        self.likeButton.transform = CGAffineTransform.identity
+                                    }
+                    })
+                    
+                    
+                    
+                    // Save to notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["to"] = self.rpUsername.text!
+                    notifications["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = textPostObject.last!.objectId!
+                    notifications["type"] = "like pp"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Successfully saved notificaiton: \(notifications)")
+                            
+                        } else {
+                            print(error?.localizedDescription)
+                        }
+                    })
+                    
+                    
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+            })
+        }
+    }
+    
+    
+    
+    // Function to show number of likes
+    func showLikes() {
+        // Append object
+        likeObject.append(self.contentObject!)
+        
+        // Push VC
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -153,6 +319,19 @@ class TextPostCell: UITableViewCell {
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
+        
+        // (4) Add like button tap
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
+        likeTap.numberOfTapsRequired = 1
+        self.likeButton.isUserInteractionEnabled = true
+        self.likeButton.addGestureRecognizer(likeTap)
+        
+        
+        // (5) Add numberOfLikes tap
+        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
+        numLikesTap.numberOfTapsRequired = 1
+        self.numberOfLikes.isUserInteractionEnabled = true
+        self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
         
         

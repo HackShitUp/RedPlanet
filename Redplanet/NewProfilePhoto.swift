@@ -17,7 +17,7 @@ import Bolts
 // Array to hold changed profile photo
 var changedProPicImg = [UIImage]()
 
-class NewProfilePhoto: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, CLImageEditorDelegate {
+class NewProfilePhoto: UIViewController, UITextViewDelegate, CLImageEditorDelegate {
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var proPicCaption: UITextView!

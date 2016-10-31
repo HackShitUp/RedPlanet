@@ -35,6 +35,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     func fetchInteractions() {
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+        likes.includeKey("fromUser")
         likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -44,7 +45,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 self.likes.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.likes.append(object)
+                    self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
             } else {
@@ -58,6 +59,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+        comments.includeKey("byUser")
         comments.order(byDescending: "createdAt")
         comments.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -68,7 +70,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 
                 // Append objects
                 for object in objects! {
-                    self.comments.append(object)
+                    self.comments.append(object["byUser"] as! PFUser)
                 }
                 
             } else {
@@ -102,7 +104,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         // Set estimated row height
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 555
+        self.tableView!.estimatedRowHeight = 570
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
         // Fetch interactions
@@ -118,7 +120,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
 
         // Back swipe implementation
@@ -149,7 +151,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Stylize title
         configureView()
@@ -165,7 +167,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -182,6 +184,10 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
 
     

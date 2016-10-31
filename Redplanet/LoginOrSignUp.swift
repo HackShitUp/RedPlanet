@@ -233,8 +233,8 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         tap.numberOfTapsRequired = 1
         self.loginButton.isUserInteractionEnabled = true
         self.loginButton.addGestureRecognizer(tap)
-
     }
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

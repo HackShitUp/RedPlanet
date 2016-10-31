@@ -57,6 +57,99 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func moreButton(_ sender: AnyObject) {
+        let alert = UIAlertController(title: nil,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        
+        // (1) Write in space
+        let space = UIAlertAction(title: "Write in Space 🚀",
+                                  style: .default,
+                                  handler: {(alertAction: UIAlertAction!) in
+                                    // TODO::
+        })
+        
+        // (2) Chat
+        let chat = UIAlertAction(title: "Chat 💬",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+                                    // Append user's object
+                                    chatUserObject.append(otherObject.last!)
+                                    // Append user's username
+                                    chatUsername.append(otherName.last!)
+                                    
+                                    // Push VC
+                                    let chatRoomVC = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+                                    self.navigationController?.pushViewController(chatRoomVC, animated: true)
+                                    
+        })
+        
+        // (3) Best Friends
+        let bestFriends = UIAlertAction(title: "Best Friends 👫",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+                                    // TODO::
+                                    
+        })
+        
+        // (3) Mutual
+        let mutual = UIAlertAction(title: "Mutual Relationships 🤗",
+                                   style: .default,
+                                   handler: {(alertAction: UIAlertAction!) in
+                                    // TODO::
+        })
+        
+        // (5) Report
+        let report = UIAlertAction(title: "Report ✋",
+                                   style: .destructive,
+                                   handler: {(alertAction: UIAlertAction!) in
+                                    // TODO::
+        })
+        
+        // (6) Block
+        let block = UIAlertAction(title: "Block 🚫",
+                                  style: .destructive,
+                                  handler: {(alertAction: UIAlertAction!) in
+                                    // TODO::
+        })
+        
+        // (7) Cancel
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        
+
+        
+        // TODO::
+        // Add best friend,
+        // And show only few options depending on whether they're friends or not
+        
+        if myFriends.contains(otherObject.last!) {
+            alert.addAction(space)
+            alert.addAction(chat)
+            alert.addAction(bestFriends)
+            alert.addAction(mutual)
+            alert.addAction(report)
+            alert.addAction(block)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            alert.addAction(chat)
+            alert.addAction(mutual)
+            alert.addAction(report)
+            alert.addAction(block)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+    }
+    
+    
+    
     // Function to query other user's content
     func queryContent() {
         let newsfeeds = PFQuery(className: "Newsfeeds")
@@ -166,14 +259,34 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         else {
             print("First launch, setting NSUserDefault.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
+            
+            let alert = UIAlertController(title: "Friend VS Follow",
+                                          message: "Being friends with this person lets you\n(1) See their best friends.\n(2) Write in their Space.\n(3) See what they've been up to.",
+                                          preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Make navigationBar's color white
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
+        // Stylize title again
+        configureView()
+        
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -435,44 +548,55 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                             }
                         })
                     }
-                    
-                    
-                    // (C) Set user's object
-//                    cell.userObject = user
+
                 }
                 
                 
                 
-                // (2) Set content
-                // Determine what to show
-                if object!["mediaAsset"] != nil {
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
-                    // Hide textPreview
-                    cell.textPreview.isHidden = true
-                    
-                    // Fetch photo
-                    if let media = object!["mediaAsset"] as? PFFile {
-                        media.getDataInBackground(block: {
+                // (2) Determine Content Type
+                // (A) Photo
+                if object!["contentType"] as! String == "pv" {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Set photo
+                                // Show media
+                                cell.mediaPreview.isHidden = false
+                                // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
+                                // Hide text
+                                cell.textPreview.isHidden = true
                             } else {
                                 print(error?.localizedDescription)
                             }
                         })
                     }
-                    
-                } else {
-                    // Show textPreview
+                }
+                
+                // (B) Text Post
+                if object!["contentType"] as! String == "tp" {
+                    // Show text
                     cell.textPreview.isHidden = false
-                    // Show mediaPreview
+                    // Hide media
                     cell.mediaPreview.isHidden = true
-                    
-                    
                     // Set text
-                    cell.textPreview.text! = "\(object!["textPost"] as! String)"
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
+                
+                
+                
+                // (C) SHARED
+                // TODO::
+                // Complete this
+                if object!["contentType"] as! String == "sh" {
+                    // Show media
+                    cell.mediaPreview.isHidden = false
+                    // Set background color
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set SHARED ICON
+                    cell.mediaPreview.image = UIImage(named: "RedShared")
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
                 }
                 
                 
@@ -522,34 +646,69 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     }
 
     // MARK: UICollectionViewDelegate
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            textPostObject.append(self.contentObjects[indexPath.row])
+            
+            
+            // Present VC
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+            self.navigationController?.pushViewController(textPostVC, animated: true)
+        }
 
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
+        
+        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "pv" {
+            
+            
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            mediaAssetObject.append(self.contentObjects[indexPath.row])
+            
+            // Present VC
+            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
+            self.navigationController?.pushViewController(mediaVC, animated: true)
+        }
+        
+        
+        
+        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+            
+        }
+        
     }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
-    }
-    */
 
 }

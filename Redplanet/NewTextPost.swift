@@ -33,9 +33,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Check if textView is empty
         if textView.text!.isEmpty {
             let alert = UIAlertController(title: "No Text Post?",
-                                          message: "We think you forgot something.",
+                                          message: "",
                                           preferredStyle: .alert)
-            let ok = UIAlertAction(title: "oops",
+            let ok = UIAlertAction(title: "Ok",
                                    style: .default,
                                    handler: nil)
             alert.addAction(ok)
@@ -47,6 +47,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             newsfeeds["byUser"]  = PFUser.current()!
             newsfeeds["username"] = PFUser.current()!.username!
             newsfeeds["textPost"] = self.textView!.text!
+            newsfeeds["contentType"] = "tp"
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {

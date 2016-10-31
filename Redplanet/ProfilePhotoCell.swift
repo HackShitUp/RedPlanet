@@ -219,26 +219,40 @@ class ProfilePhotoCell: UITableViewCell {
                                         message: nil,
                                         preferredStyle: .actionSheet)
         
+        // TODO:
+        // Add option to share to followers
+        
         let publicShare = UIAlertAction(title: "All Friends",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
-                                            // TODO:
-                                            // Add option to share to followers
                                             
+                                            
+                                            // TODO::
+                                            // TODO::
+                                            // TODO::
+                                            // THIS IS INCOMPLETE
                                             // Share to public ***FRIENDS ONLY***
+                                            
+                                            
+                                            // Convert UIImage to NSData
+                                            let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
+                                            // Change UIImage to PFFile
+                                            let parseFile = PFFile(data: imageData!)
+                                            
                                             let newsfeeds = PFObject(className: "Newsfeeds")
                                             newsfeeds["byUser"] = PFUser.current()!
                                             newsfeeds["username"] = PFUser.current()!.username!
-//                                            newsfeeds["textPost"] = "Shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
+                                            newsfeeds["textPost"] = "Shared @\(self.rpUsername.text!)'s Profile Photo: \(self.caption.text!)"
+                                            newsfeeds["mediaAsset"] = parseFile
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {
-                                                    print("Successfully shared text post: \(newsfeeds)")
+                                                    print("Successfully shared profile photo: \(newsfeeds)")
                                                     
                                                     // Show alert
                                                     let alert = UIAlertController(title: "Shared With Friends",
-                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Text Post.",
+                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Profile Photo.",
                                                         preferredStyle: .alert)
                                                     
                                                     let ok = UIAlertAction(title: "ok",

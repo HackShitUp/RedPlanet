@@ -14,8 +14,16 @@ import ParseUI
 import Bolts
 
 
+
+
+
 // Global variable to hold object
 var textPostObject = [PFObject]()
+
+
+// Define identifier
+let textPostNotification = Notification.Name("textPostLike")
+
 
 class TextPost: UITableViewController, UINavigationControllerDelegate {
     
@@ -31,12 +39,21 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func refresh(_ sender: AnyObject) {
+        // Fetch interactions
+        fetchInteractions()
+        
+        // Reload data
+        self.tableView!.reloadData()
+    }
+    
     
     // Function to count likes
     func fetchInteractions() {
         // Likes
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+        likes.includeKey("fromUser")
         likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -46,7 +63,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 self.likes.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.likes.append(object)
+                    self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
             } else {
@@ -60,6 +77,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Comments
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+        comments.includeKey("byUser")
         comments.order(byDescending: "createdAt")
         comments.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -70,7 +88,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 
                 // Append objects
                 for object in objects! {
-                    self.comments.append(object)
+                    self.comments.append(object["byUser"] as! PFUser)
                 }
                 
             } else {
@@ -106,6 +124,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
         // Set estimated row height
         self.tableView!.setNeedsLayout()
+        self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 220
         self.tableView!.rowHeight = UITableViewAutomaticDimension
@@ -117,11 +136,15 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Stylize title
         configureView()
         
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: textPostNotification, object: nil)
+        
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -155,7 +178,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Stylize title
         configureView()
@@ -171,7 +194,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     
@@ -195,6 +218,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         return 1
     }
 
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 220
+    }
+    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -205,6 +232,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Content
         let cell = tableView.dequeueReusableCell(withIdentifier: "textPostCell", for: indexPath) as! TextPostCell
+        
+        //set contentView frame and autoresizingMask
+        cell.contentView.frame = cell.bounds
+        
         
         // Instantiate parent vc
         cell.delegate = self
@@ -300,13 +331,12 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 // (4) Determine whether the current user has liked this object or not
                 if self.likes.contains(PFUser.current()!) {
                     // Set button title
-                    cell.likeButton.setTitle("like", for: .normal)
+                    cell.likeButton.setTitle("liked", for: .normal)
                     // Set/ button image
-                    cell.likeButton.setImage(UIImage(named: "Like Filled=100"), for: .normal)
+                    cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                 } else {
                     // Set button title
-                    cell.likeButton.setTitle("unlike", for: .normal)
-                    
+                    cell.likeButton.setTitle("notLiked", for: .normal)
                     // Set button image
                     cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                 }

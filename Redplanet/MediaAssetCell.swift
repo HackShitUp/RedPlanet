@@ -74,12 +74,52 @@ class MediaAssetCell: UITableViewCell {
                                         message: nil,
                                         preferredStyle: .actionSheet)
         
+        // TODO:
+        // share to FOLLOWERS
+        
         let publicShare = UIAlertAction(title: "All Friends",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
-                                            // TODO:
+    
                                             // Share to public ***FRIENDS ONLY***
+
                                             
+                                            // Convert UIImage to NSData
+                                            let imageData = UIImageJPEGRepresentation(self.rpMedia.image!, 0.5)
+                                            // Change UIImage to PFFile
+                                            let parseFile = PFFile(data: imageData!)
+                                            
+                                            let newsfeeds = PFObject(className: "Newsfeeds")
+                                            newsfeeds["byUser"] = PFUser.current()!
+                                            newsfeeds["username"] = PFUser.current()!.username!
+                                            newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Photo: \(self.caption.text!)"
+                                            newsfeeds["mediaAsset"] = parseFile
+                                            newsfeeds["pointObject"] = mediaAssetObject.last!
+                                            newsfeeds["contentType"] = "sh"
+                                            newsfeeds.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if error == nil {
+                                                    print("Successfully shared photo: \(newsfeeds)")
+                                                    
+                                                    // Show alert
+                                                    let alert = UIAlertController(title: "Shared With Friends",
+                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: {(alertAction: UIAlertAction!) in
+                                                                            // Pop view controller
+                                                                            self.delegate?.navigationController?.popViewController(animated: true)
+                                                    })
+                                                    
+                                                    alert.addAction(ok)
+                                                    self.delegate?.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription)
+                                                }
+                                            })
         })
         
         let privateShare = UIAlertAction(title: "One Friend",

@@ -47,8 +47,6 @@
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CF1DBD7FA500F03E0C /* ViewsCell.swift */; };
-		7E7037D31DBD862800F03E0C /* TextFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037D21DBD862800F03E0C /* TextFocusCell.swift */; };
-		7E7037D51DBD863000F03E0C /* MediaFocusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037D41DBD863000F03E0C /* MediaFocusCell.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
 		7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8CE1DB75057001B7329 /* CLImageEditor.m */; };
 		7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8D01DB75057001B7329 /* CLImageEditorTheme.m */; };
@@ -156,6 +154,7 @@
 		7EE1C22F1DBC78C100F75557 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2291DBC78C100F75557 /* ImageDownloader.swift */; };
 		7EE1C2301DBC78C100F75557 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EE1C22A1DBC78C100F75557 /* Info.plist */; };
 		7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */; };
+		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -229,8 +228,6 @@
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E7037CF1DBD7FA500F03E0C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
-		7E7037D21DBD862800F03E0C /* TextFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFocusCell.swift; sourceTree = "<group>"; };
-		7E7037D41DBD863000F03E0C /* MediaFocusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaFocusCell.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
 		7E98E8CD1DB75057001B7329 /* CLImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLImageEditor.h; sourceTree = "<group>"; };
 		7E98E8CE1DB75057001B7329 /* CLImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLImageEditor.m; sourceTree = "<group>"; };
@@ -392,6 +389,7 @@
 		7EE1C2291DBC78C100F75557 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		7EE1C22A1DBC78C100F75557 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -874,7 +872,6 @@
 		7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */,
 				7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */,
 			);
@@ -885,6 +882,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
+				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 			);
 			name = RPCamera;
 			sourceTree = "<group>";
@@ -920,8 +918,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
-				7E7037D21DBD862800F03E0C /* TextFocusCell.swift */,
-				7E7037D41DBD863000F03E0C /* MediaFocusCell.swift */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
 			);
@@ -1050,6 +1046,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D16A1DB32F0D00437219 /* MasterTab.swift */,
+				7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */,
 				7EC5D16C1DB32F3300437219 /* Navigator.swift */,
 			);
 			name = "TabBar&Navigation";
@@ -1521,7 +1518,6 @@
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
-				7E7037D51DBD863000F03E0C /* MediaFocusCell.swift in Sources */,
 				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
@@ -1576,13 +1572,13 @@
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
 				7E3F0EDE1DC06309006BF522 /* RelationshipRequests.swift in Sources */,
 				7E3F0EEC1DC085A3006BF522 /* EPExtensions.swift in Sources */,
+				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
-				7E7037D31DBD862800F03E0C /* TextFocusCell.swift in Sources */,
 				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
 				7EC5D1AF1DB359EE00437219 /* OtherContentCell.swift in Sources */,
 				7E98E9451DB75057001B7329 /* CLHighlightShadowEffect.m in Sources */,

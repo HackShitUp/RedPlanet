@@ -268,71 +268,60 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
 
                 // (2) Determine Content Type
-//                // (A) Photo
-//                if object!["contentType"] as! String == "pv" {
-//                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
-//                        mediaPreview.getDataInBackground(block: {
-//                            (data: Data?, error: Error?) in
-//                            if error == nil {
-//                                // Show media
-//                                cell.mediaPreview.isHidden = false
-//                                // Set media
-//                                cell.mediaPreview.image = UIImage(data: data!)
-//                                // Hide text
-//                                cell.textPreview.isHidden = true
-//                            } else {
-//                                print(error?.localizedDescription)
-//                            }
-//                        })
-//                    }
-//                }
-//                
-//                // (B) Text Post
-//                if object!["contentType"] as! String == "tp" {
-//                    // Show text
-//                    cell.textPreview.isHidden = false
-//                    // Hide media
-//                    cell.mediaPreview.isHidden = true
-//                    // Set text
-//                    cell.textPreview.text! = object!["textPost"] as! String
-//                }
-//                
-//                
-//                // (C) SHARED
-//                if object!["contentType"] as! String == "sh" {
-//                    // Set SHARED ICON
-//                    cell.mediaPreview.image = UIImage(named: "Shared")
-//                    // Set text
-//                    cell.textPreview.text! = object!["textPost"] as! String
-//                }
+                // (A) Photo
+                if object!["contentType"] as! String == "pv" {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show media
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                // Hide text
+                                cell.textPreview.isHidden = true
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
+                }
+                
+                // (B) Text Post
+                if object!["contentType"] as! String == "tp" {
+                    // Show text
+                    cell.textPreview.isHidden = false
+                    // Hide media
+                    cell.mediaPreview.isHidden = true
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
                 
                 
-//                if object!["mediaType"] != nil {
-//                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
-//                        mediaPreview.getDataInBackground(block: {
-//                            (data: Data?, error: Error?) in
-//                            if error == nil {
-//                                // Show media
-//                                cell.mediaPreview.isHidden = false
-//                                // Set media
-//                                cell.mediaPreview.image = UIImage(data: data!)
-//                                // Hide text
-//                                cell.textPreview.isHidden = true
-//                            } else {
-//                                print(error?.localizedDescription)
-//                            }
-//                        })
-//                    }
-//                } else {
-//                    // Show text
-//                    cell.textPreview.isHidden = false
-//                    // Hide media
-//                    cell.mediaPreview.isHidden = true
-//                    // Set text
-//                    cell.textPreview.text! = object!["textPost"] as! String
-//                }
+                
+                // (C) SHARED
+                // TODO::
+                // Complete this
+                if object!["contentType"] as! String == "sh" {
+                    // Show media
+                    cell.mediaPreview.isHidden = false
+                    // Set background color
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set SHARED ICON
+                    cell.mediaPreview.image = UIImage(named: "RedShared")
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
+                
+                
+                // (D) In the moment
+                // == When user takes a photo and shares it with his/her friends on the spot
+                
+                
                 
 
+                
+                /*
                 // (2) Determine Content Type
                 if let mediaPreview = object!["mediaAsset"] as? PFFile {
                     mediaPreview.getDataInBackground(block: {
@@ -342,8 +331,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                             cell.mediaPreview.isHidden = false
                             // Set media
                             cell.mediaPreview.image = UIImage(data: data!)
-                            // Hide text
-                            cell.textPreview.isHidden = true
+                            // Show text
+                            cell.textPreview.isHidden = false
+                            cell.textPreview.text! = "shared a photo"
                         } else {
                             print(error?.localizedDescription)
                         }
@@ -356,6 +346,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
                 }
+                */
 
                 
                 
@@ -422,24 +413,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        
-        if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") == nil {
-            
+        // TEXT POST
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             /*
-            // Save to Views
-            let view = PFObject(className: "Views")
-            view["byUser"] = PFUser.current()!
-            view["username"] = PFUser.current()!.username!
-            view["forObjectId"] = friendsContent[indexPath.row].objectId!
-            view.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    
-                } else {
-                    print(error?.localizedDescription)
-                }
-            })
-            */
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription)
+             }
+             })
+             */
             
             
             // Append Object
@@ -449,9 +439,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Present VC
             let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
             self.parentNavigator.pushViewController(textPostVC, animated: true)
-
-        } else {
-            
+        }
+        
+        
+        // PHOTO
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pv" {
             /*
              // Save to Views
              let view = PFObject(className: "Views")
@@ -475,10 +467,41 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Present VC
             let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
             self.parentNavigator.pushViewController(mediaVC, animated: true)
-
-            
-
         }
+        
+        // SHARED
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+            if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") != nil {
+                
+                // Append Object
+                mediaAssetObject.append(self.friendsContent[indexPath.row])
+                
+                // Present VC
+                let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
+                self.parentNavigator.pushViewController(mediaVC, animated: true)
+                
+            } else {
+                // Append Object
+                textPostObject.append(self.friendsContent[indexPath.row])
+                
+                
+                // Present VC
+                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                self.parentNavigator.pushViewController(textPostVC, animated: true)
+            }
+        }
+        
+        // TODO::
+        // IM
+        /*
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pv" {
+            
+        }
+        */
+        
+        
+        
+
     }
     
     

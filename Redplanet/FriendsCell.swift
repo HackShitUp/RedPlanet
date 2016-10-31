@@ -32,10 +32,7 @@ class FriendsCell: UITableViewCell {
     @IBOutlet weak var textPreview: KILabel!
     @IBOutlet weak var mediaPreview: PFImageView!
     
-    @IBOutlet weak var textPost: KILabel!
-    
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

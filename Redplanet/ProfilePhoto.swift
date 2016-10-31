@@ -15,12 +15,13 @@ import Bolts
 
 
 
-// Define identifier
-let profileNotification = Notification.Name("profileLike")
-
 
 // ProfilePhoto's Object Id
 var proPicObject = [PFObject]()
+
+// Define identifier
+let profileNotification = Notification.Name("profileLike")
+
 
 class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     
@@ -129,7 +130,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -144,9 +145,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Set tableView height
         self.tableView!.estimatedRowHeight = 540
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-
-        // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
         
         // Stylize title
         configureView()
@@ -157,12 +155,28 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
 
+        // Hide tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
+        // Hide tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Stylize title again
+        configureView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Hide tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Stylize title again
+        configureView()
     }
 
     override func didReceiveMemoryWarning() {

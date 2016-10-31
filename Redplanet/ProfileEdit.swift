@@ -24,7 +24,7 @@ var proPicChanged = false
 var profilePhotoCaption = [String]()
 
 
-class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate {
+class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, CLImageEditorDelegate {
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUserBio: UITextView!
@@ -266,6 +266,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePick
                                     me.saveInBackground(block: {
                                         (success: Bool, error: Error?) in
                                         if success {
+                                            
                                             // Append new profile photo
                                             changedProPicImg.append(self.rpUserProPic.image!)
                                             
@@ -274,18 +275,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePick
                                             
                                         } else {
                                             print(error?.localizedDescription)
-                                            
-                                            // Show Network
-                                            let error = UIAlertController(title: "Poor Network Connection",
-                                                                          message: "Please connect to the internet to update your Profile Photo.",
-                                                                          preferredStyle: .alert)
-                                            
-                                            let ok = UIAlertAction(title: "ok",
-                                                                   style: .default,
-                                                                   handler: nil)
-                                            
-                                            error.addAction(ok)
-                                            self.present(error, animated: true, completion: nil)
                                         }
                                     })
         })
@@ -308,7 +297,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePick
                                             
                                             // Replace current photo
                                             self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
-                                            
                                             
                                             // Append to profilePhotoCaption
                                             profilePhotoCaption.append(" ")
@@ -357,8 +345,63 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePick
     
     
     
+    // Function didFinishPickingImage via UIImagePickerController
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+
+    
+        // Set image
+        self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+
+        
+        // Append image
+        changedProPicImg.append(info[UIImagePickerControllerOriginalImage] as! UIImage)
+        
+        PFUser.current()!["proPicExists"] = true
+        PFUser.current()!.saveInBackground(block: {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Profile Photo Exists!")
+                
+                // Dismiss view controller
+                self.dismiss(animated: true, completion: nil)
+                
+                
+                // CLImageEditor
+                let editor = CLImageEditor(image: self.rpUserProPic.image!)
+                editor?.delegate = self
+                self.present(editor!, animated: true, completion: nil)
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        })
+        
+    }
     
     
+    
+    // CLImageEditor
+    // didFinishEditing
+    // function
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        // Set image
+        self.rpUserProPic.image = image
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+        
+        
+        // Present PopOverpresentationcontroller
+        self.performSegue(withIdentifier: "popOver", sender: self)
+    }
+    
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+        
+        
+        // Present PopOverpresentationcontroller
+        self.performSegue(withIdentifier: "popOver", sender: self)
+    }
     
     
     // Function to dismiss keybaord
@@ -372,20 +415,40 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIImagePick
     
     
     // Prevent forced sizes for ipad
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
+//    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+//        return UIModalPresentationStyle.none
+//    }
+//    
+//    
+//    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        
+//        if segue.identifier == "popOver" {
+//            print("POPPIN")
+////            let newProfilePhoto = segue.destination as! NewProfilePhoto
+////            let controller = newProfilePhoto.popoverPresentationController
+//            let newProPicVC = segue.destination as! NewProfilePhoto
+//            let controller = newProPicVC.popoverPresentationController
+//
+//            if controller != nil {
+//                controller?.delegate = self
+//            }
+//            
+//        }
+//
+//    }
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "popOver" {
-            let newProfilePhoto = segue.destination as! NewProfilePhoto
-            let controller = newProfilePhoto.popoverPresentationController
             
-            if controller != nil {
-                controller?.delegate = self
-            }
         }
-
+            
+    }
+    
+    
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        
     }
 
     
