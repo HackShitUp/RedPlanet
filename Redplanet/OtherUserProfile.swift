@@ -474,7 +474,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+
         return CGSize(width: self.view.frame.size.width, height: 65)
     }
 

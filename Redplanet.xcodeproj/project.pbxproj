@@ -47,6 +47,8 @@
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CF1DBD7FA500F03E0C /* ViewsCell.swift */; };
+		7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */; };
+		7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
 		7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8CE1DB75057001B7329 /* CLImageEditor.m */; };
 		7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8D01DB75057001B7329 /* CLImageEditorTheme.m */; };
@@ -228,6 +230,8 @@
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E7037CF1DBD7FA500F03E0C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
+		7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPostCell.swift; sourceTree = "<group>"; };
+		7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMediaCell.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
 		7E98E8CD1DB75057001B7329 /* CLImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLImageEditor.h; sourceTree = "<group>"; };
 		7E98E8CE1DB75057001B7329 /* CLImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLImageEditor.m; sourceTree = "<group>"; };
@@ -580,6 +584,7 @@
 			isa = PBXGroup;
 			children = (
 				7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */,
+				7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */,
 			);
 			name = NewTextPost;
 			sourceTree = "<group>";
@@ -883,6 +888,7 @@
 			children = (
 				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
+				7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */,
 			);
 			name = RPCamera;
 			sourceTree = "<group>";
@@ -1518,6 +1524,7 @@
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
+				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
 				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
@@ -1529,6 +1536,7 @@
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
+				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
 				7E4CFF991DB439540087454E /* MediaAssetCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,

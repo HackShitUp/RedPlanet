@@ -296,6 +296,19 @@ class ProfilePhotoCell: UITableViewCell {
         self.delegate?.present(options, animated: true, completion: nil)
     }
     
+    
+    // Function to show number of likes
+    func showLikes() {
+        // Append object
+        likeObject.append(proPicObject.last!)
+        
+        // Push VC
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
+    }
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -319,6 +332,18 @@ class ProfilePhotoCell: UITableViewCell {
         self.commentButton.addGestureRecognizer(commentTap)
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
+        
+        // (4) Number of likes tap
+        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
+        numLikesTap.numberOfTapsRequired = 1
+        self.numberOfLikes.isUserInteractionEnabled = true
+        self.numberOfLikes.addGestureRecognizer(numLikesTap)
+        
+        // (5) Share options
+        let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareContent))
+        dmTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(dmTap)
 
     }
 

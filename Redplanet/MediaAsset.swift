@@ -17,19 +17,36 @@ import Bolts
 // Global array to hold the object
 var mediaAssetObject = [PFObject]()
 
+
+// Define identifier
+let mediaNotification = Notification.Name("mediaAsset")
+
 class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     
     
     // Arrays to hold likes and comments
     var likes = [PFObject]()
     var comments = [PFObject]()
-        
+    
+    // Refresher
+    var refresher: UIRefreshControl!
+    
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
         self.navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func refresh(_ sender: AnyObject) {
+        // Fetch interactions
+        fetchInteractions()
+        
+        // End refresher
+        refresher.endRefreshing()
+        
+        // Reload data
+        self.tableView!.reloadData()
+    }
     
     // Fetch interactions
     func fetchInteractions() {
@@ -48,38 +65,39 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                     self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
-            } else {
-                print(error?.localizedDescription)
-            }
-            
-            // Reload data
-            self.tableView!.reloadData()
-        }
-        
-        
-        let comments = PFQuery(className: "Comments")
-        comments.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
-        comments.includeKey("byUser")
-        comments.order(byDescending: "createdAt")
-        comments.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
                 
-                // Clear array
-                self.comments.removeAll(keepingCapacity: false)
-                
-                // Append objects
-                for object in objects! {
-                    self.comments.append(object["byUser"] as! PFUser)
+                let comments = PFQuery(className: "Comments")
+                comments.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+                comments.includeKey("byUser")
+                comments.order(byDescending: "createdAt")
+                comments.findObjectsInBackground {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Clear array
+                        self.comments.removeAll(keepingCapacity: false)
+                        
+                        // Append objects
+                        for object in objects! {
+                            self.comments.append(object["byUser"] as! PFUser)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription)
+                    }
+                    
+                    
+                    // Reload data
+                    self.tableView!.reloadData()
                 }
                 
+                
             } else {
                 print(error?.localizedDescription)
             }
             
-            
             // Reload data
-            self.tableView!.reloadData()
+//            self.tableView!.reloadData()
         }
     }
     
@@ -122,6 +140,14 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         // Hide tabbarcontroller
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: mediaNotification, object: nil)
+        
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

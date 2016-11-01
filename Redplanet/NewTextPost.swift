@@ -14,9 +14,15 @@ import Parse
 import ParseUI
 import Bolts
 
-// #ff004f
 
-class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate {
+
+
+class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
+    
+    
+    // Array to hold user objects
+    var userObjects = [PFObject]()
+    
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Dismiss VC
@@ -25,17 +31,32 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var shareButton: UIButton!
+    @IBOutlet weak var characterCount: UILabel!
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var fbShare: UIButton!
     @IBOutlet weak var twitterShare: UIButton!
     
     // Share
     func postTextPost() {
+        
         // Check if textView is empty
         if textView.text!.isEmpty {
+            
             let alert = UIAlertController(title: "No Text Post?",
-                                          message: "",
+                                          message: "Share your thoughts within 200 characters about anything.",
                                           preferredStyle: .alert)
-            let ok = UIAlertAction(title: "Ok",
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true)
+            
+        } else if self.textView.text.characters.count > 200 {
+            
+            let alert = UIAlertController(title: "Exceeded Character Count",
+                                          message: "For experience purposes, your thoughts should be concisely shared within 200 characters.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
             alert.addAction(ok)
@@ -52,6 +73,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 (success: Bool, error: Error?) in
                 if error == nil {
                     print("Saved \(newsfeeds)")
+                    
+                    // Send notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
                     
                     // Push Show MasterTab
                     let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -90,6 +115,186 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     }
     
     
+    
+    // Counting function
+    func countRemaining() {
+        // Limit
+        let limit = 200
+        // Current # of characters
+        let currentCharacters = self.textView.text.characters.count
+        // Number of characters for space left
+        let remainingCharacters = limit - currentCharacters
+        
+        // Change colors if character count has 20 left...
+        if remainingCharacters <= limit {
+            characterCount.textColor = UIColor.black
+        }
+        if remainingCharacters <=  20 {
+            characterCount.textColor = UIColor.red
+        }
+        
+        characterCount.text = String(remainingCharacters)
+    }
+    
+    
+    
+
+
+    // MARK: - UITextView delegate methods
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.textView!.text! == "What are you doing?" {
+            self.textView.text! = ""
+        }
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // Count characters
+        countRemaining()
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        countRemaining()
+        
+        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        // Define word
+        for var word in words {
+            // #####################
+            if word.hasPrefix("@") {
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Find the user
+                let fullName = PFQuery(className: "_User")
+                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                
+                let theUsername = PFQuery(className: "_User")
+                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                
+                let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
+                search.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Clear arrays
+                        self.userObjects.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            self.userObjects.append(object)
+                        }
+                    } else {
+                        print(error?.localizedDescription)
+                    }
+                })
+                self.tableView!.isHidden = false
+                self.tableView!.reloadData()
+            } else {
+                self.tableView!.isHidden = true
+            }
+        }
+        
+        return true
+    }
+    
+    
+    
+    
+    
+    
+    
+    // MARK: - UITableView Data Source methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.userObjects.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "newTPCell", for: indexPath) as! NewTextPostCell
+        
+        
+        // LayoutViews for rpUserProPic
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // Fetch user's objects
+        self.userObjects[indexPath.row].fetchIfNeededInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Get and set user's profile photo
+                if let proPic = object!["userProfilePicture"] as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set user's pro pic
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription)
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                        }
+                    })
+                }
+                
+                // (2) Set user's fullName
+                cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                
+                // (3) Set user's username
+                cell.rpUsername.text! = object!["username"] as! String
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+        
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        // Define #word
+        for var word in words {
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if word.hasPrefix("@") {
+                
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Replace text
+                // NSString.CompareOptions.literal
+                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+            }
+        }
+        
+        // Clear array
+        self.userObjects.removeAll(keepingCapacity: false)
+        
+        // Hide UITableView
+        self.tableView!.isHidden = true
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,6 +304,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         // Set textView to first responder
         self.textView!.becomeFirstResponder()
+        
+        // Hide tableView
+        self.tableView!.isHidden = true
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -116,7 +324,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+
         
+        // TODO:::
         // Tap to share privately
         let privateShare = UITapGestureRecognizer(target: self, action: #selector(sharePrivate))
         privateShare.numberOfTapsRequired = 1
@@ -134,13 +344,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView!.text! == "What are you doing?" {
-            self.textView.text! = ""
-        }
     }
 
 

@@ -167,7 +167,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "My Friends"
+            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Friends"
         }
     }
     
@@ -233,7 +233,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
-        
         
         
         // Return SEARCH

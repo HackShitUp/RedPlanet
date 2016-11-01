@@ -126,6 +126,8 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
             if error == nil {
                 print("Successfully shared object: \(newsfeeds)")
                 
+                // Send notification
+                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                 
                 // Push Show MasterTab
                 let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

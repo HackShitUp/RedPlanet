@@ -76,7 +76,8 @@ class MyProfile: UICollectionViewController {
         // Stylize and set title
         configureView()
         
-        
+        // Fetch current user's content
+        fetchMine()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -123,17 +124,9 @@ class MyProfile: UICollectionViewController {
         // Declare delegate
         header.delegate = self
         
-        header.setNeedsUpdateConstraints()
-        header.updateConstraintsIfNeeded()
-        
-        header.setNeedsLayout()
-        header.layoutIfNeeded()
-        
-        header.userBio.setNeedsLayout()
-        header.userBio.layoutIfNeeded()
-        header.userBio.setNeedsUpdateConstraints()
-        header.userBio.updateConstraintsIfNeeded()
-        
+        //set contentView frame and autoresizingMask
+        header.frame = header.frame
+                
         // Query relationships
         appDelegate.queryRelationships()
         
@@ -144,7 +137,7 @@ class MyProfile: UICollectionViewController {
         header.myProPic.setNeedsLayout()
         
         // Make profile photo circular
-        header.myProPic.layer.cornerRadius = 125.00
+        header.myProPic.layer.cornerRadius = header.myProPic.frame.size.width/2.0
         header.myProPic.layer.borderColor = UIColor.lightGray.cgColor
         header.myProPic.layer.borderWidth = 0.5
         header.myProPic.clipsToBounds = true
@@ -218,13 +211,125 @@ class MyProfile: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        return self.myContentObjects.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: self.view.frame.size.width, height: 65)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myContentCell", for: indexPath) as! MyContentCell
     
-        // Configure the cell
+        
+        // LayoutViews for rpUserProPic
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // LayoutViews for mediaPreview
+        cell.mediaPreview.layoutIfNeeded()
+        cell.mediaPreview.layoutSubviews()
+        cell.mediaPreview.setNeedsLayout()
+        
+        // Make mediaPreview cornered square
+        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.clipsToBounds = true
+        
+        
+        // Set bounds for textPreview
+        cell.textPreview.clipsToBounds = true
+
+        
+        
+        // Fetch objects
+        myContentObjects[indexPath.row].fetchIfNeededInBackground(block: {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Set user's profile photo
+                if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set profile photo
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription)
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                        }
+                    })
+                }
+                
+                
+                // (2) Set username
+                cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+                
+                
+                // (2) Determine Content Type
+                // (A) Photo
+                if object!["contentType"] as! String == "pv" {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                // Hide textPreview
+                                cell.textPreview.isHidden = true
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
+                }
+                
+                // (B) Text Post
+                if object!["contentType"] as! String == "tp" {
+                    // Show text
+                    cell.textPreview.isHidden = false
+                    // Hide media
+                    cell.mediaPreview.isHidden = true
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
+                
+                
+                
+                // (C) SHARED
+                if object!["contentType"] as! String == "sh" {
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Show textPreview
+                    cell.textPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "RedShared")
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
+                
+                
+                // (4) 
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        })
+        
     
         return cell
     }

@@ -92,6 +92,9 @@ class TextPostCell: UITableViewCell {
                                                 if error == nil {
                                                     print("Successfully shared text post: \(newsfeeds)")
                                                     
+                                                    // Send notification
+                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                    
                                                     // Show alert
                                                     let alert = UIAlertController(title: "Shared With Friends",
                                                                                   message: "Successfully shared \(self.rpUsername.text!)'s Text Post.",
@@ -267,7 +270,7 @@ class TextPostCell: UITableViewCell {
                     notifications["to"] = self.rpUsername.text!
                     notifications["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
                     notifications["forObjectId"] = textPostObject.last!.objectId!
-                    notifications["type"] = "like pp"
+                    notifications["type"] = "like tp"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {

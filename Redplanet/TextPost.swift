@@ -22,7 +22,7 @@ var textPostObject = [PFObject]()
 
 
 // Define identifier
-let textPostNotification = Notification.Name("textPostLike")
+let textPostNotification = Notification.Name("textPost")
 
 
 class TextPost: UITableViewController, UINavigationControllerDelegate {
@@ -32,7 +32,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     var comments = [PFObject]()
     
     
-    let navigator = UINavigationController()
+    // Refresher
+    var refresher: UIRefreshControl!
+    
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
@@ -42,6 +44,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func refresh(_ sender: AnyObject) {
         // Fetch interactions
         fetchInteractions()
+        
+        // End refresher
+        refresher.endRefreshing()
         
         // Reload data
         self.tableView!.reloadData()
@@ -66,39 +71,43 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                     self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
-            } else {
-                print(error?.localizedDescription)
-            }
-            
-            // Reload data
-            self.tableView!.reloadData()
-        }
-        
-        // Comments
-        let comments = PFQuery(className: "Comments")
-        comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
-        comments.includeKey("byUser")
-        comments.order(byDescending: "createdAt")
-        comments.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
                 
-                // Clear array
-                self.comments.removeAll(keepingCapacity: false)
                 
-                // Append objects
-                for object in objects! {
-                    self.comments.append(object["byUser"] as! PFUser)
+                // Comments
+                let comments = PFQuery(className: "Comments")
+                comments.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
+                comments.includeKey("byUser")
+                comments.order(byDescending: "createdAt")
+                comments.findObjectsInBackground {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Clear array
+                        self.comments.removeAll(keepingCapacity: false)
+                        
+                        // Append objects
+                        for object in objects! {
+                            self.comments.append(object["byUser"] as! PFUser)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription)
+                    }
+                    
+                    
+                    // Reload data
+                    self.tableView!.reloadData()
                 }
                 
+                
             } else {
                 print(error?.localizedDescription)
             }
             
-            
             // Reload data
-            self.tableView!.reloadData()
+//            self.tableView!.reloadData()
         }
+
     }
     
     
@@ -129,6 +138,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.estimatedRowHeight = 220
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
+        // Reload data to grow height
+//        self.tableView!.reloadData()
         
         // Fetch Likes and Comments
         fetchInteractions()
@@ -149,9 +160,16 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
         
+        
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
-        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        backSwipe.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }

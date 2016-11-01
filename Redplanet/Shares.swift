@@ -62,6 +62,8 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
 
         // Fetch sharers
         queryShares()
+        
+        // Stylize title
     }
 
     override func didReceiveMemoryWarning() {

@@ -72,7 +72,7 @@ class Home: UIViewController, UINavigationControllerDelegate, UITabBarController
         ]
         
         // Initialize page menu with controller array, frame, and optional parameters
-        pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: 20.00, width: self.view.frame.width, height: self.view.frame.height), pageMenuOptions: parameters)
+        pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: 20.00, width: self.view.frame.width, height: self.view.frame.height-self.navigationController!.tabBarController!.tabBar.frame.height-20), pageMenuOptions: parameters)
         
         
         // Lastly add page menu as subview of base view controller view

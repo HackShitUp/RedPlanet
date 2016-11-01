@@ -17,6 +17,12 @@ import SVProgressHUD
 import DZNEmptyDataSet
 
 
+
+
+// Define identifier
+let friendsNewsfeed = Notification.Name("homeFriends")
+
+
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, CAPSPageMenuDelegate {
     
     // Array to hold friends
@@ -165,6 +171,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -274,11 +283,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Show media
+                                // Show mediaPreview
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Hide text
+                                // Hide textPreview
                                 cell.textPreview.isHidden = true
                             } else {
                                 print(error?.localizedDescription)
@@ -300,14 +309,16 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
                 // (C) SHARED
-                // TODO::
                 // Complete this
                 if object!["contentType"] as! String == "sh" {
-                    // Show media
+                    // Show mediaPreview
                     cell.mediaPreview.isHidden = false
-                    // Set background color
+                    // Show textPreview
+                    cell.textPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
-                    // Set SHARED ICON
+                    // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "RedShared")
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
@@ -317,7 +328,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (D) In the moment
                 // == When user takes a photo and shares it with his/her friends on the spot
                 
-                
+
+                // (E) Profile Photo
                 
 
                 
