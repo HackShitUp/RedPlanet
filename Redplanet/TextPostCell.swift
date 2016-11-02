@@ -38,7 +38,134 @@ class TextPostCell: UITableViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     @IBAction func moreButton(_ sender: AnyObject) {
-        // Show views
+        // Show Options
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        let delete = UIAlertAction(title: "Delete",
+                                   style: .destructive,
+                                   handler: {(alertAction: UIAlertAction!) in
+        })
+        
+        let edit = UIAlertAction(title: "Edit",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+        })
+        
+        
+        let views = UIAlertAction(title: "Views",
+                                  style: .default,
+                                  handler: {(alertAction: UIAlertAction!) in
+        })
+        
+        let shareVia = UIAlertAction(title: "Share Via",
+                                      style: .default, 
+                                      handler: {(alertAction: UIAlertAction!) in
+                                        
+                                        
+                                        let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)"
+//                                        if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+//                                        }
+//                                        let objectsToShare = [textToShare, myWebsite] as [Any]
+                                        let objectsToShare = [textToShare]
+                                        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                                        self.delegate?.present(activityVC, animated: true, completion: nil)
+        })
+        
+        
+        
+        
+        // Report
+        let report = UIAlertAction(title: "Report Content",
+                                   style: .destructive,
+                                   handler: {(alertAction: UIAlertAction!) in
+                                    
+                                    
+                                    let alert = UIAlertController(title: "Report \(self.rpUsername.text!)'s content?",
+                                        message: "Please enter your reason for reporting this content.",
+                                        preferredStyle: .alert)
+                                    
+                                    
+                                    let report = UIAlertAction(title: "report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        let report = PFObject(className: "Block_Reported")
+                                        report["from"] = PFUser.current()!.username!
+                                        report["fromUser"] = PFUser.current()!
+                                        report["to"] = self.rpUsername.text!
+                                        report["toUser"] = otherObject.last!
+                                        report["forObjectId"] = textPostObject.last!.objectId!
+                                        report["type"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                // Dismiss
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(self.rpUsername.text!)",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .cancel,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                self.delegate?.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription)
+                                            }
+                                        })
+                                    }
+                                    
+                                    let cancel = UIAlertAction(title: "cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    // Add textfield
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
+                                    self.delegate?.present(alert, animated: true, completion: nil)
+        })
+        
+        
+        
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        
+        
+        
+        
+        if self.userObject! == PFUser.current()! {
+            // Edit, delete, share to facebook/twitter, and cancel
+            options.addAction(delete)
+            options.addAction(edit)
+            options.addAction(views)
+            options.addAction(shareVia)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+            self.delegate?.present(options, animated: true, completion: nil)
+        } else {
+            // report, block, share to facebook/twitter, and cancel
+            options.addAction(shareVia)
+            options.addAction(report)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+            self.delegate?.present(options, animated: true, completion: nil)
+        }
+        
+        
+        
+        
     }
     
     

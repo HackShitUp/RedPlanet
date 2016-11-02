@@ -187,25 +187,55 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 
                 // (2) Determine Content Type
-                if let mediaPreview = object!["mediaAsset"] as? PFFile {
-                    mediaPreview.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Show media
-                            cell.mediaPreview.isHidden = false
-                            // Set media
-                            cell.mediaPreview.image = UIImage(data: data!)
-                            // Hide text
-                            cell.textPreview.isHidden = true
-                        } else {
-                            print(error?.localizedDescription)
-                        }
-                    })
-                } else {
+                // (A) Photo
+                if object!["contentType"] as! String == "pv" {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                //                                // Hide textPreview
+                                //                                cell.textPreview.isHidden = true
+                                // Show textPreview
+                                cell.textPreview.isHidden = false
+                                // Set text
+                                cell.textPreview.text! = "shared a photo"
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
+                }
+                
+                // (B) Text Post
+                if object!["contentType"] as! String == "tp" {
                     // Show text
                     cell.textPreview.isHidden = false
-                    // Hide media
-                    cell.mediaPreview.isHidden = true
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Set mediaPreview's icon
+                    cell.mediaPreview.image = UIImage(named: "TextPreview")
+                    // Set text
+                    cell.textPreview.text! = object!["textPost"] as! String
+                }
+                
+                
+                
+                // (C) SHARED
+                // Complete this
+                if object!["contentType"] as! String == "sh" {
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Show textPreview
+                    cell.textPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "RedShared")
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
                 }
@@ -270,6 +300,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
  
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Set selection backgroundColor
+//        let sCell = self.tableView!.cellForRow(at: indexPath)!
+//        sCell.contentView.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
         
         if self.followingContent[indexPath.row].value(forKey: "mediaAsset") == nil {
             

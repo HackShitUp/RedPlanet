@@ -22,6 +22,10 @@ var commentsObject = [PFObject]()
 
 
 
+// Define identifier
+let commentNotification = Notification.Name("comment")
+
+
 class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     
@@ -176,7 +180,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -255,6 +259,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Stylize navigation bar
         configureView()
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: commentNotification, object: nil)
         
         
         // Set estimated row height
@@ -465,6 +472,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     
                     
                 })
+                
+                
+                // (5) Set comment object
+                cell.commentObject = self.comments[indexPath.row]
                 
                 
             } else {

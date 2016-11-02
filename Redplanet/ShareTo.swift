@@ -194,6 +194,14 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title again
+        configureView()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

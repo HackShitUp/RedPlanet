@@ -288,7 +288,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Hide navigationbar
             self.navigationController?.setNavigationBarHidden(true, animated: true)
             // Hide tabBarController
-            self.navigationController?.tabBarController?.tabBar.isHidden = true
+            self.navigationController?.tabBarController?.tabBar.isHidden = false
             // Show Grid Menu
             igcMenu.showGridMenu()
 //            igcMenu.showCircularMenu()

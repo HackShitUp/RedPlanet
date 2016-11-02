@@ -287,8 +287,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Hide textPreview
-                                cell.textPreview.isHidden = true
+//                                // Hide textPreview
+//                                cell.textPreview.isHidden = true
+                                // Show textPreview
+                                cell.textPreview.isHidden = false
+                                // Set text
+                                cell.textPreview.text! = "shared a photo"
                             } else {
                                 print(error?.localizedDescription)
                             }
@@ -300,8 +304,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 if object!["contentType"] as! String == "tp" {
                     // Show text
                     cell.textPreview.isHidden = false
-                    // Hide media
-                    cell.mediaPreview.isHidden = true
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Set mediaPreview's icon
+                    cell.mediaPreview.image = UIImage(named: "TextPreview")
                     // Set text
                     cell.textPreview.text! = object!["textPost"] as! String
                 }
@@ -424,6 +430,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        // Set selection backgroundColor
+//        let sCell = self.tableView!.cellForRow(at: indexPath)!
+//        sCell.contentView.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
+        
+
         
         // TEXT POST
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {

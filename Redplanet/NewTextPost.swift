@@ -289,7 +289,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     
     
-    
+    // Function to dismissKeyboard
+    func dismissKeyboard() {
+        // Resign textView
+        self.textView!.resignFirstResponder()
+        
+        // Hide tableView
+        self.tableView!.isHidden = true
+    }
     
     
     
@@ -324,6 +331,13 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+        
+        
+        // Add view tap to dismiss keyboard
+        let viewTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        viewTap.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(viewTap)
 
         
         // TODO:::

@@ -94,6 +94,9 @@
 		7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9351DB75057001B7329 /* UIImage+Utility.m */; };
 		7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9371DB75057001B7329 /* UIView+Frame.m */; };
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
+		7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955571DC960BA003D9D73 /* MutualRelationships.swift */; };
+		7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */; };
+		7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
@@ -323,6 +326,9 @@
 		7E98E9371DB75057001B7329 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		7E98E9391DB75057001B7329 /* _CLImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CLImageEditorViewController.h; sourceTree = "<group>"; };
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
+		7E9955571DC960BA003D9D73 /* MutualRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationships.swift; sourceTree = "<group>"; };
+		7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsCell.swift; sourceTree = "<group>"; };
+		7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsHeader.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
@@ -865,6 +871,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		7E99555B1DC960D8003D9D73 /* MutualRelationships */ = {
+			isa = PBXGroup;
+			children = (
+				7E9955571DC960BA003D9D73 /* MutualRelationships.swift */,
+				7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */,
+				7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */,
+			);
+			name = MutualRelationships;
+			sourceTree = "<group>";
+		};
 		7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,14 +936,14 @@
 			name = BRYXBanner;
 			sourceTree = "<group>";
 		};
-		7EC05B0D1DB5EE460039B357 /* Newsfeeds */ = {
+		7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */ = {
 			isa = PBXGroup;
 			children = (
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
 			);
-			name = Newsfeeds;
+			name = NEWS_FEEDS;
 			sourceTree = "<group>";
 		};
 		7EC05B121DB5EE7E0039B357 /* Friends */ = {
@@ -1017,15 +1033,16 @@
 				7EC328D21DBF461A00344AFF /* Comments */,
 				7EBDC6651DC55E7300DFCC28 /* Shares */,
 				7ED4A91E1DBEBE080016698F /* ShareTo */,
+				7E99555B1DC960D8003D9D73 /* MutualRelationships */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */,
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
-				7EC05B0D1DB5EE460039B357 /* Newsfeeds */,
-				7EC5D1991DB3541000437219 /* Chats */,
-				7EC5D1B41DB36EB800437219 /* Create-Redplanet */,
-				7EC5D1A41DB356A500437219 /* Explore */,
-				7EC5D19F1DB3566D00437219 /* MyProfile */,
+				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
+				7EC5D1991DB3541000437219 /* CHATS */,
+				7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */,
+				7EC5D1A41DB356A500437219 /* EXPLORE */,
+				7EC5D19F1DB3566D00437219 /* MYPROFILE */,
 			);
 			path = Redplanet;
 			sourceTree = "<group>";
@@ -1058,7 +1075,7 @@
 			name = "TabBar&Navigation";
 			sourceTree = "<group>";
 		};
-		7EC5D1991DB3541000437219 /* Chats */ = {
+		7EC5D1991DB3541000437219 /* CHATS */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1951DB353E000437219 /* Chats.swift */,
@@ -1066,7 +1083,7 @@
 				7E7037C81DBD5FF100F03E0C /* NewChats */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
 			);
-			name = Chats;
+			name = CHATS;
 			sourceTree = "<group>";
 		};
 		7EC5D19A1DB3541900437219 /* LoginOrSignUp */ = {
@@ -1081,7 +1098,7 @@
 			name = LoginOrSignUp;
 			sourceTree = "<group>";
 		};
-		7EC5D19F1DB3566D00437219 /* MyProfile */ = {
+		7EC5D19F1DB3566D00437219 /* MYPROFILE */ = {
 			isa = PBXGroup;
 			children = (
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
@@ -1090,17 +1107,17 @@
 				7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */,
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
-			name = MyProfile;
+			name = MYPROFILE;
 			sourceTree = "<group>";
 		};
-		7EC5D1A41DB356A500437219 /* Explore */ = {
+		7EC5D1A41DB356A500437219 /* EXPLORE */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1A91DB357C600437219 /* SearchEngine */,
 				7EC5D1A01DB3568A00437219 /* Explore.swift */,
 				7EC5D1A21DB3569B00437219 /* ExploreCell.swift */,
 			);
-			name = Explore;
+			name = EXPLORE;
 			sourceTree = "<group>";
 		};
 		7EC5D1A91DB357C600437219 /* SearchEngine */ = {
@@ -1122,7 +1139,7 @@
 			name = OtherUserProfile;
 			sourceTree = "<group>";
 		};
-		7EC5D1B41DB36EB800437219 /* Create-Redplanet */ = {
+		7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
@@ -1132,7 +1149,7 @@
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,
 			);
-			name = "Create-Redplanet";
+			name = CREATE_REDPLANET;
 			sourceTree = "<group>";
 		};
 		7ED4A9131DBEB4F60016698F /* RFriends */ = {
@@ -1523,6 +1540,7 @@
 				7E3F0EDC1DC062FC006BF522 /* RequestsCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */,
+				7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
 				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
@@ -1536,6 +1554,7 @@
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
+				7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */,
 				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
 				7E4CFF991DB439540087454E /* MediaAssetCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
@@ -1581,6 +1600,7 @@
 				7E3F0EDE1DC06309006BF522 /* RelationshipRequests.swift in Sources */,
 				7E3F0EEC1DC085A3006BF522 /* EPExtensions.swift in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
+				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,

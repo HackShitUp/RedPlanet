@@ -27,6 +27,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     // Arrays to hold likes and comments
     var likes = [PFObject]()
     var comments = [PFObject]()
+    var sharers = [PFObject]()
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -50,6 +51,8 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     
     // Fetch interactions
     func fetchInteractions() {
+        
+        // (1) Fetch Likes
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
         likes.includeKey("fromUser")
@@ -66,6 +69,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 }
                 
                 
+                // (2) Fetch Comments
                 let comments = PFQuery(className: "Comments")
                 comments.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
                 comments.includeKey("byUser")
@@ -82,6 +86,37 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                             self.comments.append(object["byUser"] as! PFUser)
                         }
                         
+                        
+                        
+                        // (3) Fetch Shares
+                        let shares = PFQuery(className: "Newsfeeds")
+                        shares.whereKey("pointObject", equalTo: mediaAssetObject.last!)
+                        shares.includeKey("byUser")
+                        shares.order(byDescending: "createdAt")
+                        shares.findObjectsInBackground(block: {
+                            (objects: [PFObject]?, error: Error?) in
+                            if error == nil {
+                                
+                                // Clear array
+                                self.sharers.removeAll(keepingCapacity: false)
+                                
+                                // Append objects
+                                for object in objects! {
+                                    self.sharers.append(object["byUser"] as! PFUser)
+                                }
+                                
+                                print("Shares: \(self.sharers.count)")
+                                
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                            
+                            // Reload data
+                            self.tableView!.reloadData()
+                        })
+                        
+                        
+                        
                     } else {
                         print(error?.localizedDescription)
                     }
@@ -97,7 +132,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
             }
             
             // Reload data
-//            self.tableView!.reloadData()
+            self.tableView!.reloadData()
         }
     }
     
@@ -362,6 +397,15 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 } else {
                     cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
                     
+                }
+                
+                // Set number of shares
+                if self.sharers.count == 0 {
+                    cell.numberOfShares.setTitle("shares", for: .normal)
+                } else if self.sharers.count == 1 {
+                    cell.numberOfShares.setTitle("1 share", for: .normal)
+                } else {
+                    cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
                 }
 
                 

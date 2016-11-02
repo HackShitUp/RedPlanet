@@ -31,8 +31,8 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
     
     // Variable to hold shares
     func queryShares() {
-        let shares = PFQuery(className: "Shares")
-        shares.whereKey("forObjectId", equalTo: shareObject.last!.objectId!)
+        let shares = PFQuery(className: "Newsfeeds")
+        shares.whereKey("pointObject", equalTo: shareObject.last!)
         shares.includeKey("fromUser")
         shares.limit = self.page
         shares.order(byDescending: "createdAt")
@@ -45,7 +45,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                 
                 // Append objects
                 for object in objects! {
-                    self.sharers.append(object["fromUser"] as! PFUser)
+                    self.sharers.append(object["byUser"] as! PFUser)
                 }
                 
             } else {
@@ -56,6 +56,22 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
         }
     }
     
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Shares"
+        }
+    }
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,8 +80,16 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
         queryShares()
         
         // Stylize title
+        configureView()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -127,7 +151,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                 }
                 
                 // (2) Set usernames
-                cell.rpUsername.text! = object!["username"] as! String
+                cell.rpUsername.text! = object!["realNameOfUser"] as! String
                 
             } else {
                 print(error?.localizedDescription)

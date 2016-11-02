@@ -73,6 +73,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         let chat = UIAlertAction(title: "Chat 💬",
                                  style: .default,
                                  handler: {(alertAction: UIAlertAction!) in
+                                    
                                     // Append user's object
                                     chatUserObject.append(otherObject.last!)
                                     // Append user's username
@@ -96,7 +97,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         let mutual = UIAlertAction(title: "Mutual Relationships 🤗",
                                    style: .default,
                                    handler: {(alertAction: UIAlertAction!) in
-                                    // TODO::
+                                    
+                                    // Append object
+                                    forMutual.append(otherObject.last!)
+                                    
+                                    // Push VC
+                                    let mutualVC = self.storyboard?.instantiateViewController(withIdentifier: "mutualVC") as! MutualRelationships
+                                    self.navigationController?.pushViewController(mutualVC, animated: true)
         })
         
         // (5) Report
