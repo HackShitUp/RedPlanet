@@ -14,46 +14,288 @@ import ParseUI
 import Bolts
 
 
+import SVProgressHUD
+
+
 // Array to hold changed profile photo
 var changedProPicImg = [UIImage]()
 
-class NewProfilePhoto: UIViewController, UITextViewDelegate, CLImageEditorDelegate {
+class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var proPicCaption: UITextView!
     @IBOutlet weak var doneButton: UIButton!
     
+    @IBAction func backButton(_ sender: AnyObject) {
+        // Pop view controller
+        self.navigationController!.popViewController(animated: true)
+    }
     
-    // Function to handle caption
-    func complete() {
-        // Append caption for user to save
-        if self.proPicCaption.text!.isEmpty {
-            profilePhotoCaption.append(" ")
-        }  else {
-            profilePhotoCaption.append(self.proPicCaption.text!)
-        }
-        
-        if self.proPicCaption.text! == "Say something about your profile photo..." {
-            profilePhotoCaption.append(" ")
-        }
-        
-        // Dismiss view controller
-        self.dismiss(animated: true, completion: nil)
+    @IBAction func edit(_ sender: AnyObject) {
+        // CLImageEditor
+        let editor = CLImageEditor(image: self.rpUserProPic.image!)
+        editor?.delegate = self
+        self.present(editor!, animated: true, completion: nil)
     }
     
     
     
-    // MARK: - CLImageEditor delegate method
+    // MARK: - CLImageEditor
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        // Set image
         self.rpUserProPic.image = image
+        // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
     
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+    }
+    
+    
+    
+    // Function to handle caption
+    func complete() {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
+        // ***
+        // Set user's profile picture as a PFFile ***
+        // ***
+        let proPicData = UIImagePNGRepresentation(self.rpUserProPic.image!)
+        let proPicFile = PFFile(data: proPicData!)
+        
+        // (1) Save user's data
+        PFUser.current()!["proPicExists"] = true
+        PFUser.current()!["userProfilePicture"] = proPicFile
+        
+        
+        
+        // (2) Save to Parse: "ProfilePhoto"
+        let profilePhoto = PFObject(className: "ProfilePhoto")
+        profilePhoto["fromUser"] = PFUser.current()!
+        profilePhoto["userId"] = PFUser.current()!.objectId!
+        profilePhoto["username"] = PFUser.current()!.username!
+        profilePhoto["userProfilePicture"] = proPicFile
+        profilePhoto["proPicCaption"] = self.proPicCaption.text!
+        profilePhoto.saveInBackground(block: {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved profile photo: \(profilePhoto)")
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+                
+                
+                // (3) Save to newsfeed
+                let newsfeeds = PFObject(className: "Newsfeeds")
+                newsfeeds["byUser"] = PFUser.current()!
+                newsfeeds["username"] = PFUser.current()!.username!
+                newsfeeds["mediaAsset"] = proPicFile
+                newsfeeds["textPost"] = self.proPicCaption.text!
+                newsfeeds["contentType"] = "pp"
+                newsfeeds.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved profile photo: \(newsfeeds)")
+                        
+                        // Post notification
+                        // NSNotificationCenter.defaultCenter().postNotificationName("profileLike", object: nil)
+                        
+                        
+                        // Present alert
+                        let alert = UIAlertController(title: "Successfully Saved Changes",
+                                                      message: "Your updated Profile Photo was shared in the news feed.",
+                                                      preferredStyle: .alert)
+                        
+                        let ok = UIAlertAction(title: "ok",
+                                               style: .default,
+                                               handler: {(alertAction: UIAlertAction!) in
+                                                
+                                                // Pop view controller
+                                                self.navigationController!.popViewController(animated: true)
+                        })
+                        
+                        
+                        alert.addAction(ok)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                        
+                    } else {
+                        print(error?.localizedDescription)
+                    }
+                })
+                
+
+                
+                
+                
+            } else {
+                print(error?.localizedDescription)
+                
+                // Dismiss progress
+                SVProgressHUD.dismiss()
+            }
+        })
+    }
+    
+    
+    
+    
+    
+    
+    // Options for profile picture
+    func changePhoto(sender: AnyObject) {
+        
+        // Instantiate UIImagePickerController
+        let image = UIImagePickerController()
+        image.delegate = self
+        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        image.allowsEditing = true
+        image.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        
+        
+        let alert = UIAlertController(title: nil,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        
+        let change = UIAlertAction(title: "Update Profile Photo",
+                                   style: .default,
+                                   handler: { (alertAction: UIAlertAction!) in
+                                    
+                                    
+                                    PFUser.current()!["proPicExists"] = true
+                                    PFUser.current()!.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            print("Saved Bool!")
+                                            
+                                            // Show imagePicker
+                                            self.present(image, animated: false, completion: nil)
+
+                                            
+                                        } else {
+                                            print(error?.localizedDescription)
+                                            
+                                            // Show Network
+                                            let error = UIAlertController(title: "Changes Failed",
+                                                                          message: "Something went wrong 😬. Please try again later.",
+                                                                          preferredStyle: .alert)
+                                            
+                                            let ok = UIAlertAction(title: "ok",
+                                                                   style: .default,
+                                                                   handler: nil)
+                                            
+                                            error.addAction(ok)
+                                            self.present(error, animated: true, completion: nil)
+                                            
+                                        }
+                                    })
+                                    
+        })
+        
+        
+        // Remove
+        let remove = UIAlertAction(title: "Remove Profile Photo",
+                                   style: .destructive,
+                                   handler: { (alertAction: UIAlertAction!) in
+                                    
+                                    // Show Progress
+                                    SVProgressHUD.show()
+                                    
+                                    
+                                    // Set boolean and save
+                                    PFUser.current()!["proPicExists"] = false
+                                    PFUser.current()!.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            // Dismiss
+                                            SVProgressHUD.dismiss()
+                                            
+                                            // Replace current photo
+                                            self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                                            
+                                        } else {
+                                            print(error?.localizedDescription)
+                                            // Dismiss
+                                            SVProgressHUD.dismiss()
+                                            
+                                            // Show Network
+                                            let error = UIAlertController(title: "Changes Failed",
+                                                                          message: "Something went wrong 😬.",
+                                                                          preferredStyle: .alert)
+                                            
+                                            let ok = UIAlertAction(title: "ok",
+                                                                   style: .default,
+                                                                   handler: nil)
+                                            
+                                            error.addAction(ok)
+                                            self.present(error, animated: true, completion: nil)
+                                        }
+                                    })
+                                    
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        
+        if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
+            alert.addAction(change)
+            alert.addAction(remove)
+            alert.addAction(cancel)
+        } else {
+            alert.addAction(change)
+            alert.addAction(cancel)
+        }
+        
+        self.navigationController!.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    
+
 
     // MARK: - UITextViewDelegate method
     func textViewDidBeginEditing(_ textView: UITextView) {
         if self.proPicCaption.text! == "Say something about your profile photo..." {
             self.proPicCaption.text! = ""
+        }
+    }
+    
+    
+    
+    
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.rpUserProPic.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self)
+    }
+    
+    
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Profile Photo"
         }
     }
     
@@ -93,6 +335,10 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, CLImageEditorDelega
             }
         })
         
+        
+        // Stylize title
+        configureView()
+        
 
         // Set initial image
         self.rpUserProPic.image = changedProPicImg.last!
@@ -125,6 +371,13 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, CLImageEditorDelega
         captionTap.numberOfTapsRequired = 1
         self.doneButton.isUserInteractionEnabled = true
         self.doneButton.addGestureRecognizer(captionTap)
+        
+        // Add method tap to zoom
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(zoomTap)
+        
     }
 
     override func didReceiveMemoryWarning() {

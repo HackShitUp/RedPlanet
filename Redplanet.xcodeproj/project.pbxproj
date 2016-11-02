@@ -15,8 +15,6 @@
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
 		7E3F0EDA1DBFFEAA006BF522 /* StackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */; };
-		7E3F0EDC1DC062FC006BF522 /* RequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EDB1DC062FC006BF522 /* RequestsCell.swift */; };
-		7E3F0EDE1DC06309006BF522 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EDD1DC06309006BF522 /* RelationshipRequests.swift */; };
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
 		7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */; };
 		7E3F0EEB1DC085A3006BF522 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE61DC085A3006BF522 /* .gitkeep */; };
@@ -97,6 +95,10 @@
 		7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955571DC960BA003D9D73 /* MutualRelationships.swift */; };
 		7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */; };
 		7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */; };
+		7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */; };
+		7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */; };
+		7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */; };
+		7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955661DC99A98003D9D73 /* InTheMoment.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
@@ -191,8 +193,6 @@
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
 		7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StackPageView.swift; path = ../StackPageView.swift; sourceTree = "<group>"; };
-		7E3F0EDB1DC062FC006BF522 /* RequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestsCell.swift; sourceTree = "<group>"; };
-		7E3F0EDD1DC06309006BF522 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
 		7E3F0EE01DC08015006BF522 /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsCell.swift; sourceTree = "<group>"; };
 		7E3F0EE61DC085A3006BF522 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
@@ -329,6 +329,10 @@
 		7E9955571DC960BA003D9D73 /* MutualRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationships.swift; sourceTree = "<group>"; };
 		7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsCell.swift; sourceTree = "<group>"; };
 		7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsHeader.swift; sourceTree = "<group>"; };
+		7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsHeader.swift; sourceTree = "<group>"; };
+		7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
+		7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsCell.swift; sourceTree = "<group>"; };
+		7E9955661DC99A98003D9D73 /* InTheMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTheMoment.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
@@ -466,8 +470,9 @@
 		7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */ = {
 			isa = PBXGroup;
 			children = (
-				7E3F0EDB1DC062FC006BF522 /* RequestsCell.swift */,
-				7E3F0EDD1DC06309006BF522 /* RelationshipRequests.swift */,
+				7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */,
+				7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */,
+				7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */,
 			);
 			name = RelationshipRequests;
 			sourceTree = "<group>";
@@ -508,6 +513,7 @@
 				7E4CFFA01DB439780087454E /* MediaAsset */,
 				7E4CFF9F1DB439720087454E /* ProfilePhoto */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
+				7E9955661DC99A98003D9D73 /* InTheMoment.swift */,
 			);
 			name = SingleContent;
 			sourceTree = "<group>";
@@ -1034,6 +1040,7 @@
 				7EBDC6651DC55E7300DFCC28 /* Shares */,
 				7ED4A91E1DBEBE080016698F /* ShareTo */,
 				7E99555B1DC960D8003D9D73 /* MutualRelationships */,
+				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */,
@@ -1144,7 +1151,6 @@
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
-				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,
@@ -1531,13 +1537,13 @@
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
+				7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
-				7E3F0EDC1DC062FC006BF522 /* RequestsCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E7037D01DBD7FA500F03E0C /* ViewsCell.swift in Sources */,
 				7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */,
@@ -1546,6 +1552,7 @@
 				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
+				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
 				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
@@ -1597,7 +1604,6 @@
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
 				7E3F0EEE1DC085A3006BF522 /* EPSignatureViewController.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
-				7E3F0EDE1DC06309006BF522 /* RelationshipRequests.swift in Sources */,
 				7E3F0EEC1DC085A3006BF522 /* EPExtensions.swift in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
 				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
@@ -1639,6 +1645,7 @@
 				7EC5D19E1DB3566600437219 /* MyProfile.swift in Sources */,
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,
 				7EE1C22F1DBC78C100F75557 /* ImageDownloader.swift in Sources */,
+				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
 				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
@@ -1658,6 +1665,7 @@
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,
 				7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */,
+				7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

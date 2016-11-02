@@ -154,6 +154,10 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
+        
+        
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
 
         // Hide tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -161,6 +165,9 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Hide tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -175,9 +182,13 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Hide tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // Stylize title again
         configureView()
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

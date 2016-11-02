@@ -85,7 +85,6 @@ class OtherUserHeader: UICollectionReusableView {
                 // Append object
                 proPicObject.append(object!)
                 
-                
                 // Push VC
                 let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                 self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)

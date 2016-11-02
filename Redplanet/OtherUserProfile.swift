@@ -400,6 +400,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Hide and show buttons depending on relationship
         // Also set title depending on relationship state
         
+        
+        
         // DEFAULT
         // Not yet connected
         header.relationType.isUserInteractionEnabled = true
@@ -410,6 +412,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         header.followButton.isHidden = false
         header.followButton.isEnabled = true
+        
+        
+        
         
         if myFriends.contains(otherObject.last!) {
             // FRIENDS

@@ -68,6 +68,36 @@ class MyHeader: UICollectionReusableView {
     
     
     
+    // Function to show profile photo
+    func showProPic() {
+        
+        // Append to otherObject
+        otherObject.append(PFUser.current()!)
+        // Append to otherName
+        otherName.append(PFUser.current()!.username!)
+        
+        // Get user's profile photo
+        let proPic = PFQuery(className: "ProfilePhoto")
+        proPic.whereKey("fromUser", equalTo: PFUser.current()!)
+        proPic.order(byDescending: "createdAt")
+        proPic.getFirstObjectInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                
+                // Append object
+                proPicObject.append(object!)
+                
+                // Push VC
+                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                
+                
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+        
+    }
     
     
     
@@ -97,6 +127,13 @@ class MyHeader: UICollectionReusableView {
         followingTap.numberOfTapsRequired = 1
         self.numberOfFollowing.isUserInteractionEnabled = true
         self.numberOfFollowing.addGestureRecognizer(followingTap)
+        
+        
+        // (2) Show profile photo tap
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))
+        proPicTap.numberOfTapsRequired = 1
+        self.myProPic.isUserInteractionEnabled = true
+        self.myProPic.addGestureRecognizer(proPicTap)
         
         
         

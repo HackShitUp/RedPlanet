@@ -219,79 +219,30 @@ class ProfilePhotoCell: UITableViewCell {
                                         message: nil,
                                         preferredStyle: .actionSheet)
         
-        // TODO:
-        // Add option to share to followers
-        
-        let publicShare = UIAlertAction(title: "All Friends",
+        // TODO::
+        // For now, share only to one friend
+        // Sharing this publicly causes problem because if it were shared in the newsfeeds,
+        // then you'd have to run through 2 data sets when viewing the content
+        let share = UIAlertAction(title: "Share With Friend",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
                                             
-                                            
-                                            // TODO::
-                                            // TODO::
-                                            // TODO::
-                                            // THIS IS INCOMPLETE
-                                            // Share to public ***FRIENDS ONLY***
-                                            
-                                            
-                                            // Convert UIImage to NSData
-                                            let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
-                                            // Change UIImage to PFFile
-                                            let parseFile = PFFile(data: imageData!)
-                                            
-                                            let newsfeeds = PFObject(className: "Newsfeeds")
-                                            newsfeeds["byUser"] = PFUser.current()!
-                                            newsfeeds["username"] = PFUser.current()!.username!
-                                            newsfeeds["textPost"] = "Shared @\(self.rpUsername.text!)'s Profile Photo: \(self.caption.text!)"
-                                            newsfeeds["mediaAsset"] = parseFile
-                                            newsfeeds["contentType"] = "sh"
-                                            newsfeeds.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if error == nil {
-                                                    print("Successfully shared profile photo: \(newsfeeds)")
-                                                    
-                                                    // Show alert
-                                                    let alert = UIAlertController(title: "Shared With Friends",
-                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Profile Photo.",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: {(alertAction: UIAlertAction!) in
-                                                                            // Pop view controller
-                                                                            self.delegate?.navigationController?.popViewController(animated: true)
-                                                    })
-                                                    
-                                                    alert.addAction(ok)
-                                                    self.delegate?.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription)
-                                                }
-                                            })
-                                            
-                                            
-        })
-        
-        // Share privately
-        let privateShare = UIAlertAction(title: "One Friend",
-                                         style: .default,
-                                         handler: {(alertAction: UIAlertAction!) in
-                                            
+                                            // Share privately only
                                             // Append to contentObject
                                             shareObject.append(proPicObject.last!)
                                             
                                             // Share to chats
                                             let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
                                             self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+                                            
         })
+
         
         
         let cancel = UIAlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
-        options.addAction(publicShare)
-        options.addAction(privateShare)
+        options.addAction(share)
         options.addAction(cancel)
         self.delegate?.present(options, animated: true, completion: nil)
     }

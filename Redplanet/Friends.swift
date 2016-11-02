@@ -287,8 +287,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-//                                // Hide textPreview
-//                                cell.textPreview.isHidden = true
                                 // Show textPreview
                                 cell.textPreview.isHidden = false
                                 // Set text
@@ -315,7 +313,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
                 // (C) SHARED
-                // Complete this
                 if object!["contentType"] as! String == "sh" {
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
@@ -331,42 +328,35 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
                 
                 
-                // (D) In the moment
-                // == When user takes a photo and shares it with his/her friends on the spot
-                
-
-                // (E) Profile Photo
-                
 
                 
-                /*
-                // (2) Determine Content Type
-                if let mediaPreview = object!["mediaAsset"] as? PFFile {
-                    mediaPreview.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Show media
-                            cell.mediaPreview.isHidden = false
-                            // Set media
-                            cell.mediaPreview.image = UIImage(data: data!)
-                            // Show text
-                            cell.textPreview.isHidden = false
-                            cell.textPreview.text! = "shared a photo"
-                        } else {
-                            print(error?.localizedDescription)
-                        }
-                    })
-                } else {
-                    // Show text
-                    cell.textPreview.isHidden = false
-                    // Hide media
-                    cell.mediaPreview.isHidden = true
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+
+                // (D) Profile Photo
+                if object!["contentType"] as! String == "pp" {
+                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                // Show textPreview
+                                cell.textPreview.isHidden = false
+                                // Set text
+                                cell.textPreview.text! = "has a new Profile Photo"
+                            } else {
+                                print(error?.localizedDescription)
+                            }
+                        })
+                    }
                 }
-                */
-
                 
+                
+                
+                // (E) In the moment
+                // == When user takes a photo and shares it with his/her friends on the spot
+
                 
                 
                 // (3) Set time
@@ -430,12 +420,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        // Set selection backgroundColor
-//        let sCell = self.tableView!.cellForRow(at: indexPath)!
-//        sCell.contentView.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
-        
-
         
         // TEXT POST
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
@@ -500,7 +484,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // Append Object
                 mediaAssetObject.append(self.friendsContent[indexPath.row])
                 
-                // Present VC
+                // Push VC
                 let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
                 self.parentNavigator.pushViewController(mediaVC, animated: true)
                 
@@ -509,14 +493,45 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 textPostObject.append(self.friendsContent[indexPath.row])
                 
                 
-                // Present VC
+                // Push VC
                 let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                 self.parentNavigator.pushViewController(textPostVC, animated: true)
             }
         }
         
-        // TODO::
-        // IM
+        
+        // PROFILE PHOTO
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+            // Append user's object
+            otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
+            // Append user's username
+            otherName.append(self.friends[indexPath.row].value(forKey: "username") as! String)
+            
+            // Get user's profile photo
+            let proPic = PFQuery(className: "ProfilePhoto")
+            proPic.whereKey("fromUser", equalTo: otherObject.last!)
+            proPic.order(byDescending: "createdAt")
+            proPic.getFirstObjectInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    
+                    // Append object
+                    proPicObject.append(object!)
+                    
+                    // Push VC
+                    let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                    self.parentNavigator.pushViewController(proPicVC, animated: true)
+                    
+                    
+                } else {
+                    print(error?.localizedDescription)
+                }
+            }
+            
+        }
+        
+        
+        // ITM
         /*
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pv" {
             

@@ -84,12 +84,18 @@ class Home: UIViewController, UINavigationControllerDelegate, UITabBarController
         super.viewDidAppear(animated)
         // Hide navigation Bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // Show tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide navigation Bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // Show tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
