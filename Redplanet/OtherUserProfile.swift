@@ -174,7 +174,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -203,7 +203,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -327,8 +327,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // ofSize should be the same size of the headerView's label size:
         return CGSize(width: self.view.frame.size.width, height: CGFloat(425 + label.frame.size.height))
     }
-
-
+    
+    
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        return CGSize(width: self.view.frame.size.width, height: 35)
+    }
+    
     
     // MARK: UICollectionViewHeader
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -372,7 +377,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                             // Set profile photo
                             header.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             header.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
@@ -380,7 +385,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -484,12 +489,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        return CGSize(width: self.view.frame.size.width, height: 65)
-    }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
@@ -499,7 +498,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         print("Returning: \(contentObjects.count) count")
-        return CGSize(width: self.view.frame.size.width, height: 60)
+        return CGSize(width: self.view.frame.size.width, height: 105)
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -553,7 +552,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                 // Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -579,7 +578,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                 // Hide text
                                 cell.textPreview.isHidden = true
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
@@ -650,7 +649,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
     
@@ -671,7 +670,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
              if error == nil {
              
              } else {
-             print(error?.localizedDescription)
+             print(error?.localizedDescription as Any)
              }
              })
              */
@@ -701,7 +700,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
              if error == nil {
              
              } else {
-             print(error?.localizedDescription)
+             print(error?.localizedDescription as Any)
              }
              })
              */

@@ -124,7 +124,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                         
                         
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                 })
                 
@@ -133,7 +133,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
@@ -178,7 +178,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
 
                                             
                                         } else {
-                                            print(error?.localizedDescription)
+                                            print(error?.localizedDescription as Any)
                                             
                                             // Show Network
                                             let error = UIAlertController(title: "Changes Failed",
@@ -219,7 +219,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                                             self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                                             
                                         } else {
-                                            print(error?.localizedDescription)
+                                            print(error?.localizedDescription as Any)
                                             // Dismiss
                                             SVProgressHUD.dismiss()
                                             
@@ -331,7 +331,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         

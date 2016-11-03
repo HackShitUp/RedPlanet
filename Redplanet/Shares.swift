@@ -49,7 +49,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             // Reload data
             self.tableView!.reloadData()
@@ -143,7 +143,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                             // Set profile photo
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
@@ -154,7 +154,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                 cell.rpUsername.text! = object!["realNameOfUser"] as! String
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
 

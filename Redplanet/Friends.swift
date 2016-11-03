@@ -128,7 +128,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         print("Friends feed count: \(self.friendsContent.count)")
                         
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                         
                         
                         // Dismiss
@@ -142,7 +142,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss
                 SVProgressHUD.dismiss()
@@ -237,10 +237,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         // Make mediaPreview cornered square
         cell.mediaPreview.layer.cornerRadius = 6.00
         cell.mediaPreview.clipsToBounds = true
-        
-        
-        // Set bounds for textPreview
-        cell.textPreview.clipsToBounds = true
+
         
 
         // Fetch objects
@@ -262,7 +259,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                                 // Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -287,12 +284,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Show textPreview
-                                cell.textPreview.isHidden = false
-                                // Set text
-                                cell.textPreview.text! = "shared a photo"
+
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
@@ -300,14 +294,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Show text
-                    cell.textPreview.isHidden = false
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
                     cell.mediaPreview.image = UIImage(named: "TextPreview")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
                 }
                 
                 
@@ -316,15 +306,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 if object!["contentType"] as! String == "sh" {
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
-                    // Show textPreview
-                    cell.textPreview.isHidden = false
                     
                     // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "RedShared")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+                    
                 }
                 
                 
@@ -341,12 +328,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Show textPreview
-                                cell.textPreview.isHidden = false
-                                // Set text
-                                cell.textPreview.text! = "has a new Profile Photo"
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
@@ -371,19 +354,19 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    cell.time.text = "\(difference.minute!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    cell.time.text = "\(difference.hour!) hours ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    cell.time.text = "\(difference.day!) days ago"
                 }
                 
                 if difference.weekOfMonth! > 0 {
@@ -407,7 +390,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
 
@@ -434,7 +417,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
              if error == nil {
              
              } else {
-             print(error?.localizedDescription)
+             print(error?.localizedDescription as Any)
              }
              })
              */
@@ -463,7 +446,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
              if error == nil {
              
              } else {
-             print(error?.localizedDescription)
+             print(error?.localizedDescription as Any)
              }
              })
              */
@@ -524,7 +507,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             }
             

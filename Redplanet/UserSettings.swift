@@ -17,7 +17,7 @@ import Bolts
 // State of user's anonymity
 var anonymity = true
 
-class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSignatureDelegate {
+class UserSettings: UITableViewController, UINavigationControllerDelegate {
 
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
@@ -87,7 +87,9 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             }
             
             if indexPath.row == 1 {
-                
+                // Relationship Requests
+                let rRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
+                self.navigationController?.pushViewController(rRequestsVC, animated: true)
             }
             
             if indexPath.row == 2 {
@@ -157,12 +159,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
             }
             
             if indexPath.row == 3 {
-                let signatureVC = EPSignatureViewController(signatureDelegate: self, showsDate: true, showsSaveSignatureOption: true)
-                signatureVC.subtitleText = "I agree to the Terms & Conditions"
-                signatureVC.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                signatureVC.showsDate = true
-                signatureVC.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-                self.present(signatureVC, animated: true, completion: nil)
+
             }
             
             if indexPath.row == 4 {
@@ -176,19 +173,6 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate, EPSig
         }
     }
     
-    
-    // MARK: - EPSignatureDelegates
-    func epSignature(_: EPSignatureViewController, didCancel error: NSError) {
-        print("Canceled")
-        // Dismiss VC
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func epSignature(_: EPSignatureViewController, didSign signatureImage: UIImage, boundingRect: CGRect) {
-        // TODO:: Save Signature image
-        // Dismiss VC
-        self.dismiss(animated: true, completion: nil)
-    }
     
 
 }

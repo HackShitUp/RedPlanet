@@ -29,7 +29,6 @@ class FriendsCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var textPreview: KILabel!
     @IBOutlet weak var mediaPreview: PFImageView!
     
 

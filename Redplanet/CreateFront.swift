@@ -27,13 +27,13 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // FRIENDS
     // Array to hold friends' notifications
-    var friendActivity = [PFObject]()
+//    var friendActivity = [PFObject]()
     
     // Array to hold <fromUser> pointer objects
-    var friendFromUsers = [PFObject]()
+//    var friendFromUsers = [PFObject]()
     
     // Array to hold fromUser Objects
-    var toUsers = [PFObject]()
+//    var toUsers = [PFObject]()
     
     
     // NOTIFICATIONs
@@ -55,25 +55,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Page size
     var page: Int = 25
-    
-    
 
-
-    @IBAction func switchSource(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0:
-            queryNotifications()
-            
-        case 1:
-            queryActivity()
-            
-        default:
-            break;
-        }
-        // Reload data
-        self.tableView!.reloadData()
-    }
-    
     
     // Function to access camera
     func takePhoto() {
@@ -201,7 +183,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     
     
-    
+    /*
     // Query Friends' Activity
     func queryActivity() {
         
@@ -234,14 +216,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload Data
             self.tableView!.reloadData()
         })
     }
-    
+    */
     
     
     // Query Notifications
@@ -269,7 +251,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload Data
@@ -360,14 +342,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 //        igcMenu.showCircularMenu()
 
         
-        // Set initial queries
-        if self.activityType.selectedSegmentIndex == 0 {
-            // You
-            self.queryNotifications()
-        } else {
-            // Friends
-            self.queryActivity()
-        }
+        // Set initial query
+        self.queryNotifications()
+        
 
         
         // Give tableView rounded corners
@@ -404,15 +381,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if self.activityType.selectedSegmentIndex == 0 {
-            print("returning: \(myActivity.count)")
-            return myActivity.count
-            
-        } else {
-            
-            print("returning: \(friendActivity.count)")
-            return friendActivity.count
-        }
+        print("returning: \(myActivity.count)")
+        return myActivity.count
     }
     
     
@@ -443,8 +413,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // =======================================================================================================================
         // (I) ME ================================================================================================================
         // =======================================================================================================================
-        if activityType.selectedSegmentIndex == 0 {
-            
+//        if activityType.selectedSegmentIndex == 0 {
+        
             // Set user's object
             cell.userObject = fromUsers[indexPath.row]
             
@@ -464,7 +434,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                                 // Set Profile Photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -472,7 +442,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     }
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -612,7 +582,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             
             
-            
+        /*
         } else {
             // =======================================================================================================================
             // (II) FRIENDS ==========================================================================================================
@@ -637,7 +607,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         // Set Profile Photo
                         cell.rpUserProPic.image = UIImage(data: data!)
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                         // Set default
                         cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }
@@ -698,7 +668,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         cell.activity.setTitle("wrote in \(object!["username"] as! String)'s space", for: .normal)
                     }
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -738,7 +708,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             
         }
-        
+        */
         
         
         
@@ -758,17 +728,16 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= myActivity.count || page <= friendActivity.count {
+        if page <= myActivity.count {
             
             // Increase page size to load more posts
             page = page + 25
+
             
-            
-            if activityType.selectedSegmentIndex == 0 {
-                queryNotifications()
-            } else {
-                queryActivity()
-            }
+            // Fetch Notifications
+            queryNotifications()
+
+
         }
     }
     

@@ -42,7 +42,7 @@ class MyProfile: UICollectionViewController {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -152,7 +152,7 @@ class MyProfile: UICollectionViewController {
                     header.myProPic.image = UIImage(data: data!)
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                     
                     // (B) Set default
                     header.myProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -262,7 +262,7 @@ class MyProfile: UICollectionViewController {
                             // Set profile photo
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
@@ -288,7 +288,7 @@ class MyProfile: UICollectionViewController {
                                 // Hide textPreview
                                 cell.textPreview.isHidden = true
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
@@ -326,7 +326,7 @@ class MyProfile: UICollectionViewController {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         

@@ -117,7 +117,7 @@ class TextPostCell: UITableViewCell {
                                                 self.delegate?.present(alert, animated: true, completion: nil)
                                                 
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                             }
                                         })
                                     }
@@ -238,7 +238,7 @@ class TextPostCell: UITableViewCell {
                                                     self.delegate?.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                             
@@ -328,12 +328,12 @@ class TextPostCell: UITableViewCell {
                                                     print("Successfully deleted notification: \(object)")
                                                     
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                         }
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                                 
@@ -341,13 +341,13 @@ class TextPostCell: UITableViewCell {
                                 
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -404,14 +404,14 @@ class TextPostCell: UITableViewCell {
                             print("Successfully saved notificaiton: \(notifications)")
                             
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                     
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }
@@ -489,7 +489,7 @@ class TextPostCell: UITableViewCell {
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

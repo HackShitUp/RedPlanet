@@ -125,7 +125,7 @@ class MediaAssetCell: UITableViewCell {
                                                 self.delegate?.present(alert, animated: true, completion: nil)
                                                 
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                             }
                                         })
                                     }
@@ -249,7 +249,7 @@ class MediaAssetCell: UITableViewCell {
                                                     self.delegate?.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
         })
@@ -353,12 +353,12 @@ class MediaAssetCell: UITableViewCell {
                                                     print("Successfully deleted notification: \(object)")
                                                     
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                         }
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                                 
@@ -366,13 +366,13 @@ class MediaAssetCell: UITableViewCell {
                                 
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -429,14 +429,14 @@ class MediaAssetCell: UITableViewCell {
                             print("Successfully saved notificaiton: \(notifications)")
                             
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                     
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

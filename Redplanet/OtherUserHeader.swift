@@ -91,7 +91,7 @@ class OtherUserHeader: UICollectionReusableView {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -128,7 +128,7 @@ class OtherUserHeader: UICollectionReusableView {
                 // Send push notification
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
     }
@@ -249,7 +249,7 @@ class OtherUserHeader: UICollectionReusableView {
             //                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
             //                    }
             //                } else {
-            //                    print(error?.localizedDescription)
+            //                    print(error?.localizedDescription as Any)
             //                }
             //            })
         }

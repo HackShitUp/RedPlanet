@@ -104,18 +104,18 @@ class ProfilePhotoCell: UITableViewCell {
                                         print("Successfully saved notificaiton: \(notifications)")
                                         
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                                 
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -171,12 +171,12 @@ class ProfilePhotoCell: UITableViewCell {
                                         print("Successfully deleted notification: \(object)")
                                         
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                             }
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                     
@@ -184,7 +184,7 @@ class ProfilePhotoCell: UITableViewCell {
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

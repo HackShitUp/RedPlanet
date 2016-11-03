@@ -99,7 +99,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                 self.collectionView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -148,7 +148,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                 self.collectionView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -196,7 +196,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                 self.collectionView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -376,7 +376,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                                 // Set user's proPic
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -388,7 +388,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                     cell.rpUsername.text! = object!["realNameOfUser"] as! String
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         
@@ -405,7 +405,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                                 // Set user's proPic
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -417,7 +417,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                     cell.rpUsername.text! = object!["realNameOfUser"] as! String
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         
@@ -434,7 +434,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                                 // Set user's proPic
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -446,7 +446,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                     cell.rpUsername.text! = object!["realNameOfUser"] as! String
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             

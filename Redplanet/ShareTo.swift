@@ -80,7 +80,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
@@ -149,7 +149,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 self.tableView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         
@@ -257,7 +257,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                 // set user's profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -267,7 +267,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     // (2) Set user's name
                     cell.rpUsername.text! = self.searchNames[indexPath.row]
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -286,7 +286,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                 // Set user's profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -297,7 +297,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     cell.rpUsername.text! = object!["username"] as! String
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -367,7 +367,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                 
                                                 
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                             }
                                         })
                                     } else {
@@ -401,7 +401,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                     self.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                         }

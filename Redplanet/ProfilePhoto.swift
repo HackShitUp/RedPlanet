@@ -66,7 +66,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -91,7 +91,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             // Reload data
             self.tableView!.reloadData()
@@ -115,7 +115,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -227,7 +227,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                     // Set profile photo
                     cell.rpUserProPic.image = UIImage(data: data!)
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                     // Set default
                     cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                 }

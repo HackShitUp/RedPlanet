@@ -57,7 +57,7 @@ class RPChatRoomCell: UITableViewCell {
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

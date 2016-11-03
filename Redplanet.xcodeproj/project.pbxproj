@@ -17,11 +17,6 @@
 		7E3F0EDA1DBFFEAA006BF522 /* StackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */; };
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
 		7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */; };
-		7E3F0EEB1DC085A3006BF522 /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE61DC085A3006BF522 /* .gitkeep */; };
-		7E3F0EEC1DC085A3006BF522 /* EPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE71DC085A3006BF522 /* EPExtensions.swift */; };
-		7E3F0EED1DC085A3006BF522 /* EPSignatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE81DC085A3006BF522 /* EPSignatureView.swift */; };
-		7E3F0EEE1DC085A3006BF522 /* EPSignatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE91DC085A3006BF522 /* EPSignatureViewController.swift */; };
-		7E3F0EEF1DC085A3006BF522 /* EPSignatureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E3F0EEA1DC085A3006BF522 /* EPSignatureViewController.xib */; };
 		7E3F0EF11DC085C2006BF522 /* SAConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EF01DC085C2006BF522 /* SAConfettiView.swift */; };
 		7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4065F71DC56589001E0C9C /* ShareMedia.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
@@ -195,11 +190,6 @@
 		7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StackPageView.swift; path = ../StackPageView.swift; sourceTree = "<group>"; };
 		7E3F0EE01DC08015006BF522 /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsCell.swift; sourceTree = "<group>"; };
-		7E3F0EE61DC085A3006BF522 /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
-		7E3F0EE71DC085A3006BF522 /* EPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPExtensions.swift; sourceTree = "<group>"; };
-		7E3F0EE81DC085A3006BF522 /* EPSignatureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPSignatureView.swift; sourceTree = "<group>"; };
-		7E3F0EE91DC085A3006BF522 /* EPSignatureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EPSignatureViewController.swift; sourceTree = "<group>"; };
-		7E3F0EEA1DC085A3006BF522 /* EPSignatureViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EPSignatureViewController.xib; sourceTree = "<group>"; };
 		7E3F0EF01DC085C2006BF522 /* SAConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAConfettiView.swift; sourceTree = "<group>"; };
 		7E4065F71DC56589001E0C9C /* ShareMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMedia.swift; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
@@ -484,18 +474,6 @@
 				7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */,
 			);
 			name = AboutUs;
-			sourceTree = "<group>";
-		};
-		7E3F0EE51DC085A3006BF522 /* EPSignature */ = {
-			isa = PBXGroup;
-			children = (
-				7E3F0EE61DC085A3006BF522 /* .gitkeep */,
-				7E3F0EE71DC085A3006BF522 /* EPExtensions.swift */,
-				7E3F0EE81DC085A3006BF522 /* EPSignatureView.swift */,
-				7E3F0EE91DC085A3006BF522 /* EPSignatureViewController.swift */,
-				7E3F0EEA1DC085A3006BF522 /* EPSignatureViewController.xib */,
-			);
-			path = EPSignature;
 			sourceTree = "<group>";
 		};
 		7E3F0EF21DC086EF006BF522 /* SAConfettiView */ = {
@@ -1015,7 +993,6 @@
 			isa = PBXGroup;
 			children = (
 				7E3F0EF21DC086EF006BF522 /* SAConfettiView */,
-				7E3F0EE51DC085A3006BF522 /* EPSignature */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
@@ -1373,11 +1350,9 @@
 				7E5837F81DBC70A00049ED18 /* SwiftWebVC.bundle in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
-				7E3F0EEF1DC085A3006BF522 /* EPSignatureViewController.xib in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EE1C2301DBC78C100F75557 /* Info.plist in Resources */,
-				7E3F0EEB1DC085A3006BF522 /* .gitkeep in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1602,9 +1577,7 @@
 				7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */,
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
-				7E3F0EEE1DC085A3006BF522 /* EPSignatureViewController.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
-				7E3F0EEC1DC085A3006BF522 /* EPExtensions.swift in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
 				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
@@ -1635,7 +1608,6 @@
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,
 				7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */,
 				7E4CFF971DB4394A0087454E /* TextPostCell.swift in Sources */,
-				7E3F0EED1DC085A3006BF522 /* EPSignatureView.swift in Sources */,
 				7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */,
 				7E98E95A1DB75057001B7329 /* CLSplashTool.m in Sources */,
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,

@@ -9,5 +9,6 @@
 import UIKit
 
 class RelationshipRequestsHeader: UICollectionReusableView {
+    @IBOutlet weak var friendsFollowersFollowing: UISegmentedControl!
         
 }

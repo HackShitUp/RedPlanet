@@ -104,7 +104,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     self.navigationController!.popViewController(animated: true)
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -167,7 +167,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             self.navigationController?.pushViewController(newProPicVC, animated: true)
                                             
                                         } else {
-                                            print(error?.localizedDescription)
+                                            print(error?.localizedDescription as Any)
                                         }
                                     })
         })
@@ -195,7 +195,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                                             
                                         } else {
-                                            print(error?.localizedDescription)
+                                            print(error?.localizedDescription as Any)
                                             // Dismiss
                                             SVProgressHUD.dismiss()
                                             
@@ -238,6 +238,33 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     
     
+    // Prevent forced sizes for ipad
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    // Show PopOver
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "popOver" {
+            let newProfilePhoto = segue.destination as! NewProfilePhoto
+            newProfilePhoto.modalPresentationStyle = .popover
+            newProfilePhoto.preferredContentSize = CGSize(width: 300, height: 300)
+            
+            let controller = newProfilePhoto.popoverPresentationController
+            
+            if controller != nil {
+                controller?.delegate = self
+            }
+        }
+
+    }
+    
+    
+    
+    
+    
+    
+    
     
     
     // MARK: - UIImagePickerController Delegate method
@@ -271,7 +298,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
             }
         })
@@ -407,7 +434,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         // Set profile photo
                         self.rpUserProPic.image = UIImage(data: data!)
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                         // Set default
                         self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }

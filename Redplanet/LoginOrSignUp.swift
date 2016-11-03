@@ -58,7 +58,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                             if success {
                                                 print("Successfully saved installation data: \(installation)")
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                             }
                                         })
                                         
@@ -73,14 +73,14 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                                 if success {
                                                     print("Successfully saved apnsId: \(PFUser.current()!)")
                                                 } else {
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                         }
                                         
                                         
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                         
                                         print("User login failed")
                                         

@@ -95,7 +95,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 print("Message objects: \(self.messageObjects.count)")
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -138,7 +138,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Failed
                 // TODO::??
@@ -248,7 +248,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 print("Network Error")
                 
@@ -456,7 +456,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Set pro pic
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -476,7 +476,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Set pro pic
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -573,7 +573,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                 mCell.rpMediaAsset.image = UIImage(data: data!)
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 
                                 // TODO::
                                 // Set Default
@@ -582,7 +582,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     }
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -610,7 +610,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Set pro pic
                             mCell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             
                             // Set default
                             mCell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -630,7 +630,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Set pro pic
                             mCell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             
                             // Set default
                             mCell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")

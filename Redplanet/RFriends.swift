@@ -85,7 +85,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss SVProgress
                 SVProgressHUD.dismiss()
@@ -241,14 +241,14 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                             // Set user's profile photo
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
                     })
                 }
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 // Set default
                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
             }

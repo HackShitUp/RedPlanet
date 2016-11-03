@@ -80,12 +80,12 @@ class CommentsCell: UITableViewCell {
                                 
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             
@@ -135,7 +135,7 @@ class CommentsCell: UITableViewCell {
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             

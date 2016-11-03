@@ -318,7 +318,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                             }
                         }
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                 })
                 
@@ -326,7 +326,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         
@@ -357,7 +357,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         
@@ -389,7 +389,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
 

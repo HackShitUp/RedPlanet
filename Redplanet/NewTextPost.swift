@@ -85,7 +85,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     UIApplication.shared.keyWindow?.rootViewController = masterTab
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             }
             
@@ -183,7 +183,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             self.userObjects.append(object)
                         }
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                 })
                 self.tableView!.isHidden = false
@@ -239,7 +239,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             // Set user's pro pic
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
@@ -253,7 +253,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 cell.rpUsername.text! = object!["username"] as! String
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         

@@ -77,7 +77,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                     }
                 }
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -161,7 +161,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 self.tableView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         
@@ -224,13 +224,13 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                                 // Set user's profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
                         })
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                         // Set default
                         cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }
@@ -264,13 +264,13 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                                 // Set user's profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
                         })
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                         // Set default
                         cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                     }
@@ -283,7 +283,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                     cell.rpFullName.text! = object!["username"] as! String
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

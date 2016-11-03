@@ -54,7 +54,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                     self.present(alert, animated: true, completion: nil)
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                     let alert = UIAlertController(title: "Invalid Email",
                                                   message: "This email doesn't exist in our database.",
                                                   preferredStyle: .alert)

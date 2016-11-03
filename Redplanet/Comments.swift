@@ -104,7 +104,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -160,13 +160,13 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                             // Send push notificaiton
                             
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             }
 
@@ -390,7 +390,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                 // Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -452,7 +452,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                             self.likers.append(object["fromUser"] as! PFUser)
                         }
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                     
                     // Set number of likes
@@ -479,7 +479,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -528,25 +528,25 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                                                 if success {
                                                                                     print("Successfully deleted from notifications: \(object)")
                                                                                 } else {
-                                                                                    print(error?.localizedDescription)
+                                                                                    print(error?.localizedDescription as Any)
                                                                                 }
                                                                             })
                                                                         }
                                                                     } else {
                                                                         print("ERROR1")
-                                                                        print(error?.localizedDescription)
+                                                                        print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
                                                                 
                                                             } else {
                                                                 print("ERROR2")
-                                                                print(error?.localizedDescription)
+                                                                print(error?.localizedDescription as Any)
                                                             }
                                                         })
                                                     }
                                                 } else {
                                                     print("ERROR3")
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                             
@@ -596,7 +596,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                 print("Successfully reported \(block)")
                                                 
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                             }
                                         })
                                         // Close cell

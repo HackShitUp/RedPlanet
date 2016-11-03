@@ -79,7 +79,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
@@ -223,14 +223,14 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                             // Set user's profile photo
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                         }
                     })
                 }
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 // Set default
                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
             }

@@ -112,7 +112,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                 }
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                             
                             // Reload data
@@ -125,7 +125,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                         
                         
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                     
                     
@@ -134,7 +134,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -330,7 +330,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                 // (B1) Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // (B2) Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -425,7 +425,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -487,25 +487,25 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                                                 if success {
                                                                                     print("Successfully deleted from notifications: \(object)")
                                                                                 } else {
-                                                                                    print(error?.localizedDescription)
+                                                                                    print(error?.localizedDescription as Any)
                                                                                 }
                                                                             })
                                                                         }
                                                                     } else {
                                                                         print("ERROR1")
-                                                                        print(error?.localizedDescription)
+                                                                        print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
                                                                 
                                                             } else {
                                                                 print("ERROR2")
-                                                                print(error?.localizedDescription)
+                                                                print(error?.localizedDescription as Any)
                                                             }
                                                         })
                                                     }
                                                 } else {
                                                     print("ERROR3")
-                                                    print(error?.localizedDescription)
+                                                    print(error?.localizedDescription as Any)
                                                 }
                                             })
                                             
@@ -554,7 +554,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                                                 print("Successfully reported \(block)")
                                                                                 
                                                                             } else {
-                                                                                print(error?.localizedDescription)
+                                                                                print(error?.localizedDescription as Any)
                                                                             }
                                                                         })
                                                                         // Close cell

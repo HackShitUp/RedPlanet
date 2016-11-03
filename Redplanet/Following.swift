@@ -74,7 +74,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -152,10 +152,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         cell.mediaPreview.layer.cornerRadius = 6.00
         cell.mediaPreview.clipsToBounds = true
         
-        
-        // Set bounds for textPreview
-        cell.textPreview.clipsToBounds = true
-        
         // Fetch content
         self.followingContent[indexPath.row].fetchIfNeededInBackground {
             (object: PFObject?, error: Error?) in
@@ -173,7 +169,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                                 // Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -197,14 +193,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                //                                // Hide textPreview
-                                //                                cell.textPreview.isHidden = true
-                                // Show textPreview
-                                cell.textPreview.isHidden = false
-                                // Set text
-                                cell.textPreview.text! = "shared a photo"
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                         })
                     }
@@ -212,14 +202,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Show text
-                    cell.textPreview.isHidden = false
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
                     cell.mediaPreview.image = UIImage(named: "TextPreview")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
                 }
                 
                 
@@ -229,15 +215,11 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 if object!["contentType"] as! String == "sh" {
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
-                    // Show textPreview
-                    cell.textPreview.isHidden = false
                     
                     // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "RedShared")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
                 }
                 
                 
@@ -255,26 +237,28 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    cell.time.text = "\(difference.minute!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    cell.time.text = "\(difference.hour!) hours ago"
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    cell.time.text = "\(difference.day!) days ago"
                 }
-
+                
                 if difference.weekOfMonth! > 0 {
                     let createdDate = DateFormatter()
                     createdDate.dateFormat = "MMM d"
                     cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
+                
+                
                 
                 /////
                 // USER FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
@@ -290,7 +274,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 
             } else{
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -300,10 +284,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
  
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // Set selection backgroundColor
-//        let sCell = self.tableView!.cellForRow(at: indexPath)!
-//        sCell.contentView.backgroundColor = UIColor(red:0.95, green:0.95, blue:0.95, alpha:1.0)
         
         if self.followingContent[indexPath.row].value(forKey: "mediaAsset") == nil {
             
@@ -326,7 +306,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                     
                     // Dismiss Progress
                     SVProgressHUD.dismiss()
@@ -355,7 +335,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
              if error == nil {
              
              } else {
-             print(error?.localizedDescription)
+             print(error?.localizedDescription as Any)
              }
              })
              */

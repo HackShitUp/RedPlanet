@@ -116,7 +116,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
 
             }
             
@@ -177,7 +177,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 self.tableView!.reloadData()
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         })
         
@@ -387,7 +387,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                 if error == nil {
                                     cell.rpUserProPic.image = UIImage(data: data!)
                                 } else {
-                                    print(error?.localizedDescription)
+                                    print(error?.localizedDescription as Any)
                                 }
                             })
 
@@ -412,7 +412,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
 
                 }
             })
@@ -490,7 +490,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                     if error == nil {
                                         cell.rpUserProPic.image = UIImage(data: data!)
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                             } else {
@@ -527,7 +527,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                     if error == nil {
                                         cell.rpUserProPic.image = UIImage(data: data!)
                                     } else {
-                                        print(error?.localizedDescription)
+                                        print(error?.localizedDescription as Any)
                                     }
                                 })
                             } else {
@@ -550,7 +550,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                     
                 }
             })
@@ -604,7 +604,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                                 SVProgressHUD.dismiss()
                                                                 
                                                             } else {
-                                                                print(error?.localizedDescription)
+                                                                print(error?.localizedDescription as Any)
                                                                 
                                                                 // Dismiss
                                                                 SVProgressHUD.dismiss()
@@ -624,7 +624,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                                 SVProgressHUD.dismiss()
                                                                 
                                                             } else {
-                                                                print(error?.localizedDescription)
+                                                                print(error?.localizedDescription as Any)
                                                                 
                                                                 // Dismiss
                                                                 SVProgressHUD.dismiss()
@@ -639,7 +639,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                 self.refresh()
                                                 
                                             } else {
-                                                print(error?.localizedDescription)
+                                                print(error?.localizedDescription as Any)
                                                 
                                                 // Dismiss
                                                 SVProgressHUD.dismiss()
@@ -692,7 +692,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                 } else {
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
             

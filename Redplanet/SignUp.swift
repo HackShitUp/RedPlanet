@@ -111,7 +111,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                         if success {
                             print("Successfully saved installation data: \(installation)")
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                     
@@ -140,7 +140,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     self.present(alert, animated: true, completion: nil)
                     
                     
-                    print(error?.localizedDescription)
+                    print(error?.localizedDescription as Any)
                 }
             })
         }

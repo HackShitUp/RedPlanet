@@ -58,7 +58,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
                 print("Explore objects: \(self.exploreObjects.count)")
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
@@ -175,7 +175,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         
         
         // Fetch Explore Objects
-        exploreObjects[indexPath.row].fetchInBackground {
+        exploreObjects[indexPath.row].fetchIfNeededInBackground(block:  {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 // (1) Get username
@@ -190,7 +190,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
                             // Set profile photo
                             cell.rpUserProPic.image = UIImage(data: data!)
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                             
                             // Set default
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
@@ -199,9 +199,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
-        }
+        })
         
     
         return cell
