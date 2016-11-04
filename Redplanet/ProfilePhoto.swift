@@ -155,12 +155,17 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
         
-        
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
 
         // Hide tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -220,7 +225,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
 
         // (A) Get profile photo
-        if let proPic = proPicObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+        if let proPic = proPicObject.last!.value(forKey: "photoAsset") as? PFFile {
             proPic.getDataInBackground(block: {
                 (data: Data?, error: Error?) in
                 if error == nil {

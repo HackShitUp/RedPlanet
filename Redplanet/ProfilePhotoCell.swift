@@ -219,11 +219,57 @@ class ProfilePhotoCell: UITableViewCell {
                                         message: nil,
                                         preferredStyle: .actionSheet)
         
-        // TODO::
-        // For now, share only to one friend
-        // Sharing this publicly causes problem because if it were shared in the newsfeeds,
-        // then you'd have to run through 2 data sets when viewing the content
-        let share = UIAlertAction(title: "Share With Friend",
+        let publicShare = UIAlertAction(title: "All Friends",
+                                        style: .default,
+                                        handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Share to public ***FRIENDS ONLY***
+                                            
+                                            
+                                            // Convert UIImage to NSData
+                                            let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
+                                            // Change UIImage to PFFile
+                                            let parseFile = PFFile(data: imageData!)
+                                            
+                                            let newsfeeds = PFObject(className: "Newsfeeds")
+                                            newsfeeds["byUser"] = PFUser.current()!
+                                            newsfeeds["username"] = PFUser.current()!.username!
+                                            newsfeeds["textPost"] = "shared @\(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo: \(self.caption.text!)"
+                                            newsfeeds["photoAsset"] = parseFile
+                                            newsfeeds["pointObject"] = proPicObject.last!
+                                            newsfeeds["contentType"] = "sh"
+                                            newsfeeds.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if error == nil {
+                                                    print("Successfully shared photo: \(newsfeeds)")
+                                                    
+                                                    // Send notification
+                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                    
+                                                    // Show alert
+                                                    let alert = UIAlertController(title: "Shared With Friends",
+                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: {(alertAction: UIAlertAction!) in
+                                                                            // Pop view controller
+                                                                            self.delegate?.navigationController?.popViewController(animated: true)
+                                                    })
+                                                    
+                                                    alert.addAction(ok)
+                                                    self.delegate?.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+        })
+        
+        
+
+        let privateShare = UIAlertAction(title: "Share With Friend",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
                                             
@@ -240,10 +286,13 @@ class ProfilePhotoCell: UITableViewCell {
         
         
         let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
-        options.addAction(share)
+        
+        options.addAction(publicShare)
+        options.addAction(privateShare)
         options.addAction(cancel)
+        options.view.tintColor = UIColor.black
         self.delegate?.present(options, animated: true, completion: nil)
     }
     
@@ -290,11 +339,12 @@ class ProfilePhotoCell: UITableViewCell {
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (5) Share options
+        // (5) Private Share
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareContent))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
+        
 
     }
 

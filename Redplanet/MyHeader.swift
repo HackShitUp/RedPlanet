@@ -71,29 +71,32 @@ class MyHeader: UICollectionReusableView {
     // Function to show profile photo
     func showProPic() {
         
-        // Append to otherObject
-        otherObject.append(PFUser.current()!)
-        // Append to otherName
-        otherName.append(PFUser.current()!.username!)
         
-        // Get user's profile photo
-        let proPic = PFQuery(className: "ProfilePhoto")
-        proPic.whereKey("fromUser", equalTo: PFUser.current()!)
-        proPic.order(byDescending: "createdAt")
-        proPic.getFirstObjectInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                
-                // Append object
-                proPicObject.append(object!)
-                
-                // Push VC
-                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                
-                
-            } else {
-                print(error?.localizedDescription as Any)
+        if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
+            // Append to otherObject
+            otherObject.append(PFUser.current()!)
+            // Append to otherName
+            otherName.append(PFUser.current()!.username!)
+            
+            // Get user's profile photo
+            let proPic = PFQuery(className: "Newsfeeds")
+            proPic.whereKey("byUser", equalTo: PFUser.current()!)
+            proPic.whereKey("contentType", equalTo: "pp")
+            proPic.order(byDescending: "createdAt")
+            proPic.getFirstObjectInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    
+                    // Append object
+                    proPicObject.append(object!)
+                    
+                    // Push VC
+                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
             }
         }
         

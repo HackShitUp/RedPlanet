@@ -49,9 +49,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Reload view depending on content type
-        if commentsObject.last!.value(forKey: "mediaAsset") != nil {
+        if commentsObject.last!.value(forKey: "photoAsset") != nil {
             // Send Notification to Photo
-            NotificationCenter.default.post(name: mediaNotification, object: nil)
+            NotificationCenter.default.post(name: photoNotification, object: nil)
         } else {
             // Send Notification to Text Post
             NotificationCenter.default.post(name: textPostNotification, object: nil)
@@ -178,7 +178,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont

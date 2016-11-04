@@ -14,6 +14,11 @@ import ParseUI
 import Bolts
 
 
+
+// Define identifier
+let myProfileNotification = Notification.Name("myProfile")
+
+
 class MyProfile: UICollectionViewController {
     
     // Variable to hold my content
@@ -22,6 +27,11 @@ class MyProfile: UICollectionViewController {
     
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    
+    
+    
+    // Refresher
+    var refresher: UIRefreshControl!
     
     
     // Function to fetch my content
@@ -65,6 +75,18 @@ class MyProfile: UICollectionViewController {
     }
     
     
+    // Refresh function
+    func refresh() {
+        // fetch data
+        fetchMine()
+        
+        // End refresher
+        self.refresher.endRefreshing()
+        
+        // Reload data
+        self.collectionView!.reloadData()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +100,15 @@ class MyProfile: UICollectionViewController {
         
         // Fetch current user's content
         fetchMine()
+        
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: myProfileNotification, object: nil)
+        
+        // Pull to refresh
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.collectionView!.addSubview(refresher)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -245,11 +276,6 @@ class MyProfile: UICollectionViewController {
         cell.mediaPreview.clipsToBounds = true
         
         
-        // Set bounds for textPreview
-        cell.textPreview.clipsToBounds = true
-
-        
-        
         // Fetch objects
         myContentObjects[indexPath.row].fetchIfNeededInBackground(block: {
             (object: PFObject?, error: Error?) in
@@ -276,8 +302,8 @@ class MyProfile: UICollectionViewController {
                 
                 // (2) Determine Content Type
                 // (A) Photo
-                if object!["contentType"] as! String == "pv" {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                if object!["contentType"] as! String == "ph" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -285,8 +311,7 @@ class MyProfile: UICollectionViewController {
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Hide textPreview
-                                cell.textPreview.isHidden = true
+                                
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -296,13 +321,12 @@ class MyProfile: UICollectionViewController {
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Show text
-                    cell.textPreview.isHidden = false
-                    // Hide media
-                    cell.mediaPreview.isHidden = true
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Set mediaPreview's icon
+                    cell.mediaPreview.image = UIImage(named: "TextPreview")
                 }
+                
                 
                 
                 
@@ -310,19 +334,74 @@ class MyProfile: UICollectionViewController {
                 if object!["contentType"] as! String == "sh" {
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
-                    // Show textPreview
-                    cell.textPreview.isHidden = false
                     
                     // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "RedShared")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+                    
                 }
                 
                 
-                // (4) 
+                
+                
+                
+                // (D) Profile Photo
+                if object!["contentType"] as! String == "pp" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                }
+                
+                
+                
+                // (E) In the moment
+                // == When user takes a photo and shares it with his/her friends on the spot
+                
+                
+                
+                // (3) Set time
+                let from = object!.createdAt!
+                let now = Date()
+                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                
+                // logic what to show : Seconds, minutes, hours, days, or weeks
+                if difference.second! <= 0 {
+                    cell.time.text = "now"
+                }
+                
+                if difference.second! > 0 && difference.minute! == 0 {
+                    cell.time.text = "\(difference.second!) seconds ago"
+                }
+                
+                if difference.minute! > 0 && difference.hour! == 0 {
+                    cell.time.text = "\(difference.minute!) minutes ago"
+                }
+                
+                if difference.hour! > 0 && difference.day! == 0 {
+                    cell.time.text = "\(difference.hour!) hours ago"
+                }
+                
+                if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                    cell.time.text = "\(difference.day!) days ago"
+                }
+                
+                if difference.weekOfMonth! > 0 {
+                    let createdDate = DateFormatter()
+                    createdDate.dateFormat = "MMM d"
+                    cell.time.text = createdDate.string(from: object!.createdAt!)
+                }
                 
                 
             } else {

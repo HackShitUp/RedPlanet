@@ -27,7 +27,7 @@ class OtherContentCell: UICollectionViewCell {
     override func awakeFromNib() {
         // Add top border to distinguish content
         let upperBorder = CALayer()
-        upperBorder.backgroundColor = UIColor.black.cgColor
+        upperBorder.backgroundColor = UIColor.lightGray.cgColor
         upperBorder.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0.50)
         self.layer.addSublayer(upperBorder)
     }

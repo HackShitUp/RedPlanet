@@ -275,8 +275,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 // (2) Determine Content Type
                 // (A) Photo
-                if object!["contentType"] as! String == "pv" {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                if object!["contentType"] as! String == "ph" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -311,7 +311,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "RedShared")
-                    
                 }
                 
                 
@@ -320,7 +319,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -406,21 +405,22 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // TEXT POST
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            /*
-             // Save to Views
-             let view = PFObject(className: "Views")
-             view["byUser"] = PFUser.current()!
-             view["username"] = PFUser.current()!.username!
-             view["forObjectId"] = friendsContent[indexPath.row].objectId!
-             view.saveInBackground(block: {
-             (success: Bool, error: Error?) in
-             if error == nil {
-             
-             } else {
-             print(error?.localizedDescription as Any)
-             }
-             })
-             */
+/*
+            // Save to Views
+            let view = PFObject(className: "Views")
+            view["byUser"] = PFUser.current()!
+            view["username"] = PFUser.current()!.username!
+            view["forObjectId"] = friendsContent[indexPath.row].objectId!
+            view.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if error == nil {
+
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+*/
             
             
             // Append Object
@@ -430,11 +430,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Present VC
             let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
             self.parentNavigator.pushViewController(textPostVC, animated: true)
+            
         }
+        
+
         
         
         // PHOTO
-        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pv" {
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             /*
              // Save to Views
              let view = PFObject(className: "Views")
@@ -453,23 +456,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             
             // Append Object
-            mediaAssetObject.append(self.friendsContent[indexPath.row])
+            photoAssetObject.append(self.friendsContent[indexPath.row])
             
             // Present VC
-            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
-            self.parentNavigator.pushViewController(mediaVC, animated: true)
+            let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+            self.parentNavigator.pushViewController(photoVC, animated: true)
         }
         
         // SHARED
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            if self.friendsContent[indexPath.row].value(forKey: "mediaAsset") != nil {
+            if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
                 
                 // Append Object
-                mediaAssetObject.append(self.friendsContent[indexPath.row])
+                photoAssetObject.append(self.friendsContent[indexPath.row])
                 
                 // Push VC
-                let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
-                self.parentNavigator.pushViewController(mediaVC, animated: true)
+                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                self.parentNavigator.pushViewController(photoVC, animated: true)
                 
             } else {
                 // Append Object
@@ -490,33 +493,19 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Append user's username
             otherName.append(self.friends[indexPath.row].value(forKey: "username") as! String)
             
-            // Get user's profile photo
-            let proPic = PFQuery(className: "ProfilePhoto")
-            proPic.whereKey("fromUser", equalTo: otherObject.last!)
-            proPic.order(byDescending: "createdAt")
-            proPic.getFirstObjectInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    
-                    // Append object
-                    proPicObject.append(object!)
-                    
-                    // Push VC
-                    let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                    self.parentNavigator.pushViewController(proPicVC, animated: true)
-                    
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            }
+            // Append object
+            proPicObject.append(self.friendsContent[indexPath.row])
+            
+            // Push VC
+            let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+            self.parentNavigator.pushViewController(proPicVC, animated: true)
             
         }
         
         
         // ITM
         /*
-        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pv" {
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             
         }
         */

@@ -73,61 +73,41 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         
         
         
-        // (2) Save to Parse: "ProfilePhoto"
-        let profilePhoto = PFObject(className: "ProfilePhoto")
-        profilePhoto["fromUser"] = PFUser.current()!
-        profilePhoto["userId"] = PFUser.current()!.objectId!
-        profilePhoto["username"] = PFUser.current()!.username!
-        profilePhoto["userProfilePicture"] = proPicFile
-        profilePhoto["proPicCaption"] = self.proPicCaption.text!
-        profilePhoto.saveInBackground(block: {
+        // (2) Save <Newsfeeds>
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["photoAsset"] = proPicFile
+        newsfeeds["textPost"] = self.proPicCaption.text!
+        newsfeeds.saveInBackground(block: {
             (success: Bool, error: Error?) in
             if success {
-                print("Successfully saved profile photo: \(profilePhoto)")
+                print("Successfully saved profile photo: \(newsfeeds)")
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
                 
                 
-                // (3) Save to newsfeed
-                let newsfeeds = PFObject(className: "Newsfeeds")
-                newsfeeds["byUser"] = PFUser.current()!
-                newsfeeds["username"] = PFUser.current()!.username!
-                newsfeeds["mediaAsset"] = proPicFile
-                newsfeeds["textPost"] = self.proPicCaption.text!
-                newsfeeds["contentType"] = "pp"
-                newsfeeds.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if success {
-                        print("Successfully saved profile photo: \(newsfeeds)")
-                        
-                        // Post notification
-                        // NSNotificationCenter.defaultCenter().postNotificationName("profileLike", object: nil)
-                        
-                        
-                        // Present alert
-                        let alert = UIAlertController(title: "Successfully Saved Changes",
-                                                      message: "Your updated Profile Photo was shared in the news feed.",
-                                                      preferredStyle: .alert)
-                        
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: {(alertAction: UIAlertAction!) in
-                                                
-                                                // Pop view controller
-                                                self.navigationController!.popViewController(animated: true)
-                        })
-                        
-                        
-                        alert.addAction(ok)
-                        self.present(alert, animated: true, completion: nil)
-                        
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
+                // Post notification
+                // NSNotificationCenter.defaultCenter().postNotificationName("profileLike", object: nil)
+                
+                
+                // Present alert
+                let alert = UIAlertController(title: "Successfully Saved Changes",
+                                              message: "Your updated Profile Photo was shared in the news feed.",
+                                              preferredStyle: .alert)
+                
+                let ok = UIAlertAction(title: "ok",
+                                       style: .default,
+                                       handler: {(alertAction: UIAlertAction!) in
+                                        
+                                        // Pop view controller
+                                        self.navigationController!.popViewController(animated: true)
                 })
                 
+                
+                alert.addAction(ok)
+                self.present(alert, animated: true, completion: nil)
 
                 
                 
@@ -306,15 +286,17 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         
         
         // Get profile photo's caption
-        let proPic = PFQuery(className: "ProfilePhoto")
-        proPic.whereKey("fromUser", equalTo: PFUser.current()!)
-        proPic.getFirstObjectInBackground(block: {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+        newsfeeds.whereKey("contentType", equalTo: "pp")
+        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.getFirstObjectInBackground(block: {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
                     // Profile Photo Exists
                     // Handle optional chaining for profile photo's caption
-                    if let caption = object!["proPicCaption"] as? String {
+                    if let caption = object!["textPost"] as? String {
                         if caption == " " {
                             self.proPicCaption.text! = "Say something about your profile photo..."
                         } else {

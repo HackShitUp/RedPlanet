@@ -13,7 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
-
+import SVProgressHUD
 
 
 
@@ -168,7 +168,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 225
+        self.tableView!.estimatedRowHeight = 250
         self.tableView!.rowHeight = UITableViewAutomaticDimension
 
         
@@ -267,7 +267,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 220
+        return 250
     }
     
     
@@ -357,7 +357,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!) minutes ago"
+                    cell.time.text = "\(difference.hour!) minutes ago"
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
@@ -370,7 +370,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 
                 if difference.weekOfMonth! > 0 {
                     let createdDate = DateFormatter()
-                    createdDate.dateFormat = "MMM d"
+                    createdDate.dateFormat = "MMM d, yyyy"
                     cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
                 
@@ -441,11 +441,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     // MARK: - UITableViewDelegate Method
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
-            return true
-        } else {
-            return false
-        }
+        return true
     } // end edit boolean
     
     
@@ -456,87 +452,86 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
         
         
-        // (1) Delete comment
+        // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
                                           title: "Delete") { (UITableViewRowAction, indexPath) in
                                             
-                                            let comment = PFQuery(className: "Comments")
-                                            comment.whereKey("byUser", equalTo: self.comments[indexPath.row].value(forKey: "byUser") as! PFUser)
-                                            comment.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                            comment.whereKey("commentOfContent", equalTo: self.comments[indexPath.row].value(forKey: "commentOfContent") as! String)
-                                            comment.findObjectsInBackground(block: {
+                                            // Show Progress
+                                            SVProgressHUD.show()
+                                            
+                                            // Delete content
+                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+                                            newsfeeds.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
+                                            newsfeeds.findObjectsInBackground(block: {
                                                 (objects: [PFObject]?, error: Error?) in
                                                 if error == nil {
                                                     for object in objects! {
+                                                        // Delete object
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
-                                                                print("Successfully deleted comment: \(object)")
+                                                                print("Successfully deleted object: \(object)")
                                                                 
-                                                                // Delete from Parse: "Notifications"
-                                                                let notifications = PFQuery(className: "Notifications")
-                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                                notifications.whereKey("type", equalTo: "comment")
-                                                                notifications.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                                                notifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted from notifications: \(object)")
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print("ERROR1")
-                                                                        print(error?.localizedDescription as Any)
-                                                                    }
-                                                                })
+                                                                // Dismiss
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                
+                                                                // Reload newsfeed
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                
+                                                                // Reload myProfile
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
-                                                                print("ERROR2")
                                                                 print(error?.localizedDescription as Any)
                                                             }
                                                         })
                                                     }
                                                 } else {
-                                                    print("ERROR3")
                                                     print(error?.localizedDescription as Any)
                                                 }
                                             })
-                                            
-                                            // (1B) Delete comment from table view
-                                            // use array
-                                            self.comments.remove(at: indexPath.row)
-                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
+
         }
         
-        // (2) Quick Replhy
-        let reply = UITableViewRowAction(style: .normal,
-                                         title: "Reply") { (UITableViewRowAction, indexPath) in
+        // (2) Edit
+        let edit = UITableViewRowAction(style: .normal,
+                                         title: " Edit ") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             
-                                            // TODO
+                                            // TODO::
+                                            // Edit Content
                                             
                                             // Close cell
                                             self.tableView!.setEditing(false, animated: true)
                                             
+        }
+        
+        
+        // (3) Views
+        let views = UITableViewRowAction(style: .normal,
+                                        title: " Views ") { (UITableViewRowAction, indexPath) in
+                                            // Append object
+                                            viewsObject.append(textPostObject.last!)
+                                            
+                                            // Push VC
+                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                            self.navigationController?.pushViewController(viewsVC, animated: true)
                                             
         }
         
         
-        
-        // (3) Block user
+        // (4) Block user
         let report = UITableViewRowAction(style: .normal,
                                           title: "Block") { (UITableViewRowAction, indexPath) in
                                             
-                                            let alert = UIAlertController(title: "Report this comment?",
-                                                                          message: "Are you sure you'd like to report this comment and the user?",
+                                            let alert = UIAlertController(title: "Report this Text Post?",
+                                                                          message: "Are you sure you'd like to report \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post?",
                                                                           preferredStyle: .alert)
                                             
                                             let yes = UIAlertAction(title: "yes",
@@ -567,7 +562,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                             
                                             alert.addAction(yes)
                                             alert.addAction(no)
-                                            
                                             self.present(alert, animated: true, completion: nil)
                                             
         }
@@ -577,15 +571,20 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         // Set background images
+        // Red
         delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        reply.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+        // Baby blue
+        edit.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+        // Gray
+        views.backgroundColor = UIColor.lightGray
+        // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.91, blue:0.04, alpha:1.0)
         
 
         if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
-            return [delete, reply, report]
+            return [delete, edit, views]
         } else {
-            return [delete, reply]
+            return [report]
         }
         
 
@@ -601,7 +600,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-            self.navigationController!.popViewController(animated: true)
+//            self.navigationController!.popViewController(animated: true)
         }
     }
     

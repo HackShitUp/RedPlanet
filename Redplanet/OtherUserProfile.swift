@@ -21,6 +21,10 @@ var otherObject = [PFObject]()
 var otherName = [String]()
 
 
+// Define identifier
+let otherNotification = Notification.Name("otherUser")
+
+
 class OtherUserProfile: UICollectionViewController, UINavigationControllerDelegate {
     
     // Query Relationships
@@ -45,6 +49,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Array to hold other user's space posts
     var spaceObjects = [PFObject]()
+    
+    
+    // Refresher
+    var refresher: UIRefreshControl!
     
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -182,36 +190,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         }
     }
     
-    
-    // Function to query other user's Space Posts
-    func querySpace() {
-        let wall = PFQuery(className: "Wall")
-        wall.whereKey("toUser", equalTo: otherObject.last!)
-        wall.order(byDescending: "createdAt")
-        wall.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear array
-                self.spaceObjects.removeAll(keepingCapacity: false)
-                
-                
-                for object in objects! {
-                    self.spaceObjects.append(object)
-                }
-                
-                
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-            
-            // Reload data
-            self.collectionView!.reloadData()
-        })
-    }
-    
-    
+
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
@@ -235,6 +214,20 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     
     
+    // Function to refresh
+    func refresh() {
+        // Query Content
+        queryContent()
+        
+        // End refresher
+        self.refresher.endRefreshing()
+        
+        // Reload data
+        self.collectionView!.reloadData()
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -251,11 +244,21 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: otherNotification, object: nil)
+        
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        
+        
+        // Pull to refresh
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.collectionView!.addSubview(refresher)
         
         // TODO::
         // Show which button to tap!
@@ -566,8 +569,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (2) Determine Content Type
                 // (A) Photo
-                if object!["contentType"] as! String == "pv" {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                if object!["contentType"] as! String == "ph" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -686,7 +689,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         }
 
         
-        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "pv" {
+        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             
             
             /*
@@ -707,11 +710,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             
             
             // Append Object
-            mediaAssetObject.append(self.contentObjects[indexPath.row])
+            photoAssetObject.append(self.contentObjects[indexPath.row])
             
             // Present VC
-            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
-            self.navigationController?.pushViewController(mediaVC, animated: true)
+            let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+            self.navigationController?.pushViewController(photoVC, animated: true)
         }
         
         

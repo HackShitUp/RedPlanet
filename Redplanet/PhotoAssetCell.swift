@@ -17,7 +17,7 @@ import KILabel
 
 
 
-class MediaAssetCell: UITableViewCell {
+class PhotoAssetCell: UITableViewCell {
     
     // Initialize parent vc
     var delegate: UIViewController?
@@ -118,7 +118,7 @@ class MediaAssetCell: UITableViewCell {
                                                     preferredStyle: .alert)
                                                 
                                                 let ok = UIAlertAction(title: "ok",
-                                                                       style: .cancel,
+                                                                       style: .default,
                                                                        handler: nil)
                                                 
                                                 alert.addAction(ok)
@@ -147,7 +147,7 @@ class MediaAssetCell: UITableViewCell {
         
         
         let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
         
         
@@ -222,8 +222,8 @@ class MediaAssetCell: UITableViewCell {
                                             newsfeeds["byUser"] = PFUser.current()!
                                             newsfeeds["username"] = PFUser.current()!.username!
                                             newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Photo: \(self.caption.text!)"
-                                            newsfeeds["mediaAsset"] = parseFile
-                                            newsfeeds["pointObject"] = mediaAssetObject.last!
+                                            newsfeeds["photoAsset"] = parseFile
+                                            newsfeeds["pointObject"] = photoAssetObject.last!
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
@@ -242,7 +242,7 @@ class MediaAssetCell: UITableViewCell {
                                                                            style: .default,
                                                                            handler: {(alertAction: UIAlertAction!) in
                                                                             // Pop view controller
-                                                                            self.delegate?.navigationController?.popViewController(animated: true)
+                                                                            self.delegate!.navigationController?.popViewController(animated: true)
                                                     })
                                                     
                                                     alert.addAction(ok)
@@ -303,7 +303,7 @@ class MediaAssetCell: UITableViewCell {
             
             // UNLIKE
             let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+            likes.whereKey("forObjectId", equalTo: photoAssetObject.last!.objectId!)
             likes.whereKey("fromUser", equalTo: PFUser.current()!)
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -324,7 +324,7 @@ class MediaAssetCell: UITableViewCell {
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
                                 // Send Notification
-                                NotificationCenter.default.post(name: textPostNotification, object: nil)
+                                NotificationCenter.default.post(name: photoNotification, object: nil)
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -341,7 +341,7 @@ class MediaAssetCell: UITableViewCell {
                                 
                                 // Delete "Notifications"
                                 let notifications = PFQuery(className: "Notifications")
-                                notifications.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+                                notifications.whereKey("forObjectId", equalTo: photoAssetObject.last!.objectId!)
                                 notifications.whereKey("fromUser", equalTo: PFUser.current()!)
                                 notifications.findObjectsInBackground(block: {
                                     (objects: [PFObject]?, error: Error?) in
@@ -381,9 +381,9 @@ class MediaAssetCell: UITableViewCell {
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!.username!
-            likes["toUser"] = mediaAssetObject.last!.value(forKey: "byUser") as! PFUser
+            likes["toUser"] = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
             likes["to"] = self.rpUsername.text!
-            likes["forObjectId"] = mediaAssetObject.last!.objectId!
+            likes["forObjectId"] = photoAssetObject.last!.objectId!
             likes.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
@@ -400,7 +400,7 @@ class MediaAssetCell: UITableViewCell {
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
                     // Send Notification
-                    NotificationCenter.default.post(name: textPostNotification, object: nil)
+                    NotificationCenter.default.post(name: photoNotification, object: nil)
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -420,8 +420,8 @@ class MediaAssetCell: UITableViewCell {
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
                     notifications["to"] = self.rpUsername.text!
-                    notifications["toUser"] = mediaAssetObject.last!.value(forKey: "byUser") as! PFUser
-                    notifications["forObjectId"] = mediaAssetObject.last!.objectId!
+                    notifications["toUser"] = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = photoAssetObject.last!.objectId!
                     notifications["type"] = "like pv"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in

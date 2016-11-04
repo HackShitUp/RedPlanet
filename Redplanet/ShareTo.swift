@@ -336,7 +336,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                 style: .default,
                                 handler: {(alertAction: UIAlertAction!) in
                                     
-                                    if shareObject.last!.value(forKey: "mediaAsset") != nil {
+                                    if shareObject.last!.value(forKey: "photoAsset") != nil {
                                         // Share with user
                                         // Send to Chats
                                         let chats = PFObject(className: "Chats")
@@ -345,7 +345,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                         chats["senderUsername"] = PFUser.current()!.username!
                                         chats["receiverUsername"] = shareUserObject!.value(forKey: "username") as! String
                                         chats["read"] = false
-                                        chats["mediaAsset"] = shareObject.last!.value(forKey: "mediaAsset") as! PFFile
+                                        chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
                                         chats.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if error == nil {

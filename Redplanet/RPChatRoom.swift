@@ -217,7 +217,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chat["senderUsername"] = PFUser.current()!.username!
         chat["receiver"] = chatUserObject.last!
         chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["mediaAsset"] = parseFile
+        chat["photoAsset"] = parseFile
         chat["read"] = false
         chat.saveInBackground {
             (success: Bool, error: Error?) in
@@ -412,7 +412,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         mCell.delegate = self
         
         
-        if messageObjects[indexPath.row].value(forKey: "mediaAsset") == nil {
+        if messageObjects[indexPath.row].value(forKey: "photoAsset") == nil {
             //////////////////////////////
             ///                       ///
             /// Return TextPost Cell ///
@@ -564,7 +564,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // Fetch media asset and handle optional chaining
-                    if let media = object!["mediaAsset"] as? PFFile {
+                    if let media = object!["photoAsset"] as? PFFile {
                         media.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {

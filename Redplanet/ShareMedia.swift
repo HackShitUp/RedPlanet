@@ -25,7 +25,7 @@ var shareImageAssets = [UIImage]()
 
 
 
-class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
+class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
 
     
     // Variable to hold parseFile
@@ -42,6 +42,8 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
         self.navigationController!.popViewController(animated: false)
     }
     
+    @IBAction func more(_ sender: Any) {
+    }
     
     @IBAction func editPhoto(_ sender: AnyObject) {
         // Present CLImageEditor
@@ -115,9 +117,9 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
         let newsfeeds = PFObject(className: "Newsfeeds")
         newsfeeds["username"] = PFUser.current()!.username!
         newsfeeds["byUser"] = PFUser.current()!
-        newsfeeds["mediaAsset"] = parseFile
+        newsfeeds["photoAsset"] = parseFile
         newsfeeds["textPost"] = self.mediaCaption.text
-        newsfeeds["contentType"] = "pv"
+        newsfeeds["contentType"] = "ph"
         if self.mediaCaption.text! == "Say something about this photo..." {
             newsfeeds["textPost"] = ""
         }
@@ -141,6 +143,15 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
             }
         }
 
+    }
+    
+    
+    
+    // MARK: - UITextViewDelegate Method
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.mediaCaption.text! == "Say something about this photo..." {
+            self.mediaCaption.text! = ""
+        }
     }
     
 
@@ -222,6 +233,15 @@ class ShareMedia: UIViewController, UINavigationControllerDelegate, CLImageEdito
         self.shareButton.addGestureRecognizer(shareTap)
 
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

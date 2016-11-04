@@ -14,10 +14,14 @@ import ParseUI
 import Bolts
 
 
+import SVProgressHUD
+import DZNEmptyDataSet
+
+
 // Array to hold like object
 var likeObject = [PFObject]()
 
-class Likers: UITableViewController, UINavigationControllerDelegate {
+class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     
     // Array to hold likers
@@ -54,6 +58,13 @@ class Likers: UITableViewController, UINavigationControllerDelegate {
                     self.likers.append(object["fromUser"] as! PFUser)
                 }
                 
+                
+                // DZNEMptyDataSet
+                if self.likers.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -67,7 +78,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate {
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont
@@ -78,6 +89,32 @@ class Likers: UITableViewController, UINavigationControllerDelegate {
     }
     
     
+    
+    // MARK: DZNEmptyDataSet Framework
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.likers.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "🦄\nNo Likes Yet"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -86,6 +123,10 @@ class Likers: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
+        
+        // Set blank
+        self.tableView!.tableFooterView = UIView()
     }
     
     

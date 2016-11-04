@@ -14,14 +14,17 @@ import ParseUI
 import Bolts
 
 
+import SVProgressHUD
+
+
 // Global array to hold the object
-var mediaAssetObject = [PFObject]()
+var photoAssetObject = [PFObject]()
 
 
 // Define identifier
-let mediaNotification = Notification.Name("mediaAsset")
+let photoNotification = Notification.Name("photoAsset")
 
-class MediaAsset: UITableViewController, UINavigationControllerDelegate {
+class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     
     
     // Arrays to hold likes and comments
@@ -36,6 +39,8 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
         self.navigationController!.popViewController(animated: true)
+        
+        print("Fired with sender: \(sender)")
     }
     
     @IBAction func refresh(_ sender: AnyObject) {
@@ -54,7 +59,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Fetch Likes
         let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+        likes.whereKey("forObjectId", equalTo: photoAssetObject.last!.objectId!)
         likes.includeKey("fromUser")
         likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
@@ -71,7 +76,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 
                 // (2) Fetch Comments
                 let comments = PFQuery(className: "Comments")
-                comments.whereKey("forObjectId", equalTo: mediaAssetObject.last!.objectId!)
+                comments.whereKey("forObjectId", equalTo: photoAssetObject.last!.objectId!)
                 comments.includeKey("byUser")
                 comments.order(byDescending: "createdAt")
                 comments.findObjectsInBackground {
@@ -90,7 +95,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                         
                         // (3) Fetch Shares
                         let shares = PFQuery(className: "Newsfeeds")
-                        shares.whereKey("pointObject", equalTo: mediaAssetObject.last!)
+                        shares.whereKey("pointObject", equalTo: photoAssetObject.last!)
                         shares.includeKey("byUser")
                         shares.order(byDescending: "createdAt")
                         shares.findObjectsInBackground(block: {
@@ -108,7 +113,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                                 print("Shares: \(self.sharers.count)")
                                 
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                             }
                             
                             // Reload data
@@ -118,7 +123,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                         
                         
                     } else {
-                        print(error?.localizedDescription)
+                        print(error?.localizedDescription as Any)
                     }
                     
                     
@@ -128,7 +133,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
             
             // Reload data
@@ -176,7 +181,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: mediaNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: photoNotification, object: nil)
         
         
         // Pull to refresh action
@@ -253,17 +258,17 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "mediaAssetCell", for: indexPath) as! MediaAssetCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
         
         // Declare parent vc
         cell.delegate = self
         
         
         // Declare user's object
-        cell.userObject = mediaAssetObject.last!.value(forKey: "byUser") as! PFUser
+        cell.userObject = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
         
         // Declare content's object
-        cell.contentObject = mediaAssetObject.last!
+        cell.contentObject = photoAssetObject.last!
         
         
         // LayoutViews
@@ -279,7 +284,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
         
 
         // Get Media Asset Object
-        mediaAssetObject.last!.fetchInBackground {
+        photoAssetObject.last!.fetchInBackground {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 
@@ -296,7 +301,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                                 // (B1) Set profile photo
                                 cell.rpUserProPic.image = UIImage(data: data!)
                             } else {
-                                print(error?.localizedDescription)
+                                print(error?.localizedDescription as Any)
                                 // (B2) Set default
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
                             }
@@ -306,7 +311,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 
                 
                 // (2)
-                if let media = object!["mediaAsset"] as? PFFile {
+                if let media = object!["photoAsset"] as? PFFile {
                     media.getDataInBackground(block: {
                         (data: Data?, error: Error?) in
                         if error == nil {
@@ -314,7 +319,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                             cell.rpMedia.image = UIImage(data: data!)
                             
                         } else {
-                            print(error?.localizedDescription)
+                            print(error?.localizedDescription as Any)
                         }
                     })
                 }
@@ -364,13 +369,12 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 // (4) Determine whether the current user has liked this object or not
                 if self.likes.contains(PFUser.current()!) {
                     // Set button title
-                    cell.likeButton.setTitle("like", for: .normal)
+                    cell.likeButton.setTitle("liked", for: .normal)
                     // Set/ button image
-                    cell.likeButton.setImage(UIImage(named: "Like Filled=100"), for: .normal)
+                    cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                 } else {
                     // Set button title
-                    cell.likeButton.setTitle("unlike", for: .normal)
-                    
+                    cell.likeButton.setTitle("notLiked", for: .normal)
                     // Set button image
                     cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                 }
@@ -411,7 +415,7 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
                 
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription as Any)
             }
         }
         
@@ -424,11 +428,173 @@ class MediaAsset: UITableViewController, UINavigationControllerDelegate {
     
     
     
+    
+    
+    // MARK: - UITableViewDelegate Method
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    } // end edit boolean
+    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
+        
+        
+        
+        // (1) Delete Text Post
+        let delete = UITableViewRowAction(style: .normal,
+                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                            
+                                            // Ask before deleting???
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.show()
+                                            
+                                            // Delete content
+                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+                                            newsfeeds.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
+                                            newsfeeds.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        // Delete object
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted object: \(object)")
+                                                                
+                                                                // Dismiss
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                
+                                                                // Reload newsfeed
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                
+                                                                // Reload myProfile
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                self.navigationController?.popViewController(animated: true)
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+        }
+        
+        // (2) Edit
+        let edit = UITableViewRowAction(style: .normal,
+                                        title: " Edit ") { (UITableViewRowAction, indexPath) in
+                                            
+                                            
+                                            
+                                            // TODO::
+                                            // Edit Content
+                                            
+                                            // Close cell
+                                            self.tableView!.setEditing(false, animated: true)
+                                            
+        }
+        
+        
+        // (3) Views
+        let views = UITableViewRowAction(style: .normal,
+                                         title: " Views ") { (UITableViewRowAction, indexPath) in
+                                            // Append object
+                                            viewsObject.append(photoAssetObject.last!)
+                                            
+                                            // Push VC
+                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                            self.navigationController?.pushViewController(viewsVC, animated: true)
+                                            
+        }
+        
+        
+        // (4) Block user
+        let report = UITableViewRowAction(style: .normal,
+                                          title: "Block") { (UITableViewRowAction, indexPath) in
+                                            
+                                            let alert = UIAlertController(title: "Report this Photo",
+                                                                          message: "Are you sure you'd like to report \(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo?",
+                                                preferredStyle: .alert)
+                                            
+                                            let yes = UIAlertAction(title: "yes",
+                                                                    style: .destructive,
+                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
+                                                                        // I have to manually delete all "blocked objects..." -__-
+                                                                        let block = PFObject(className: "Block_Reported")
+                                                                        block["from"] = PFUser.current()!.username!
+                                                                        block["fromUser"] = PFUser.current()!
+                                                                        block["to"] = cell.rpUsername.text!
+                                                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
+                                                                        block.saveInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully reported \(block)")
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
+                                                                        // Close cell
+                                                                        tableView.setEditing(false, animated: true)
+                                            })
+                                            
+                                            let no = UIAlertAction(title: "no",
+                                                                   style: .default,
+                                                                   handler: nil)
+                                            
+                                            alert.addAction(yes)
+                                            alert.addAction(no)
+                                            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
+        
+        
+        // Set background images
+        // Red
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        // Baby blue
+        edit.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+        // Gray
+        views.backgroundColor = UIColor.lightGray
+        // Yellow
+        report.backgroundColor = UIColor(red:1.00, green:0.91, blue:0.04, alpha:1.0)
+        
+        
+        if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+            return [delete, edit, views]
+        } else {
+            return [report]
+        }
+        
+        
+        
+        
+    } // End edit action
+
+    
+    
+    
+    
+    
+    
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-            self.navigationController!.popViewController(animated: true)
+//            self.navigationController!.popViewController(animated: true)
         }
     }
     

@@ -184,8 +184,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // (2) Determine Content Type
                 // (A) Photo
-                if object!["contentType"] as! String == "pv" {
-                    if let mediaPreview = object!["mediaAsset"] as? PFFile {
+                if object!["contentType"] as! String == "ph" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -285,7 +285,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if self.followingContent[indexPath.row].value(forKey: "mediaAsset") == nil {
+        if self.followingContent[indexPath.row].value(forKey: "photoAsset") == nil {
             
             // Show Progress
 //            SVProgressHUD.show()
@@ -342,11 +342,11 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             
             
             // Append Object
-            mediaAssetObject.append(self.followingContent[indexPath.row])
+            photoAssetObject.append(self.followingContent[indexPath.row])
             
             // Present VC
-            let mediaVC = self.storyboard?.instantiateViewController(withIdentifier: "mediaAssetVC") as! MediaAsset
-            self.parentNavigator.pushViewController(mediaVC, animated: true)
+            let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+            self.parentNavigator.pushViewController(photoVC, animated: true)
             
         }
         
