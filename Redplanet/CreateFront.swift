@@ -398,6 +398,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Initialize and set parent vc
         cell.delegate = self
         
+        // Declare content's object
+        cell.contentObject = myActivity[indexPath.row]
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

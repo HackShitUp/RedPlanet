@@ -235,6 +235,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.mediaPreview.setNeedsLayout()
 
         
+        // Make mediaPreview cornered square
+        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.clipsToBounds = true
+        
 
         // Fetch objects
         friendsContent[indexPath.row].fetchIfNeededInBackground {
@@ -516,7 +520,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Append user's object
             otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
             // Append user's username
-            otherName.append(self.friends[indexPath.row].value(forKey: "username") as! String)
+            otherName.append(self.friendsContent[indexPath.row].value(forKey: "username") as! String)
             
             // Append object
             proPicObject.append(self.friendsContent[indexPath.row])

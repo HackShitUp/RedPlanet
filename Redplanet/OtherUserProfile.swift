@@ -693,6 +693,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         return cell
     }
 
+    
+    
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
@@ -754,9 +756,28 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            
+            if self.contentObjects[indexPath.row].value(forKey: "photoAsset") != nil {
+                
+                // Append Object
+                photoAssetObject.append(self.contentObjects[indexPath.row])
+                
+                // Push VC
+                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                self.navigationController?.pushViewController(photoVC, animated: true)
+                
+            } else {
+                // Append Object
+                textPostObject.append(self.contentObjects[indexPath.row])
+                
+                
+                // Push VC
+                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                self.navigationController?.pushViewController(textPostVC, animated: true)
+            }
         }
         
-    }
+    } // end didSelectRow
+    
+    
 
 }

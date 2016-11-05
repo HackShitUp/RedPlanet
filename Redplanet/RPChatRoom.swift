@@ -784,8 +784,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let report = UITableViewRowAction(style: .normal,
                                           title: "Block") { (UITableViewRowAction, indexPath) in
                                             
-                                            let alert = UIAlertController(title: "Report this Text Post?",
-                                                                          message: "Are you sure you'd like to report \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post?",
+                                            let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
+                                                                          message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
                                                 preferredStyle: .alert)
                                             
                                             let yes = UIAlertAction(title: "yes",
@@ -836,7 +836,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Return specific actions depending on user's object
         if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
-            return [delete, like, report]
+            return [delete]
         } else {
             return [report]
         }

@@ -62,15 +62,15 @@ class MyProfile: UICollectionViewController {
 
     // Function to stylize and set title of navigation bar
     func configureView() {
-        let myUsername = PFUser.current()!.username!
+//        let myUsername = PFUser.current()!.username!
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = myUsername.uppercased()
+            self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.uppercased()
         }
     }
     
@@ -111,11 +111,24 @@ class MyProfile: UICollectionViewController {
         self.collectionView!.addSubview(refresher)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show tabbarcontroller
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Stylize title
+        configureView()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Show tabbarcontroller
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Stylize title
+        configureView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -349,6 +362,11 @@ class MyProfile: UICollectionViewController {
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
                     if let mediaPreview = object!["photoAsset"] as? PFFile {
+                        
+                        // Make mediaPreview circular
+                        cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
+                        
+                        // Fetch profile photo
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -427,6 +445,121 @@ class MyProfile: UICollectionViewController {
         
     
         return cell
+    } // end cellForRowAt
+    
+    
+    
+    
+    
+    // MARK: - UICollectionViewDelegate method
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // TEXT POST
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             
+             } else {
+             print(error?.localizedDescription as Any)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            textPostObject.append(self.myContentObjects[indexPath.row])
+            
+            
+            // Present VC
+            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+            self.navigationController?.pushViewController(textPostVC, animated: true)
+            
+        }
+        
+        
+        
+        
+        // PHOTO
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+            /*
+             // Save to Views
+             let view = PFObject(className: "Views")
+             view["byUser"] = PFUser.current()!
+             view["username"] = PFUser.current()!.username!
+             view["forObjectId"] = friendsContent[indexPath.row].objectId!
+             view.saveInBackground(block: {
+             (success: Bool, error: Error?) in
+             if error == nil {
+             
+             } else {
+             print(error?.localizedDescription as Any)
+             }
+             })
+             */
+            
+            
+            // Append Object
+            photoAssetObject.append(self.myContentObjects[indexPath.row])
+            
+            // Present VC
+            let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+            self.navigationController?.pushViewController(photoVC, animated: true)
+        }
+        
+        // SHARED
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+            if self.myContentObjects[indexPath.row].value(forKey: "photoAsset") != nil {
+                
+                // Append Object
+                photoAssetObject.append(self.myContentObjects[indexPath.row])
+                
+                // Push VC
+                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                self.navigationController?.pushViewController(photoVC, animated: true)
+                
+            } else {
+                // Append Object
+                textPostObject.append(self.myContentObjects[indexPath.row])
+                
+                
+                // Push VC
+                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                self.navigationController?.pushViewController(textPostVC, animated: true)
+            }
+        }
+        
+        
+        // PROFILE PHOTO
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+            // Append user's object
+            otherObject.append(self.myContentObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+            // Append user's username
+            otherName.append(self.myContentObjects[indexPath.row].value(forKey: "username") as! String)
+            
+            // Append object
+            proPicObject.append(self.myContentObjects[indexPath.row])
+            
+            // Push VC
+            let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+            self.navigationController?.pushViewController(proPicVC, animated: true)
+            
+        }
+        
+        
+        // ITM
+        /*
+         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+         
+         }
+         */
+
     }
 
 
