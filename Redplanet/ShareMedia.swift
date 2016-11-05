@@ -25,7 +25,7 @@ var shareImageAssets = [UIImage]()
 
 
 
-class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
+class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
 
     
     // Variable to hold parseFile
@@ -33,8 +33,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     var parseFile: PFFile?
     
     
+    // Array to hold user's objects for @
+    var userObjects = [PFObject]()
+    
+    
     @IBOutlet weak var mediaAsset: PFImageView!
     @IBOutlet weak var mediaCaption: UITextView!
+    @IBOutlet weak var tableView: UITableView!
 
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -128,6 +133,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             if error == nil {
                 print("Successfully shared object: \(newsfeeds)")
                 
+                
+                
+                // TODO::
+                // Check for hashtags
+                // Check for mentions
+                
+                
+                
                 // Send notification
                 NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                 
@@ -154,12 +167,166 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         }
     }
     
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+//        countRemaining()
+        
+        let words: [String] = self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        // Define word
+        for var word in words {
+            // #####################
+            if word.hasPrefix("@") {
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Find the user
+                let fullName = PFQuery(className: "_User")
+                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                
+                let theUsername = PFQuery(className: "_User")
+                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                
+                let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
+                search.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Clear arrays
+                        self.userObjects.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            self.userObjects.append(object)
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                self.tableView!.isHidden = false
+                self.tableView!.reloadData()
+            } else {
+                self.tableView!.isHidden = true
+            }
+        }
+        
+        return true
+    }
+    
+    
+    
+    
+    
+    // Function to dismissKeyboard
+    func dismissKeyboard() {
+        // Resign textView
+        self.mediaCaption.resignFirstResponder()
+        
+        // Hide tableView
+        self.tableView!.isHidden = true
+    }
+    
+    
+    
+    
+    
+    // MARK: - UITableView Data Source methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.userObjects.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "shareMediaCell", for: indexPath) as! ShareMediaCell
+        
+        
+        // LayoutViews for rpUserProPic
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // Fetch user's objects
+        self.userObjects[indexPath.row].fetchIfNeededInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Get and set user's profile photo
+                if let proPic = object!["userProfilePicture"] as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set user's pro pic
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                        }
+                    })
+                }
+                
+                // (2) Set user's fullName
+                cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                
+                // (3) Set user's username
+                cell.rpUsername.text! = object!["username"] as! String
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+        
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let words: [String] = self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        // Define #word
+        for var word in words {
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if word.hasPrefix("@") {
+                
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Replace text
+                // NSString.CompareOptions.literal
+                self.mediaCaption.text! = self.mediaCaption.text!.replacingOccurrences(of: "\(word)", with: userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+            }
+        }
+        
+        // Clear array
+        self.userObjects.removeAll(keepingCapacity: false)
+        
+        // Hide UITableView
+        self.tableView!.isHidden = true
+    }
+    
+    
+    
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // * Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        
+        // Hide tableView on load
+        self.tableView!.isHidden = true
 
         
         // (1) Make shareButton circular
@@ -231,6 +398,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+        
+        
+        // (8) Add dismiss keyboard tap
+        let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissTap.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(dismissTap)
 
     }
     

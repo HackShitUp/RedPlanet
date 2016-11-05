@@ -275,9 +275,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 
                 // Replace text
                 // NSString.CompareOptions.literal
-                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+//                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+              self.textView.text! = self.textView.text!.replacingOccurrences(of: word, with: self.userObjects[indexPath.row].value(forKey: "username") as! String)
+
             }
         }
+
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)

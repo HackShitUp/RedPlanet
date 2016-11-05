@@ -34,6 +34,11 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     
     @IBAction func refresh(_ sender: Any) {
+        // Query views
+        queryViews()
+        
+        // Reload data
+        self.tableView!.reloadData()
     }
     
     
@@ -91,7 +96,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont

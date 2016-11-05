@@ -531,10 +531,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         cell.mediaPreview.clipsToBounds = true
         
         
-        // Set bounds for textPreview
-        cell.textPreview.clipsToBounds = true
-        
-        
     
         // Configure the cell
         contentObjects[indexPath.row].fetchIfNeededInBackground(block: {
@@ -574,12 +570,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Show media
+                                // Show mediaPreview
                                 cell.mediaPreview.isHidden = false
                                 // Set media
                                 cell.mediaPreview.image = UIImage(data: data!)
-                                // Hide text
-                                cell.textPreview.isHidden = true
+                                
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -589,29 +584,52 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Show text
-                    cell.textPreview.isHidden = false
-                    // Hide media
-                    cell.mediaPreview.isHidden = true
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    // Set mediaPreview's icon
+                    cell.mediaPreview.image = UIImage(named: "TextPostIcon")
                 }
+                
                 
                 
                 
                 // (C) SHARED
-                // TODO::
-                // Complete this
                 if object!["contentType"] as! String == "sh" {
-                    // Show media
+                    // Show mediaPreview
                     cell.mediaPreview.isHidden = false
-                    // Set background color
+                    
+                    // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
-                    // Set SHARED ICON
-                    cell.mediaPreview.image = UIImage(named: "RedShared")
-                    // Set text
-                    cell.textPreview.text! = object!["textPost"] as! String
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "BlueShared")
+                    
                 }
+                
+                
+                
+                
+                
+                // (D) Profile Photo
+                if object!["contentType"] as! String == "pp" {
+                    if let mediaPreview = object!["photoAsset"] as? PFFile {
+                        mediaPreview.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                }
+                
+                
+                
+                // (E) In the moment
+                // == When user takes a photo and shares it with his/her friends on the spot
                 
                 
                 
@@ -624,28 +642,44 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // logic what to show : Seconds, minutes, hours, days, or weeks
                 if difference.second! <= 0 {
-                    cell.time.text = "now"
+                    cell.time.text = "right now"
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
+                    if difference.second! == 1 {
+                        cell.time.text = "1 second ago"
+                    } else {
+                        cell.time.text = "\(difference.second!) seconds ago"
+                    }
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
+                    if difference.minute! == 1 {
+                        cell.time.text = "1 minute ago"
+                    } else {
+                        cell.time.text = "\(difference.minute!) minutes ago"
+                    }
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
+                    if difference.hour! == 1 {
+                        cell.time.text = "1 hour ago"
+                    } else {
+                        cell.time.text = "\(difference.hour!) hours ago"
+                    }
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
+                    if difference.day! == 1 {
+                        cell.time.text = "1 day ago"
+                    } else {
+                        cell.time.text = "\(difference.day!) days ago"
+                    }
                 }
                 
                 if difference.weekOfMonth! > 0 {
                     let createdDate = DateFormatter()
-                    createdDate.dateFormat = "MMM d"
+                    createdDate.dateFormat = "MMM d, yyyy"
                     cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
                 

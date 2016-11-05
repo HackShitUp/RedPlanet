@@ -53,6 +53,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     func refresh() {
         // Reload data
         queryChats()
+        
+        // End refresher
         self.refresher.endRefreshing()
     }
     

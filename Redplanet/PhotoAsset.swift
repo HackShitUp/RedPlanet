@@ -570,7 +570,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Gray
         views.backgroundColor = UIColor.lightGray
         // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.91, blue:0.04, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
         
         
         if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {

@@ -14,13 +14,14 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import DZNEmptyDataSet
 
 
 // Array to hold shareObject
 var shareObject = [PFObject]()
 
 
-class Shares: UITableViewController, UINavigationControllerDelegate {
+class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // Array to hold sharers
     var sharers = [PFObject]()
@@ -28,12 +29,26 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
     // Pipeline method
     var page: Int = 50
     
+    @IBAction func backButton(_ sender: Any) {
+        // Pop view controller
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBAction func refresh(_ sender: Any) {
+        // Query shares
+        queryShares()
+        
+        // Reload data
+        self.tableView!.reloadData()
+    }
+    
     
     // Variable to hold shares
     func queryShares() {
         let shares = PFQuery(className: "Newsfeeds")
         shares.whereKey("pointObject", equalTo: shareObject.last!)
-        shares.includeKey("fromUser")
+        shares.includeKey("byUser")
         shares.limit = self.page
         shares.order(byDescending: "createdAt")
         shares.findObjectsInBackground {
@@ -46,6 +61,13 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
                 // Append objects
                 for object in objects! {
                     self.sharers.append(object["byUser"] as! PFUser)
+                }
+                
+                
+                // Set DZN if count is 0
+                if self.sharers.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
                 }
                 
             } else {
@@ -63,13 +85,42 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Shares"
         }
     }
+    
+    
+    
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.sharers.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "🦄\nNo Shares Yet"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    
     
     
 
@@ -81,6 +132,9 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
+        // Set footer
+        self.tableView!.tableFooterView = UIView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -164,8 +218,9 @@ class Shares: UITableViewController, UINavigationControllerDelegate {
 
     // MARK: - UITableView delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Append data
+        // Append user's object
         otherName.append(sharers[indexPath.row].value(forKey: "username") as! String)
+        // Append user's username
         otherObject.append(sharers[indexPath.row])
         
         // Push VC

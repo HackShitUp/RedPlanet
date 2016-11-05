@@ -27,10 +27,50 @@ class RPChatRoomCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var message: KILabel!
+    
+    
+    // Show chat options
+    func chatOptions(sender: UIGestureRecognizer) {
+        
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        let copy = UIAlertAction(title: "Copy",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+                                    // Copy text
+                                    
+                                    let message: UILabel = sender.view as! UILabel
+                                    print("The text selected is: \(message.text!)")
+                                    
+                                    let pasteboard: UIPasteboard = UIPasteboard.general
+                                    pasteboard.string = message.text!
+                                    
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        options.addAction(copy)
+        options.addAction(cancel)
+        options.view.tintColor = UIColor.black
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Intialization code
+        
+        
+        
+        // add text tap
+        let chatHold = UILongPressGestureRecognizer(target: self, action: #selector(chatOptions))
+        chatHold.minimumPressDuration = 0.50
+        self.message.isUserInteractionEnabled = true
+        self.message.addGestureRecognizer(chatHold)
+        
+        
         
         
         // Handle @username tap

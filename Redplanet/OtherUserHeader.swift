@@ -98,7 +98,9 @@ class OtherUserHeader: UICollectionReusableView {
                     
                 } else {
                     print(error?.localizedDescription as Any)
-                    // Error?
+                    // Error
+                    // Call Agrume
+                    self.zoom(sender: self)
                 }
             }
         }

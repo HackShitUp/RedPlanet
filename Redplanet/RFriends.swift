@@ -141,7 +141,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     }
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "Redplanet is more fun with your friends!"
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
@@ -229,8 +229,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         friends[indexPath.row].fetchIfNeededInBackground {
             (object: PFObject?, error: Error?) in
             if error == nil {
-                // (A) Set username
-//                cell.rpUsername.text! = object!["username"] as! String
+                // (A) Set user's full name
                 cell.rpUsername.text! = object!["realNameOfUser"] as! String
                 
                 // (B) Get and set user's profile photo

@@ -20,6 +20,9 @@ class CommentsCell: UITableViewCell {
     
     // Variable to hold comment object
     var commentObject: PFObject?
+    
+    // Initialize parent VC
+    var delegate: UIViewController?
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
@@ -143,6 +146,17 @@ class CommentsCell: UITableViewCell {
         
     }
     
+    
+    // Function to show likers
+    func showLikes(sender: UIButton) {
+        // Append object
+        likeObject.append(self.commentObject!)
+        
+        // Push VC
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -152,6 +166,12 @@ class CommentsCell: UITableViewCell {
         commentLike.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(commentLike)
+        
+        // Add number of likes tap
+        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
+        numLikesTap.numberOfTapsRequired = 1
+        self.numberOfLikes.isUserInteractionEnabled = true
+        self.numberOfLikes.addGestureRecognizer(numLikesTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

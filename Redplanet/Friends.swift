@@ -233,10 +233,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.mediaPreview.layoutIfNeeded()
         cell.mediaPreview.layoutSubviews()
         cell.mediaPreview.setNeedsLayout()
-        
-        // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 6.00
-        cell.mediaPreview.clipsToBounds = true
 
         
 
@@ -276,6 +272,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
+                    
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Fetch photo
                     if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
@@ -297,7 +299,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
-                    cell.mediaPreview.image = UIImage(named: "TextPreview")
+                    cell.mediaPreview.image = UIImage(named: "TextPostIcon")
                 }
                 
                 
@@ -310,7 +312,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Set background color for mediaPreview
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.mediaPreview.image = UIImage(named: "RedShared")
+                    cell.mediaPreview.image = UIImage(named: "BlueShared")
                 }
                 
                 
@@ -319,6 +321,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
+                    
+                    // Make mediaPreview circular
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    
+                    // Fetch Profile photo
                     if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
@@ -349,28 +358,44 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // logic what to show : Seconds, minutes, hours, days, or weeks
                 if difference.second! <= 0 {
-                    cell.time.text = "now"
+                    cell.time.text = "right now"
                 }
                 
                 if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!) seconds ago"
+                    if difference.second! == 1 {
+                        cell.time.text = "1 second ago"
+                    } else {
+                        cell.time.text = "\(difference.second!) seconds ago"
+                    }
                 }
                 
                 if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!) minutes ago"
+                    if difference.minute! == 1 {
+                        cell.time.text = "1 minute ago"
+                    } else {
+                        cell.time.text = "\(difference.minute!) minutes ago"
+                    }
                 }
                 
                 if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!) hours ago"
+                    if difference.hour! == 1 {
+                        cell.time.text = "1 hour ago"
+                    } else {
+                        cell.time.text = "\(difference.hour!) hours ago"
+                    }
                 }
                 
                 if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!) days ago"
+                    if difference.day! == 1 {
+                        cell.time.text = "1 day ago"
+                    } else {
+                        cell.time.text = "\(difference.day!) days ago"
+                    }
                 }
                 
                 if difference.weekOfMonth! > 0 {
                     let createdDate = DateFormatter()
-                    createdDate.dateFormat = "MMM d"
+                    createdDate.dateFormat = "MMM d, yyyy"
                     cell.time.text = createdDate.string(from: object!.createdAt!)
                 }
                 

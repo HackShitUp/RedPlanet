@@ -212,8 +212,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
             (object: PFObject?, error: Error?) in
             if error == nil {
                 // (A) Set username
-                //                cell.rpUsername.text! = object!["username"] as! String
-                cell.rpUsername.text! = object!["realNameOfUser"] as! String
+                cell.rpUsername.text! = object!["username"] as! String
                 
                 // (B) Get and set user's profile photo
                 if let proPic = object!["userProfilePicture"] as? PFFile {

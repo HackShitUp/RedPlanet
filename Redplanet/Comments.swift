@@ -178,9 +178,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -371,6 +371,13 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // Set default like icon
+        cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+        
+        // Set parent vc
+        cell.delegate = self
         
         
         // Fetch comments objects

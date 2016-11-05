@@ -39,12 +39,21 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func refresh(_ sender: Any) {
+        // Reset Bool
+        searchActive = true
+        
+        // query friends
+        queryFriends()
+        
+        // Reload data
+        self.tableView!.reloadData()
+    }
+    
+    
     // Query Friends
     func queryFriends() {
-        
-        // Show Progress
-//        SVProgressHUD.show()
-        
+
         let fFriend = PFQuery(className: "FriendMe")
         fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
         fFriend.whereKey("frontFriend", notEqualTo: PFUser.current()!)
@@ -161,7 +170,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -293,8 +302,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         })
                     }
                     
-                    // (2) Set username
-                    cell.rpUsername.text! = object!["username"] as! String
+                    // (2) Set user's full name
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
                     
                 } else {
                     print(error?.localizedDescription as Any)
