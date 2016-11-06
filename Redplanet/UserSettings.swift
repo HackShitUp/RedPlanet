@@ -133,12 +133,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             
             if indexPath.row == 0 {
-                let confettiView = SAConfettiView(frame: self.view.bounds)
-                self.view.addSubview(confettiView)
-                confettiView.type = .Confetti
-                confettiView.colors = [UIColor.red, UIColor.green, UIColor.blue]
-                confettiView.intensity = 0.75
-                confettiView.startConfetti()
+                // Confetti
 
             }
             

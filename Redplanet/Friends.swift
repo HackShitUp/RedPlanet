@@ -235,10 +235,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.mediaPreview.setNeedsLayout()
 
         
-        // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 6.00
-        cell.mediaPreview.clipsToBounds = true
-        
 
         // Fetch objects
         friendsContent[indexPath.row].fetchIfNeededInBackground {
@@ -273,6 +269,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
                 
 
+                
+                
+                
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
@@ -300,6 +299,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
@@ -310,6 +312,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     
@@ -328,6 +334,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     
                     // Make mediaPreview circular
                     cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
+                    cell.mediaPreview.layer.borderColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0).cgColor
+                    cell.mediaPreview.layer.borderWidth = 1.25
                     cell.mediaPreview.clipsToBounds = true
                     
                     

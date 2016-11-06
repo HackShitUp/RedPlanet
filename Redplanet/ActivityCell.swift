@@ -27,7 +27,7 @@ import Bolts
     // Then search for the objectId 
     // liked
     // commented
-    // 
+    //
  
  */
 
@@ -71,12 +71,19 @@ class ActivityCell: UITableViewCell {
     // Function to go to content
     func goContent(sender: UIButton) {
         
-        // LIKE
+        
+        // A
+        // LIKED
         if self.activity.titleLabel!.text!.hasPrefix("liked") {
+            
+            print("FIRED")
+            
+            // I
+            // TEXT POST
             if self.activity.titleLabel!.text!.hasSuffix("text post") {
                 // Check TextPosts
                 let texts = PFQuery(className: "Newsfeeds")
-                texts.whereKey("objectId", equalTo: self.userObject!.objectId!)
+                texts.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 texts.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
@@ -107,11 +114,13 @@ class ActivityCell: UITableViewCell {
                 
             }
             
-            // L I K E D:     P H O T O S
+            
+            // II
+            // PHOTO
             if self.activity.titleLabel!.text!.hasSuffix("photo") {
                 // Check "Photos_Videos"
                 let photos = PFQuery(className: "Newsfeeds")
-                photos.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+                photos.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 photos.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
@@ -143,12 +152,14 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
-            // L I K E D:     P R O F I L E     P H O T O
+            
+            
+            // III
+            // PROFILE PHOTO
             if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
-                // Check "ProfilePhoto"
                 let profilePhoto = PFQuery(className: "Newsfeeds")
                 profilePhoto.includeKey("byUser")
-                profilePhoto.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+                profilePhoto.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 profilePhoto.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
@@ -176,16 +187,65 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
-            
-            // L I K E D:     W A L L     P O S T
-            // L I K E D:     S P A C E     P O S T
-            if self.activity.titleLabel!.text!.hasSuffix("space post") {
-            
+
+            // IV
+            // SHARE
+            if self.activity.titleLabel!.text!.hasSuffix("share") {
+                
+                let share = PFQuery(className: "Newsfeeds")
+                share.includeKey("byUser")
+                share.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                share.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            
+                            // TODO::
+                            //
+                            
+                            
+                            
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
             }
             
+            
+            
+            // V
+            // SPACE POST
+            if self.activity.titleLabel!.text!.hasSuffix("space post") {
+                
+            }
+            
+            // VI
+            // VIDEO
+            if self.activity.titleLabel!.text!.hasSuffix("video") {
+                
+            }
+            
+            
+            // VII
+            // ITM
+            if self.activity.titleLabel!.text!.hasSuffix("moment") {
+                
+            }
+            
+            
+            
+            
         }
-        //////// E N D ------> L I K E
-        
         
         
         // L I K E D     Y O U R      C O M M E N T
@@ -212,6 +272,9 @@ class ActivityCell: UITableViewCell {
                             if error == nil {
                                 // TODO::
                                 // PUSH VC
+                                
+                                
+                                
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -227,7 +290,8 @@ class ActivityCell: UITableViewCell {
                 }
             })
         }
-        // END: LIKED COMMENT
+        //////// E N D ------> L I K E
+
         
         
         
@@ -242,11 +306,21 @@ class ActivityCell: UITableViewCell {
         
         
         
+        
+        
+        
+        
+        
         // T A G
         if self.activity.titleLabel!.text!.hasPrefix("tagged you") {
             
         }
         // END: "tagged you in a comment"
+        
+        
+        
+        
+        
         
         
         /////////////////////////////////
@@ -255,14 +329,25 @@ class ActivityCell: UITableViewCell {
         // R E Q U E S T E D     T O     F O L L O W     Y O U
         // A S K E D     T O     B E     F R I E N D S
         if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "asked to be friends" {
-            
+            // Push VC
+            let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
+            self.delegate?.navigationController?.pushViewController(rRequestsVC, animated: true)
         }
+        
+        
+        
+        
         
         // L E V E L    3
         // I S     N O W     F R I E N D S     W I T H     Y O U
         if self.activity.titleLabel!.text! == "is now friends with you" {
             
         }
+        
+        
+        
+        
+        
         
         // L E V E L    3
         // S T A R T E D     F O L L O W I N G     Y O U
@@ -272,12 +357,7 @@ class ActivityCell: UITableViewCell {
         
         
         
-        // L E V E L    3
-        // V I E W E D      Y O U R     P R O F I L E
-        if self.activity.titleLabel!.text! == "viewed your profile" {
-            // GONE
-        }
-        
+
         // L E V E L    3
         // W R O T E      O N     Y O U R     W A L L
         if self.activity.titleLabel!.text!.hasPrefix("wrote on") {
@@ -303,6 +383,13 @@ class ActivityCell: UITableViewCell {
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
+        
+        
+        // Content tap
+        let activeTap = UITapGestureRecognizer(target: self, action: #selector(goContent))
+        activeTap.numberOfTapsRequired = 1
+        self.activity.isUserInteractionEnabled = true
+        self.activity.addGestureRecognizer(activeTap)
         
     }
 

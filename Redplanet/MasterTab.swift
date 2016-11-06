@@ -25,6 +25,7 @@ class MasterTab: UITabBarController {
             self.tabBar.items?[4].title = PFUser.current()!.username!.uppercased()
         }
         
+        // Set font
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 10.0)!], for: .normal)

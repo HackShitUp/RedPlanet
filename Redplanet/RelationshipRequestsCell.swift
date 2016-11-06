@@ -40,7 +40,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
     func confirm(sender: UIButton) {
         
         
-        // Determine user's object
+        // FRIEND
         if requestType == "friends" {
             let friends = PFQuery(className: "FriendMe")
             friends.whereKey("endFriend", equalTo: PFUser.current()!)
@@ -95,6 +95,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                             self.relationState.setTitle("Confirmed", for: .normal)
 
                                                             
+                                                            // Post Notification
+                                                            // NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                            
                                                             // TODO::
                                                             // Send Push Notification
 //                                                            OneSignal.defaultClient().postNotification(
@@ -141,7 +144,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
     
     
     
-    
+        // FOLLOW
         if requestType == "follow" {
             let followers = PFQuery(className: "FollowMe")
             followers.whereKey("isFollowing", equalTo: false)
@@ -195,6 +198,11 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                             // Change title: "CONFIRMED"
                                                             self.relationState.isHidden = false
                                                             self.relationState.setTitle("Confirmed", for: .normal)
+                                                            
+                                                            
+                                                            // Post Notification
+                                                            // NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                            
                                                             
                                                             // Send Push Notification
 //                                                            OneSignal.defaultClient().postNotification(
@@ -284,6 +292,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                     self.relationState.isHidden = false
                                                     self.relationState.setTitle("Ignored", for: .normal)
                                                     
+                                                    // Post Notification
+                                                    // NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                    
                                                 } else {
                                                     print(error?.localizedDescription as Any)
                                                 }
@@ -341,6 +352,10 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                     self.relationState.isHidden = false
                                                     self.relationState.setTitle("Ignored", for: .normal)
                                                     
+                                                    // Post Notification
+                                                    // NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                    
+                                                    
                                                 } else {
                                                     print(error?.localizedDescription as Any)
                                                 }
@@ -379,9 +394,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
         
         
         // R E S C I N D      F R I E N D      R E Q U E S T
-        if sender.titleLabel!.text == "Rescind Friend Request" {
+        if self.relationState.titleLabel!.text == "Rescind Friend Request" {
             let alert = UIAlertController(title: "Rescind Friend Request?",
-                                          message: "Are you sure you'd like to unfriend \(self.rpUsername.text!)?",
+                                          message: "Are you sure you'd like to unfriend \(self.rpFullName.text!)?",
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
@@ -399,7 +414,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                     object.deleteInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            print("Successfully deleted friend request: \(object)")
+                                                            print("Successfully rescinded friend request: \(object)")
                                                             
                                                             // Delete from "Notifcations": "type" == "friend requested"
                                                             let notifications = PFQuery(className: "Notifications")
@@ -418,9 +433,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                                                 // Hide buttons
                                                                                 self.relationState.setTitle("Rescinded", for: .normal)
                                                                                 
-                                                                                // Send to NSNotificationCenter.defaultCenter()
-                                                                                // named: "requested"
-//                                                                                NSNotificationCenter.defaultCenter().postNotificationName("requested", object: nil)
+                                                                                // Post Notification
+                                                                                NotificationCenter.default.post(name: requestsNotification, object: nil)
                                                                                 
                                                                             } else {
                                                                                 print(error?.localizedDescription as Any)
@@ -455,7 +469,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
         
         
         // R E S C I N D     F O L L O W     R E Q U E S T
-        if sender.titleLabel!.text! == "Rescind Follow Request" {
+        if self.relationState.titleLabel!.text! == "Rescind Follow Request" {
             let alert = UIAlertController(title: "Rescind Follow Request?",
                                           message: "Are you sure you'd like to unfollow \(self.rpUsername.text!)?",
                 preferredStyle: .alert)
@@ -495,9 +509,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                                                 self.relationState.setTitle("Rescinded", for: .normal)
                                                                                 
                                                                                 
-                                                                                // Send to NSNotificationCenter.defaultCenter() to reload data
-                                                                                // named: "requested"
-//                                                                                NSNotificationCenter.defaultCenter().postNotificationName("requested", object: nil)
+                                                                                // Post Notification
+                                                                                NotificationCenter.default.post(name: requestsNotification, object: nil)
                                                                                 
                                                                             } else {
                                                                                 print(error?.localizedDescription as Any)

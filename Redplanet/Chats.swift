@@ -287,6 +287,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         // Set design of navigation bar
         configureView()
         
+        // Query chats
+        queryChats()
+        
         // Hide tab bar controller
         self.navigationController!.tabBarController!.tabBar.isHidden = false
     }
@@ -452,27 +455,46 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     // logic what to show : Seconds, minutes, hours, days, or weeks
                     if difference.second! <= 0 {
-                        cell.time.text = "just now"
+                        cell.time.text = "right now"
                     }
                     
                     if difference.second! > 0 && difference.minute! == 0 {
-                        cell.time.text = "\(difference.second!) seconds ago"
+                        if difference.second! == 1 {
+                            cell.time.text = "1 second ago"
+                        } else {
+                            cell.time.text = "\(difference.second!) seconds ago"
+                        }
                     }
                     
                     if difference.minute! > 0 && difference.hour! == 0 {
-                        cell.time.text = "\(difference.minute!) minutes ago"
+                        if difference.minute! == 1 {
+                            cell.time.text = "1 minute ago"
+                        } else {
+                            cell.time.text = "\(difference.minute!) minutes ago"
+                        }
                     }
                     
                     if difference.hour! > 0 && difference.day! == 0 {
-                        cell.time.text = "\(difference.hour!) hours ago"
+                        if difference.hour! == 1 {
+                            cell.time.text = "1 hour ago"
+                        } else {
+                            cell.time.text = "\(difference.hour!) hours ago"
+                        }
                     }
                     
                     if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        cell.time.text = "\(difference.day!) days ago"
+                        if difference.day! == 1 {
+                            cell.time.text = "1 day ago"
+                        } else {
+                            cell.time.text = "\(difference.day!) days ago"
+                        }
                     }
                     
+                    
                     if difference.weekOfMonth! > 0 {
-                        cell.time.text = "\(difference.weekOfMonth!) weeks ago"
+                        let createdDate = DateFormatter()
+                        createdDate.dateFormat = "MMM d, yyyy"
+                        cell.time.text = createdDate.string(from: object!.createdAt!)
                     }
                     
                     
@@ -570,6 +592,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         // Swipe to Delete Messages
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+
             // Present alert
             let alert = UIAlertController(title: "Delete Conversation Forever?",
                                           message: "You AND \(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String) cannot restore this conversation once it's forever deleted.",
@@ -659,6 +682,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             alert.addAction(yes)
             alert.addAction(no)
             self.present(alert, animated: true, completion: nil)
+
+            
         }
         
         delete.backgroundColor = UIColor.red

@@ -454,7 +454,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "      ") { (UITableViewRowAction, indexPath) in
+                                              title: "🗑\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
@@ -500,7 +500,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                         title: " Edit ") { (UITableViewRowAction, indexPath) in
+                                         title: "🖋\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             
@@ -515,7 +515,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                        title: " Views ") { (UITableViewRowAction, indexPath) in
+                                        title: "👁\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(textPostObject.last!)
                                             
@@ -528,7 +528,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Block") { (UITableViewRowAction, indexPath) in
+                                          title: "🚫\nReport") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report this Text Post?",
                                                                           message: "Are you sure you'd like to report \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post?",
@@ -572,12 +572,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Set background images
         // Red
-//        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        delete.backgroundColor = UIColor(patternImage: UIImage(named: "Trash")!)
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
         // Baby blue
         edit.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
         // Gray
-        views.backgroundColor = UIColor.lightGray
+        views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
         

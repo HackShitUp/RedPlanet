@@ -24,6 +24,9 @@ var requestType: String?
 
 
 
+// Define Notification Identifier
+let requestsNotification = Notification.Name("relationshipRequests")
+
 class RelationshipRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     
@@ -66,8 +69,8 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             fetchSent()
         }
         
-        
-        
+        // Reload data
+        self.collectionView!.reloadData()
     }
     
     func fetchFriends() {
@@ -245,7 +248,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -320,6 +323,10 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             requestType = "sent"
 
         }
+        
+        
+        // Add Notification 
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: requestsNotification, object: nil)
         
         
         // Set background color
@@ -442,16 +449,15 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                             }
                         })
                     }
-                    
-                    
-                    // (4) Set user's object
-                    cell.userObject = object!
-                    
+
                     
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            // (4) Set user's object
+            cell.userObject = nFriends[indexPath.row]
             
             
             // Hide button and show relative buttons
@@ -489,16 +495,15 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                             }
                         })
                     }
-                    
-                    
-                    // (4) Set user's object
-                    cell.userObject = object!
-                    
+
                     
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            // (4) Set user's object
+            cell.userObject = nFollowers[indexPath.row]
             
             
             // Hide button and show relative buttons
@@ -536,16 +541,15 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                             }
                         })
                     }
-                    
-                    
-                    
-                    // (4) Set user's object
-                    cell.userObject = object!
-                    
+
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            
+            // (4) Set user's object
+            cell.userObject = sentTo[indexPath.row]
             
             
             

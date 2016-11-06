@@ -221,6 +221,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+            masterTab.tabBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
             self.window?.makeKeyAndVisible()
             window?.rootViewController = masterTab
             

@@ -366,7 +366,7 @@ class OtherUserHeader: UICollectionReusableView {
                                         
                                         let fFriend = PFQuery(className: "FriendMe")
                                         fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
-                                        fFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
+                                        fFriend.whereKey("frontFriend", equalTo: otherObject.last!)
                                         
                                         let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
                                         friend.whereKey("isFriends", equalTo: true)
@@ -410,6 +410,10 @@ class OtherUserHeader: UICollectionReusableView {
                                                             }
                                                         })
                                                     }
+                                                    
+                                                    
+                                                    // Post Notification
+//                                                    NotificationCenter.default.post(name: otherNotification, object: nil)
                                                     
                                                 }
                                             } else {
@@ -474,6 +478,11 @@ class OtherUserHeader: UICollectionReusableView {
                                                         }
                                                     })
                                                 }
+                                                
+                                                
+                                                // Post Notification
+                                                NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                
                                             } else {
                                                 print(error?.localizedDescription as Any)
                                             }
@@ -562,6 +571,10 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                         self.followButton.isHidden = true
                                                                                                         self.relationType.setTitle("Friend Requested", for: .normal)
                                                                                                         
+                                                                                                        
+                                                                                                        // Post Notification
+                                                                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                                                                        
                                                                                                         // Send push notification
 //                                                                                                        OneSignal.defaultClient().postNotification(
 //                                                                                                            ["contents":
@@ -643,6 +656,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         // Change sender button title
                                                                                         self.relationType.setTitle("Follow Requested", for: .normal)
                                                                                         
+                                                                                        // Post Notification
+                                                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                                                        
                                                                                         
                                                                                         // Send push notification
 //                                                                                        OneSignal.defaultClient().postNotification(
@@ -693,6 +709,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         
                                                                                         // Change sender button title
                                                                                         self.relationType.setTitle("Following", for: .normal)
+                                                                                        
+                                                                                        // Post Notification
+                                                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                                         
                                                                                         
                                                                                         // Send push notification
@@ -789,6 +808,10 @@ class OtherUserHeader: UICollectionReusableView {
                                                                         // Change Button's Title
                                                                         self.relationType.setTitle("Friends", for: .normal)
                                                                         
+                                                                        // Post Notification
+                                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                                        
+                                                                        
                                                                         // Send push notification
 //                                                                        OneSignal.defaultClient().postNotification(
 //                                                                            ["contents":
@@ -855,6 +878,8 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                 self.followButton.isHidden = false
                                                                                 
                                                                                 
+                                                                                
+                                                                                
                                                                             } else {
                                                                                 print(error?.localizedDescription as Any)
                                                                             }
@@ -864,6 +889,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                     print(error?.localizedDescription as Any)
                                                                 }
                                                             })
+                                                            
+                                                            // Post Notification
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
                                                             
                                                             
                                                         } else {
@@ -923,6 +951,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
+                                                                
+                                                                // Post Notification
+                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -1011,6 +1042,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 // Change button title
                                                                 sender.setTitle("Follower", for: .normal)
                                                                 
+                                                                // Post Notification
+                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                                
                                                                 // Send push notification
 //                                                                OneSignal.defaultClient().postNotification(
 //                                                                    ["contents":
@@ -1084,6 +1118,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 }
                                                             })
                                                             
+                                                            // Post Notification
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                            
                                                         } else {
                                                             print(error?.localizedDescription as Any)
                                                         }
@@ -1143,6 +1180,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
+                                                                
+                                                                // Post Notification
+                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

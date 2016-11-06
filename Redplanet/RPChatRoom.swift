@@ -340,6 +340,50 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         photosTap.numberOfTapsRequired = 1
         self.photosButton.isUserInteractionEnabled = true
         self.photosButton.addGestureRecognizer(photosTap)
+        
+        
+        
+        
+        
+        
+        // Add Function Method to add user's read recipets
+        let sender = PFQuery(className: "Chats")
+        sender.whereKey("sender", equalTo: PFUser.current()!)
+        sender.whereKey("receiver", equalTo: chatUserObject.last!)
+        
+        let receiver = PFQuery(className: "Chats")
+        receiver.whereKey("receiver", equalTo: PFUser.current()!)
+        receiver.whereKey("sender", equalTo: chatUserObject.last!)
+        
+        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+        chats.includeKey("sender")
+        chats.includeKey("receiver")
+        chats.order(byDescending: "createdAt")
+        chats.getFirstObjectInBackground(block: {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                
+                // Get user's first object
+                if object!["receiver"] as!  PFUser == PFUser.current()! {
+                    object!["read"] = true
+                    object!.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Read")
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                }
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

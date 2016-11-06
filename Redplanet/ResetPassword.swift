@@ -23,6 +23,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     }
     
     
+    @IBOutlet weak var resetButton: UIButton!
     @IBAction func resetPassword(_ sender: AnyObject) {
         // Re set userEmail
         if userEmail.text!.isEmpty {
@@ -41,8 +42,8 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
             PFUser.requestPasswordResetForEmail(inBackground: userEmail.text!, block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    let alert = UIAlertController(title: "Received Reset Password Request",
-                                                  message: "Please check your email! You can change your password via the link we sent.",
+                    let alert = UIAlertController(title: "Reset Password Requested",
+                                                  message: "You can change your password via the link we sent.",
                                                   preferredStyle: .alert)
                     let ok = UIAlertAction(title: "ok",
                                            style: .default,
@@ -76,6 +77,10 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
 
         // Make email first responder
         userEmail.becomeFirstResponder()
+        
+        // Design button
+        self.resetButton.layer.cornerRadius = 25.00
+        self.resetButton.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {

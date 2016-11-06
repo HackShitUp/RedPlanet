@@ -445,7 +445,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "🗑\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Ask before deleting???
                                             
@@ -493,7 +493,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: " Edit ") { (UITableViewRowAction, indexPath) in
+                                        title: "🖋\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             
@@ -508,7 +508,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: " Views ") { (UITableViewRowAction, indexPath) in
+                                         title: "👁\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(photoAssetObject.last!)
                                             
@@ -521,7 +521,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Block") { (UITableViewRowAction, indexPath) in
+                                          title: "🚫\nReport") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report this Photo",
                                                                           message: "Are you sure you'd like to report \(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo?",
@@ -568,7 +568,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Baby blue
         edit.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
         // Gray
-        views.backgroundColor = UIColor.lightGray
+        views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
         

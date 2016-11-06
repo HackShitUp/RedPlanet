@@ -171,6 +171,28 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Query Following
+        queryFollowing()
+        
+        // Stylize title
+        configureView()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Query Following
+        queryFollowing()
+        
+        // Stylize title
+        configureView()
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

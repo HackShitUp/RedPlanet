@@ -274,6 +274,20 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
     
     
     
+    // Stylize title
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Mutual Relationships"
+        }
+    }
+    
+    
     
     
 
@@ -296,7 +310,20 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
             // Following
             queryFollowing()
         }
+        
+        
+        // Stylize title
+        configureView()
 
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        // Stylize title
+        configureView()
     }
 
     override func didReceiveMemoryWarning() {

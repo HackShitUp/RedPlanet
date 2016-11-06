@@ -216,6 +216,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Function to refresh
     func refresh() {
+        
+        // Run relationships
+        appDelegate.queryRelationships()
+        
         // Query Content
         queryContent()
         

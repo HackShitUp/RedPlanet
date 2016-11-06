@@ -2473,7 +2473,7 @@
         <scene sceneID="sA8-Aa-G9o">
             <objects>
                 <collectionViewController id="GrF-aX-oeE" customClass="Explore" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="u6d-uY-o5J">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="u6d-uY-o5J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2569,7 +2569,7 @@
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5s1-Og-6eq">
                                                     <rect key="frame" x="51" y="8" width="258" height="22"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <state key="normal" title="Loading...">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -2771,6 +2771,7 @@
                                 <rect key="frame" x="124" y="20" width="235" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
@@ -2850,7 +2851,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="D7F-Kw-Nth">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="editPhoto:" destination="Ir1-z0-Hmq" id="qFV-WS-HgD"/>
                             </connections>
@@ -3172,7 +3173,7 @@
         <scene sceneID="Lr6-tm-68h">
             <objects>
                 <collectionViewController id="2tP-pp-hZo" customClass="MyProfile" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dpe-ay-7Z5">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="dpe-ay-7Z5">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3610,17 +3611,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yQh-rs-jw4">
-                                <rect key="frame" x="16" y="107" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xux-7d-Cvt">
-                                <rect key="frame" x="16" y="174" width="343" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xux-7d-Cvt">
+                                <rect key="frame" x="16" y="166" width="343" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Lfo-uz-MLH"/>
+                                    <constraint firstAttribute="width" constant="343" id="zi2-5I-jS8"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="25"/>
                                 <state key="normal" title="Reset">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3629,12 +3626,47 @@
                                     <action selector="resetPassword:" destination="8Xe-ln-q3K" eventType="touchUpInside" id="Bb5-e2-s6S"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fr1-s8-0a2">
+                                <rect key="frame" x="16" y="80" width="343" height="75"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="yQh-rs-jw4">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="73"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="73" id="QVc-cV-yjZ"/>
+                                            <constraint firstAttribute="width" constant="343" id="m6V-WD-cro"/>
+                                        </constraints>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="yQh-rs-jw4" firstAttribute="leading" secondItem="fr1-s8-0a2" secondAttribute="leading" id="Llw-DY-VVS"/>
+                                    <constraint firstAttribute="width" constant="343" id="OcD-0T-obE"/>
+                                    <constraint firstAttribute="trailing" secondItem="yQh-rs-jw4" secondAttribute="trailing" id="Q7z-l4-iT9"/>
+                                    <constraint firstItem="yQh-rs-jw4" firstAttribute="top" secondItem="fr1-s8-0a2" secondAttribute="top" id="drg-CT-ztg"/>
+                                    <constraint firstAttribute="height" constant="75" id="krP-gO-OHP"/>
+                                    <constraint firstAttribute="bottom" secondItem="yQh-rs-jw4" secondAttribute="bottom" constant="2" id="njf-CB-udP"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Xux-7d-Cvt" firstAttribute="leading" secondItem="HOY-2K-tFo" secondAttribute="leading" constant="16" id="4Mo-iU-LNl"/>
+                            <constraint firstItem="sHD-N1-wa0" firstAttribute="top" secondItem="Xux-7d-Cvt" secondAttribute="bottom" constant="451" id="BEJ-Hj-ttk"/>
+                            <constraint firstItem="fr1-s8-0a2" firstAttribute="leading" secondItem="HOY-2K-tFo" secondAttribute="leading" constant="16" id="MsB-dQ-elE"/>
+                            <constraint firstItem="Xux-7d-Cvt" firstAttribute="top" secondItem="fr1-s8-0a2" secondAttribute="bottom" constant="11" id="ShE-RP-vVS"/>
+                            <constraint firstItem="fr1-s8-0a2" firstAttribute="top" secondItem="ITj-GM-pdo" secondAttribute="bottom" constant="16" id="bfO-DE-z2f"/>
+                            <constraint firstAttribute="trailing" secondItem="fr1-s8-0a2" secondAttribute="trailing" constant="16" id="dck-4M-m6m"/>
+                            <constraint firstAttribute="trailing" secondItem="Xux-7d-Cvt" secondAttribute="trailing" constant="16" id="gOs-J3-pBY"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="SF0-4Y-GDt">
+                    <navigationItem key="navigationItem" title="Reset Password" id="SF0-4Y-GDt">
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="Fko-R8-5tp">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="8Xe-ln-q3K" id="1JB-kV-SQz"/>
                             </connections>
@@ -3642,12 +3674,13 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="resetButton" destination="Xux-7d-Cvt" id="as5-cw-9tj"/>
                         <outlet property="userEmail" destination="yQh-rs-jw4" id="gca-Dn-cp2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KIU-M3-Ns4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2476" y="2482"/>
+            <point key="canvasLocation" x="2475.5" y="2481.5"/>
         </scene>
         <!--Profile Edit-->
         <scene sceneID="fyV-TR-hj4">
@@ -4270,7 +4303,7 @@
                             <outlet property="delegate" destination="szY-bz-4Si" id="whR-IF-Rni"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" title="Mutual Relationships" id="qdN-VN-p6w">
+                    <navigationItem key="navigationItem" id="qdN-VN-p6w">
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="bm4-HY-yfQ">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>

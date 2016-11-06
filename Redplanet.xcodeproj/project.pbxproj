@@ -18,7 +18,6 @@
 		7E3F0EDA1DBFFEAA006BF522 /* StackPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */; };
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
 		7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */; };
-		7E3F0EF11DC085C2006BF522 /* SAConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EF01DC085C2006BF522 /* SAConfettiView.swift */; };
 		7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4065F71DC56589001E0C9C /* ShareMedia.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
 		7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8F1DB439060087454E /* PhotoAsset.swift */; };
@@ -191,7 +190,6 @@
 		7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StackPageView.swift; path = ../StackPageView.swift; sourceTree = "<group>"; };
 		7E3F0EE01DC08015006BF522 /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsCell.swift; sourceTree = "<group>"; };
-		7E3F0EF01DC085C2006BF522 /* SAConfettiView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SAConfettiView.swift; sourceTree = "<group>"; };
 		7E4065F71DC56589001E0C9C /* ShareMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMedia.swift; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		7E4CFF8F1DB439060087454E /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
@@ -474,14 +472,6 @@
 				7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */,
 			);
 			name = AboutUs;
-			sourceTree = "<group>";
-		};
-		7E3F0EF21DC086EF006BF522 /* SAConfettiView */ = {
-			isa = PBXGroup;
-			children = (
-				7E3F0EF01DC085C2006BF522 /* SAConfettiView.swift */,
-			);
-			name = SAConfettiView;
 			sourceTree = "<group>";
 		};
 		7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */ = {
@@ -992,7 +982,6 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
-				7E3F0EF21DC086EF006BF522 /* SAConfettiView */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
@@ -1573,7 +1562,6 @@
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
-				7E3F0EF11DC085C2006BF522 /* SAConfettiView.swift in Sources */,
 				7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */,
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,

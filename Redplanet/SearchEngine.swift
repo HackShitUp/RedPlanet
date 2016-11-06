@@ -103,6 +103,12 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     }
     
     
+    // Cancel
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        // Pop view controller
+        self.navigationController?.popViewController(animated: true)
+    }
+    
     
 
     // MARK: - Table view data source

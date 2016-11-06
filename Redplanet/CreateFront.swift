@@ -307,9 +307,26 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     
+    // Status bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Notifications"
+        }
+    }
+    
     
     
     override func viewDidLoad() {
@@ -324,7 +341,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
-        
+        // Stylize title
+        configureView()
         
         // MARK: - IGCMenuDataSource and Delegates
         menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
@@ -360,6 +378,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Stylize title
+        configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -367,6 +388,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Stylize title
+        configureView()
     }
     
 
@@ -401,6 +425,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Declare content's object
         cell.contentObject = myActivity[indexPath.row]
         
+        // Set user's object
+        cell.userObject = fromUsers[indexPath.row]
+        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -416,9 +443,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // (I) ME ================================================================================================================
         // =======================================================================================================================
 //        if activityType.selectedSegmentIndex == 0 {
-        
-            // Set user's object
-            cell.userObject = fromUsers[indexPath.row]
             
             
             // Fetch User Object
