@@ -547,7 +547,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                           title: "🚫\nReport") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report this Text Post?",
-                                                                          message: "Are you sure you'd like to report \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post?",
+                                                                          message: "Are you sure you'd like to report \(cell.rpUsername.text!.uppercased())'s Text Post?",
                                                                           preferredStyle: .alert)
                                             
                                             let yes = UIAlertAction(title: "yes",
@@ -558,7 +558,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                                         block["from"] = PFUser.current()!.username!
                                                                         block["fromUser"] = PFUser.current()!
                                                                         block["to"] = cell.rpUsername.text!
-                                                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
+                                                                        block["forObjectId"] = textPostObject.last!.objectId!
                                                                         block.saveInBackground(block: {
                                                                             (success: Bool, error: Error?) in
                                                                             if success {

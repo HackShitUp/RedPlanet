@@ -19,6 +19,11 @@
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
 		7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */; };
 		7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4065F71DC56589001E0C9C /* ShareMedia.swift */; };
+		7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077A1DD01F6800AA2413 /* VideoAsset.swift */; };
+		7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077C1DD01F8900AA2413 /* VideoCell.swift */; };
+		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
+		7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307811DD021A100AA2413 /* VideoViewController.swift */; };
+		7E43078A1DD0294F00AA2413 /* LibraryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307891DD0294F00AA2413 /* LibraryHeader.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
 		7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8F1DB439060087454E /* PhotoAsset.swift */; };
 		7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */; };
@@ -191,6 +196,11 @@
 		7E3F0EE01DC08015006BF522 /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
 		7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsCell.swift; sourceTree = "<group>"; };
 		7E4065F71DC56589001E0C9C /* ShareMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMedia.swift; sourceTree = "<group>"; };
+		7E43077A1DD01F6800AA2413 /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
+		7E43077C1DD01F8900AA2413 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		7E4307811DD021A100AA2413 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		7E4307891DD0294F00AA2413 /* LibraryHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryHeader.swift; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		7E4CFF8F1DB439060087454E /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhoto.swift; sourceTree = "<group>"; };
@@ -474,6 +484,24 @@
 			name = AboutUs;
 			sourceTree = "<group>";
 		};
+		7E43077E1DD01F8F00AA2413 /* VideoAsset */ = {
+			isa = PBXGroup;
+			children = (
+				7E43077A1DD01F6800AA2413 /* VideoAsset.swift */,
+				7E43077C1DD01F8900AA2413 /* VideoCell.swift */,
+			);
+			name = VideoAsset;
+			sourceTree = "<group>";
+		};
+		7E43077F1DD021A100AA2413 /* VideoViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7E4307801DD021A100AA2413 /* TimelineView.swift */,
+				7E4307811DD021A100AA2413 /* VideoViewController.swift */,
+			);
+			path = VideoViewController;
+			sourceTree = "<group>";
+		};
 		7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,6 +510,7 @@
 				7E4CFF9F1DB439720087454E /* ProfilePhoto */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
 				7E9955661DC99A98003D9D73 /* InTheMoment.swift */,
+				7E43077E1DD01F8F00AA2413 /* VideoAsset */,
 			);
 			name = SINGLE_CONTENT;
 			sourceTree = "<group>";
@@ -868,6 +897,7 @@
 			isa = PBXGroup;
 			children = (
 				7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */,
+				7E4307891DD0294F00AA2413 /* LibraryHeader.swift */,
 				7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */,
 			);
 			name = PhotosLibrary;
@@ -982,6 +1012,7 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
+				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
@@ -1505,11 +1536,13 @@
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
+				7E43078A1DD0294F00AA2413 /* LibraryHeader.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */,
+				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
 				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
@@ -1531,6 +1564,7 @@
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */,
+				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
@@ -1552,6 +1586,7 @@
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,
+				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
@@ -1561,6 +1596,7 @@
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
+				7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */,
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
 				7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */,
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,

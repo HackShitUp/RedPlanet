@@ -361,6 +361,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // == When user takes a photo and shares it with his/her friends on the spot
 
                 
+                // (F) Video
+                if object!["contentType"] as! String == "vi" {
+                    
+                }
+                
                 
                 // (3) Set time
                 let from = object!.createdAt!

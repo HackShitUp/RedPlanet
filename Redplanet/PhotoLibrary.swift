@@ -14,6 +14,10 @@ import MobileCoreServices
 import Photos
 import PhotosUI
 
+
+// Source type
+var libraryType: Int = 0
+
 class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
     
     // Variable to hold UIImagePickerController
@@ -23,7 +27,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     // Array to hold PHAssets
     var photoAssets = [PHAsset]()
     
-    
+    @IBOutlet weak var photosVideos: UISegmentedControl!
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
@@ -70,13 +74,37 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
     
     
+    // Function to fetch Videos
+    // V I D E O S
+    func fetchVideos() {
+        // Clear assets array
+        self.photoAssets.removeAll(keepingCapacity: false)
+        
+        
+        // Options for fetching assets
+        let options = PHFetchOptions()
+        options.includeAllBurstAssets = true
+        options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        
+        // Fetch assets
+        let results = PHAsset.fetchAssets(with: PHAssetMediaType.video, options: options)
+        results.enumerateObjects({ (photo: PHAsset, i: Int, Bool) in
+            // append PHAsset
+            self.photoAssets.append(photo)
+        })
+        
+        print("There are: \(self.photoAssets.count) photos")
+        
+        // Reload data
+        self.collectionView!.reloadData()
+    }
+    
     
     // UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         // Selected image
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        // TODO::
     }
     
     
@@ -99,15 +127,25 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Fetch Photos
-        fetchPhotos()
+        // Fetch assets depending on type
+        if libraryType == 0 {
+            // Fetch Photos
+            fetchPhotos()
+            
+        } else {
+            // Fetch Photos
+            fetchVideos()
+            
+        }
+        
+        
         
         // Stylize title
         configureView()
         
         
         // Hide TabBarController
-//        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -133,6 +171,63 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    
+    // Function to switch source
+    func switchType(sender: UISegmentedControl) -> Int {
+        if sender.selectedSegmentIndex == 0 {
+            // Fetch photos
+            fetchPhotos()
+            
+            // Set content type: photo
+            libraryType = 0
+            
+        } else {
+            // Fetch videos
+            fetchVideos()
+            
+            // Set content type: video
+            libraryType = 1
+            
+        }
+
+        
+        return libraryType
+    }
+    
+    
+    
+    
+    
+    
+    
+    // MARK: UICollectionViewHeaderSection datasource
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+
+        
+        // ofSize should be the same size of the headerView's label size:
+        return CGSize(width: self.view.frame.size.width, height: 45)
+    }
+
+    // MARK: UICollectionViewHeader
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        // Initialize header
+        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "libraryHeader", for: indexPath) as! LibraryHeader
+        
+        // Add function method to switch between sources
+        header.photosVideos.addTarget(self, action: #selector(switchType), for: .allEvents)
+        
+        return header
+    }
+    
+    
+    
+    
+    
 
 
     
@@ -174,14 +269,21 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoLibraryCell", for: indexPath) as! PhotoLibraryCell
 
+        
+        if libraryType == 0 {
+            mediaType = "photo"
+        } else {
+            mediaType = "video"
+        }
+        
         // Append PHAsset
         shareMediaAsset.append(photoAssets[indexPath.item])
         
         // Push VC
         let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
         self.navigationController!.pushViewController(shareMediaVC, animated: true)
+
     }
 
 }

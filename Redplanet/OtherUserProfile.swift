@@ -334,14 +334,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // ofSize should be the same size of the headerView's label size:
         return CGSize(width: self.view.frame.size.width, height: CGFloat(425 + label.frame.size.height))
     }
-    
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        return CGSize(width: self.view.frame.size.width, height: 35)
-    }
-    
-    
+
     // MARK: UICollectionViewHeader
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         

@@ -162,9 +162,20 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             // Append new profile photo
                                             changedProPicImg.append(self.rpUserProPic.image!)
                                             
-                                            // Push VC
+                                            // Present Popover
                                             let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-                                            self.navigationController?.pushViewController(newProPicVC, animated: true)
+                                            newProPicVC.modalPresentationStyle = .popover
+                                            newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+                                            
+                                            
+                                            let popOverVC = newProPicVC.popoverPresentationController
+                                            popOverVC?.permittedArrowDirections = .any
+                                            popOverVC?.delegate = self
+                                            popOverVC?.sourceView = self.rpUserProPic
+                                            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+                                            
+                                            
+                                            self.present(newProPicVC, animated: true, completion: nil)
                                             
                                         } else {
                                             print(error?.localizedDescription as Any)
@@ -239,9 +250,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     
     // Prevent forced sizes for ipad
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
+
     
     // Show PopOver
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -325,9 +337,20 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         editor.dismiss(animated: true, completion: { _ in })
         
         
-        // Push VC
+        // Present Popover
         let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-        self.navigationController?.pushViewController(newProPicVC, animated: true)
+        newProPicVC.modalPresentationStyle = .popover
+        newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+        
+        
+        let popOverVC = newProPicVC.popoverPresentationController
+        popOverVC?.permittedArrowDirections = .any
+        popOverVC?.delegate = self
+        popOverVC?.sourceView = self.rpUserProPic
+        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        
+        
+        self.present(newProPicVC, animated: true, completion: nil)
         
     }
     
@@ -336,9 +359,20 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         editor.dismiss(animated: true, completion: { _ in })
         
         
-        // Push VC
+        // Present Popover
         let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-        self.navigationController?.pushViewController(newProPicVC, animated: true)
+        newProPicVC.modalPresentationStyle = .popover
+        newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+        
+        
+        let popOverVC = newProPicVC.popoverPresentationController
+        popOverVC?.permittedArrowDirections = .any
+        popOverVC?.delegate = self
+        popOverVC?.sourceView = self.rpUserProPic
+        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        
+        
+        self.present(newProPicVC, animated: true, completion: nil)
     }
 
     

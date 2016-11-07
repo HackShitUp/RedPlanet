@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import KILabel
+import OneSignal
 
 class RelationshipRequestsCell: UICollectionViewCell {
     
@@ -97,15 +98,19 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                             
                                                             // Post Notification
                                                             // NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                            
-                                                            // TODO::
+
                                                             // Send Push Notification
-//                                                            OneSignal.defaultClient().postNotification(
-//                                                                ["contents":
-//                                                                    ["en": "\(PFUser.currentUser()!.username!) accepted your friend request"],
-//                                                                 "include_player_ids": ["\(self.userApnsId!)"]
-//                                                                ]
-//                                                            )
+                                                            // Handle optional chaining for user's apnsId
+                                                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                                                // MARK: - OneSignal
+                                                                // Send push notificaiton
+                                                                OneSignal.postNotification(
+                                                                    ["contents":
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                    ]
+                                                                )
+                                                            }
                                                             
                                                             
                                                             
@@ -205,12 +210,17 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                             
                                                             
                                                             // Send Push Notification
-//                                                            OneSignal.defaultClient().postNotification(
-//                                                                ["contents":
-//                                                                    ["en": "\(PFUser.currentUser()!.username!) accepted your follow request"],
-//                                                                 "include_player_ids": ["\(self.userApnsId!)"]
-//                                                                ]
-//                                                            )
+                                                            // Handle optional chaining for user's apnsId
+                                                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                                                // MARK: - OneSignal
+                                                                // Send push notificaiton
+                                                                OneSignal.postNotification(
+                                                                    ["contents":
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                    ]
+                                                                )
+                                                            }
                                                             
                                                             
                                                         } else {

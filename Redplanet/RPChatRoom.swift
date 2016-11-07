@@ -66,6 +66,39 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.navigationController!.popViewController(animated: true)
     }
     
+    @IBAction func moreButton(_ sender: Any) {
+        let alert = UIAlertController(title: nil,
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        let visit = UIAlertAction(title: "Visit Profile",
+            style: .default,
+            handler: {(alertAciont: UIAlertAction!) in
+                // Appned user's object
+                otherObject.append(chatUserObject.last!)
+                // Append user's username
+                otherName.append(chatUsername.last!)
+                
+                // Push VC
+                let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                self.navigationController?.pushViewController(otherVC, animated: true)
+        })
+        
+        let report = UIAlertAction(title: "Report",
+                                  style: .destructive,
+                                  handler: {(alertAction: UIAlertAction!) in
+                                    
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        alert.addAction(visit)
+        alert.addAction(report)
+        alert.addAction(cancel)
+//        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+    }
     
     // Query all of the user's chats
     func queryChats() {

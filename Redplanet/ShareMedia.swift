@@ -11,6 +11,8 @@ import CoreData
 import Photos
 import PhotosUI
 import AVFoundation
+import AVKit
+
 
 import Parse
 import ParseUI
@@ -24,9 +26,14 @@ var shareMediaAsset = [PHAsset]()
 // When taken photo w RPCamera
 var shareImageAssets = [UIImage]()
 
+// Media Type
+// Photo or Video
+var mediaType: String?
 
+// NSURL to hold Video data
+var videoData: NSURL?
 
-class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
+class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
 
     
     // Variable to hold parseFile
@@ -62,7 +69,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         self.present(activityViewController, animated: true, completion: nil)
     }
     
-    
+    @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBAction func editPhoto(_ sender: AnyObject) {
         // Present CLImageEditor
         let editor = CLImageEditor(image: self.mediaAsset.image!)
@@ -85,11 +92,80 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     // Function to zoom
     func zoom(sender: AnyObject) {
         
-        // Mark: - Agrume
-        let agrume = Agrume(image: self.mediaAsset.image!)
-        agrume.statusBarStyle = UIStatusBarStyle.lightContent
-        agrume.showFrom(self)
+        if mediaType == "photo" {
+            
+            // Mark: - Agrume
+            let agrume = Agrume(image: self.mediaAsset.image!)
+            agrume.statusBarStyle = UIStatusBarStyle.lightContent
+            agrume.showFrom(self)
+        } else {
+            
+            // Play the Video
+            playVideo()
+        }
     }
+    
+    
+    
+    
+    // Play V I D E O
+    func playVideo() {
+        
+        // Set video options
+        let videoOptions = PHVideoRequestOptions()
+        videoOptions.deliveryMode = .automatic
+        videoOptions.isNetworkAccessAllowed = true
+        videoOptions.version = .current
+        
+        /* Now get the video */
+        PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
+                                                       options: videoOptions,
+                                                       resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
+            
+                                                        /* This result handler is performed on a random thread but
+                                                         we want to do some UI work so let's switch to the main thread */
+            
+                                                        DispatchQueue.main.async(execute: {
+                                                            
+                                                            /* Did we get the URL to the video? */
+                                                            if let asset = asset as? AVURLAsset{
+                                                                
+                                                                videoData = asset.url as NSURL?
+                                                                
+                                                                
+                                                                let videoViewController = VideoViewController(videoURL: asset.url)
+                                                                videoViewController.modalPresentationStyle = .popover
+                                                                videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+                                                                
+
+                                                                
+                                                                let popOverVC = videoViewController.popoverPresentationController
+                                                                popOverVC?.permittedArrowDirections = .any
+                                                                popOverVC?.delegate = self
+                                                                popOverVC?.sourceView = self.mediaAsset
+                                                                popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+
+                                                                
+                                                                self.present(videoViewController, animated: true, completion: nil)
+
+
+                                                            } else {
+                                                                // Did not get the AVAssetUrl
+                                                                print("This is not a URL asset. Cannot play")
+                                                            }
+                                                            
+                                                        })
+        })
+        
+    }
+    
+    
+    
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
     
     
     
@@ -102,9 +178,16 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "New Photo"
+            if mediaType == "photo" {
+                self.title = "New Photo"
+            } else {
+                self.title = "New Video"
+            }
+            
         }
     }
+    
+    
     
     
     // Function to save photo
@@ -123,24 +206,49 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
     
     
+    
+    
     // Function to share photo
     func shareMedia() {
-        // Convert UIImage to NSData
-        let imageData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
-        // Change UIImage to PFFile
-        parseFile = PFFile(data: imageData!)
-        
-        
-        // Save to "Photos_Videos"
+
+        // Save to Newsfeeds
         let newsfeeds = PFObject(className: "Newsfeeds")
         newsfeeds["username"] = PFUser.current()!.username!
         newsfeeds["byUser"] = PFUser.current()!
-        newsfeeds["photoAsset"] = parseFile
-        newsfeeds["textPost"] = self.mediaCaption.text
-        newsfeeds["contentType"] = "ph"
-        if self.mediaCaption.text! == "Say something about this photo..." {
-            newsfeeds["textPost"] = ""
+        
+        // Determine Content Type
+        
+        if mediaType == "photo" {
+            // PHOTO
+            
+            // Convert UIImage to NSData
+            let imageData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
+            // Change UIImage to PFFile
+            parseFile = PFFile(data: imageData!)
+            newsfeeds["photoAsset"] = parseFile
+            newsfeeds["contentType"] = "ph"
+
+            
+        } else {
+            // VIDEO
+            
+//            let videoPath = videoData!.isFileURL
+//            let videoAsData = Data()
+//            [videoAsData.write(to: videoPath, options: nil)]
+//            parseFile = PFFile(data: videoData)
+            
+//            newsfeeds["videoAsset"] = parseFile
+//            newsfeeds["contentType"] = "vi"
         }
+        
+        
+        if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
+            newsfeeds["textPost"] = ""
+        } else {
+            newsfeeds["textPost"] = self.mediaCaption.text
+        }
+
+        // Finally, save...
         newsfeeds.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
@@ -154,22 +262,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 // Define #word
                 for var word in words {
                     
-                    
-                    // If url exists, shorten url
-                    //                                                    if word.hasPrefix("https://") || word.hasPrefix("http://") {
-                    //
-                    //                                                        let apiEndpoint = "http://tinyurl.com/api-create.php?url=\(word)"
-                    //                                                        let shortURL = try! String(contentsOf: NSURL(string: apiEndpoint)!, encoding: NSUTF8StringEncoding)
-                    //
-                    //                                                        print("SHORTURL: \(shortURL)")
-                    //
-                    //
-                    //                                                        textPosts["userTextPost"] = self.newTextPost.text!.stringByReplacingOccurrencesOfString("\(word)", withString: shortURL, options: NSStringCompareOptions.LiteralSearch, range: nil)
-                    //                                                        textPosts.saveInBackground()
-                    //
-                    //                                                    }
-                    
-                    
+
                     
                     // #####################
                     if word.hasPrefix("#") {
@@ -285,7 +378,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // MARK: - UITextViewDelegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.mediaCaption.text! == "Say something about this photo..." {
+        if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
             self.mediaCaption.text! = ""
         }
     }
@@ -435,6 +528,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        print("MEDIA ASSET TYPE IS: \(mediaType)")
+        
         // * Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -444,6 +540,18 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         self.tableView!.allowsSelection = true
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
+        
+        
+        // Set placeholder depending on media type
+        if mediaType == "photo" {
+            self.mediaCaption.text! = "Say something about this photo..."
+            // Enable edit button
+            editBarButton.isEnabled = true
+        } else {
+            self.mediaCaption.text! = "Say something about this video..."
+            // Disable edit button
+            editBarButton.isEnabled = false
+        }
         
         
         // (1) Make shareButton circular

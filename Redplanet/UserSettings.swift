@@ -19,6 +19,7 @@ var anonymity = true
 
 class UserSettings: UITableViewController, UINavigationControllerDelegate {
 
+    @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         self.navigationController!.popViewController(animated: true)
@@ -103,7 +104,13 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 4 {
-                
+                if privacy.isOn {
+                    // Private account
+                    print("private")
+                } else {
+                    // Public account
+                    print("public")
+                }
             }
             
             if indexPath.row == 5 {

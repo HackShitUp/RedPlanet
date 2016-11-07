@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import KILabel
+import OneSignal
 
 // Array to hold other user's relationships
 var oFriends = [PFObject]()
@@ -170,13 +171,18 @@ class OtherUserHeader: UICollectionReusableView {
                         self.followButton.isEnabled = true
                         
                         
-                        // Send push notification
-//                        OneSignal.defaultClient().postNotification(
-//                            ["contents":
-//                                ["en": "\(PFUser.currentUser()!.username!) asked to be friends"],
-//                             "include_player_ids": ["\(apnsId.last!)"]
-//                            ]
-//                        )
+                        // Handle optional chaining for user's apnsId
+                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                            // MARK: - OneSignal
+                            // Send push notificaiton
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) asked to be friends"],
+                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                ]
+                            )
+                        }
+
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -254,13 +260,18 @@ class OtherUserHeader: UICollectionReusableView {
                             self.followButton.isUserInteractionEnabled = true
                             self.followButton.isEnabled = true
                             
-//                            // Send push notification
-//                            OneSignal.defaultClient().postNotification(
-//                                ["contents":
-//                                    ["en": "\(PFUser.currentUser()!.username!) requested to follow you"],
-//                                 "include_player_ids": ["\(apnsId.last!)"]
-//                                ]
-//                            )
+                            
+                            // Handle optional chaining for user's apnsId
+                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                // MARK: - OneSignal
+                                // Send push notificaiton
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                    ]
+                                )
+                            }
                             
                         } else {
                             print(error?.localizedDescription as Any)
@@ -304,11 +315,18 @@ class OtherUserHeader: UICollectionReusableView {
                         if success {
                             print("Successfully sent notification: \(notifications)")
                             
-                            // Send push notification
-//                            OneSignal.defaultClient().postNotification(
-//                                ["contents": ["en": "\(PFUser.currentUser()!.username!) is now following you"],
-//                                 "include_player_ids": ["\(apnsId.last!)"]]
-//                            )
+
+                            // Handle optional chaining for user's apnsId
+                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                // MARK: - OneSignal
+                                // Send push notificaiton
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                    ]
+                                )
+                            }
                             
                             // Re enable buttons
                             self.friendButton.isUserInteractionEnabled = true
@@ -575,13 +593,17 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                         // Post Notification
                                                                                                         NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                                                         
-                                                                                                        // Send push notification
-//                                                                                                        OneSignal.defaultClient().postNotification(
-//                                                                                                            ["contents":
-//                                                                                                                ["en": "\(PFUser.currentUser()!.username!) asked to be friends"],
-//                                                                                                             "include_player_ids": ["\(apnsId.last!)"]
-//                                                                                                            ]
-//                                                                                                        )
+                                                                                                        // Handle optional chaining for user's apnsId
+                                                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                                                            // MARK: - OneSignal
+                                                                                                            // Send push notificaiton
+                                                                                                            OneSignal.postNotification(
+                                                                                                                ["contents":
+                                                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) asked to be friends"],
+                                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                                ]
+                                                                                                            )
+                                                                                                        }
                                                                                                         
                                                                                                     } else {
                                                                                                         print(error?.localizedDescription as Any)
@@ -661,12 +683,17 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         
                                                                                         
                                                                                         // Send push notification
-//                                                                                        OneSignal.defaultClient().postNotification(
-//                                                                                            ["contents":
-//                                                                                                ["en": "\(PFUser.currentUser()!.username!) requested to follow you"],
-//                                                                                             "include_player_ids": ["\(apnsId.last!)"]
-//                                                                                            ]
-//                                                                                        )
+                                                                                        // Handle optional chaining for user's apnsId
+                                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                                            // MARK: - OneSignal
+                                                                                            // Send push notificaiton
+                                                                                            OneSignal.postNotification(
+                                                                                                ["contents":
+                                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
+                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                ]
+                                                                                            )
+                                                                                        }
                                                                                         
                                                                                     } else {
                                                                                         print(error?.localizedDescription as Any)
@@ -714,13 +741,17 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                                         
                                                                                         
-                                                                                        // Send push notification
-//                                                                                        OneSignal.defaultClient().postNotification(
-//                                                                                            ["contents":
-//                                                                                                ["en": "\(PFUser.currentUser()!.username!) is now following you"],
-//                                                                                             "include_player_ids": ["\(apnsId.last!)"]
-//                                                                                            ]
-//                                                                                        )
+                                                                                        // Handle optional chaining for user's apnsId
+                                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                                            // MARK: - OneSignal
+                                                                                            // Send push notificaiton
+                                                                                            OneSignal.postNotification(
+                                                                                                ["contents":
+                                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
+                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                ]
+                                                                                            )
+                                                                                        }
                                                                                         
                                                                                     } else {
                                                                                         print(error?.localizedDescription as Any)
@@ -813,12 +844,17 @@ class OtherUserHeader: UICollectionReusableView {
                                                                         
                                                                         
                                                                         // Send push notification
-//                                                                        OneSignal.defaultClient().postNotification(
-//                                                                            ["contents":
-//                                                                                ["en": "\(PFUser.currentUser()!.username!) confirmed your friend request"],
-//                                                                             "include_player_ids": ["\(apnsId.last!)"]
-//                                                                            ]
-//                                                                        )
+                                                                        // Handle optional chaining for user's apnsId
+                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                            // MARK: - OneSignal
+                                                                            // Send push notificaiton
+                                                                            OneSignal.postNotification(
+                                                                                ["contents":
+                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                ]
+                                                                            )
+                                                                        }
                                                                         
                                                                     } else {
                                                                         print(error?.localizedDescription as Any)
@@ -1046,12 +1082,17 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
                                                                 // Send push notification
-//                                                                OneSignal.defaultClient().postNotification(
-//                                                                    ["contents":
-//                                                                        ["en": "\(PFUser.currentUser()!.username!) confirmed your follow request"],
-//                                                                     "include_player_ids": ["\(apnsId.last!)"]
-//                                                                    ]
-//                                                                )
+                                                                // Handle optional chaining for user's apnsId
+                                                                if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                    // MARK: - OneSignal
+                                                                    // Send push notificaiton
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
+                                                                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
                                                                 
                                                                 
                                                             } else {
@@ -1072,7 +1113,6 @@ class OtherUserHeader: UICollectionReusableView {
                                        style: .destructive,
                                        handler: {(alertAction: UIAlertAction!) in
                                         
-                                        // TODO::
                                         // Delete request
                                         let follower = PFQuery(className: "FollowMe")
                                         follower.whereKey("isFollowing", equalTo: false)
