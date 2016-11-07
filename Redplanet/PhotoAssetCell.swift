@@ -179,7 +179,7 @@ class PhotoAssetCell: UITableViewCell {
         // Append user's object
         otherObject.append(self.userObject!)
         // Append username
-        otherName.append(self.rpUsername.text!)
+        otherName.append(self.rpUsername.text!.lowercased())
         
         // Push VC
         let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
@@ -470,52 +470,111 @@ class PhotoAssetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // (1) Add tap to go to user's profile
+        // (1) Add user's profile photo tap to go to user's profile
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
         userTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(userTap)
         
-        // (2) Add tap gesture to zoom in
+        // (2) Add username tap to go to user's profile
+        let usernameTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        usernameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(usernameTap)
+        
+        
+        // (3) Add tap gesture to zoom in
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
         self.rpMedia.isUserInteractionEnabled = true
         self.rpMedia.addGestureRecognizer(zoomTap)
         
         
-        // (3) Add direct share tap
+        // (4) Add direct share tap
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
         
-        // (4) Add comment tap
+        // (5) Add comment tap
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
         
-        // (5) Add like button tap
+        // (6) Add like button tap
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
         
-        // (6) Add numberOfLikes tap
+        // (7) Add numberOfLikes tap
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
         
-        // (7) Add numberOfShares tap
+        // (8) Add numberOfShares tap
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showSharers))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
+        
+        
+        
+        
+        
+        // Handle @username tap
+        caption.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        
+        // Handle #object tap
+        caption.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            //            var mention = handle
+            //            mention = String(mention.characters.dropFirst())
+            //            hashtags.append(mention.lowercaseString)
+            //            let hashTags = self.delegate?.storyboard?.instantiateViewControllerWithIdentifier("hashTags") as! Hashtags
+            //            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        
+        
+        // Handle http: tap
+        caption.urlLinkTapHandler = { label, handle, range in
+            // Open url
+            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
+            self.delegate?.present(modalWeb, animated: true, completion: nil)
+        }
         
         
     }

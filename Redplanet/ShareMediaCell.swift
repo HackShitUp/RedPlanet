@@ -18,6 +18,7 @@ class ShareMediaCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpFullName: UILabel!
     @IBOutlet weak var rpUsername: UILabel!
+
     
 
     override func awakeFromNib() {

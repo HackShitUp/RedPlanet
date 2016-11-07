@@ -129,12 +129,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Send Push Notification to user
                 // Handle optional chaining
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    
+                    // MARK: - OneSignal
+                    // Send push notification
                     OneSignal.postNotification(
                         ["contents":
-                            ["en": "from \(PFUser.current()!.username!)"],
+                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
                          "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
                         ]
                     )
+                    
                 }
                 
                 // Reload data
@@ -290,6 +294,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(chatUserObject.last!)
+        
         // Query Chats
         queryChats()
         
@@ -313,7 +319,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(self.queryChats), name: rpChat, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
+        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -826,7 +833,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // (3) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Block") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
                                                                           message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",

@@ -63,22 +63,6 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                         })
                                         
                                         
-                                        // Save apnsId
-                                        if playerId.isEmpty {
-                                            PFUser.current()!["apnsId"] = ""
-                                        } else {
-                                            PFUser.current()!["apnsId"] = playerId.last!
-                                            PFUser.current()!.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved apnsId: \(PFUser.current()!)")
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                        
-                                        
                                     } else {
                                         print(error?.localizedDescription as Any)
                                         

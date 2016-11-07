@@ -13,6 +13,8 @@ import Social
 import Parse
 import ParseUI
 import Bolts
+import OneSignal
+
 
 
 
@@ -22,10 +24,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // Array to hold user objects
     var userObjects = [PFObject]()
+    var usernames = [String]()
     
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Dismiss VC
+        // Pop VC
         self.navigationController!.popViewController(animated: true)
     }
     
@@ -33,6 +36,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var characterCount: UILabel!
     @IBOutlet weak var tableView: UITableView!
+
+    
     @IBOutlet weak var fbShare: UIButton!
     @IBOutlet weak var twitterShare: UIButton!
     
@@ -73,6 +78,113 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 (success: Bool, error: Error?) in
                 if error == nil {
                     print("Saved \(newsfeeds)")
+                    
+                    
+                    
+                    // Check for hashtags
+                    // and user mentions
+                    let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                    
+                    
+                    // Define #word
+                    for var word in words {
+                        
+                        
+                        // #####################
+                        if word.hasPrefix("#") {
+                            // Cut all symbols
+                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                            word = word.trimmingCharacters(in: CharacterSet.symbols)
+                            
+                            // Save hashtag to server
+                            let hashtags = PFObject(className: "Hashtags")
+                            hashtags["hashtag"] = word.lowercased()
+                            hashtags["userHash"] = "#" + word.lowercased()
+                            hashtags["by"] = PFUser.current()!.username!
+                            hashtags["pointUser"] = PFUser.current()!
+                            hashtags["forObjectId"] =  newsfeeds.objectId!
+                            hashtags.saveInBackground(block: {
+                                (success: Bool, error: Error?) in
+                                if success {
+                                    print("#\(word) has been saved!")
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                        }
+                        // end #
+                        
+                        
+                        
+                        // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                        if word.hasPrefix("@") {
+                            // Cut all symbols
+                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                            word = word.trimmingCharacters(in: CharacterSet.symbols)
+                            
+                            print("The user's username to notify is: \(word)")
+                            // Search for user
+                            let theUsername = PFQuery(className: "_User")
+                            theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                            
+                            let realName = PFQuery(className: "_User")
+                            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                            
+                            let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+                            mention.findObjectsInBackground(block: {
+                                (objects: [PFObject]?, error: Error?) in
+                                if error == nil {
+                                    for object in objects! {
+                                        print("The user is:\(object)")
+                                        
+                                        
+                                        // Send notification to user
+                                        let notifications = PFObject(className: "Notifications")
+                                        notifications["from"] = PFUser.current()!.username!
+                                        notifications["fromUser"] = PFUser.current()
+                                        notifications["to"] = word
+                                        notifications["toUser"] = object
+                                        notifications["type"] = "tag tp"
+                                        notifications["forObjectId"] = newsfeeds.objectId!
+                                        notifications.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                
+                                                print("Successfully sent notification: \(notifications)")
+                                                
+                                                
+                                                // If user's apnsId is not nil
+                                                if object["apnsId"] != nil {
+                                                    // MARK: - OneSignal
+                                                    // Send push notification
+                                                    OneSignal.postNotification(
+                                                        ["contents":
+                                                            ["en": "\(PFUser.current()!.username!) tagged you in a Photo."],
+                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                        ]
+                                                    )
+                                                }
+
+                                                
+                                                
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                        
+                                        
+                                    }
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                    print("Couldn't find the user...")
+                                }
+                            })
+                            
+                        } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                    }
+                    
+                    
                     
                     // Send notification
                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -157,10 +269,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         countRemaining()
         
         let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        
         // Define word
         for var word in words {
             // #####################
             if word.hasPrefix("@") {
+                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
@@ -176,16 +290,23 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
+                        
+                        
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
+                        self.usernames.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
                             self.userObjects.append(object)
+                            self.usernames.append(object["username"] as! String)
                         }
+                        
+                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
+                // show table view and reload data
                 self.tableView!.isHidden = false
                 self.tableView!.reloadData()
             } else {
@@ -204,11 +325,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.userObjects.count
+        return self.usernames.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -261,6 +382,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         return cell
     }
     
+    
+    
+    // MARK: - UITableViewdelegeate Method
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
@@ -274,34 +398,17 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Replace text
-                // NSString.CompareOptions.literal
-//                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
-              self.textView.text! = self.textView.text!.replacingOccurrences(of: word, with: self.userObjects[indexPath.row].value(forKey: "username") as! String)
-
+                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.usernames[indexPath.row], options: String.CompareOptions.literal, range: nil)
             }
         }
-
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
+        self.usernames.removeAll(keepingCapacity: false)
         
         // Hide UITableView
         self.tableView!.isHidden = true
     }
-    
-    
-    
-    
-    // Function to dismissKeyboard
-    func dismissKeyboard() {
-        // Resign textView
-        self.textView!.resignFirstResponder()
-        
-        // Hide tableView
-        self.tableView!.isHidden = true
-    }
-    
-    
     
     
     
@@ -317,6 +424,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         // Hide tableView
         self.tableView!.isHidden = true
+        // Set Tableview properties
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -335,13 +445,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
         
-        
-        // Add view tap to dismiss keyboard
-        let viewTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        viewTap.numberOfTapsRequired = 1
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(viewTap)
-
         
         // TODO:::
         // Tap to share privately

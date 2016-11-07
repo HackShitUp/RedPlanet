@@ -47,9 +47,6 @@ import OneSignal
 var username = [String]()
 
 
-// Current User's OneSignal PlayerID ==> Connected to Parse's PFUser.currentUser()!'s apnsId
-var playerId = [String]()
-
 
 // User's relationships: friends, followers, and following
 var myFriends = [PFObject]()
@@ -89,49 +86,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         OneSignal.initWithLaunchOptions(launchOptions,
                                         appId: "571bbb3a-3612-4496-b3b4-12623256782a",
                                         handleNotificationReceived: { (notification) in
-            print("Received Notification - \(notification?.payload.notificationID)")
+                                            
+                                            
+                                            // This block gets called when the user reacts to a notification received
+                                            let payload = notification?.payload
+                                            let fullMessage = payload?.title
+                                            
+                                            print("\(fullMessage)")
+                                            
+                                            // Banner for notification
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!)") {
+                                                // If PFUser.currentUser()! caused
+                                                // Sent notification
+                                                // Set "invisible banner"
+                                                let banner = Banner(title: "",
+                                                                    subtitle: "",
+                                                                    image: nil,
+                                                                    backgroundColor: UIColor.clear
+                                                )
+                                                
+                                                banner.dismissesOnTap = true
+                                                banner.show(duration: 3.0)
+                                                
+                                            } else if fullMessage!.hasPrefix("from") && chatUsername.count != 0 && fullMessage!.hasSuffix(chatUsername.last!.uppercased()) {
+                                                // if notificaiton titles: "from <Username>"
+                                                // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
+                                                // Reload data for SlackChat
+                                                
+                                                NotificationCenter.default.post(name: rpChat, object: nil)
+                                                
+                                                
+                                            } else {
+                                                // Set visible banner
+                                                let banner = Banner(title: "\(fullMessage!)",
+                                                    subtitle: "",
+                                                    image: nil,
+                                                    backgroundColor: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                                                )
+                                                banner.dismissesOnTap = true
+                                                banner.show(duration: 3.0)
+                                            }
+                                            
+                                            
+                                            
+                                            
             }, handleNotificationAction: { (result) in
                 
-                // This block gets called when the user reacts to a notification received
-                let payload = result?.notification.payload
-                let fullMessage = payload?.title
-                
-                print("\(fullMessage)")
-                
-                // Banner for notification
-                if fullMessage!.hasPrefix("\(PFUser.current()!.username!)") {
-                    // If PFUser.currentUser()! caused
-                    // Sent notification
-                    // Set "invisible banner"
-                    let banner = Banner(title: "",
-                                        subtitle: "",
-                                        image: nil,
-                                        backgroundColor: UIColor.clear
-                    )
-                    banner.dismissesOnTap = true
-                    banner.show(duration: 3.0)
-                    
-                } else if fullMessage!.hasPrefix("from") && chatUsername.count != 0 && fullMessage!.hasSuffix(chatUsername.last!) {
-                    // if notificaiton titles: "from <Username>"
-                    // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
-                    // Reload data for SlackChat
-
-                    // Post notification
-                    NotificationCenter.default.post(name: rpChat, object: nil)
-                    
-                } else {
-                    // Set visible banner
-                    let banner = Banner(title: "\(fullMessage)",
-                        subtitle: "",
-                        image: nil,
-                        backgroundColor: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-                    )
-                    banner.dismissesOnTap = true
-                    banner.show(duration: 3.0)
-                }
+                // Add action
+               
 
                 
-                print(fullMessage)
             }, settings: [kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInFocusDisplayOption : false])
         
         
@@ -156,6 +160,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // this is also the user's "apnsId" in the Parse-Server
         OneSignal.idsAvailable({ (userId, pushToken) in
             print("UserId:%@", userId)
+            
+            if PFUser.current() != nil {
+                PFUser.current()!["apnsId"] = userId
+                PFUser.current()!.saveInBackground()
+            }
+            
             if (pushToken != nil) {
                 print("pushToken:%@", pushToken)
             }
@@ -170,8 +180,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        // Clear array
-        playerId.removeAll(keepingCapacity: false)
+        
         // Print error
         print(error.localizedDescription)
     }

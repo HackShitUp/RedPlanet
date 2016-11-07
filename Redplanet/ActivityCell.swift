@@ -211,6 +211,9 @@ class ActivityCell: UITableViewCell {
                             
                             
                         }
+                        
+                        
+                        
                     } else {
                         print(error?.localizedDescription as Any)
                         
@@ -312,22 +315,45 @@ class ActivityCell: UITableViewCell {
         
         
         // T A G
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you") {
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a text post") {
             
         }
-        // END: "tagged you in a comment"
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a photo") {
+            
+        }
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a profile photo") {
+            
+        }
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a comment") {
+            
+        }
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a space post") {
+            
+        }
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a video") {
+            
+        }
         
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a moment") {
+            
+        }
         
-        /////////////////////////////////
-        // R E L A T I O N S H I P S   //
-        /////////////////////////////////
-        // R E Q U E S T E D     T O     F O L L O W     Y O U
-        // A S K E D     T O     B E     F R I E N D S
+        // end TAG
+ 
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////   R E L A T I O N S H I P S   R E Q U E S T S   ////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        // requested to follow you
+        // asked to be friends
         if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "asked to be friends" {
             // Push VC
             let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
@@ -335,32 +361,39 @@ class ActivityCell: UITableViewCell {
         }
         
         
-        
-        
-        
-        // L E V E L    3
-        // I S     N O W     F R I E N D S     W I T H     Y O U
+        // is now friends with you
         if self.activity.titleLabel!.text! == "is now friends with you" {
+            // Append user's object
+            otherObject.append(self.userObject!)
+            // Append user's username
+            otherName.append(self.userObject!.value(forKey: "username") as! String)
             
+            // Push VC
+            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+            self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
+
         }
-        
-        
-        
-        
-        
-        
-        // L E V E L    3
-        // S T A R T E D     F O L L O W I N G     Y O U
+
+
+        // started following you
         if self.activity.titleLabel!.text! == "started following you" {
+            // Append user's object
+            otherObject.append(self.userObject!)
+            // Append user's username
+            otherName.append(self.userObject!.value(forKey: "username") as! String)
+            
+            // Push VC
+            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+            self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
 
-        } ////////// E N D -----> R E L A T I O N S H I P S
+        }
+        ////////// E N D -----> R E L A T I O N S H I P S
         
         
         
 
-        // L E V E L    3
-        // W R O T E      O N     Y O U R     W A L L
-        if self.activity.titleLabel!.text!.hasPrefix("wrote on") {
+        // WRote in Your Space
+        if self.activity.titleLabel!.text!.hasPrefix("wrote in") {
             // TODO
         }
 

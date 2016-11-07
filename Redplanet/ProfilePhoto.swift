@@ -260,29 +260,47 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-        // (E) Logic what to show : Seconds, minutes, hours, days, or weeks
+        // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
-            cell.time.text = "now"
+            cell.time.text = "right now"
         }
         
         if difference.second! > 0 && difference.minute! == 0 {
-            cell.time.text = "\(difference.second!) seconds ago"
+            if difference.second! == 1 {
+                cell.time.text = "1 second ago"
+            } else {
+                cell.time.text = "\(difference.second!) seconds ago"
+            }
         }
         
         if difference.minute! > 0 && difference.hour! == 0 {
-            cell.time.text = "\(difference.minute!) minutes ago"
+            if difference.minute! == 1 {
+                cell.time.text = "1 minute ago"
+            } else {
+                cell.time.text = "\(difference.minute!) minutes ago"
+            }
         }
         
         if difference.hour! > 0 && difference.day! == 0 {
-            cell.time.text = "\(difference.hour!) hours ago"
+            if difference.hour! == 1 {
+                cell.time.text = "1 hour ago"
+            } else {
+                cell.time.text = "\(difference.hour!) hours ago"
+            }
         }
         
         if difference.day! > 0 && difference.weekOfMonth! == 0 {
-            cell.time.text = "\(difference.day!) days ago"
+            if difference.day! == 1 {
+                cell.time.text = "1 day ago"
+            } else {
+                cell.time.text = "\(difference.day!) days ago"
+            }
         }
         
         if difference.weekOfMonth! > 0 {
-            cell.time.text = "\(difference.weekOfMonth!) weeks ago"
+            let createdDate = DateFormatter()
+            createdDate.dateFormat = "MMM d, yyyy"
+            cell.time.text = createdDate.string(from: proPicObject.last!.createdAt!)
         }
         
         

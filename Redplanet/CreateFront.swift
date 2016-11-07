@@ -21,19 +21,7 @@ import Bolts
 
 class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate {
     
-    @IBOutlet weak var activityType: UISegmentedControl!
-    @IBOutlet weak var tableView: UITableView!
     
-    
-    // FRIENDS
-    // Array to hold friends' notifications
-//    var friendActivity = [PFObject]()
-    
-    // Array to hold <fromUser> pointer objects
-//    var friendFromUsers = [PFObject]()
-    
-    // Array to hold fromUser Objects
-//    var toUsers = [PFObject]()
     
     
     // NOTIFICATIONs
@@ -55,7 +43,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Page size
     var page: Int = 25
+    
+    
+    @IBOutlet weak var tableView: UITableView!
 
+    
+    
     
     // Function to access camera
     func takePhoto() {
@@ -181,49 +174,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         })
     }
 
-    
-    
-    /*
-    // Query Friends' Activity
-    func queryActivity() {
-        
-        // Fetch Relationships appDelegate
-        appDelegate.queryRelationships()
-        
-        // Fetch Friends' Activity
-        let notifications = PFQuery(className: "Notifications")
-        notifications.includeKey("fromUser")
-        notifications.includeKey("toUser")
-        notifications.whereKey("fromUser", containedIn: myFriends)
-        notifications.whereKey("toUser", notEqualTo: PFUser.current()!)
-        notifications.limit = self.page
-        notifications.order(byDescending: "createdAt")
-        notifications.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear array
-                self.friendActivity.removeAll(keepingCapacity: false)
-                self.friendFromUsers.removeAll(keepingCapacity: false)
-                self.toUsers.removeAll(keepingCapacity: false)
-                
-                
-                // Append objects
-                for object in objects! {
-                    self.friendActivity.append(object)
-                    self.friendFromUsers.append(object["fromUser"] as! PFUser)
-                    self.toUsers.append(object["toUser"] as! PFUser)
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-            
-            // Reload Data
-            self.tableView!.reloadData()
-        })
-    }
-    */
     
     
     // Query Notifications
@@ -379,6 +329,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         
+        // query Notifications
+        queryNotifications()
+        
         // Stylize title
         configureView()
     }
@@ -391,6 +344,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Stylize title
         configureView()
+        
+        // Query notifications
+        queryNotifications()
     }
     
 
@@ -423,11 +379,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.delegate = self
         
         // Declare content's object
+        // in Notifications' <forObjectId>
         cell.contentObject = myActivity[indexPath.row]
         
-        // Set user's object
-        cell.userObject = fromUsers[indexPath.row]
-        
+
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -439,303 +394,189 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // =======================================================================================================================
-        // (I) ME ================================================================================================================
-        // =======================================================================================================================
-//        if activityType.selectedSegmentIndex == 0 {
-            
-            
-            // Fetch User Object
-            fromUsers[indexPath.row].fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Set Username
-                    cell.rpUsername.setTitle("\(object!["realNameOfUser"] as! String)", for: .normal)
-                    
-                    // (2) Get and user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set Profile Photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
-                            }
-                        })
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
-            
-            
-            // Friend Requested
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "friend requested" {
-                cell.activity.setTitle("asked to be friends", for: .normal)
-            }
-            
-            // Friended
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "friended" {
-                cell.activity.setTitle("is now friends with you", for: .normal)
-            }
-            
-            // Follow Requested
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
-                cell.activity.setTitle("asked to follow you", for: .normal)
-            }
-            
-            // Followed
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
-                cell.activity.setTitle("is now following you", for: .normal)
-            }
-            
-            
-            // Space
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "wall" {
-                cell.activity.setTitle("wrote in your Space", for: .normal)
-            }
-            
-            // View
-            // Friended
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "view" {
-                cell.activity.setTitle("viewed your profile", for: .normal)
-            }
-            
-            
-
-            
-            
-            
-            // Liked Media
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "like pv" {
-                cell.activity.setTitle("liked your photo", for: .normal)
-            }
-            
-            // Liked Text Post
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "like tp" {
-                cell.activity.setTitle("liked your text post", for: .normal)
-            }
-            
-            // Liked Profile Photo
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "like pp" {
-                cell.activity.setTitle("liked your profile photo", for: .normal)
-            }
-            
-            // Liked Space Post
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "like wa" {
-                cell.activity.setTitle("liked your space post", for: .normal)
-            }
-            
-            // Liked Comment
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
-                cell.activity.setTitle("liked your comment", for: .normal)
-            }
-            
-            
-            
-
-            // Tag in Media
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "tag pv" {
-                cell.activity.setTitle("tagged you in a photo", for: .normal)
-            }
-            
-            // Tag in Text Post
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "tag tp" {
-                cell.activity.setTitle("tagged you in a text post", for: .normal)
-            }
-            
-            // Tag in Profile Photo
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "tag pp" {
-                cell.activity.setTitle("tagged you in a profile photo", for: .normal)
-            }
-            
-            // Tag in Space Post
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "tag wa" {
-                cell.activity.setTitle("tagged you in a space post", for: .normal)
-            }
-            
-            // Tag in comment
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "tag co" {
-                cell.activity.setTitle("tagged you in a comment", for: .normal)
-            }
-            
-            
-            
-            
-            
-            // Comment
-            if myActivity[indexPath.row].value(forKey: "type") as! String == "comment" {
-                cell.activity.setTitle("commented on your content", for: .normal)
-            }
-            
-            
-            // Set time
-            let from = myActivity[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.time.text = "now"
-            }
-            
-            if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!)s ago"
-            }
-            
-            if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!)m ago"
-            }
-            
-            if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!)h ago"
-            }
-            
-            if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!)d ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!)w ago"
-            }
-            
-            
-            
-        /*
-        } else {
-            // =======================================================================================================================
-            // (II) FRIENDS ==========================================================================================================
-            // =======================================================================================================================
-            
-            // POINTER ===> <fromUser>
-            // Point to User Object
-            
-            
-            // Set user's object
-            cell.userObject = friendFromUsers[indexPath.row]
-            
-            
-            // (1) Set username
-            cell.rpUsername.setTitle("\(friendFromUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)", for: .normal)
-            
-            // (2) Get and set user's profile photo
-            if let proPic = friendFromUsers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                proPic.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set Profile Photo
-                        cell.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Set default
-                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
-                    }
-                })
-            }
-            
-            
-            // (3) Set activity titles...
-            toUsers[indexPath.row].fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // Friended, Followed,
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "friended" {
-                        cell.activity.setTitle("is now friends with \(object!["username"] as! String)", for: .normal)
-                    }
-                    
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
-                        cell.activity.setTitle("is now following \(object!["username"] as! String)", for: .normal)
-                    }
-                    
-                    
-                    
-                    
-                    // Liked
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "like pv" {
-                        cell.activity.setTitle("liked \(object!["username"] as! String)'s photo", for: .normal)
-                    }
-                    
-                    
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "like tp" {
-                        cell.activity.setTitle("liked \(object!["username"] as! String)'s text post", for: .normal)
-                    }
-                    
-                    
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "like pp" {
-                        cell.activity.setTitle("liked \(object!["username"] as! String)'s profile photo", for: .normal)
-                    }
-                    
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "like wa" {
-                        cell.activity.setTitle("liked \(object!["username"] as! String)'s space post", for: .normal)
-                    }
-                    
-                    
-                    //            if friendActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
-                    //
-                    //            }
-                    
-                    
-                    
-                    
-                    // Comment
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "comment" {
-                        cell.activity.setTitle("commented on \(object!["username"] as! String)'s content", for: .normal)
-                    }
-                    
-                    // Space Post
-                    if self.friendActivity[indexPath.row].value(forKey: "type") as! String == "wall" {
-                        cell.activity.setTitle("wrote in \(object!["username"] as! String)'s space", for: .normal)
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
-            
-            
-            
-            // (4) Set time
-            let from = friendActivity[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.time.text = "now"
-            }
-            
-            if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!)s ago"
-            }
-            
-            if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!)m ago"
-            }
-            
-            if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!)h ago"
-            }
-            
-            if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!)d ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!)w ago"
-            }
-            
-            
-        }
-        */
         
+        // (1) Set user's object
+        cell.userObject = fromUsers[indexPath.row]
+        
+       
+        // (2) Fetch User Object
+        fromUsers[indexPath.row].fetchIfNeededInBackground(block: {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Set Username
+                cell.rpUsername.setTitle("\(object!["realNameOfUser"] as! String)", for: .normal)
+                
+                // (2) Get and user's profile photo
+                if let proPic = object!["userProfilePicture"] as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set Profile Photo
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                        }
+                    })
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        
+        
+        
+        // (3) Set title of activity
+        
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== R E L A T I O N S H I P S ---------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+        
+        
+        
+        // Friend Requested
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "friend requested" {
+            cell.activity.setTitle("asked to be friends", for: .normal)
+        }
+        
+        // Friended
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "friended" {
+            cell.activity.setTitle("is now friends with you", for: .normal)
+        }
+        
+        // Follow Requested
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
+            cell.activity.setTitle("asked to follow you", for: .normal)
+        }
+        
+        // Followed
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
+            cell.activity.setTitle("started following you", for: .normal)
+        }
+        
+        
+        
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== S P A C E -------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+
+        // Space
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "wall" {
+            cell.activity.setTitle("wrote in your Space", for: .normal)
+        }
+
+        
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== L I K E ---------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+
+        
+        // Liked Text Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like tp" {
+            cell.activity.setTitle("liked your text post", for: .normal)
+        }
+        
+        // Liked Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like ph" {
+            cell.activity.setTitle("liked your photo", for: .normal)
+        }
+        
+        // Liked Profile Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like pp" {
+            cell.activity.setTitle("liked your profile photo", for: .normal)
+        }
+        
+        // Liked Space Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like wa" {
+            cell.activity.setTitle("liked your space post", for: .normal)
+        }
+        
+        // Liked Comment
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
+            cell.activity.setTitle("liked your comment", for: .normal)
+        }
+        
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== T A G -----------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+        
+        // Tag in Text Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag tp" {
+            cell.activity.setTitle("tagged you in a text post", for: .normal)
+        }
+
+        // Tag in Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag ph" {
+            cell.activity.setTitle("tagged you in a photo", for: .normal)
+        }
+        
+        // Tag in Profile Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag pp" {
+            cell.activity.setTitle("tagged you in a profile photo", for: .normal)
+        }
+        
+        // Tag in Space Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag wa" {
+            cell.activity.setTitle("tagged you in a space post", for: .normal)
+        }
+        
+        // Tag in comment
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag co" {
+            cell.activity.setTitle("tagged you in a comment", for: .normal)
+        }
+        
+        
+        
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== C O M M E N T ---------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // Comment
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "comment" {
+            cell.activity.setTitle("commented on your content", for: .normal)
+        }
+        
+        
+        
+        
+        
+        // (4) Set time
+        let from = myActivity[indexPath.row].createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
+        // logic what to show : Seconds, minutes, hours, days, or weeks
+        // logic what to show : Seconds, minutes, hours, days, or weeks
+        if difference.second! <= 0 {
+            cell.time.text = "now"
+        }
+        
+        if difference.second! > 0 && difference.minute! == 0 {
+            cell.time.text = "\(difference.second!)s ago"
+        }
+        
+        if difference.minute! > 0 && difference.hour! == 0 {
+            cell.time.text = "\(difference.minute!)m ago"
+        }
+        
+        if difference.hour! > 0 && difference.day! == 0 {
+            cell.time.text = "\(difference.hour!)h ago"
+        }
+        
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            cell.time.text = "\(difference.day!)d ago"
+        }
+        
+        if difference.weekOfMonth! > 0 {
+            cell.time.text = "\(difference.weekOfMonth!)w ago"
+        }
         
         
         return cell
