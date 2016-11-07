@@ -363,7 +363,17 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (F) Video
                 if object!["contentType"] as! String == "vi" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
                     
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "igcVideo")
                 }
                 
                 
@@ -553,9 +563,24 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         */
         
         
+        // VIDEO
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+            if let video = self.friendsContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                video.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        
+                        
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+        }
         
 
-    }
+    } // end didSelectRowAt
     
     
     

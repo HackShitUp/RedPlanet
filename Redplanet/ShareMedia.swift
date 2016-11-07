@@ -162,6 +162,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     
     
+    
+    
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
@@ -210,44 +212,63 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Function to share photo
     func shareMedia() {
-
-        // Save to Newsfeeds
-        let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["byUser"] = PFUser.current()!
         
         // Determine Content Type
-        
         if mediaType == "photo" {
             // PHOTO
             
-            // Convert UIImage to NSData
-            let imageData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
-            // Change UIImage to PFFile
-            parseFile = PFFile(data: imageData!)
-            newsfeeds["photoAsset"] = parseFile
-            newsfeeds["contentType"] = "ph"
-
+            // Share Photo
+            sharePhotoData()
+            
             
         } else {
             // VIDEO
             
-//            let videoPath = videoData!.isFileURL
-//            let videoAsData = Data()
-//            [videoAsData.write(to: videoPath, options: nil)]
-//            parseFile = PFFile(data: videoData)
-            
-//            newsfeeds["videoAsset"] = parseFile
-//            newsfeeds["contentType"] = "vi"
-        }
+            // Share Video
+            shareVideoData()
+
+        } // end contentType Determination
         
         
+        // Clear values (?)
+        // and arrays (?)
+        
+        
+        
+        // Send notification
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        
+        // Push Show MasterTab
+        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+        UIApplication.shared.keyWindow?.makeKeyAndVisible()
+        UIApplication.shared.keyWindow?.rootViewController = masterTab
+    }
+    
+    
+    
+    
+    
+    
+    
+    // Function to share photo data
+    func sharePhotoData() {
+        // Save to Newsfeeds
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["byUser"] = PFUser.current()!
+        // Convert UIImage to NSData
+        let imageData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
+        // Change UIImage to PFFile
+        parseFile = PFFile(data: imageData!)
+        newsfeeds["photoAsset"] = parseFile
+        newsfeeds["contentType"] = "ph"
         if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
             newsfeeds["textPost"] = ""
         } else {
             newsfeeds["textPost"] = self.mediaCaption.text
         }
-
+        
         // Finally, save...
         newsfeeds.saveInBackground {
             (success: Bool, error: Error?) in
@@ -257,12 +278,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 // Check for hashtags
                 // and user mentions
                 let words: [String] = self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-
+                
                 
                 // Define #word
                 for var word in words {
                     
-
+                    
                     
                     // #####################
                     if word.hasPrefix("#") {
@@ -354,25 +375,189 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                         
                     } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
                 }
-
-                
-                
-                // Send notification
-                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                
-                // Push Show MasterTab
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                UIApplication.shared.keyWindow?.rootViewController = masterTab
                 
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
+        
 
     }
+    
+    
+    
+    // Function to share video data
+    func shareVideoData() {
+        
+        // Set video options
+        let videoOptions = PHVideoRequestOptions()
+        videoOptions.deliveryMode = .automatic
+        videoOptions.isNetworkAccessAllowed = true
+        videoOptions.version = .current
+        
+        PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
+                                               options: videoOptions,
+                                               resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
+                                                
+                                                /* This result handler is performed on a random thread but
+                                                 we want to do some UI work so let's switch to the main thread */
+                                                
+                                                DispatchQueue.main.async(execute: {
+                                                    
+                                                    /* Did we get the URL to the video? */
+                                                    if let asset = asset as? AVURLAsset{
+                                                        
+                                                        videoData = asset.url as NSURL?
+                                                        let videoPath = videoData!.filePathURL
+                                                        let videoAsData = NSData(contentsOf: videoPath!)
+                                                        videoAsData?.write(to: videoPath!, atomically: true)
+                                                        self.parseFile = PFFile(data: videoAsData as! Data)
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        // Save to Newsfeeds
+                                                        let newsfeeds = PFObject(className: "Newsfeeds")
+                                                        newsfeeds["username"] = PFUser.current()!.username!
+                                                        newsfeeds["byUser"] = PFUser.current()!
+                                                        if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
+                                                            newsfeeds["textPost"] = ""
+                                                        } else {
+                                                            newsfeeds["textPost"] = self.mediaCaption.text
+                                                        }
+                                                        newsfeeds["videoAsset"] = self.parseFile
+                                                        newsfeeds["contentType"] = "vi"
+                                                        
+                                                        // Finally, save...
+                                                        newsfeeds.saveInBackground {
+                                                            (success: Bool, error: Error?) in
+                                                            if error == nil {
+                                                                print("Successfully shared object: \(newsfeeds)")
+                                                                
+                                                                // Check for hashtags
+                                                                // and user mentions
+                                                                let words: [String] = self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                                                                
+                                                                
+                                                                // Define #word
+                                                                for var word in words {
+                                                                    
+                                                                    
+                                                                    
+                                                                    // #####################
+                                                                    if word.hasPrefix("#") {
+                                                                        // Cut all symbols
+                                                                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                                                        word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                                                        
+                                                                        // Save hashtag to server
+                                                                        let hashtags = PFObject(className: "Hashtags")
+                                                                        hashtags["hashtag"] = word.lowercased()
+                                                                        hashtags["userHash"] = "#" + word.lowercased()
+                                                                        hashtags["by"] = PFUser.current()!.username!
+                                                                        hashtags["pointUser"] = PFUser.current()!
+                                                                        hashtags["forObjectId"] =  newsfeeds.objectId!
+                                                                        hashtags.saveInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("#\(word) has been saved!")
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
+                                                                    }
+                                                                    
+                                                                    
+                                                                    
+                                                                    // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                                                                    if word.hasPrefix("@") {
+                                                                        // Cut all symbols
+                                                                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                                                        word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                                                        
+                                                                        print("The user's username to notify is: \(word)")
+                                                                        // Search for user
+                                                                        let theUsername = PFQuery(className: "_User")
+                                                                        theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                                                                        
+                                                                        let realName = PFQuery(className: "_User")
+                                                                        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                                                                        
+                                                                        let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+                                                                        mention.findObjectsInBackground(block: {
+                                                                            (objects: [PFObject]?, error: Error?) in
+                                                                            if error == nil {
+                                                                                for object in objects! {
+                                                                                    print("The user is:\(object)")
+                                                                                    
+                                                                                    
+                                                                                    // Send notification to user
+                                                                                    let notifications = PFObject(className: "Notifications")
+                                                                                    notifications["from"] = PFUser.current()!.username!
+                                                                                    notifications["fromUser"] = PFUser.current()
+                                                                                    notifications["to"] = word
+                                                                                    notifications["toUser"] = object
+                                                                                    notifications["type"] = "tag ph"
+                                                                                    notifications["forObjectId"] = newsfeeds.objectId!
+                                                                                    notifications.saveInBackground(block: {
+                                                                                        (success: Bool, error: Error?) in
+                                                                                        if success {
+                                                                                            
+                                                                                            print("Successfully sent notification: \(notifications)")
+                                                                                            
+                                                                                            // If user's apnsId is not nil
+                                                                                            if object["apnsId"] != nil {
+                                                                                                // MARK: - OneSignal
+                                                                                                // Send push notification
+                                                                                                OneSignal.postNotification(
+                                                                                                    ["contents":
+                                                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Photo."],
+                                                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                                                    ]
+                                                                                                )
+                                                                                            }
+                                                                                            
+                                                                                            
+                                                                                            
+                                                                                        } else {
+                                                                                            print(error?.localizedDescription as Any)
+                                                                                        }
+                                                                                    })
+                                                                                    
+                                                                                    
+                                                                                }
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                                print("Couldn't find the user...")
+                                                                            }
+                                                                        })
+                                                                        
+                                                                    } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                                                                }
+                                                                
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        }
+
+                                                        
+                                                    } else {
+                                                        // Did not get the AVAssetUrl
+                                                        print("This is not a URL asset. Cannot play")
+                                                    }
+                                                    
+                                                })
+        })
+    }
+
+    
+    
+    
+    
+    
+    
     
     
     
