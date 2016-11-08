@@ -520,9 +520,13 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                          title: "Edit") { (UITableViewRowAction, indexPath) in
                                             
                                             
+                                            // Append object
+                                            editObjects.append(textPostObject.last!)                                            
                                             
-                                            // TODO::
-                                            // Edit Content
+                                            // Push VC
+                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                            self.navigationController?.pushViewController(editVC, animated: true)
+                                            
                                             
                                             // Close cell
                                             self.tableView!.setEditing(false, animated: true)

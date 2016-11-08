@@ -145,6 +145,7 @@
 		7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B11DB35B6900437219 /* CustomCamera.swift */; };
 		7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B71DB36EE900437219 /* ActivityCell.swift */; };
 		7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1BC1DB3766200437219 /* CreateFront.swift */; };
+		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */; };
 		7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */; };
 		7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */; };
@@ -386,6 +387,7 @@
 		7EC5D1B71DB36EE900437219 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redplanet.entitlements; sourceTree = "<group>"; };
 		7EC5D1BC1DB3766200437219 /* CreateFront.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFront.swift; sourceTree = "<group>"; };
+		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriendsCell.swift; sourceTree = "<group>"; };
 		7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowersCell.swift; sourceTree = "<group>"; };
 		7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowingCell.swift; sourceTree = "<group>"; };
@@ -1141,6 +1143,7 @@
 				7EC5D1AA1DB359B900437219 /* OtherUserProfile.swift */,
 				7EC5D1AE1DB359EE00437219 /* OtherContentCell.swift */,
 				7EC5D1AC1DB359C500437219 /* OtherUserHeader.swift */,
+				7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */,
 			);
 			name = OtherUserProfile;
 			sourceTree = "<group>";
@@ -1580,6 +1583,7 @@
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
+				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
 				7EC5D1A11DB3568A00437219 /* Explore.swift in Sources */,

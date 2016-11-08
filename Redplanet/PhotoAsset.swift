@@ -110,7 +110,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                     self.sharers.append(object["byUser"] as! PFUser)
                                 }
                                 
-                                print("Shares: \(self.sharers.count)")
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -512,9 +511,16 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                         title: "Edit") { (UITableViewRowAction, indexPath) in
                                             
                                             
+                                            // Append object
+                                            editObjects.append(photoAssetObject.last!)
                                             
-                                            // TODO::
-                                            // Edit Content
+                                            
+                                            // Push VC
+                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                            self.navigationController?.pushViewController(editVC, animated: true)
+                                            
+                                            
+                                            
                                             
                                             // Close cell
                                             self.tableView!.setEditing(false, animated: true)
