@@ -244,7 +244,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         }
         
         // (B) Set caption
-        if let caption = proPicObject.last!.value(forKey: "proPicCaption") as? String {
+        if let caption = proPicObject.last!.value(forKey: "textPost") as? String {
             cell.caption.text! = caption
         } else {
             cell.caption.isHidden = true

@@ -40,7 +40,7 @@ import ParseUI
 import Bolts
 
 import OneSignal
-
+import Mixpanel
 
 
 // Current Username
@@ -141,6 +141,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Ask to register for push notifications
         OneSignal.registerForPushNotifications()
+        
+        // MARK: - Mixpanel People Analytics
+        if PFUser.current() != nil {
+//            // Track who opened the app
+//            let mixpanel = Mixpanel.initialize(token: "f3328bd382f9a28fe612f4b1e4d77923")
+//            mixpanel.track(event: "Opened App",
+//                           properties:["Username": "\(PFUser.currentUser()!.username!)"])
+
+            // // Sets user 13793's "Plan" attribute to "Premium"
+//            Mixpanel.mainInstance().people.set(property: "Plan",
+//                                               to: "Premium")
+        } else {
+            // Track when app is Opened
+//            let mixpanel = Mixpanel.initialize(token: "f3328bd382f9a28fe612f4b1e4d77923")
+//            mixpanel.track(event: "Opened App")
+        }
         
         
         // Call Login Function...

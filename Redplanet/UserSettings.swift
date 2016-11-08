@@ -64,16 +64,91 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    
+    
+    // Function to set privacy
+    func setPrivacy(sender: UISwitch) {
+        
+        print("Touched")
+        
+        if sender.isOn {
+            // Private account
+            // (1) Friends request must be confirmed
+            // (2) Follow requests must be confirmed
+            let alert = UIAlertController(title: "Private Account",
+                                          message: "• Friend requests must be accepted. \n • Follow requests must be confirmed.",
+                                          preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "ok",
+                                         style: .default,
+                                         handler: { (UIAlertAction) -> Void in
+                                            // Save objects in parse
+                                            let user = PFUser.current()
+                                            user!["private"] = true
+                                            user!.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully made private")
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+            })
+            
+            
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            // Public account
+            // (1) Friends Requests must be confirmed
+            // (2) Follow requests do not have to be confirmed
+            
+            let alert = UIAlertController(title: "Public Account",
+                                          message: "• Friend requests must be accepted. \n • Anyone can follow you and see your content.",
+                                          preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "ok",
+                                         style: .default,
+                                         handler: { (UIAlertAction) -> Void in
+                                            
+                                            // Save object in parse
+                                            let user = PFUser.current()
+                                            user!["private"] = false
+                                            user!.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully made public")
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+            })
+            
+            
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        }
+
+    }
+    
+    
+    
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        if section == 0 {
+            return 6
+        } else {
+            return 7
+        }
     }
 
     
@@ -104,13 +179,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 4 {
-                if privacy.isOn {
-                    // Private account
-                    print("private")
-                } else {
-                    // Public account
-                    print("public")
-                }
+                // Add function method to 'privacy'
+                self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
             }
             
             if indexPath.row == 5 {
@@ -145,6 +215,15 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 1 {
+                
+                // Push VC
+                let iconsVC = self.storyboard?.instantiateViewController(withIdentifier: "iconsVC") as! RPIconsGuideline
+                self.navigationController!.pushViewController(iconsVC, animated: true)
+                
+            }
+            
+            if indexPath.row == 2 {
+                
                 // Show Activity
                 let textToShare = "🤗 Let's be friends on Redplanet, my username is \(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
@@ -152,15 +231,14 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                     let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                     self.present(activityVC, animated: true, completion: nil)
                 }
-            }
-            
-            if indexPath.row == 2 {
-                // Push to AboutUs
-                let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
-                self.navigationController!.pushViewController(aboutVC, animated: true)
+                
             }
             
             if indexPath.row == 3 {
+                
+                // Push to AboutUs
+                let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
+                self.navigationController!.pushViewController(aboutVC, animated: true)
 
             }
             
