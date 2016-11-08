@@ -92,7 +92,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             newUser.email = newRPUserEmailAddress
             newUser["private"] = true
             // Save default picture
-            let imageData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-96")!, 0.5)
+            let imageData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
             let imageFile = PFFile(data: imageData!)
             newUser["userProfilePicture"] = imageFile
             newUser["userBiography"] = ""

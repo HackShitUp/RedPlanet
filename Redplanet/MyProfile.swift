@@ -199,7 +199,7 @@ class MyProfile: UICollectionViewController {
                     print(error?.localizedDescription as Any)
                     
                     // (B) Set default
-                    header.myProPic.image = UIImage(named: "Gender Neutral User-96")
+                    header.myProPic.image = UIImage(named: "Gender Neutral User-100")
                 }
             })
         }
@@ -303,7 +303,7 @@ class MyProfile: UICollectionViewController {
                         } else {
                             print(error?.localizedDescription as Any)
                             // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                         }
                     })
                 }

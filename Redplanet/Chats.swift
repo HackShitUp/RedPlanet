@@ -397,7 +397,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                             })
 
                         } else {
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral USer-96")
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                         }
                         
                         // Handle optional chaining for user's real name
@@ -518,7 +518,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                     }
                                 })
                             } else {
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
                         }
                         
@@ -555,7 +555,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                     }
                                 })
                             } else {
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
                         }
                         

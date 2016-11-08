@@ -332,7 +332,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                             } else {
                                 print(error?.localizedDescription as Any)
                                 // (B2) Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
                         })
                     }

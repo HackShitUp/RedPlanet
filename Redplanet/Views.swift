@@ -211,7 +211,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         } else {
                             print(error?.localizedDescription as Any)
                             // set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                         }
                     })
                 }
