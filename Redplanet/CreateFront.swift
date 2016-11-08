@@ -36,7 +36,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     
-    // IGCMenu!!!
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    
+    // MARK: - IGCMenu
+    // Initialize IGCMenu and UIButton
     let igcMenu = IGCMenu()
     let menuButton = UIButton()
     
@@ -223,8 +228,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             self.navigationController?.tabBarController?.tabBar.isHidden = false
             // Show Grid Menu
             igcMenu.showGridMenu()
-//            igcMenu.showCircularMenu()
-
         }
     }
 
@@ -279,6 +282,20 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     
+    // Refresh function
+    func refresh() {
+        // Query notifications
+        queryNotifications()
+        
+        // End refresher
+        self.refresher.endRefreshing()
+        
+        // Reload data
+        self.tableView!.reloadData()
+    }
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -307,13 +324,17 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         igcMenu.delegate = self
         igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText", "igcExit"]
         igcMenu.showGridMenu()
-//        igcMenu.showCircularMenu()
 
         
         // Set initial query
         self.queryNotifications()
         
 
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
+        
         
         // Give tableView rounded corners
         self.tableView!.layer.cornerRadius = 10.00

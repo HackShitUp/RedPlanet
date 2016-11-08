@@ -323,6 +323,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
 
+    
+    // Function to send screenshot
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -331,6 +334,24 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Query Chats
         queryChats()
+        
+        
+
+        // Send push notification
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil,
+                                               queue: OperationQueue.main) { notification in
+                                                
+                                                // Send push notification
+                                                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                                                    OneSignal.postNotification(
+                                                        ["contents":
+                                                            ["en": "\(PFUser.current()!.username!) screenshotted the conversation"],
+                                                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                                                        ]
+                                                    )
+                                                }
+        }
         
         
         // Hide tabBarController
@@ -380,9 +401,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         photosTap.numberOfTapsRequired = 1
         self.photosButton.isUserInteractionEnabled = true
         self.photosButton.addGestureRecognizer(photosTap)
-        
-        
-        
         
         
         

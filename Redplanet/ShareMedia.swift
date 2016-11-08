@@ -133,6 +133,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                 videoData = asset.url as NSURL?
                                                                 
                                                                 
+                                                                
+                                                                // MARK: - VideoViewController
                                                                 let videoViewController = VideoViewController(videoURL: asset.url)
                                                                 videoViewController.modalPresentationStyle = .popover
                                                                 videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)

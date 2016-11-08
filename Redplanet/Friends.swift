@@ -334,8 +334,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     
                     // Make mediaPreview circular
                     cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
-                    cell.mediaPreview.layer.borderColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0).cgColor
-                    cell.mediaPreview.layer.borderWidth = 1.25
                     cell.mediaPreview.clipsToBounds = true
                     
                     
@@ -429,7 +427,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
                 /////
-                // USER FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
+                // USE FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
                 /////
                 //                let dateFormatter = DateFormatter()
                 //                dateFormatter.dateFormat = "EEEE"
@@ -566,16 +564,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         // VIDEO
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
             if let video = self.friendsContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                video.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        
-                        
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                
+                
+                let videoData = URL(string: video.url!)
+                let videoViewController = VideoViewController(videoURL: videoData!)
+                self.parentNavigator.pushViewController(videoViewController, animated: true)
+                
+                
+
             }
         }
         

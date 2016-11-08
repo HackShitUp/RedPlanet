@@ -98,7 +98,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary

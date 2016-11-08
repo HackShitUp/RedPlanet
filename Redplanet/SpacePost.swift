@@ -13,16 +13,108 @@ import Parse
 import ParseUI
 import Bolts
 
+
+
+// Array to hold space post object
+var spaceObjects = [PFObject]()
+
 class SpacePost: UITableViewController {
+    
+    
+    // Array to hold likers, comments, and shares
+    var likers = [PFObject]()
+    var comments = [PFObject]()
+    var shares = [PFObject]()
+    
+    
+    // Function to fetch interactions
+    func fetchInteractions() {
+        // Fetch likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: spaceObjects.last!.objectId!)
+        likes.includeKey("fromUser")
+        likes.order(byDescending: "createdAt")
+        likes.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.likers.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    // Append objects
+                    self.likers.append(object["fromUser"] as! PFUser)
+                }
+                
+                
+                // Fetch comments
+                let comments = PFQuery(className: "Comments")
+                comments.includeKey("byUser")
+                comments.whereKey("forObjectId", equalTo: spaceObjects.last!.objectId!)
+                comments.order(byDescending: "createdAt")
+                comments.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Clear array
+                        self.comments.removeAll(keepingCapacity: false)
+                        
+                        // Append objects
+                        for object in objects! {
+                            self.comments.append(object)
+                        }
+                        
+                        
+                        
+                        // Fetch shares
+                        let shares = PFQuery(className: "Newsfeeds")
+                        shares.whereKey("contentType", equalTo: "sh")
+                        shares.whereKey("pointObject", equalTo: spaceObjects.last!)
+                        shares.findObjectsInBackground(block: {
+                            (objects: [PFObject]?, error: Error?) in
+                            if error == nil {
+                                // Clear array
+                                self.shares.removeAll(keepingCapacity: false)
+                                
+                                // Append objects
+                                for object in objects! {
+                                    self.shares.append(object)
+                                }
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                            
+                            // Reload data
+                            self.tableView!.reloadData()
+                        })
+                        
+                    
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                    
+                    // Reload data
+                    self.tableView!.reloadData()
+                    
+                })
+                
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+            
+            // Reload data
+            self.tableView!.reloadData()
+        })
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        // Fetch interactions
+        fetchInteractions()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,15 +126,15 @@ class SpacePost: UITableViewController {
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return 1
     }
 
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
@@ -50,7 +142,7 @@ class SpacePost: UITableViewController {
 
         return cell
     }
-    */
+    
 
     /*
     // Override to support conditional editing of the table view.

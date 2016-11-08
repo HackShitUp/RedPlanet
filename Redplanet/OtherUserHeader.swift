@@ -823,43 +823,82 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 print("Successfully confirmed friend request: \(object)")
                                                                 
                                                                 
-                                                                // Save to notification and send push notification
-                                                                let notifications = PFObject(className: "Notifications")
-                                                                notifications["fromUser"] = PFUser.current()!
-                                                                notifications["from"] = PFUser.current()!.username!
-                                                                notifications["to"] = otherName.last!
-                                                                notifications["toUser"] = otherObject.last!
-                                                                notifications["type"] = "friended"
-                                                                notifications["forObjectId"] = otherObject.last!.objectId!
-                                                                notifications.saveInBackground(block: {
-                                                                    (success: Bool, error: Error?) in
-                                                                    if success {
-                                                                        print("Successfully saved notification: \(notifications)")
-                                                                        
-                                                                        // Change Button's Title
-                                                                        self.relationType.setTitle("Friends", for: .normal)
-                                                                        
-                                                                        // Post Notification
-                                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                        
-                                                                        
-                                                                        // Send push notification
-                                                                        // Handle optional chaining for user's apnsId
-                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                                                                            // MARK: - OneSignal
-                                                                            // Send push notificaiton
-                                                                            OneSignal.postNotification(
-                                                                                ["contents":
-                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
-                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
-                                                                                ]
-                                                                            )
+                                                                // Delete from "Notifications"
+                                                                let dnotifications = PFQuery(className: "Notifications")
+                                                                dnotifications.whereKey("toUser", equalTo: PFUser.current()!)
+                                                                dnotifications.whereKey("fromUser", equalTo: otherObject.last!)
+                                                                dnotifications.whereKey("type", equalTo: "friend requested")
+                                                                dnotifications.findObjectsInBackground(block: {
+                                                                    (objects: [PFObject]?, error: Error?) in
+                                                                    if error == nil {
+                                                                        for object in objects! {
+                                                                            object.deleteInBackground(block: {
+                                                                                (success: Bool, error: Error?) in
+                                                                                if success {
+                                                                                    print("Successfully deleted notification: \(object)")
+                                                                                    
+                                                                                    
+                                                                                    // Send to Notifications: "friended" = accepted friend request
+                                                                                    let notifications = PFObject(className: "Notifications")
+                                                                                    notifications["from"] = PFUser.current()!.username!
+                                                                                    notifications["fromUser"] = PFUser.current()!
+                                                                                    notifications["forObjectId"] = otherObject.last!.objectId!
+                                                                                    notifications["to"] = otherName.last!
+                                                                                    notifications["toUser"] = otherObject.last!
+                                                                                    notifications["type"] = "friended"
+                                                                                    notifications.saveInBackground(block: {
+                                                                                        (success: Bool, error: Error?) in
+                                                                                        if error == nil {
+                                                                                            print("Successfully sent notification: \(notifications)")
+                                                                                            
+                                                                                            
+                                                                                            /*
+                                                                                            
+                                                                                            // Hide block button
+                                                                                            self.ignoreButton.isHidden = true
+                                                                                            self.confirmButton.isHidden = true
+                                                                                            
+                                                                                            // Unhide currentState button
+                                                                                            // Set title to "CONFIRMED"
+                                                                                            self.relationState.isHidden = false
+                                                                                            self.relationState.setTitle("Confirmed", for: .normal)
+                                                                                            
+                                                                                            
+                                                                                            // Post Notification
+                                                                                            // NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                                                             */
+                                                                                            
+                                                                                            // Send Push Notification
+                                                                                            // Handle optional chaining for user's apnsId
+                                                                                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                                                // MARK: - OneSignal
+                                                                                                // Send push notificaiton
+                                                                                                OneSignal.postNotification(
+                                                                                                    ["contents":
+                                                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                    ]
+                                                                                                )
+                                                                                            }
+                                                                                            
+                                                                                            
+                                                                                            
+                                                                                        } else {
+                                                                                            print(error?.localizedDescription as Any)
+                                                                                        }
+                                                                                    })
+                                                                                    
+                                                                                    
+                                                                                } else {
+                                                                                    print(error?.localizedDescription as Any)
+                                                                                }
+                                                                            })
                                                                         }
-                                                                        
                                                                     } else {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
+
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

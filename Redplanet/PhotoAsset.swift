@@ -461,7 +461,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "🗑\nDelete") { (UITableViewRowAction, indexPath) in
+                                          title: "Delete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Ask before deleting???
                                             
@@ -509,7 +509,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "🖋\nEdit") { (UITableViewRowAction, indexPath) in
+                                        title: "Edit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             
@@ -524,7 +524,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "👁\nViews") { (UITableViewRowAction, indexPath) in
+                                         title: "Views") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(photoAssetObject.last!)
                                             
@@ -535,42 +535,61 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         }
         
         
-        // (4) Block user
+        // (4) Report user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "🚫\nReport") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
                                             
-                                            let alert = UIAlertController(title: "Report this Photo",
-                                                                          message: "Are you sure you'd like to report \(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo?",
+                                            let alert = UIAlertController(title: "Report",
+                                                                          message: "Please provide your reason for reporting \(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo",
                                                 preferredStyle: .alert)
                                             
-                                            let yes = UIAlertAction(title: "yes",
-                                                                    style: .destructive,
-                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // I have to manually delete all "blocked objects..." -__-
-                                                                        let block = PFObject(className: "Block_Reported")
-                                                                        block["from"] = PFUser.current()!.username!
-                                                                        block["fromUser"] = PFUser.current()!
-                                                                        block["to"] = cell.rpUsername.text!
-                                                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
-                                                                        block.saveInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully reported \(block)")
-                                                                                
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
-                                                                        // Close cell
-                                                                        tableView.setEditing(false, animated: true)
-                                            })
+                                            let report = UIAlertAction(title: "Report", style: .destructive) {
+                                                [unowned self, alert] (action: UIAlertAction!) in
+                                                
+                                                let answer = alert.textFields![0]
+                                                
+                                                
+                                                // Save to <Block_Reported>
+                                                let report = PFObject(className: "Block_Reported")
+                                                report["from"] = PFUser.current()!.username!
+                                                report["fromUser"] = PFUser.current()!
+                                                report["to"] = photoAssetObject.last!.value(forKey: "username") as! String
+                                                report["toUser"] = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
+                                                report["forObjectId"] = photoAssetObject.last!.objectId!
+                                                report["type"] = answer.text!
+                                                report.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved report: \(report)")
+                                                        
+                                                        // Dismiss
+                                                        let alert = UIAlertController(title: "Successfully Reported",
+                                                                                      message: "\(photoAssetObject.last!.value(forKey: "username") as! String)",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(ok)
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
                                             
-                                            let no = UIAlertAction(title: "no",
-                                                                   style: .default,
+                                            
+                                            let cancel = UIAlertAction(title: "Cancel",
+                                                                   style: .cancel,
                                                                    handler: nil)
                                             
-                                            alert.addAction(yes)
-                                            alert.addAction(no)
+                                            
+                                            alert.addTextField(configurationHandler: nil)
+                                            alert.addAction(report)
+                                            alert.addAction(cancel)
+                                            alert.view.tintColor = UIColor.black
                                             self.present(alert, animated: true, completion: nil)
         }
         
@@ -578,12 +597,16 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         
-        // Set background images
-        // Red
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        // Set background colors
+        
+        // Set background colors
+        
+        // Light Red
+        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
         // Baby blue
-        edit.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
-        // Gray
+        edit.backgroundColor = UIColor.darkGray
+        //        edit.backgroundColor = UIColor(red:0.45, green:0.69, blue:0.86, alpha:1.0)
+        // Light Gray
         views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)

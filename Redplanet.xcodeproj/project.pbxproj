@@ -40,6 +40,7 @@
 		7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837EF1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift */; };
 		7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */; };
 		7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */; };
+		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
@@ -227,6 +228,7 @@
 		7E5837F31DBC70A00049ED18 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
 		7E5837F41DBC70A00049ED18 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
 		7E5837F51DBC70A00049ED18 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
+		7E6113D41DD157C2001CE98C /* EditContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
@@ -1147,6 +1149,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
+				7E6113D41DD157C2001CE98C /* EditContent.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
@@ -1645,6 +1648,7 @@
 				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
+				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,

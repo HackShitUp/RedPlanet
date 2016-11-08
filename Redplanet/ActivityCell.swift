@@ -276,6 +276,54 @@ class ActivityCell: UITableViewCell {
                                 // TODO::
                                 // PUSH VC
                                 
+                                for object in objects! {
+                                    
+                                    if object["contentType"] as! String == "sh" {
+                                        
+                                        if object["photoAsset"] != nil {
+                                            // Shared Photo
+                                            // Append object
+                                            photoAssetObject.append(object)
+                                            
+                                            // Push to VC
+                                            let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                                            self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+                                        }
+                                        
+                                        if object["videoAsset"] != nil {
+                                            // Shared Video
+                                        }
+                                        
+                                        
+                                        
+                                        if object["photoAsset"] == nil && object["videoAsset"] == nil && object["textPost"] != nil {
+                                            // Shared Text Post
+                                        }
+                                        
+                                        
+                                    } else {
+                                        
+                                        // Push to Text Post
+                                        if object["contentType"] as! String  == "tp" {
+                                            
+                                        }
+                                        
+                                        // Push to Photo
+                                        if object["contentType"] as! String  == "ph" {
+                                            
+                                        }
+                                        
+                                        // Push to Video
+                                        if object["contentType"] as! String  == "vi" {
+                                            
+                                        }
+                                    }
+
+                                    
+                                    
+
+                                }
+                                
                                 
                                 
                             } else {
@@ -303,6 +351,10 @@ class ActivityCell: UITableViewCell {
             // TODO:: 
             // Find Comment
             // Find in Newsfeed
+            
+            let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+            
             
         }
         // END: COMMENTED ON YOUR CONTENT
