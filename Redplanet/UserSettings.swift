@@ -44,29 +44,6 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
     
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Stylize title
-        configureView()
-        
-        // Back swipe implementation
-        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
-        backSwipe.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-    
     
     
     // Function to set privacy
@@ -100,6 +77,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             
             alert.addAction(okAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
             
         } else {
@@ -131,9 +109,35 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             alert.addAction(okAction)
             self.present(alert, animated: true, completion: nil)
         }
-
+        
     }
     
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Stylize title
+        configureView()
+        
+        // Add function method to 'privacy'
+        self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
     
     
 
@@ -150,6 +154,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             return 7
         }
     }
+    
 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -169,7 +174,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 2 {
-                
+                // Friends in Contacts
+                // TODO::
             }
             
             if indexPath.row == 3 {
@@ -179,8 +185,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 4 {
-                // Add function method to 'privacy'
-                self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
+                // Privacy
             }
             
             if indexPath.row == 5 {
@@ -211,10 +216,12 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             if indexPath.row == 0 {
                 // Confetti
-
+                // TODO::
+                // ????
             }
             
             if indexPath.row == 1 {
+                // Icons Guideline
                 
                 // Push VC
                 let iconsVC = self.storyboard?.instantiateViewController(withIdentifier: "iconsVC") as! RPIconsGuideline
@@ -235,6 +242,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 3 {
+                // TODO::
                 
                 // Push to AboutUs
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
@@ -243,14 +251,23 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 4 {
+                // FAQ
                 
             }
             
             if indexPath.row == 5 {
-                
+                // TOS
             }
             
-        }
+            if indexPath.row == 6 {
+                // Privacy Policy
+            }
+            
+        } // end indexPath
+        
+        
+        
+        
     }
     
     

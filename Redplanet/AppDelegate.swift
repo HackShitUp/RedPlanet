@@ -6,29 +6,45 @@
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
+
+
+
+
+
+
+
+
 /*
- How does it feel?
+                                                            How does it feel?
  
- How does it feel?
+                                                            How does it feel?
  
- To be without a home?
+                                                            To be without a home?
  
- Like a complete unknown?
+                                                            Like a complete unknown?
  
- Like a rolling stone ?
+                                                            Like a rolling stone ?
+ 
+ *//*
+
+                                                             
+ C O L O R S
+ 
+ YELLOW:
+ UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+ 
+ RED:
+ UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+ 
+ BLUE:
+ UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+ 
+ #ff004f
+
+ 
+ 
  */
 
-// COLORS I LIKE
-// YELLOW:
-// UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
-
-// RED:
-// UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-
-// BLUE:
-// UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
-
-// #ff004f
 
 
 import UIKit
@@ -142,9 +158,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Ask to register for push notifications
         OneSignal.registerForPushNotifications()
         
+    
+        
         // MARK: - Mixpanel People Analytics
         if PFUser.current() != nil {
-//            // Track who opened the app
+            
+            
+            // Initialize Mixpanel API
+//            Mixpanel.init(token: "f3328bd382f9a28fe612f4b1e4d77923", andFlushInterval: 5)
+            
 //            let mixpanel = Mixpanel.initialize(token: "f3328bd382f9a28fe612f4b1e4d77923")
 //            mixpanel.track(event: "Opened App",
 //                           properties:["Username": "\(PFUser.currentUser()!.username!)"])
@@ -152,10 +174,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // // Sets user 13793's "Plan" attribute to "Premium"
 //            Mixpanel.mainInstance().people.set(property: "Plan",
 //                                               to: "Premium")
-        } else {
-            // Track when app is Opened
-//            let mixpanel = Mixpanel.initialize(token: "f3328bd382f9a28fe612f4b1e4d77923")
-//            mixpanel.track(event: "Opened App")
         }
         
         
@@ -234,9 +252,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     
-    // MARK: - Redplanet Crucial Functions
-    
-    
+    // MARK: - Redplanet VIP Functions
     // (1) Login ---- Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
     func login() {
         // Remember user's login
@@ -485,7 +501,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                         
                                         // use this
                                         for friend in myFriends.indices {
-                                            print(friend)
+                                            // print(friend)
                                             // TODO::
                                             // Fix the above code.
                                             // When printed, it only prints the number of friends,

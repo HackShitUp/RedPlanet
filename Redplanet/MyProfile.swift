@@ -62,7 +62,6 @@ class MyProfile: UICollectionViewController {
 
     // Function to stylize and set title of navigation bar
     func configureView() {
-//        let myUsername = PFUser.current()!.username!
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
