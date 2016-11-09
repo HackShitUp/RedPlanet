@@ -364,36 +364,51 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "proPicCell", for: indexPath) as! ProfilePhotoCell
-        
-        
-        
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
                                           title: "Delete") { (UITableViewRowAction, indexPath) in
                                             
-                                            // Ask before deleting???
+                                            /*
+                                            (1) If currentUser is trying to delete his/her's most RECENT Profile Photo...
+                                             • Change 'proPicExists' == false
+                                             • Save new profile photo
+                                             • Delete object from <Newsfeeds>
+                                             
+                                             (2) OTHERWISE
+                                             • Keep 'proPicExists' == true
+                                             • Delete object from <Newsfeeds>
+                                            
+                                            */
+                                            
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
                                             
-                                            // Delete content
-                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                            newsfeeds.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
+                                            
+                                            // (1) Check if object is most recent by querying getFirstObject
+                                            let recentProPic = PFQuery(className: "Newsfeeds")
+                                            recentProPic.whereKey("byUser", equalTo: PFUser.current()!)
+                                            recentProPic.whereKey("contentType", equalTo: "pp")
+                                            recentProPic.order(byDescending: "createdAt")
+                                            recentProPic.getFirstObjectInBackground(block: {
+                                                (object: PFObject?, error: Error?) in
                                                 if error == nil {
-                                                    for object in objects! {
+                                                    
+                                                    if object! == proPicObject.last! {
+                                                        
+                                                        // Most recent Profile Photo
                                                         // Delete object
-                                                        object.deleteInBackground(block: {
+                                                        object?.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
-                                                                print("Successfully deleted object: \(object)")
+                                                                print("Most Recent Profile Photo has been deleted: \(object)")
                                                                 
-                                                                // Dismiss
+                                                                // User's Profile Photo DOES NOT exist
+                                                                PFUser.current()!["proPicExists"] = false
+                                                                PFUser.current()!.saveEventually()
+                                                                
+                                                                // Dismiss Progress
                                                                 SVProgressHUD.dismiss()
-                                                                
                                                                 
                                                                 // Reload newsfeed
                                                                 NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -402,33 +417,87 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                self.navigationController!.popViewController(animated: true)
+                                                                
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
                                                             }
                                                         })
+                                                    } else {
+                                                        
+                                                        // Delete content
+                                                        let newsfeeds = PFQuery(className: "Newsfeeds")
+                                                        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+                                                        newsfeeds.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+                                                        newsfeeds.findObjectsInBackground(block: {
+                                                            (objects: [PFObject]?, error: Error?) in
+                                                            if error == nil {
+                                                                for object in objects! {
+                                                                    // Delete object
+                                                                    object.deleteInBackground(block: {
+                                                                        (success: Bool, error: Error?) in
+                                                                        if success {
+                                                                            print("Successfully deleted profile photo: \(object)")
+                                                                            
+                                                                            // Dismiss
+                                                                            SVProgressHUD.dismiss()
+                                                                            
+                                                                            // Current User's Profile Photo DOES EXIST
+                                                                            PFUser.current()!["proPicExists"] = true
+                                                                            PFUser.current()!.saveEventually()
+                                                                            
+                                                                            // Reload newsfeed
+                                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                            
+                                                                            // Reload myProfile
+                                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                            
+                                                                            // Pop view controller
+                                                                            self.navigationController!.popViewController(animated: true)
+                                                                            
+                                                                            
+                                                                        } else {
+                                                                            print(error?.localizedDescription as Any)
+                                                                        }
+                                                                    })
+                                                                }
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+
                                                     }
+                                                    
+                                                    
                                                 } else {
                                                     print(error?.localizedDescription as Any)
+                                                
                                                 }
                                             })
                                             
+                                            
+                                            
+                                            
         }
+        
+        
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
                                         title: "Edit") { (UITableViewRowAction, indexPath) in
                                             
+                                            // Append object
+                                            editObjects.append(proPicObject.last!)
                                             
-                                            
-                                            // TODO::
-                                            // Edit Content
+                                            // Push VC
+                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                            self.navigationController?.pushViewController(editVC, animated: true)
                                             
                                             // Close cell
                                             self.tableView!.setEditing(false, animated: true)
-                                            
         }
+        
         
         
         // (3) Views
@@ -440,8 +509,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                             // Push VC
                                             let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                             self.navigationController?.pushViewController(viewsVC, animated: true)
-                                            
         }
+        
         
         
         // (4) Report user and content

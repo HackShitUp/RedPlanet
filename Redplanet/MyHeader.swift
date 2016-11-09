@@ -98,6 +98,11 @@ class MyHeader: UICollectionReusableView {
                     print(error?.localizedDescription as Any)
                 }
             }
+        } else {
+            // Mark: - Agrume
+            let agrume = Agrume(image: self.myProPic.image!)
+            agrume.statusBarStyle = UIStatusBarStyle.lightContent
+            agrume.showFrom(self.delegate!.self)
         }
         
     }

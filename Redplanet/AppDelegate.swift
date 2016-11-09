@@ -429,80 +429,98 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return anonymity
     }
     
+    
+    
+    
     // (4) Check Birthday --- Checks whether today is the user's birthday or not
     func checkBirthday() {
         print("Checking birthday...")
         
         
-        /*
+        
         if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
-            print("MY BIRTHDAY IS: \(usersBirthday)")
             
             
-            
-            // Transform full birthday; remove year
-            var currentBday = usersBirthday
-            let indexEndOfText = currentBday.endIndex.advancedBy(-4)
-            let finalBday = currentBday.substringToIndex(indexEndOfText)     // <<<Hello
-            
-            let finalBday = currentBday.characters[currentBday.startIndex.advance(4, for: currentBday)]
-
-            
-            print("BDAY: \(finalBday)")
+            // (1) Get user's birthday
+            // MONTH DATE
+            // 6 Characters Total
+            let bEndIndex = usersBirthday.startIndex
+            let bStartIndex = usersBirthday.index(bEndIndex, offsetBy: 6)
+            let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
+            let finalBday = usersBirthday[r]
             
             
-            // Change String to NSDate
+            print("\nFinal Birthday is:\n\(finalBday)\n\n")
+            
+            // (2) Change String to Date
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM dd"
-            let birthDate = dateFormatter.dateFromString(finalBday)
+            let birthDate = dateFormatter.date(from: finalBday) // Date()
+            
+
+            // (3) Set up today's date as string
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM dd"
+            let todayString = formatter.string(from: date)  // String
             
             
+            // (4) Convert todayString to Date()
+            let todayFormat = DateFormatter()
+            todayFormat.dateFormat = "MMM dd"
+            let today = todayFormat.date(from: todayString)
             
-            let cal = NSCalendar.currentCalendar()
-            var components = cal.components(([.Month, .Day]), fromDate: NSDate())
-            let today = cal.dateFromComponents(components)!
-            components = cal.components(([.Month, .Day]), fromDate: birthDate!)
-            let otherDate = cal.dateFromComponents(components)!
-            if today.isEqualToDate(otherDate) {
+
+            if today == birthDate {
+                print("HAPPY BDAY")
                 
-                print("HAPPY BIRTHDAY!")
-                
-                let alert = UIAlertController(title: "🎂🎊🎉\nHappy Birthday \(PFUser.current()!.username!)",
-                    message: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String), we've sent your friends a push notification to remind them it's your birthday.",
+                let alert = UIAlertController(title: "🎂 🎊 🎉\nHappy Birthday \(PFUser.current()!.username!.uppercased())",
+                    message: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String), we'll send your friends push notifications to remind them it's your birthday.",
                     preferredStyle: .alert)
                 
                 let ok = UIAlertAction(title: "ok",
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
                                         
-                                        // Run for loop
-                                        for i in stride(from: 0, to: myFriends.count, by: 1) {
-
-                                            if myFriends[i].value(forKey: "apnsId") != nil {
-                                                // Send push notification
-                                                OneSignal.postNotification(
-                                                    ["contents":
-                                                        ["en": "Today is \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s birthday!"],
-                                                     "include_player_ids": ["\(myFriends[i].value(forKey: "apnsId") as! String)"]
-                                                    ]
-
-                                                )
-                                            }
+                                        
+                                        // use this
+                                        for friend in myFriends.indices {
+                                            print(friend)
+                                            // TODO::
+                                            // Fix the above code.
+                                            // When printed, it only prints the number of friends,
+                                            // in other words, the array's indices...
                                             
+                                            
+                                            // TODO::
+                                            // Send push notification for friends
+                                            
+                                            //                                            if friend.value(forKey: "apnsId") != nil {
+                                            //                                        // Send push notification
+                                            //                                        OneSignal.postNotification(
+                                            //                                            ["contents":
+                                            //                                                ["en": "Today is \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s birthday!"],
+                                            //                                             "include_player_ids": ["\(myFriends[i].value(forKey: "apnsId") as! String)"]
+                                            //                                            ]
+                                            //                                        )
+                                            //                                            }
                                         }
+                                        
+                                        
+                                        
                                         
                                         
                 })
                 
                 
                 alert.addAction(ok)
+                alert.view.tintColor = UIColor.black
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
-                
-                
             }
             
+            
         }
- */
+ 
 
     }
     

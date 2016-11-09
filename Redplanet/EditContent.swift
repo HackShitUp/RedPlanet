@@ -84,6 +84,9 @@ class EditContent: UIViewController, UITextViewDelegate, UINavigationControllerD
                             // Send to Photo Asset
                             NotificationCenter.default.post(name: textPostNotification, object: nil)
                             
+                            // Send to Profile Photo
+                            NotificationCenter.default.post(name: profileNotification, object: nil)
+                            
                         } else {
                             print(error?.localizedDescription as Any)
                             

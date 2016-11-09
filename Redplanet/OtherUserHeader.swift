@@ -104,6 +104,9 @@ class OtherUserHeader: UICollectionReusableView {
                     self.zoom(sender: self)
                 }
             }
+        } else {
+            // Call Agrume
+            self.zoom(sender: self)
         }
     }
     

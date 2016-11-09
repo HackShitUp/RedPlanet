@@ -308,6 +308,15 @@ class ProfilePhotoCell: UITableViewCell {
     }
     
     
+    // Function to go to user's profile
+    func goUser() {
+        // *** otherObject and otherName's data already appended ***
+        // Push VC
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -319,7 +328,7 @@ class ProfilePhotoCell: UITableViewCell {
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(zoomTap)
         
-        // (2) Like button tap
+        // (2) ACTION to Like button tap
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(likePP))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
@@ -345,7 +354,13 @@ class ProfilePhotoCell: UITableViewCell {
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-
+        // (6) Go to user's profile
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        userTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(userTap)
+        
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
