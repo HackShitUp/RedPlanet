@@ -164,6 +164,7 @@
 		7EE1C22F1DBC78C100F75557 /* ImageDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2291DBC78C100F75557 /* ImageDownloader.swift */; };
 		7EE1C2301DBC78C100F75557 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EE1C22A1DBC78C100F75557 /* Info.plist */; };
 		7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */; };
+		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -409,6 +410,7 @@
 		7EE1C2291DBC78C100F75557 /* ImageDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloader.swift; sourceTree = "<group>"; };
 		7EE1C22A1DBC78C100F75557 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1157,7 +1159,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
-				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7EE5609E1DD2D3B200DA2849 /* EditContent */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
@@ -1232,6 +1234,15 @@
 				7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */,
 			);
 			path = Agrume;
+			sourceTree = "<group>";
+		};
+		7EE5609E1DD2D3B200DA2849 /* EditContent */ = {
+			isa = PBXGroup;
+			children = (
+				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */,
+			);
+			name = EditContent;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1612,6 +1623,7 @@
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
+				7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */,

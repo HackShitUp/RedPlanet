@@ -428,6 +428,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
         
+        // Hide tableView
+        self.tableView.isHidden = true
+        
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
