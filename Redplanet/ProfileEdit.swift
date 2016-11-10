@@ -20,6 +20,9 @@ import SVProgressHUD
 // Array to hold profile photo's caption
 var profilePhotoCaption = [String]()
 
+// Variable to determine whether the profile photo is NEW
+var newProfilePhoto: Bool = false
+
 class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
 
     // Bool to determine whether caption has changed
@@ -35,6 +38,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     @IBOutlet weak var container: UIView!
     
     
+    @IBOutlet weak var backButton: UIBarButtonItem!
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         self.navigationController!.popViewController(animated: true)
@@ -43,8 +47,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func save(_ sender: AnyObject) {
         
+        
         // Check for empty email...
         if rpEmail.text!.isEmpty {
+            
             let alert = UIAlertController(title: "Invalid Email",
                                           message: "Please enter your email to save changes.",
                                           preferredStyle: .alert)
@@ -70,6 +76,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             self.present(alert, animated: true, completion: nil)
             
         } else {
+            
+            // Disable back button
+            self.backButton.isEnabled = false
             
             // I) Save user's data
             // II) Save user's Profile Photo but check the following
@@ -101,7 +110,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             
             
             // (B) Current User's Profile Photo
-            let proPicData = UIImagePNGRepresentation(self.rpUserProPic.image!)
+            let proPicData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
             let proPicFile = PFFile(data: proPicData!)
             
             
@@ -142,6 +151,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         let ok = UIAlertAction(title: "ok",
                                                style: .default,
                                                handler: { (alertAction: UIAlertAction!) in
+                                                
+                                                // Re-enable backButton
+                                                self.backButton.isEnabled = true
                                                 
                                                 // Send Notification to friendsNewsfeed
                                                 NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -192,6 +204,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             let ok = UIAlertAction(title: "ok",
                                                                    style: .default,
                                                                    handler: { (alertAction: UIAlertAction!) in
+                                                                    
+                                                                    // Re-enable backButton
+                                                                    self.backButton.isEnabled = true
                                                                     
                                                                     // Send Notification to friendsNewsfeed
                                                                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -244,6 +259,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     let ok = UIAlertAction(title: "ok",
                                                            style: .default,
                                                            handler: { (alertAction: UIAlertAction!) in
+                                                            
+                                                            
+                                                            // Re-enable backButton
+                                                            self.backButton.isEnabled = true
+
                                                             
                                                             // Send Notification to friendsNewsfeed
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -311,6 +331,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         let change = UIAlertAction(title: "Update Profile Photo",
                                    style: .default,
                                    handler: { (alertAction: UIAlertAction!) in
+                                    
+                                    // Set Bool
+                                    newProfilePhoto = true
                                     
                                     // Present image picker
                                     self.present(image, animated: false, completion: nil)

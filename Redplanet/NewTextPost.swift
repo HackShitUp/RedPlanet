@@ -38,9 +38,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     @IBOutlet weak var tableView: UITableView!
 
     
-    @IBOutlet weak var fbShare: UIButton!
-    @IBOutlet weak var twitterShare: UIButton!
-    
     // Share
     func postTextPost() {
         

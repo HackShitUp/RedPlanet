@@ -1,19 +1,24 @@
 //
-//  AboutUsCell.swift
+//  NewSpacePostCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/26/16.
+//  Created by Joshua Choi on 11/9/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
-import KILabel
+import CoreData
 
-class AboutUsCell: UITableViewCell {
+import Parse
+import ParseUI
+import Bolts
+
+class NewSpacePostCell: UITableViewCell {
     
-    @IBOutlet weak var headerTitle: UILabel!
-    @IBOutlet weak var aboutText: KILabel!
-    
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpFullName: UILabel!
+    @IBOutlet weak var rpUsername: UILabel!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

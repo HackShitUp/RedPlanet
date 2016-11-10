@@ -10,6 +10,11 @@ import UIKit
 import AVFoundation
 import CoreImage
 
+
+import Parse
+import ParseUI
+import Bolts
+
 class CustomCamera: UIViewController {
 
     // todo::
@@ -60,8 +65,6 @@ class CustomCamera: UIViewController {
 
     
     @IBAction func exit(_ sender: AnyObject) {
-        // Dismiss Camera
-//        self.dismiss(animated: true, completion: nil)
         // Pop view controller
         self.navigationController!.popViewController(animated: true)
     }
@@ -222,11 +225,42 @@ class CustomCamera: UIViewController {
             if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
                 
                 // Append Image
-                shareImageAssets.append(self.imageTaken.image!)
+//                shareImageAssets.append(self.imageTaken.image!)
                 
                 // Push VC
-                let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-                self.navigationController!.pushViewController(shareMediaVC, animated: true)
+//                let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+//                self.navigationController!.pushViewController(shareMediaVC, animated: true)
+                
+                
+                // Show editor
+                
+                // Convert image to data
+                let imageData = UIImageJPEGRepresentation(self.imageTaken.image!, 0.5)
+                let parseFile = PFFile(data: imageData!)
+                
+                // First send it
+                let newsfeeds = PFObject(className: "Newsfeeds")
+                newsfeeds["byUser"] = PFUser.current()!
+                newsfeeds["username"] = PFUser.current()!.username!
+                newsfeeds["contentType"] = "itm"
+                newsfeeds["photoAsset"] = parseFile
+                newsfeeds.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved object: \(newsfeeds)")
+                        
+                        // Send Notification
+                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                        
+                        // Pop VC
+                        self.navigationController?.popViewController(animated: true)
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                
+                
             }
             
         })
@@ -253,6 +287,23 @@ class CustomCamera: UIViewController {
         flashView.removeFromSuperview()
     }
     
+    
+    // Function to zoom in
+//    func handlePinch(toZoom pinchRecognizer: UIPinchGestureRecognizer) {
+//        let pinchVelocityDividerFactor: CGFloat = 5.0
+//        if pinchRecognizer.state == .changed {
+//            var error: Error? = nil
+//            if videoDevice!.lockForConfiguration(error) {
+//                var desiredZoomFactor: CGFloat = device!.videoZoomFactor + atan2f(pinchRecognizer.velocity, pinchVelocityDividerFactor)
+//                // Check if desiredZoomFactor fits required range from 1.0 to activeFormat.videoMaxZoomFactor
+//                device!.videoZoomFactor = max(1.0, min(desiredZoomFactor, device!.activeFormat.videoMaxZoomFactor))
+//                videoDevice!.unlockForConfiguration()
+//            }
+//            else {
+//                print("error: \(error)")
+//            }
+//        }
+//    }
 
     
     // Swipe for filters
@@ -345,6 +396,12 @@ class CustomCamera: UIViewController {
         doubleTap.numberOfTapsRequired = 2
         self.previewView.isUserInteractionEnabled = true
         self.previewView.addGestureRecognizer(doubleTap)
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(exit))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         
         // Set frame sizes
         self.previewView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)

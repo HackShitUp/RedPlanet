@@ -74,7 +74,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         let space = UIAlertAction(title: "Write in Space 🚀",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
-                                    // TODO::
+                                    // Push VC
+                                    let newSpaceVC = self.storyboard?.instantiateViewController(withIdentifier: "newSpacePostVC") as! NewSpacePost
+                                    self.navigationController?.pushViewController(newSpaceVC, animated: true)
         })
         
         // (2) Chat

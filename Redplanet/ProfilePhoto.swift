@@ -403,21 +403,34 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                             if success {
                                                                 print("Most Recent Profile Photo has been deleted: \(object)")
                                                                 
+                                                                // Set new profile photo
+                                                                let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
+                                                                let parseFile = PFFile(data: proPicData!)
+                                                                
                                                                 // User's Profile Photo DOES NOT exist
                                                                 PFUser.current()!["proPicExists"] = false
-                                                                PFUser.current()!.saveEventually()
-                                                                
-                                                                // Dismiss Progress
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                // Reload newsfeed
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                
-                                                                // Reload myProfile
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                self.navigationController!.popViewController(animated: true)
+                                                                PFUser.current()!["userProfilePicture"] = parseFile
+                                                                PFUser.current()!.saveInBackground(block: {
+                                                                    (success: Bool, error: Error?) in
+                                                                    if success {
+                                                                        
+                                                                        print("Deleted current profile photo and saved a new one.")
+                                                                        
+                                                                        // Dismiss Progress
+                                                                        SVProgressHUD.dismiss()
+                                                                        
+                                                                        // Reload newsfeed
+                                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                        
+                                                                        // Reload myProfile
+                                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                        
+                                                                        // Pop view controller
+                                                                        self.navigationController!.popViewController(animated: true)
+                                                                    } else {
+                                                                        print(error?.localizedDescription as Any)
+                                                                    }
+                                                                })
                                                                 
                                                                 
                                                             } else {

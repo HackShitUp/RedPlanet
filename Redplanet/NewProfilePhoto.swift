@@ -26,6 +26,8 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     @IBOutlet weak var proPicCaption: UITextView!
     @IBOutlet weak var doneButton: UIButton!
     
+    
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         self.navigationController!.popViewController(animated: true)
@@ -129,37 +131,48 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         super.viewDidLoad()
         
         
-        // Get profile photo's caption
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-        newsfeeds.whereKey("contentType", equalTo: "pp")
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.getFirstObjectInBackground(block: {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
-                    // Profile Photo Exists
-                    // Handle optional chaining for profile photo's caption
-                    if let caption = object!["textPost"] as? String {
-                        if caption == " " {
-                            self.proPicCaption.text! = "Say something about your profile photo..."
+        // If NOT NEW Profile Photo, don't set caption
+        if newProfilePhoto == false {
+            
+            // Get profile photo's caption
+            let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+            newsfeeds.whereKey("contentType", equalTo: "pp")
+            newsfeeds.order(byDescending: "createdAt")
+            newsfeeds.getFirstObjectInBackground(block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
+                        // Profile Photo Exists
+                        // Handle optional chaining for profile photo's caption
+                        if let caption = object!["textPost"] as? String {
+                            if caption == " " {
+                                self.proPicCaption.text! = "Say something about your profile photo..."
+                            } else {
+                                self.proPicCaption.text! = caption
+                            }
+                            
                         } else {
-                            self.proPicCaption.text! = caption
+                            self.proPicCaption.text! = "Say something about your profile photo..."
                         }
-                        
                     } else {
+                        // Profile Photo DOES NOT Exist
                         self.proPicCaption.text! = "Say something about your profile photo..."
                     }
+                    
+                    
                 } else {
-                    // Profile Photo DOES NOT Exist
-                    self.proPicCaption.text! = "Say something about your profile photo..."
+                    print(error?.localizedDescription as Any)
                 }
-                
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
+            })
+            
+        } else {
+            self.proPicCaption.text! = "Say something about your profile photo..."
+        }
+        
+        
+        
+        
         
         
         // Stylize title

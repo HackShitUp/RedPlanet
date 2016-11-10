@@ -271,7 +271,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 
                 
-                
+                // *************************************************************************************************************************
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
@@ -281,8 +281,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo
-                    if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
+                    if let photo = object!["photoAsset"] as? PFFile {
+                        photo.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
                                 // Show mediaPreview
@@ -356,7 +356,32 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
                 // (E) In the moment
-                // == When user takes a photo and shares it with his/her friends on the spot
+                if object!["contentType"] as! String == "itm" {
+                    
+                    
+                    
+                    // Make mediaPreview cornerd Squared and blur image
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Fetch photo
+                    if let itm = object!["photoAsset"] as? PFFile {
+                        itm.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                    
+                }
 
                 
                 // (F) Video
@@ -373,6 +398,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "igcVideo")
                 }
+                
+                // *************************************************************************************************************************
+                
+                
                 
                 
                 // (3) Set time
@@ -554,11 +583,15 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         
         // ITM
-        /*
-        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            // Append content object
+            itmObject.append(self.friendsContent[indexPath.row])
             
+            // Push VC
+            let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+            self.parentNavigator.pushViewController(itmVC, animated: true)
         }
-        */
+        
         
         
         // VIDEO

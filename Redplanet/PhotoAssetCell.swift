@@ -76,9 +76,6 @@ class PhotoAssetCell: UITableViewCell {
                                         let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
                                         activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
                                         
-                                        // exclude some activity types from the list (optional)
-                                        activityViewController.excludedActivityTypes = [ UIActivityType.airDrop, UIActivityType.postToFacebook ]
-                                        
                                         // present the view controller
                                         self.delegate?.present(activityViewController, animated: true, completion: nil)
         })

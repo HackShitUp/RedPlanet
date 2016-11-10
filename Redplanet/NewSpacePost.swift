@@ -7,36 +7,406 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
 
 
+import SVProgressHUD
+import OneSignal
 
+class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
+    
+    // Array to hold user objects and usernames
+    var userObjects = [PFObject]()
+    var usernames = [String]()
+    
+    
+    @IBAction func backButton(_ sender: Any) {
+        // Pop view controller
+        self.navigationController!.popViewController(animated: true)
+    }
+    
+    @IBAction func editAction(_ sender: Any) {
+        // Show CLImageEditor
+        let editor = CLImageEditor(image: self.mediaAsset.image!)
+        editor?.delegate = self
+        
+        // Present CLImageEditor
+        self.present(editor!, animated: true, completion: nil)
+    }
+    
+    @IBOutlet weak var mediaAsset: PFImageView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var photosButton: UIButton!
+    @IBOutlet weak var postButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
+    
+    // Function to share
+    func postSpace(sender: UIButton) {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
+        // Set the mediaAsset
+        // for now, image
+        let proPicData = UIImagePNGRepresentation(self.mediaAsset.image!)
+        let mediaFile = PFFile(data: proPicData!)
+        
+        // TODO::
+        // Change file type depending on whether it's a video or not
 
-class NewSpacePost: UIViewController {
+        
+        // Post to user's Space
+        let space = PFObject(className: "Newsfeeds")
+        space["byUser"] = PFUser.current()!
+        space["username"] = PFUser.current()!.username!
+        space["contentType"] = "sp"
+        space["photoAsset"] = mediaFile
+        space["toUser"] = otherObject.last!
+        space["toUsername"] = otherName.last!
+        space.saveInBackground {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Successfully shared Space Post: \(space)")
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+                
+                // Send push notification
+                if otherObject.last!.value(forKey: "apnsId") != nil {
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "\(PFUser.current()!.username!.uppercased()) wrote in your Space"],
+                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                    ])
+
+                }
+                
+                
+                // Send Notification
+                NotificationCenter.default.post(name: otherNotification, object: nil)
+                
+                // Pop View Controller
+                self.navigationController!.popViewController(animated: true)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+            }
+        }
+    }
     
     
     
+    // Function to choose photo
+    func choosePhoto(sender: UIButton) {
+        // Instantiate UIImagePickerController
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        imagePicker.allowsEditing = false
+        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        
+
+        // Present image picker
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+    
+    
+    // Function to show more sharing options
+    func doMore(sender: UIButton) {
+        // set up activity view controller
+        let image = self.mediaAsset.image!
+        let imageToShare = [image]
+        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+        
+        // present the view controller
+        self.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - UIImagePickerController Delegate method
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        // Show mediaAsset
+        self.mediaAsset.isHidden = false
+        
+        // Set image
+        self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        // Dismiss view controller
+        self.dismiss(animated: true, completion: nil)
+        
+        // CLImageEditor
+        let editor = CLImageEditor(image: self.mediaAsset.image!)
+        editor?.delegate = self
+        self.present(editor!, animated: true, completion: nil)
+    }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // Dismiss VC
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+
+    
+    
+    
+    
+    // MARK: - CLImageEditor delegate methods
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        // Set image
+        self.mediaAsset.image = image
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+        
+    }
+    
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+
+    }
+
+    
+    
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "New Space Post"
+        }
+    }
+    
+
+    
+    
+    
+    // MARK: - UITextView delegate methods
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.textView!.text! == "What are you doing?" {
+            self.textView.text! = ""
+        }
+    }
+    
+    
+    func textViewDidChange(_ textView: UITextView) {
+        // Count characters
+        //        countRemaining()
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        //        countRemaining()
+        
+        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        
+        // Define word
+        for var word in words {
+            // #####################
+            if word.hasPrefix("@") {
+                
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Find the user
+                let fullName = PFQuery(className: "_User")
+                fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                
+                let theUsername = PFQuery(className: "_User")
+                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                
+                let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
+                search.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        
+                        // Clear arrays
+                        self.userObjects.removeAll(keepingCapacity: false)
+                        self.usernames.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            self.userObjects.append(object)
+                            self.usernames.append(object["username"] as! String)
+                        }
+                        
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                // show table view and reload data
+                self.tableView!.isHidden = false
+                self.tableView!.reloadData()
+            } else {
+                self.tableView!.isHidden = true
+            }
+        }
+        
+        return true
+    }
+    
+    
+    
+    
+    
+    
+    
+    // MARK: - UITableView Data Source methods
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.usernames.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "newSpacePostCell", for: indexPath) as! NewSpacePostCell
+        
+        
+        // LayoutViews for rpUserProPic
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        
+        // Make Profile Photo Circular
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.clipsToBounds = true
+        
+        
+        // Fetch user's objects
+        self.userObjects[indexPath.row].fetchIfNeededInBackground {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                // (1) Get and set user's profile photo
+                if let proPic = object!["userProfilePicture"] as? PFFile {
+                    proPic.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set user's pro pic
+                            cell.rpUserProPic.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // Set default
+                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                        }
+                    })
+                }
+                
+                // (2) Set user's fullName
+                cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                
+                // (3) Set user's username
+                cell.rpUsername.text! = object!["username"] as! String
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+        
+        
+        return cell
+    }
+    
+    
+    
+    // MARK: - UITableViewdelegeate Method
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        // Define #word
+        for var word in words {
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@
+            if word.hasPrefix("@") {
+                
+                // Cut all symbols
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Replace text
+                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.usernames[indexPath.row], options: String.CompareOptions.literal, range: nil)
+            }
+        }
+        
+        // Clear array
+        self.userObjects.removeAll(keepingCapacity: false)
+        self.usernames.removeAll(keepingCapacity: false)
+        
+        // Hide UITableView
+        self.tableView!.isHidden = true
+    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Design button corners
+        self.postButton.layer.cornerRadius = self.postButton.frame.size.width/2
+        self.postButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.postButton.layer.borderWidth = 0.5
+        self.postButton.clipsToBounds = true
+        
+        // Hide mediaAsset
+        self.mediaAsset.isHidden = true
+        
+        // Hide tableView
+        self.tableView.isHidden = true
+        
+        // Set mediaAsset's cornerRadius
+        self.mediaAsset.layer.cornerRadius = 4.00
+        self.mediaAsset.layer.borderColor = UIColor.white.cgColor
+        self.mediaAsset.layer.borderWidth = 0.5
+        self.mediaAsset.clipsToBounds = true
+        
+        // Stylize title
+        configureView()
+        
+        // (1) Add button tap
+        let spaceTap = UITapGestureRecognizer(target: self, action: #selector(postSpace))
+        spaceTap.numberOfTapsRequired = 1
+        self.postButton.isUserInteractionEnabled = true
+        self.postButton.addGestureRecognizer(spaceTap)
+        
+        // (2) Add photo button tap
+        let photoTap = UITapGestureRecognizer(target: self, action: #selector(choosePhoto))
+        photoTap.numberOfTapsRequired = 1
+        self.photosButton.isUserInteractionEnabled = true
+        self.photosButton.addGestureRecognizer(photoTap)
+        
+        
+        // (3) Add more button tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
