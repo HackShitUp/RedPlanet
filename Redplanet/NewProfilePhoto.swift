@@ -104,6 +104,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     func zoom(sender: AnyObject) {
         
         // Mark: - Agrume
+        
         let agrume = Agrume(image: self.rpUserProPic.image!)
         agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self)

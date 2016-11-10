@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -478,6 +480,21 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     
+    // define these as class properties:
+    var player:AVPlayer!
+    var playerLayer:AVPlayerLayer!
+    
+    func setupVideoPlayerWithURL(url:NSURL) {
+        
+        player = AVPlayer(url: url as URL)
+        playerLayer = AVPlayerLayer(player: self.player)
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
+        playerLayer.frame = self.view.frame   // take up entire screen
+        self.view.layer.addSublayer(self.playerLayer)
+        player.play()
+        
+    }
+    
     
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -598,12 +615,58 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
             if let video = self.friendsContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 
+                /*
+//                let videoData = URL(string: video.url!)
+//                let videoViewController = VideoViewController(videoURL: videoData!)
+//                self.parentNavigator.pushViewController(videoViewController, animated: true)
+                /*
+                 let filemanager = NSFileManager.defaultManager()
+                 
+                 let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
+                 let destinationPath:NSString = documentsPath.stringByAppendingString("/file.mov")
+                 movieData!.writeToFile ( destinationPath as String, atomically:true)
+                 
+                 
+                 let playerItem = AVPlayerItem(asset: AVAsset(URL: NSURL(fileURLWithPath: destinationPath as String)))
+                 let player = AVPlayer(playerItem: playerItem)
+                 playerController.player = player
+                 player.play()
+ */
                 
-                let videoData = URL(string: video.url!)
-                let videoViewController = VideoViewController(videoURL: videoData!)
-                self.parentNavigator.pushViewController(videoViewController, animated: true)
+
                 
+                print("fired vi")
+                print("VIDEO URL: \(video.url)")
+
+//                let videoUrl = NSURL(string: video.url!)
+//                // Create player
+//                let playerController = AVPlayerViewController()
+//                let avPlayer = AVPlayer(url: videoUrl as! URL)
+//                playerController.player = avPlayer
+//                self.present(playerController, animated: true, completion: {() -> Void in
+//                    playerController.player?.play()
+//                })
                 
+                video.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        
+                        let filemanager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+                        let destinationPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+//                        data!.write(toFile: destinationPath as! String, atomic: true)
+                        data!.write(to: URL(string: video.url!)!, options: .atomic)
+                        let playerItem = AVPlayerItem(asset: AVAsset(url: NSURL(fileURLWithPath: destinationPath as! String) as URL))
+                        let player = AVPlayer(playerItem: playerItem)
+                        
+                        
+
+                        
+
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                */
 
             }
         }
