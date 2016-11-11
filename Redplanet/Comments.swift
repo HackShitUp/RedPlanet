@@ -289,6 +289,16 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Catch notification if the keyboard is shown or hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

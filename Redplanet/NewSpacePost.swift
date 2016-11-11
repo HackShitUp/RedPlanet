@@ -75,25 +75,49 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             if success {
                 print("Successfully shared Space Post: \(space)")
                 
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-                
-                // Send push notification
-                if otherObject.last!.value(forKey: "apnsId") != nil {
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) wrote in your Space"],
-                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
-                    ])
-
-                }
-                
                 
                 // Send Notification
-                NotificationCenter.default.post(name: otherNotification, object: nil)
-                
-                // Pop View Controller
-                self.navigationController!.popViewController(animated: true)
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = otherObject.last!
+                notifications["to"] = otherName.last!
+                notifications["type"] = "space"
+                notifications["forObjectId"] = space.objectId!
+                notifications.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if error == nil {
+                        print("Sent Notification: \(notifications)")
+                        
+                        
+                        
+                        // Dismiss Progress
+                        SVProgressHUD.dismiss()
+                        
+                        // Send push notification
+                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) wrote in your Space"],
+                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                ])
+                            
+                        }
+                        
+                        
+                        // Send Notification
+                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                        
+                        // Pop View Controller
+                        self.navigationController!.popViewController(animated: true)
+                        
+                        
+                        
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -186,13 +210,13 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "New Space Post"
+            self.title = "\(otherName.last!.uppercased())'s Space"
         }
     }
     

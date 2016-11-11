@@ -45,6 +45,12 @@
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
+		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
+		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
+		7E7E38BF1DD576C400DEC27B /* BestFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BE1DD576C400DEC27B /* BestFriends.swift */; };
+		7E7E38C11DD576D100DEC27B /* BestFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C01DD576D100DEC27B /* BestFriendsCell.swift */; };
+		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };
+		7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C51DD595E800DEC27B /* TOSCell.swift */; };
 		7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */; };
 		7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
@@ -238,6 +244,12 @@
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
+		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
+		7E7E38BE1DD576C400DEC27B /* BestFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestFriends.swift; sourceTree = "<group>"; };
+		7E7E38C01DD576D100DEC27B /* BestFriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestFriendsCell.swift; sourceTree = "<group>"; };
+		7E7E38C31DD5951700DEC27B /* TermsOfService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
+		7E7E38C51DD595E800DEC27B /* TOSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TOSCell.swift; sourceTree = "<group>"; };
 		7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPostCell.swift; sourceTree = "<group>"; };
 		7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMediaCell.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
@@ -626,6 +638,33 @@
 				7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		7E7E38BD1DD533CF00DEC27B /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				7E7E38BB1DD533CB00DEC27B /* Contacts.swift */,
+				7E7E38B91DD533C100DEC27B /* ContactsCell.swift */,
+			);
+			name = Contacts;
+			sourceTree = "<group>";
+		};
+		7E7E38C21DD576D700DEC27B /* BestFriends */ = {
+			isa = PBXGroup;
+			children = (
+				7E7E38BE1DD576C400DEC27B /* BestFriends.swift */,
+				7E7E38C01DD576D100DEC27B /* BestFriendsCell.swift */,
+			);
+			name = BestFriends;
+			sourceTree = "<group>";
+		};
+		7E7E38C71DD595ED00DEC27B /* TermsOfService */ = {
+			isa = PBXGroup;
+			children = (
+				7E7E38C31DD5951700DEC27B /* TermsOfService.swift */,
+				7E7E38C51DD595E800DEC27B /* TOSCell.swift */,
+			);
+			name = TermsOfService;
 			sourceTree = "<group>";
 		};
 		7E98E8CB1DB75057001B7329 /* CLImageEditor */ = {
@@ -1137,6 +1176,8 @@
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
+				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
+				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */,
 				7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */,
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
@@ -1169,6 +1210,7 @@
 				7EC5D1AA1DB359B900437219 /* OtherUserProfile.swift */,
 				7EC5D1AE1DB359EE00437219 /* OtherContentCell.swift */,
 				7EC5D1AC1DB359C500437219 /* OtherUserHeader.swift */,
+				7E7E38C21DD576D700DEC27B /* BestFriends */,
 				7EA09E121DD3EF9700BD2D51 /* NewSpacePost */,
 			);
 			name = OtherUserProfile;
@@ -1570,6 +1612,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E7E38BF1DD576C400DEC27B /* BestFriends.swift in Sources */,
 				7E4CFF941DB439170087454E /* SpacePost.swift in Sources */,
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */,
@@ -1591,6 +1634,7 @@
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
+				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */,
 				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
@@ -1644,11 +1688,13 @@
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
+				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
+				7E7E38C11DD576D100DEC27B /* BestFriendsCell.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
 				7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */,
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
@@ -1663,6 +1709,7 @@
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
+				7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
 				7EC5D1AF1DB359EE00437219 /* OtherContentCell.swift in Sources */,
@@ -1671,6 +1718,7 @@
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
 				7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */,
 				7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */,
+				7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,

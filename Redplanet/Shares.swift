@@ -135,6 +135,16 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Set footer
         self.tableView!.tableFooterView = UIView()
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -142,6 +152,9 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Stylize title
         configureView()
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func didReceiveMemoryWarning() {

@@ -104,6 +104,13 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let views = UIAlertAction(title: "Views",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
+                                    
+                                    // Append object
+                                    viewsObject.append(itmObject.last!)
+                                    
+                                    // Push VC
+                                    let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                    self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
         let share = UIAlertAction(title: "Share Via",
@@ -321,16 +328,356 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         likeObject.append(itmObject.last!)
         
         // Push VC
-        let likesVC = self.storyboard?.instantiateViewController(withIdentifier: "likesVC") as! Likers
+        let likesVC = self.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
         self.navigationController?.pushViewController(likesVC, animated: true)
     }
+    
+    // Function to like content
+    func like(sender: UIButton) {
+        // Disable button
+        self.likeButton.isUserInteractionEnabled = false
+        self.likeButton.isEnabled = false
+        
+        if self.likeButton.title(for: .normal) == "liked" {
+            // unlike
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("fromUser", equalTo: PFUser.current()!)
+            likes.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully deleted like: \(object)")
+                                
+                                
+                                
+                                
+                                
+                                
+                                // Delete "Notifications"
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully deleted notification: \(object)")
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                                
+                                
+                                // Re-enable buttons
+                                self.likeButton.isUserInteractionEnabled = true
+                                self.likeButton.isEnabled = true
+                                
+                                
+                                // Change button
+                                self.likeButton.setTitle("notLiked", for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                
+                                // Animate like button
+                                UIView.animate(withDuration: 0.6 ,
+                                               animations: {
+                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                                },
+                                               completion: { finish in
+                                                UIView.animate(withDuration: 0.5){
+                                                    self.likeButton.transform = CGAffineTransform.identity
+                                                }
+                                })
+                                
+                                // Reload data
+                                self.fetchContent()
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        } else {
+            
+            // LIKE
+            let likes = PFObject(className: "Likes")
+            likes["fromUser"] = PFUser.current()!
+            likes["from"] = PFUser.current()!.username!
+            likes["toUser"] = itmObject.last!.value(forKey: "byUser") as! PFUser
+            likes["to"] = self.rpUsername.titleLabel!.text!
+            likes["forObjectId"] = itmObject.last!.objectId!
+            likes.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved like \(likes)")
+                    
+                    
+                    // Save to notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["to"] = self.rpUsername.titleLabel!.text!
+                    notifications["toUser"] = itmObject.last!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = itmObject.last!.objectId!
+                    notifications["type"] = "like tp"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Successfully saved notificaiton: \(notifications)")
+                            
+                            // Handle optional chaining
+                            if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
+                                // MARK: - OneSignal
+                                // Send push notification
+                                if user.value(forKey: "apnsId") != nil {
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Moment"],
+                                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"]
+                                        ]
+                                    )
+                                }
+                            }
 
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                    
+                    
+                    
+                    
+                    
+                    // Re-enable buttons
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.likeButton.isEnabled = true
+                    
+                    
+                    // Change button title and image
+                    self.likeButton.setTitle("liked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    
+                    // Reload data
+                    self.fetchContent()
+                    
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: {
+                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                    },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5){
+                                        self.likeButton.transform = CGAffineTransform.identity
+                                    }
+                    })
+                    
+                    
+                    
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        }
+    }
+    
+    
+    
+    // Function to go to user's profile
+    func goUser(sender: UIButton) {
+        // Append otherObject
+        otherObject.append(itmObject.last!.value(forKey: "byUser") as! PFUser)
+        // Append otherName
+        otherName.append(self.rpUsername.titleLabel!.text!)
+        
+        // Push VC
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        self.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    // Function to show comments
+    func showComments(sender: UIButton) {
+        // Append object
+        commentsObject.append(itmObject.last!)
+        
+        // Push VC
+        let commentsVC = self.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
+        self.navigationController?.pushViewController(commentsVC, animated: true)
+    }
+
+    // Function to show shares
+    func showShares(sender: UIButton) {
+        // Append object
+        shareObject.append(itmObject.last!)
+        
+        // Push VC
+        let sharesVC = self.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
+        self.navigationController?.pushViewController(sharesVC, animated: true)
+
+    }
+    
+    // Function to share
+    func shareOptions(sender: UIButton) {
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        // TODO::
+        // Share the moment as a photo
+        // 'photoAsset'
+        
+        
+        // TODO:
+        // Add option to share to followers
+        
+        let publicShare = UIAlertAction(title: "All Friends",
+                                        style: .default,
+                                        handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            
+                                            // Turn image to readable PFFile
+                                            let imageData = UIImageJPEGRepresentation(self.itmMedia.image!, 0.5)
+                                            let parseFile = PFFile(data: imageData!)
+                                            
+                                            // Share to public ***FRIENDS ONLY***
+                                            let newsfeeds = PFObject(className: "Newsfeeds")
+                                            newsfeeds["byUser"] = PFUser.current()!
+                                            newsfeeds["username"] = PFUser.current()!.username!
+                                            newsfeeds["textPost"] = "shared @\(self.rpUsername.titleLabel!.text!)'s Moment: "
+                                            newsfeeds["pointObject"] = itmObject.last!
+                                            newsfeeds["contentType"] = "sh"
+                                            newsfeeds["photoAsset"] = parseFile
+                                            newsfeeds.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if error == nil {
+                                                    print("Successfully shared moment: \(newsfeeds)")
+                                                    
+                                                    
+                                                    // Send Notification
+                                                    let notifications = PFObject(className: "Notifications")
+                                                    notifications["fromUser"] = PFUser.current()!
+                                                    notifications["from"] = PFUser.current()!.username!
+                                                    notifications["toUser"] = itmObject.last!.value(forKey: "byUser") as! PFUser
+                                                    notifications["to"] = self.rpUsername.titleLabel!.text!
+                                                    notifications["type"] = "share itm"
+                                                    notifications["forObjectId"] = itmObject.last!.objectId!
+                                                    notifications.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Sent notification: \(notifications)")
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            // Send notification
+                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            
+                                                            
+                                                            
+                                                            // Send Push notificaiton
+                                                            if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
+                                                                // Handle optional chaining
+                                                                if user["apnsId"] != nil {
+                                                                    // MARK: - OneSignal
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) shared your Moment"],
+                                                                         "include_player_ids": ["\(user["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
+                                                                
+                                                            }
+                                                            
+                                                            
+                                                            // Show alert
+                                                            let alert = UIAlertController(title: "Shared With Friends",
+                                                                                          message: "Successfully shared \(self.rpUsername.titleLabel!.text!)'s Moment",
+                                                                preferredStyle: .alert)
+                                                            
+                                                            let ok = UIAlertAction(title: "ok",
+                                                                                   style: .default,
+                                                                                   handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Pop view controller
+                                                                                    self.navigationController!.popViewController(animated: true)
+                                                            })
+                                                            
+                                                            alert.addAction(ok)
+                                                            self.present(alert, animated: true, completion: nil)
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+                                            
+        })
+        
+        let privateShare = UIAlertAction(title: "One Friend",
+                                         style: .default,
+                                         handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Append to contentObject
+                                            shareObject.append(itmObject.last!)
+                                            
+                                            // Share to chats
+                                            let shareToVC = self.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                            self.navigationController?.pushViewController(shareToVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        options.addAction(publicShare)
+        options.addAction(privateShare)
+        options.addAction(cancel)
+        self.present(options, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Fetch data
         fetchContent()
+        
+        // Hide navigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -343,32 +690,82 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         
         
-        // Add tap methods
+        // (1) Add more tap method
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
+        // (2) Add numberOfLikes tap
+        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
+        numLikesTap.numberOfTapsRequired = 1
+        self.numberOfLikes.isUserInteractionEnabled = true
+        self.numberOfLikes.addGestureRecognizer(numLikesTap)
+        
+        // (4) Add like button tap
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
+        likeTap.numberOfTapsRequired = 1
+        self.likeButton.isUserInteractionEnabled = true
+        self.likeButton.addGestureRecognizer(likeTap)
+        
+        // (5) Add Username tap
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        userTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(userTap)
+        
+        // (6) Add numComments tap
+        let numCommentsTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
+        numCommentsTap.numberOfTapsRequired = 1
+        self.numberOfComments.isUserInteractionEnabled = true
+        self.numberOfComments.addGestureRecognizer(numCommentsTap)
         
         
-//        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector())
+        // (7) Add comment tap
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
+        commentTap.numberOfTapsRequired = 1
+        self.commentButton.isUserInteractionEnabled = true
+        self.commentButton.addGestureRecognizer(commentTap)
         
+        
+        // (8) Add num shares tap
+        let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
+        numSharesTap.numberOfTapsRequired = 1
+        self.numberOfShares.isUserInteractionEnabled = true
+        self.numberOfShares.addGestureRecognizer(numSharesTap)
+        
+        
+        // (9) Add share options
+        let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
+        shareTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(shareTap)
+        
+        
+        // Hide moreButton if not user's content
+        if itmObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+            // Show button
+            self.moreButton.isHidden = false
+        } else {
+            // Hide button
+            self.moreButton.isHidden = true
+        }
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide navigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

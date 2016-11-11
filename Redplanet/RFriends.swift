@@ -187,6 +187,13 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
         
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func viewWillAppear(_ animated: Bool) {

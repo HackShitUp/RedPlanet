@@ -145,7 +145,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         
         
         // Hide TabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -165,6 +165,19 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
+        
+        // Hide TabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func didReceiveMemoryWarning() {

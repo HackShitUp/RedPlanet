@@ -170,6 +170,13 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     

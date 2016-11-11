@@ -114,6 +114,13 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
     
     
     
+    // Deep link user to change settings
+    func openSettings() {
+        let url = URL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.shared.openURL(url!)
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -175,7 +182,32 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             if indexPath.row == 2 {
                 // Friends in Contacts
-                // TODO::
+                if #available(iOS 9, *) {
+                    // Push to Contacts VC
+                    let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+                    self.navigationController!.pushViewController(contactsVC, animated: true)
+                    
+                } else {
+                    let alert = UIAlertController(title: "iOS 9 Only",
+                                                  message: "Please update your device to iOS 9 or greater to access Contacts.",
+                                                  preferredStyle: .alert)
+                    
+                    let settings = UIAlertAction(title: "Settings",
+                                                 style: .default,
+                                                 handler: {(alertAction: UIAlertAction!) in
+                                                    // Lead them to settings
+                                                    self.openSettings()
+                    })
+                    
+                    let later = UIAlertAction(title: "Later",
+                                              style: .destructive,
+                                              handler: nil)
+                    
+                    alert.addAction(later)
+                    alert.addAction(settings)
+                    alert.view.tintColor = UIColor.black
+                    self.navigationController!.present(alert, animated: true, completion: nil)
+                }
             }
             
             if indexPath.row == 3 {

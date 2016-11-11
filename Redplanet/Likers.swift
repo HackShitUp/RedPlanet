@@ -127,6 +127,16 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Set blank
         self.tableView!.tableFooterView = UIView()
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     
@@ -135,6 +145,9 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Stylize title again
         configureView()
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     

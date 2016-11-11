@@ -121,6 +121,14 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         swipe.direction = .down
         self.tableView!.isUserInteractionEnabled = true
         self.tableView!.addGestureRecognizer(swipe)
+        
+        
+        
+        // Back swipe implementation
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
 
     override func didReceiveMemoryWarning() {

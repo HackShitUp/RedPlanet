@@ -18,6 +18,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
+
 
 class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate {
     
@@ -220,6 +222,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Show Grid menu on tap
     // MARK: - UITabBarControllerDelegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        // Dismiss Progress
+        SVProgressHUD.dismiss()
         
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
             // Hide navigationbar

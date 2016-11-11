@@ -14,7 +14,7 @@ import ParseUI
 import Bolts
 
 import KILabel
-
+import OneSignal
 
 
 class PhotoAssetCell: UITableViewCell {
@@ -141,23 +141,57 @@ class PhotoAssetCell: UITableViewCell {
                                                 if error == nil {
                                                     print("Successfully shared photo: \(newsfeeds)")
                                                     
-                                                    // Send notification
-                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                                                     
-                                                    // Show alert
-                                                    let alert = UIAlertController(title: "Shared With Friends",
-                                                                                  message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: {(alertAction: UIAlertAction!) in
-                                                                            // Pop view controller
-                                                                            self.delegate!.navigationController?.popViewController(animated: true)
+                                                    // Send Notification
+                                                    let notifications = PFObject(className: "Notifications")
+                                                    notifications["fromUser"] = PFUser.current()!
+                                                    notifications["from"] = PFUser.current()!.username!
+                                                    notifications["toUser"] = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
+                                                    notifications["to"] = self.rpUsername.text!
+                                                    notifications["type"] = "share ph"
+                                                    notifications["forObjectId"] = photoAssetObject.last!.objectId!
+                                                    notifications.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Sent notification: \(notifications)")
+                                                            
+                                                      
+                                                            // Handle optional chaining
+                                                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                                                // MARK: - OneSignal
+                                                                // Send push notification
+                                                                OneSignal.postNotification(
+                                                                    ["contents":
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared your Photo"],
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                    ]
+                                                                )
+                                                            }
+                                                            
+                                                            
+                                                            // Send notification
+                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            
+                                                            // Show alert
+                                                            let alert = UIAlertController(title: "Shared With Friends",
+                                                                                          message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
+                                                                preferredStyle: .alert)
+                                                            
+                                                            let ok = UIAlertAction(title: "ok",
+                                                                                   style: .default,
+                                                                                   handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Pop view controller
+                                                                                    self.delegate!.navigationController?.popViewController(animated: true)
+                                                            })
+                                                            
+                                                            alert.addAction(ok)
+                                                            self.delegate?.present(alert, animated: true, completion: nil)
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
                                                     })
-                                                    
-                                                    alert.addAction(ok)
-                                                    self.delegate?.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
                                                     print(error?.localizedDescription as Any)
@@ -338,6 +372,19 @@ class PhotoAssetCell: UITableViewCell {
                         (success: Bool, error: Error?) in
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
+                            
+                            
+                            // MARK: - OneSignal
+                            // Send push notification
+                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
+                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                    ]
+                                )
+                            }
+                            
                             
                         } else {
                             print(error?.localizedDescription as Any)
