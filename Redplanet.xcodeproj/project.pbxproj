@@ -112,6 +112,8 @@
 		7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */; };
 		7EA45CD11DB6BB0500A466D9 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */; };
 		7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */; };
+		7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D371DD6B38400B3471F /* SharedPostCell.swift */; };
+		7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D391DD6B38F00B3471F /* SharedPost.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
@@ -357,6 +359,8 @@
 		7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardFollowCell.swift; sourceTree = "<group>"; };
 		7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
 		7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCell.swift; sourceTree = "<group>"; };
+		7EA87D371DD6B38400B3471F /* SharedPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPostCell.swift; sourceTree = "<group>"; };
+		7EA87D391DD6B38F00B3471F /* SharedPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPost.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoomCell.swift; sourceTree = "<group>"; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
@@ -533,6 +537,7 @@
 				7E4CFFA01DB439780087454E /* PhotoAsset */,
 				7E4CFF9F1DB439720087454E /* ProfilePhoto */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
+				7EA87D3B1DD6B39400B3471F /* SharedPost */,
 				7EA09E131DD406F500BD2D51 /* InTheMoment */,
 				7E43077E1DD01F8F00AA2413 /* VideoAsset */,
 			);
@@ -979,6 +984,15 @@
 				7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */,
 			);
 			name = RPCamera;
+			sourceTree = "<group>";
+		};
+		7EA87D3B1DD6B39400B3471F /* SharedPost */ = {
+			isa = PBXGroup;
+			children = (
+				7EA87D391DD6B38F00B3471F /* SharedPost.swift */,
+				7EA87D371DD6B38400B3471F /* SharedPostCell.swift */,
+			);
+			name = SharedPost;
 			sourceTree = "<group>";
 		};
 		7EAB4EB01DB4608300059DB1 /* RPChatRoom */ = {
@@ -1662,6 +1676,7 @@
 				7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */,
 				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
+				7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
@@ -1739,6 +1754,7 @@
 				7E98E95A1DB75057001B7329 /* CLSplashTool.m in Sources */,
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,
 				7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */,
+				7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */,
 				7E3F0EDA1DBFFEAA006BF522 /* StackPageView.swift in Sources */,
 				7E98E9561DB75057001B7329 /* UIView+CLImageToolInfo.m in Sources */,
 				7EC5D19E1DB3566600437219 /* MyProfile.swift in Sources */,

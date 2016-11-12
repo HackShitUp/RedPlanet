@@ -15,11 +15,11 @@ import Bolts
 
 import SVProgressHUD
 import DZNEmptyDataSet
+import OneSignal
 
 
 // Array to hold comments
 var commentsObject = [PFObject]()
-
 
 
 // Define identifier
@@ -156,8 +156,22 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                             // Query Comments
                             self.queryComments()
                             
-                            // TODO::
-                            // Send push notificaiton
+                            
+                            // Handle optional chaining for user object
+                            if let user = commentsObject.last!.value(forKey: "byUser") as? PFUser {
+                                // Handle optional chaining for user's apnsId
+                                if user["apnsId"] != nil {
+                                    // MARK: - OneSignal
+                                    // Send push notification
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) commented on your content"],
+                                         "include_player_ids": ["\(user["apnsId"] as! String)"]
+                                        ]
+                                    )
+                                    
+                                }
+                            }
                             
                         } else {
                             print(error?.localizedDescription as Any)

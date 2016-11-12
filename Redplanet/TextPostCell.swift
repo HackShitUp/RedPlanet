@@ -235,7 +235,7 @@ class TextPostCell: UITableViewCell {
                                                     notifications["from"] = PFUser.current()!.username!
                                                     notifications["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
                                                     notifications["to"] = self.rpUsername.text!
-                                                    notifications["type"] = "share ph"
+                                                    notifications["type"] = "share tp"
                                                     notifications["forObjectId"] = textPostObject.last!.objectId!
                                                     notifications.saveInBackground(block: {
                                                         (success: Bool, error: Error?) in

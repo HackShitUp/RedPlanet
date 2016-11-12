@@ -436,7 +436,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     notifications["to"] = self.rpUsername.titleLabel!.text!
                     notifications["toUser"] = itmObject.last!.value(forKey: "byUser") as! PFUser
                     notifications["forObjectId"] = itmObject.last!.objectId!
-                    notifications["type"] = "like tp"
+                    notifications["type"] = "like itm"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {

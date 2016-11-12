@@ -561,24 +561,32 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // SHARED
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
-                
-                // Append Object
-                photoAssetObject.append(self.friendsContent[indexPath.row])
-                
-                // Push VC
-                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                self.parentNavigator.pushViewController(photoVC, animated: true)
-                
-            } else {
-                // Append Object
-                textPostObject.append(self.friendsContent[indexPath.row])
-                
-                
-                // Push VC
-                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                self.parentNavigator.pushViewController(textPostVC, animated: true)
-            }
+//            if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
+//                
+//                // Append Object
+//                photoAssetObject.append(self.friendsContent[indexPath.row])
+//                
+//                // Push VC
+//                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+//                self.parentNavigator.pushViewController(photoVC, animated: true)
+//                
+//            } else {
+//                // Append Object
+//                textPostObject.append(self.friendsContent[indexPath.row])
+//                
+//                
+//                // Push VC
+//                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+//                self.parentNavigator.pushViewController(textPostVC, animated: true)
+//            }
+            
+            
+            // Append object
+            sharedObject.append(self.friendsContent[indexPath.row])
+            // Push VC
+            let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+            self.parentNavigator.pushViewController(sharedPostVC, animated: true)
+            
         }
         
         

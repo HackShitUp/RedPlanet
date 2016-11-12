@@ -254,7 +254,7 @@ class ActivityCell: UITableViewCell {
         // L I K E D     Y O U R      C O M M E N T
         if self.activity.titleLabel!.text! == "liked your comment" {
             let comments = PFQuery(className: "Comments")
-            comments.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+            comments.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
             comments.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -362,6 +362,114 @@ class ActivityCell: UITableViewCell {
         
         
         
+        // S H A R E D      Y O U R...
+        if self.activity.titleLabel!.text!.hasPrefix("shared your") {
+            
+            
+            if self.activity.titleLabel!.text!.hasSuffix("text post") {
+                // TEXT POST
+                // Find Text Post
+                let newsfeeds = PFQuery(className: "Newsfeed")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        print("Found Text Post..")
+                        
+                        for object in objects! {
+                            // Append object
+                            textPostObject.append(object)
+                            
+                            // Push to VC
+                            let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                            self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            
+            if self.activity.titleLabel!.text!.hasSuffix("photo") {
+                // PHOTO
+                // Find Photo
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        print("Found Photo...")
+                        
+                        for object in objects! {
+                           // Append object
+                            photoAssetObject.append(object)
+                            
+                            // Push to VC
+                            let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                            self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
+                // PROFILE PHOTO
+                // Find Profile Photo
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        print("Found Profile Photo")
+                        
+                        for object in objects! {
+                            // Append object
+                            proPicObject.append(object)
+                            
+                            // Push to VC
+                            let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                            self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                        }
+                        
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            if self.activity.titleLabel!.text!.hasSuffix("moment") {
+                // MOMENT
+                // Find Moment
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        print("Found Moment")
+                        
+                        for object in objects! {
+                            // Append object
+                            itmObject.append(object)
+                            
+                            // Push to VC
+                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+        }
         
         
         
@@ -388,10 +496,6 @@ class ActivityCell: UITableViewCell {
         }
         
         if self.activity.titleLabel!.text!.hasPrefix("tagged you in a video") {
-            
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a moment") {
             
         }
         

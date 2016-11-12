@@ -507,8 +507,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             cell.activity.setTitle("liked your text post", for: .normal)
         }
         
+        
+        // TODO::
+        // Remove "like pv" once everyone has the new update
         // Liked Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like ph" {
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like ph" || myActivity[indexPath.row].value(forKey: "type") as! String == "like pv" {
             cell.activity.setTitle("liked your photo", for: .normal)
         }
         
@@ -569,6 +572,30 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         
         
+        
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== S H A R E D -----------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+        
+        // Text Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share tp" {
+            cell.activity.setTitle("shared your text post", for: .normal)
+        }
+        
+        // Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share ph" {
+            cell.activity.setTitle("shared you photo", for: .normal)
+        }
+        
+        // Profile Photo
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share pp" {
+            cell.activity.setTitle("shared your profile photo", for: .normal)
+        }
+        
+        // Moment
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share itm" {
+            cell.activity.setTitle("shared your moment", for: .normal)
+        }
         
         
         
