@@ -33,7 +33,7 @@ var chatUsername = [String]()
 let rpChat = Notification.Name("rpChat")
 
 
-class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate {
+class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
     
     
@@ -63,7 +63,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func moreButton(_ sender: Any) {
@@ -110,6 +110,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+                
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
                 
@@ -163,14 +167,18 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Handle optional chaining
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
                     
-                    // MARK: - OneSignal
-                    // Send push notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
-                        ]
-                    )
+                    // Handle optional chaining
+                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                        // MARK: - OneSignal
+                        // Send push notification
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                            ]
+                        )
+                    }
+
                     
                 }
                 
@@ -246,6 +254,26 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Selected image
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 
+        // Dimsiss VC
+        self.dismiss(animated: true, completion: nil)
+        
+        // CLImageEditor
+        let editor = CLImageEditor(image: image)
+        editor?.delegate = self
+        self.present(editor!, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    
+    // MARK: - CLImageEditor delegate methods
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        
+        // Show Progress
+        SVProgressHUD.show()
+        
         // Convert UIImage to NSData
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         // Change UIImage to PFFile
@@ -265,20 +293,26 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             if error == nil {
                 print("Successfully sent chat: \(chat)")
                 
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+                
                 // Clear newChat
                 self.newChat.text!.removeAll()
                 
-                // TODO::
-                // Send Push Notification to user
+                
                 // Handle optional chaining
-//                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-//                    OneSignal.postNotification(
-//                        ["contents":
-//                            ["en": "from \(PFUser.current()!.username!)"],
-//                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
-//                        ]
-//                    )
-//                }
+                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    // MARK: - OneSignal
+                    // Send Push Notification to user
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "from \(PFUser.current()!.username!)"],
+                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                        ]
+                    )
+                }
+
+                
                 
                 // Reload data
                 self.queryChats()
@@ -293,10 +327,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 print("Network Error")
                 
-                // Failed
-                // TODO::??
-                // Show Alert?
-                
                 // Reload data
                 self.queryChats()
                 
@@ -306,7 +336,20 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
         
         
+        
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
     }
+    
+    
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
+        // Dismiss view controller
+        editor.dismiss(animated: true, completion: { _ in })
+    }
+    
+    
+    
+    
     
     
     
@@ -324,13 +367,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
 
     
-    // Function to send screenshot
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print(chatUserObject.last!)
+        
+        // Show Progress
+        SVProgressHUD.show()
         
         // Query Chats
         queryChats()
@@ -393,8 +438,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePicker.allowsEditing = false
-        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
         // Add Photo Library method to photosButton
         let photosTap = UITapGestureRecognizer(target: self, action: #selector(accessPhotos))

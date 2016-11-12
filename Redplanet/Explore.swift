@@ -31,6 +31,19 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     var searchBar = UISearchBar()
     
     
+    // Function to refresh
+    func refresh() {
+        // Query Explore
+        queryExplore()
+        
+        // End refresher
+        self.refresher.endRefreshing()
+        
+        // Reload data
+        self.collectionView!.reloadData()
+    }
+    
+    
     // Fetch Public Users
     func queryExplore() {
         
@@ -89,6 +102,11 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
+        
+        // Pull to refresh
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.collectionView!.addSubview(refresher)
         
         
         // SearchbarDelegates

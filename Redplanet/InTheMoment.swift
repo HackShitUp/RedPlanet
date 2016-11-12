@@ -44,7 +44,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     // Functiont to go back
     func goBack(sender: UIGestureRecognizer) {
         // Pop VC
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -61,10 +61,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     // Show Progress
                                     SVProgressHUD.show()
                                 
-                                    let newsfeeds = PFQuery(className: "Newsfeeds")
-                                    newsfeeds.whereKey("contentType", equalTo: "itm")
-                                    newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                    newsfeeds.whereKey("objectId", equalTo: itmObject.last!.objectId!)
+//                                    let newsfeeds = PFQuery(className: "Newsfeeds")
+//                                    newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+//                                    newsfeeds.whereKey("objectId", equalTo: itmObject.last!.objectId!)
+                                    
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("byUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: itmObject.last!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: itmObject.last!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                     newsfeeds.findObjectsInBackground(block: {
                                         (objects: [PFObject]?, error: Error?) in
                                         if error == nil {
@@ -86,7 +94,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop VC
-                                                        self.navigationController!.popViewController(animated: true)
+                                                        self.navigationController?.popViewController(animated: true)
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
@@ -621,10 +629,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                                                    style: .default,
                                                                                    handler: {(alertAction: UIAlertAction!) in
                                                                                     // Pop view controller
-                                                                                    self.navigationController!.popViewController(animated: true)
+                                                                                    self.navigationController?.popViewController(animated: true)
                                                             })
                                                             
                                                             alert.addAction(ok)
+                                                            alert.view.tintColor = UIColor.black
                                                             self.present(alert, animated: true, completion: nil)
                                                             
                                                             
@@ -659,6 +668,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
+        options.view.tintColor = UIColor.black
         self.present(options, animated: true, completion: nil)
     }
     

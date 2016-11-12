@@ -115,6 +115,7 @@ class TextPostCell: UITableViewCell {
                                                                        handler: nil)
                                                 
                                                 alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
                                                 self.delegate?.present(alert, animated: true, completion: nil)
                                                 
                                             } else {
@@ -309,6 +310,7 @@ class TextPostCell: UITableViewCell {
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
+        options.view.tintColor = UIColor.black
         self.delegate?.present(options, animated: true, completion: nil)
     }
     

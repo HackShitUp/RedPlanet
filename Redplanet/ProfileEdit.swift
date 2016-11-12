@@ -41,7 +41,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -162,7 +162,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                 
                                                 // Pop view controller
-                                                self.navigationController!.popViewController(animated: true)
+                                                self.navigationController?.popViewController(animated: true)
                         })
                         
                         
@@ -215,7 +215,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                                     NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                     
                                                                     // Pop view controller
-                                                                    self.navigationController!.popViewController(animated: true)
+                                                                    self.navigationController?.popViewController(animated: true)
                                             })
                                             
                                             
@@ -272,7 +272,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Pop view controller
-                                                            self.navigationController!.popViewController(animated: true)
+                                                            self.navigationController?.popViewController(animated: true)
                                     })
                                     
                                     
@@ -319,8 +319,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         image.delegate = self
         image.sourceType = UIImagePickerControllerSourceType.photoLibrary
         image.allowsEditing = true
-        image.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        image.navigationBar.tintColor = UIColor.black
+        image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
 
         
 
@@ -501,7 +501,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 self.dismiss(animated: true, completion: nil)
                 
                 
-                // CLImageEditor
+                // MARK: - CLImageEditor
+                // Show Editing Options
                 let editor = CLImageEditor(image: self.rpUserProPic.image!)
                 editor?.delegate = self
                 self.present(editor!, animated: true, completion: nil)

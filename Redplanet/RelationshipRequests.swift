@@ -53,7 +53,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {

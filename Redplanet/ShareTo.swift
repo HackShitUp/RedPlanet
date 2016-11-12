@@ -36,7 +36,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -381,7 +381,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                                        style: .default,
                                                                        handler: {(alertAction: UIAlertAction!) in
                                                                         // Pop view controller
-                                                                        self.navigationController!.popViewController(animated: true)
+                                                                        self.navigationController?.popViewController(animated: true)
                                                 })
                                                 
                                                 alert.addAction(ok)
@@ -416,7 +416,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                                            style: .default,
                                                                            handler: {(alertAction: UIAlertAction!) in
                                                                             // Pop view controller
-                                                                            self.navigationController!.popViewController(animated: true)
+                                                                            self.navigationController?.popViewController(animated: true)
                                                     })
                                                     
                                                     alert.addAction(ok)

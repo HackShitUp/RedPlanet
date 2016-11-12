@@ -215,6 +215,14 @@ class ProfilePhotoCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
     }
     
+    @IBAction func commentButton(_ sender: Any) {
+        // Append object
+        commentsObject.append(proPicObject.last!)
+        
+        // Push VC
+        let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
+        self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
+    }
     
     // Function to show sharers
     func sharers() {
@@ -304,6 +312,7 @@ class ProfilePhotoCell: UITableViewCell {
                                                             })
                                                             
                                                             alert.addAction(ok)
+                                                            alert.view.tintColor = UIColor.black
                                                             self.delegate?.present(alert, animated: true, completion: nil)
                                                             
                                                             
@@ -322,7 +331,7 @@ class ProfilePhotoCell: UITableViewCell {
         
         
 
-        let privateShare = UIAlertAction(title: "Share With Friend",
+        let privateShare = UIAlertAction(title: "One Friend",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
                                             
@@ -339,7 +348,7 @@ class ProfilePhotoCell: UITableViewCell {
         
         
         let cancel = UIAlertAction(title: "Cancel",
-                                   style: .destructive,
+                                   style: .cancel,
                                    handler: nil)
         
         options.addAction(publicShare)
@@ -371,6 +380,7 @@ class ProfilePhotoCell: UITableViewCell {
     
     
     
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -390,8 +400,6 @@ class ProfilePhotoCell: UITableViewCell {
         // (3) Comment button tap
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
         commentTap.numberOfTapsRequired = 1
-        self.commentButton.isUserInteractionEnabled = true
-        self.commentButton.addGestureRecognizer(commentTap)
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         

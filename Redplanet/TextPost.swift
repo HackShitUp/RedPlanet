@@ -39,7 +39,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {
@@ -463,11 +463,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "textPostCell", for: indexPath) as! TextPostCell
-
-        
-        
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
                                               title: "Delete") { (UITableViewRowAction, indexPath) in
@@ -477,9 +472,19 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                             SVProgressHUD.show()
                                             
                                             // Delete content
-                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                            newsfeeds.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
+//                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+//                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+//                                            newsfeeds.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
+//                                            newsfeeds.whereKey("pointObject", equalTo: textPostObject.last!)
+                                                
+                                            let content = PFQuery(className: "Newsfeeds")
+                                            content.whereKey("byUser", equalTo: PFUser.current()!)
+                                            content.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
+                                            
+                                            let shares = PFQuery(className: "Newsfeeds")
+                                            shares.whereKey("pointObject", equalTo: textPostObject.last!)
+                                                
+                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                             newsfeeds.findObjectsInBackground(block: {
                                                 (objects: [PFObject]?, error: Error?) in
                                                 if error == nil {
@@ -552,7 +557,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                           title: "Report") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
-                                                                          message: "Please provide your reason for reporting \(textPostObject.last!.value(forKey: "username") as! String)'s Photo",
+                                                                          message: "Please provide your reason for reporting \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post",
                                                 preferredStyle: .alert)
                                             
                                             let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -575,7 +580,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                         
                                                         // Dismiss
                                                         let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(textPostObject.last!.value(forKey: "username") as! String)",
+                                                                                      message: "\(textPostObject.last!.value(forKey: "username") as! String)'s Text Post",
                                                             preferredStyle: .alert)
                                                         
                                                         let ok = UIAlertAction(title: "ok",
@@ -640,7 +645,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-//            self.navigationController!.popViewController(animated: true)
+//            self.navigationController?.popViewController(animated: true)
         }
     }
     

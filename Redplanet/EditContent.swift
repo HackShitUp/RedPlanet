@@ -35,7 +35,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -269,7 +269,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         SVProgressHUD.dismiss()
         
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
         
         
         // Send to Text Post
@@ -430,6 +430,19 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     }
     
     
+    
+    
+    
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self)
+    }
+    
+    
 
     
     override func viewDidLoad() {
@@ -494,6 +507,15 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         
         
         
+        
+        // Add zoom function
+        if editObjects.last!.value(forKey: "photoAsset") != nil {
+            // Add zoom-method tap
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(zoomTap)
+        }
         
     }
 

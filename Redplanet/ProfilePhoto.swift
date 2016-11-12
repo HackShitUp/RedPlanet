@@ -34,7 +34,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -426,7 +426,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                         
                                                                         // Pop view controller
-                                                                        self.navigationController!.popViewController(animated: true)
+                                                                        self.navigationController?.popViewController(animated: true)
                                                                     } else {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
@@ -440,9 +440,18 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                     } else {
                                                         
                                                         // Delete content
-                                                        let newsfeeds = PFQuery(className: "Newsfeeds")
-                                                        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                                        newsfeeds.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+//                                                        let newsfeeds = PFQuery(className: "Newsfeeds")
+//                                                        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+//                                                        newsfeeds.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+                                                        
+                                                        let content = PFQuery(className: "Newsfeeds")
+                                                        content.whereKey("byUser", equalTo: PFUser.current()!)
+                                                        content.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+                                                        
+                                                        let shares = PFQuery(className: "Newsfeeds")
+                                                        shares.whereKey("pointObject", equalTo: proPicObject.last!)
+                                                        
+                                                        let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                                         newsfeeds.findObjectsInBackground(block: {
                                                             (objects: [PFObject]?, error: Error?) in
                                                             if error == nil {
@@ -467,7 +476,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                             
                                                                             // Pop view controller
-                                                                            self.navigationController!.popViewController(animated: true)
+                                                                            self.navigationController?.popViewController(animated: true)
                                                                             
                                                                             
                                                                         } else {

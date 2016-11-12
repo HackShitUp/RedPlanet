@@ -26,7 +26,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func editAction(_ sender: Any) {
@@ -109,7 +109,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         NotificationCenter.default.post(name: otherNotification, object: nil)
                         
                         // Pop View Controller
-                        self.navigationController!.popViewController(animated: true)
+                        self.navigationController?.popViewController(animated: true)
                         
                         
                         
@@ -137,8 +137,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePicker.allowsEditing = false
-        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
 
         // Present image picker

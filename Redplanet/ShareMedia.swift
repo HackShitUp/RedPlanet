@@ -222,12 +222,19 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Share Photo
             sharePhotoData()
             
+            // Send notification
+            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+
             
         } else {
             // VIDEO
             
             // Share Video
             shareVideoData()
+            
+            // Send notification
+            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+
 
         } // end contentType Determination
         

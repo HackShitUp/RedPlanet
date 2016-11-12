@@ -19,7 +19,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -49,7 +49,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                            style: .default,
                                            handler: {(alertAction: UIAlertAction!) in
                                             // Pop back view controller
-                                            self.navigationController!.popViewController(animated: true)
+                                            self.navigationController?.popViewController(animated: true)
                     })
                     alert.addAction(ok)
                     self.present(alert, animated: true, completion: nil)

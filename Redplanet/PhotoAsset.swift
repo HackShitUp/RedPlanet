@@ -38,7 +38,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
         
         print("Fired with sender: \(sender)")
     }
@@ -468,9 +468,21 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                             SVProgressHUD.show()
                                             
                                             // Delete content
-                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                            newsfeeds.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
+//                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+//                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+//                                            newsfeeds.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
+//                                            newsfeeds.whereKey("pointObject", equalTo: photoAssetObject.last!)
+                                            
+                                            
+                                            
+                                            let content = PFQuery(className: "Newsfeeds")
+                                            content.whereKey("byUser", equalTo: PFUser.current()!)
+                                            content.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
+                                            
+                                            let shares = PFQuery(className: "Newsfeeds")
+                                            shares.whereKey("pointObject", equalTo: photoAssetObject.last!)
+                                            
+                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                             newsfeeds.findObjectsInBackground(block: {
                                                 (objects: [PFObject]?, error: Error?) in
                                                 if error == nil {
@@ -639,7 +651,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-//            self.navigationController!.popViewController(animated: true)
+//            self.navigationController?.popViewController(animated: true)
         }
     }
     

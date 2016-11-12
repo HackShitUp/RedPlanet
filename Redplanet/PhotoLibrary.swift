@@ -31,7 +31,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func iosPhotos(_ sender: AnyObject) {
@@ -156,8 +156,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
         imagePicker.allowsEditing = true
-        imagePicker.navigationBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)]
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
         
         // Back swipe implementation

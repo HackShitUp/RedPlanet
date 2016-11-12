@@ -23,7 +23,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop back
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // Sign up

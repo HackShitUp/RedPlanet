@@ -62,7 +62,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         otherName.removeLast()
         
         // Pop view controller
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func moreButton(_ sender: AnyObject) {

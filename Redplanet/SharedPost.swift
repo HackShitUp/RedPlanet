@@ -21,6 +21,9 @@ import SVProgressHUD
 // Array to hold the sharedObject
 var sharedObject = [PFObject]()
 
+// Define notification
+let sharedPostNotification = Notification.Name("sharedPostNotification")
+
 class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     // Arrays to hold likes, comments, and shares
@@ -28,12 +31,20 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     var comments = [PFObject]()
     var shares = [PFObject]()
     
+    // Refresher
+    var refresher: UIRefreshControl!
+    
     @IBAction func backButton(_ sender: Any) {
         // Pop VC
         self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {
+        // Fetch interactions
+        fetchInteractions()
+        
+        // Reload data
+        self.tableView!.reloadData()
     }
     
     // Function to fetch the shared object
@@ -156,6 +167,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: sharedPostNotification, object: nil)
+        
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -268,6 +283,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         cell.container.layer.borderWidth = 0.50
         cell.container.clipsToBounds = true
         
+        // Clip mediaAsset
+        cell.mediaAsset.clipsToBounds = true
+        
+        
         // By User
         
         // (1) Fetch user
@@ -346,6 +365,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             content.fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
+
                     // (1) Get user's object
                     if let user = object!["byUser"] as? PFUser {
                         // (A) Set username
@@ -462,6 +482,23 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    
+                    // Show alert
+                    let alert = UIAlertController(title: "Post Not Found",
+                                                  message: "Looks like this post was deleted.",
+                                                  preferredStyle: .alert)
+                    
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: {(alertAction: UIAlertAction!) in
+                                            // Pop VC
+                                            self.navigationController?.popViewController(animated: true)
+                    })
+                    
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
                 }
             })
         }
@@ -469,52 +506,164 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         return cell
         
-    }
+    } // end cellForRowAt
     
-
-    /*
-    // Override to support conditional editing of the table view.
+    
+    
+    
+    // MARK: - UITableViewDelegate Method
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
-    }
-    */
+    } // end edit boolean
+    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // (1) Delete Text Post
+        let delete = UITableViewRowAction(style: .normal,
+                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                            
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.show()
+                                            
+                                            // Delete content
+                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+                                            newsfeeds.whereKey("objectId", equalTo: sharedObject.last!.objectId!)
+                                            newsfeeds.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        // Delete object
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted object: \(object)")
+                                                                
+                                                                // Dismiss
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                
+                                                                // Reload newsfeed
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                
+                                                                // Reload myProfile
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                self.navigationController?.popViewController(animated: true)
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+        }
+        
 
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        
+        // (2) Views
+        let views = UITableViewRowAction(style: .normal,
+                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                            // Append object
+                                            viewsObject.append(sharedObject.last!)
+                                            
+                                            // Push VC
+                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                            self.navigationController?.pushViewController(viewsVC, animated: true)
+                                            
+        }
+        
+        
+        // (4) Report Content
+        let report = UITableViewRowAction(style: .normal,
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
+                                            
+                                            let alert = UIAlertController(title: "Report",
+                                                                          message: "Please provide your reason for reporting \(sharedObject.last!.value(forKey: "username") as! String)'s Share",
+                                                preferredStyle: .alert)
+                                            
+                                            let report = UIAlertAction(title: "Report", style: .destructive) {
+                                                [unowned self, alert] (action: UIAlertAction!) in
+                                                
+                                                let answer = alert.textFields![0]
+                                                
+                                                // Save to <Block_Reported>
+                                                let report = PFObject(className: "Block_Reported")
+                                                report["from"] = PFUser.current()!.username!
+                                                report["fromUser"] = PFUser.current()!
+                                                report["to"] = sharedObject.last!.value(forKey: "username") as! String
+                                                report["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
+                                                report["forObjectId"] = sharedObject.last!.objectId!
+                                                report["type"] = answer.text!
+                                                report.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved report: \(report)")
+                                                        
+                                                        // Dismiss
+                                                        let alert = UIAlertController(title: "Successfully Reported",
+                                                                                      message: "\(sharedObject.last!.value(forKey: "username") as! String)'s Share",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(ok)
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                            
+                                            
+                                            let cancel = UIAlertAction(title: "Cancel",
+                                                                       style: .cancel,
+                                                                       handler: nil)
+                                            
+                                            
+                                            alert.addTextField(configurationHandler: nil)
+                                            alert.addAction(report)
+                                            alert.addAction(cancel)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
+        
+        
+        // Set background colors
+        
+        // Light Red
+        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
+        // Light Gray
+        views.backgroundColor = UIColor.gray
+        // Yellow
+        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        
+        
+        if sharedObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+            return [delete, views]
+        } else {
+            return [report]
+        }
+        
+        
+        
+        
+    } // End edit action
+    
+    
+    
 
 }

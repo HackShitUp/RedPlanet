@@ -32,7 +32,7 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop vc
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 
     override func viewDidLoad() {

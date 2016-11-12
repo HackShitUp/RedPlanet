@@ -29,7 +29,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop VC
-        self.navigationController!.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBOutlet weak var textView: UITextView!
@@ -53,10 +53,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             alert.addAction(ok)
             self.present(alert, animated: true)
             
-        } else if self.textView.text.characters.count > 200 {
+        } else if self.textView.text.characters.count > 500 {
             
             let alert = UIAlertController(title: "Exceeded Character Count",
-                                          message: "For experience purposes, your thoughts should be concisely shared within 200 characters.",
+                                          message: "For experience purposes, your thoughts should be concisely shared within 500 characters.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
@@ -228,7 +228,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     // Counting function
     func countRemaining() {
         // Limit
-        let limit = 200
+        let limit = 500
         // Current # of characters
         let currentCharacters = self.textView.text.characters.count
         // Number of characters for space left
@@ -259,11 +259,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     func textViewDidChange(_ textView: UITextView) {
         // Count characters
-//        countRemaining()
+        countRemaining()
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-//        countRemaining()
+        countRemaining()
         
         let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         
