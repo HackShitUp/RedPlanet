@@ -41,7 +41,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     var oFollowing = [PFObject]()
     
     
-    
 
     // Array to hold other user's content
     var contentObjects = [PFObject]()
@@ -53,6 +52,14 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Refresher
     var refresher: UIRefreshControl!
+    
+    // Page size
+    var page: Int = 10
+    
+    
+    
+    // View to cover collectionView when hidden swift
+    let cover = UIButton()
     
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -169,16 +176,15 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Function to query other user's content
     func queryContent() {
-//        let newsfeeds = PFQuery(className: "Newsfeeds")
-//        newsfeeds.whereKey("byUser", equalTo: otherObject.last!)
-//        newsfeeds.whereKey("toUser", equalTo: otherObject.last!)
+        // User's Posts
         let byUser = PFQuery(className: "Newsfeeds")
         byUser.whereKey("byUser", equalTo: otherObject.last!)
-        
+        // User's Space Posts
         let toUser = PFQuery(className:  "Newsfeeds")
         toUser.whereKey("toUser", equalTo: otherObject.last!)
-        
+        // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
+        newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -190,6 +196,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 for object in objects! {
                     self.contentObjects.append(object)
                 }
+                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -213,16 +220,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             self.title = "\(otherName.last!.uppercased())"
         }
     }
-    
-    
-    // Function to check other user's privacy
-    func checkPrivacy() {
-        if otherObject.last!.value(forKey: "private") as! Bool == true {
-            
-        }
-    }
-    
-    
+
     
     // Function to refresh
     func refresh() {
@@ -239,7 +237,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Reload data
         self.collectionView!.reloadData()
     }
-    
+
     
     
     override func viewDidLoad() {
@@ -250,6 +248,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // Query content
         queryContent()
+
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -339,6 +338,101 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         }
         
         label.sizeToFit()
+        
+        
+        
+        
+        // Add cover
+        self.cover.frame = CGRect(x: 0, y: CGFloat(426 + label.frame.size.height), width: self.collectionView!.frame.size.width, height: self.collectionView!.frame.size.height+426+label.frame.size.height)
+        self.cover.isUserInteractionEnabled = false
+        self.cover.isEnabled = false
+        self.cover.titleLabel!.lineBreakMode = .byWordWrapping
+        self.cover.contentVerticalAlignment = .top
+        self.cover.contentHorizontalAlignment = .center
+        self.cover.titleLabel!.textAlignment = .center
+        self.cover.setTitleColor(UIColor.lightGray, for: .normal)
+        self.cover.backgroundColor = UIColor.white
+        
+        
+        
+        // Check Privacy; add cover relatively
+        if otherObject.last!.value(forKey: "private") as! Bool == true {
+            // PRIVATE ACCOUNT
+            // Any logic that contains a print statement DOES NOT place a cover
+            
+            if myFriends.contains(otherObject.last!) {
+                // FRIENDS
+                print("Don't hide because FRIENDS")
+                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
+                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
+                    self.collectionView!.addSubview(self.cover)
+                    self.collectionView!.allowsSelection = false
+                }
+                
+            } else if myRequestedFriends.contains(otherObject.last!) || requestedToFriendMe.contains(otherObject.last!) {
+                // FRIEND REQUESTED
+                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+                
+            } else if myFollowers.contains(otherObject.last!) && !myFollowing.contains(otherObject.last!) {
+                // FOLLOWER ONLY
+                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+                
+            } else if myRequestedFollowers.contains(otherObject.last!) {
+                // CONFIRM FOLLOW REQUEST
+                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+                
+            } else if myFollowing.contains(otherObject.last!) {
+                // FOLLOWING
+                print("Don't hide because FOLLOWING")
+                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
+                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
+                    self.collectionView!.addSubview(self.cover)
+                    self.collectionView!.allowsSelection = false
+                }
+                
+            } else if myRequestedFollowing.contains(otherObject.last!) {
+                // FOLLOW REQUESTED
+                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+                
+            } else if myFollowers.contains(otherObject.last!) && myFollowing.contains(otherObject.last!) {
+                // FOLLOWER & FOLLOWING
+                print("Don't hide because FOLLOWING")
+                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
+                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
+                    self.collectionView!.addSubview(self.cover)
+                    self.collectionView!.allowsSelection = false
+                }
+                
+            } else {
+                // Not yet connected
+                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+            }
+            
+        } else {
+            // PUBLIC ACCOUNT
+            
+            if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
+                self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
+                self.collectionView!.addSubview(self.cover)
+                self.collectionView!.allowsSelection = false
+            }
+            
+            
+        }
+
+        
+        
+        
         
         
         // ofSize should be the same size of the headerView's label size:
@@ -906,6 +1000,30 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
     } // end didSelectRow
     
+    
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            // Load more content
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.contentObjects.count {
+            
+            // Increase page size to load more posts
+            page = page + 10
+            
+            // Query content
+            queryContent()
+            
+        }
+    }
     
 
 }
