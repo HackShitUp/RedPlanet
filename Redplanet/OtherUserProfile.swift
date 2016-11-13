@@ -198,6 +198,78 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 }
                 
                 
+                // Check Privacy; add cover relatively
+                if otherObject.last!.value(forKey: "private") as! Bool == true {
+                    // PRIVATE ACCOUNT
+                    // Any logic that contains a print statement DOES NOT place a cover
+                    
+                    if myFriends.contains(otherObject.last!) {
+                        // FRIENDS
+                        print("Don't hide because FRIENDS")
+                        if self.contentObjects.count == 0 {
+                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.collectionView!.addSubview(self.cover)
+                            self.collectionView!.allowsSelection = false
+                        }
+                        
+                    } else if myRequestedFriends.contains(otherObject.last!) || requestedToFriendMe.contains(otherObject.last!) {
+                        // FRIEND REQUESTED
+                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                        
+                    } else if myFollowers.contains(otherObject.last!) && !myFollowing.contains(otherObject.last!) {
+                        // FOLLOWER ONLY
+                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                        
+                    } else if myRequestedFollowers.contains(otherObject.last!) {
+                        // CONFIRM FOLLOW REQUEST
+                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                        
+                    } else if myFollowing.contains(otherObject.last!) {
+                        // FOLLOWING
+                        print("Don't hide because FOLLOWING")
+                        if self.contentObjects.count == 0 {
+                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.collectionView!.addSubview(self.cover)
+                            self.collectionView!.allowsSelection = false
+                        }
+                        
+                    } else if myRequestedFollowing.contains(otherObject.last!) {
+                        // FOLLOW REQUESTED
+                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                        
+                    } else if myFollowers.contains(otherObject.last!) && myFollowing.contains(otherObject.last!) {
+                        // FOLLOWER & FOLLOWING
+                        print("Don't hide because FOLLOWING")
+                        if self.contentObjects.count == 0 {
+                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.collectionView!.addSubview(self.cover)
+                            self.collectionView!.allowsSelection = false
+                        }
+                        
+                    } else {
+                        // Not yet connected
+                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                    }
+                    
+                } else {
+                    // PUBLIC ACCOUNT
+                    if self.contentObjects.count == 0 {
+                        self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                        self.collectionView!.addSubview(self.cover)
+                        self.collectionView!.allowsSelection = false
+                    }
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -337,10 +409,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             label.text = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "birthday") as! String)"
         }
         
+        // Set label's dynamic height
         label.sizeToFit()
-        
-        
-        
+
         
         // Add cover
         self.cover.frame = CGRect(x: 0, y: CGFloat(426 + label.frame.size.height), width: self.collectionView!.frame.size.width, height: self.collectionView!.frame.size.height+426+label.frame.size.height)
@@ -350,89 +421,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.cover.contentVerticalAlignment = .top
         self.cover.contentHorizontalAlignment = .center
         self.cover.titleLabel!.textAlignment = .center
-        self.cover.setTitleColor(UIColor.lightGray, for: .normal)
+        self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        self.cover.setTitleColor(UIColor.darkGray, for: .normal)
         self.cover.backgroundColor = UIColor.white
-        
-        
-        
-        // Check Privacy; add cover relatively
-        if otherObject.last!.value(forKey: "private") as! Bool == true {
-            // PRIVATE ACCOUNT
-            // Any logic that contains a print statement DOES NOT place a cover
-            
-            if myFriends.contains(otherObject.last!) {
-                // FRIENDS
-                print("Don't hide because FRIENDS")
-                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
-                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
-                    self.collectionView!.addSubview(self.cover)
-                    self.collectionView!.allowsSelection = false
-                }
-                
-            } else if myRequestedFriends.contains(otherObject.last!) || requestedToFriendMe.contains(otherObject.last!) {
-                // FRIEND REQUESTED
-                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-                
-            } else if myFollowers.contains(otherObject.last!) && !myFollowing.contains(otherObject.last!) {
-                // FOLLOWER ONLY
-                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-                
-            } else if myRequestedFollowers.contains(otherObject.last!) {
-                // CONFIRM FOLLOW REQUEST
-                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-                
-            } else if myFollowing.contains(otherObject.last!) {
-                // FOLLOWING
-                print("Don't hide because FOLLOWING")
-                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
-                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
-                    self.collectionView!.addSubview(self.cover)
-                    self.collectionView!.allowsSelection = false
-                }
-                
-            } else if myRequestedFollowing.contains(otherObject.last!) {
-                // FOLLOW REQUESTED
-                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-                
-            } else if myFollowers.contains(otherObject.last!) && myFollowing.contains(otherObject.last!) {
-                // FOLLOWER & FOLLOWING
-                print("Don't hide because FOLLOWING")
-                if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
-                    self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
-                    self.collectionView!.addSubview(self.cover)
-                    self.collectionView!.allowsSelection = false
-                }
-                
-            } else {
-                // Not yet connected
-                self.cover.setTitle("\n🔒\nThis Account is Private", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-            }
-            
-        } else {
-            // PUBLIC ACCOUNT
-            
-            if self.contentObjects.count == 0 && !self.cover.isDescendant(of: self.collectionView!) {
-                self.cover.setTitle("\n\(otherName.last!.uppercased())\nhasn't shared any posts yet...\n", for: .normal)
-                self.collectionView!.addSubview(self.cover)
-                self.collectionView!.allowsSelection = false
-            }
-            
-            
-        }
-
-        
-        
-        
         
         
         // ofSize should be the same size of the headerView's label size:

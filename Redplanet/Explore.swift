@@ -15,8 +15,6 @@ import Bolts
 
 import SVProgressHUD
 
-
-
 class Explore: UICollectionViewController, UISearchBarDelegate {
     
     
