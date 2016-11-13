@@ -24,6 +24,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     var usernames = [String]()
     
     
+    // Boolean to determine whether there's a photo
+    var spacePhotoExists: Bool = false
+    
+    
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
@@ -53,10 +57,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         // Show Progress
         SVProgressHUD.show()
         
-        // Set the mediaAsset
-        // for now, image
-        let proPicData = UIImagePNGRepresentation(self.mediaAsset.image!)
-        let mediaFile = PFFile(data: proPicData!)
         
         // TODO::
         // Change file type depending on whether it's a video or not
@@ -67,7 +67,20 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         space["byUser"] = PFUser.current()!
         space["username"] = PFUser.current()!.username!
         space["contentType"] = "sp"
-        space["photoAsset"] = mediaFile
+        // Save parseFile dependent on Boolean
+        if spacePhotoExists == true {
+            // Set the mediaAsset
+            // for now, image
+            let proPicData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
+            let mediaFile = PFFile(data: proPicData!)
+            space["photoAsset"] = mediaFile
+        }
+        // Save textPost
+        if self.textView.text! != "" {
+            // Set textPost
+            space["textPost"] = self.textView.text!
+        }
+        
         space["toUser"] = otherObject.last!
         space["toUsername"] = otherName.last!
         space.saveInBackground {
@@ -75,7 +88,16 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             if success {
                 print("Successfully shared Space Post: \(space)")
                 
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
                 
+                // Send Notification
+                NotificationCenter.default.post(name: otherNotification, object: nil)
+                
+                // Pop View Controller
+                self.navigationController?.popViewController(animated: true)
+                
+                /*
                 // Send Notification
                 let notifications = PFObject(className: "Notifications")
                 notifications["fromUser"] = PFUser.current()!
@@ -88,7 +110,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if error == nil {
                         print("Sent Notification: \(notifications)")
-                        
+
                         
                         
                         // Dismiss Progress
@@ -118,7 +140,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         print(error?.localizedDescription as Any)
                     }
                 })
-                
+                */
             } else {
                 print(error?.localizedDescription as Any)
                 
@@ -160,13 +182,16 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     
     // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
         
         // Show mediaAsset
         self.mediaAsset.isHidden = false
         
         // Set image
         self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        // Set bool
+        spacePhotoExists = true
         
         // Dismiss view controller
         self.dismiss(animated: true, completion: nil)
@@ -175,6 +200,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         let editor = CLImageEditor(image: self.mediaAsset.image!)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
+        
+        
+        // return bool
+        return spacePhotoExists
     }
     
     
@@ -385,6 +414,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set first responder
+        self.textView.becomeFirstResponder()
 
         // Design button corners
         self.postButton.layer.cornerRadius = self.postButton.frame.size.width/2

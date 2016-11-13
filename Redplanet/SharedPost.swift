@@ -86,7 +86,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         // (3) Fetch shares
                         let newsfeeds = PFQuery(className: "Newsfeeds")
                         newsfeeds.whereKey("contentType", equalTo: "sh")
-                        newsfeeds.whereKey("pointObject", equalTo: sharedObject.last!.value(forKey: "pointObject") as! PFObject)
+//                        newsfeeds.whereKey("pointObject", equalTo: sharedObject.last!.value(forKey: "pointObject") as! PFObject)
+                        newsfeeds.whereKey("pointObject", equalTo: sharedObject.last!)
                         newsfeeds.findObjectsInBackground(block: {
                             (objects: [PFObject]?, error: Error?) in
                             if error == nil {
@@ -287,7 +288,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         cell.mediaAsset.clipsToBounds = true
         
         
-        // By User
+        // Set parent VC delegate
+        cell.delegate = self
+
+        
         
         // (1) Fetch user
         if let user = sharedObject.last!.value(forKey: "byUser") as? PFUser {
@@ -308,6 +312,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     }
                 })
             }
+            
+            // (C) Set fromUser's object
+            cell.fromUserObject = user
         }
         
         // (2) set time
@@ -371,7 +378,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         // (A) Set username
                         cell.rpUsername.text! = user["username"] as! String
                         
-                        // (C) Get user's profile photo
+                        // (B) Get user's profile photo
                         if let proPic = user["userProfilePicture"] as? PFFile {
                             proPic.getDataInBackground(block: {
                                 (data: Data?, error: Error?) in
@@ -385,6 +392,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                                 }
                             })
                         }
+                        
+                        // (C) Set byUser's object
+                        cell.byUserObject = user
                     }
                     
                     
@@ -422,8 +432,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         
                         // (B2) Check for textPost
                         if object!["textPost"] != nil {
+                            // Add lines for sizing constraints
                             cell.textPost.isHidden = false
-                            cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
+                            cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
+                        } else {
+                            // Add lines for sizing constraints
+                            cell.textPost.isHidden = false
+                            cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
                         }
                         
                     }
@@ -479,6 +494,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     }
                     
                     
+                    // (4) Set shared content's object
+                    cell.cellSharedObject = object!
+                    
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -504,6 +522,50 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         }
         
         
+        // Manipulate likes, comments, and shares
+        
+        // Set Like Button
+        if self.likes.contains(PFUser.current()!) {
+            cell.likeButton.setTitle("liked", for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+        } else {
+            cell.likeButton.setTitle("notLiked", for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+        }
+        
+        // Set numberOfLikes
+        if self.likes.count == 0 {
+            cell.numberOfLikes.setTitle("likes", for: .normal)
+        } else if self.likes.count == 1 {
+            cell.numberOfLikes.setTitle("1 like", for: .normal)
+        } else {
+            cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+        }
+        
+        // Set numberOfComments
+        if self.comments.count == 0 {
+            cell.numberOfComments.setTitle("comments", for: .normal)
+        } else if self.comments.count == 1 {
+            cell.numberOfComments.setTitle("1 comment", for: .normal)
+        } else {
+            cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+        }
+        
+        
+        // Set numberOfShares
+        if self.shares.count == 0 {
+            cell.numberOfShares.setTitle("shares", for: .normal)
+        } else if self.shares.count == 1 {
+            cell.numberOfShares.setTitle("1 share", for: .normal)
+        } else {
+            cell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+        }
+        
+        
+        
+        
+        
+        
         return cell
         
     } // end cellForRowAt
@@ -519,7 +581,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        // (1) Delete Text Post
+        // (1) Delete Shared Post
         let delete = UITableViewRowAction(style: .normal,
                                           title: "Delete") { (UITableViewRowAction, indexPath) in
                                             

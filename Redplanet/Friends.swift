@@ -384,9 +384,26 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     }
                     
                 }
+                
+                
+                
+                // (F) Space Post
+                if object!["contentType"] as! String == "sp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "SpacePost")
+                }
 
                 
-                // (F) Video
+                // (G) Video
                 if object!["contentType"] as! String == "vi" {
                     // Make mediaPreview cornered square
                     cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
@@ -561,26 +578,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // SHARED
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-//            if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
-//                
-//                // Append Object
-//                photoAssetObject.append(self.friendsContent[indexPath.row])
-//                
-//                // Push VC
-//                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-//                self.parentNavigator.pushViewController(photoVC, animated: true)
-//                
-//            } else {
-//                // Append Object
-//                textPostObject.append(self.friendsContent[indexPath.row])
-//                
-//                
-//                // Push VC
-//                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-//                self.parentNavigator.pushViewController(textPostVC, animated: true)
-//            }
-            
-            
+
             // Append object
             sharedObject.append(self.friendsContent[indexPath.row])
             // Push VC
@@ -604,6 +602,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
             self.parentNavigator.pushViewController(proPicVC, animated: true)
             
+        }
+        
+        
+        // SPACE POST
+        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+            // Append object
+            spaceObject.append(self.friendsContent[indexPath.row])
+            
+            // Append otherObject
+            otherObject.append(self.friendsContent[indexPath.row].value(forKey: "toUser") as! PFUser)
+            
+            // Append otherName
+            otherName.append(self.friendsContent[indexPath.row].value(forKey: "toUsername") as! String)
+            
+            // Push VC
+            let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+            self.parentNavigator.pushViewController(spacePostVC, animated: true)
         }
         
         

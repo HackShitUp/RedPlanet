@@ -275,6 +275,7 @@ class TextPostCell: UITableViewCell {
                                                             })
                                                             
                                                             alert.addAction(ok)
+                                                            alert.view.tintColor = UIColor.black
                                                             self.delegate?.present(alert, animated: true, completion: nil)
                                                             
                                                             

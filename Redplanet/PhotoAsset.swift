@@ -458,7 +458,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         
-        // (1) Delete Text Post
+        // (1) Delete Photo
         let delete = UITableViewRowAction(style: .normal,
                                           title: "Delete") { (UITableViewRowAction, indexPath) in
                                             
@@ -582,7 +582,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                                         
                                                         // Dismiss
                                                         let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(photoAssetObject.last!.value(forKey: "username") as! String)",
+                                                                                      message: "\(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo",
                                                             preferredStyle: .alert)
                                                         
                                                         let ok = UIAlertAction(title: "ok",
@@ -590,6 +590,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                                                                handler: nil)
                                                         
                                                         alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
                                                         self.present(alert, animated: true, completion: nil)
                                                         
                                                     } else {

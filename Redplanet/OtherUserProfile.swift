@@ -169,8 +169,16 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Function to query other user's content
     func queryContent() {
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: otherObject.last!)
+//        let newsfeeds = PFQuery(className: "Newsfeeds")
+//        newsfeeds.whereKey("byUser", equalTo: otherObject.last!)
+//        newsfeeds.whereKey("toUser", equalTo: otherObject.last!)
+        let byUser = PFQuery(className: "Newsfeeds")
+        byUser.whereKey("byUser", equalTo: otherObject.last!)
+        
+        let toUser = PFQuery(className:  "Newsfeeds")
+        toUser.whereKey("toUser", equalTo: otherObject.last!)
+        
+        let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -562,11 +570,18 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 
                 
+                // *************************************************************************************************************************
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
-                    if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
+                    
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Fetch photo
+                    if let photo = object!["photoAsset"] as? PFFile {
+                        photo.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
                                 // Show mediaPreview
@@ -583,6 +598,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
@@ -591,9 +609,12 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 
                 
-                
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     
@@ -601,7 +622,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "BlueShared")
-                    
                 }
                 
                 
@@ -610,6 +630,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
+                    
+                    // Make mediaPreview circular
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    
+                    // Fetch Profile photo
                     if let mediaPreview = object!["photoAsset"] as? PFFile {
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
@@ -628,8 +655,67 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 
                 // (E) In the moment
-                // == When user takes a photo and shares it with his/her friends on the spot
+                if object!["contentType"] as! String == "itm" {
+                    
+                    
+                    
+                    // Make mediaPreview cornerd Squared and blur image
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Fetch photo
+                    if let itm = object!["photoAsset"] as? PFFile {
+                        itm.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                    
+                }
                 
+                
+                
+                // (F) Space Post
+                if object!["contentType"] as! String == "sp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "SpacePost")
+                }
+                
+                
+                // (G) Video
+                if object!["contentType"] as! String == "vi" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "igcVideo")
+                }
+                
+                // *************************************************************************************************************************
                 
                 
                 
@@ -696,7 +782,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+        
+        
+        
+        // TEXT POST
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             /*
              // Save to Views
              let view = PFObject(className: "Views")
@@ -706,6 +796,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
              view.saveInBackground(block: {
              (success: Bool, error: Error?) in
              if error == nil {
+             
              
              } else {
              print(error?.localizedDescription as Any)
@@ -721,12 +812,14 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             // Present VC
             let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
             self.navigationController?.pushViewController(textPostVC, animated: true)
+            
         }
-
         
-        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-            
-            
+        
+        
+        
+        // PHOTO
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             /*
              // Save to Views
              let view = PFObject(className: "Views")
@@ -752,28 +845,63 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             self.navigationController?.pushViewController(photoVC, animated: true)
         }
         
-        
-        
-        if contentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            if self.contentObjects[indexPath.row].value(forKey: "photoAsset") != nil {
-                
-                // Append Object
-                photoAssetObject.append(self.contentObjects[indexPath.row])
-                
-                // Push VC
-                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                self.navigationController?.pushViewController(photoVC, animated: true)
-                
-            } else {
-                // Append Object
-                textPostObject.append(self.contentObjects[indexPath.row])
-                
-                
-                // Push VC
-                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                self.navigationController?.pushViewController(textPostVC, animated: true)
-            }
+        // SHARED
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+            
+            // Append object
+            sharedObject.append(self.contentObjects[indexPath.row])
+            // Push VC
+            let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+            self.navigationController?.pushViewController(sharedPostVC, animated: true)
+            
         }
+        
+        
+        // PROFILE PHOTO
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+            // Append user's object
+            otherObject.append(self.contentObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+            // Append user's username
+            otherName.append(self.contentObjects[indexPath.row].value(forKey: "username") as! String)
+            
+            // Append object
+            proPicObject.append(self.contentObjects[indexPath.row])
+            
+            // Push VC
+            let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+            self.navigationController?.pushViewController(proPicVC, animated: true)
+            
+        }
+        
+        
+        // SPACE POST
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+            // Append object
+            spaceObject.append(self.contentObjects[indexPath.row])
+            
+            // Append otherObject
+            otherObject.append(self.contentObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+            
+            // Append otherName
+            otherName.append(self.contentObjects[indexPath.row].value(forKey: "username") as! String)
+            
+            // Push VC
+            let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+            self.navigationController?.pushViewController(spacePostVC, animated: true)
+        }
+        
+        
+        // ITM
+        if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            // Append content object
+            itmObject.append(self.contentObjects[indexPath.row])
+            
+            // Push VC
+            let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+            self.navigationController?.pushViewController(itmVC, animated: true)
+        }
+        
+        
         
     } // end didSelectRow
     

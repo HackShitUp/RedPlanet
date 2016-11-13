@@ -588,6 +588,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                                                handler: nil)
                                                         
                                                         alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
                                                         self.present(alert, animated: true, completion: nil)
                                                         
                                                     } else {

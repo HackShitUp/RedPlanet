@@ -584,7 +584,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share ph" {
-            cell.activity.setTitle("shared you photo", for: .normal)
+            cell.activity.setTitle("shared your photo", for: .normal)
         }
         
         // Profile Photo

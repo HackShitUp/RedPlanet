@@ -364,7 +364,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         
-        // (1) Delete Text Post
+        // (1) Delete Profile Photo
         let delete = UITableViewRowAction(style: .normal,
                                           title: "Delete") { (UITableViewRowAction, indexPath) in
                                             
@@ -562,7 +562,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                         
                                                         // Dismiss
                                                         let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(proPicObject.last!.value(forKey: "username") as! String)",
+                                                                                      message: "\(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo",
                                                             preferredStyle: .alert)
                                                         
                                                         let ok = UIAlertAction(title: "ok",
@@ -570,6 +570,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                                handler: nil)
                                                         
                                                         alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
                                                         self.present(alert, animated: true, completion: nil)
                                                         
                                                     } else {
