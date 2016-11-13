@@ -15,7 +15,7 @@ import Parse
 import ParseUI
 import Bolts
 
-class CustomCamera: UIViewController {
+class CustomCamera: UIViewController, CLImageEditorDelegate {
 
     // todo::
     // (1) add front face flash
@@ -157,6 +157,9 @@ class CustomCamera: UIViewController {
 
         DispatchQueue.main.async(execute: {
             
+            
+            
+            // CAPTURE PHOTO
             if sender.image(for: .normal) == UIImage(named: "Unchecked Circle-100") {
                 
                 if let videoConnection = self.stillImageOutput!.connection(withMediaType: AVMediaTypeVideo) {
@@ -222,49 +225,65 @@ class CustomCamera: UIViewController {
                 }
             }
             
+            
+            
+            // USEPHOTO
             if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
                 
-                // Append Image
-//                shareImageAssets.append(self.imageTaken.image!)
-                
-                // Push VC
-//                let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-//                self.navigationController!.pushViewController(shareMediaVC, animated: true)
-                
-                
-                // Show editor
-                
-                // Convert image to data
-                let imageData = UIImageJPEGRepresentation(self.imageTaken.image!, 0.5)
-                let parseFile = PFFile(data: imageData!)
-                
-                // First send it
-                let newsfeeds = PFObject(className: "Newsfeeds")
-                newsfeeds["byUser"] = PFUser.current()!
-                newsfeeds["username"] = PFUser.current()!.username!
-                newsfeeds["contentType"] = "itm"
-                newsfeeds["photoAsset"] = parseFile
-                newsfeeds.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if success {
-                        print("Successfully saved object: \(newsfeeds)")
-                        
-                        // Send Notification
-                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                        
-                        // Pop VC
-                        self.navigationController?.popViewController(animated: true)
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
-                
-                
+                // Show editor first
+                // Present CLImageEditor
+                let editor = CLImageEditor(image: self.imageTaken.image!)
+                editor?.delegate = self
+                self.present(editor!, animated: true, completion: nil)
             }
             
+            
+        }) // end running in main thread
+        
+    }
+    
+    
+    
+    
+    // MARK: - CLImageEditorDelegate
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        // Share Moment
+        // Convert image to data
+        let imageData = UIImageJPEGRepresentation(self.imageTaken.image!, 0.5)
+        let parseFile = PFFile(data: imageData!)
+        
+        // First send it
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["contentType"] = "itm"
+        newsfeeds["photoAsset"] = parseFile
+        newsfeeds.saveInBackground(block: {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved object: \(newsfeeds)")
+                
+                // Send Notification
+                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                
+                // Push Show MasterTab
+                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                UIApplication.shared.keyWindow?.rootViewController = masterTab
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
         })
         
+    }
+    
+    // Cancel editing
+    func imageEditorDidCancel(_ editor: CLImageEditor!) {
+        // Dismiss Editor
+        editor.dismiss(animated: true, completion: nil)
     }
     
     

@@ -426,7 +426,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.cover.backgroundColor = UIColor.white
         
         
-        // ofSize should be the same size of the headerView's label size:
+        // Size should be the same size of the headerView's label size:
         return CGSize(width: self.view.frame.size.width, height: CGFloat(425 + label.frame.size.height))
     }
 
