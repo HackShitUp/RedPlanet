@@ -414,7 +414,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.rpUserProPic.layoutSubviews()
         cell.rpUserProPic.setNeedsLayout()
         
-        // Give Profile Photo Corner Radius 
+        // Give Profile Photo Corner Radius
         cell.rpUserProPic.layer.cornerRadius = 8.00
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5

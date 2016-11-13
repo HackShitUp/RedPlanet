@@ -148,6 +148,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 for object in objects! {
+                    
                     // (1) Load moment
                     if let moment = object["photoAsset"] as? PFFile {
                         moment.getDataInBackground(block: {
@@ -164,8 +165,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     
                     // (2) Set username
                     if let user = object["byUser"] as? PFUser {
-                        let mUsername = user["username"] as! String
-                        self.rpUsername.setTitle("\(mUsername.uppercased())", for: .normal)
+                        self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
                     }
                     
                     // (3) Set time

@@ -733,31 +733,38 @@ class ActivityCell: UITableViewCell {
         
         
         // T A G
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a text post") {
+        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a") {
+            // TODO::
             
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a photo") {
             
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a profile photo") {
             
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a comment") {
+            // I Text Post
+            if self.activity.titleLabel!.text!.hasSuffix("text post"){
+                
+            }
             
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a space post") {
+            // II Photo
+            if self.activity.titleLabel!.text!.hasSuffix("photo") {
+                
+            }
             
-        }
-        
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a video") {
+            // III Profile Photo
+            if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
+                
+            }
             
-        }
+            // IV Space Post
+            if self.activity.titleLabel!.text!.hasSuffix("space post") {
+                
+            }
+            
+            // V Comment
+            if self.activity.titleLabel!.text!.hasSuffix("comment") {
+                
+            }
         
-        // end TAG
+        
+        }// end TAG
  
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
