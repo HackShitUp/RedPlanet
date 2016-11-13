@@ -15,6 +15,29 @@ import Bolts
 
 
 class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
+    
+    
+    // Arrays to hold icon images
+    var iconImages = [UIImage(named: "TextPostIcon"),               // Text Post
+                      UIImage(named: "PhotoGuide"),                 // Photo
+                      UIImage(named: "BlueShared"),                 // Shared
+                      UIImage(named: "Gender Neutral User-100"),    // Profile Photo
+                      UIImage(named: "SpacePost")]                  // Space Post
+    
+    // Arrays to hold titles
+    var iconNames = ["Text Post",
+                     "Photo",
+                     "Shared",
+                     "Profile Photo",
+                     "Space Post"]
+    
+    // Arrays to hold description
+    var iconDescripts = ["This is content focused on just text, and nothing else.",
+                         "This is content concentrated on a single photo. Photos have a corner radius around its thumbnail.",
+                         "This is content that's been re-shared by someone.",
+                         "Circular photo thumbnails indicate that someone has a new Profile Photo.",
+                         "A comet with a red gradient background indicates that someone wrote in someone else's Space. Only friends can write in each other's Space.",
+                         ]
 
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
@@ -28,11 +51,11 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
+                NSForegroundColorAttributeName: UIColor.white,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "I C O N S"
+            self.title = "Redplanet Icons Guideline"
         }
     }
     
@@ -45,24 +68,33 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 175
+        self.tableView!.estimatedRowHeight = 117
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
         // Stylize title
         configureView()
+
         
+        // Set lightcontent
+        UIApplication.shared.statusBarStyle = .lightContent
+
+        // Set background for navigationbar
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "ColorGradient"), for: .default)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Set NavigationBar back to normal
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    // Status bar
-//    override var preferredStatusBarStyle: UIStatusBarStyle {
-//        return .lightContent
-//    }
     
     
     
@@ -79,7 +111,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 175
+        return 117
     }
     
     
@@ -90,76 +122,19 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "rpIconsCell", for: indexPath) as! RPIconsCell
 
-        
-        // INTRO
-        if indexPath.row == 0 {
-            
-            cell.background.image = UIImage(named: "Wide")
-            cell.icon.isHidden = true
-            cell.iconName.text = "Our Icons Legend"
-            cell.iconName.textColor = UIColor.white
-            cell.iconDescription.isHidden = true
-            
-        }
+        // Configure cell
+        cell.icon.image = iconImages[indexPath.row]
+        cell.iconName.text! = iconNames[indexPath.row]
+        cell.iconDescription.text! = iconDescripts[indexPath.row]
         
         
-        
-        // TEXT POST
-        if indexPath.row == 1 {
-            cell.icon.image = UIImage(named: "TextPostIcon")
-            cell.iconName.text = "Text Post"
-            cell.iconDescription.text = "This is content focused on just text, and nothing else."
-            
-        }
-        
-        
-        
-        // PHOTO
-        if indexPath.row == 2 {
-            
-            cell.icon.backgroundColor = UIColor.white
-            cell.icon.layer.cornerRadius = 4.00
-            cell.icon.layer.borderColor = UIColor.black.cgColor
-            cell.icon.layer.borderWidth = 2.00
+        if indexPath.row == 1 || indexPath.row == 4 {
+            cell.icon.layer.cornerRadius = 6.00
             cell.icon.clipsToBounds = true
-            
-            cell.iconName.text = "Photo"
-            cell.iconDescription.text = "This is content concentrated on a photo. Photos will have a corner radius around the photo's thumbnail."
-        }
-        
-        
-        
-        // SHARED
-        if indexPath.row == 3 {
-            
-            cell.icon.image = UIImage(named: "BlueShared")
-            cell.icon.clipsToBounds = true
-            
-            cell.iconName.text = "Shared"
-            cell.iconDescription.text = "This is content that's been indirectly shared by someone."
-        }
-        
-        
-        // PROFILE PHOTO
-        if indexPath.row == 4 {
-            
-            cell.background.image = nil
-            
-            cell.icon.isHidden = false
-            cell.iconName.isHidden = false
-            cell.iconDescription.isHidden = false
-            
-            cell.icon.backgroundColor = UIColor.white
+        } else if indexPath.row == 3 {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
-            cell.icon.layer.borderColor = UIColor.black.cgColor
-            cell.icon.layer.borderWidth = 2.00
             cell.icon.clipsToBounds = true
-            
-            
-            cell.iconName.text = "Profile Photo"
-            cell.iconDescription.text = "Circular thumbnails indicate that someone updated his or her Profile Photo."
         }
-        
         
         
         

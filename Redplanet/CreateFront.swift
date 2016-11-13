@@ -491,7 +491,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // --------------------------------------------------------------------------------------------------------------------------------
 
         // Space
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "wall" {
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "space" {
             cell.activity.setTitle("wrote in your Space", for: .normal)
         }
 
@@ -521,7 +521,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         
         // Liked Space Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like wa" {
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like sp" {
             cell.activity.setTitle("liked your space post", for: .normal)
         }
         
@@ -551,7 +551,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         
         // Tag in Space Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag wa" {
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag sp" {
             cell.activity.setTitle("tagged you in a space post", for: .normal)
         }
         
@@ -590,6 +590,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Profile Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share pp" {
             cell.activity.setTitle("shared your profile photo", for: .normal)
+        }
+        
+        
+        // Share
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sh" {
+            cell.activity.setTitle("shared your shared post", for: .normal)
         }
         
         // Moment

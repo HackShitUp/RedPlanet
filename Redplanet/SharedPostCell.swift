@@ -272,7 +272,7 @@ class SharedPostCell: UITableViewCell {
                     notifications["to"] = self.rpUsername.text!
                     notifications["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
                     notifications["forObjectId"] = sharedObject.last!.objectId!
-                    notifications["type"] = "like tp"
+                    notifications["type"] = "like sh"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {

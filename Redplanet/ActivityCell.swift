@@ -444,6 +444,33 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
+            
+            if self.activity.titleLabel!.text!.hasSuffix("share") {
+                // MOMENT
+                // Find Moment
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        print("Found Moment")
+                        
+                        for object in objects! {
+                            // Append object
+                            itmObject.append(object)
+                            
+                            // Push to VC
+                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            
             if self.activity.titleLabel!.text!.hasSuffix("moment") {
                 // MOMENT
                 // Find Moment
@@ -468,6 +495,8 @@ class ActivityCell: UITableViewCell {
                     }
                 })
             }
+            
+            
             
         }
         

@@ -212,7 +212,7 @@ class SpacePostCell: UITableViewCell {
                     notifications["to"] = self.toUserObject!.value(forKey: "username") as! String
                     notifications["toUser"] = self.toUserObject!
                     notifications["forObjectId"] = spaceObject.last!.objectId!
-                    notifications["type"] = "like tp"
+                    notifications["type"] = "like sp"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {

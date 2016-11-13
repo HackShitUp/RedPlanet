@@ -359,9 +359,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
-                    
-                    
-                    
+
                     // Make mediaPreview cornerd Squared and blur image
                     cell.mediaPreview.layer.cornerRadius = 6.00
                     cell.mediaPreview.clipsToBounds = true

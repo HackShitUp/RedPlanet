@@ -59,6 +59,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                                           message: "• Friend requests must be accepted. \n • Follow requests must be confirmed.",
                                           preferredStyle: .alert)
             
+            
             let okAction = UIAlertAction(title: "ok",
                                          style: .default,
                                          handler: { (UIAlertAction) -> Void in
@@ -138,6 +139,13 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
     }
 
     override func didReceiveMemoryWarning() {
