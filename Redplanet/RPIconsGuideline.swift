@@ -128,10 +128,13 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         cell.iconDescription.text! = iconDescripts[indexPath.row]
         
         
-        if indexPath.row == 1 || indexPath.row == 4 {
+        if indexPath.row == 1 {
             cell.icon.layer.cornerRadius = 6.00
             cell.icon.clipsToBounds = true
         } else if indexPath.row == 3 {
+            cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
+            cell.icon.clipsToBounds = true
+        } else if indexPath.row == 4 {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
             cell.icon.clipsToBounds = true
         }

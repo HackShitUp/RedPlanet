@@ -687,7 +687,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+//                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Show mediaPreview

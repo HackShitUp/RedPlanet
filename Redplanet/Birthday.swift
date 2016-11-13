@@ -9,6 +9,9 @@
 import UIKit
 
 class Birthday: UIViewController {
+    
+    @IBOutlet weak var birthday: UIDatePicker!
+    @IBOutlet weak var continueButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()

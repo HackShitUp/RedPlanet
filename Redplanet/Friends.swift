@@ -360,9 +360,31 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
 
+                    // Add blur -- this doesn't work because cell issues
+//                    let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
+//                    let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//                    blurEffectView.frame = cell.mediaPreview.frame
+//                    blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//                    cell.mediaPreview.addSubview(blurEffectView)
+                    
+                    
+                    
+                    // SHADOW?
+                    // :/
+//                    cell.mediaPreview.layer.shadowOffset = CGSize(width: cell.mediaPreview.frame.size.width, height: cell.mediaPreview.frame.size.height)
+//                    cell.mediaPreview.layer.shadowOpacity = 0.7
+//                    cell.mediaPreview.layer.shadowRadius = 2.00
+                    
+                    // None of the above methods work :(
+                    
                     // Make mediaPreview cornerd Squared and blur image
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+//                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    cell.mediaPreview.contentMode = .scaleAspectFit
                     cell.mediaPreview.clipsToBounds = true
+                    
+                    
+
                     
                     // Fetch photo
                     if let itm = object!["photoAsset"] as? PFFile {
@@ -388,7 +410,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+//                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Show mediaPreview

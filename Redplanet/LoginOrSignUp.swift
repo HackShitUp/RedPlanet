@@ -20,6 +20,13 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBOutlet weak var rpPassword: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     
+    @IBAction func signUp(_ sender: Any) {
+        // Push VC
+        let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "signUpVC") as! SignUp
+//        self.navigationController?.pushViewController(signUpVC, animated: true)
+        self.present(signUpVC, animated: true, completion: nil)
+    }
+    
     // Function to login
     func loginToRP() {
         print("Logging in...")

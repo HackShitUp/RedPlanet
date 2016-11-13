@@ -414,8 +414,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.rpUserProPic.layoutSubviews()
         cell.rpUserProPic.setNeedsLayout()
         
-        // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        // Give Profile Photo Corner Radius 
+        cell.rpUserProPic.layer.cornerRadius = 8.00
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
@@ -456,6 +456,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // (3) Set title of activity
         
+        // =================================================================================================================================
+        // =================================================================================================================================
+        // START TITLE =====================================================================================================================
+        // =================================================================================================================================
+        // =================================================================================================================================
+        
+
+        
         
         // --------------------------------------------------------------------------------------------------------------------------------
         // ==================== R E L A T I O N S H I P S ---------------------------------------------------------------------------------
@@ -463,22 +471,22 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         
         
-        // Friend Requested
+        // (1) Friend Requested
         if myActivity[indexPath.row].value(forKey: "type") as! String == "friend requested" {
             cell.activity.setTitle("asked to be friends", for: .normal)
         }
         
-        // Friended
+        // (2) Friended
         if myActivity[indexPath.row].value(forKey: "type") as! String == "friended" {
             cell.activity.setTitle("is now friends with you", for: .normal)
         }
         
-        // Follow Requested
+        // (3) Follow Requested
         if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
             cell.activity.setTitle("asked to follow you", for: .normal)
         }
         
-        // Followed
+        // (4) Followed
         if myActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
             cell.activity.setTitle("started following you", for: .normal)
         }
@@ -502,7 +510,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // --------------------------------------------------------------------------------------------------------------------------------
 
         
-        // Liked Text Post
+        // (1) Text Post
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like tp" {
             cell.activity.setTitle("liked your text post", for: .normal)
         }
@@ -510,22 +518,33 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // TODO::
         // Remove "like pv" once everyone has the new update
-        // Liked Photo
+        // (2) Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like ph" || myActivity[indexPath.row].value(forKey: "type") as! String == "like pv" {
             cell.activity.setTitle("liked your photo", for: .normal)
         }
         
-        // Liked Profile Photo
+        // (3) Profile Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like pp" {
             cell.activity.setTitle("liked your profile photo", for: .normal)
         }
         
-        // Liked Space Post
+        // (4) Space Post
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like sp" {
             cell.activity.setTitle("liked your space post", for: .normal)
         }
         
-        // Liked Comment
+        // (5) Shared
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like sh" {
+            cell.activity.setTitle("liked your shared post", for: .normal)
+        }
+        
+        
+        // (6) Moment
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like itm" {
+            cell.activity.setTitle("liked your moment", for: .normal)
+        }
+        
+        // (7)  Liked Comment
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
             cell.activity.setTitle("liked your comment", for: .normal)
         }
@@ -535,27 +554,27 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ==================== T A G -----------------------------------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------------------------
         
-        // Tag in Text Post
+        // (1) Text Post
         if myActivity[indexPath.row].value(forKey: "type") as! String == "tag tp" {
             cell.activity.setTitle("tagged you in a text post", for: .normal)
         }
 
-        // Tag in Photo
+        // (2) Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "tag ph" {
             cell.activity.setTitle("tagged you in a photo", for: .normal)
         }
         
-        // Tag in Profile Photo
+        // (3) Profile Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "tag pp" {
             cell.activity.setTitle("tagged you in a profile photo", for: .normal)
         }
         
-        // Tag in Space Post
+        // (4) Space Post
         if myActivity[indexPath.row].value(forKey: "type") as! String == "tag sp" {
             cell.activity.setTitle("tagged you in a space post", for: .normal)
         }
         
-        // Tag in comment
+        // (5) Comment
         if myActivity[indexPath.row].value(forKey: "type") as! String == "tag co" {
             cell.activity.setTitle("tagged you in a comment", for: .normal)
         }
@@ -568,7 +587,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // --------------------------------------------------------------------------------------------------------------------------------
         // Comment
         if myActivity[indexPath.row].value(forKey: "type") as! String == "comment" {
-            cell.activity.setTitle("commented on your content", for: .normal)
+            cell.activity.setTitle("commented on your post", for: .normal)
         }
         
         
@@ -577,31 +596,43 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ==================== S H A R E D -----------------------------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------------------------
         
-        // Text Post
+        // (1) Text Post
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share tp" {
             cell.activity.setTitle("shared your text post", for: .normal)
         }
         
-        // Photo
+        // (2) Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share ph" {
             cell.activity.setTitle("shared your photo", for: .normal)
         }
         
-        // Profile Photo
+        // (3) Profile Photo
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share pp" {
             cell.activity.setTitle("shared your profile photo", for: .normal)
         }
         
-        
-        // Share
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sh" {
-            cell.activity.setTitle("shared your shared post", for: .normal)
+        // (4) Space Post
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sp" {
+            cell.activity.setTitle("shared your space post", for: .normal)
         }
         
-        // Moment
+        // (5) Share
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sh" {
+            cell.activity.setTitle("re-shared your shared post", for: .normal)
+        }
+        
+        // (6) Moment
         if myActivity[indexPath.row].value(forKey: "type") as! String == "share itm" {
             cell.activity.setTitle("shared your moment", for: .normal)
         }
+        
+        
+        
+        // =================================================================================================================================
+        // =================================================================================================================================
+        // END TITLE =======================================================================================================================
+        // =================================================================================================================================
+        // =================================================================================================================================
         
         
         

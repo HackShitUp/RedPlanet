@@ -22,8 +22,8 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     @IBOutlet weak var continueButton: UIButton!
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Pop back
-        self.navigationController?.popViewController(animated: true)
+        // Dismiss
+        self.dismiss(animated: true, completion: nil)
     }
     
     // Sign up
@@ -155,6 +155,14 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
         // Create rounded buttons
         self.continueButton.layer.cornerRadius = 25.0
         self.continueButton.clipsToBounds = true
+        
+        // Add sign up method
+        let signUpTap = UITapGestureRecognizer(target: self, action: #selector(signUp))
+        signUpTap.numberOfTapsRequired = 1
+        self.continueButton.isUserInteractionEnabled = true
+        self.continueButton.addGestureRecognizer(signUpTap)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {

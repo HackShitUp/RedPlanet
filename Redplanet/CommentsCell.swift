@@ -78,10 +78,30 @@ class CommentsCell: UITableViewCell {
                                 })
                                 
                                 
-                                // TODO:: 
-                                // Delete from notification
                                 
-                                
+                                // Delete from <Notifications>
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.whereKey("forObjectId", equalTo: self.commentObject!.objectId!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Deleted notification: \(object)")
+
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -131,9 +151,25 @@ class CommentsCell: UITableViewCell {
                     })
                     
                     
-                    // TODO::
-                    // Save to notification
                     
+                    // Send to <Notifications>
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = self.commentObject!.value(forKey: "byUser") as! PFUser
+                    notifications["to"] = self.rpUsername.titleLabel!.text!
+                    notifications["forObjectId"] = self.commentObject!.objectId!
+                    notifications["type"]  = "like co"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Sent notification: \(notifications)")
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
                     
                     
                     

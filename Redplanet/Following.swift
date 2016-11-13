@@ -32,6 +32,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     // Refresher
     var refresher: UIRefreshControl!
     
+    // Array to hold contenTypes
+    var contentTypes = ["ph", "tp", "sh"]
+    
     
     // Function to refresh data
     func refresh() {
@@ -48,6 +51,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
+        newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {

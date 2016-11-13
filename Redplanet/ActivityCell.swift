@@ -76,7 +76,6 @@ class ActivityCell: UITableViewCell {
         // LIKED
         if self.activity.titleLabel!.text!.hasPrefix("liked") {
             
-            print("FIRED")
             
             // I
             // TEXT POST
@@ -93,7 +92,6 @@ class ActivityCell: UITableViewCell {
                         self.activity.isEnabled = true
                         
                         for object in objects! {
-                            
                             
                             // Append text post object
                             textPostObject.append(object)
@@ -134,7 +132,6 @@ class ActivityCell: UITableViewCell {
                             
                             // Append object
                             photoAssetObject.append(object)
-                            
                             
                             // Push VC
                             let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
@@ -190,10 +187,10 @@ class ActivityCell: UITableViewCell {
 
             // IV
             // SHARE
-            if self.activity.titleLabel!.text!.hasSuffix("share") {
-                
+            if self.activity.titleLabel!.text!.hasSuffix("shared post") {
                 let share = PFQuery(className: "Newsfeeds")
                 share.includeKey("byUser")
+                share.whereKey("contentType", equalTo: "sh")
                 share.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 share.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -205,14 +202,13 @@ class ActivityCell: UITableViewCell {
                         
                         for object in objects! {
                             
-                            // TODO::
-                            //
+                            // Append object
+                            sharedObject.append(object)
                             
-                            
-                            
+                            // Push VC
+                            let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                            self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
                         }
-                        
-                        
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -229,30 +225,88 @@ class ActivityCell: UITableViewCell {
             // V
             // SPACE POST
             if self.activity.titleLabel!.text!.hasSuffix("space post") {
-                
+                let spacePost = PFQuery(className: "Newsfeeds")
+                spacePost.whereKey("toUser", equalTo: PFUser.current()!)
+                spacePost.whereKey("contentType", equalTo: "sp")
+                spacePost.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                spacePost.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            spaceObject.append(object)
+                            
+                            // Push VC
+                            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
             }
             
             // VI
+            // MOMENT
+            if self.activity.titleLabel!.text!.hasSuffix("moment") {
+                let moment = PFQuery(className: "Newsfeeds")
+                moment.whereKey("byUser", equalTo: PFUser.current()!)
+                moment.whereKey("contentType", equalTo: "itm")
+                moment.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                moment.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            itmObject.append(object)
+                            
+                            // Push VC
+                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
+            }
+            
+            
+            // VII
             // VIDEO
             if self.activity.titleLabel!.text!.hasSuffix("video") {
                 
             }
             
-            
-            // VII
-            // ITM
-            if self.activity.titleLabel!.text!.hasSuffix("moment") {
-                
-            }
-            
-            
-            
-            
-        }
+        } // End Liked Content
         
         
-        // L I K E D     Y O U R      C O M M E N T
+        // B
+        // LIKED COMMENT
         if self.activity.titleLabel!.text! == "liked your comment" {
+
+            // Disable buttons
+            self.activity.isUserInteractionEnabled = false
+            self.activity.isEnabled = false
+            
+            // Find content
             let comments = PFQuery(className: "Comments")
             comments.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
             comments.findObjectsInBackground(block: {
@@ -273,55 +327,75 @@ class ActivityCell: UITableViewCell {
                         newsfeeds.findObjectsInBackground(block: {
                             (objects: [PFObject]?, error: Error?) in
                             if error == nil {
-                                // TODO::
-                                // PUSH VC
                                 
+                                // PUSH VC
                                 for object in objects! {
+
+                                    // I TEXT POST
+                                    if object["contentType"] as! String  == "tp" {
+                                        // Append object
+                                        textPostObject.append(object)
+                                        
+                                        // Push VC
+                                        let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                                        self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                                    }
                                     
-                                    if object["contentType"] as! String == "sh" {
+                                    // II PHOTO
+                                    if object["contentType"] as! String  == "ph" {
+                                        // Append object
+                                        photoAssetObject.append(object)
                                         
-                                        if object["photoAsset"] != nil {
-                                            // Shared Photo
-                                            // Append object
-                                            photoAssetObject.append(object)
-                                            
-                                            // Push to VC
-                                            let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                            self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
-                                        }
-                                        
-                                        if object["videoAsset"] != nil {
-                                            // Shared Video
-                                        }
-                                        
-                                        
-                                        
-                                        if object["photoAsset"] == nil && object["videoAsset"] == nil && object["textPost"] != nil {
-                                            // Shared Text Post
-                                        }
-                                        
-                                        
-                                    } else {
-                                        
-                                        // Push to Text Post
-                                        if object["contentType"] as! String  == "tp" {
-                                            
-                                        }
-                                        
-                                        // Push to Photo
-                                        if object["contentType"] as! String  == "ph" {
-                                            
-                                        }
-                                        
-                                        // Push to Video
-                                        if object["contentType"] as! String  == "vi" {
-                                            
-                                        }
+                                        // Push VC
+                                        let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                                        self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                                     }
 
+                                    // III SHARED POST
+                                    if object["contentType"] as! String == "sh" {
+                                        // Append object
+                                        sharedObject.append(object)
+                                        
+                                        // Push VC
+                                        let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                                        self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
+                                    }
                                     
+                                    // IV PROFILE PHOTO
+                                    if object["contentType"] as! String == "pp" {
+                                        // Append object
+                                        proPicObject.append(object)
+                                        
+                                        // Push VC
+                                        let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                                        self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                                    }
                                     
-
+                                    // VI SPACE POST
+                                    if object["contentType"] as! String == "sp" {
+                                        // Append object
+                                        spaceObject.append(object)
+                                        
+                                        // Append to otherObject
+                                        otherObject.append(object["toUser"] as! PFUser)
+                                        // Append to otherName
+                                        otherName.append(object["toUsername"] as! String)
+                                        
+                                        // Push VC
+                                        let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                                        self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                                    }
+                                    
+                                    // VII MOMENT
+                                    if object["contentType"] as! String == "itm" {
+                                        // Append object
+                                        itmObject.append(object)
+                                        
+                                        // Push VC
+                                        let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                        self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                                    }
+                                    
                                 }
                                 
                                 
@@ -340,41 +414,138 @@ class ActivityCell: UITableViewCell {
                     self.activity.isEnabled = true
                 }
             })
-        }
-        //////// E N D ------> L I K E
+
+        }// End liked comment
 
         
         
         
-        // C O M M E N T E D     O N     Y O U R      C O N T E N T
-        if self.activity.titleLabel!.text! == "commented on your content" {
-            // TODO:: 
+        
+        // C
+        // COMMENT
+        if self.activity.titleLabel!.text! == "commented on your post" {
+
+            // Disable buttons
+            self.activity.isUserInteractionEnabled = false
+            self.activity.isEnabled = false
+            
             // Find Comment
             // Find in Newsfeed
-            
             let newsfeeds = PFQuery(className: "Newsfeeds")
-            newsfeeds.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+            newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+            newsfeeds.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    
+                    // Re-enable buttons
+                    self.activity.isUserInteractionEnabled = true
+                    self.activity.isEnabled = true
+                    
+                    // PUSH VC
+                    for object in objects! {
+                        
+                        // I TEXT POST
+                        if object["contentType"] as! String  == "tp" {
+                            // Append object
+                            textPostObject.append(object)
+                            
+                            // Push VC
+                            let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                            self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+                        }
+                        
+                        // II PHOTO
+                        if object["contentType"] as! String  == "ph" {
+                            // Append object
+                            photoAssetObject.append(object)
+                            
+                            // Push VC
+                            let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                            self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+                        }
+                        
+                        // III SHARED POST
+                        if object["contentType"] as! String == "sh" {
+                            // Append object
+                            sharedObject.append(object)
+                            
+                            // Push VC
+                            let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                            self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
+                        }
+                        
+                        // IV PROFILE PHOTO
+                        if object["contentType"] as! String == "pp" {
+                            // Append object
+                            proPicObject.append(object)
+                            
+                            // Push VC
+                            let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                            self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                        }
+                        
+                        // VI SPACE POST
+                        if object["contentType"] as! String == "sp" {
+                            // Append object
+                            spaceObject.append(object)
+                            
+                            // Append to otherObject
+                            otherObject.append(object["toUser"] as! PFUser)
+                            // Append to otherName
+                            otherName.append(object["toUsername"] as! String)
+                            
+                            // Push VC
+                            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                        }
+                        
+                        // VII MOMENT
+                        if object["contentType"] as! String == "itm" {
+                            // Append object
+                            itmObject.append(object)
+                            
+                            // Push VC
+                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                        }
+                        
+                    }
+                    
+                    
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Re-enable buttons
+                    self.activity.isUserInteractionEnabled = true
+                    self.activity.isEnabled = true
+                }
+            })
+
             
-            
-        }
-        // END: COMMENTED ON YOUR CONTENT
+        }// End commented on your content
         
         
         
-        
-        // S H A R E D      Y O U R...
-        if self.activity.titleLabel!.text!.hasPrefix("shared your") {
+        // D
+        // SHARE
+        if self.activity.titleLabel!.text!.hasPrefix("shared your") || self.activity.titleLabel!.text!.hasPrefix("re-shared your") {
             
+            // Disable buttons
+            self.activity.isUserInteractionEnabled = false
+            self.activity.isEnabled = false
             
+            // (1) Text Post
             if self.activity.titleLabel!.text!.hasSuffix("text post") {
-                // TEXT POST
                 // Find Text Post
                 let newsfeeds = PFQuery(className: "Newsfeed")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        print("Found Text Post..")
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                         
                         for object in objects! {
                             // Append object
@@ -387,13 +558,17 @@ class ActivityCell: UITableViewCell {
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                     }
                 })
             }
             
-            
+
+            // (2) Photo
             if self.activity.titleLabel!.text!.hasSuffix("photo") {
-                // PHOTO
                 // Find Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -401,7 +576,9 @@ class ActivityCell: UITableViewCell {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         
-                        print("Found Photo...")
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                         
                         for object in objects! {
                            // Append object
@@ -418,15 +595,18 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
+            // (3) Profile Photo
             if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
-                // PROFILE PHOTO
                 // Find Profile Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        print("Found Profile Photo")
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                         
                         for object in objects! {
                             // Append object
@@ -445,41 +625,85 @@ class ActivityCell: UITableViewCell {
             }
             
             
-            if self.activity.titleLabel!.text!.hasSuffix("share") {
-                // MOMENT
+            // (4) Shared Post
+            if self.activity.titleLabel!.text!.hasSuffix("shared post") {
+                // Find Shared Post
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            sharedObject.append(object)
+                            
+                            // Push to VC
+                            let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                            self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
+            }
+            
+            // (5) Space Post
+            if self.activity.titleLabel!.text!.hasSuffix("space post") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        print("Found Moment")
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                         
                         for object in objects! {
                             // Append object
-                            itmObject.append(object)
+                            spaceObject.append(object)
+                            
+                            // Append otherObject
+                            otherObject.append(object["toUser"] as! PFUser)
+                            // Append otherName
+                            otherName.append(object["toUsername"] as! String)
                             
                             // Push to VC
-                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                         }
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                     }
                 })
             }
             
-            
+            // (6) Moment
             if self.activity.titleLabel!.text!.hasSuffix("moment") {
-                // MOMENT
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        print("Found Moment")
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                         
                         for object in objects! {
                             // Append object
@@ -492,13 +716,18 @@ class ActivityCell: UITableViewCell {
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
                     }
                 })
             }
             
+            // (7) VIDEO
+            // TODO::
             
-            
-        }
+        }// End Shared
+        
         
         
         
