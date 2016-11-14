@@ -39,49 +39,8 @@ class PhotoAssetCell: UITableViewCell {
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
+
     
-    @IBAction func moreButton(_ sender: AnyObject) {
-        
-        
-        // Show Options
-        let options = UIAlertController(title: nil,
-                                        message: nil,
-                                        preferredStyle: .actionSheet)
-        
-        let delete = UIAlertAction(title: "Delete",
-                                   style: .destructive,
-                                   handler: {(alertAction: UIAlertAction!) in
-        })
-        
-        let edit = UIAlertAction(title: "Edit",
-                                 style: .default,
-                                 handler: {(alertAction: UIAlertAction!) in
-        })
-        
-        
-        let views = UIAlertAction(title: "Views",
-                                  style: .default,
-                                  handler: {(alertAction: UIAlertAction!) in
-        })
-        
-        
-        let shareVia = UIAlertAction(title: "Share Via",
-                                     style: .default,
-                                     handler: {(alertAction: UIAlertAction!) in
-                                        
-                                        
-                                        // set up activity view controller
-                                        let image = self.rpMedia.image!
-                                        let imageToShare = [image]
-                                        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-                                        activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
-                                        
-                                        // present the view controller
-                                        self.delegate?.present(activityViewController, animated: true, completion: nil)
-        })
-
-
-    }
     
     // Function to go to OtherUser
     func goOther() {
@@ -426,6 +385,22 @@ class PhotoAssetCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
         
     }
+    
+    
+    
+    // Function to save do more with the photo
+    func saveShare(sender: UILongPressGestureRecognizer) {
+        // set up activity view controller
+        let image = self.rpMedia.image!
+        let imageToShare = [image]
+        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
+        
+        // present the view controller
+        self.delegate?.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -483,6 +458,12 @@ class PhotoAssetCell: UITableViewCell {
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
+        
+        // (9) Hold the photo to save it
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        hold.minimumPressDuration = 0.50
+        self.rpMedia.isUserInteractionEnabled = true
+        self.rpMedia.addGestureRecognizer(hold)
         
         
         

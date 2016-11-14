@@ -63,15 +63,6 @@ class TextPostCell: UITableViewCell {
         let shareVia = UIAlertAction(title: "Share Via",
                                       style: .default, 
                                       handler: {(alertAction: UIAlertAction!) in
-                                        
-                                        
-                                        let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)"
-//                                        if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
-//                                        }
-//                                        let objectsToShare = [textToShare, myWebsite] as [Any]
-                                        let objectsToShare = [textToShare]
-                                        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                                        self.delegate?.present(activityVC, animated: true, completion: nil)
         })
         
         
@@ -502,6 +493,19 @@ class TextPostCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
     }
     
+    
+    // Function to share text post
+    func saveShare(sender: UILongPressGestureRecognizer) {
+        
+        let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let objectsToShare = [textToShare]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.delegate?.present(activityVC, animated: true, completion: nil)
+
+    }
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -553,6 +557,12 @@ class TextPostCell: UITableViewCell {
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
+        
+        // (9) Long tap
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        hold.minimumPressDuration = 0.50
+        self.textPost.isUserInteractionEnabled = true
+        self.textPost.addGestureRecognizer(hold)
         
         
         

@@ -679,6 +679,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         return true
     }
     
+    
+    // Save or share the photo
+    func saveShare(sender: UILongPressGestureRecognizer) {
+        // Photo to Share
+        let image = self.itmMedia.image!
+        let imageToShare = [image]
+        let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -750,6 +762,12 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+        
+        // (10) Add Save??
+        let holdTap = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        holdTap.minimumPressDuration = 0.5
+        self.itmMedia.isUserInteractionEnabled = true
+        self.itmMedia.addGestureRecognizer(holdTap)
         
         
         // Hide moreButton if not user's content

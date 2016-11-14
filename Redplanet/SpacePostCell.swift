@@ -382,6 +382,24 @@ class SpacePostCell: UITableViewCell {
 
     
     
+    // Save or share the photo
+    func saveShare(sender: UILongPressGestureRecognizer) {
+        if spaceObject.last!.value(forKey: "photoAsset") != nil {
+            // Photo to Share
+            let image = self.mediaAsset.image!
+            let imageToShare = [image]
+            let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+            self.delegate?.present(activityVC, animated: true, completion: nil)
+
+        } else {
+            // Text to Share
+            let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            let objectsToShare = [textToShare]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.delegate?.present(activityVC, animated: true, completion: nil)
+        }
+    }
+    
     
     
     override func awakeFromNib() {
@@ -428,6 +446,19 @@ class SpacePostCell: UITableViewCell {
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
+        
+        // (7) Hold photo or text to share it or save it
+        let mediaHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        mediaHold.minimumPressDuration = 0.50
+        self.mediaAsset.isUserInteractionEnabled = true
+        self.mediaAsset.addGestureRecognizer(mediaHold)
+        
+        // (8) Add method to textPost
+        let tpHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        tpHold.minimumPressDuration = 0.50
+        self.textPost.isUserInteractionEnabled = true
+        self.textPost.addGestureRecognizer(tpHold)
+        
         
         
         // Handle @username tap

@@ -380,6 +380,18 @@ class ProfilePhotoCell: UITableViewCell {
     
     
     
+    // Function to save do more with the photo
+    func saveShare(sender: UILongPressGestureRecognizer) {
+        // set up activity view controller
+        let image = self.rpUserProPic.image!
+        let imageToShare = [image]
+        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
+        
+        // present the view controller
+        self.delegate?.present(activityViewController, animated: true, completion: nil)
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -420,6 +432,12 @@ class ProfilePhotoCell: UITableViewCell {
         userTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
+        
+        // (9) Hold the photo to save it
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+        hold.minimumPressDuration = 0.50
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(hold)
         
         
         
