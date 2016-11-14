@@ -14,7 +14,7 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
     
     
     // Variables to hold text
-    var rowTitles = ["Welcome to Redplanet", "Copyright Policy Effective: June 4th, 2016", "DMCA Notice of Alleged Infringement (Notice)"]
+    var rowTitles = ["Welcome to Redplanet", "Copyright Policy\nEffective: November 16th, 2016", "DMCA Notice of Alleged Infringement (Notice)"]
     
     var rowText = [
         
@@ -70,6 +70,10 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "aboutUsCell", for: indexPath) as! AboutUsCell
+        
+        
+        // Set delegate
+        cell.delegate = self
 
         if indexPath.row == 0 {
             cell.headerTitle.text! = rowTitles[indexPath.row]

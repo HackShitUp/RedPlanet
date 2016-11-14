@@ -15,7 +15,7 @@ import Parse
 import ParseUI
 import Bolts
 
-class CustomCamera: UIViewController, CLImageEditorDelegate {
+class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
 
     // todo::
     // (1) add front face flash
@@ -234,7 +234,8 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
                 // Present CLImageEditor
                 let editor = CLImageEditor(image: self.imageTaken.image!)
                 editor?.delegate = self
-                self.present(editor!, animated: true, completion: nil)
+//                self.present(editor!, animated: true, completion: nil)
+                self.navigationController?.pushViewController(editor!, animated: true)
             }
             
             
@@ -249,7 +250,7 @@ class CustomCamera: UIViewController, CLImageEditorDelegate {
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
         // Share Moment
         // Convert image to data
-        let imageData = UIImageJPEGRepresentation(self.imageTaken.image!, 0.5)
+        let imageData = UIImageJPEGRepresentation(image, 0.5)
         let parseFile = PFFile(data: imageData!)
         
         // First send it

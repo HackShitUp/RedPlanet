@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
+
+import KILabel
 
 class TOSCell: UITableViewCell {
 
+    @IBOutlet weak var tosTitle: UILabel!
+    @IBOutlet weak var tosText: KILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

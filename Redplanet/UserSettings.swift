@@ -281,12 +281,10 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 
             }
             
-            if indexPath.row == 3 {
-                // TODO::
-                
+            if indexPath.row == 3 {                
                 // Push to AboutUs
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
-                self.navigationController!.pushViewController(aboutVC, animated: true)
+                self.navigationController?.pushViewController(aboutVC, animated: true)
 
             }
             
@@ -297,6 +295,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             if indexPath.row == 5 {
                 // TOS
+                let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
+                self.navigationController?.pushViewController(tosVC, animated: true)
             }
             
             if indexPath.row == 6 {

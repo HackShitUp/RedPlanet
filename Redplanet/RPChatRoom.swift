@@ -372,15 +372,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print(chatUserObject.last!)
-        
         // Show Progress
         SVProgressHUD.show()
         
         // Query Chats
         queryChats()
-        
-        
 
         // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
@@ -413,7 +409,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Set placeholder for newChat
         self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)..."
         
-        // Add notifications to hide chatBox
+        // Add notifications to hide chatBoxx
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
@@ -487,6 +483,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         
         
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Set first responder
+        self.newChat.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

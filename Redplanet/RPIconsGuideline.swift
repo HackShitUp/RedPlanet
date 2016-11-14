@@ -51,7 +51,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.white,
+                NSForegroundColorAttributeName:  UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -77,16 +77,10 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         
         // Set lightcontent
         UIApplication.shared.statusBarStyle = .lightContent
-
-        // Set background for navigationbar
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(named: "ColorGradient"), for: .default)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Set NavigationBar back to normal
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
 
     }
     
