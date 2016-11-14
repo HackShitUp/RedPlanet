@@ -245,7 +245,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         
         
         // Send notification
-//        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
         
         // Push Show MasterTab
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)

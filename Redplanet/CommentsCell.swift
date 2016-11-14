@@ -208,6 +208,55 @@ class CommentsCell: UITableViewCell {
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
+        
+        
+        // Handle @username tap
+        comment.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        
+        // Handle #object tap
+        comment.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            //            var mention = handle
+            //            mention = String(mention.characters.dropFirst())
+            //            hashtags.append(mention.lowercaseString)
+            //            let hashTags = self.delegate?.storyboard?.instantiateViewControllerWithIdentifier("hashTags") as! Hashtags
+            //            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        
+        
+        // Handle http: tap
+        comment.urlLinkTapHandler = { label, handle, range in
+            // Open url
+            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
+            self.delegate?.present(modalWeb, animated: true, completion: nil)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

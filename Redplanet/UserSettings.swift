@@ -301,6 +301,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             if indexPath.row == 6 {
                 // Privacy Policy
+                let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
+                self.navigationController?.pushViewController(privacyVC, animated: true)
             }
             
         } // end indexPath

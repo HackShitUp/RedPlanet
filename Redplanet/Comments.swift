@@ -136,8 +136,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved comment: \(comments)")
-                    // Clear text
-                    self.newComment.text! = ""
                     
                     
                     // Send notification
@@ -153,9 +151,70 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
+                            
+                            
+                            // Hashtags only exist for shared content, not comments :/
+                            // Check for user mentions...
+                            let words: [String] = self.newComment.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                            // Loop through words to check for # and @ prefixes
+                            for var word in words {
+                                
+                                // Define @username
+                                if word.hasPrefix("@") {
+                                    // Get username
+                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                    
+                                    // Look for user
+                                    let user = PFUser.query()!
+                                    user.whereKey("username", equalTo: word.lowercased())
+                                    user.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                
+                                                // Send mention to Parse server, class "Notifications"
+                                                let notifications = PFObject(className: "Notifications")
+                                                notifications["from"] = PFUser.current()!.username!
+                                                notifications["fromUser"] = PFUser.current()!
+                                                notifications["type"] = "tag co"
+                                                notifications["forObjectId"] = comments.objectId!
+                                                notifications["to"] = word
+                                                notifications["toUser"] = object
+                                                notifications.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved tag in notifications: \(notifications)")
+                                                        
+                                                        
+                                                        // Handle optional chaining
+                                                        if object.value(forKey: "apnsId") != nil {
+                                                            // Send push notification
+                                                            OneSignal.postNotification(
+                                                                ["contents":
+                                                                    ["en": "\(PFUser.current()!.username!) tagged you in a comment"],
+                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
+                                                                ]
+                                                            )
+                                                        }
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                            }
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
+                                }
+                            }
+                            
+                            
                             // Query Comments
                             self.queryComments()
-                            
                             
                             // Handle optional chaining for user object
                             if let user = commentsObject.last!.value(forKey: "byUser") as? PFUser {
@@ -172,6 +231,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                     
                                 }
                             }
+                            
+                            // Clear text
+                            self.newComment.text! = ""
                             
                         } else {
                             print(error?.localizedDescription as Any)
