@@ -312,11 +312,18 @@ class MyProfile: UICollectionViewController {
                 cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
                 
                 
-                // (2) Determine Content Type
+                // *************************************************************************************************************************
+                // (3) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
-                    if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
+                    
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Fetch photo
+                    if let photo = object!["photoAsset"] as? PFFile {
+                        photo.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
                                 // Show mediaPreview
@@ -333,6 +340,9 @@ class MyProfile: UICollectionViewController {
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     // Set mediaPreview's icon
@@ -341,9 +351,12 @@ class MyProfile: UICollectionViewController {
                 
                 
                 
-                
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.clipsToBounds = true
+                    
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
                     
@@ -351,7 +364,6 @@ class MyProfile: UICollectionViewController {
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
                     cell.mediaPreview.image = UIImage(named: "BlueShared")
-                    
                 }
                 
                 
@@ -360,12 +372,14 @@ class MyProfile: UICollectionViewController {
                 
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
+                    
+                    // Make mediaPreview circular
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    
+                    // Fetch Profile photo
                     if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        
-                        // Make mediaPreview circular
-                        cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
-                        
-                        // Fetch profile photo
                         mediaPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -380,6 +394,69 @@ class MyProfile: UICollectionViewController {
                     }
                 }
                 
+                
+                
+                // (E) In the moment
+                if object!["contentType"] as! String == "itm" {
+                    
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    cell.mediaPreview.contentMode = .scaleAspectFit
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    
+                    // Fetch photo
+                    if let itm = object!["photoAsset"] as? PFFile {
+                        itm.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                
+                                // Show mediaPreview
+                                cell.mediaPreview.isHidden = false
+                                // Set media
+                                cell.mediaPreview.image = UIImage(data: data!)
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                    
+                }
+                
+                
+                
+                // (F) Space Post
+                if object!["contentType"] as! String == "sp" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "SpacePost")
+                }
+                
+                
+                // (G) Video
+                if object!["contentType"] as! String == "vi" {
+                    // Make mediaPreview cornered square
+                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
+                    cell.mediaPreview.clipsToBounds = true
+                    
+                    // Show mediaPreview
+                    cell.mediaPreview.isHidden = false
+                    
+                    // Set background color for mediaPreview
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.mediaPreview.image = UIImage(named: "igcVideo")
+                }
+                
+                // *************************************************************************************************************************
                 
                 
                 // (E) In the moment

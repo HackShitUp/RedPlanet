@@ -147,56 +147,60 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Function to send chat
     func sendChat() {
-        // Send to Chats
-        let chat = PFObject(className: "Chats")
-        chat["sender"] = PFUser.current()!
-        chat["senderUsername"] = PFUser.current()!.username!
-        chat["receiver"] = chatUserObject.last!
-        chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["Message"] = self.newChat.text!
-        chat["read"] = false
-        chat.saveInBackground {
-            (success: Bool, error: Error?) in
-            if error == nil {
-                print("Successfully sent chat: \(chat)")
-                
-                // Clear newChat
-                self.newChat.text!.removeAll()
-                
-                // Send Push Notification to user
-                // Handle optional chaining
-                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+
+        if self.newChat.text!.isEmpty {
+            // Resign first responder
+            self.newChat.resignFirstResponder()
+        } else {
+            // Send to Chats
+            let chat = PFObject(className: "Chats")
+            chat["sender"] = PFUser.current()!
+            chat["senderUsername"] = PFUser.current()!.username!
+            chat["receiver"] = chatUserObject.last!
+            chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chat["Message"] = self.newChat.text!
+            chat["read"] = false
+            chat.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    print("Successfully sent chat: \(chat)")
                     
+                    // Clear newChat
+                    self.newChat.text!.removeAll()
+                    
+                    // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // MARK: - OneSignal
-                        // Send push notification
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
-                            ]
-                        )
+                        
+                        // Handle optional chaining
+                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                            // MARK: - OneSignal
+                            // Send push notification
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                                ]
+                            )
+                        }
+                        
+                        
                     }
-
                     
+                    // Reload data
+                    self.queryChats()
+                    
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+
+                    // Reload data
+                    self.queryChats()
                 }
-                
-                // Reload data
-                self.queryChats()
-                
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                
-                // Failed
-                // TODO::??
-                // Show Alert?
-                
-                // Reload data
-                self.queryChats()
             }
+
         }
+        
     }
     
     
@@ -350,7 +354,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     
     
-    
+    // Function to push camera
+    func goCamera(sender: UIButton) {
+        // Set bool
+        chatCamera = true
+        
+        // Push VC
+        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+        self.navigationController?.pushViewController(cameraVC, animated: true)
+    }
     
     
     // Function to refresh
@@ -393,6 +405,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                     )
                                                 }
         }
+        
+        // Set bool
+        chatCamera == false
         
         
         // Hide tabBarController
@@ -443,6 +458,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.photosButton.isUserInteractionEnabled = true
         self.photosButton.addGestureRecognizer(photosTap)
         
+        // Add camera tap
+        let cameraTap = UITapGestureRecognizer(target: self, action: #selector(goCamera))
+        cameraTap.numberOfTapsRequired = 1
+        self.cameraButton.isUserInteractionEnabled = true
+        self.cameraButton.addGestureRecognizer(cameraTap)
         
         
         // Add Function Method to add user's read recipets
@@ -488,6 +508,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        print("BOOL:\(chatCamera)")
         
         // Set first responder
         self.newChat.becomeFirstResponder()

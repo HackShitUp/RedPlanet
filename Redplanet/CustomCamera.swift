@@ -15,6 +15,11 @@ import Parse
 import ParseUI
 import Bolts
 
+import OneSignal
+
+// Bool to determine whether camera was accessed from Chats
+var chatCamera: Bool = false
+
 class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
 
     // todo::
@@ -22,7 +27,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     // (2) add front face focus
     // (3) pinch to zoom back camera
     // (3a) pinch to zoom front camera
-    
     
     
     // Variable to determine camera face
@@ -234,7 +238,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                 // Present CLImageEditor
                 let editor = CLImageEditor(image: self.imageTaken.image!)
                 editor?.delegate = self
-//                self.present(editor!, animated: true, completion: nil)
                 self.navigationController?.pushViewController(editor!, animated: true)
             }
             
@@ -253,31 +256,87 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         let parseFile = PFFile(data: imageData!)
         
-        // First send it
-        let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["byUser"] = PFUser.current()!
-        newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["contentType"] = "itm"
-        newsfeeds["photoAsset"] = parseFile
-        newsfeeds.saveInBackground(block: {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Successfully saved object: \(newsfeeds)")
-                
-                // Send Notification
-                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                
-                // Push Show MasterTab
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                UIApplication.shared.keyWindow?.rootViewController = masterTab
-                
-                
-            } else {
-                print(error?.localizedDescription as Any)
+        
+        
+        if chatCamera == false {
+            // First send it
+            let newsfeeds = PFObject(className: "Newsfeeds")
+            newsfeeds["byUser"] = PFUser.current()!
+            newsfeeds["username"] = PFUser.current()!.username!
+            newsfeeds["contentType"] = "itm"
+            newsfeeds["photoAsset"] = parseFile
+            newsfeeds.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved object: \(newsfeeds)")
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                    
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        } else {
+
+            // Send to Chats
+            let chat = PFObject(className: "Chats")
+            chat["sender"] = PFUser.current()!
+            chat["senderUsername"] = PFUser.current()!.username!
+            chat["receiver"] = chatUserObject.last!
+            chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chat["photoAsset"] = parseFile
+            chat["read"] = false
+            chat.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    print("Successfully sent chat: \(chat)")
+                    
+                    // Send Push Notification to user
+                    // Handle optional chaining
+                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                        
+                        // Handle optional chaining
+                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                            // MARK: - OneSignal
+                            // Send push notification
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                                ]
+                            )
+                        }
+                        
+                        
+                    }
+                    
+                    // Make false
+                    chatCamera = false
+                    
+                    // Reload chats
+                    NotificationCenter.default.post(name: rpChat, object: nil)
+
+                    // Pop 2 view controllers
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+
+                } else {
+                    print(error?.localizedDescription as Any)
+
+                }
             }
-        })
+        }
+        
+        
+
         
     }
     
@@ -489,7 +548,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         videoPreviewLayer!.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
         previewView.layer.addSublayer(videoPreviewLayer!)
         session!.startRunning()
-        
         videoPreviewLayer!.frame = previewView.bounds
     }
     

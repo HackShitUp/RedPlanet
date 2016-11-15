@@ -292,7 +292,9 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                 // (1) Point to User's Object
                 if let user = object!["byUser"] as? PFUser {
                     // (A) Set username
-                    cell.rpUsername.text! = (user["username"] as! String).uppercased()
+//                    cell.rpUsername.text! = (user["username"] as! String).uppercased()
+                    cell.rpUsername.text! = "\(user["username"] as! String)"
+                    
                     
                     // (B) Get profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {

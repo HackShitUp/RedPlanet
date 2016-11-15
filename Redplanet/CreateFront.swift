@@ -281,7 +281,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Notifications"
+            self.navigationController?.navigationBar.topItem?.title = "Notifications"
         }
     }
     

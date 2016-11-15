@@ -382,8 +382,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     cell.mediaPreview.contentMode = .scaleAspectFit
                     cell.mediaPreview.clipsToBounds = true
-                    
-                    
 
                     
                     // Fetch photo
@@ -410,7 +408,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
                     // Make mediaPreview cornered square
-//                    cell.mediaPreview.layer.cornerRadius = 6.00
                     cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
                     cell.mediaPreview.clipsToBounds = true
                     
@@ -537,57 +534,40 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
+        
+        
+        /*
+         // Save to Views
+         let view = PFObject(className: "Views")
+         view["byUser"] = PFUser.current()!
+         view["username"] = PFUser.current()!.username!
+         view["forObjectId"] = friendsContent[indexPath.row].objectId!
+         view.saveInBackground(block: {
+         (success: Bool, error: Error?) in
+         if error == nil {
+         
+         
+         } else {
+         print(error?.localizedDescription as Any)
+         }
+         })
+         */
+        
+        
+        
         // TEXT POST
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-/*
-            // Save to Views
-            let view = PFObject(className: "Views")
-            view["byUser"] = PFUser.current()!
-            view["username"] = PFUser.current()!.username!
-            view["forObjectId"] = friendsContent[indexPath.row].objectId!
-            view.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if error == nil {
-
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-*/
-            
             
             // Append Object
             textPostObject.append(self.friendsContent[indexPath.row])
             
-            
             // Present VC
             let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
             self.parentNavigator.pushViewController(textPostVC, animated: true)
-            
         }
-        
-
-        
         
         // PHOTO
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-            /*
-             // Save to Views
-             let view = PFObject(className: "Views")
-             view["byUser"] = PFUser.current()!
-             view["username"] = PFUser.current()!.username!
-             view["forObjectId"] = friendsContent[indexPath.row].objectId!
-             view.saveInBackground(block: {
-             (success: Bool, error: Error?) in
-             if error == nil {
-             
-             } else {
-             print(error?.localizedDescription as Any)
-             }
-             })
-             */
-            
             
             // Append Object
             photoAssetObject.append(self.friendsContent[indexPath.row])
@@ -607,7 +587,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             self.parentNavigator.pushViewController(sharedPostVC, animated: true)
             
         }
-        
         
         // PROFILE PHOTO
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
@@ -642,7 +621,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             self.parentNavigator.pushViewController(spacePostVC, animated: true)
         }
         
-        
         // ITM
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
             // Append content object
@@ -652,8 +630,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
             self.parentNavigator.pushViewController(itmVC, animated: true)
         }
-        
-        
         
         // VIDEO
         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
