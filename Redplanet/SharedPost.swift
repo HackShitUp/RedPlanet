@@ -43,6 +43,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
+        // End refresher
+        self.refresher.endRefreshing()
+        
         // Reload data
         self.tableView!.reloadData()
     }
@@ -170,6 +173,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: sharedPostNotification, object: nil)
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
         
         
         // Back swipe implementation

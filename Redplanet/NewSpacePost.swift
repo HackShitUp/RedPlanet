@@ -315,14 +315,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         }
     }
     
-    
-    func textViewDidChange(_ textView: UITextView) {
-        // Count characters
-        //        countRemaining()
-    }
+
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        //        countRemaining()
         
         let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         

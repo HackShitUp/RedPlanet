@@ -43,6 +43,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         print("Fired with sender: \(sender)")
     }
     
+    
     @IBAction func refresh(_ sender: AnyObject) {
         // Fetch interactions
         fetchInteractions()
@@ -53,6 +54,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Reload data
         self.tableView!.reloadData()
     }
+    
     
     // Fetch interactions
     func fetchInteractions() {

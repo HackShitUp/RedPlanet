@@ -680,6 +680,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     }
     
     
+    
     // Save or share the photo
     func saveShare(sender: UILongPressGestureRecognizer) {
         // Photo to Share

@@ -139,17 +139,23 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         }
         
         
-        
         // Stylize title
         configureView()
+
         
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
         
         // Hide TabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
         
         // Open photo library
         imagePicker = UIImagePickerController()
@@ -158,7 +164,6 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -236,16 +241,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         
         return header
     }
-    
-    
-    
-    
-    
-
 
     
-    
-
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
