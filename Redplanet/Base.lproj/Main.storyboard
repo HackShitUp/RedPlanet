@@ -2120,7 +2120,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4g-SX-VPU">
-                                <rect key="frame" x="301" y="98" width="50" height="50"/>
+                                <rect key="frame" x="301" y="98" width="50" height="75"/>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="Checked Filled-100"/>
                             </button>
@@ -4110,7 +4110,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWF-MY-qPm">
-                                <rect key="frame" x="142.5" y="519" width="90" height="90"/>
+                                <rect key="frame" x="143" y="519" width="90" height="90"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="90" id="XJs-YM-sbr"/>
                                     <constraint firstAttribute="width" constant="90" id="swN-bN-ulW"/>
@@ -5828,7 +5828,7 @@
     <resources>
         <image name="CLEAN" width="125" height="125"/>
         <image name="Chat Filled-50" width="25" height="25"/>
-        <image name="Checked Filled-100" width="50" height="50"/>
+        <image name="Checked Filled-100" width="75" height="75"/>
         <image name="Circled Play Filled-50" width="25" height="25"/>
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="50" height="50"/>
@@ -5851,7 +5851,7 @@
         <image name="ShareOP" width="116" height="116"/>
         <image name="Stack of Photos-96" width="48" height="48"/>
         <image name="Switch Camera-100" width="50" height="50"/>
-        <image name="Unchecked Circle-100" width="100" height="100"/>
+        <image name="Unchecked Circle-100" width="150" height="150"/>
         <image name="User-48" width="24" height="24"/>
         <image name="WhiteComment" width="50" height="50"/>
         <image name="WhiteLike" width="50" height="50"/>
