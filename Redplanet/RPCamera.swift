@@ -48,20 +48,12 @@ class RPCamera: UIViewController, UINavigationControllerDelegate {
 //                            self.navigationController?.pushViewController(validVC, animated: true)
 //                        }
 //                    }
-                    
-                    
+
                     
                     if let capturedImage = image {
                         self.imageTaken.isHidden = false
                         self.imageTaken.image = capturedImage
                     }
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                     
                 }
             })

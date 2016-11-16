@@ -279,9 +279,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let login = storyboard.instantiateViewController(withIdentifier:"loginVC") as! LoginOrSignUp
-            window?.rootViewController = login
+//            let login = storyboard.instantiateViewController(withIdentifier:"loginVC") as! LoginOrSignUp
+            let login = storyboard.instantiateViewController(withIdentifier:"initialVC") as! UINavigationController
             self.window?.makeKeyAndVisible()
+            window?.rootViewController = login
         }
     }
     
