@@ -369,19 +369,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     // Function to zoom in
     func zoom(sender: UIPinchGestureRecognizer) {
-        
-        
-        
-        /*
-         
-         myImage.transform = myImage.transform.scaledBy(x: sender.scale, y: sender.scale)
-         sender.scale = 1
-         
-         if sender.state == UIGestureRecognizerState.began {
-         print("Began")
-         }
- */
-        
 
         
 //        let scale = coolPinch.scale

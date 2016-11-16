@@ -26,6 +26,8 @@
 	<string>To capture moments and share them on this platform.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>To find your friends easily.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>To record videos and share them on this platform.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To share and save photos on this platform.</string>
 	<key>UIBackgroundModes</key>
