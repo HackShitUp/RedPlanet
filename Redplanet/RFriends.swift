@@ -26,6 +26,10 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Array to hold friend
     var friends = [PFObject]()
     
+    // Set pipeline
+    var page: Int = 50
+
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Remove last value in the array
         forFriends.removeLast()
@@ -42,8 +46,6 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Query Friends
     func queryFriends() {
         
-        // Show SVProgressHUD
-        SVProgressHUD.show()
         
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: forFriends.last!)
@@ -56,7 +58,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.whereKey("isFriends", equalTo: true)
         friends.order(byDescending: "createdAt")
-//        friends.limit = page
+        friends.limit = self.page
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -175,6 +177,10 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Show SVProgressHUD
+        SVProgressHUD.show()
 
         
         // Query friends
@@ -299,5 +305,27 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         self.navigationController?.pushViewController(otherVC, animated: true)
         
     }
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.friends.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryFriends()
+        }
+    }
+    
 
 }

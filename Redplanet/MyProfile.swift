@@ -28,7 +28,8 @@ class MyProfile: UICollectionViewController {
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
+    // Set pipeline method
+    var page: Int = 50
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -39,6 +40,7 @@ class MyProfile: UICollectionViewController {
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
         newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -636,6 +638,26 @@ class MyProfile: UICollectionViewController {
          }
          */
 
+    }
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.myContentObjects.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query content
+            fetchMine()
+        }
     }
 
 

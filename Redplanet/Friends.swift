@@ -186,14 +186,64 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     
     
-    // MARK: - UITabBarControllerDelegate Method
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        
-//        if self.parentNavigator?.tabBarController?.selectedIndex == 0 {
-//            // Scroll to the top
-//            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
-//        }
-//    }
+
+    
+    // MARK: DZNEmptyDataSet Framework
+    
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if friendsContent.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "☹️\nYour Friends' News Feed is empty."
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "Redplanet is more fun with your friends."
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Find My Friends"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Show search
+        let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController!.pushViewController(search, animated: true)
+    }
+    
+    
     
     
     

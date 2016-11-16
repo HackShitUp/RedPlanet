@@ -258,6 +258,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 // Confetti
                 // TODO::
                 // ????
+                // NOTHING HERE
             }
             
             if indexPath.row == 1 {
@@ -290,7 +291,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             if indexPath.row == 4 {
                 // FAQ
-                
+                let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
+                self.navigationController?.pushViewController(faqVC, animated: true)
             }
             
             if indexPath.row == 5 {

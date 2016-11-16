@@ -42,6 +42,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Refresher
     var refresher: UIRefreshControl!
     
+    // Set limit
+    var page: Int = 50
+    
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
@@ -82,6 +85,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         comments.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
         comments.includeKey("byUser")
         comments.order(byDescending: "createdAt")
+        comments.limit = self.page
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -729,6 +733,31 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
 
     } // end edit action
         
-        
+    
+    
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.comments.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryComments()
+        }
+    }
+
+    
+    
 
 }

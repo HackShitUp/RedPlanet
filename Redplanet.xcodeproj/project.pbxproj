@@ -171,6 +171,10 @@
 		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
 		7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91A1DBEBDF90016698F /* LikersCell.swift */; };
 		7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91C1DBEBE020016698F /* ShareToCell.swift */; };
+		7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6361DDBDC60004AE090 /* FAQ.swift */; };
+		7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */; };
+		7EDFB63C1DDBDF94004AE090 /* FriendsActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB63B1DDBDF94004AE090 /* FriendsActivityCell.swift */; };
+		7EDFB63E1DDBDFA1004AE090 /* FriendsActivities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB63D1DDBDFA1004AE090 /* FriendsActivities.swift */; };
 		7EE1C22C1DBC78C100F75557 /* Agrume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2261DBC78C100F75557 /* Agrume.swift */; };
 		7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2271DBC78C100F75557 /* AgrumeCell.swift */; };
 		7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2281DBC78C100F75557 /* AgrumeServiceLocator.swift */; };
@@ -429,6 +433,10 @@
 		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
 		7ED4A91A1DBEBDF90016698F /* LikersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikersCell.swift; sourceTree = "<group>"; };
 		7ED4A91C1DBEBE020016698F /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
+		7EDFB6361DDBDC60004AE090 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
+		7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
+		7EDFB63B1DDBDF94004AE090 /* FriendsActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsActivityCell.swift; sourceTree = "<group>"; };
+		7EDFB63D1DDBDFA1004AE090 /* FriendsActivities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsActivities.swift; sourceTree = "<group>"; };
 		7EE1C2251DBC78C100F75557 /* Agrume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Agrume.h; sourceTree = "<group>"; };
 		7EE1C2261DBC78C100F75557 /* Agrume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Agrume.swift; sourceTree = "<group>"; };
 		7EE1C2271DBC78C100F75557 /* AgrumeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgrumeCell.swift; sourceTree = "<group>"; };
@@ -1221,6 +1229,7 @@
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
+				7EDFB63A1DDBDC71004AE090 /* FAQ */,
 				7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */,
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
@@ -1261,6 +1270,7 @@
 		7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */ = {
 			isa = PBXGroup;
 			children = (
+				7EDFB63F1DDBE0D4004AE090 /* FriendsActivities */,
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7EE5609E1DD2D3B200DA2849 /* EditContent */,
@@ -1323,6 +1333,24 @@
 				7ED4A91A1DBEBDF90016698F /* LikersCell.swift */,
 			);
 			name = Likers;
+			sourceTree = "<group>";
+		};
+		7EDFB63A1DDBDC71004AE090 /* FAQ */ = {
+			isa = PBXGroup;
+			children = (
+				7EDFB6361DDBDC60004AE090 /* FAQ.swift */,
+				7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */,
+			);
+			name = FAQ;
+			sourceTree = "<group>";
+		};
+		7EDFB63F1DDBE0D4004AE090 /* FriendsActivities */ = {
+			isa = PBXGroup;
+			children = (
+				7EDFB63B1DDBDF94004AE090 /* FriendsActivityCell.swift */,
+				7EDFB63D1DDBDFA1004AE090 /* FriendsActivities.swift */,
+			);
+			name = FriendsActivities;
 			sourceTree = "<group>";
 		};
 		7EE1C2241DBC78C100F75557 /* Agrume */ = {
@@ -1676,6 +1704,7 @@
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
+				7EDFB63E1DDBDFA1004AE090 /* FriendsActivities.swift in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
@@ -1711,6 +1740,7 @@
 				7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
+				7EDFB63C1DDBDF94004AE090 /* FriendsActivityCell.swift in Sources */,
 				7EE1C22C1DBC78C100F75557 /* Agrume.swift in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
@@ -1742,6 +1772,7 @@
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E7E38C11DD576D100DEC27B /* BestFriendsCell.swift in Sources */,
+				7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
 				7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */,
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
@@ -1771,6 +1802,7 @@
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7EA09E111DD3EF9200BD2D51 /* NewSpacePostCell.swift in Sources */,
+				7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */,
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,

@@ -27,6 +27,9 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     // Array to hold objects
     var viewers = [PFObject]()
     
+    // Set pipeline method
+    var page: Int = 50
+    
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
@@ -50,6 +53,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         views.whereKey("forObjectId", equalTo: viewsObject.last!.objectId!)
         views.includeKey("byUser")
         views.order(byDescending: "createdAt")
+        views.limit = self.page
         views.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -256,7 +260,27 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
+
     
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.viewers.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryViews()
+        }
+    }
 
 
 }

@@ -21,6 +21,8 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     // Variable to hold objects to explore
     var exploreObjects = [PFObject]()
     
+    // Set pipeline method
+    var page: Int = 50
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -45,11 +47,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     // Fetch Public Users
     func queryExplore() {
         
-        // Show Progress
-        SVProgressHUD.show()
-        
         let user = PFUser.query()!
         user.whereKey("private", equalTo: false)
+        user.limit = self.page
         user.order(byDescending: "createdAt")
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -83,6 +83,11 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+        // Show Progress
+        SVProgressHUD.show()
 
         
         // Query Public accounts
@@ -234,6 +239,27 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // Push to VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
         self.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.exploreObjects.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryExplore()
+        }
     }
 
 }

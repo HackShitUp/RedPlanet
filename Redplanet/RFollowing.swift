@@ -26,6 +26,9 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     // Array to hold following
     var following = [PFObject]()
     
+    // Set pipeline method
+    var page: Int = 50
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Remove last value in the array
         forFollowing.removeLast()
@@ -50,7 +53,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         following.whereKey("isFollowing", equalTo: true)
         following.whereKey("follower", equalTo: forFollowing.last!)
         following.includeKey("following")
-//        following.limit = self.page
+        following.limit = self.page
         following.order(byDescending: "createdAt")
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -284,5 +287,26 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         self.navigationController?.pushViewController(otherVC, animated: true)
         
     }
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.following.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryFollowing()
+        }
+    }
+    
     
 }

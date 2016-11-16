@@ -19,9 +19,9 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import DZNEmptyDataSet
 
-
-class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate {
+class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     
     
@@ -380,6 +380,63 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if myActivity.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "😱\nYou Have No Notifications"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "Starting sharing cool things for your friends or followers!"
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "continue"
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Show Grid Menu
+        igcMenu.showGridMenu()
+    }
+    
     
     
     

@@ -27,6 +27,10 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     // Array to hold likers
     var likers = [PFObject]()
     
+    // Set pipeline method
+    var page: Int = 50
+    
+    
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
@@ -47,6 +51,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         likes.whereKey("forObjectId", equalTo: likeObject.last!.objectId!)
         likes.includeKey("fromUser")
         likes.order(byDescending: "createdAt")
+        likes.limit = self.page
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -233,5 +238,28 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.navigationController?.pushViewController(otherVC, animated: true)
         
     }
+    
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.likers.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryLikes()
+        }
+    }
+    
+    
 
 }

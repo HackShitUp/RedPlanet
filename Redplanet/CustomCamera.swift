@@ -21,6 +21,11 @@ import OneSignal
 var chatCamera: Bool = false
 
 class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
+    
+    
+    // Pinch
+    var coolPinch: UIPinchGestureRecognizer!
+    
 
     // todo::
     // (1) add front face flash
@@ -176,17 +181,17 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                         if sampleBuffer != nil {
                             let imageData = AVCaptureStillImageOutput.jpegStillImageNSDataRepresentation(sampleBuffer)
                             let dataProvider = CGDataProvider(data: imageData as! CFData)
-                            let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: false, intent: CGColorRenderingIntent.defaultIntent)
+                            let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
                             
                             // Check whether the camera is the front or the back
                             // If front, flip the image once photo is captured and add flash
                             // FRONT CAMERA
                             if self.frontBack == "front" {
+                                
                                 // Flip image
                                 let flippedImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
                                 self.imageTaken.isHidden = false
                                 self.imageTaken.image = flippedImage
-                                
                                 // Set Front flash??
                                 // Currently not working... :/
                                 /*
@@ -194,8 +199,8 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                                  self.flashScreen()
                                  }
                                  */
-                                
                             } else {
+                                
                                 // BACK CAMERA
                                 // Don't flip image
                                 let normalImage = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: UIImageOrientation.right)
@@ -213,9 +218,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                             
                             // Change button's title
                             self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
-                            
-                            
-                            
                             
                             // Show retake button
                             self.retakeButton.isHidden = false
@@ -255,8 +257,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         // Convert image to data
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         let parseFile = PFFile(data: imageData!)
-        
-        
         
         if chatCamera == false {
             // First send it
@@ -368,22 +368,34 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     
     // Function to zoom in
-//    func handlePinch(toZoom pinchRecognizer: UIPinchGestureRecognizer) {
-//        let pinchVelocityDividerFactor: CGFloat = 5.0
-//        if pinchRecognizer.state == .changed {
-//            var error: Error? = nil
-//            if videoDevice!.lockForConfiguration(error) {
-//                var desiredZoomFactor: CGFloat = device!.videoZoomFactor + atan2f(pinchRecognizer.velocity, pinchVelocityDividerFactor)
-//                // Check if desiredZoomFactor fits required range from 1.0 to activeFormat.videoMaxZoomFactor
-//                device!.videoZoomFactor = max(1.0, min(desiredZoomFactor, device!.activeFormat.videoMaxZoomFactor))
-//                videoDevice!.unlockForConfiguration()
-//            }
-//            else {
-//                print("error: \(error)")
-//            }
-//        }
-//    }
+    func zoom(sender: UIPinchGestureRecognizer) {
+        
+        
+        
+        /*
+         
+         myImage.transform = myImage.transform.scaledBy(x: sender.scale, y: sender.scale)
+         sender.scale = 1
+         
+         if sender.state == UIGestureRecognizerState.began {
+         print("Began")
+         }
+ */
+        
 
+        
+//        let scale = coolPinch.scale
+        
+//        self.previewView.transform = self.previewView.transform.scaledBy(x: scale, y: scale)
+//        coolPinch.scale = 1
+
+        
+//        previewView.transform = previewView.transform.scaledBy(x: sender.scale, y: sender.scale)
+//        sender.scale = 1
+        
+    }
+
+    
     
     // Swipe for filters
     func filterSwipe(sender: AnyObject) {
@@ -476,6 +488,15 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         self.previewView.isUserInteractionEnabled = true
         self.previewView.addGestureRecognizer(doubleTap)
         
+        // Add pinch gesture
+        coolPinch = UIPinchGestureRecognizer(target: self, action: #selector(zoom))
+        coolPinch.scale = 1
+        coolPinch.isEnabled = true
+        coolPinch.cancelsTouchesInView = true
+        coolPinch.delaysTouchesBegan = false
+        coolPinch.delaysTouchesEnded = true
+        self.previewView.addGestureRecognizer(coolPinch)
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(exit))
         backSwipe.direction = .right
@@ -531,7 +552,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         
         if error == nil && session!.canAddInput(input) {
             session!.addInput(input)
-            // ...
+            // ...8
             // The remainder of the session setup will go here...
             stillImageOutput = AVCaptureStillImageOutput()
             stillImageOutput?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]
