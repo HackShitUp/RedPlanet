@@ -213,9 +213,12 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         cell.mediaPreview.layoutSubviews()
         cell.mediaPreview.setNeedsLayout()
         
+        // Set default contentMode
+        cell.mediaPreview.contentMode = .scaleAspectFill
         // Make mediaPreview cornered square
         cell.mediaPreview.layer.cornerRadius = 6.00
         cell.mediaPreview.clipsToBounds = true
+
         
         // Fetch content
         self.followingContent[indexPath.row].fetchIfNeededInBackground {

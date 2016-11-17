@@ -226,13 +226,17 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // Function to show more sharing options
     func doMore(sender: UIButton) {
         // set up activity view controller
-        let image = self.mediaAsset.image!
-        let imageToShare = [image]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
+//        let image = self.mediaAsset.image!
+//        let imageToShare = [image]
+        if self.mediaAsset == nil {
+            
+        }
+        
+//        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+//        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
         
         // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
+//        self.present(activityViewController, animated: true, completion: nil)
     }
     
     

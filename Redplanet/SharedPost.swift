@@ -452,6 +452,47 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     }
                     
                     
+                    // (C) Space Post
+                    if object!["contentType"] as! String == "sp" {
+                        
+                        cell.mediaAsset.isHidden = false
+                        cell.textPost.isHidden = true
+                        
+                        if object!["photoAsset"] != nil {
+                            // (B1) Fetch photo
+                            if let photo = object!["photoAsset"] as? PFFile {
+                                photo.getDataInBackground(block: {
+                                    (data: Data?, error: Error?) in
+                                    if error == nil {
+                                        // Set Photo
+                                        cell.mediaAsset.image = UIImage(data: data!)
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                            }
+                            
+                            // (B2) Check for textPost
+                            if object!["textPost"] != nil {
+                                // Add lines for sizing constraints
+                                cell.textPost.isHidden = false
+                                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
+                            } else {
+                                // Add lines for sizing constraints
+                                cell.textPost.isHidden = false
+                                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                            }
+                        } else {
+                            // Add lines for sizing constraints
+                            cell.textPost.isHidden = false
+                            cell.textPost.text! = "\(object!["textPost"] as! String)"
+
+                        }
+                        
+                        
+                    }
+                    
+                    
                     // (3) set time
                     let from = object!.createdAt!
                     let now = Date()

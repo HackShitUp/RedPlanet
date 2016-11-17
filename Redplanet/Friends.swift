@@ -294,6 +294,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.mediaPreview.layoutSubviews()
         cell.mediaPreview.setNeedsLayout()
 
+        // Set aspectFill by default
+        cell.mediaPreview.contentMode = .scaleAspectFill
         
 
         // Fetch objects

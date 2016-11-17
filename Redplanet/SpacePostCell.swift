@@ -402,8 +402,27 @@ class SpacePostCell: UITableViewCell {
     
     
     
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self.delegate!.self)
+    }
+    
+    
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        // Design corner radius
+        if mediaAsset != nil {
+            self.mediaAsset.layer.cornerRadius = 5.00
+            self.mediaAsset.clipsToBounds = true
+        }
         
         // (1) Add user's profile photo tap to go to user's profile
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
@@ -459,6 +478,11 @@ class SpacePostCell: UITableViewCell {
         self.textPost.isUserInteractionEnabled = true
         self.textPost.addGestureRecognizer(tpHold)
         
+        // (9) mediaZoom
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.mediaAsset.isUserInteractionEnabled = true
+        self.mediaAsset.addGestureRecognizer(zoomTap)
         
         
         // Handle @username tap

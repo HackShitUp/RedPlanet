@@ -791,6 +791,13 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

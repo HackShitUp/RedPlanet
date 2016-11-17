@@ -2358,8 +2358,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4g-SX-VPU">
-                                <rect key="frame" x="301" y="98" width="50" height="75"/>
+                                <rect key="frame" x="301" y="98" width="50" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="664-ZK-h1R"/>
+                                    <constraint firstAttribute="height" constant="50" id="oHf-3F-KC1"/>
+                                </constraints>
                                 <state key="normal" image="Checked Filled-100"/>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qpo-Li-4ZO">
@@ -3073,13 +3077,6 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Uc-nU-KQI">
                                             <rect key="frame" x="8" y="56" width="359" height="369"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Hk-lm-zhN">
-                                                    <rect key="frame" x="0.0" y="5" width="359" height="359"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="359" id="Aqd-LB-DZA"/>
-                                                        <constraint firstAttribute="height" constant="359" id="S7K-h8-AeR"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LCH-N2-JQJ" customClass="KILabel">
                                                     <rect key="frame" x="0.0" y="5" width="359" height="359"/>
                                                     <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3090,6 +3087,13 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Hk-lm-zhN">
+                                                    <rect key="frame" x="0.0" y="5" width="359" height="359"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="359" id="Aqd-LB-DZA"/>
+                                                        <constraint firstAttribute="height" constant="359" id="S7K-h8-AeR"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -5012,12 +5016,6 @@
                                 <action selector="backButton:" destination="jQC-kq-hWo" id="x8Y-nf-gv5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Number Pad-48" id="i2l-L1-u1X">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="saveNumber:" destination="jQC-kq-hWo" id="WeT-Ph-tWS"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -5440,8 +5438,8 @@
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="06E-I5-X6i">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Phone-48" id="IUU-9W-cB1">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="rightBarButtonItem" image="Number Pad-48" id="IUU-9W-cB1">
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="calibratedRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
@@ -6254,12 +6252,11 @@
         <image name="Left Filled-50" width="25" height="25"/>
         <image name="Lightning Bolt-96" width="48" height="48"/>
         <image name="Like-100" width="50" height="50"/>
-        <image name="Message Filled-50" width="15" height="15"/>
+        <image name="Message Filled-50" width="20" height="20"/>
         <image name="More" width="25" height="25"/>
         <image name="More-100" width="50" height="50"/>
         <image name="Newsfeed(1)" width="24" height="24"/>
         <image name="Number Pad-48" width="24" height="24"/>
-        <image name="Phone-48" width="24" height="24"/>
         <image name="REFLECT" width="167" height="172"/>
         <image name="Redo-100" width="50" height="50"/>
         <image name="SLR Camera Filled-Gray" width="50" height="50"/>

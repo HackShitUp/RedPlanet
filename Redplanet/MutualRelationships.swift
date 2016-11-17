@@ -297,6 +297,15 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
         
         // Show Progress
         SVProgressHUD.show()
+        
+        
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
 
         
         // Get initial relationships

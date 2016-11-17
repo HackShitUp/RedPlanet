@@ -111,6 +111,31 @@ class SharedPostCell: UITableViewCell {
                         self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                     }
                     
+                    if object["contentType"] as! String == "pp" {
+                        // Profile Photo
+                        // Append object
+                        proPicObject.append(object)
+                        
+                        // Push VC
+                        let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                        self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+                    }
+                    
+                    if object["contentType"] as! String == "sp" {
+                        // Space Post
+                        // Append object
+                        spaceObject.append(object)
+                        
+                        // Append otherObject
+                        otherObject.append(object["byUser"] as! PFUser)
+                        // Append otherName
+                        otherName.append(object["username"] as! String)
+                        
+                        // Push VC
+                        let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                        self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                    }
+                    
                     if object["contentType"] as! String == "itm" {
                         // Moment
                         // Append object

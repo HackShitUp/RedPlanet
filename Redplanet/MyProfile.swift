@@ -312,6 +312,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         cell.mediaPreview.layoutSubviews()
         cell.mediaPreview.setNeedsLayout()
         
+        // Set default contentMode
+        cell.mediaPreview.contentMode = .scaleAspectFill
         // Make mediaPreview cornered square
         cell.mediaPreview.layer.cornerRadius = 6.00
         cell.mediaPreview.clipsToBounds = true
@@ -558,26 +560,29 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     // MARK: - UICollectionViewDelegate method
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        /*
+         // Save to Views
+         let view = PFObject(className: "Views")
+         view["byUser"] = PFUser.current()!
+         view["username"] = PFUser.current()!.username!
+         view["forObjectId"] = friendsContent[indexPath.row].objectId!
+         view.saveInBackground(block: {
+         (success: Bool, error: Error?) in
+         if error == nil {
+         
+         
+         } else {
+         print(error?.localizedDescription as Any)
+         }
+         })
+         */
+        
+        
+        
+        
         // TEXT POST
         if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            /*
-             // Save to Views
-             let view = PFObject(className: "Views")
-             view["byUser"] = PFUser.current()!
-             view["username"] = PFUser.current()!.username!
-             view["forObjectId"] = friendsContent[indexPath.row].objectId!
-             view.saveInBackground(block: {
-             (success: Bool, error: Error?) in
-             if error == nil {
-             
-             
-             } else {
-             print(error?.localizedDescription as Any)
-             }
-             })
-             */
-            
-            
             // Append Object
             textPostObject.append(self.myContentObjects[indexPath.row])
             
@@ -589,27 +594,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         }
         
         
-        
-        
         // PHOTO
         if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-            /*
-             // Save to Views
-             let view = PFObject(className: "Views")
-             view["byUser"] = PFUser.current()!
-             view["username"] = PFUser.current()!.username!
-             view["forObjectId"] = friendsContent[indexPath.row].objectId!
-             view.saveInBackground(block: {
-             (success: Bool, error: Error?) in
-             if error == nil {
-             
-             } else {
-             print(error?.localizedDescription as Any)
-             }
-             })
-             */
-            
-            
             // Append Object
             photoAssetObject.append(self.myContentObjects[indexPath.row])
             
@@ -620,24 +606,13 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // SHARED
         if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            if self.myContentObjects[indexPath.row].value(forKey: "photoAsset") != nil {
-                
-                // Append Object
-                photoAssetObject.append(self.myContentObjects[indexPath.row])
-                
-                // Push VC
-                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                self.navigationController?.pushViewController(photoVC, animated: true)
-                
-            } else {
-                // Append Object
-                textPostObject.append(self.myContentObjects[indexPath.row])
-                
-                
-                // Push VC
-                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                self.navigationController?.pushViewController(textPostVC, animated: true)
-            }
+            
+            // Append object
+            sharedObject.append(self.myContentObjects[indexPath.row])
+            // Push VC
+            let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+            self.navigationController?.pushViewController(sharedPostVC, animated: true)
+            
         }
         
         
@@ -658,12 +633,35 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         }
         
         
+        // SPACE POST
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+            // Append object
+            spaceObject.append(self.myContentObjects[indexPath.row])
+            
+            // Append otherObject
+            otherObject.append(PFUser.current()!)
+            
+            // Append otherName
+            otherName.append(PFUser.current()!.username!)
+            
+            // Push VC
+            let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+            self.navigationController?.pushViewController(spacePostVC, animated: true)
+        }
+        
+        
         // ITM
-        /*
-         if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-         
-         }
-         */
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            // Append content object
+            itmObject.append(self.myContentObjects[indexPath.row])
+            
+            // Push VC
+            let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+            self.navigationController?.pushViewController(itmVC, animated: true)
+        }
+        
+
+        
 
     }
     
