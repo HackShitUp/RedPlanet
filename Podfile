@@ -13,6 +13,7 @@ target 'Redplanet' do
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
 	pod 'DZNEmptyDataSet'
+	pod 'Onboard'
 
   target 'RedplanetTests' do
     inherit! :search_paths

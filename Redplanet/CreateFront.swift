@@ -55,6 +55,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     @IBOutlet weak var tableView: UITableView!
 
     
+    @IBAction func showCommunity(_ sender: Any) {
+        // Push to VC
+        
+    }
     
     
     // Function to access camera
@@ -207,6 +211,13 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     self.fromUsers.append(object["fromUser"] as! PFUser)
                 }
                 
+                
+                // Set DZN
+                if self.myActivity.count == 0 {
+                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView!.emptyDataSetSource = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -303,6 +314,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Clean tableView
+        self.tableView!.tableFooterView = UIView()
         
         // Set tabBarController's delegate to self
         self.navigationController?.tabBarController?.delegate = self
@@ -407,7 +421,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Starting sharing cool things for your friends or followers!"
+        let str = "Share something cool for your friends or followers!"
         let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,

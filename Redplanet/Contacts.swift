@@ -42,6 +42,9 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     var contactNames = [String]()
     var contactNumbers = [String]()
     
+    var contactList: [CNContact]!
+
+    
     // Variable to hold friend objects
     var friends = [PFObject]()
     
@@ -54,31 +57,48 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Function to fetch user's contacts
     func getPhoneContacts() {
-        // Clear arrays
-        contactNames.removeAll(keepingCapacity: false)
-        contactNumbers.removeAll(keepingCapacity: false)
-        
-        let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
-        let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch as [CNKeyDescriptor])
-        
-        do {
-            try store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
-                // Append contact's name from device
-                self.contactNames.append(contact.givenName)
-
-                var numbers = (contact.phoneNumbers[0] as! CNPhoneNumber).value(forKey: "digits") as! String
-                numbers = numbers.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                numbers = numbers.trimmingCharacters(in: CharacterSet.symbols)
-                
-                // Append contact's number from device
-                self.contactNumbers.append(numbers)
-                
-                // Fetch users on Redplanet
-                self.fetchRedplanetters()
-            })
-        } catch let error as Error {
-            print(error.localizedDescription as Any)
-        }
+//        // Clear arrays
+//        contactNames.removeAll(keepingCapacity: false)
+//        contactNumbers.removeAll(keepingCapacity: false)
+//        
+//        let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
+//        let fetchRequest = CNContactFetchRequest(keysToFetch: keysToFetch as [CNKeyDescriptor])
+//        
+//        do {
+//            try store.enumerateContacts(with: fetchRequest, usingBlock: { (contact, stop) in
+//                // Append contact's name from device
+//                self.contactNames.append(contact.givenName)
+//
+//                var numbers = (contact.phoneNumbers[0] as! CNPhoneNumber).value(forKey: "digits") as! String
+//                numbers = numbers.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+//                numbers = numbers.trimmingCharacters(in: CharacterSet.symbols)
+//                
+//                // Append contact's number from device
+//                self.contactNumbers.append(numbers)
+//                
+//                // Fetch users on Redplanet
+//                self.fetchRedplanetters()
+//            })
+//        } catch let error as Error {
+//            print(error.localizedDescription as Any)
+//        }
+        let store = CNContactStore()
+        store.requestAccess(for: .contacts, completionHandler: { (success, error) in
+            if success {
+                let request = CNContactFetchRequest(keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor])
+                do {
+                    self.contactList = []
+                    try store.enumerateContacts(with: request, usingBlock: { (contact, status) in
+                        self.contactList.append(contact)
+                    })
+                } catch {
+                    print("Error")
+                }
+                OperationQueue.main.addOperation({
+                    self.tableView.reloadData()
+                })
+            }
+        })
     }
     
     

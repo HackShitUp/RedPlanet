@@ -42,6 +42,7 @@
 		7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837EF1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift */; };
 		7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */; };
 		7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */; };
+		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
@@ -253,6 +254,7 @@
 		7E5837F31DBC70A00049ED18 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
 		7E5837F41DBC70A00049ED18 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
 		7E5837F51DBC70A00049ED18 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
+		7E5A98031DDCFFFA006DA985 /* FullName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullName.swift; sourceTree = "<group>"; };
 		7E6113D41DD157C2001CE98C /* EditContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContent.swift; sourceTree = "<group>"; };
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
@@ -645,6 +647,20 @@
 				7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */,
 			);
 			path = Safari;
+			sourceTree = "<group>";
+		};
+		7E5A98051DDD2CFA006DA985 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				7E7E38BD1DD533CF00DEC27B /* Contacts */,
+				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
+				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
+				7EDFB63A1DDBDC71004AE090 /* FAQ */,
+				7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */,
+				7E3F0EE41DC0802B006BF522 /* AboutUs */,
+			);
+			name = Settings;
+			path = Redplanet;
 			sourceTree = "<group>";
 		};
 		7E6BA2791DBC8F2700DE364D /* NewTextPost */ = {
@@ -1112,6 +1128,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1311DB2FE4F00437219 /* Redplanet */,
+				7E5A98051DDD2CFA006DA985 /* Settings */,
 				7EC5D1491DB2FE4F00437219 /* RedplanetTests */,
 				7EC5D1541DB2FE4F00437219 /* RedplanetUITests */,
 				7EC5D1301DB2FE4F00437219 /* Products */,
@@ -1218,6 +1235,7 @@
 			children = (
 				7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */,
 				7EC5D1681DB31B2500437219 /* SignUp.swift */,
+				7E5A98031DDCFFFA006DA985 /* FullName.swift */,
 				7EA45CC71DB6A1A600A466D9 /* Birthday.swift */,
 				7EA45CC91DB6A1B900A466D9 /* NewUser.swift */,
 				7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */,
@@ -1232,12 +1250,6 @@
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */,
-				7E7E38BD1DD533CF00DEC27B /* Contacts */,
-				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
-				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
-				7EDFB63A1DDBDC71004AE090 /* FAQ */,
-				7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */,
-				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
 			name = MYPROFILE;
 			sourceTree = "<group>";
@@ -1832,6 +1844,7 @@
 				7EC5D19E1DB3566600437219 /* MyProfile.swift in Sources */,
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,
 				7EE1C22F1DBC78C100F75557 /* ImageDownloader.swift in Sources */,
+				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
 				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,

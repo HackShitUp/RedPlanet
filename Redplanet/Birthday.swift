@@ -7,16 +7,69 @@
 //
 
 import UIKit
+import CoreData
 
-class Birthday: UIViewController {
+import Parse
+import ParseUI
+import Bolts
+
+
+
+class Birthday: UIViewController, UINavigationControllerDelegate {
+    
     
     @IBOutlet weak var birthday: UIDatePicker!
     @IBOutlet weak var continueButton: UIButton!
+    
+    
+    // Function to save birthday
+    func saveBday(sender: Any) {
+
+        // Save user's birthday
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM d yyyy"
+        let stringDate = dateFormatter.string(from: self.birthday.date)
+
+        // Save Birthday
+        PFUser.current()!["birthday"] = stringDate
+        PFUser.current()!.saveInBackground {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved birthday: \(PFUser.current()!)")
+                
+                // Push to NewUserVC
+                let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
+                self.navigationController?.pushViewController(userVC, animated: true)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                
+                // Network error
+                
+                let alert = UIAlertController(title: "There was an error.",
+                                              message: "There appears to be poor connection.",
+                                              preferredStyle: .alert)
+                let ok = UIAlertAction(title: "ok",
+                                       style: .default,
+                                       handler: nil)
+                alert.addAction(ok)
+                alert.view.tintColor = UIColor.black
+            }
+        }
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        // Add method tap to button
+        let nextTap = UITapGestureRecognizer(target: self, action: #selector(saveBday))
+        nextTap.numberOfTapsRequired = 1
+        self.continueButton.isUserInteractionEnabled = true
+        self.continueButton.addGestureRecognizer(nextTap)
+        
+        // Design button's corner radius
+        self.continueButton.layer.cornerRadius = 25.00
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,14 +78,6 @@ class Birthday: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

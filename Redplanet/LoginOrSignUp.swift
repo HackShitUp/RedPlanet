@@ -23,11 +23,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBAction func signUp(_ sender: Any) {
         // Push VC
         let signUpVC = self.storyboard?.instantiateViewController(withIdentifier: "signUpVC") as! SignUp
-//        self.present(signUpVC, animated: true, completion: nil)
         self.navigationController?.pushViewController(signUpVC, animated: true)
-        
-        // Perform Segueu
-//        self.performSegue(withIdentifier: "toSignUp", sender: self)
     }
     
     // Function to login

@@ -154,7 +154,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Find Things to Follow"
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
             NSFontAttributeName: font!

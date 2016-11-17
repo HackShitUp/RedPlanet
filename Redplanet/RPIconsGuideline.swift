@@ -22,14 +22,16 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                       UIImage(named: "PhotoGuide"),                 // Photo
                       UIImage(named: "BlueShared"),                 // Shared
                       UIImage(named: "Gender Neutral User-100"),    // Profile Photo
-                      UIImage(named: "SpacePost")]                  // Space Post
+                      UIImage(named: "SpacePost"),                  // Space Post
+                      UIImage(named: "ITM")]                        // ITM
     
     // Arrays to hold titles
     var iconNames = ["Text Post",
                      "Photo",
                      "Shared",
                      "Profile Photo",
-                     "Space Post"]
+                     "Space Post",
+                     "Moment"]
     
     // Arrays to hold description
     var iconDescripts = ["This is content focused on just text, and nothing else.",
@@ -37,11 +39,13 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                          "This is content that's been re-shared by someone.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
                          "A comet with a red gradient background indicates that someone wrote in someone else's Space. Only friends can write in each other's Space.",
+                         "Photos that are rectangular are what we call Moments. These are photos captured directly from the custom camera and shared on Redplanet."
                          ]
 
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: false)
+//        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -73,6 +77,9 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
+        // show nav bsr
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
 
         
         // Set lightcontent
@@ -101,7 +108,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 5
+        return 6
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -131,6 +138,8 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         } else if indexPath.row == 4 {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
             cell.icon.clipsToBounds = true
+        } else if indexPath.row == 5 {
+            cell.icon.contentMode = .scaleAspectFit
         }
         
         

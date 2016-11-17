@@ -25,7 +25,7 @@ import DZNEmptyDataSet
 let friendsNewsfeed = Notification.Name("homeFriends")
 
 
-class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, CAPSPageMenuDelegate {
+class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CAPSPageMenuDelegate {
     
     // Array to hold friends
     var friends = [PFObject]()
@@ -126,6 +126,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                             
                             self.friendsContent.append(object)
                         }
+                        
+                        
+                        // Set DZN
+                        if self.friendsContent.count == 0 {
+                            self.tableView!.emptyDataSetSource = self
+                            self.tableView!.emptyDataSetDelegate = self
+                        }
+                        
                         
                         print("Friends feed count: \(self.friendsContent.count)")
                         
@@ -240,7 +248,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         // Show search
         let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController!.pushViewController(search, animated: true)
+        self.parentNavigator.pushViewController(search, animated: true)
     }
     
     

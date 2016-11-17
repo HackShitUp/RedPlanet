@@ -109,7 +109,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 
                 
                 // Initialize DZNEmptyDataset
-                if self.finalChatObjects.count == 0 {
+                if self.finalChatObjects.count == 0 || self.initialChatObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.tableFooterView = UIView()

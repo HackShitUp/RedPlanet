@@ -22,17 +22,16 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     @IBOutlet weak var continueButton: UIButton!
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Dismiss
-//        self.dismiss(animated: true, completion: nil)
+        // Pop VC
         self.navigationController?.popViewController(animated: true)
     }
     
     // Sign up
     func signUp() {
         // November 17th 2015
-        let newRPUserEmailAddress = newEmail.text!.lowercased()
+        let newRPUserEmailAddress = newEmail.text!.lowercased().replacingOccurrences(of: " ", with: "")
         let newRPUsername = newUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
-        let newRPUserPassword = newPassword.text!
+        let newRPUserPassword = newPassword.text!.replacingOccurrences(of: " ", with: "")
         
         if newRPUsername.characters.count < 6 {
             // Show that Username must be at least 6 characters long
@@ -43,6 +42,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                              style: .cancel,
                                              handler: nil)
             alert.addAction(cancelAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
             
             
@@ -55,6 +55,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                              style: .cancel,
                                              handler: nil)
             alert.addAction(cancelAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
             
             
@@ -67,6 +68,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                              style: .cancel,
                                              handler: nil)
             alert.addAction(cancelAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
             
             
@@ -79,6 +81,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                              style: .cancel,
                                              handler: nil)
             alert.addAction(cancelAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
             
         } else {
@@ -117,17 +120,18 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     })
                     
                     
-                    let alert = UIAlertController(title: "Thank You",
+                    let alert = UIAlertController(title: "Welcome",
                                                   message: "Thank you for signing up for Redplanet!",
                                                   preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
+                    let ok = UIAlertAction(title: "next",
                                            style: .cancel,
                                            handler: {(alert: UIAlertAction!) in
-                                            // TODO::
-                                            // Perform Segue
-                                            self.performSegue(withIdentifier: "toSignUp", sender: self)
+                                            // Push VC
+                                            let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
+                                            self.navigationController?.pushViewController(nameVC, animated: true)
                     })
                     alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
                     self.present(alert, animated: true, completion: nil)
                     
                 } else {
@@ -138,6 +142,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                                  style: .cancel,
                                                  handler: nil)
                     alert.addAction(tryAgain)
+                    alert.view.tintColor = UIColor.black
                     self.present(alert, animated: true, completion: nil)
                     
                     
@@ -148,10 +153,27 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     }
     
     
+    
+    // MARK: - UITextFieldDelegate method
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if newEmail.isFirstResponder {
+            self.newUsername.becomeFirstResponder()
+        }else if newUsername.isFirstResponder {
+            self.newPassword.becomeFirstResponder()
+        }else {
+            // Sign the user up
+            self.signUp()
+        }
+        
+        return true
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Set first responder
+        self.newEmail.becomeFirstResponder()
         
         // Create rounded buttons
         self.continueButton.layer.cornerRadius = 25.0
@@ -172,14 +194,5 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

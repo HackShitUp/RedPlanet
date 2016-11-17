@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Onboard.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,11 +62,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>14746ACAA57BEE593F670ACB72EDA9E0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>162B59B96FF1F5B6B21CF89AC9E41170</key>
 		<dict>
 			<key>primary</key>
@@ -82,7 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3D4FD65720F550C4D5719C0BB35F1931</key>
+		<key>49A366505FB38CCD55C7C7DE6C9FF03A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6E1E4653D700085455793AA031F55AB9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -98,6 +103,11 @@
 			<true/>
 		</dict>
 		<key>B6C24B1347797090F1CB11354C5ABA6B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D7FF48F3092783E4E42B336F0DEF2D1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>

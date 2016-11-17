@@ -25,6 +25,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func saveNumber(_ sender: Any) {
+    }
     
     
     
@@ -240,7 +242,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                         UserDefaults.standard.synchronize()
 
                         DispatchQueue.main.async(execute: { 
-                            let logoutToStart: LoginOrSignUp = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! LoginOrSignUp
+                            // Logout
+                            let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
                             self.present(logoutToStart, animated: true, completion: nil)
                         })
                         
@@ -266,8 +269,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 
                 // Push VC
                 let iconsVC = self.storyboard?.instantiateViewController(withIdentifier: "iconsVC") as! RPIconsGuideline
-                self.navigationController!.pushViewController(iconsVC, animated: true)
-                
+                self.navigationController!.pushViewController(iconsVC, animated: false)
             }
             
             if indexPath.row == 2 {

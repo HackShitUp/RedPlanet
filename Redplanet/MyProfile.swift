@@ -13,13 +13,13 @@ import Parse
 import ParseUI
 import Bolts
 
-
+import MessageUI
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
 
-class MyProfile: UICollectionViewController {
+class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate {
     
     // Variable to hold my content
     var myContentObjects = [PFObject]()
@@ -33,6 +33,33 @@ class MyProfile: UICollectionViewController {
     
     // Refresher
     var refresher: UIRefreshControl!
+    
+    @IBAction func sendFeedback(_ sender: Any) {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["redplanethub@gmail.com"])
+            mail.setSubject("My Opinion About Redplanet")
+            present(mail, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Something Went Wrong",
+                                          message: "Configure your email to this device to send us feedback!",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    
+    // Dismiss
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
     
     
     // Function to fetch my content
