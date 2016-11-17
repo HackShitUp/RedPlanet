@@ -560,26 +560,6 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     // MARK: - UICollectionViewDelegate method
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        /*
-         // Save to Views
-         let view = PFObject(className: "Views")
-         view["byUser"] = PFUser.current()!
-         view["username"] = PFUser.current()!.username!
-         view["forObjectId"] = friendsContent[indexPath.row].objectId!
-         view.saveInBackground(block: {
-         (success: Bool, error: Error?) in
-         if error == nil {
-         
-         
-         } else {
-         print(error?.localizedDescription as Any)
-         }
-         })
-         */
-        
-        
-        
         
         // TEXT POST
         if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
@@ -660,9 +640,6 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
             self.navigationController?.pushViewController(itmVC, animated: true)
         }
         
-
-        
-
     }
     
     

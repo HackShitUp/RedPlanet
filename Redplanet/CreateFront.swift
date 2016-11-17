@@ -571,7 +571,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
         // Space
         if myActivity[indexPath.row].value(forKey: "type") as! String == "space" {
-            cell.activity.setTitle("wrote in your Space", for: .normal)
+            cell.activity.setTitle("wrote on your Space", for: .normal)
         }
 
         

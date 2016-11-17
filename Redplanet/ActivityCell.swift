@@ -1034,8 +1034,22 @@ class ActivityCell: UITableViewCell {
         
 
         // WRote in Your Space
-        if self.activity.titleLabel!.text!.hasPrefix("wrote in") {
-            // TODO
+        if self.activity.titleLabel!.text!.hasPrefix("wrote on your Space") {
+            // Space Post
+            
+            // Append object
+            spaceObject.append(self.contentObject!)
+            
+            // Append to otherObject
+            otherObject.append(self.userObject!)
+            
+            // Append to otherName
+            otherName.append(self.userObject!.value(forKey: "username") as! String)
+            
+            // Push VC
+            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+            
         }
 
     }
