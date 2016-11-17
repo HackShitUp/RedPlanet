@@ -99,6 +99,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
              • User's new Profile Photo must NOT be pushed to <Newsfeeds>
              
              */
+            
+            // Handle optional chaining
+            if profilePhotoCaption.isEmpty {
+                profilePhotoCaption.append(" ")
+            }
 
             // Show Progress
             SVProgressHUD.show()

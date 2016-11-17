@@ -114,7 +114,6 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         image.navigationBar.tintColor = UIColor.black
         image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
-        
         self.present(image, animated: true, completion: nil)
     }
     
@@ -132,7 +131,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
 
         
         // Set image
-        self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         // Dismiss view controller
         self.dismiss(animated: true, completion: nil)

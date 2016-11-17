@@ -167,7 +167,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         // Show search
         let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController!.pushViewController(search, animated: true)
+        self.parentNavigator.pushViewController(search, animated: true)
     }
     
     
