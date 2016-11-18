@@ -23,10 +23,10 @@ var profilePhotoCaption = [String]()
 // Variable to determine whether the profile photo is NEW
 var newProfilePhoto: Bool = false
 
-class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
+// Bool to determine whether caption has changed
+var changedCaption: Bool = false
 
-    // Bool to determine whether caption has changed
-    var changedCaption: Bool = false
+class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
     
     @IBOutlet weak var rpUserProPic: PFImageView!
@@ -178,7 +178,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         
                     } else {
                         
-                        if self.changedCaption == true {
+                        if changedCaption == true {
                             // Change caption
                             // Find in <Newsfeeds>
                             let newsfeedProPic = PFQuery(className: "Newsfeeds")
@@ -379,7 +379,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                         }
                                     })
                                     
-                                    self.changedCaption = true
+                                    changedCaption = true
         })
 
         
