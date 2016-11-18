@@ -62,14 +62,15 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 SVProgressHUD.dismiss()
                 
                 // Clear array
-                viewsObject.removeAll(keepingCapacity: false)
+                self.viewers.removeAll(keepingCapacity: false)
                 
                 
                 // Append objects
                 for object in objects! {
-                    if self.viewers.contains(object) || object["byUser"] as! PFUser == PFUser.current()! {
-                        print("Already exists: \(object)")
+                    if self.viewers.contains(object["byUser"] as! PFUser) || object["byUser"] as! PFUser == PFUser.current()! {
+                        // Skip appending the object
                     } else {
+                        // Append the object
                         self.viewers.append(object["byUser"] as! PFUser)
                     }
                 }
@@ -235,7 +236,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 
                 // (2) Set username
-                cell.rpUsername.text! = object!["username"] as! String
+//                cell.rpUsername.text! = object!["username"] as! String
+                cell.rpUsername.text! = object!["realNameOfUser"] as! String
                 
             } else {
                 print(error?.localizedDescription as Any)

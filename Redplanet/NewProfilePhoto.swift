@@ -98,6 +98,19 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     }
     
     
+    func textViewDidChange(_ textView: UITextView) -> [Bool] {
+        
+        // Set bool for caption
+        didChangeCaption = true
+        // Set bool for propic
+        isNewProPic = false
+        
+        return [didChangeCaption, isNewProPic]
+    }
+    
+    
+    
+    
     
     
     // Function to zoom
@@ -109,6 +122,8 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self)
     }
+    
+    
     
     
     
@@ -128,12 +143,15 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     
     
     
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         // If NOT NEW Profile Photo, don't set caption
-        if newProfilePhoto == false {
+        if isNewProPic == false {
             
             // Get profile photo's caption
             let newsfeeds = PFQuery(className: "Newsfeeds")

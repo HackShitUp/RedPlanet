@@ -21,10 +21,10 @@ import SVProgressHUD
 var profilePhotoCaption = [String]()
 
 // Variable to determine whether the profile photo is NEW
-var newProfilePhoto: Bool = false
+var isNewProPic: Bool = false
 
 // Bool to determine whether caption has changed
-var changedCaption: Bool = false
+var didChangeCaption: Bool = false
 
 class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
@@ -75,8 +75,102 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             alert.addAction(ok)
             self.present(alert, animated: true, completion: nil)
             
-        } else {
+        } else if isNewProPic == false && didChangeCaption == false {
             
+            // Disable back button
+            self.backButton.isEnabled = false
+            
+            // I) Save user's data
+            // II) Save user's Profile Photo but check the following
+            /*
+             
+             The user can decide to do either of the following:
+             
+             (A) Change Profile Photo - then,
+             • User's 'proPicExists' == true
+             • User's new Profile Photo must be pushed to <Newsfeeds>
+             
+             // (B) Change Profile Photo's caption - then,
+             • User's 'proPicExists' == true
+             • User's new Profile Photo must NOT be pushed to <Newsfeeds>
+             
+             // (C) Removed Profile Photo
+             • User's 'proPicExists' == false
+             • User's new Profile Photo must NOT be pushed to <Newsfeeds>
+             
+             */
+            
+            // Handle optional chaining
+            if profilePhotoCaption.isEmpty {
+                profilePhotoCaption.append(" ")
+            }
+            
+            // Show Progress
+            SVProgressHUD.show()
+            
+            // (A) Current User's Birthday
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d yyyy"
+            let stringDate = dateFormatter.string(from: self.userBirthday.date)
+            
+            
+            // (B) Current User's Profile Photo
+            let proPicData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
+            let proPicFile = PFFile(data: proPicData!)
+            
+            
+            
+            // I) Save changes to Parse className: "_User"
+            let me = PFUser.current()!
+            me.email = rpEmail.text!
+            me["realNameOfUser"] = self.rpName.text!
+            me["userBiography"] = rpUserBio.text!
+            me.username = self.rpUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
+            me["birthday"] = stringDate
+            me["userProfilePicture"] = proPicFile
+            me.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved objects: \(me)")
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
+                    
+                    // Present alert
+                    let alert = UIAlertController(title: "Successfully Saved Changes",
+                                                  message: "New Profile Photos are automatically pushed to the news feeds.",
+                                                  preferredStyle: .alert)
+                    
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: { (alertAction: UIAlertAction!) in
+                                            
+                                            // Re-enable backButton
+                                            self.backButton.isEnabled = true
+                                            
+                                            // Send Notification to friendsNewsfeed
+                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                            
+                                            // Send Notification to myProfile
+                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                            
+                                            // Pop view controller
+                                            self.navigationController?.popViewController(animated: true)
+                    })
+                    
+                    
+                    
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        } else {
+        
             // Disable back button
             self.backButton.isEnabled = false
             
@@ -132,53 +226,59 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved objects: \(me)")
-                  
 
-                    /*
-                     
-                     IF there exists a new profile photo, determine whether user has just changed its caption.
-                     Otherwise, push the new profile photo to the new newsfeeds.
-                     
-                    */
-                    
-                    
-                    if self.rpUserProPic.image == UIImage(named: "Gender Neutral User-100") {
-                        // User has removed his/her profile photo
-                        
-                        // Dismiss Progress
-                        SVProgressHUD.dismiss()
-                        
-                        // Present alert
-                        let alert = UIAlertController(title: "Successfully Saved Changes",
-                                                      message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                      preferredStyle: .alert)
-                        
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: { (alertAction: UIAlertAction!) in
-                                                
-                                                // Re-enable backButton
-                                                self.backButton.isEnabled = true
-                                                
-                                                // Send Notification to friendsNewsfeed
-                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                
-                                                // Send Notification to myProfile
-                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                
-                                                // Pop view controller
-                                                self.navigationController?.popViewController(animated: true)
+                    if isNewProPic == true {
+                        // New Profile Photo
+                        let newsfeeds = PFObject(className: "Newsfeeds")
+                        newsfeeds["byUser"] = PFUser.current()!
+                        newsfeeds["username"] = PFUser.current()!.username!
+                        newsfeeds["photoAsset"] = proPicFile
+                        newsfeeds["contentType"] = "pp"
+                        newsfeeds["textPost"] = profilePhotoCaption.last!
+                        newsfeeds.saveInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
+                                
+                                // Dismiss Progress
+                                SVProgressHUD.dismiss()
+                                
+                                // Present alert
+                                let alert = UIAlertController(title: "Successfully Saved Changes",
+                                                              message: "New Profile Photos are automatically pushed to the news feeds.",
+                                                              preferredStyle: .alert)
+                                
+                                let ok = UIAlertAction(title: "ok",
+                                                       style: .default,
+                                                       handler: { (alertAction: UIAlertAction!) in
+                                                        
+                                                        
+                                                        // Re-enable backButton
+                                                        self.backButton.isEnabled = true
+                                                        
+                                                        
+                                                        // Send Notification to friendsNewsfeed
+                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        
+                                                        // Send Notification to myProfile
+                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        
+                                                        // Pop view controller
+                                                        self.navigationController?.popViewController(animated: true)
+                                })
+                                
+                                
+                                
+                                alert.addAction(ok)
+                                alert.view.tintColor = UIColor.black
+                                self.present(alert, animated: true, completion: nil)
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
                         })
-                        
-                        
-                        
-                        alert.addAction(ok)
-                        alert.view.tintColor = UIColor.black
-                        self.present(alert, animated: true, completion: nil)
-                        
                     } else {
-                        
-                        if changedCaption == true {
+                        if didChangeCaption == true {
                             // Change caption
                             // Find in <Newsfeeds>
                             let newsfeedProPic = PFQuery(className: "Newsfeeds")
@@ -237,62 +337,45 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     print(error?.localizedDescription as Any)
                                 }
                             })
-                            
-                            
-                            
-                        } else {
-                            // New Profile Photo
-                            let newsfeeds = PFObject(className: "Newsfeeds")
-                            newsfeeds["byUser"] = PFUser.current()!
-                            newsfeeds["username"] = PFUser.current()!.username!
-                            newsfeeds["photoAsset"] = proPicFile
-                            newsfeeds["contentType"] = "pp"
-                            newsfeeds["textPost"] = profilePhotoCaption.last!
-                            newsfeeds.saveInBackground(block: {
-                                (success: Bool, error: Error?) in
-                                if success {
-                                    print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
-                                    
-                                    // Dismiss Progress
-                                    SVProgressHUD.dismiss()
-                                    
-                                    // Present alert
-                                    let alert = UIAlertController(title: "Successfully Saved Changes",
-                                                                  message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                                  preferredStyle: .alert)
-                                    
-                                    let ok = UIAlertAction(title: "ok",
-                                                           style: .default,
-                                                           handler: { (alertAction: UIAlertAction!) in
-                                                            
-                                                            
-                                                            // Re-enable backButton
-                                                            self.backButton.isEnabled = true
 
-                                                            
-                                                            // Send Notification to friendsNewsfeed
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                            
-                                                            // Send Notification to myProfile
-                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                            
-                                                            // Pop view controller
-                                                            self.navigationController?.popViewController(animated: true)
-                                    })
-                                    
-                                    
-                                    
-                                    alert.addAction(ok)
-                                    alert.view.tintColor = UIColor.black
-                                    self.present(alert, animated: true, completion: nil)
-                                    
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                }
+                        } else {
+                            // Dismiss Progress
+                            SVProgressHUD.dismiss()
+                            
+                            // Present alert
+                            let alert = UIAlertController(title: "Successfully Saved Changes",
+                                                          message: "New Profile Photos are automatically pushed to the news feeds.",
+                                                          preferredStyle: .alert)
+                            
+                            let ok = UIAlertAction(title: "ok",
+                                                   style: .default,
+                                                   handler: { (alertAction: UIAlertAction!) in
+                                                    
+                                                    // Re-enable backButton
+                                                    self.backButton.isEnabled = true
+                                                    
+                                                    // Send Notification to friendsNewsfeed
+                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                    
+                                                    // Send Notification to myProfile
+                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    
+                                                    // Pop view controller
+                                                    self.navigationController?.popViewController(animated: true)
                             })
+                            
+                            
+                            
+                            alert.addAction(ok)
+                            alert.view.tintColor = UIColor.black
+                            self.present(alert, animated: true, completion: nil)
+
                         }
-                        
                     }
+                    
+                    
+                    
+                    
                     
                     
                 } else {
@@ -333,12 +416,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                       message: nil,
                                       preferredStyle: .actionSheet)
         
-        let change = UIAlertAction(title: "Update Profile Photo",
+        let change = UIAlertAction(title: "New Profile Photo",
                                    style: .default,
                                    handler: { (alertAction: UIAlertAction!) in
-                                    
-                                    // Set Bool
-                                    newProfilePhoto = true
                                     
                                     // Present image picker
                                     self.present(image, animated: false, completion: nil)
@@ -378,8 +458,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             print(error?.localizedDescription as Any)
                                         }
                                     })
-                                    
-                                    changedCaption = true
         })
 
         
@@ -483,7 +561,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     
     // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
         
         // Edit changes
         PFUser.current()!["proPicExists"] = true
@@ -495,7 +573,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 
                 
                 // Set image
-                self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+                self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as? UIImage
                 
                 
                 // Append image
@@ -519,6 +597,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             }
         })
         
+        // Set Bool
+        isNewProPic = true
+        // Return bool
+        return isNewProPic
     }
     
     
@@ -707,7 +789,5 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
 
 }

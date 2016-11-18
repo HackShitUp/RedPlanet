@@ -22,7 +22,7 @@ class MasterTab: UITabBarController {
         // If current user is not nil
         if PFUser.current() != nil {
             // Set title to user's username
-            self.tabBar.items?[4].title = PFUser.current()!.username!.lowercased()
+            self.tabBar.items?[4].title = PFUser.current()!.username!.uppercased()
         }
         
         // Set font

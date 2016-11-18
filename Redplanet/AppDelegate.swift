@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             print("\(fullMessage)")
                                             
                                             // Banner for notification
-                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!)") {
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") || fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"
@@ -122,9 +122,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 )
                                                 
                                                 banner.dismissesOnTap = true
-                                                banner.show(duration: 3.0)
+                                                banner.show(duration: 0.0)
                                                 
-                                            } else if fullMessage!.hasPrefix("from") && chatUsername.count != 0 && fullMessage!.hasSuffix(chatUsername.last!.uppercased()) {
+                                            } else if fullMessage!.hasPrefix("from") && chatUserObject.count != 0 && fullMessage!.hasSuffix(chatUsername.last!.uppercased()) {
                                                 // if notificaiton titles: "from <Username>"
                                                 // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
                                                 // Reload data for SlackChat
@@ -279,7 +279,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-//            let login = storyboard.instantiateViewController(withIdentifier:"loginVC") as! LoginOrSignUp
             let login = storyboard.instantiateViewController(withIdentifier:"initialVC") as! UINavigationController
             self.window?.makeKeyAndVisible()
             window?.rootViewController = login
