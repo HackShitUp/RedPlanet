@@ -64,9 +64,14 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     // Function to fetch my content
     func fetchMine() {
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-        newsfeeds.whereKey("toUser", equalTo: PFUser.current()!)
+        // User's Posts
+        let byUser = PFQuery(className: "Newsfeeds")
+        byUser.whereKey("byUser", equalTo: PFUser.current()!)
+        // User's Space Posts
+        let toUser = PFQuery(className:  "Newsfeeds")
+        toUser.whereKey("toUser", equalTo: PFUser.current()!)
+        // Both
+        let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {
@@ -368,6 +373,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                             }
                         })
                     }
+                    
+                    
                 }
                 
                 // (B) Text Post
