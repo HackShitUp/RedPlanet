@@ -83,6 +83,35 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 }
                 
                 
+                // Change the font and size of nav bar text
+                if self.viewers.count != 0 && self.navigationController != nil {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+                        let navBarAttributesDictionary: [String: AnyObject]? = [
+                            NSForegroundColorAttributeName: UIColor.black,
+                            NSFontAttributeName: navBarFont
+                        ]
+                        self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                        if self.viewers.count == 0 {
+                            self.title = "Views"
+                        } else if self.viewers.count == 1 {
+                            self.title = "1 View"
+                        } else {
+                            self.title = "\(self.viewers.count) Views"
+                        }
+                    }
+                } else {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+                        let navBarAttributesDictionary: [String: AnyObject]? = [
+                            NSForegroundColorAttributeName: UIColor.black,
+                            NSFontAttributeName: navBarFont
+                        ]
+                        self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                        self.title = "Views"
+                    }
+                }
+                
+                
+                
             } else {
                 print(error?.localizedDescription as Any)
                 
@@ -94,23 +123,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             self.tableView!.reloadData()
         }
     }
-    
-    
-    
-    
-    // Function to stylize and set title of navigation bar
-    func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Views"
-        }
-    }
-    
     
     
     
@@ -142,14 +154,11 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Query views
+        // Query views & configure title
         queryViews()
         
         // Show progress
         SVProgressHUD.show()
-        
-        // Stylize title
-        configureView()
         
         // Set tablefooter view
         self.tableView!.tableFooterView = UIView()
@@ -168,8 +177,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Stylize title again
-        configureView()
+        // Query views and configure title
+        queryViews()
         
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)

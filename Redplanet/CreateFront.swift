@@ -194,7 +194,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         let notifications = PFQuery(className: "Notifications")
         notifications.includeKey("toUser")
         notifications.whereKey("toUser", equalTo: PFUser.current()!)
-        
+        notifications.whereKey("fromUser", notEqualTo: PFUser.current()!)
         notifications.order(byDescending: "createdAt")
         notifications.limit = self.page
         notifications.findObjectsInBackground(block: {
@@ -371,6 +371,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // query Notifications
         queryNotifications()
+        
+        // Show navigation bar
+//        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Stylize title
         configureView()

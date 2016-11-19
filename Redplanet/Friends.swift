@@ -288,7 +288,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
         // LayoutViews for mediaPreview
         cell.mediaPreview.layoutIfNeeded()
         cell.mediaPreview.layoutSubviews()
@@ -438,7 +437,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // None of the above methods work :(
                     
                     // Make mediaPreview cornerd Squared and blur image
-//                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 0
                     cell.mediaPreview.backgroundColor = UIColor.clear
                     cell.mediaPreview.contentMode = .scaleAspectFit
                     cell.mediaPreview.clipsToBounds = true

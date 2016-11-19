@@ -216,8 +216,17 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                             // Hide switchCameraButton
                             self.switchCameraButton.isHidden = true
                             
-                            // Change button's title
+                            // Change button's image
                             self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
+                            // Add shadow
+                            self.captureButton.backgroundColor = UIColor.black
+                            self.captureButton.layer.shadowColor = UIColor.black.cgColor
+                            self.captureButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+                            self.captureButton.layer.shadowOpacity = 1.0
+                            self.captureButton.layer.shadowRadius = 5.0
+                            self.captureButton.layer.cornerRadius = self.captureButton.frame.size.width/2
+                            self.captureButton.clipsToBounds = true
+                            
                             
                             // Show retake button
                             self.retakeButton.isHidden = false

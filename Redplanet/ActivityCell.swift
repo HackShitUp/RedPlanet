@@ -1037,21 +1037,32 @@ class ActivityCell: UITableViewCell {
         if self.activity.titleLabel!.text!.hasPrefix("wrote on your Space") {
             // Space Post
             
-            // Append object
-            spaceObject.append(self.contentObject!)
-            
-            // Append to otherObject
-            otherObject.append(self.userObject!)
-            
-            // Append to otherName
-            otherName.append(self.userObject!.value(forKey: "username") as! String)
-            
-            // Push VC
-            let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-            self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-            
+            let spacePost = PFQuery(className: "Newsfeeds")
+            spacePost.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+            spacePost.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Append object
+                        spaceObject.append(object)
+                        
+                        // Append to otherObject
+                        otherObject.append(PFUser.current()!)
+                        
+                        // Append to otherName
+                        otherName.append(PFUser.current()!.username!)
+                        
+                        // Push VC
+                        let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                        self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
         }
 
+        
     }
     
     
