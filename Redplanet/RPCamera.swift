@@ -15,9 +15,14 @@ import Bolts
 
 class RPCamera: UIViewController, UINavigationControllerDelegate {
     
-    // MARK: - Constants
     
+    
+    // Initialize CameraManager
     let cameraManager = CameraManager()
+    
+    // Variable to determine camera face
+    // By default, back camera loads
+    var frontBack = "back"
     
     @IBOutlet var cameraView: UIView!
     @IBOutlet weak var switchCamera: UIButton!
@@ -35,72 +40,56 @@ class RPCamera: UIViewController, UINavigationControllerDelegate {
     
     // Function to take photo
     func takePhoto(sender: UIButton) {
-        switch (cameraManager.cameraOutputMode) {
-        case .stillImage:
-            cameraManager.capturePictureWithCompletion({ (image, error) -> Void in
-                if let errorOccured = error {
-                    self.cameraManager.showErrorBlock("Error occurred", errorOccured.localizedDescription)
+        print("FIRED HERE")
+        // Set output mode
+        cameraManager.cameraOutputMode = .stillImage
+        // Capture photo
+        cameraManager.capturePictureWithCompletion({ (image, error) -> Void in
+            
+            if self.captureButton.image(for: .normal) == UIImage(named: "Unchecked Circle-100") {
+                if self.frontBack == "front" {
+                    // Flip image
+                    let flippedImage = UIImage(cgImage: image as! CGImage, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
+                    self.imageTaken.isHidden = false
+                    self.imageTaken.image = flippedImage
+                    
                 } else {
-//                    let vc: ImageViewController? = self.storyboard?.instantiateViewController(withIdentifier: "ImageVC") as? ImageViewController
-//                    if let validVC: ImageViewController = vc {
-//                        if let capturedImage = image {
-//                            validVC.image = capturedImage
-//                            self.navigationController?.pushViewController(validVC, animated: true)
-//                        }
-//                    }
-
                     
-                    if let capturedImage = image {
-                        self.imageTaken.isHidden = false
-                        self.imageTaken.image = capturedImage
-                    }
-                    
+                    // Check whether front or back
+                    self.imageTaken.isHidden = false
+                    self.imageTaken.image = image
                 }
-            })
-        case .videoWithMic, .videoOnly:
-//            sender.isSelected = !sender.isSelected
-//            sender.setTitle(" ", for: UIControlState.selected)
-//            sender.backgroundColor = sender.isSelected ? UIColor.red : UIColor.green
-            if sender.isSelected {
-                cameraManager.startRecordingVideo()
+                
             } else {
-                cameraManager.stopVideoRecording({ (videoURL, error) -> Void in
-                    if let errorOccured = error {
-                        self.cameraManager.showErrorBlock("Error occurred", errorOccured.localizedDescription)
-                    }
-                })
+                
             }
-        }
-        
-        
+
+        })
         
     }
     
     
     // Function to record video
     func recordVideo(sender: UIButton) {
+        print("FIRED THERE")
+        /*
         cameraManager.cameraOutputMode = cameraManager.cameraOutputMode == CameraOutputMode.videoWithMic ? CameraOutputMode.stillImage : CameraOutputMode.videoWithMic
         switch (cameraManager.cameraOutputMode) {
         case .stillImage:
-//            self.captureButton.isSelected = false
+            self.captureButton.isSelected = false
             self.captureButton.backgroundColor = UIColor.green
             sender.setTitle("Image", for: UIControlState())
         case .videoWithMic, .videoOnly:
             sender.setTitle("Video", for: UIControlState())
         }
+        */
     }
     
     
     
     // Function to switch camera
-    func switchCamera(sender: UIButton) {
+    func changeCamera(sender: UIButton) {
         cameraManager.cameraDevice = cameraManager.cameraDevice == CameraDevice.front ? CameraDevice.back : CameraDevice.front
-        switch (cameraManager.cameraDevice) {
-        case .front:
-            sender.setTitle("Front", for: UIControlState())
-        case .back:
-            sender.setTitle("Back", for: UIControlState())
-        }
     }
     
     
@@ -135,6 +124,47 @@ class RPCamera: UIViewController, UINavigationControllerDelegate {
 
     
     
+    
+    // Hide status bar
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
+    
+    
+    
+    // Function to reload data
+    func reload() -> String {
+        // Set frontBack
+        frontBack = "back"
+        
+        // Show flashButton
+        self.flashButton.isHidden = false
+        
+        // Show switchCameraButton
+        self.switchCamera.isHidden = false
+        
+        // Change button title
+        self.captureButton.setImage(UIImage(named: "Unchecked Circle-100"), for: .normal)
+        
+        
+        // Hide imageTaken
+        self.imageTaken.isHidden = true
+        
+        // Hide retake button
+        self.retakeButton.isHidden = true
+        
+        // Hide Save button
+        self.saveButton.isHidden = true
+        
+        // Reload view
+        self.viewDidLoad()
+        
+        return frontBack
+    }
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,6 +177,12 @@ class RPCamera: UIViewController, UINavigationControllerDelegate {
         takePhoto.numberOfTapsRequired = 1
         self.captureButton.isUserInteractionEnabled = true
         self.captureButton.addGestureRecognizer(takePhoto)
+        
+        let switchTap = UITapGestureRecognizer(target: self, action: #selector(self.changeCamera))
+        switchTap.numberOfTapsRequired = 1
+        self.switchCamera.isUserInteractionEnabled = true
+        self.switchCamera.addGestureRecognizer(switchTap)
+        
         
         // Add camera view
         addCameraToView()

@@ -66,6 +66,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     func fetchMine() {
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+        newsfeeds.whereKey("toUser", equalTo: PFUser.current()!)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {

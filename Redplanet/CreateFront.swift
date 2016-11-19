@@ -80,6 +80,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 // Push VC
                 let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
                 self.navigationController!.pushViewController(cameraVC, animated: true)
+//                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "rpCameraVC") as! RPCamera
+//                self.navigationController!.pushViewController(cameraVC, animated: true)
             })
             
             
@@ -371,10 +373,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // query Notifications
         queryNotifications()
-        
-        // Show navigation bar
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
+
         // Stylize title
         configureView()
     }
