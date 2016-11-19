@@ -343,10 +343,10 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // (G) Count comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
-        } else if self.likes.count == 1 {
+        } else if self.comments.count == 1 {
             cell.numberOfComments.setTitle("1 comment", for: .normal)
         } else {
-            cell.numberOfComments.setTitle("\(self.likes.count) comments", for: .normal)
+            cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
         }
         
         
