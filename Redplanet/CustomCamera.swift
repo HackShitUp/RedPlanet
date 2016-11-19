@@ -198,7 +198,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                                  if self.flashButton.imageForState(.Normal) == UIImage(named: "FilledFlash100") {
                                  self.flashScreen()
                                  }
-                                 */
+                                */
                             } else {
                                 
                                 // BACK CAMERA
@@ -219,13 +219,14 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                             // Change button's image
                             self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
                             // Add shadow
-                            self.captureButton.backgroundColor = UIColor.black
-                            self.captureButton.layer.shadowColor = UIColor.black.cgColor
-                            self.captureButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-                            self.captureButton.layer.shadowOpacity = 1.0
-                            self.captureButton.layer.shadowRadius = 5.0
                             self.captureButton.layer.cornerRadius = self.captureButton.frame.size.width/2
-                            self.captureButton.clipsToBounds = true
+                            self.captureButton.layer.masksToBounds = false
+                            self.captureButton.layer.borderWidth = 0.0
+                            self.captureButton.layer.shadowColor = UIColor.black.cgColor
+                            self.captureButton.layer.shadowOpacity = 0.8
+                            self.captureButton.layer.shadowRadius = 12
+                            self.captureButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
+
                             
                             
                             // Show retake button
