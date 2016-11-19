@@ -395,7 +395,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     // MARK: UICollectionViewHeaderSection datasource
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        let label: UILabel = UILabel(frame: CGRect(x: 8,y: 389, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 356, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
@@ -514,19 +514,12 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         header.followButton.isEnabled = true
         
         
-        // Title √
-        // Interaction buttons
-        // (1) Chats
-        // (2) Space Posts == IF friends && Report/Block
-        // (3) Mutual Relationships == Best Friends == IF friends
         
         
         if myFriends.contains(otherObject.last!) {
             // FRIENDS
             header.relationType.isHidden = false
             header.relationType.setTitle("Friends", for: .normal)
-            // Set buttons to ...
-            
         }
         
         
