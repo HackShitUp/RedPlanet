@@ -350,8 +350,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
             print("Not first launch.")
-        }
-        else {
+        } else {
             print("First launch, setting NSUserDefault.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             

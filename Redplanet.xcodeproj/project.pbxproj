@@ -1365,8 +1365,8 @@
 		7EDFB63F1DDBE0D4004AE090 /* FriendsActivities */ = {
 			isa = PBXGroup;
 			children = (
-				7EDFB63B1DDBDF94004AE090 /* FriendsActivityCell.swift */,
 				7EDFB63D1DDBDFA1004AE090 /* FriendsActivities.swift */,
+				7EDFB63B1DDBDF94004AE090 /* FriendsActivityCell.swift */,
 			);
 			name = FriendsActivities;
 			sourceTree = "<group>";

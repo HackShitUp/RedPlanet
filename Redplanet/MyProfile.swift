@@ -329,24 +329,32 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         myContentObjects[indexPath.row].fetchIfNeededInBackground(block: {
             (object: PFObject?, error: Error?) in
             if error == nil {
-                // (1) Set user's profile photo
-                if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                
+                
+                // (1) Get user's object
+                if let user = object!["byUser"] as? PFUser {
+                    
+                    // (A) Username
+                    cell.rpUsername.text! = user.value(forKey: "realNameOfUser") as! String
+                    
+                    // (B) Profile Photo
+                    // Handle optional chaining for user's profile photo
+                    if let proPic = user["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                            }
+                        })
+                    }
+                    
                 }
                 
-                
-                // (2) Set username
-                cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
                 
                 
                 // *************************************************************************************************************************

@@ -175,6 +175,32 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        // TODO::
+        // Show which button to tap!
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        if launchedBefore  {
+            print("Not first launch.")
+        } else {
+            print("First launch, setting NSUserDefault.")
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            
+            
+            // TODO::
+            // TRY Using the Framework HERE::
+            let alert = UIAlertController(title: "Congrats!",
+                                          message: "You just viewed your first Text Post! Swipe right to leave. Swipe left for more options.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            alert.addAction(ok)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+        
         // Fetch interactions
         fetchInteractions()
         

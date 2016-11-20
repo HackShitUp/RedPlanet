@@ -18,35 +18,39 @@ import SVProgressHUD
 
 class FriendsActivities: UITableViewController {
     
-    var friends = [PFObject]()
+    // Array to hold friends' actibities
     var friendActivities = [PFObject]()
+    
+    // AppDelegate
+    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // Function to query friends activities
     func queryFriends() {
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        let friends = PFQuery(className: "FriendMe")
-        friends.whereKey("isFriends", equalTo: true)
-        friends.findObjectsInBackground {
+        
+        // Query relationships
+        appDelegate.queryRelationships()
+        
+        // Fetch notifications
+        let notifications = PFQuery(className: "Notifications")
+        notifications.whereKey("fromUser", containedIn: myFriends)
+        notifications.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
+                self.friendActivities.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
+        
     }
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
