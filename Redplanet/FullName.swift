@@ -23,36 +23,68 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
     
     // Function to save name
     func saveName(sender: Any) {
-        // add
         
-        
-        // Set fullName
-        let fullName = "\(self.firstName.text!) \(self.lastName.text!)"
-        
-        PFUser.current()!["realNameOfUser"] = fullName
-        PFUser.current()!.saveInBackground {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Successfully saved fullName: \(PFUser.current()!)")
-                
-                // Push VC
-                let birthdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
-                self.navigationController?.pushViewController(birthdayVC, animated: true)
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                
-                // There was a network error
-                let alert = UIAlertController(title: "There was an error.",
-                                              message: "There appears to be poor connection.",
-                                              preferredStyle: .alert)
-                let ok = UIAlertAction(title: "ok",
-                                       style: .default,
-                                       handler: nil)
-                alert.addAction(ok)
-                alert.view.tintColor = UIColor.black
+        if self.firstName.text!.isEmpty {
+            
+            // Invalid first name
+            let alert = UIAlertController(title: "Invalid First Name",
+                                          message: "Please enter your first name.",
+                                          preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true)
+            
+        } else if self.lastName.text!.isEmpty {
+            
+            // Invalid last name
+            let alert = UIAlertController(title: "Invalid Last Name",
+                                          message: "Please enter your last name.",
+                                          preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            alert.addAction(ok)
+            alert.view.tintColor = UIColor.black
+            self.present(alert, animated: true)
+            
+        } else {
+            // Set fullName
+            let fullName = "\(self.firstName.text!) \(self.lastName.text!)"
+            
+            PFUser.current()!["realNameOfUser"] = fullName
+            PFUser.current()!.saveInBackground {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved fullName: \(PFUser.current()!)")
+                    
+                    // Push VC
+                    let birthdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
+                    self.navigationController?.pushViewController(birthdayVC, animated: true)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // There was a network error
+                    let alert = UIAlertController(title: "There was an error.",
+                                                  message: "There appears to be poor connection.",
+                                                  preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true)
+                }
             }
         }
+        
+        
+        
     }
     
     override func viewDidLoad() {
