@@ -43,6 +43,11 @@
 
  
  
+ F R A M E W O R K S    T O     L O O K     A T 
+ • ALERTS: https://github.com/Orderella/PopupDialog
+ • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
+ • CIRCULAR CROP: https://github.com/ruslanskorb/RSKImageCropper
+ 
  */
 
 
