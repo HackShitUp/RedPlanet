@@ -3758,7 +3758,7 @@
                                                 <constraint firstAttribute="height" constant="75" id="dpo-L4-2mD"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwq-Df-dqk">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwq-Df-dqk">
                                             <rect key="frame" x="8" y="91" width="109" height="26"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="26" id="Rlj-iN-CrC"/>
@@ -4363,9 +4363,10 @@
                                         <segment title="Photos"/>
                                         <segment title="Videos"/>
                                     </segments>
-                                    <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </segmentedControl>
                             </subviews>
+                            <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstItem="02D-Qz-02m" firstAttribute="top" secondItem="SFE-AC-DET" secondAttribute="top" constant="8" id="0Lw-fg-kVO"/>
                                 <constraint firstItem="02D-Qz-02m" firstAttribute="leading" secondItem="SFE-AC-DET" secondAttribute="leading" constant="8" id="466-d8-Ysb"/>
@@ -4389,8 +4390,7 @@
                                 <action selector="backButton:" destination="8RR-jD-nvC" id="SBd-wf-18G"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Stack of Photos-96" id="T7i-Xb-qSv">
-                            <inset key="imageInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                        <barButtonItem key="rightBarButtonItem" image="iOS Photos-Grey" id="T7i-Xb-qSv">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="iosPhotos:" destination="8RR-jD-nvC" id="Bgb-Qj-hrK"/>
@@ -6292,6 +6292,7 @@
         <image name="WhiteLike" width="50" height="50"/>
         <image name="WhiteRedo" width="50" height="50"/>
         <image name="WhiteSave" width="25" height="25"/>
+        <image name="iOS Photos-Grey" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
