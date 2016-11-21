@@ -30,14 +30,22 @@ class SearchCell: UITableViewCell {
     // Go to user
     func goUser() {
         
-        // Append other user
-        otherObject.append(self.userObject!)
-        // Append otherName
-        otherName.append(self.rpUsername.text!)
-        
-        // Push VC
-        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
-        self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
+        if self.rpUsername.text!.hasPrefix("#") {
+            
+            let mention = String(self.rpUsername.text!.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        } else {
+            // Append other user
+            otherObject.append(self.userObject!)
+            // Append otherName
+            otherName.append(self.rpUsername.text!)
+            
+            // Push VC
+            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+            self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
+        }
     }
     
     override func awakeFromNib() {

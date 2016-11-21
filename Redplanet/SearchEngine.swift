@@ -69,6 +69,28 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         
         if searchBar.text!.hasPrefix("#") {
             // Looking for hashtags...
+            let hashtags = PFQuery(className: "Hashtags")
+            hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
+            hashtags.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    
+                    // Clear array
+                    self.searchHashes.removeAll(keepingCapacity: false)
+                    self.dataHash.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.searchHashes.append(object["userHash"] as! String)
+                        self.dataHash.append(object["hashtag"] as! String)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+            })
         } else {
             // Looking for humans...
             // Search for user
@@ -135,6 +157,14 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         if searchBar.text!.hasPrefix("#") {
             
             cell.userObject = nil
+            
+            // Hide IBObjects
+            cell.rpUserProPic.isHidden = true
+            cell.rpFullName.isHidden = true
+            cell.rpUsername.isHidden = false
+            
+            // Set hashtag word
+            cell.rpUsername.text! = self.searchHashes[indexPath.row]
             
         } else {
             

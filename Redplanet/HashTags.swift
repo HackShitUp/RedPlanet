@@ -121,6 +121,12 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                     self.hashtagStrings.append(object["forObjectId"] as! String)
                 }
                 
+                // DZNEmptyDataSet
+                if self.hashtagObjects.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
+                
                 // Fetch hashtags
                 self.fetchHashtags()
                 
@@ -160,6 +166,34 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         // Dispose of any resources that can be recreated.
     }
 
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if hashtagObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "＃\nUh Oh\n No Hashtags to show..."
+        let font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+
+    
+    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
