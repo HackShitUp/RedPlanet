@@ -128,7 +128,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "☹️\nYour Following's News Feed is empty."
+        let str = "💩\nYour Following's News Feed is empty."
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,

@@ -2040,7 +2040,7 @@
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redpalnetmediallc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -2057,7 +2057,7 @@
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redpalnetmediallc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

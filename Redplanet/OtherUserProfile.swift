@@ -354,14 +354,24 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             print("First launch, setting NSUserDefault.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             
-            let alert = UIAlertController(title: "Friend VS Follow",
-                                          message: "Being friends with this person lets you\n(1) See their best friends.\n(2) Write in their Space.\n(3) See what they've been up to.",
+            let alert = UIAlertController(title: "Friend or Follow",
+                                          message: "Friends and Following are NOT the same thing on Redplanet. We suggest you friend people in your life for the cool features only friends can interact with.",
                                           preferredStyle: .alert)
+            
+            let learnMore = UIAlertAction(title: "I'm confused",
+                                          style: .default,
+                                          handler: {(alertAction: UIAlertAction!) in
+                                            // Push VC
+                                            let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
+                                            self.navigationController?.pushViewController(faqVC, animated: true)
+            })
             
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
             alert.addAction(ok)
+            alert.addAction(learnMore)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
     }

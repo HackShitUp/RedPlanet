@@ -209,7 +209,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "☹️\nYour Friends' News Feed is empty."
+        let str = "💩\nYour Friends' News Feed is empty."
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
