@@ -42,9 +42,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     var contactNames = [String]()
     var contactNumbers = [String]()
     
-    var contactList: [CNContact]!
-
-    
     // Variable to hold friend objects
     var friends = [PFObject]()
     
@@ -55,26 +52,77 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Initiaize AppDelegate
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    @IBAction func backButton(_ sender: Any) {
+        // POP VC
+        self.navigationController!.popViewController(animated: true)
+    }
     // Function to fetch user's contacts
     func getPhoneContacts() {
-        // Fetch contacts
-        let store = CNContactStore()
-        store.requestAccess(for: .contacts, completionHandler: { (success, error) in
-            if success {
-                let request = CNContactFetchRequest(keysToFetch: [CNContactGivenNameKey as CNKeyDescriptor, CNContactFamilyNameKey as CNKeyDescriptor])
-                do {
-                    self.contactList = []
-                    try store.enumerateContacts(with: request, usingBlock: { (contact, status) in
-                        self.contactList.append(contact)
-                    })
-                } catch {
-                    print("Error")
-                }
-                OperationQueue.main.addOperation({
-                    self.tableView.reloadData()
-                })
+        // Clear arrays
+        contactNames.removeAll(keepingCapacity: false)
+        contactNumbers.removeAll(keepingCapacity: false)
+
+//        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor]
+//        let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
+//        
+//        do {
+//            try store.enumerateContacts(with: fetchRequest, usingBlock: { ( contact, stop) -> Void in
+//                print("Appending: \(contact.givenName)")
+//                
+//                // Append contact's name in device
+//                self.contactNames.append(contact.givenName)
+//                
+//                // Fetch phone numbers
+//                var numbers = (contact.phoneNumbers[0].value).value(forKey: "digits") as! String
+//                // Remove other charcters besides the number
+//                numbers = numbers.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+//                numbers = numbers.trimmingCharacters(in: CharacterSet.symbols)
+//                
+//                // Append contact's number in device
+//                self.contactNumbers.append(numbers)
+//                
+//                // Fetch users on redplanet
+//                self.fetchRedplanetters()
+//            })
+//            
+//        } catch let error as NSError {
+//            print(error.localizedDescription)
+//        }
+        
+        let contactStore = CNContactStore()
+        let keysToFetch = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey,
+            CNContactPhoneNumbersKey,
+            CNContactImageDataAvailableKey,
+            CNContactThumbnailImageDataKey
+        ] as [Any]
+        
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try contactStore.containers(matching: nil)
+        } catch {
+            print("Error fetching containers")
+        }
+        
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            
+            do {
+                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
+                results.append(contentsOf: containerResults)
+            } catch {
+                print("Error fetching results for container")
             }
-        })
+        }
+        
+
+//        return results
+        
     }
     
     
@@ -85,7 +133,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         
         // Find users
         let user = PFUser.query()!
-        user.whereKey("phoneNumber", containedIn: contactNumbers)
+//        user.whereKey("phoneNumber", containedIn: )
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -285,13 +333,16 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         configureView()
     }
 
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
+    
+    
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -308,6 +359,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
+        
 
         // Query relationships
         appDelegate.queryRelationships()

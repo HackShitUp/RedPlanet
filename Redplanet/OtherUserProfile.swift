@@ -891,11 +891,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     // Present VC
                     let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                     self.navigationController?.pushViewController(textPostVC, animated: true)
-                    
                 }
-                
-                
-                
                 
                 // PHOTO
                 if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "ph" {

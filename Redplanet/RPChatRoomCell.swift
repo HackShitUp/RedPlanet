@@ -106,11 +106,11 @@ class RPChatRoomCell: UITableViewCell {
         // Handle #object tap
         message.hashtagLinkTapHandler = { label, handle, range in
             // When # is tapped, drop the "#" and send to hashtags
-//            var mention = handle
-//            mention = String(mention.characters.dropFirst())
-//            hashtags.append(mention.lowercaseString)
-//            let hashTags = self.delegate?.storyboard?.instantiateViewControllerWithIdentifier("hashTags") as! Hashtags
-//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
 
         }
         
