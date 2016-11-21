@@ -660,7 +660,6 @@
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
 			name = Settings;
-			path = Redplanet;
 			sourceTree = "<group>";
 		};
 		7E6BA2791DBC8F2700DE364D /* NewTextPost */ = {
@@ -1128,7 +1127,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1311DB2FE4F00437219 /* Redplanet */,
-				7E5A98051DDD2CFA006DA985 /* Settings */,
 				7EC5D1491DB2FE4F00437219 /* RedplanetTests */,
 				7EC5D1541DB2FE4F00437219 /* RedplanetUITests */,
 				7EC5D1301DB2FE4F00437219 /* Products */,
@@ -1187,6 +1185,7 @@
 				7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
 				7EC5D19F1DB3566D00437219 /* MYPROFILE */,
+				7E5A98051DDD2CFA006DA985 /* Settings */,
 			);
 			path = Redplanet;
 			sourceTree = "<group>";
