@@ -95,7 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Power your app with local datastore
         Parse.enableLocalDatastore()
         
-        
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
         Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",

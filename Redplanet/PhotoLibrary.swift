@@ -146,7 +146,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+//        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/4, height: self.view.frame.size.width/4)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
@@ -227,7 +228,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
 
         
         // ofSize should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 45)
+//        return CGSize(width: self.view.frame.size.width, height: 45)
+        return CGSize(width: self.view.frame.size.width, height: 0)
     }
 
     // MARK: UICollectionViewHeader
@@ -245,8 +247,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        print("Returning: \(self.photoAssets.count) photos")
+        
         return self.photoAssets.count
     }
 

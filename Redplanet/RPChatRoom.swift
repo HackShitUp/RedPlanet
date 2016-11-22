@@ -509,10 +509,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        print("BOOL:\(chatCamera)")
-        
         // Set first responder
-        self.newChat.becomeFirstResponder()
+//        self.newChat.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Resign first responder
+        self.newChat.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

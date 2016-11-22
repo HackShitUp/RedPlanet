@@ -58,6 +58,7 @@
 		7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C51DD595E800DEC27B /* TOSCell.swift */; };
 		7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */; };
 		7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */; };
+		7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E989A251DE4F17E000215A1 /* NewPassword.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
 		7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8CE1DB75057001B7329 /* CLImageEditor.m */; };
 		7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E8D01DB75057001B7329 /* CLImageEditorTheme.m */; };
@@ -270,6 +271,7 @@
 		7E7E38C51DD595E800DEC27B /* TOSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TOSCell.swift; sourceTree = "<group>"; };
 		7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPostCell.swift; sourceTree = "<group>"; };
 		7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMediaCell.swift; sourceTree = "<group>"; };
+		7E989A251DE4F17E000215A1 /* NewPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPassword.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
 		7E98E8CD1DB75057001B7329 /* CLImageEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLImageEditor.h; sourceTree = "<group>"; };
 		7E98E8CE1DB75057001B7329 /* CLImageEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLImageEditor.m; sourceTree = "<group>"; };
@@ -559,6 +561,15 @@
 				7E43833D1DD9138F00337007 /* HashTagsCell.swift */,
 			);
 			name = Hashtags;
+			sourceTree = "<group>";
+		};
+		7E46EDD61DE4F4400034E434 /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */,
+				7E989A251DE4F17E000215A1 /* NewPassword.swift */,
+			);
+			name = Password;
 			sourceTree = "<group>";
 		};
 		7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */ = {
@@ -1248,7 +1259,7 @@
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */,
+				7E46EDD61DE4F4400034E434 /* Password */,
 			);
 			name = MYPROFILE;
 			sourceTree = "<group>";
@@ -1844,6 +1855,7 @@
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,
 				7EE1C22F1DBC78C100F75557 /* ImageDownloader.swift in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
+				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
 				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,

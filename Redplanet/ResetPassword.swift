@@ -15,7 +15,7 @@ import Bolts
 
 class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFieldDelegate {
     
-    @IBOutlet weak var userEmail: UITextField!
+    @IBOutlet weak var userPassword: UITextField!
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
@@ -23,64 +23,107 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     }
     
     
-    @IBOutlet weak var resetButton: UIButton!
-    @IBAction func resetPassword(_ sender: AnyObject) {
+    @IBAction func forgotPassword(_ sender: Any) {
+        
+        // Show alert
+        let alert = UIAlertController(title: "Password Reset",
+                                      message: "Please enter your email below to reset your password.",
+                                      preferredStyle: .alert)
+        
+        let done = UIAlertAction(title: "Done",
+                                 style: .default,
+                                 handler: {(alertAction: UIAlertAction!) in
+                                    // Show textfield for email reset
+                                    let email = alert.textFields![0]
+                                    
+                                    // Request new password via email
+                                    PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            let alert = UIAlertController(title: "Reset Password Requested",
+                                                                          message: "We've sent you an email to reset your password.",
+                                                                          preferredStyle: .alert)
+                                            
+                                            let ok = UIAlertAction(title: "ok",
+                                                                   style: .default,
+                                                                   handler: {(alertAction: UIAlertAction!) in
+                                                                    // Pop back view controller
+                                                                    self.navigationController?.popViewController(animated: true)
+                                            })
+                                            alert.addAction(ok)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            let alert = UIAlertController(title: "Invalid Email",
+                                                                          message: "This email doesn't exist in our database.",
+                                                                          preferredStyle: .alert)
+                                            let ok = UIAlertAction(title: "ok",
+                                                                   style: .default,
+                                                                   handler: {(alertAction: UIAlertAction!) in
+                                                                    self.dismiss(animated: true, completion: nil)
+                                            })
+                                            alert.addAction(ok)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+                                        }
+                                        
+                                    })
+
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                  style: .cancel,
+                                  handler: nil)
+        
+        alert.addTextField(configurationHandler: nil)
+        alert.addAction(done)
+        alert.addAction(cancel)
+        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+
+    }
+    
+    @IBOutlet weak var nextButton: UIButton!
+    @IBAction func nextAction(_ sender: Any) {
+        print("ASDAPSD:\(self.userPassword.text!)")
+        
         // Re set userEmail
-        if userEmail.text!.isEmpty {
-            let alert = UIAlertController(title: "Password Reset Failed",
-                                          message: "Please enter your email.",
+        if userPassword.text!.isEmpty {
+            let alert = UIAlertController(title: "Invalid Password",
+                                          message: "Please enter your password to continue.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
                                    style: .cancel,
                                    handler: nil)
             
             alert.addAction(ok)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
             
         } else {
-            // Request new password via email
-            PFUser.requestPasswordResetForEmail(inBackground: userEmail.text!, block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    let alert = UIAlertController(title: "Reset Password Requested",
-                                                  message: "You can change your password via the link we sent.",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: {(alertAction: UIAlertAction!) in
-                                            // Pop back view controller
-                                            self.navigationController?.popViewController(animated: true)
-                    })
-                    alert.addAction(ok)
-                    self.present(alert, animated: true, completion: nil)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    let alert = UIAlertController(title: "Invalid Email",
-                                                  message: "This email doesn't exist in our database.",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: {(alertAction: UIAlertAction!) in
-                                            self.dismiss(animated: true, completion: nil)
-                    })
-                    alert.addAction(ok)
-                    self.present(alert, animated: true, completion: nil)
-                }
-
-            })
+            // TODO::
+            // Validate correct credentials
+            // Before user can change their passwords...
+            
+            // Push VC
+            let newPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "newPasswordVC") as! NewPassword
+            self.navigationController?.pushViewController(newPasswordVC, animated: true)
         }
+           
+
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Make email first responder
-        userEmail.becomeFirstResponder()
+        userPassword.becomeFirstResponder()
         
         // Design button
-        self.resetButton.layer.cornerRadius = 25.00
-        self.resetButton.clipsToBounds = true
+        self.nextButton.layer.cornerRadius = 25.00
+        self.nextButton.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {

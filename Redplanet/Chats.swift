@@ -292,6 +292,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         // Hide tab bar controller
         self.navigationController!.tabBarController!.tabBar.isHidden = false
+        
+        // Show navigation bar
+        self.navigationController!.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -302,6 +305,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         // Query CHATS
         queryChats()
+        
+        // Show navigation bar
+        self.navigationController!.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
