@@ -44,7 +44,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 print("Saved user's data!: \(PFUser.current()!)")
                 
                 // Show alert, and load onboarding
-                let alert = UIAlertController(title: "😁\nAlmost Finished!",
+                let alert = UIAlertController(title: "😁\nAlmost Finished",
                                               message: "Please check your email when you can. We've sent you something!",
                                               preferredStyle: .alert)
                 let ok = UIAlertAction(title: "next",

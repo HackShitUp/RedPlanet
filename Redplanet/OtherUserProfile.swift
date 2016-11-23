@@ -320,6 +320,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // Query content
         queryContent()
+        
+        print("OBJECTID: \(otherObject.last!.objectId!)")
 
         
         // Hide tabBarController

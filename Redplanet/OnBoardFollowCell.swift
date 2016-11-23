@@ -118,6 +118,92 @@ class OnBoardFollowCell: UITableViewCell {
             })
             
         }
+        
+        
+        
+        if self.followButton.title(for: .normal) == "Friend" {
+            let friendMe = PFObject(className: "FriendMe")
+            friendMe["frontFriend"] = PFUser.current()!
+            friendMe["frontFriendName"] = PFUser.current()!.username!
+            friendMe["endFriend"] = self.userObject!
+            friendMe["endFriendName"] = self.name.text!
+            friendMe["isFriends"] = true
+            friendMe.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    
+                    print("Friended \(friendMe)")
+                    
+                    // Change button's title and design
+                    self.followButton.setTitle("Friend Requested", for: .normal)
+                    self.followButton.setTitleColor(UIColor.white, for: .normal)
+                    self.followButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    self.followButton.layer.cornerRadius = 22.00
+                    self.followButton.clipsToBounds = true
+                    
+                    // Re-enable buttons
+                    self.followButton.isUserInteractionEnabled = true
+                    self.followButton.isEnabled = true
+                    
+                    // Trigger relationship function
+                    self.appDelegate.queryRelationships()
+                    
+                    // Reload data
+                    NotificationCenter.default.post(name: onBoardNotification, object: nil)
+
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        }
+        
+        
+        if self.followButton.title(for: .normal) == "Friend Requested" {
+            let friends = PFQuery(className: "FriendMe")
+            friends.whereKey("frontFriend", equalTo: PFUser.current()!)
+            friends.whereKey("endFriend", equalTo: self.userObject!)
+            friends.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                
+                                print("UnFriended \(object)")
+                                
+                                // Change button's title and design
+                                self.followButton.setTitle("Friend", for: .normal)
+                                self.followButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                self.followButton.backgroundColor = UIColor.white
+                                self.followButton.layer.cornerRadius = 22.00
+                                self.followButton.layer.borderWidth = 2.0
+                                self.followButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                self.followButton.clipsToBounds = true
+                                
+                                // Re-enable buttons
+                                self.followButton.isUserInteractionEnabled = true
+                                self.followButton.isEnabled = true
+                                
+                                // Trigger relationship function
+                                self.appDelegate.queryRelationships()
+                                
+                                // Reload data
+                                NotificationCenter.default.post(name: onBoardNotification, object: nil)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                        
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        }
+        
 
     }
 

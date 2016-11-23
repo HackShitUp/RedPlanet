@@ -485,7 +485,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
 //                        device.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(device.deviceWhiteBalanceGains(for: temperatureAndTintValues)) {
 //                            (timestamp:CMTime) -> Void in
 //                        }
-
                     }
                     
                     // Unlock
