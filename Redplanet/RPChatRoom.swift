@@ -278,6 +278,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Show Progress
         SVProgressHUD.show()
         
+        // Disable done button
+        editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
+        
         // Convert UIImage to NSData
         let imageData = UIImageJPEGRepresentation(image, 0.5)
         // Change UIImage to PFFile
@@ -295,10 +298,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chat.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
-                print("Successfully sent chat: \(chat)")
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
+                
+                // Re-enable done button
+                editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
+
                 
                 // Clear newChat
                 self.newChat.text!.removeAll()
@@ -329,7 +335,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             } else {
                 print(error?.localizedDescription as Any)
                 
-                print("Network Error")
+                // Re-enable done button
+                editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                 
                 // Reload data
                 self.queryChats()
