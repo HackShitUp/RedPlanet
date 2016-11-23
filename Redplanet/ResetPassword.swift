@@ -103,13 +103,34 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
             self.present(alert, animated: true, completion: nil)
             
         } else {
-            // TODO::
-            // Validate correct credentials
-            // Before user can change their passwords...
-            
-            // Push VC
-            let newPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "newPasswordVC") as! NewPassword
-            self.navigationController?.pushViewController(newPasswordVC, animated: true)
+            // Login as work around to check for user's password
+            PFUser.logInWithUsername(inBackground: PFUser.current()!.username!,
+                                     password: self.userPassword.text!) {
+                                        (user: PFUser?, error: Error?) in
+                                        if user != nil {
+                                            print("Correct password")
+
+                                            // Push VC
+                                            let newPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "newPasswordVC") as! NewPassword
+                                            self.navigationController?.pushViewController(newPasswordVC, animated: true)
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            
+                                            // Incorrect Password
+                                            let alert = UIAlertController(title: "Incorrect Password",
+                                                                          message: "This is not the correct password associated with your account.",
+                                                                          preferredStyle: .alert)
+                                            
+                                            let ok = UIAlertAction(title: "ok",
+                                                                   style: .cancel,
+                                                                   handler: nil)
+                                            
+                                            alert.addAction(ok)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+                                        }
+            }
         }
            
 
