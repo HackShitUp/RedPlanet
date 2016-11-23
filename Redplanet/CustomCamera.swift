@@ -449,26 +449,49 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     // Touch to focus camera
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let screenSize = previewView.bounds.size
+
         if let touchPoint = touches.first {
-            let x = touchPoint.location(in: previewView).y / screenSize.height
-            let y = 1.0 - touchPoint.location(in: previewView).x / screenSize.width
+            // Pass x and y coordinates
+            let x = touchPoint.location(in: previewView).y / previewView.bounds.size.height
+            let y = 1.0 - touchPoint.location(in: previewView).x / previewView.bounds.size.width
+            
+            // Set focus point
             let focusPoint = CGPoint(x: x, y: y)
             
             if let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) {
                 
                 do {
                     try device.lockForConfiguration()
+
+                    // BACK
+                    // Back Camera Focus
+                    if device.isFocusPointOfInterestSupported {
+                        
+                        device.focusPointOfInterest = focusPoint
+                        device.focusMode = .autoFocus
+                        
+                    }
                     
-                    device.focusPointOfInterest = focusPoint
-                    //device.focusMode = .ContinuousAutoFocus
-                    device.focusMode = .autoFocus
-                    //device.focusMode = .Locked
-                    device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = AVCaptureExposureMode.continuousAutoExposure
+                    // FRONT
+                    // Front camera Focus
+                    if device.isExposurePointOfInterestSupported && frontBack == "front" {
+                        
+                        device.exposurePointOfInterest = focusPoint
+                        device.focusMode = .autoFocus
+                        device.exposureMode = .custom
+//                        let incandescentLightCompensation = 3_000
+//                        let tint = 0 // no shift
+//                        let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: Float(incandescentLightCompensation), tint: Float(tint))
+//                        device.setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains(device.deviceWhiteBalanceGains(for: temperatureAndTintValues)) {
+//                            (timestamp:CMTime) -> Void in
+//                        }
+
+                    }
+                    
+                    // Unlock
                     device.unlockForConfiguration()
-                }
-                catch {
+                    
+                } catch {
                     // just ignore
                 }
             }

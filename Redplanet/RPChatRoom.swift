@@ -410,6 +410,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                          "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
                                                         ]
                                                     )
+                                                    
                                                 }
         }
         
