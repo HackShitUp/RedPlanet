@@ -54,10 +54,16 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var tableView: UITableView!
 
-    
-    @IBAction func showCommunity(_ sender: Any) {
-        // Push to VC
-        
+    @IBAction func relationshipRequests(_ sender: Any) {
+        // Push
+        let relationshipRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
+        self.navigationController?.pushViewController(relationshipRequestsVC, animated: true)
+    }
+
+    @IBAction func search(_ sender: Any) {
+        // Push VC
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController?.pushViewController(searchVC, animated: true)
     }
     
     

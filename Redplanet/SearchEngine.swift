@@ -71,6 +71,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     // MARK: - UISearchBar Delegates
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
+        // Change tableView background
+        self.tableView!.backgroundView = UIView()
+        
         if searchBar.text!.hasPrefix("#") {
             // Looking for hashtags...
             let hashtags = PFQuery(className: "Hashtags")

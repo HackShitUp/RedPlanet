@@ -258,7 +258,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // (2) Set user's bio and information
         if PFUser.current()!.value(forKey: "userBiography") != nil {
-            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)\n\(PFUser.current()!["userBiography"] as! String)"
+            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n🎈\(PFUser.current()!.value(forKey: "birthday") as! String)🎈\n\(PFUser.current()!["userBiography"] as! String)"
         } else {
             header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
         }
