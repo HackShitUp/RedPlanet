@@ -149,16 +149,16 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         let label = UILabel()
         label.textColor = UIColor.white
         label.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
         
         if section == 0 {
             
-            label.text = " Friend the Redplanet Team"
+            label.text = " • Friend the Redplanet Team"
             return label
             
         } else {
             
-            label.text = " Follow Public Accounts"
+            label.text = " • Follow Public Accounts"
             return label
 
         }

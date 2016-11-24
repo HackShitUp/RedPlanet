@@ -32,15 +32,14 @@ let contactsNotification = Notification.Name("contacts")
 // Set for iOS 9 +
 @available(iOS 9, *)
 class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+
     
-    
-    
-    // Initialize CNContactStore
-    let store = CNContactStore()
-    
-    // Global variable to hold contacts
-    var contactNames = [String]()
+    // Array to hold contacts
     var contactNumbers = [String]()
+
+    // Storing Contact Objects
+    var results = [CNContact]()
+
     
     // Variable to hold friend objects
     var friends = [PFObject]()
@@ -56,46 +55,33 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         // POP VC
         self.navigationController!.popViewController(animated: true)
     }
+    
+    @IBAction func phoneNumber(_ sender: Any) {
+        // Change phone number
+        configureNumber(sender: self)
+    }
+    
+    
+    // Function to save or edit phone number
+    func configureNumber(sender: Any) {
+        // Present PhoneNumber
+        let numberVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserNumberVC") as! CurrentUserNumber
+        self.navigationController?.pushViewController(numberVC, animated: false)
+    }
+    
     // Function to fetch user's contacts
     func getPhoneContacts() {
         // Clear arrays
-        contactNames.removeAll(keepingCapacity: false)
         contactNumbers.removeAll(keepingCapacity: false)
+        results.removeAll(keepingCapacity: false)
 
-//        let keys = [CNContactGivenNameKey as CNKeyDescriptor, CNContactPhoneNumbersKey as CNKeyDescriptor]
-//        let fetchRequest = CNContactFetchRequest(keysToFetch: keys)
-//        
-//        do {
-//            try store.enumerateContacts(with: fetchRequest, usingBlock: { ( contact, stop) -> Void in
-//                print("Appending: \(contact.givenName)")
-//                
-//                // Append contact's name in device
-//                self.contactNames.append(contact.givenName)
-//                
-//                // Fetch phone numbers
-//                var numbers = (contact.phoneNumbers[0].value).value(forKey: "digits") as! String
-//                // Remove other charcters besides the number
-//                numbers = numbers.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-//                numbers = numbers.trimmingCharacters(in: CharacterSet.symbols)
-//                
-//                // Append contact's number in device
-//                self.contactNumbers.append(numbers)
-//                
-//                // Fetch users on redplanet
-//                self.fetchRedplanetters()
-//            })
-//            
-//        } catch let error as NSError {
-//            print(error.localizedDescription)
-//        }
-        
+        // Initialize CNContactStore object
         let contactStore = CNContactStore()
+        
+        // Set predicates for Contacts' values and traverse to any object
         let keysToFetch = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-            CNContactEmailAddressesKey,
             CNContactPhoneNumbersKey,
-            CNContactImageDataAvailableKey,
-            CNContactThumbnailImageDataKey
         ] as [Any]
         
         // Get all the containers
@@ -106,7 +92,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             print("Error fetching containers")
         }
         
-        var results: [CNContact] = []
         
         // Iterate all containers and append their contacts to our results array
         for container in allContainers {
@@ -114,14 +99,37 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             
             do {
                 let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch as! [CNKeyDescriptor])
+                // Appenc to CNContacts
                 results.append(contentsOf: containerResults)
+                
+                // Fetch phone number and traverse it as String value
+                for contact: CNContact in results {
+                    if (contact.isKeyAvailable(CNContactPhoneNumbersKey)) {
+                        for phoneNumber: CNLabeledValue in contact.phoneNumbers {
+                            var number = phoneNumber.value.stringValue
+                            number = number.replacingOccurrences(of: ")", with: "") // (
+                            number = number.replacingOccurrences(of: "(", with: "") // )
+                            number = number.replacingOccurrences(of: " ", with: "") // SPACE
+                            number = number.replacingOccurrences(of: "+1 ", with: "") // +1
+                            number = number.replacingOccurrences(of: "1 ", with: "") // 1SPACE
+                            number = number.replacingOccurrences(of: "-", with: "") // -
+                            number = number.replacingOccurrences(of: "1 ", with: "")
+                            
+                            // Append clean number
+                            self.contactNumbers.append(number)
+                        }
+                    }
+                }
+                
+                
+                // Fetch users
+                fetchRedplanetters()
+
+                
             } catch {
                 print("Error fetching results for container")
             }
         }
-        
-
-//        return results
         
     }
     
@@ -133,7 +141,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         
         // Find users
         let user = PFUser.query()!
-//        user.whereKey("phoneNumber", containedIn: )
+        user.whereKey("phoneNumber", containedIn: self.contactNumbers)
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -201,7 +209,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     func refresh() {
         
         // Reload relationships
-        appDelegate.queryRelationships()
+//        appDelegate.queryRelationships()
         
         // Get contacts from device
         getPhoneContacts()
@@ -212,51 +220,39 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     
     // Function to check whether user has number
-    func checkNumber() -> Bool {
-        let number = PFUser.query()!
-        number.whereKey("username", equalTo: PFUser.current()!.username!)
-        number.findObjectsInBackground(block:  {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-                
-                for object in objects! {
-                    if object["phoneNumber"] != nil {
-                        
-                        // Get user's contacts in phone
-                        self.getPhoneContacts()
-                        
-                        // Set boolean that number does not exist
-                        numberExists = true
-                        
-                        // DZNEmptyDataSet
-                        self.tableView!.tableFooterView = UIView()
-                        
-                    } else {
-                        
-                        // Set boolean that number exists
-                        numberExists = false
-                        
-                        // Dismiss Progress
-                        SVProgressHUD.dismiss()
-                        
-                        // DZNEmptyDataset
-                        self.tableView!.emptyDataSetSource = self
-                        self.tableView!.emptyDataSetDelegate = self
-                        self.tableView!.tableFooterView = UIView()
-                    }
-                    
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
-        
+    func checkNumber() {
+        if PFUser.current()!["phoneNumber"] != nil {
+            
+            // Dismiss Progress
+            SVProgressHUD.dismiss()
+            
+            // Set boolean that number DOES EXIST
+            numberExists = true
+            
+            // Get user's contacts in phone
+            self.getPhoneContacts()
+            
+            // DZNEmptyDataSet
+            self.tableView!.tableFooterView = UIView()
+            
+        } else {
+            
+            // Dismiss Progress
+            SVProgressHUD.dismiss()
+            
+            // Set boolean that number DOES NOT EXIST
+            numberExists = false
+            
+            // Show alert
+            configureNumber(sender: self)
+            
+            // DZNEmptyDataset
+            self.tableView!.emptyDataSetSource = self
+            self.tableView!.emptyDataSetDelegate = self
+            self.tableView!.tableFooterView = UIView()
+        }
         
         print("NUMBEREXISTS: \(numberExists)")
-        return numberExists
     }
     
     
@@ -303,9 +299,10 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Change the font and size of nav bar text
     func configureView() {
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [ NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: navBarFont]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Contacts"
         }
     }
     
@@ -345,12 +342,45 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return notFriends.count
+        if section == 0 {
+            return notFriends.count
+        } else {
+            return myFriends.count
+        }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
+        
+        if section == 0 {
+            
+            label.text = " • Redplaneters in Contacts"
+            return label
+            
+        } else {
+            
+            label.text = " • Friends"
+            return label
+            
+        }
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 44
+        } else {
+            return 44
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -360,53 +390,55 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "contactsCell", for: indexPath) as! ContactsCell
         
-
-        // Query relationships
-        appDelegate.queryRelationships()
-        
         // Instantiate parent class
         cell.delegate = self
         
-        // Set user's object contained in UITableViewCell
-        cell.friend = notFriends[indexPath.row]
-        
-        // Check whether user has a full name
-        cell.rpUsername.text! = notFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
-
-        // Set button
-        if myRequestedFriends.contains(notFriends[indexPath.row]) || requestedToFriendMe.contains(notFriends[indexPath.row]) {
+        if indexPath.section == 0 {
+            // Set user's object contained in UITableViewCell
+            cell.friend = notFriends[indexPath.row]
             
-            cell.friendButton.setTitle("Friend Requested", for: .normal)
+            // Check whether user has a full name
+            cell.rpUsername.text! = notFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
             
-            // Set title color
-            cell.friendButton.setTitleColor(UIColor.white, for: .normal)
-            // Set background color
-            cell.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-            // Set borderWidth
-            cell.friendButton.layer.borderWidth = 1.50
-            // Set border radius
-            cell.friendButton.layer.cornerRadius = 22.00
-            // Clip
-            cell.friendButton.clipsToBounds = true
-            
+            // Set button
+            if myRequestedFriends.contains(notFriends[indexPath.row]) || requestedToFriendMe.contains(notFriends[indexPath.row]) {
+                
+                // Change button's title and design
+                cell.friendButton.setTitle("Friend Requested", for: .normal)
+                cell.friendButton.setTitleColor(UIColor.white, for: .normal)
+                cell.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                cell.friendButton.layer.cornerRadius = 22.00
+                cell.friendButton.clipsToBounds = true
+                
+            } else {
+                
+                // Set user's friends button
+                cell.friendButton.setTitle("Friend", for: .normal)
+                cell.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                cell.friendButton.backgroundColor = UIColor.white
+                cell.friendButton.layer.cornerRadius = 22.00
+                cell.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                cell.friendButton.layer.borderWidth = 2.00
+                cell.friendButton.clipsToBounds = true
+                
+            }
         } else {
+            // Set user's object contained in UITableViewCell
+            cell.friend = myFriends[indexPath.row]
             
-            cell.friendButton.setTitle("Friend", for: .normal)
+            // Check whether user has a full name
+            cell.rpUsername.text! = myFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
             
-            // Set titleColor
-            cell.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
-            // Set background color
-            cell.friendButton.backgroundColor = UIColor.white
-            // Set borderColor
-            cell.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
-            // Set borderWidth
-            cell.friendButton.layer.borderWidth = 1.50
-            // Clip
+            // Change button's title and design
+            cell.friendButton.setTitle("Friends", for: .normal)
+            cell.friendButton.setTitleColor(UIColor.white, for: .normal)
+            cell.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+            cell.friendButton.layer.cornerRadius = 22.00
             cell.friendButton.clipsToBounds = true
         }
 
         return cell
-    }
+    } // end cellForRowAt
 
 
 }

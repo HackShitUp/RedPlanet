@@ -34,25 +34,42 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     // Refresher
     var refresher: UIRefreshControl!
     
-    @IBAction func sendFeedback(_ sender: Any) {
-        if MFMailComposeViewController.canSendMail() {
-            let mail = MFMailComposeViewController()
-            mail.mailComposeDelegate = self
-            mail.setToRecipients(["redplanethub@gmail.com"])
-            mail.setSubject("My Opinion About Redplanet")
-            present(mail, animated: true)
+    @IBAction func findFriends(_ sender: Any) {
+        /*
+         if MFMailComposeViewController.canSendMail() {
+         let mail = MFMailComposeViewController()
+         mail.mailComposeDelegate = self
+         mail.setToRecipients(["redplanethub@gmail.com"])
+         mail.setSubject("My Opinion About Redplanet")
+         present(mail, animated: true)
+         } else {
+         let alert = UIAlertController(title: "Something Went Wrong",
+         message: "Configure your email to this device to send us feedback!",
+         preferredStyle: .alert)
+         let ok = UIAlertAction(title: "ok",
+         style: .default,
+         handler: nil)
+         alert.addAction(ok)
+         alert.view.tintColor = UIColor.black
+         self.present(alert, animated: true, completion: nil)
+         }
+ */
+        
+        // If iOS 9
+        if #available(iOS 9, *) {
+            // Push VC
+            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+            self.navigationController?.pushViewController(contactsVC, animated: true)
         } else {
-            let alert = UIAlertController(title: "Something Went Wrong",
-                                          message: "Configure your email to this device to send us feedback!",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
+            
+            // Fallback on earlier versions
+            // Show search
+            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+            self.navigationController!.pushViewController(search, animated: true)
         }
+        
     }
+    
     
     
     // Dismiss

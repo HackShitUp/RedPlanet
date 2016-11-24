@@ -72,10 +72,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBOutlet weak var moreButton: UIBarButtonItem!
     @IBAction func moreButton(_ sender: AnyObject) {
         let alert = UIAlertController(title: nil,
                                       message: nil,
-                                      preferredStyle: .actionSheet)
+                                      preferredStyle: .alert)
         
         // (1) Write in space
         let space = UIAlertAction(title: "Write in Space 🚀",
@@ -152,7 +153,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         if myFriends.contains(otherObject.last!) {
             alert.addAction(space)
             alert.addAction(chat)
-            alert.addAction(bestFriends)
+//            alert.addAction(bestFriends)
             alert.addAction(mutual)
             alert.addAction(report)
             alert.addAction(block)

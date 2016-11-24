@@ -447,8 +447,10 @@ class OtherUserHeader: UICollectionReusableView {
             let no = UIAlertAction(title: "no",
                                    style: .destructive,
                                    handler: nil)
-            alert.addAction(yes)
+            
             alert.addAction(no)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
         }
         
@@ -513,8 +515,10 @@ class OtherUserHeader: UICollectionReusableView {
             let cancel = UIAlertAction(title: "no",
                                        style: .destructive,
                                        handler: nil)
-            alert.addAction(yes)
+            
             alert.addAction(cancel)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
  
 
@@ -634,8 +638,10 @@ class OtherUserHeader: UICollectionReusableView {
                                                                style: .destructive,
                                                                handler: nil)
                                         
-                                        alert.addAction(yes)
+                                        
                                         alert.addAction(no)
+                                        alert.addAction(yes)
+                                        alert.view.tintColor = UIColor.black
                                         self.delegate?.present(alert, animated: true, completion: nil)
             })
             
@@ -775,6 +781,7 @@ class OtherUserHeader: UICollectionReusableView {
                                         
                                         alert.addAction(no)
                                         alert.addAction(yes)
+                                        alert.view.tintColor = UIColor.black
                                         self.delegate?.present(alert, animated: true, completion: nil)
                                         
             })

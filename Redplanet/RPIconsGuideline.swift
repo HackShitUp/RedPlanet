@@ -59,7 +59,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Redplanet Icons Guideline"
+            self.title = "Icons Guideline"
         }
     }
     

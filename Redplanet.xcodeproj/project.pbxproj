@@ -163,6 +163,7 @@
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED0DFA11DD19BC100BC81A1 /* RPIconsGuideline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */; };
 		7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */; };
+		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
 		7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */; };
 		7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */; };
 		7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */; };
@@ -429,6 +430,7 @@
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsGuideline.swift; sourceTree = "<group>"; };
 		7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsCell.swift; sourceTree = "<group>"; };
+		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
 		7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriendsCell.swift; sourceTree = "<group>"; };
 		7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowersCell.swift; sourceTree = "<group>"; };
 		7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowingCell.swift; sourceTree = "<group>"; };
@@ -663,7 +665,6 @@
 		7E5A98051DDD2CFA006DA985 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
 				7EDFB63A1DDBDC71004AE090 /* FAQ */,
@@ -713,6 +714,7 @@
 			isa = PBXGroup;
 			children = (
 				7E7E38BB1DD533CB00DEC27B /* Contacts.swift */,
+				7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */,
 				7E7E38B91DD533C100DEC27B /* ContactsCell.swift */,
 			);
 			name = Contacts;
@@ -1187,6 +1189,7 @@
 				7ED4A9131DBEB4F60016698F /* RFriends */,
 				7ED4A9151DBEB50B0016698F /* RFollowers */,
 				7ED4A9141DBEB5020016698F /* RFollowing */,
+				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7E3F0ED91DBFFEAA006BF522 /* StackPageView.swift */,
@@ -1256,9 +1259,9 @@
 		7EC5D19F1DB3566D00437219 /* MYPROFILE */ = {
 			isa = PBXGroup;
 			children = (
+				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
-				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7E46EDD61DE4F4400034E434 /* Password */,
 			);
 			name = MYPROFILE;
@@ -1859,6 +1862,7 @@
 				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
 				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
+				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,

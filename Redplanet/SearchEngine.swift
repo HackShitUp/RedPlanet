@@ -38,6 +38,10 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
 
         // Make first responder
         searchBar.becomeFirstResponder()
+        
+        // Set background for the image
+        self.tableView!.backgroundView = UIImageView(image: UIImage(named: "SearchBackground"))
+        self.tableView!.tableFooterView = UIView()
 
         // SearchbarDelegates
         searchBar.delegate = self

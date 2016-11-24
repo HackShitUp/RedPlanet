@@ -25,15 +25,16 @@ class ContactsCell: UITableViewCell {
 
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var friendButton: UIButton!
-    
-    
-    // Friend button
-    func friendButton(sender: UIButton) {
+    @IBAction func friendAction(_ sender: Any) {
         // Disable buttons to prevent duplicate data entry
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
         
-        if sender.title(for: .normal) == "Friend" {
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // FRIEND /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if self.friendButton.titleLabel!.text! == "Friend" {
             let friend = PFObject(className: "FriendMe")
             friend["frontFriend"] = PFUser.current()!
             friend["endFriend"] = self.friend
@@ -63,22 +64,29 @@ class ContactsCell: UITableViewCell {
                         if success {
                             print("Successfully saved to Notifications: \(notifications)")
                             
-
-                            // Send to NotificationCenter
-                            NotificationCenter.default.post(name: contactsNotification, object: nil)
-
+                            
+                            // Change button's title and design
+                            self.friendButton.setTitle("Friend Requested", for: .normal)
+                            self.friendButton.setTitleColor(UIColor.white, for: .normal)
+                            self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                            self.friendButton.layer.cornerRadius = 22.00
+                            self.friendButton.clipsToBounds = true
                             
                             
                             // Send push notificaiton
                             if self.friend!.value(forKey: "apnsId") != nil {
                                 OneSignal.postNotification(
                                     ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) sent you a friend request"],
                                      "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
                                     ]
                                 )
                             }
 
+                            
+                            // Send to NotificationCenter
+                            NotificationCenter.default.post(name: contactsNotification, object: nil)
+                            
                             
                         } else {
                             print(error?.localizedDescription as Any)
@@ -92,12 +100,109 @@ class ContactsCell: UITableViewCell {
         }
         
         
-        if sender.title(for: .normal) == "Friend Requested" {
+        
+        
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // FRIENDS ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if self.friendButton.titleLabel!.text! == "Friends" {
+            let alert = UIAlertController(title: "Unfriend?",
+                                          message: "Are you sure you would like to unfriend \(self.friend!.value(forKey: "realNameOfUser") as! String)?",
+                preferredStyle: .alert)
+            let yes = UIAlertAction(title: "yes",
+                                    style: .default,
+                                    handler: {(alertAction: UIAlertAction!) in
+                                        let eFriend = PFQuery(className: "FriendMe")
+                                        eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
+                                        eFriend.whereKey("endFriend", equalTo: otherObject.last!)
+                                        
+                                        let fFriend = PFQuery(className: "FriendMe")
+                                        fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
+                                        fFriend.whereKey("frontFriend", equalTo: otherObject.last!)
+                                        
+                                        let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
+                                        friend.whereKey("isFriends", equalTo: true)
+                                        friend.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    // If frontFriend
+                                                    if object["frontFriend"] as! PFUser == PFUser.current()! && object["endFriend"] as! PFUser ==  otherObject.last! {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted friend: \(object)")
+                                                                
+                                                                
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                        
+                                                    }
+                                                    
+                                                    // If endFriend
+                                                    if object["endFriend"] as! PFUser == PFUser.current()! && object["frontFriend"] as! PFUser == otherObject.last! {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted friend: \(object)")
+                                                                
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+
+                                                }
+                                                
+                                                
+                                                // Set user's friends button
+                                                self.friendButton.setTitle("Friend", for: .normal)
+                                                self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                self.friendButton.backgroundColor = UIColor.white
+                                                self.friendButton.layer.cornerRadius = 22.00
+                                                self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                self.friendButton.layer.borderWidth = 2.00
+                                                self.friendButton.clipsToBounds = true
+                                                
+                                                // Post Notification
+                                                NotificationCenter.default.post(name: contactsNotification, object: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+            })
+            let no = UIAlertAction(title: "no",
+                                   style: .destructive,
+                                   handler: nil)
             
+            alert.addAction(no)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
+            self.delegate?.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // FRIEND REQUESTED ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        if self.friendButton.titleLabel!.text! == "Friend Requested" {
+            
+            
+            
+            // ========================================================================================================================
+            // SENT FRIEND REQUEST ====================================================================================================
+            // ========================================================================================================================
             if myRequestedFriends.contains(self.friend!) {
                 let alert = UIAlertController(title: nil,
                                               message: nil,
-                                              preferredStyle: .actionSheet)
+                                              preferredStyle: .alert)
                 
                 let rescind = UIAlertAction(title: "Rescind Friend Request",
                                             style: .default,
@@ -135,6 +240,15 @@ class ContactsCell: UITableViewCell {
                                                                                         self.friendButton.isUserInteractionEnabled = true
                                                                                         self.friendButton.isEnabled = true
                                                                                         
+                                                                                        // Set user's friends button
+                                                                                        self.friendButton.setTitle("Friend", for: .normal)
+                                                                                        self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                                        self.friendButton.backgroundColor = UIColor.white
+                                                                                        self.friendButton.layer.cornerRadius = 22.00
+                                                                                        self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                                        self.friendButton.layer.borderWidth = 2.00
+                                                                                        self.friendButton.clipsToBounds = true
+                                                                                        
                                                                                         
                                                                                         // Send to NotificationCenter
                                                                                         NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -166,14 +280,19 @@ class ContactsCell: UITableViewCell {
                                            handler: nil)
                 alert.addAction(rescind)
                 alert.addAction(cancel)
+                alert.view.tintColor = UIColor.black
                 self.delegate!.present(alert, animated: true, completion: nil)
             }
             
             
+            
+            // ========================================================================================================================
+            // RECEIVED FRIEND REQUEST ================================================================================================
+            // ========================================================================================================================
             if requestedToFriendMe.contains(self.friend!) {
                 let alert = UIAlertController(title: nil,
                                               message: nil,
-                                              preferredStyle: .actionSheet)
+                                              preferredStyle: .alert)
                 
                 let confirm = UIAlertAction(title: "Confirm Friend Request",
                                             style: .default,
@@ -230,18 +349,18 @@ class ContactsCell: UITableViewCell {
                                                                                                 
                                                                                                 // Send to NotificationCenter
                                                                                                 NotificationCenter.default.post(name: contactsNotification, object: nil)
+                                                                                                
+                                                                                                
+                                                                                                // Send push notificaiton
+                                                                                                if self.friend!.value(forKey: "apnsId") != nil {
+                                                                                                    OneSignal.postNotification(
+                                                                                                        ["contents":
+                                                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                                                                                         "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
+                                                                                                        ]
+                                                                                                    )
+                                                                                                }
 
-                                                                                                
-                                                                                            // Send push notificaiton
-                                                                                            if self.friend!.value(forKey: "apnsId") != nil {
-                                                                                                OneSignal.postNotification(
-                                                                                                    ["contents":
-                                                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
-                                                                                                     "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
-                                                                                                    ]
-                                                                                                )
-                                                                                            }
-                                                                                                
                                                                                                 
                                                                                                 
                                                                                             } else {
@@ -312,7 +431,7 @@ class ContactsCell: UITableViewCell {
                                                                                     
                                                                                     // Send to NotificationCenter
                                                                                     NotificationCenter.default.post(name: contactsNotification, object: nil)
-
+                                                                                    
                                                                                     
                                                                                 } else {
                                                                                     print(error?.localizedDescription as Any)
@@ -348,17 +467,13 @@ class ContactsCell: UITableViewCell {
                 self.delegate?.present(alert, animated: true, completion: nil)
             }
             
-            
-            
-            
         }
         
-
     }
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
