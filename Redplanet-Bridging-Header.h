@@ -11,6 +11,8 @@
 
 #import "IGCMenu.h"
 #import "CLImageEditor.h"
-#import "Mixpanel/Mixpanel.h"
+#import "Heap.h"
+
+//#import "Mixpanel/Mixpanel.h"
 
 #endif /* Redplanet_Bridging_Header_h */

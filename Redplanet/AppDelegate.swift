@@ -61,8 +61,6 @@ import ParseUI
 import Bolts
 
 import OneSignal
-import Mixpanel
-
 
 // Current Username
 var username = [String]()
@@ -164,20 +162,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     
         
-        // MARK: - Mixpanel People Analytics
+        // MARK: - HEAP Analytics
         if PFUser.current() != nil {
-            
-            
-            // Initialize Mixpanel API
-//            Mixpanel.init(token: "f3328bd382f9a28fe612f4b1e4d77923", andFlushInterval: 5)
-            
-//            let mixpanel = Mixpanel.initialize(token: "f3328bd382f9a28fe612f4b1e4d77923")
-//            mixpanel.track(event: "Opened App",
-//                           properties:["Username": "\(PFUser.currentUser()!.username!)"])
-
-            // // Sets user 13793's "Plan" attribute to "Premium"
-//            Mixpanel.mainInstance().people.set(property: "Plan",
-//                                               to: "Premium")
+            Heap.setAppId("3455525110");
+            #if DEBUG
+                Heap.enableVisualizer();
+            #endif
         }
         
         

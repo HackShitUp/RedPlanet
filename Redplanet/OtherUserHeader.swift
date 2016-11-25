@@ -126,10 +126,6 @@ class OtherUserHeader: UICollectionReusableView {
     // Function to friend
     func friendUser(sender: UIButton) {
         
-        
-        // TODO::
-        // MixPanel Analytics
-        
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -212,10 +208,6 @@ class OtherUserHeader: UICollectionReusableView {
     
     // Function to follow
     func followUser(sender: UIButton) {
-        
-        
-        // TODO::
-        // MixPanel Analytics
         
         
         // Disable connection buttons

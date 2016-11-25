@@ -9,7 +9,7 @@ target 'Redplanet' do
 	pod ‘ParseUI’
 	pod ‘Bolts’
 	pod ‘OneSignal’
-	pod ‘Mixpanel’
+	pod ‘Heap’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
 	pod 'DZNEmptyDataSet'
