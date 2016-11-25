@@ -346,7 +346,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -369,7 +369,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
@@ -382,7 +382,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Show mediaPreview

@@ -216,7 +216,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Set default contentMode
         cell.mediaPreview.contentMode = .scaleAspectFill
         // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.layer.cornerRadius = 10.00
         cell.mediaPreview.clipsToBounds = true
 
         

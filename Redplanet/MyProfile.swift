@@ -156,6 +156,9 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: myProfileNotification, object: nil)
         
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // Pull to refresh
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -164,6 +167,9 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Show tabbarcontroller
         self.navigationController?.tabBarController?.tabBar.isHidden = false
@@ -177,6 +183,9 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // Show tabbarcontroller
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Stylize title
         configureView()
@@ -338,7 +347,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         // Set default contentMode
         cell.mediaPreview.contentMode = .scaleAspectFill
         // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.layer.cornerRadius = 10.00
         cell.mediaPreview.clipsToBounds = true
         
         
@@ -380,7 +389,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -405,7 +414,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
@@ -418,7 +427,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Show mediaPreview

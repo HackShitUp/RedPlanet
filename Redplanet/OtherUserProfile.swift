@@ -746,7 +746,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Set default contentMode
         cell.mediaPreview.contentMode = .scaleAspectFill
         // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 6.00
+        cell.mediaPreview.layer.cornerRadius = 10.00
         cell.mediaPreview.clipsToBounds = true
         
         
@@ -791,7 +791,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -814,7 +814,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     // Show mediaPreview
                     cell.mediaPreview.isHidden = false
@@ -827,7 +827,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Show mediaPreview
@@ -875,7 +875,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     
                     
                     // Make mediaPreview cornerd Squared and blur image
-                    cell.mediaPreview.layer.cornerRadius = 6.00
+                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -902,7 +902,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
                     // Make mediaPreview cornered square
-//                    cell.mediaPreview.layer.cornerRadius = 6.00
+//                    cell.mediaPreview.layer.cornerRadius = 10.00
                     cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
                     cell.mediaPreview.clipsToBounds = true
                     
