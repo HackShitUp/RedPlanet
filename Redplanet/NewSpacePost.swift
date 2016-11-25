@@ -225,18 +225,19 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // Function to show more sharing options
     func doMore(sender: UIButton) {
-        // set up activity view controller
-//        let image = self.mediaAsset.image!
-//        let imageToShare = [image]
-        if self.mediaAsset == nil {
-            
+
+        let textToShare = "@\(PFUser.current()!.username!)'s Space Post on Redplanet: \(self.textView.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        
+        if self.mediaAsset.image != nil {
+            let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+
+        } else {
+            let objectsToShare = [textToShare]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
         }
-        
-//        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-//        activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-        
-        // present the view controller
-//        self.present(activityViewController, animated: true, completion: nil)
     }
     
     

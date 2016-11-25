@@ -32,6 +32,13 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func moreButton(_ sender: Any) {
+        let textToShare = "@\(PFUser.current()!.username!) on Redplanet: \(self.textView.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let objectsToShare = [textToShare]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var characterCount: UILabel!

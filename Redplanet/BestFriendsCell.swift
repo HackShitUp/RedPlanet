@@ -7,9 +7,28 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
+
+import KILabel
+
+
 
 class BestFriendsCell: UITableViewCell {
+    
+    // Initialize paretn VC
+    var delegate: UIViewController?
+    
+    // Initialize user's object
+    var userObject: PFObject?
 
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpName: UILabel!
+    @IBOutlet weak var rpBio: KILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

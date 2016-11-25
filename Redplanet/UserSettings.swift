@@ -24,8 +24,15 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
     }
-    
-    @IBAction func saveNumber(_ sender: Any) {
+
+    @IBAction func invitePeople(_ sender: Any) {
+        // Show Activity
+        let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
+        if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+            let objectsToShare = [textToShare, myWebsite] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+        }
     }
     
     
@@ -275,7 +282,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             if indexPath.row == 2 {
                 
                 // Show Activity
-                let textToShare = "🤗 Let's be friends on Redplanet, my username is \(PFUser.current()!.username!)"
+                let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
                     let objectsToShare = [textToShare, myWebsite] as [Any]
                     let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
