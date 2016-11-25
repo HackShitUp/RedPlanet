@@ -305,7 +305,7 @@ class SharedPostCell: UITableViewCell {
                             
                             // MARK: - OneSignal
                             // Send push notification
-                            if self.byUserObject!.value(forKey: "apnsId") != nil {
+                            if self.fromUserObject!.value(forKey: "apnsId") != nil {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Share"],
