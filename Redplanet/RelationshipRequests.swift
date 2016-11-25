@@ -337,6 +337,15 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         configureView()
         
         
+        // Set collectionview's cell size
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 105.00)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
+        
+        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)

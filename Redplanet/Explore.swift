@@ -94,6 +94,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // $$$ MONETIZE ON THIS
         queryExplore()
         
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         
         // Set collectionView's backgroundColor
         self.collectionView!.backgroundColor = UIColor.white
@@ -134,6 +137,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         
         // Resign frist responder
         self.searchBar.resignFirstResponder()
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false

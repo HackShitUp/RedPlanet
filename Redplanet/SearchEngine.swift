@@ -39,6 +39,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         // Make first responder
         searchBar.becomeFirstResponder()
         
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // Set background for the image
         self.tableView!.backgroundView = UIImageView(image: UIImage(named: "SearchBackground"))
         self.tableView!.tableFooterView = UIView()
@@ -58,7 +61,20 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     
 
     override func didReceiveMemoryWarning() {

@@ -39,6 +39,8 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
     var refresher: UIRefreshControl!
     
     @IBAction func backButton(_ sender: Any) {
+        // Pop VC
+        self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func addBestFriend(_ sender: Any) {
@@ -61,7 +63,7 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
     // HUMAN BEST FRIENDS
     func fetchBestFriends() {
         let bestFriends = PFQuery(className: "BestFriends")
-        bestFriends.whereKey("theFriend", containedIn: forBFObject)
+        bestFriends.whereKey("theFriend", equalTo: forBFObject.last!)
         bestFriends.includeKey("firstBF")
         bestFriends.includeKey("secondBF")
         bestFriends.includeKey("thirdBF")
@@ -87,9 +89,7 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                         self.threeBFObjects.append(bfThree)
                     }
                 }
-                
-                print("BFOBjects:\n\(self.threeBFObjects)\n")
-                print("Count:\n\(self.threeBFObjects.count)\n")
+
                 
                 // DZNEmptyDataSet
                 if self.threeBFObjects.count == 0 {
@@ -197,8 +197,122 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                                             (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
                                                 
+                                                for object in objects! {
+                                                    if object["firstBF"] != nil {
+                                                        // Show that you already have a best friend
+                                                        let alert = UIAlertController(title: "1st Best Friend",
+                                                                                      message: "Looks like you already have someone as your 1st Best Friend.",
+                                                                                      preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        // Save
+                                                        let bf = PFObject(className: "BestFriends")
+                                                        bf["theFriend"] = PFUser.current()!
+                                                        bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                        bf["firstBF"] = forBFObject.last! as! PFUser
+                                                        bf.saveInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                // Refresh
+                                                                self.refresh()
+                                                                
+                                                                let alert = UIAlertController(title: "1st Best Friend",
+                                                                                              message: "You've successfully listed \(otherName.last!.uppercased()) as your 1st Best Friend.",
+                                                                    preferredStyle: .alert)
+                                                                
+                                                                let myBF = UIAlertAction(title: "View My List",
+                                                                                         style: .default,
+                                                                                         handler: {(alertAction: UIAlertAction!) in
+                                                                                            // Append
+                                                                                            forBFObject.append(PFUser.current()!)
+                                                                                            
+                                                                                            // Push VC
+                                                                                            let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                            self.navigationController?.pushViewController(bfVC, animated: true)
+                                                                })
+                                                                
+                                                                let ok = UIAlertAction(title: "ok",
+                                                                                       style: .cancel,
+                                                                                       handler: nil)
+                                                                
+                                                                alert.addAction(myBF)
+                                                                alert.addAction(ok)
+                                                                alert.view.tintColor = UIColor.black
+                                                                self.present(alert, animated: true, completion: nil)
+                                                                
+                                                            } else{
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                                
                                             } else {
                                                 print(error?.localizedDescription as Any)
+                                                
+                                                print("NOT FOUND")
+                                                // Save
+                                                let bf = PFObject(className: "BestFriends")
+                                                bf["theFriend"] = PFUser.current()!
+                                                bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                bf["firstBF"] = forBFObject.last! as! PFUser
+                                                bf.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        // Refresh
+                                                        self.refresh()
+                                                        
+                                                        let alert = UIAlertController(title: "1st Best Friend",
+                                                                                      message: "You've successfully listed \(otherName.last!.uppercased()) as your 1st Best Friend.",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                        
+                                                    } else{
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+
                                             }
                                         })
         })
@@ -206,13 +320,258 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         let secondBF = UIAlertAction(title: "2nd Best Friend 🏅",
                                      style: .default,
                                      handler: {(alertAction: UIAlertAction!) in
-                                        
+                                        // Check if Current user has best friends
+                                        let bf = PFQuery(className: "BestFriends")
+                                        bf.whereKey("theFriend", equalTo: PFUser.current()!)
+                                        bf.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    if object["secondBF"] != nil {
+                                                        // Show that you already have a best friend
+                                                        let alert = UIAlertController(title: "2nd Best Friend",
+                                                                                      message: "Looks like you already have someone as your 2nd Best Friend.",
+                                                                                      preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        // Save
+                                                        let bf = PFObject(className: "BestFriends")
+                                                        bf["theFriend"] = PFUser.current()!
+                                                        bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                        bf["secondBF"] = forBFObject.last! as! PFUser
+                                                        bf.saveInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                // Refresh
+                                                                self.refresh()
+                                                                
+                                                                let alert = UIAlertController(title: "2nd Best Friend",
+                                                                                              message: "You've successfully listed \(otherName.last!.uppercased()) as your 2nd Best Friend.",
+                                                                    preferredStyle: .alert)
+                                                                
+                                                                let myBF = UIAlertAction(title: "View My List",
+                                                                                         style: .default,
+                                                                                         handler: {(alertAction: UIAlertAction!) in
+                                                                                            // Append
+                                                                                            forBFObject.append(PFUser.current()!)
+                                                                                            
+                                                                                            // Push VC
+                                                                                            let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                            self.navigationController?.pushViewController(bfVC, animated: true)
+                                                                })
+                                                                
+                                                                let ok = UIAlertAction(title: "ok",
+                                                                                       style: .cancel,
+                                                                                       handler: nil)
+                                                                
+                                                                alert.addAction(myBF)
+                                                                alert.addAction(ok)
+                                                                alert.view.tintColor = UIColor.black
+                                                                self.present(alert, animated: true, completion: nil)
+                                                                
+                                                            } else{
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                }
+                                               
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                
+                                                // Save
+                                                let bf = PFObject(className: "BestFriends")
+                                                bf["theFriend"] = PFUser.current()!
+                                                bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                bf["secondBF"] = forBFObject.last! as! PFUser
+                                                bf.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        // Refresh
+                                                        self.refresh()
+                                                        
+                                                        let alert = UIAlertController(title: "2nd Best Friend",
+                                                                                      message: "You've successfully listed \(otherName.last!.uppercased()) as your 2nd Best Friend.",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                        
+                                                    } else{
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                        })
+
         })
         
         let thirdBF = UIAlertAction(title: "3rd Best Friend 🔥",
                                     style: .default,
                                     handler: {(alertAction: UIAlertAction!) in
-                                                                        
+                                        // Check if Current user has best friends
+                                        let bf = PFQuery(className: "BestFriends")
+                                        bf.whereKey("theFriend", equalTo: PFUser.current()!)
+                                        bf.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    if object["thirdBF"] != nil {
+                                                        // Show that you already have a best friend
+                                                        let alert = UIAlertController(title: "3rd Best Friend",
+                                                                                      message: "Looks like you already have someone as your 3rd Best Friend.",
+                                                                                      preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        // Save
+                                                        let bf = PFObject(className: "BestFriends")
+                                                        bf["theFriend"] = PFUser.current()!
+                                                        bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                        bf["thirdBF"] = forBFObject.last! as! PFUser
+                                                        bf.saveInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                // Refresh
+                                                                self.refresh()
+                                                                
+                                                                let alert = UIAlertController(title: "3rd Best Friend",
+                                                                                              message: "You've successfully listed \(otherName.last!.uppercased()) as your 3rd Best Friend.",
+                                                                    preferredStyle: .alert)
+                                                                
+                                                                let myBF = UIAlertAction(title: "View My List",
+                                                                                         style: .default,
+                                                                                         handler: {(alertAction: UIAlertAction!) in
+                                                                                            // Append
+                                                                                            forBFObject.append(PFUser.current()!)
+                                                                                            
+                                                                                            // Push VC
+                                                                                            let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                            self.navigationController?.pushViewController(bfVC, animated: true)
+                                                                })
+                                                                
+                                                                let ok = UIAlertAction(title: "ok",
+                                                                                       style: .cancel,
+                                                                                       handler: nil)
+                                                                
+                                                                alert.addAction(myBF)
+                                                                alert.addAction(ok)
+                                                                alert.view.tintColor = UIColor.black
+                                                                self.present(alert, animated: true, completion: nil)
+                                                                
+                                                            } else{
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                }
+
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                
+                                                print("NOT FOUND")
+                                                // Save
+                                                let bf = PFObject(className: "BestFriends")
+                                                bf["theFriend"] = PFUser.current()!
+                                                bf["theFriendName"] = PFUser.current()!.username!.uppercased()
+                                                bf["thirdBF"] = forBFObject.last! as! PFUser
+                                                bf.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        // Refresh
+                                                        self.refresh()
+                                                        
+                                                        let alert = UIAlertController(title: "3rd Best Friend",
+                                                                                      message: "You've successfully listed \(otherName.last!.uppercased()) as your 3rd Best Friend.",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let myBF = UIAlertAction(title: "View My Best Friends",
+                                                                                 style: .default,
+                                                                                 handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Append
+                                                                                    forBFObject.append(PFUser.current()!)
+                                                                                    
+                                                                                    // Push VC
+                                                                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
+                                                                                    self.navigationController?.pushViewController(bfVC, animated: true)
+                                                        })
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .cancel,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(myBF)
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                        
+                                                    } else{
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                        })
         })
         
         let cancel = UIAlertAction(title: "Cancel",
@@ -304,10 +663,9 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         
         if indexPath.row == 0 {
             // Get user's objects
-            if let bfOne = threeBFObjects[0].value(forKey: "firstBF") as? PFUser {
+            if let bfOne = threeBFObjects[0] as? PFUser {
                 // (A) Set username
-                cell.rpName.text! = "1st: \(bfOne["username"] as! String)"
-                
+                cell.rpName.text! = "1st 🏆: \(bfOne["username"] as! String)"
                 
                 // (B) Get profile photo
                 if let proPic = bfOne["userProfilePicture"] as? PFFile {
@@ -324,7 +682,14 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                     })
                 }
                 
-                // (C) Set user's object
+                // (C) Set bio
+                if let bio = bfOne["userBiography"] as? String {
+                    cell.rpBio.text! = "\(bfOne["realNameOfUser"] as! String)\n\(bio)"
+                } else {
+                    cell.rpBio.text! = "\(bfOne["realNameOfUser"] as! String)"
+                }
+                
+                // (D) Set user's object
                 cell.userObject = bfOne
             }
         }
@@ -332,9 +697,9 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         
         
         if indexPath.row == 1 {
-            if let bfTwo = threeBFObjects[1].value(forKey: "secondBF") as? PFUser {
+            if let bfTwo = threeBFObjects[1] as? PFUser {
                 // (A) Set username
-                cell.rpName.text! = "2nd: \(bfTwo["username"] as! String)"
+                cell.rpName.text! = "2nd 🏅: \(bfTwo["username"] as! String)"
                 
                 
                 // (B) Get profile photo
@@ -352,7 +717,14 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                     })
                 }
                 
-                // (C) Set user's object
+                // (C) Set bio
+                if let bio = bfTwo["userBiography"] as? String {
+                    cell.rpBio.text! = "\(bfTwo["realNameOfUser"] as! String)\n\(bio)"
+                } else {
+                    cell.rpBio.text! = "\(bfTwo["realNameOfUser"] as! String)"
+                }
+                
+                // (D) Set user's object
                 cell.userObject = bfTwo
             }
         }
@@ -360,9 +732,9 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         
         
         if indexPath.row == 2 {
-            if let bfThree = threeBFObjects[2].value(forKey: "thirdBF") as? PFUser {
+            if let bfThree = threeBFObjects[2] as? PFUser {
                 // (A) Set username
-                cell.rpName.text! = "3rd: \(bfThree["username"] as! String)"
+                cell.rpName.text! = "3rd 🔥: \(bfThree["username"] as! String)"
                 
                 
                 // (B) Get profile photo
@@ -380,8 +752,15 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                     })
                 }
                 
-                // (C) Set user's object
-                cell.userObject = bfThree            
+                // (C) Set bio
+                if let bio = bfThree["userBiography"] as? String {
+                    cell.rpBio.text! = "\(bfThree["realNameOfUser"] as! String)\n\(bio)"
+                } else {
+                    cell.rpBio.text! = "\(bfThree["realNameOfUser"] as! String)"
+                }
+                
+                // (D) Set user's object
+                cell.userObject = bfThree
             }
 
         }
@@ -402,7 +781,7 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Remove Me") { (UITableViewRowAction, indexPath) in
+                                          title: "Remove") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -446,6 +825,9 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
                                                     }
                                                 } else {
                                                     print(error?.localizedDescription as Any)
+                                                    
+                                                    // Dismiss
+                                                    SVProgressHUD.dismiss()
                                                 }
                                             })
                                             
@@ -458,7 +840,7 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         // Light Red
         delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
         
-        if threeBFObjects[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! || forBFObject.last! as! PFUser == PFUser.current()! {
+        if threeBFObjects[indexPath.row] as! PFUser == PFUser.current()! || forBFObject.last! as! PFUser == PFUser.current()! {
             return [delete]
         } else {
             return nil

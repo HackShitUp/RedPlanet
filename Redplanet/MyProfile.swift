@@ -265,7 +265,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // (3) Set count for friends, followers, and following
         if myFriends.count == 0 {
-            header.numberOfFriends.setTitle("friends", for: .normal)
+            header.numberOfFriends.setTitle("\nfriends", for: .normal)
         } else if myFriends.count == 1 {
             header.numberOfFriends.setTitle("1\nfriend", for: .normal)
         } else {
@@ -274,7 +274,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         
         if myFollowers.count == 0 {
-            header.numberOfFollowers.setTitle("followers", for: .normal)
+            header.numberOfFollowers.setTitle("\nfollowers", for: .normal)
         } else if myFollowers.count == 0 {
             header.numberOfFollowers.setTitle("1\nfollower", for: .normal)
         } else {
@@ -283,7 +283,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         
         if myFollowing.count == 0 {
-            header.numberOfFollowing.setTitle("following", for: .normal)
+            header.numberOfFollowing.setTitle("\nfollowing", for: .normal)
         } else if myFollowing.count == 1 {
             header.numberOfFollowing.setTitle("1\nfollowing", for: .normal)
         } else {

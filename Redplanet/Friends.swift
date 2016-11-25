@@ -250,12 +250,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         if #available(iOS 9, *) {
             // Push VC
             let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.navigationController?.pushViewController(contactsVC, animated: true)
+            self.parentNavigator.pushViewController(contactsVC, animated: true)
         } else {
             // Fallback on earlier versions
             // Show search
             let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.navigationController!.pushViewController(search, animated: true)
+            self.parentNavigator.pushViewController(search, animated: true)
         }
     }
     

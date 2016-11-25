@@ -76,10 +76,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     @IBAction func moreButton(_ sender: AnyObject) {
         let alert = UIAlertController(title: nil,
                                       message: nil,
-                                      preferredStyle: .alert)
+                                      preferredStyle: .actionSheet)
         
         // (1) Write in space
-        let space = UIAlertAction(title: "Write in Space 🚀",
+        let space = UIAlertAction(title: "Write in Space ☄️",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
                                     // Push VC
@@ -104,7 +104,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         // (3) Best Friends
-        let bestFriends = UIAlertAction(title: "Best Friends 👫",
+        let bestFriends = UIAlertAction(title: "Best Friends 🔥",
                                  style: .default,
                                  handler: {(alertAction: UIAlertAction!) in
                                     // Append object
@@ -255,7 +255,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         if myFriends.contains(otherObject.last!) {
             alert.addAction(space)
             alert.addAction(chat)
-            alert.addAction(bestFriends)
+//            alert.addAction(bestFriends)
             alert.addAction(mutual)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
@@ -422,7 +422,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Query content
         queryContent()
         
-        print("OBJECTID: \(otherObject.last!.objectId!)")
+        // Set collectionview's cell size
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 65.00)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
 
         
         // Hide tabBarController
@@ -472,8 +478,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
-            alert.addAction(ok)
+            
             alert.addAction(learnMore)
+            alert.addAction(ok)
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
@@ -485,12 +492,18 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Stylize title again
         configureView()
         
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false

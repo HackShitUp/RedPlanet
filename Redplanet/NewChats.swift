@@ -113,6 +113,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
         
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
+        
         // Set title
         configureView()
         
