@@ -59,14 +59,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
     
     @IBAction func more(_ sender: Any) {
-        // set up activity view controller
-        let image = self.mediaAsset.image!
-        let imageToShare = [image]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.view
-        
-        // present the view controller
-        self.present(activityViewController, animated: true, completion: nil)
+        let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     @IBOutlet weak var editBarButton: UIBarButtonItem!

@@ -393,7 +393,7 @@ class SpacePostCell: UITableViewCell {
 
         } else {
             // Text to Share
-            let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            let textToShare = "@\(self.rpUsername.text!) Space Post on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
             let objectsToShare = [textToShare]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.delegate?.present(activityVC, animated: true, completion: nil)

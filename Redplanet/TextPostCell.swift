@@ -497,7 +497,7 @@ class TextPostCell: UITableViewCell {
     // Function to share text post
     func saveShare(sender: UILongPressGestureRecognizer) {
         
-        let textToShare = "@\(self.rpUsername.text!) on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let textToShare = "@\(self.rpUsername.text!)'s Text Post on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
         let objectsToShare = [textToShare]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         self.delegate?.present(activityVC, animated: true, completion: nil)
