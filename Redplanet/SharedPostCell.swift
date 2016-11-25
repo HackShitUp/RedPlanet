@@ -520,13 +520,19 @@ class SharedPostCell: UITableViewCell {
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // (9) Add numberOfShares tap
+        // (9) Add comment tap
+        let cCommentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
+        cCommentTap.numberOfTapsRequired = 1
+        self.commentButton.isUserInteractionEnabled = true
+        self.commentButton.addGestureRecognizer(cCommentTap)
+        
+        // (10) Add numberOfShares tap
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (10) Add Share tap
+        // (11) Add Share tap
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true

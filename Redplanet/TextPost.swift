@@ -221,6 +221,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             let alert = UIAlertController(title: "🎉\nCongrats",
                                           message: "You just viewed your first Text Post!\n•Swipe right to leave.\n•Swipe left for more options.",
                                           preferredStyle: .alert)
+            
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
