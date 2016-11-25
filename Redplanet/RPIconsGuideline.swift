@@ -36,10 +36,10 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
     // Arrays to hold description
     var iconDescripts = ["This is content focused on just text, and nothing else.",
                          "This is content concentrated on a single photo. Photos have a corner radius around its thumbnail.",
-                         "This is content that's been re-shared by someone.",
+                         "This is content that’s been re-shared by someone publicly.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
-                         "A comet with a red gradient background indicates that someone wrote in someone else's Space. Only friends can write in each other's Space.",
-                         "Photos that are rectangular are what we call Moments. These are photos captured directly from the custom camera and shared on Redplanet."
+                         "Comets with a red gradient background indicate that someone wrote in someone else’s Space. Only friends can write in each other’s Space.",
+                         "Rectangular photos are what we call Moments. These are photos caputred directly from the custom camera and shared on Redplanet."
                          ]
 
     @IBAction func backButton(_ sender: Any) {
@@ -130,7 +130,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         
         
         if indexPath.row == 1 {
-            cell.icon.layer.cornerRadius = 6.00
+            cell.icon.layer.cornerRadius = 10.00
             cell.icon.clipsToBounds = true
         } else if indexPath.row == 3 {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
