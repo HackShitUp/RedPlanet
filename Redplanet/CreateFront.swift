@@ -248,7 +248,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
             // Hide navigationbar
             self.navigationController?.setNavigationBarHidden(true, animated: true)
-            // Hide tabBarController
+            // Show tabBarController
             self.navigationController?.tabBarController?.tabBar.isHidden = false
             // Show Grid Menu
             igcMenu.showGridMenu()

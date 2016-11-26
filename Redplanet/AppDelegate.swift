@@ -9,7 +9,15 @@
 
 
 
-
+/*
+ F U T U R E    P R O D U C T   F E A T U R E S
+ 
+ • Video - Record and share videos via the CustomCamera. Play with PeriscopeVideoViewController
+ • Likes & Shares - Because Redplanet hides all your content, we're going to have to let people go back to the things they liked or shared.
+ • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
+ • Best Friends - Let people choose their top 3 best friends.
+ 
+ */
 
 
 
@@ -25,21 +33,23 @@
  
                                                             Like a rolling stone ?
  
- *//*
+ */
 
-                                                             
+
+/*
  C O L O R S
  
- YELLOW:
- UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+YELLOW:
+UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
  
- RED:
- UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+RED:
+UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+
+#ff004f
  
- BLUE:
- UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
  
- #ff004f
+BLUE:
+UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
 
  
  

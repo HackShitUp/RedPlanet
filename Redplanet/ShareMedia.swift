@@ -218,36 +218,34 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Share Photo
             sharePhotoData()
             
-            // Send notification
-            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-
-            
         } else {
             // VIDEO
             
             // Share Video
             shareVideoData()
-            
-            // Send notification
-            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-
 
         } // end contentType Determination
         
         
-        // Clear values (?)
-        // and arrays (?)
-        
-        
-        
-        // Send notification
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        
-        // Push Show MasterTab
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-        UIApplication.shared.keyWindow?.makeKeyAndVisible()
-        UIApplication.shared.keyWindow?.rootViewController = masterTab
+        // Run in main thread
+        DispatchQueue.main.async(execute: {
+            
+            // Reset Library Type to 0
+            libraryType = 0
+            
+            // Clear arrays
+            shareMediaAsset.removeAll(keepingCapacity: false)
+            shareImageAssets.removeAll(keepingCapacity: false)
+            
+            // Send Notification
+            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+            
+            // Push Show MasterTab
+            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            UIApplication.shared.keyWindow?.rootViewController = masterTab
+        }) // end running in main thread
     }
     
     
@@ -718,9 +716,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        print("MEDIA ASSET TYPE IS: \(mediaType)")
-        
         // * Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         
@@ -774,6 +769,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         // (A) Taken
         // (B) Selected from collection or photo library
         // Then, set image
+        
+        // TODO::
+        // Later, delegate this task dependent on String variable, <mediaType>
         if shareMediaAsset.count != 0 {
             PHImageManager.default().requestImage(for: shareMediaAsset.last!,
                                                                  targetSize: targetSize,

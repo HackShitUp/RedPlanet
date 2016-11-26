@@ -165,9 +165,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     @IBAction func didTakePhoto(_ sender: UIButton) {
 
         DispatchQueue.main.async(execute: {
-            
-            
-            
+
             // CAPTURE PHOTO
             if sender.image(for: .normal) == UIImage(named: "Unchecked Circle-100") {
                 
@@ -379,17 +377,14 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     // Function to zoom in
     func zoom(sender: UIPinchGestureRecognizer) {
-
         
 //        let scale = coolPinch.scale
         
 //        self.previewView.transform = self.previewView.transform.scaledBy(x: scale, y: scale)
 //        coolPinch.scale = 1
-
         
 //        previewView.transform = previewView.transform.scaledBy(x: sender.scale, y: sender.scale)
 //        sender.scale = 1
-        
     }
 
     
@@ -571,7 +566,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
         
         if error == nil && session!.canAddInput(input) {
             session!.addInput(input)
-            // ...8
+            
             // The remainder of the session setup will go here...
             stillImageOutput = AVCaptureStillImageOutput()
             stillImageOutput?.outputSettings = [AVVideoCodecKey: AVVideoCodecJPEG]

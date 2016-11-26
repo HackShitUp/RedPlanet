@@ -276,6 +276,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
         return cell
     }
+    
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
