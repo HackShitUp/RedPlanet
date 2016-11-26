@@ -46,7 +46,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Refresher
     var refresher: UIRefreshControl!
-
+    
+    // Set pipeline
+    var page: Int = 50
     
     // Variable to hold UIImagePickerController
     var imagePicker: UIImagePickerController!
@@ -96,7 +98,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         alert.addAction(visit)
         alert.addAction(report)
         alert.addAction(cancel)
-//        alert.view.tintColor = UIColor.black
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -106,6 +107,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.includeKey("receiver")
         chats.includeKey("sender")
         chats.order(byDescending: "createdAt")
+        chats.limit = self.page
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -136,6 +138,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
             }
             
             // Reload data
@@ -386,6 +390,22 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
     
     
+    // Function to send screenshot
+    func sendScreenshot() {
+        // Send push notification
+        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+            OneSignal.postNotification(
+                ["contents":
+                    ["en": "\(PFUser.current()!.username!) screenshotted the conversation"],
+                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                ]
+            )
+            
+        }
+    }
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -400,17 +420,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
                                                object: nil,
                                                queue: OperationQueue.main) { notification in
-                                                
-                                                // Send push notification
-                                                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                                                    OneSignal.postNotification(
-                                                        ["contents":
-                                                            ["en": "\(PFUser.current()!.username!) screenshotted the conversation"],
-                                                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
-                                                        ]
-                                                    )
-                                                    
-                                                }
+                                                // Send screenshot
+                                                self.sendScreenshot()
         }
         
         // Set bool
@@ -1031,12 +1042,31 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             return [report]
         }
         
-        
-        
+
         
     } // End edit action
     
 
+    
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.messageObjects.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query chats
+            queryChats()
+        }
+    }
 
 
 }
