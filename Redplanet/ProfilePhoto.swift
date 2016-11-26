@@ -150,22 +150,19 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         super.viewDidLoad()
         
         
-        
-        // TODO::
-        // Show which button to tap!
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        if launchedBefore  {
-            print("Not first launch.")
-        } else {
-            print("First launch, setting NSUserDefault.")
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-            
+        // Show the user what to do!
+        let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
+        if openedPost == false && proPicObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+
+            // Save
+            UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
                                           message: "You just viewed your first Profile Photo!\n•Swipe right to leave.\n•Swipe left for more options.",
                                           preferredStyle: .alert)
+            
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
@@ -173,8 +170,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             alert.addAction(ok)
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
-            
         }
+        
         
 
         // Set tableView height

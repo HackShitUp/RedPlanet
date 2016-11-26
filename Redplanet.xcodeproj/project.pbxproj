@@ -162,6 +162,7 @@
 		7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B11DB35B6900437219 /* CustomCamera.swift */; };
 		7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B71DB36EE900437219 /* ActivityCell.swift */; };
 		7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1BC1DB3766200437219 /* CreateFront.swift */; };
+		7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECE55A81DEA225E00203082 /* ExploreHeader.swift */; };
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED0DFA11DD19BC100BC81A1 /* RPIconsGuideline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */; };
 		7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */; };
@@ -431,6 +432,7 @@
 		7EC5D1B71DB36EE900437219 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redplanet.entitlements; sourceTree = "<group>"; };
 		7EC5D1BC1DB3766200437219 /* CreateFront.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFront.swift; sourceTree = "<group>"; };
+		7ECE55A81DEA225E00203082 /* ExploreHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHeader.swift; sourceTree = "<group>"; };
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsGuideline.swift; sourceTree = "<group>"; };
 		7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsCell.swift; sourceTree = "<group>"; };
@@ -1286,6 +1288,7 @@
 			children = (
 				7EC5D1A91DB357C600437219 /* SearchEngine */,
 				7EC5D1A01DB3568A00437219 /* Explore.swift */,
+				7ECE55A81DEA225E00203082 /* ExploreHeader.swift */,
 				7EC5D1A21DB3569B00437219 /* ExploreCell.swift */,
 			);
 			name = EXPLORE;
@@ -1749,6 +1752,7 @@
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
+				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */,
 				7EA45CD11DB6BB0500A466D9 /* PhotoLibrary.swift in Sources */,
 				7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */,

@@ -177,11 +177,25 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         return exploreObjects.count
     }
     
-    
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    /*
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: 125, height: 125)
+        // Size should be the same size of the headerView's label size:
+        return CGSize(width: self.view.frame.size.width, height: 135.00)
     }
+
+    
+    // MARK: UICollectionViewHeader
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        // Initialize header
+        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "exploreHeader", for: indexPath) as! ExploreHeader
+     
+        
+        return header
+    }
+    */
+    
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell

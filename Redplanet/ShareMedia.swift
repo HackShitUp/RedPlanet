@@ -409,8 +409,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                 DispatchQueue.main.async(execute: {
                                                     
                                                     /* Did we get the URL to the video? */
-                                                    if let asset = asset as? AVURLAsset{
+                                                    if let asset = asset as? AVURLAsset {
                                                         
+                                                        // Traverse url to Data
                                                         videoData = asset.url as NSURL?
                                                         let videoPath = videoData!.filePathURL
                                                         let videoAsData = NSData(contentsOf: videoPath!)
@@ -418,7 +419,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                         self.parseFile = PFFile(data: videoAsData as! Data)
                                                         
                                                         
+                                                        // Figure out these protocols
+                                                        // .contentsOfURL
+                                                        // .fileUrlWithPath
+                                                        // .compression
                                                         
+//                                                        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".m4v")
+//                                                        let videoFile:PFFile = PFFile(name:"yourfilenamewithtype", data:videoData)
+
                                                         
                                                         // Save to Newsfeeds
                                                         let newsfeeds = PFObject(className: "Newsfeeds")

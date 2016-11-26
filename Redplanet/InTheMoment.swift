@@ -697,21 +697,21 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         super.viewDidLoad()
         
         
-        // TODO::
-        // Show which button to tap!
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        if launchedBefore  {
+        // Show the user what to do!
+        let openedPost = UserDefaults.standard.bool(forKey: "DidOpenMoment")
+        if openedPost == true {
+            // Opened before
             print("Not first launch.")
         } else {
-            print("First launch, setting NSUserDefault.")
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-            
+            // Save
+            UserDefaults.standard.set(true, forKey: "DidOpenMoment")
             
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just viewed your first Moment!\n•Swipe right to leave.\n•Hold the Moment to secretly save it.",
+                                          message: "You just viewed your first Moment!\nSwipe right to leave.",
                                           preferredStyle: .alert)
+            
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
@@ -719,8 +719,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             alert.addAction(ok)
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
-            
         }
+        
 
         // Fetch data
         fetchContent()

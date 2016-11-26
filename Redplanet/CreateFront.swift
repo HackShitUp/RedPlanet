@@ -279,7 +279,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             // Hide menu
             igcMenu.hideGridMenu()
-//            igcMenu.hideCircularMenu()
         }
     }
     
@@ -377,6 +376,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // query Notifications
         queryNotifications()
 
@@ -390,12 +392,16 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Show tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         
+        // Show navigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
         // Stylize title
         configureView()
         
         // Query notifications
         queryNotifications()
     }
+    
     
 
     override func didReceiveMemoryWarning() {

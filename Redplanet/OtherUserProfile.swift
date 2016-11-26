@@ -463,8 +463,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             print("First launch, setting NSUserDefault.")
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             
-            let alert = UIAlertController(title: "Friend or Follow",
-                                          message: "Friends and Following are NOT the same thing on Redplanet. We suggest you friend people in your life for the cool features only friends can interact with.",
+            let alert = UIAlertController(title: "🤗\nFriend or Follow",
+                                          message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
                                           preferredStyle: .alert)
             
             let learnMore = UIAlertAction(title: "I'm confused",

@@ -174,10 +174,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
-            Heap.setAppId("3455525110");
-            #if DEBUG
-                Heap.enableVisualizer();
-            #endif
+//            Heap.setAppId("3455525110");
+//            #if DEBUG
+//                Heap.enableVisualizer();
+//            #endif
         }
         
         

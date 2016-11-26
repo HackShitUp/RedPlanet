@@ -378,13 +378,18 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     // Function to zoom in
     func zoom(sender: UIPinchGestureRecognizer) {
         
-//        let scale = coolPinch.scale
+        // TODO:
+        // Issues - zoom out to infinity, not caputring zoom frame.
         
+//        let scale = coolPinch.scale
+//        
 //        self.previewView.transform = self.previewView.transform.scaledBy(x: scale, y: scale)
 //        coolPinch.scale = 1
-        
+//        
 //        previewView.transform = previewView.transform.scaledBy(x: sender.scale, y: sender.scale)
 //        sender.scale = 1
+        
+        
     }
 
     
