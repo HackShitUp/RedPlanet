@@ -143,6 +143,13 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         // Add function method to 'privacy'
         self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
         
+        // Set privacy
+        if PFUser.current()!.value(forKey: "private") as! Bool == true {
+            self.privacy.setOn(true, animated: false)
+        } else {
+            self.privacy.setOn(false, animated: false)
+        }
+        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
