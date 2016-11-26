@@ -682,20 +682,22 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             })
             
             let no = UIAlertAction(title: "no",
-                                   style: .default,
+                                   style: .cancel,
                                    handler: nil)
             
-            alert.addAction(yes)
+            
             alert.addAction(no)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
 
             
         }
         
-        delete.backgroundColor = UIColor.red
+        // Set background color
+        delete.backgroundColor =  UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
         
         return [delete]
-        
     }
     
     

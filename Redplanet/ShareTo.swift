@@ -385,6 +385,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                 })
                                                 
                                                 alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
                                                 self.present(alert, animated: true, completion: nil)
                                                 
                                                 
@@ -420,6 +421,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                     })
                                                     
                                                     alert.addAction(ok)
+                                                    alert.view.tintColor = UIColor.black
                                                     self.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
@@ -436,8 +438,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                style: .destructive,
                                handler: nil)
         
-        alert.addAction(yes)
+        
         alert.addAction(no)
+        alert.addAction(yes)
+        alert.view.tintColor = UIColor.black
         self.present(alert, animated: true, completion: nil)
         
     }

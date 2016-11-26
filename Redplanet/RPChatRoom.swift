@@ -105,7 +105,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let chats = PFQuery(className: "Chats")
         chats.includeKey("receiver")
         chats.includeKey("sender")
-//        chats.order(byAscending: "createdAt")
         chats.order(byDescending: "createdAt")
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -519,6 +518,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Set first responder
 //        self.newChat.becomeFirstResponder()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {

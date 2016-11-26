@@ -435,6 +435,33 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         return true
     }
     
+
+    // Raise text view in the future...
+    func textViewDidChange(_ textView: UITextView) {
+//        if self.newComment.contentSize.height > self.newComment.frame.size.height && self.newComment.frame.size.height < 50 {
+//            let difference = self.newComment.contentSize.height - self.newComment.frame.size.height
+//            
+//            self.newComment.frame.origin.y = self.newComment.frame.origin.y - difference
+//            self.newComment.frame.size.height = self.newComment.contentSize.height
+//            
+//            // Move up tableview
+//            if self.newComment.contentSize.height + keyboard.height + 50 >= self.tableView!.frame.size.height {
+//                self.tableView!.frame.size.height = self.tableView!.frame.size.height - difference
+//            }
+//            
+//        } else if self.newComment.contentSize.height < self.newComment.frame.size.height {
+//            let difference = self.newComment.frame.size.height - self.newComment.frame.size.height
+//            
+//            self.newComment.frame.origin.y = self.newComment.frame.origin.y + difference
+//            self.newComment.frame.size.height = self.newComment.contentSize.height
+//            
+//            // Move tableView down
+//            if self.newComment.contentSize.height + keyboard.height + 50 > self.tableView!.frame.size.height {
+//                self.tableView!.frame.size.height = self.tableView!.frame.size.height + difference
+//            }
+//            
+//        }
+    }
     
     
     
@@ -715,10 +742,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         
         
-        // Set background images
-        delete.backgroundColor = UIColor.red
-        reply.backgroundColor = UIColor.blue
-        report.backgroundColor = UIColor.yellow
+        // Set background colors
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        reply.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+
         
         
         if self.comments[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! {
