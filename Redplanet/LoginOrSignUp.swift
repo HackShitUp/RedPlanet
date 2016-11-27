@@ -45,9 +45,13 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                         self.rpPassword.resignFirstResponder()
                                         
                                         
-                                        // Get phone disk to remember if
                                         // User has logged in or not
                                         UserDefaults.standard.set(PFUser.current()!.username!, forKey: "username")
+                                        // Save User Default for Post (1-5)
+                                        UserDefaults.standard.set("false", forKey: "DidOpenPost")
+                                        // Save User Default for Moment (6)
+                                        UserDefaults.standard.set("false", forKey: "DidOpenMoment")
+                                        // Synchronize
                                         UserDefaults.standard.synchronize()
                                         
                                         // Call login function from AppDelegeate

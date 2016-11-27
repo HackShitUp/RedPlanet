@@ -182,8 +182,11 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         }
                         
                         
-                        // Send Notification
+                        // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)
+                        
+                        // Send Notification to News Feeds
+                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                         
                         // Pop View Controller
                         self.navigationController?.popViewController(animated: true)

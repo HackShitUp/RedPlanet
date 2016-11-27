@@ -82,6 +82,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         let space = UIAlertAction(title: "Write in Space ☄️",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
+                                    // Append to otherObject
+                                    otherObject.append(otherObject.last!)
+                                    // Append to otherName
+                                    otherName.append(otherName.last!)
+                                    
                                     // Push VC
                                     let newSpaceVC = self.storyboard?.instantiateViewController(withIdentifier: "newSpacePostVC") as! NewSpacePost
                                     self.navigationController?.pushViewController(newSpaceVC, animated: true)
@@ -875,7 +880,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     
                     
                     // Make mediaPreview cornerd Squared and blur image
-                    cell.mediaPreview.layer.cornerRadius = 10.00
+                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    cell.mediaPreview.contentMode = .scaleAspectFit
                     cell.mediaPreview.clipsToBounds = true
                     
                     // Fetch photo

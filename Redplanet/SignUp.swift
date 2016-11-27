@@ -131,6 +131,8 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                                             UserDefaults.standard.set("false", forKey: "DidOpenPost")
                                             // Save User Default for Moment (6)
                                             UserDefaults.standard.set("false", forKey: "DidOpenMoment")
+                                            // Synchronize
+                                            UserDefaults.standard.synchronize()
                                             
                                             // Push VC
                                             let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
