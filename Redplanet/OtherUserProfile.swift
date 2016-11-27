@@ -461,19 +461,17 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // TODO::
         // Show which button to tap!
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        if launchedBefore  {
-            print("Not first launch.")
-        } else {
-            print("First launch, setting NSUserDefault.")
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
+        let openedProfile = UserDefaults.standard.bool(forKey: "DidOpenOtherUserProfile")
+        if openedProfile == false && otherObject.last! != PFUser.current()! {
+            // Save
+            UserDefaults.standard.set(true, forKey: "DidOpenOtherUserProfile")
             
             let alert = UIAlertController(title: "🤗\nFriend or Follow",
                                           message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
                                           preferredStyle: .alert)
             
-            let learnMore = UIAlertAction(title: "I'm confused",
-                                          style: .default,
+            let learnMore = UIAlertAction(title: "I'm Confused",
+                                          style: .destructive,
                                           handler: {(alertAction: UIAlertAction!) in
                                             // Push VC
                                             let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
@@ -489,6 +487,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
+        
+        
+        
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

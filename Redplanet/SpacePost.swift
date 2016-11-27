@@ -184,7 +184,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just viewed your first Space Post!\n•Swipe right to leave.\n•Swipe left for more options.",
+                                          message: "You just opened your first Space Post!\n\n•Swipe right to leave.\n\n•Swipe left for more options.",
                                           preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "ok",

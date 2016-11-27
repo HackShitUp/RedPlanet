@@ -160,7 +160,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just viewed your first Profile Photo!\n•Swipe right to leave.\n•Swipe left for more options.",
+                                          message: "You just opened your first Profile Photo!\n\n•Swipe right to leave.\n\n•Swipe left for more options.",
                                           preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "ok",

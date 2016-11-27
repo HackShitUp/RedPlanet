@@ -785,6 +785,7 @@ class OtherUserHeader: UICollectionReusableView {
             options.addAction(follow)
             options.addAction(friend)
             options.addAction(cancel)
+            options.view.tintColor = UIColor.black
             self.delegate?.present(options, animated: true, completion: nil)
             
         }
@@ -1058,6 +1059,7 @@ class OtherUserHeader: UICollectionReusableView {
                 options.addAction(unfriend)
                 // "Cancel"
                 options.addAction(cancel)
+                options.view.tintColor = UIColor.black
                 self.delegate!.present(options, animated: true, completion: nil)
             }
             
@@ -1068,6 +1070,7 @@ class OtherUserHeader: UICollectionReusableView {
                 options.addAction(ignore)
                 // "Cancel"
                 options.addAction(cancel)
+                options.view.tintColor = UIColor.black
                 self.delegate!.present(options, animated: true, completion: nil)
             }
             

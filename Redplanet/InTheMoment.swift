@@ -698,18 +698,15 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         
         // Show the user what to do!
-        let openedPost = UserDefaults.standard.bool(forKey: "DidOpenMoment")
-        if openedPost == true {
-            // Opened before
-            print("Not first launch.")
-        } else {
+        let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
+        if openedMoment == false {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenMoment")
             
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just viewed your first Moment!\nSwipe right to leave.",
+                                          message: "You just opened your first Moment!\n\n•Swipe right to leave.",
                                           preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "ok",
@@ -730,7 +727,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(goBack))

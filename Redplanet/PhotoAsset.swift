@@ -170,7 +170,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             // TODO::
             // TRY Using the Framework HERE::
             let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just viewed your first Photo!\n•Swipe right to leave.\n•Swipe left for more options.",
+                                          message: "You just opened your first Photo!\n\n•Swipe right to leave.\n\n•Swipe left for more options.",
                                           preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "ok",

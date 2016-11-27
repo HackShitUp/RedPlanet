@@ -181,6 +181,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
+        
+        // Determine first whether app was launched before
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        // If first launch...
+        if launchedBefore == false {
+            
+            // Set launchedBefore to true
+            UserDefaults.standard.set(true, forKey: "launchedBefore")
+            
+            // Save UserDefaults for Post (1-5) == false
+            UserDefaults.standard.set("false", forKey: "DidOpenPost")
+            // Save UserDefaults for Moment (6) == false
+            UserDefaults.standard.set("false", forKey: "DidOpenMoment")
+            // Save UserDefaults for User's Profile
+            UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
+            // Synchronize
+            UserDefaults.standard.synchronize()
+            
+        }
+        
+        
+        
         // Call Login Function...
         // Which also calls <queryRelationships()>
         login()
@@ -259,9 +281,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Redplanet VIP Functions
     // (1) Login ---- Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
     func login() {
+        
         // Remember user's login
         // By setting their username
-        let username: String? = UserDefaults.standard.string(forKey: "username")
         if PFUser.current() != nil {
 
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -273,14 +295,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Call relationships function
             queryRelationships()
-            
-            // Check anonymity
-            anonymous()
-            
+
             // Check birthday
             checkBirthday()
             
         } else {
+            
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let login = storyboard.instantiateViewController(withIdentifier:"initialVC") as! UINavigationController
@@ -437,22 +457,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
     }
+
     
-    
-    // (3) Anonymity Function
-    func anonymous() -> Bool {
-        
-        
-        // Set global variable
-        anonymity = PFUser.current()!.value(forKey: "anonymous") as! Bool
-        
-        return anonymity
-    }
-    
-    
-    
-    
-    // (4) Check Birthday --- Checks whether today is the user's birthday or not
+    // (3) Check Birthday --- Checks whether today is the user's birthday or not
     func checkBirthday() {
         print("Checking birthday...")
         

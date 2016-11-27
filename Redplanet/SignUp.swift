@@ -126,13 +126,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     let ok = UIAlertAction(title: "next",
                                            style: .cancel,
                                            handler: {(alert: UIAlertAction!) in
-                                            
-                                            // Save User Default for Post (1-5)
-                                            UserDefaults.standard.set("false", forKey: "DidOpenPost")
-                                            // Save User Default for Moment (6)
-                                            UserDefaults.standard.set("false", forKey: "DidOpenMoment")
-                                            // Synchronize
-                                            UserDefaults.standard.synchronize()
+
                                             
                                             // Push VC
                                             let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
