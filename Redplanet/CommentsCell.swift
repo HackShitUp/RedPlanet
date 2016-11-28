@@ -193,9 +193,37 @@ class CommentsCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
     }
     
+    
+    
+    // Function to go to OtherUserProfile
+    func goUser(sender: UIButton) {
+        // Append object
+        otherObject.append(self.commentObject!.value(forKey: "byUser") as! PFUser)
+        
+        // Append otherName
+        otherName.append(self.rpUsername.titleLabel!.text!)
+        
+        // Push VC
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        // Add tap to go to user's profile
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        proPicTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(proPicTap)
+        
+        // Add tap to user's name
+        let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        nameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(nameTap)
         
         // Add comment like tap
         let commentLike = UITapGestureRecognizer(target: self, action: #selector(like))

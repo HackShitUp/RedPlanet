@@ -44,7 +44,6 @@ class ContactsCell: UITableViewCell {
             friend.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully sent friend request: \(friend)")
                     
                     // Re-enable buttons
                     self.friendButton.isUserInteractionEnabled = true

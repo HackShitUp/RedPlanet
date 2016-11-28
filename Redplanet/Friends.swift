@@ -22,7 +22,7 @@ import DZNEmptyDataSet
 
 
 // Define identifier
-let friendsNewsfeed = Notification.Name("homeFriends")
+let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CAPSPageMenuDelegate {
@@ -184,6 +184,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Post Notification to reload data
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
     }
     
     override func didReceiveMemoryWarning() {

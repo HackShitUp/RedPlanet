@@ -63,10 +63,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Remove last values in arrays
-        otherObject.removeLast()
-        // Remove last value in array
-        otherName.removeLast()
         
         // Pop view controller
         self.navigationController?.popViewController(animated: true)

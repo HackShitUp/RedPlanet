@@ -202,7 +202,7 @@ class TextPostCell: UITableViewCell {
                                         preferredStyle: .actionSheet)
         
         // TODO:
-        // Add option to share to followers
+        // Change to Everyone
         
         let publicShare = UIAlertAction(title: "All Friends",
                                         style: .default,

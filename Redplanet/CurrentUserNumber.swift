@@ -80,14 +80,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     }
 
 
-    // MARK: - UITextFieldDelegate Method
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if self.phoneNumber.text! == "_ _ _ _ _ _ _ _ _ _" {
-            self.phoneNumber.text! = ""
-        }
-    }
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -95,7 +88,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
         if PFUser.current()!["phoneNumber"] != nil {
             self.phoneNumber.text! = PFUser.current()!["phoneNumber"] as! String
         } else {
-            self.phoneNumber.text! = "_ _ _ _ _ _ _ _ _ _"
+            self.phoneNumber.text! = self.phoneNumber.text!
         }
 
         // Design button
@@ -117,7 +110,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
         if PFUser.current()!["phoneNumber"] != nil {
             self.phoneNumber.text! = PFUser.current()!["phoneNumber"] as! String
         } else {
-            self.phoneNumber.text! = "_ _ _ _ _ _ _ _ _ _"
+            self.phoneNumber.text! = self.phoneNumber.text!
         }
         
         // Show navigationBar
@@ -131,7 +124,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
         if PFUser.current()!["phoneNumber"] != nil {
             self.phoneNumber.text! = PFUser.current()!["phoneNumber"] as! String
         } else {
-            self.phoneNumber.text! = "_ _ _ _ _ _ _ _ _ _"
+            self.phoneNumber.text! = self.phoneNumber.text!
         }
      
         // Set first responder

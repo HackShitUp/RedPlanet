@@ -17,6 +17,10 @@ import SVProgressHUD
 import DZNEmptyDataSet
 
 
+// Define Notification
+let followingNewsfeed = Notification.Name("followingNewsfeed")
+
+
 class Following: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold following's content
@@ -105,6 +109,18 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
+        
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: followingNewsfeed, object: nil)
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Post Notification to reload data
+        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
     }
 
     override func didReceiveMemoryWarning() {

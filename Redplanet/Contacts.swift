@@ -208,9 +208,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Reload data
     func refresh() {
         
-        // Reload relationships
-//        appDelegate.queryRelationships()
-        
         // Get contacts from device
         getPhoneContacts()
         

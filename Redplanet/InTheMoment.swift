@@ -240,7 +240,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                             if self.likes.contains(PFUser.current()!) {
                                 // liked
                                 self.likeButton.setTitle("liked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
                             } else {
                                 // notLiked
                                 self.likeButton.setTitle("notLiked", for: .normal)
@@ -396,7 +396,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                 
                                 // Change button
                                 self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "WhiteLike"), for: .normal)
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -483,7 +483,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
                     
                     // Reload data
                     self.fetchContent()
