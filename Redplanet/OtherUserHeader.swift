@@ -1382,26 +1382,39 @@ class OtherUserHeader: UICollectionReusableView {
             var mention = handle
             mention = String(mention.characters.dropFirst())
             
-            //            // Query data
-            //            let user = PFUser.query()!
-            //            user.whereKey("username", equalTo: mention.lowercaseString)
-            //            user.findObjectsInBackgroundWithBlock({
-            //                (objects: [PFObject]?, error: NSError?) in
-            //                if error == nil {
-            //                    for object in objects! {
-            //                        // Append user's username
-            //                        otherName.append(mention)
-            //                        // Append user object
-            //                        otherObject.append(object)
-            //
-            //
-            //                        let otherUser = self.delegate?.storyboard?.instantiateViewControllerWithIdentifier("otherUser") as! OtherUserProfile
-            //                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
-            //                    }
-            //                } else {
-            //                    print(error?.localizedDescription as Any)
-            //                }
-            //            })
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Show alert
+                    let alert = UIAlertController(title: "Unknown Account",
+                                                  message: "Looks like this account doesn't exist yet.",
+                                                  preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.delegate?.present(alert, animated: true)
+                }
+            })
+
         }
         
         
@@ -1414,6 +1427,7 @@ class OtherUserHeader: UICollectionReusableView {
             let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
             self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
         }
+        
         
         // Handle http: tap
         userBio.urlLinkTapHandler = { label, handle, range in

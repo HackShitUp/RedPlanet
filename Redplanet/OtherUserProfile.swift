@@ -529,13 +529,12 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
         // Get user's info and bio
+        // Set fullname
+        let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
         if otherObject.last!.value(forKey: "userBiography") != nil {
-            // Set fullname
-            let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
-            
             label.text = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
         } else {
-            label.text = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "birthday") as! String)"
+            label.text = "\(fullName.uppercased())"
         }
         
         // Set label's dynamic height
@@ -612,16 +611,15 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 print(error?.localizedDescription as Any)
             }
         }
+
         
-        
-        // (2) Get user's bio and information
+        // (2) Get user's full/real name and bio
+        // Set fullname
+        let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
         if otherObject.last!.value(forKey: "userBiography") != nil {
-            // Set fullname
-            let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
-            
-            header.userBio.text! = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
+            header.userBio.text = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
         } else {
-            header.userBio.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)\n\(otherObject.last!.value(forKey: "birthday") as! String)"
+            header.userBio.text = "\(fullName.uppercased())"
         }
         
         
