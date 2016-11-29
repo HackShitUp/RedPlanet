@@ -186,12 +186,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Reload data
-        self.queryFriends()
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -618,7 +612,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         view["forObjectId"] = friendsContent[indexPath.row].objectId!
         view.saveInBackground(block: {
             (success: Bool, error: Error?) in
-            if error == nil {
+            if success {
                 
                 // TEXT POST
                 if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
