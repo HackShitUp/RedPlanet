@@ -189,8 +189,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Post Notification to reload data
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        // Reload data
+        self.queryFriends()
     }
     
     override func didReceiveMemoryWarning() {

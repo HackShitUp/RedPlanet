@@ -465,7 +465,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
 
                     // BACK
                     // Back Camera Focus
-                    if device.isFocusPointOfInterestSupported {
+                    if device.isFocusPointOfInterestSupported && frontBack == "back" {
                         
                         device.focusPointOfInterest = focusPoint
                         device.focusMode = .autoFocus
@@ -479,6 +479,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                         device.exposurePointOfInterest = focusPoint
                         device.focusMode = .autoFocus
                         device.exposureMode = .custom
+                        
 //                        let incandescentLightCompensation = 3_000
 //                        let tint = 0 // no shift
 //                        let temperatureAndTintValues = AVCaptureWhiteBalanceTemperatureAndTintValues(temperature: Float(incandescentLightCompensation), tint: Float(tint))

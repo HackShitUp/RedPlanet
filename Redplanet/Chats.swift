@@ -328,18 +328,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             
         } else {
             
-//            // Clear array
-//            self.finalChatObjects.removeAll(keepingCapacity: false)
-//            
-//            
-//            // Remove duplicate values in array
-//            let talkingProfiles = Array(Set(initialChatObjects))
-//            
-//            // Run for loop to append new non-duplicated array
-//            for profiles in talkingProfiles {
-//                finalChatObjects.append(profiles)
-//            }
-            
             print("Returning: \(self.finalChatObjects.count)")
             // Return friends
             return finalChatObjects.count
@@ -412,13 +400,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                         } else {
                             cell.time.text! = ""
                         }
-                        
-//                        // Get user's apnsId
-//                        if object["apnsId"] != nil {
-//                            chatsApnsId.append(object["apnsId"] as! String)
-//                        } else {
-//                            chatsApnsId.append("_")
-//                        }
                     }
                     
                     
@@ -510,7 +491,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                         // SENDER
                         if let theSender = object!["sender"] as? PFUser {
                             // Set username
-                            cell.rpUsername.text! = theSender["username"] as! String
+                            cell.rpUsername.text! = theSender["realNameOfUser"] as! String
                             
                             // Get and set user's profile photo
                             // Handle optional chaining
@@ -547,7 +528,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.finalChatObjects[indexPath.row] {
                         if let theReceiver = object!["receiver"] as? PFUser {
                             // Set username
-                            cell.rpUsername.text! = theReceiver["username"] as! String
+                            cell.rpUsername.text! = theReceiver["realNameOfUser"] as! String
                             
                             // Get and set user's profile photo
                             // Handle optional chaining

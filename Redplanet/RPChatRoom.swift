@@ -64,6 +64,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     
     @IBAction func backButton(_ sender: AnyObject) {
+        
+        // Clear arrays
+        chatUserObject.removeAll(keepingCapacity: false)
+        chatUsername.removeAll(keepingCapacity: false)
+        
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
     }
@@ -319,7 +324,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Send Push Notification to user
                     OneSignal.postNotification(
                         ["contents":
-                            ["en": "from \(PFUser.current()!.username!)"],
+                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
                          "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
                         ]
                     )

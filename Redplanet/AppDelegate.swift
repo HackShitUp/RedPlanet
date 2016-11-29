@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             print("\(fullMessage)")
                                             
                                             // Banner for notification
-                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") || fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") {
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") || fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") || fullMessage!.hasPrefix("from \(PFUser.current()!.username!.uppercased())") {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"
@@ -136,7 +136,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 banner.dismissesOnTap = true
                                                 banner.show(duration: 0.0)
                                                 
-                                            } else if fullMessage!.hasPrefix("from") && chatUserObject.count != 0 && fullMessage!.hasSuffix(chatUsername.last!.uppercased()) {
+                                                
+                                            } else if (chatUserObject.count != 0 || chatUsername.count != 0) && (fullMessage!.hasPrefix("from \(chatUsername.last!.uppercased())")) {
+                                                
+                                                
+    
                                                 // if notificaiton titles: "from <Username>"
                                                 // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
                                                 // Reload data for SlackChat
