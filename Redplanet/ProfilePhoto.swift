@@ -106,8 +106,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         
         // (3) Shares
-        let shares = PFQuery(className: "Shares")
-        shares.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+        let shares = PFQuery(className: "Newsfeeds")
+        shares.whereKey("pointObject", equalTo: proPicObject.last!)
         shares.includeKey("fromUser")
         shares.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -118,7 +118,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 
                 // Append object
                 for object in objects! {
-                    self.shares.append(object["fromUser"] as! PFUser)
+                    self.shares.append(object["byUser"] as! PFUser)
                 }
                 
             } else {

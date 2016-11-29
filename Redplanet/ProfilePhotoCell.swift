@@ -393,6 +393,19 @@ class ProfilePhotoCell: UITableViewCell {
     }
     
     
+    
+    // Function to show number of shares
+    func showShares() {
+        // Append object
+        shareObject.append(proPicObject.last!)
+        
+        // Push VC
+        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
+        self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
+    }
+    
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -427,13 +440,19 @@ class ProfilePhotoCell: UITableViewCell {
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (6) Go to user's profile
+        // (6) Number of shares
+        let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
+        numSharesTap.numberOfTapsRequired = 1
+        self.numberOfShares.isUserInteractionEnabled = true
+        self.numberOfShares.addGestureRecognizer(numSharesTap)
+        
+        // (7) Go to user's profile
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         userTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
         
-        // (9) Hold the photo to save it
+        // (8) Hold the photo to save it
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
         hold.minimumPressDuration = 0.50
         self.rpUserProPic.isUserInteractionEnabled = true
