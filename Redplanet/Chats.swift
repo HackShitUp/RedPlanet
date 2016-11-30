@@ -46,7 +46,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     @IBAction func newChat(_ sender: AnyObject) {
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
-        self.navigationController!.pushViewController(newChatsVC, animated: true)
+//        self.navigationController!.pushViewController(newChatsVC, animated: true)
+        self.navigationController!.pushViewController(newChatsVC, animated: false)
     }
     
     // Refresh function
@@ -146,12 +147,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Set boolean
         searchActive = true
-        
-        if searchBar.text == "Search" {
-            searchBar.text! = ""
-        } else {
-            searchBar.text! = searchBar.text!
-        }
+
     }
     
     // Begin searching
@@ -257,11 +253,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         queryChats()
         
         // Add searchbar to header
-        self.searchBar.text! = "Search"
         self.searchBar.delegate = self
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
-        
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -368,8 +362,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             // Hide read receipts
             cell.status.isHidden = true
             
-            // Set names of searched users
-            cell.rpUsername.text = searchNames[indexPath.row]
+            // Set usernames of searched users
+            cell.time.text = searchNames[indexPath.row]
             
             // Get and set user's profile photo
             let user = PFUser.query()!
@@ -396,9 +390,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                         
                         // Handle optional chaining for user's real name
                         if let fullName = object["realNameOfUser"] as? String {
-                            cell.time.text! = fullName
+                            cell.rpUsername.text! = fullName
                         } else {
-                            cell.time.text! = ""
+                            cell.rpUsername.text! = "Loading..."
                         }
                     }
                     
