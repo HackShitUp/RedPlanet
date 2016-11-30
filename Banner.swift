@@ -216,7 +216,8 @@ open class Banner: UIView {
     private func resetTintColor() {
         titleLabel.textColor = textColor
         detailLabel.textColor = textColor
-        imageView.image = shouldTintImage ? image?.withRenderingMode(.alwaysTemplate) : image
+//        imageView.image = shouldTintImage ? image?.withRenderingMode(.alwaysTemplate) : image
+        imageView.image = image
         imageView.tintColor = shouldTintImage ? textColor : nil
     }
     

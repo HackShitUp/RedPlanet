@@ -228,7 +228,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                     // Send push notification
                                     OneSignal.postNotification(
                                         ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) commented on your content"],
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) commented on your post"],
                                          "include_player_ids": ["\(user["apnsId"] as! String)"]
                                         ]
                                     )

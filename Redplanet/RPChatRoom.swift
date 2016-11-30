@@ -539,6 +539,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -564,7 +567,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Raise Text View
-//            self.frontView.frame.origin.y = self.tableView.frame.size.height - self.keyboard.height
             self.frontView.frame.origin.y -= self.keyboard.height
             
 
@@ -581,7 +583,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Lower Text View
-//            self.frontView.frame.origin.y = self.tableView.frame.size.height
             self.frontView.frame.origin.y += self.keyboard.height
 
             

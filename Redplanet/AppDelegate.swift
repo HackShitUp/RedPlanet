@@ -123,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             print("\(fullMessage)")
                                             
                                             // Banner for notification
-                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") || fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") || fullMessage!.hasPrefix("from \(PFUser.current()!.username!.uppercased())") {
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"
@@ -137,22 +137,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 banner.show(duration: 0.0)
                                                 
                                                 
-                                            } else if (chatUserObject.count != 0 || chatUsername.count != 0) && (fullMessage!.hasPrefix("from \(chatUsername.last!.uppercased())")) {
-                                                
-                                                
-    
-                                                // if notificaiton titles: "from <Username>"
-                                                // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
-                                                // Reload data for SlackChat
-                                                
-                                                NotificationCenter.default.post(name: rpChat, object: nil)
-                                                
-                                                
+                                            } else if chatUsername.count != 0 && chatUserObject.count != 0 {
+                                                if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {
+                                                    
+                                                    // if notificaiton titles: "from <Username>"
+                                                    // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
+                                                    // Reload data for SlackChat
+                                                    
+                                                    NotificationCenter.default.post(name: rpChat, object: nil)
+                                                }
+
                                             } else {
                                                 // Set visible banner
                                                 let banner = Banner(title: "\(fullMessage!)",
                                                     subtitle: "",
-                                                    image: nil,
+                                                    image: UIImage(named: "RedplanetLogo"),
                                                     backgroundColor: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
                                                 )
                                                 banner.dismissesOnTap = true

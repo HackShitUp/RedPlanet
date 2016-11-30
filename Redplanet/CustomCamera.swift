@@ -462,7 +462,13 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                 
                 do {
                     try device.lockForConfiguration()
-
+                    
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = .continuousAutoExposure
+                    
+                    /*
                     // BACK
                     // Back Camera Focus
                     if device.isFocusPointOfInterestSupported && frontBack == "back" {
@@ -487,6 +493,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
 //                            (timestamp:CMTime) -> Void in
 //                        }
                     }
+                    */
                     
                     // Unlock
                     device.unlockForConfiguration()
