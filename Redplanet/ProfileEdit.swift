@@ -49,7 +49,20 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         
         // Check for empty email...
-        if rpEmail.text!.isEmpty {
+        if rpUsername.text!.isEmpty {
+            
+            let alert = UIAlertController(title: "Invalid Username",
+                                          message: "Please enter your username to save changes.",
+                                          preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            
+        } else if rpEmail.text!.isEmpty {
             
             let alert = UIAlertController(title: "Invalid Email",
                                           message: "Please enter your email to save changes.",

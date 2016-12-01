@@ -10,6 +10,7 @@ target 'Redplanet' do
 	pod ‘Bolts’
 	pod ‘OneSignal’
 	pod ‘Heap’
+	pod ‘Mixpanel-swift’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
 	pod 'DZNEmptyDataSet'

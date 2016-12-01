@@ -20,6 +20,8 @@ class MyLikesAndShares: UITableViewController, UINavigationControllerDelegate {
     
     
     // Array to hold likes
+    var myLikes = [PFObject]()
+    // Array to hold likedObjects
     var likedObjects = [PFObject]()
     
     
@@ -35,11 +37,11 @@ class MyLikesAndShares: UITableViewController, UINavigationControllerDelegate {
                 SVProgressHUD.dismiss()
                 
                 // Clear array
-                self.likedObjects.removeAll(keepingCapacity: false)
+                self.myLikes.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     // Append
-                    self.likedObjects.append(object)
+                    self.myLikes.append(object)
                 }
                 
                 
@@ -55,6 +57,11 @@ class MyLikesAndShares: UITableViewController, UINavigationControllerDelegate {
         })
     }
     
+    // Function to get liked objects
+    func fetchLikedObjects() {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        
+    }
     
 
     override func viewDidLoad() {

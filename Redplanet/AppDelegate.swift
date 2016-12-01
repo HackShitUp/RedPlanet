@@ -71,6 +71,7 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import Mixpanel
 
 // Current Username
 var username = [String]()
@@ -181,6 +182,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            #if DEBUG
 //                Heap.enableVisualizer();
 //            #endif
+            
+            // Mixpanel initialization
+            let mixpanel = Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769")
+            mixpanel.track(event: "Opened App",
+                           properties:["Username": "\(PFUser.current()!.username!)"
+                ])
         }
         
         
