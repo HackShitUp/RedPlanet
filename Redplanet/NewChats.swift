@@ -246,12 +246,16 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                         cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                     }
                     
-                    // (2) Set username
-                    cell.rpUsername.text! = object!["username"] as! String
                     
-                    
-                    // (3) Set fullname
-                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
+                    // (2) Set fullname 
+                    // (3) Set username
+                    if let realName = object!["realNameOfUser"] as? String {
+                        cell.rpUsername.text! = realName
+                        cell.rpFullName.text! = object!["username"] as! String
+                    } else {
+                        cell.rpUsername.text! = "Loading..."
+                        cell.rpFullName.text! = object!["username"] as! String
+                    }
                     
                 } else {
                     

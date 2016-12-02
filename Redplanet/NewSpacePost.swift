@@ -36,6 +36,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     @IBAction func editAction(_ sender: Any) {
         // Show CLImageEditor
         let editor = CLImageEditor(image: self.mediaAsset.image!)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         
         // Present CLImageEditor
@@ -261,6 +262,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         // CLImageEditor
         let editor = CLImageEditor(image: self.mediaAsset.image!)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
         

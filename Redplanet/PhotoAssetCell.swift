@@ -383,7 +383,6 @@ class PhotoAssetCell: UITableViewCell {
         // Push VC
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
-        
     }
     
     

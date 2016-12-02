@@ -129,18 +129,22 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             // Resign first responder
             self.newComment.resignFirstResponder()
         } else {
+            
+            // Clear text to prevent sending again and set constant before sending for better UX
+            let commentText = self.newComment.text!
+            // Clear chat
+            self.newComment.text!.removeAll()
+            
             let comments = PFObject(className: "Comments")
             comments["byUser"] = PFUser.current()!
             comments["byUsername"] = PFUser.current()!.username!
-            comments["commentOfContent"] = self.newComment.text!
+            comments["commentOfContent"] = commentText
             comments["forObjectId"] = commentsObject.last!.objectId!
             comments["toUser"] = commentsObject.last!.value(forKey: "byUser") as! PFUser
             comments["to"] = commentsObject.last!.value(forKey: "username") as! String
             comments.saveInBackground {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully saved comment: \(comments)")
-                    
                     
                     // Send notification
                     let notifications = PFObject(className: "Notifications")
@@ -153,13 +157,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            print("Successfully saved notificaiton: \(notifications)")
-                            
                             
                             
                             // Hashtags only exist for shared content, not comments :/
                             // Check for user mentions...
-                            let words: [String] = self.newComment.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                            let words: [String] = commentText.components(separatedBy: CharacterSet.whitespacesAndNewlines)
                             // Loop through words to check for # and @ prefixes
                             for var word in words {
                                 
@@ -182,7 +184,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                 notifications["from"] = PFUser.current()!.username!
                                                 notifications["fromUser"] = PFUser.current()!
                                                 notifications["type"] = "tag co"
-                                                notifications["forObjectId"] = comments.objectId!
+                                                notifications["forObjectId"] = commentsObject.last!.objectId!
                                                 notifications["to"] = word
                                                 notifications["toUser"] = object
                                                 notifications.saveInBackground(block: {
@@ -217,9 +219,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                             }
                             
                             
-                            // Query Comments
-                            self.queryComments()
-                            
                             // Handle optional chaining for user object
                             if let user = commentsObject.last!.value(forKey: "byUser") as? PFUser {
                                 // Handle optional chaining for user's apnsId
@@ -236,17 +235,24 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                 }
                             }
                             
-                            // Clear text
-                            self.newComment.text! = ""
+                            
+                            // Query Comments
+                            self.queryComments()
                             
                         } else {
                             print(error?.localizedDescription as Any)
+                            
+                            // Query Comments
+                            self.queryComments()
                         }
                     })
                     
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    // Query Comments
+                    self.queryComments()
                 }
             }
 
@@ -279,8 +285,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Raise Text View
-            //            self.frontView.frame.origin.y = self.tableView.frame.size.height - self.keyboard.height
             self.frontView.frame.origin.y -= self.keyboard.height
+
         }
         
     }
@@ -290,8 +296,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Lower Text View
-            //            self.frontView.frame.origin.y = self.tableView.frame.size.height
             self.frontView.frame.origin.y += self.keyboard.height
+            
+
         }
     }
     
@@ -371,8 +378,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         
-        
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -426,13 +431,12 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             // Send comment
-            sendComment()
+            self.sendComment()
             
             return false
+        } else {
+            return true
         }
-        
-        
-        return true
     }
     
 

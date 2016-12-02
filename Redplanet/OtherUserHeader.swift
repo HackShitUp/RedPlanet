@@ -122,13 +122,8 @@ class OtherUserHeader: UICollectionReusableView {
     }
     
     
-    
-    // Function to friend
-    func friendUser(sender: UIButton) {
-        
-        // TODO::
-        // Create an action button for this to run in main thread
-        
+    // FRIEND ACTION
+    @IBAction func friendUser(_ sender: Any) {
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -183,7 +178,7 @@ class OtherUserHeader: UICollectionReusableView {
                                 ]
                             )
                         }
-
+                        
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -200,21 +195,13 @@ class OtherUserHeader: UICollectionReusableView {
         
         // Reload relationships
         appDelegate.queryRelationships()
+    
+    } // end: Friend Action
 
-    } // End Friend
     
     
-    
-    
-    
-    
-    // Function to follow
-    func followUser(sender: UIButton) {
-        
-        // TODO::
-        // Create an action button for this to run in main thread
-        
-        
+    // FOLLOW ACTION
+    @IBAction func followUser(_ sender: Any) {
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -314,7 +301,14 @@ class OtherUserHeader: UICollectionReusableView {
                         if success {
                             print("Successfully sent notification: \(notifications)")
                             
-
+                            
+                            // Re enable buttons
+                            self.friendButton.isUserInteractionEnabled = true
+                            self.friendButton.isEnabled = true
+                            self.followButton.isUserInteractionEnabled = true
+                            self.followButton.isEnabled = true
+                            
+                            
                             // Handle optional chaining for user's apnsId
                             if otherObject.last!.value(forKey: "apnsId") != nil {
                                 // MARK: - OneSignal
@@ -327,11 +321,6 @@ class OtherUserHeader: UICollectionReusableView {
                                 )
                             }
                             
-                            // Re enable buttons
-                            self.friendButton.isUserInteractionEnabled = true
-                            self.friendButton.isEnabled = true
-                            self.followButton.isUserInteractionEnabled = true
-                            self.followButton.isEnabled = true
                             
                         } else {
                             print(error?.localizedDescription as Any)
@@ -349,33 +338,41 @@ class OtherUserHeader: UICollectionReusableView {
         // Reload relationships
         appDelegate.queryRelationships()
 
-    } // End Follow
+    } // end Follow Action
     
     
     
-    // Function to undo relation
-    func relationAction(sender: UIButton) {
-        
-        // TOOD::
-        // Create action button for this to run in main thread
-        
-        // *******************************************************************************************************************************
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // ======================================= F R I E N D S =========================================================================
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // *******************************************************************************************************************************
+    
+    // RELATION ACTION
+    // (1) Friends
+    // (2) Following
+    // (3) Follower
+    // (4) Friend Requested
+        // (2A) Sent Friend Request
+        // (2B) Received Friend Request
+    // (5) Follow Requested
+        // (5A) Sent Follow Request
+        // (5B) Received Follow Request
+    @IBAction func relationAction(_ sender: Any) {
+        // (1)
+        // ****************************************************************************************************************************
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ======================================= F R I E N D S ======================================================================
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ****************************************************************************************************************************
         if self.relationType.titleLabel!.text == "Friends" {
             // Unfriend user
             let alert = UIAlertController(title: "Unfriend?",
-                                          message: "Are you sure you would like to unfriend \(otherName.last!)?",
+                                          message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
                                     style: .default,
                                     handler: {(alertAction: UIAlertAction!) in
-                                        
+
+                                        // Delete Friend
                                         let eFriend = PFQuery(className: "FriendMe")
                                         eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
                                         eFriend.whereKey("endFriend", equalTo: otherObject.last!)
@@ -446,20 +443,20 @@ class OtherUserHeader: UICollectionReusableView {
         }
         
         
-        
-        // *******************************************************************************************************************************
-        // ================================================================================================================================
-        // ===============================================================================================================================
-        // ======================================= F O L L O W I N G =====================================================================
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // *******************************************************************************************************************************
+        // (5)
+        // ****************************************************************************************************************************
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ======================================= F O L L O W I N G ==================================================================
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ****************************************************************************************************************************
         if self.relationType.titleLabel!.text == "Following" {
             
             
             // UNFOLLOW
             let alert = UIAlertController(title: "Unfollow?",
-                                          message: "Are you sure you would like to unfollow \(otherName.last!)?",
+                                          message: "Are you sure you would like to unfollow \(otherName.last!.uppercased())?",
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
@@ -511,19 +508,19 @@ class OtherUserHeader: UICollectionReusableView {
             alert.addAction(yes)
             alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
- 
-
+            
+            
         }
         
         
-        
-        // *******************************************************************************************************************************
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // ======================================= F O L L O W E R  ======================================================================
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // ********************************************************************************************************************************
+        // (3)
+        // ****************************************************************************************************************************
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ======================================= F O L L O W E R  ===================================================================
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text == "Follower" {
@@ -537,7 +534,7 @@ class OtherUserHeader: UICollectionReusableView {
                                        handler: { (alertAction: UIAlertAction!) in
                                         
                                         let alert = UIAlertController(title: "Friend?",
-                                                                      message: "Would you like \(otherName.last!) to stop following you and be friends instead?",
+                                                                      message: "Would you like \(otherName.last!.uppercased()) to stop Following you and be Friends instead?",
                                             preferredStyle: .alert)
                                         
                                         let yes = UIAlertAction(title: "yes",
@@ -585,6 +582,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                         // Change button title
                                                                                                         self.friendButton.isHidden = true
                                                                                                         self.followButton.isHidden = true
+                                                                                                        self.relationType.isHidden = false
                                                                                                         self.relationType.setTitle("Friend Requested", for: .normal)
                                                                                                         
                                                                                                         
@@ -641,7 +639,7 @@ class OtherUserHeader: UICollectionReusableView {
                                        handler: { (alertAction: UIAlertAction!) in
                                         
                                         let alert = UIAlertController(title: "Follow Back?",
-                                                                      message: "Would you like to follow \(otherName.last!)?",
+                                                                      message: "Would you like to follow \(otherName.last!.uppercased())?",
                                             preferredStyle: .alert)
                                         
                                         let yes = UIAlertAction(title: "yes",
@@ -676,6 +674,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         print("Successfully sent notification: \(notifications)")
                                                                                         
                                                                                         // Change sender button title
+                                                                                        self.relationType.isHidden = false
                                                                                         self.relationType.setTitle("Follow Requested", for: .normal)
                                                                                         
                                                                                         // Post Notification
@@ -735,6 +734,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                         print("Successfully sent notification: \(notifications)")
                                                                                         
                                                                                         // Change sender button title
+                                                                                        self.relationType.isHidden = false
                                                                                         self.relationType.setTitle("Following", for: .normal)
                                                                                         
                                                                                         // Post Notification
@@ -789,14 +789,14 @@ class OtherUserHeader: UICollectionReusableView {
             
         }
         
-        
-        // *******************************************************************************************************************************
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // ======================================= F R I E N D     R E Q U E S T E D =====================================================
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // *******************************************************************************************************************************
+        // (4)
+        // ****************************************************************************************************************************
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ======================================= F R I E N D     R E Q U E S T E D ==================================================
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text! == "Friend Requested" {
@@ -891,7 +891,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
                                                                 })
-
+                                                                
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -944,7 +944,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                 self.relationType.isHidden = true
                                                                                 self.friendButton.isHidden = false
                                                                                 self.followButton.isHidden = false
-
+                                                                                
                                                                                 
                                                                             } else {
                                                                                 print(error?.localizedDescription as Any)
@@ -1069,14 +1069,14 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         
-        
-        // *******************************************************************************************************************************
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // ======================================= F O L L O W     R E Q U E S T E D =====================================================
-        // ===============================================================================================================================
-        // ===============================================================================================================================
-        // *******************************************************************************************************************************
+        // (5)
+        // ****************************************************************************************************************************
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ======================================= F O L L O W     R E Q U E S T E D ==================================================
+        // ============================================================================================================================
+        // ============================================================================================================================
+        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text! == "Follow Requested" {
@@ -1108,7 +1108,8 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 print("Successfully accepted follower: \(object)")
                                                                 
                                                                 // Change button title
-                                                                sender.setTitle("Follower", for: .normal)
+                                                                self.relationType.isHidden = false
+                                                                self.relationType.setTitle("Follower", for: .normal)
                                                                 
                                                                 // Post Notification
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
@@ -1278,25 +1279,25 @@ class OtherUserHeader: UICollectionReusableView {
                 options.addAction(confirm)
                 options.addAction(ignore)
                 options.addAction(cancel)
+                options.view.tintColor = UIColor.black
                 self.delegate?.present(options, animated: true, completion: nil)
             }
             
             if myRequestedFollowing.contains(otherObject.last!) {
                 options.addAction(rescind)
                 options.addAction(cancel)
+                options.view.tintColor = UIColor.black
                 self.delegate?.present(options, animated: true, completion: nil)
             }
             
             
         }
         
-        
-        
         // Reload relationships
         appDelegate.queryRelationships()
-        
-    }// End relation
-    
+
+    } // end Relation Action
+
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -1459,32 +1460,7 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         
-        
-        // Relationship Actions
-        // (6) Add Relation button tap
-        let relationTap = UITapGestureRecognizer(target: self, action: #selector(relationAction))
-        relationTap.numberOfTapsRequired = 1
-        self.relationType.isUserInteractionEnabled = true
-        self.relationType.addGestureRecognizer(relationTap)
-        
-        
-        // (7) Add Friend Tap
-        let doFriend = UITapGestureRecognizer(target: self, action: #selector(friendUser))
-        doFriend.numberOfTapsRequired = 1
-        self.friendButton.isUserInteractionEnabled = true
-        self.friendButton.addGestureRecognizer(doFriend)
-        
-        
-        // (8) Add Follow Tap
-        let doFollow = UITapGestureRecognizer(target: self, action: #selector(followUser))
-        doFollow.numberOfTapsRequired = 1
-        self.followButton.isUserInteractionEnabled = true
-        self.followButton.addGestureRecognizer(doFollow)
-        
-        
-        
-        
-        // (9) Add tap method to show profile photo
+        // (6) Add tap method to show profile photo
         // Show Profile photo if friends
         if myFriends.contains(otherObject.last!) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
             let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))

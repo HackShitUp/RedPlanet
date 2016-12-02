@@ -40,13 +40,18 @@ class RelationshipRequestsCell: UICollectionViewCell {
     
     
     // Function to confirm
-    // =====================================================================================================================================
-    // =====================================================================================================================================
-    // ================================================= C O N F I R M =====================================================================
-    // =====================================================================================================================================
-    // =====================================================================================================================================
-    func confirm(sender: UIButton) {
+    // ================================================================================================================================
+    // ================================================================================================================================
+    // ================================================= C O N F I R M ================================================================
+    // ================================================================================================================================
+    // ================================================================================================================================
+    @IBAction func confirm(_ sender: Any) {
         
+        // Disable buttons
+        self.confirmButton.isUserInteractionEnabled = false
+        self.confirmButton.isEnabled = false
+        self.ignoreButton.isUserInteractionEnabled = false
+        self.ignoreButton.isEnabled = false
         
         // FRIEND
         if requestType == "friends" {
@@ -101,11 +106,11 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                             // Set title to "CONFIRMED"
                                                             self.relationState.isHidden = false
                                                             self.relationState.setTitle("Confirmed", for: .normal)
-
+                                                            
                                                             
                                                             // Post Notification
                                                             // NotificationCenter.default.post(name: requestsNotification, object: nil)
-
+                                                            
                                                             // Send Push Notification
                                                             // Handle optional chaining for user's apnsId
                                                             if self.userObject!.value(forKey: "apnsId") != nil {
@@ -148,14 +153,10 @@ class RelationshipRequestsCell: UICollectionViewCell {
                 }
             })
         }
-    
-    
-    
-    
-    
-    
-    
-    
+        
+        
+        
+
         // FOLLOW
         if requestType == "follow" {
             let followers = PFQuery(className: "FollowMe")
@@ -170,7 +171,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                         object.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
-                                print("Succesfully accepted follow request: \(object)")
                                 
                                 
                                 // Delete from "Notifications"
@@ -257,9 +257,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
             })
         }
         
-        
-        
-    } // end Confirmation
+
+    }// end CONFIRM
     
     
     
@@ -268,13 +267,12 @@ class RelationshipRequestsCell: UICollectionViewCell {
     
     
     
-    // Function to ignore
-    func ignore(sender: UIButton) {
-        
-        
-        
-        // (1) Delete Parse Object
-        // (2) Delete from "Notifications"
+    @IBAction func ignore(_ sender: Any) {
+        // Disable buttons
+        self.confirmButton.isUserInteractionEnabled = false
+        self.confirmButton.isEnabled = false
+        self.ignoreButton.isUserInteractionEnabled = false
+        self.ignoreButton.isEnabled = false
         
         // D E L E T E --->    F R I E N D  R E Q U E S T
         if requestType == "friends" {
@@ -308,9 +306,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                     // Change button
                                                     self.relationState.isHidden = false
                                                     self.relationState.setTitle("Ignored", for: .normal)
-                                                    
-                                                    // Post Notification
-                                                    // NotificationCenter.default.post(name: requestsNotification, object: nil)
                                                     
                                                 } else {
                                                     print(error?.localizedDescription as Any)
@@ -369,10 +364,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                     self.relationState.isHidden = false
                                                     self.relationState.setTitle("Ignored", for: .normal)
                                                     
-                                                    // Post Notification
-                                                    // NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                    
-                                                    
                                                 } else {
                                                     print(error?.localizedDescription as Any)
                                                 }
@@ -395,19 +386,23 @@ class RelationshipRequestsCell: UICollectionViewCell {
             })
         }
         
+
         
         
-    }
-    
-    
-    
-    
-    
-    
-    
-    // Function to rescind requests
-    func rescind(sender: UIButton) {
         
+
+    }// end IGNORE
+    
+    
+    
+    
+    
+    
+    
+    @IBAction func rescind(_ sender: Any) {
+        // Disable buttons
+        self.relationState.isUserInteractionEnabled = false
+        self.relationState.isEnabled = false
         
         
         // R E S C I N D      F R I E N D      R E Q U E S T
@@ -417,7 +412,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
-                                    style: .default,
+                                    style: .destructive,
                                     handler: {(alertAction: UIAlertAction!) in
                                         // Delete from parse: "FriendMe"
                                         let friend = PFQuery(className: "FriendMe")
@@ -476,11 +471,13 @@ class RelationshipRequestsCell: UICollectionViewCell {
             })
             
             let no = UIAlertAction(title: "no",
-                                   style: .destructive,
+                                   style: .cancel,
                                    handler: nil)
             
-            alert.addAction(yes)
+            
             alert.addAction(no)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
         }
         
@@ -492,7 +489,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",
-                                    style: .default,
+                                    style: .destructive,
                                     handler: {(alertAction: UIAlertAction!) in
                                         // Delete from parse: "FollowMe"
                                         let follow = PFQuery(className: "FollowMe")
@@ -553,15 +550,18 @@ class RelationshipRequestsCell: UICollectionViewCell {
             })
             
             let no = UIAlertAction(title: "no",
-                                   style: .destructive,
+                                   style: .cancel,
                                    handler: nil)
             
-            alert.addAction(yes)
+            
             alert.addAction(no)
+            alert.addAction(yes)
+            alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
         }
 
-    }
+    }// end RESCIND OR UNDO
+    
     
     
     
@@ -576,6 +576,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
+    
+    
     
     
     override func awakeFromNib() {
@@ -600,33 +602,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
         self.ignoreButton.layer.borderWidth = 1.50
         self.ignoreButton.clipsToBounds = true
         
-        
         // Stylize buttons
         self.relationState.layer.cornerRadius = 22.00
         self.relationState.clipsToBounds = true
-        
-        
-        // Add button tap to confirm
-        let confirmTap = UITapGestureRecognizer(target: self, action: #selector(confirm))
-        confirmTap.numberOfTapsRequired = 1
-        self.confirmButton.isUserInteractionEnabled = true
-        self.confirmButton.addGestureRecognizer(confirmTap)
-        
-        
-        // Add button tap to ignore
-        let ignoreTap = UITapGestureRecognizer(target: self, action: #selector(ignore))
-        ignoreTap.numberOfTapsRequired = 1
-        self.ignoreButton.isUserInteractionEnabled = true
-        self.ignoreButton.addGestureRecognizer(ignoreTap)
-        
-        
-        // Add button tap to rescind
-        let rescindTap = UITapGestureRecognizer(target: self, action: #selector(rescind))
-        rescindTap.numberOfTapsRequired = 1
-        self.relationState.isUserInteractionEnabled = true
-        self.relationState.addGestureRecognizer(rescindTap)
-        
-        
         
         // Add proPicTap to go to user's profile
         let profileTap = UITapGestureRecognizer(target: self, action: #selector(goUser))

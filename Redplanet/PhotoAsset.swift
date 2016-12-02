@@ -295,7 +295,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Declare content's object
         cell.contentObject = photoAssetObject.last!
         
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()

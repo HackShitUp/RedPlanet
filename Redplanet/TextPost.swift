@@ -650,7 +650,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
         // Baby blue
         edit.backgroundColor = UIColor.darkGray
-//        edit.backgroundColor = UIColor(red:0.45, green:0.69, blue:0.86, alpha:1.0)
         // Light Gray
         views.backgroundColor = UIColor.gray
         // Yellow

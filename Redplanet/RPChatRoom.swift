@@ -108,7 +108,49 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Query all of the user's chats
     func queryChats() {
-        let chats = PFQuery(className: "Chats")
+        // (A) Sender
+        let sender = PFQuery(className: "Chats")
+        sender.whereKey("sender", equalTo: PFUser.current()!)
+        sender.whereKey("receiver", equalTo: chatUserObject.last!)
+        // (B) Receiver
+        let receiver = PFQuery(className: "Chats")
+        receiver.whereKey("receiver", equalTo: PFUser.current()!)
+        receiver.whereKey("sender", equalTo: chatUserObject.last!)
+        
+        // (1) Chats subqueries
+        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+        chats.includeKey("receiver")
+        chats.includeKey("sender")
+        chats.order(byDescending: "createdAt")
+        chats.limit = self.page
+        chats.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Dismiss progress
+                SVProgressHUD.dismiss()
+                
+                // Clear arrays
+                self.messageObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    // Append object
+                    self.messageObjects.append(object)
+                }
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+            }
+            
+            // Reload data
+            self.tableView!.reloadData()
+        })
+
+        /*let chats = PFQuery(className: "Chats")
         chats.includeKey("receiver")
         chats.includeKey("sender")
         chats.order(byDescending: "createdAt")
@@ -116,13 +158,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
+         
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
-                
+         
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
-                
+         
                 // Append Objects
                 for object in objects! {
                     // IF SENDER == PFUser.currentUser()!
@@ -130,8 +172,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     if object["sender"] as! PFUser == PFUser.current()! && object["receiver"] as! PFUser == chatUserObject.last! {
                         self.messageObjects.append(object)
                     }
-                    
-                    
+         
+         
                     // IF RECEIVER == PFUser.currentUser()!
                     // AND SENDER == OtherUser
                     if object["receiver"] as! PFUser == PFUser.current()! && object["sender"] as! PFUser == chatUserObject.last! {
@@ -149,7 +191,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Reload data
             self.tableView!.reloadData()
-        }
+        }*/
     }
     
     
@@ -160,22 +202,23 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Resign first responder
             self.newChat.resignFirstResponder()
         } else {
+            // Clear text to prevent sending again and set constant before sending for better UX
+            let chatText = self.newChat.text!
+            // Clear chat
+            self.newChat.text!.removeAll()
+            
             // Send to Chats
             let chat = PFObject(className: "Chats")
             chat["sender"] = PFUser.current()!
             chat["senderUsername"] = PFUser.current()!.username!
             chat["receiver"] = chatUserObject.last!
             chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chat["Message"] = self.newChat.text!
+            chat["Message"] = chatText
             chat["read"] = false
             chat.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    print("Successfully sent chat: \(chat)")
-                    
-                    // Clear newChat
-                    self.newChat.text!.removeAll()
-                    
+
                     // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
@@ -271,6 +314,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // CLImageEditor
         let editor = CLImageEditor(image: image)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
     }
@@ -430,16 +474,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
         
         // Set bool
-        chatCamera == false
+        chatCamera = false
         
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
 
-        // Set tableView height
+        // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 60
-        // Scroll to bottom of tableView
-        self.tableView!.contentOffset = CGPoint(x: 0, y: CGFloat.greatestFiniteMagnitude)
 
         // Set title
         self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
@@ -529,12 +571,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Set first responder
-//        self.newChat.becomeFirstResponder()
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         // Hide tabBarController

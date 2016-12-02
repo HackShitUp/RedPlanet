@@ -69,6 +69,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     @IBAction func editPhoto(_ sender: AnyObject) {
         // Present CLImageEditor
         let editor = CLImageEditor(image: self.mediaAsset.image!)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
     }

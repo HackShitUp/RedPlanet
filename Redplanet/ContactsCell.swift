@@ -26,10 +26,10 @@ class ContactsCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var friendButton: UIButton!
     @IBAction func friendAction(_ sender: Any) {
+        
         // Disable buttons to prevent duplicate data entry
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
-        
         
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // FRIEND /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -44,11 +44,6 @@ class ContactsCell: UITableViewCell {
             friend.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    
-                    // Re-enable buttons
-                    self.friendButton.isUserInteractionEnabled = true
-                    self.friendButton.isEnabled = true
-                    
                     
                     // Send to Notifications
                     let notifications = PFObject(className: "Notifications")
@@ -72,6 +67,11 @@ class ContactsCell: UITableViewCell {
                             self.friendButton.clipsToBounds = true
                             
                             
+                            // Re-enable buttons
+                            self.friendButton.isUserInteractionEnabled = true
+                            self.friendButton.isEnabled = true
+                            
+                            
                             // Send push notificaiton
                             if self.friend!.value(forKey: "apnsId") != nil {
                                 OneSignal.postNotification(
@@ -81,7 +81,7 @@ class ContactsCell: UITableViewCell {
                                     ]
                                 )
                             }
-
+                            
                             
                             // Send to NotificationCenter
                             NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -155,7 +155,7 @@ class ContactsCell: UITableViewCell {
                                                             }
                                                         })
                                                     }
-
+                                                    
                                                 }
                                                 
                                                 
@@ -167,6 +167,10 @@ class ContactsCell: UITableViewCell {
                                                 self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
                                                 self.friendButton.layer.borderWidth = 2.00
                                                 self.friendButton.clipsToBounds = true
+                                                
+                                                // Re-enable buttons
+                                                self.friendButton.isUserInteractionEnabled = true
+                                                self.friendButton.isEnabled = true
                                                 
                                                 // Post Notification
                                                 NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -234,11 +238,6 @@ class ContactsCell: UITableViewCell {
                                                                                     if success {
                                                                                         print("Successfully deleted notifications: \(object)")
                                                                                         
-                                                                                        
-                                                                                        // Re-enable buttons
-                                                                                        self.friendButton.isUserInteractionEnabled = true
-                                                                                        self.friendButton.isEnabled = true
-                                                                                        
                                                                                         // Set user's friends button
                                                                                         self.friendButton.setTitle("Friend", for: .normal)
                                                                                         self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
@@ -247,6 +246,12 @@ class ContactsCell: UITableViewCell {
                                                                                         self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
                                                                                         self.friendButton.layer.borderWidth = 2.00
                                                                                         self.friendButton.clipsToBounds = true
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                        // Re-enable buttons
+                                                                                        self.friendButton.isUserInteractionEnabled = true
+                                                                                        self.friendButton.isEnabled = true
                                                                                         
                                                                                         
                                                                                         // Send to NotificationCenter
@@ -313,10 +318,6 @@ class ContactsCell: UITableViewCell {
                                                                 if success {
                                                                     print("Successfully confirmed friend request: \(object)")
                                                                     
-                                                                    // Re-enable buttons
-                                                                    self.friendButton.isUserInteractionEnabled = true
-                                                                    self.friendButton.isEnabled = true
-                                                                    
                                                                     
                                                                     // Delete "Notifications"
                                                                     let notifications = PFQuery(className: "Notifications")
@@ -346,6 +347,18 @@ class ContactsCell: UITableViewCell {
                                                                                             if success {
                                                                                                 print("Succesfully sent new notification: \(notifications)")
                                                                                                 
+                                                                                                // Change button's title and design
+                                                                                                self.friendButton.setTitle("Friends", for: .normal)
+                                                                                                self.friendButton.setTitleColor(UIColor.white, for: .normal)
+                                                                                                self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                                                                                                self.friendButton.layer.cornerRadius = 22.00
+                                                                                                self.friendButton.clipsToBounds = true
+                                                                                                
+                                                                                                
+                                                                                                // Re-enable buttons
+                                                                                                self.friendButton.isUserInteractionEnabled = true
+                                                                                                self.friendButton.isEnabled = true
+                                                                                                
                                                                                                 // Send to NotificationCenter
                                                                                                 NotificationCenter.default.post(name: contactsNotification, object: nil)
                                                                                                 
@@ -359,7 +372,7 @@ class ContactsCell: UITableViewCell {
                                                                                                         ]
                                                                                                     )
                                                                                                 }
-
+                                                                                                
                                                                                                 
                                                                                                 
                                                                                             } else {
@@ -422,6 +435,17 @@ class ContactsCell: UITableViewCell {
                                                                                     
                                                                                     
                                                                                     
+                                                                                    // Set user's friends button
+                                                                                    self.friendButton.setTitle("Friend", for: .normal)
+                                                                                    self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                                    self.friendButton.backgroundColor = UIColor.white
+                                                                                    self.friendButton.layer.cornerRadius = 22.00
+                                                                                    self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                                    self.friendButton.layer.borderWidth = 2.00
+                                                                                    self.friendButton.clipsToBounds = true
+                                                                                    
+
+                                                                                    
                                                                                     // Re-enable buttons
                                                                                     self.friendButton.isUserInteractionEnabled = true
                                                                                     self.friendButton.isEnabled = true
@@ -467,6 +491,7 @@ class ContactsCell: UITableViewCell {
             }
             
         }
+
         
     }
 

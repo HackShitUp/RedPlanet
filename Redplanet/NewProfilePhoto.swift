@@ -36,6 +36,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     @IBAction func edit(_ sender: AnyObject) {
         // CLImageEditor
         let editor = CLImageEditor(image: self.rpUserProPic.image!)
+        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
     }

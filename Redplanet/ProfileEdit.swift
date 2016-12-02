@@ -479,30 +479,36 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             (success: Bool, error: Error?) in
             if success {
                 print("Saved Bool!")
-                
-                
-                
+
                 // Set image
-                self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-                
-                
-                // Append image
-                changedProPicImg.append(info[UIImagePickerControllerOriginalImage] as! UIImage)
-                
-                
-                // Dismiss view controller
-                self.dismiss(animated: true, completion: nil)
-                
-                
-                // MARK: - CLImageEditor
-                // Show Editing Options
-                let editor = CLImageEditor(image: self.rpUserProPic.image!)
-                editor?.delegate = self
-                self.present(editor!, animated: true, completion: nil)
+                if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+                    // Set image
+                    self.rpUserProPic.image = chosenImage
+                    
+                    
+                    // Append image
+                    changedProPicImg.append(chosenImage)
+                    
+                    
+                    // Dismiss view controller
+                    self.dismiss(animated: true, completion: nil)
+                    
+                    
+                    // MARK: - CLImageEditor
+                    // Show Editing Options
+                    let editor = CLImageEditor(image: self.rpUserProPic.image!)
+                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+                    editor?.delegate = self
+                    self.present(editor!, animated: true, completion: nil)
+                }
                 
                 
             } else {
                 print(error?.localizedDescription as Any)
+                
+                
+                // Dismiss view controller
+                self.dismiss(animated: true, completion: nil)
                 
             }
         })

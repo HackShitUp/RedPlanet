@@ -392,6 +392,15 @@ class HashTagsCell: UITableViewCell {
     }
     
     
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.photoAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self.delegate!.self)
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -442,6 +451,14 @@ class HashTagsCell: UITableViewCell {
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
+        
+        // (9) Add zoom function
+        if self.photoAsset.isHidden == false {
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.photoAsset.isUserInteractionEnabled = true
+            self.photoAsset.addGestureRecognizer(zoomTap)
+        }
         
         
         // Handle @username tap

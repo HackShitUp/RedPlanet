@@ -224,7 +224,6 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                             self.captureButton.layer.shadowOpacity = 0.8
                             self.captureButton.layer.shadowRadius = 12
                             self.captureButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
-
                             
                             
                             // Show retake button
@@ -243,12 +242,32 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
             
             // USEPHOTO
             if sender.image(for: .normal) == UIImage(named: "Checked Filled-100") {
+                // Detmerine where the camera was accessed
                 
-                // Show editor first
-                // Present CLImageEditor
-                let editor = CLImageEditor(image: self.imageTaken.image!)
-                editor?.delegate = self
-                self.navigationController?.pushViewController(editor!, animated: true)
+                // If it's a Moment...
+                // Disable rotate, crop, and resizing options
+                if chatCamera == false {
+                    // Moment
+                    // (1) Present CLImageEditor
+                    let editor = CLImageEditor(image: self.imageTaken.image!)
+                    // Disable tools: rotate, clip, and resize
+                    let rotateTool = editor?.toolInfo.subToolInfo(withToolName: "CLRotateTool", recursive: false)
+                    let cropTool = editor?.toolInfo.subToolInfo(withToolName: "CLClippingTool", recursive: false)
+                    let resizeTool = editor?.toolInfo.subToolInfo(withToolName: "CLResizeTool", recursive: false)
+                    rotateTool?.available = false
+                    cropTool?.available = false
+                    resizeTool?.available = false
+                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+                    editor?.delegate = self
+                    self.navigationController?.pushViewController(editor!, animated: true)
+                } else {
+                    // CHAT
+                    // (1) Present CLImageEditor
+                    let editor = CLImageEditor(image: self.imageTaken.image!)
+                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+                    editor?.delegate = self
+                    self.navigationController?.pushViewController(editor!, animated: true)
+                }
             }
             
             
@@ -261,6 +280,10 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     // MARK: - CLImageEditorDelegate
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+        
+        // Disable button
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = false
+        
         // Share Moment
         // Convert image to data
         let imageData = UIImageJPEGRepresentation(image, 0.5)
@@ -276,7 +299,8 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
             newsfeeds.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully saved object: \(newsfeeds)")
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
                     
                     // Send Notification
                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
@@ -290,6 +314,18 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
                 }
             })
         } else {
@@ -305,7 +341,8 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
             chat.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    print("Successfully sent chat: \(chat)")
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
                     
                     // Send Push Notification to user
                     // Handle optional chaining
@@ -339,6 +376,15 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                 } else {
                     print(error?.localizedDescription as Any)
 
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+                    
+                    // Reload chats
+                    NotificationCenter.default.post(name: rpChat, object: nil)
+                    
+                    // Pop 2 view controllers
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
                 }
             }
         }

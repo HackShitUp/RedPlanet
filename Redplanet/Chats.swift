@@ -46,8 +46,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     @IBAction func newChat(_ sender: AnyObject) {
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
-//        self.navigationController!.pushViewController(newChatsVC, animated: true)
-        self.navigationController!.pushViewController(newChatsVC, animated: false)
+        self.navigationController!.pushViewController(newChatsVC, animated: true)
     }
     
     // Refresh function
@@ -84,7 +83,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 self.initialChatObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    
+                    // Append user's objects
                     if object["receiver"] as! PFUser == PFUser.current()! {
                         self.initialChatObjects.append(object["sender"] as! PFUser)
                     }
@@ -92,6 +91,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     if object["sender"] as! PFUser == PFUser.current()! {
                         self.initialChatObjects.append(object["receiver"] as! PFUser)
                     }
+
                 }// end for loop
                 
                 
@@ -152,6 +152,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     
     // Begin searching
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
         // Search by username
         let name = PFQuery(className: "_User")
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
@@ -180,7 +181,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         })
         
         return true
-
     }
 
     
@@ -586,74 +586,51 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                         // Show Progress
                                         SVProgressHUD.show()
                                         
-                                        // Delete in Parse class: "Chats"
-                                        let chats = PFQuery(className: "Chats")
-                                        chats.includeKey("receiver")
-                                        chats.includeKey("sender")
+                                        
+                                        // Delete Chats
+                                        
+                                        // (A) Sender
+                                        let sender = PFQuery(className: "Chats")
+                                        sender.whereKey("sender", equalTo: PFUser.current()!)
+                                        sender.whereKey("receiver", equalTo: self.finalChatObjects[indexPath.row])
+                                        // (B) Receiver
+                                        let receiver = PFQuery(className: "Chats")
+                                        receiver.whereKey("receiver", equalTo: PFUser.current()!)
+                                        receiver.whereKey("sender", equalTo: self.finalChatObjects[indexPath.row])
+                                        
+                                        // (1) Chats subqueries
+                                        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
                                         chats.findObjectsInBackground(block: {
                                             (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
                                                 
-                                                // Dismiss
+                                                // Dismiss progress
                                                 SVProgressHUD.dismiss()
                                                 
                                                 for object in objects! {
-                                                    
-                                                    // If recipient is PFUser.currentUser()! && sender is OtherUser()
-                                                    if object["receiver"] as! PFUser == PFUser.current()! && object["sender"] as! PFUser == self.finalChatObjects[indexPath.row] {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted chats: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                            }
-                                                        })
-                                                        
-                                                    }
-                                                    
-                                                    // If sender is PFUser.currentUser()! && recipient is OtherUser()
-                                                    if object["sender"] as! PFUser == PFUser.current()! && object["receiver"] as! PFUser == self.finalChatObjects[indexPath.row] {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted chats: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                            }
-                                                        })
-                                                        
-                                                    }
-                                                    
-                                                } // end for loop
+                                                    // Delete
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            
+                                                            // Query Chats again
+                                                            self.queryChats()
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+                                                }
                                                 
-                                                // Reload
-                                                self.refresh()
                                                 
                                             } else {
                                                 print(error?.localizedDescription as Any)
                                                 
-                                                // Dismiss
-                                                SVProgressHUD.dismiss()
+                                                // Query Chats again
+                                                self.queryChats()
                                             }
                                         })
-                                        
-                                        
-                                        
+    
             })
             
             let no = UIAlertAction(title: "no",

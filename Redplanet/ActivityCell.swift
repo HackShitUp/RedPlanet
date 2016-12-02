@@ -994,7 +994,7 @@ class ActivityCell: UITableViewCell {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         // requested to follow you
-        // asked to be friends
+        // asked to be friends=
         if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "asked to be friends" {
             // Push VC
             let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
