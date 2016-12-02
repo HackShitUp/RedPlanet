@@ -149,49 +149,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Reload data
             self.tableView!.reloadData()
         })
-
-        /*let chats = PFQuery(className: "Chats")
-        chats.includeKey("receiver")
-        chats.includeKey("sender")
-        chats.order(byDescending: "createdAt")
-        chats.limit = self.page
-        chats.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-         
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-         
-                // Clear arrays
-                self.messageObjects.removeAll(keepingCapacity: false)
-         
-                // Append Objects
-                for object in objects! {
-                    // IF SENDER == PFUser.currentUser()!
-                    // AND RECEIVER == OtherUser
-                    if object["sender"] as! PFUser == PFUser.current()! && object["receiver"] as! PFUser == chatUserObject.last! {
-                        self.messageObjects.append(object)
-                    }
-         
-         
-                    // IF RECEIVER == PFUser.currentUser()!
-                    // AND SENDER == OtherUser
-                    if object["receiver"] as! PFUser == PFUser.current()! && object["sender"] as! PFUser == chatUserObject.last! {
-                        self.messageObjects.append(object)
-                    }
-                }
-                
-                print("Message objects: \(self.messageObjects.count)")
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-            }
-            
-            // Reload data
-            self.tableView!.reloadData()
-        }*/
     }
     
     
