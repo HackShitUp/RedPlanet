@@ -167,10 +167,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            // TODO::
-            // TRY Using the Framework HERE::
-            let alert = UIAlertController(title: "🎉\nCongrats",
-                                          message: "You just opened your first Photo!\n\n•Swipe right to leave.\n\n•Swipe left for more options.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Photo\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+                                          message: nil,
                                           preferredStyle: .alert)
             
             let ok = UIAlertAction(title: "ok",

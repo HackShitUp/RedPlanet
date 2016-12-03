@@ -39,6 +39,7 @@ class MyHeader: UICollectionReusableView {
     func showFriends() {
         // Append to forFriends
         forFriends.append(PFUser.current()!)
+        forFriends.append(PFUser.current()!)
         
         // Push VC
         let friendsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFriendsVC") as! RFriends
@@ -50,6 +51,7 @@ class MyHeader: UICollectionReusableView {
     func showFollowers() {
         // Append to forFriends
         forFollowers.append(PFUser.current()!)
+        forFollowers.append(PFUser.current()!)
         
         // Push VC
         let followersVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowersVC") as! RFollowers
@@ -60,6 +62,7 @@ class MyHeader: UICollectionReusableView {
     func showFollowing() {
         // Append to forFriends
         forFollowing.append(PFUser.current()!)
+        forFollowers.append(PFUser.current()!)
         
         // Push VC
         let followingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowingVC") as! RFollowing

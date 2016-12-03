@@ -216,15 +216,19 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                             
                             // Change button's image
                             self.captureButton.setImage(UIImage(named: "Checked Filled-100"), for: .normal)
-                            // Add shadow
-                            self.captureButton.layer.cornerRadius = self.captureButton.frame.size.width/2
-                            self.captureButton.layer.masksToBounds = false
-                            self.captureButton.layer.borderWidth = 0.0
-                            self.captureButton.layer.shadowColor = UIColor.black.cgColor
-                            self.captureButton.layer.shadowOpacity = 0.8
-                            self.captureButton.layer.shadowRadius = 12
-                            self.captureButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
                             
+                            // Add shadow to
+                            // saveButton
+                            self.saveButton.layer.shadowColor = UIColor.black.cgColor
+                            self.saveButton.layer.shadowOpacity = 0.8
+                            self.saveButton.layer.shadowRadius = 12
+                            self.saveButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
+                            // retakeButton
+                            self.retakeButton.layer.shadowColor = UIColor.black.cgColor
+                            self.retakeButton.layer.shadowOpacity = 0.8
+                            self.retakeButton.layer.shadowRadius = 12
+                            self.retakeButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
+
                             
                             // Show retake button
                             self.retakeButton.isHidden = false
@@ -259,6 +263,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                     resizeTool?.available = false
                     editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
                     editor?.delegate = self
+                    self.navigationController?.navigationBar.tintColor = UIColor.black
                     self.navigationController?.pushViewController(editor!, animated: true)
                 } else {
                     // CHAT
@@ -266,6 +271,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                     let editor = CLImageEditor(image: self.imageTaken.image!)
                     editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
                     editor?.delegate = self
+                    self.navigationController?.navigationBar.tintColor = UIColor.black
                     self.navigationController?.pushViewController(editor!, animated: true)
                 }
             }

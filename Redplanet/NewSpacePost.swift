@@ -17,15 +17,15 @@ import Bolts
 import SVProgressHUD
 import OneSignal
 
+
+// Boolean to determine whether there's a photo
+var spacePhotoExists: Bool = false
+
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
     // Array to hold user objects and usernames
     var userObjects = [PFObject]()
     var usernames = [String]()
-    
-    
-    // Boolean to determine whether there's a photo
-    var spacePhotoExists: Bool = false
     
     
     @IBAction func backButton(_ sender: Any) {
@@ -34,13 +34,15 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     }
     
     @IBAction func editAction(_ sender: Any) {
-        // Show CLImageEditor
-        let editor = CLImageEditor(image: self.mediaAsset.image!)
-        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-        editor?.delegate = self
-        
-        // Present CLImageEditor
-        self.present(editor!, animated: true, completion: nil)
+        // If photo exists
+        if spacePhotoExists == true {
+            // Show CLImageEditor
+            let editor = CLImageEditor(image: self.mediaAsset.image!)
+            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+            editor?.delegate = self
+            // Present CLImageEditor
+            self.present(editor!, animated: true, completion: nil)
+        }
     }
     
     @IBOutlet weak var mediaAsset: PFImageView!
@@ -246,16 +248,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     
     // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
-        
-        // Show mediaAsset
-        self.mediaAsset.isHidden = false
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         // Set image
         self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        // Set bool
-        spacePhotoExists = true
         
         // Dismiss view controller
         self.dismiss(animated: true, completion: nil)
@@ -265,10 +261,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
-        
-        
-        // return bool
-        return spacePhotoExists
     }
     
     
@@ -277,24 +269,37 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.dismiss(animated: true, completion: nil)
     }
     
-
-    
-    
     
     
     // MARK: - CLImageEditor delegate methods
-    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) -> Bool {
         // Set image
         self.mediaAsset.image = image
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
         
+        // Set bool
+        spacePhotoExists = true
+        
+        // Reload view
+        self.viewDidLoad()
+        
+        // return bool
+        return spacePhotoExists
     }
     
-    func imageEditorDidCancel(_ editor: CLImageEditor) {
+    func imageEditorDidCancel(_ editor: CLImageEditor) -> Bool {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
 
+        // Set bool
+        spacePhotoExists = true
+        
+        // Reload view
+        self.viewDidLoad()
+        
+        // return bool
+        return spacePhotoExists
     }
 
     
@@ -471,9 +476,30 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.tableView!.isHidden = true
     }
     
+    
+    
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        agrume.showFrom(self)
+    }
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Disable or Enable buttons depending on whether photo exists
+        if spacePhotoExists ==  false {
+            // Disable edit button
+            self.editButton.isEnabled = false
+        } else {
+            // Enabled edit button
+            self.editButton.isEnabled = true
+        }
         
         // Set first responder
         self.textView.becomeFirstResponder()
@@ -483,9 +509,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.postButton.layer.borderColor = UIColor.lightGray.cgColor
         self.postButton.layer.borderWidth = 0.5
         self.postButton.clipsToBounds = true
-        
-        // Hide mediaAsset
-        self.mediaAsset.isHidden = true
         
         // Hide tableView
         self.tableView.isHidden = true
@@ -511,12 +534,31 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.photosButton.isUserInteractionEnabled = true
         self.photosButton.addGestureRecognizer(photoTap)
         
-        
         // (3) Add more button tap
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
+        
+        // (4) Add tap gesture to zoom in
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.mediaAsset.isUserInteractionEnabled = true
+        self.mediaAsset.addGestureRecognizer(zoomTap)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide tab bar controller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Hide tab bar controller
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {

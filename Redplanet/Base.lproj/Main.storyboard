@@ -1809,7 +1809,6 @@
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2bc-Ob-PQL">
                                 <rect key="frame" x="16" y="166" width="60" height="60"/>
-                                <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Fj4-AH-nBx"/>
                                     <constraint firstAttribute="width" constant="60" id="cdn-fO-yVD"/>
@@ -4851,8 +4850,8 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWF-MY-qPm">
                                 <rect key="frame" x="143" y="519" width="90" height="90"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="90" id="XJs-YM-sbr"/>
-                                    <constraint firstAttribute="width" constant="90" id="swN-bN-ulW"/>
+                                    <constraint firstAttribute="height" constant="90" id="iGq-6K-GHf"/>
+                                    <constraint firstAttribute="width" constant="90" id="pGm-cN-8NZ"/>
                                 </constraints>
                                 <state key="normal" image="Unchecked Circle-100"/>
                                 <connections>
@@ -4860,32 +4859,21 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qua-G8-7b8">
-                                <rect key="frame" x="319" y="15" width="40" height="40"/>
+                                <rect key="frame" x="319" y="544" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="G26-2h-FGH"/>
-                                    <constraint firstAttribute="width" constant="40" id="GiA-q4-0Hm"/>
+                                    <constraint firstAttribute="width" constant="40" id="aDM-hn-wZ0"/>
+                                    <constraint firstAttribute="height" constant="40" id="ee1-sp-wWf"/>
                                 </constraints>
                                 <state key="normal" image="Lightning Bolt-96"/>
                                 <connections>
                                     <action selector="flash:" destination="sCf-VT-dx7" eventType="touchUpInside" id="6rD-Tg-Q2Z"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONP-OM-NrW">
-                                <rect key="frame" x="324" y="617" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="lyX-gt-8Ec"/>
-                                    <constraint firstAttribute="height" constant="30" id="oab-Hx-f9z"/>
-                                </constraints>
-                                <state key="normal" image="Download"/>
-                                <connections>
-                                    <action selector="saveButton:" destination="sCf-VT-dx7" eventType="touchUpInside" id="Pym-sa-Yzc"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3W-3m-Ttp">
-                                <rect key="frame" x="16" y="620" width="25" height="25"/>
+                                <rect key="frame" x="16" y="20" width="25" height="25"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="etX-Hf-SxO"/>
-                                    <constraint firstAttribute="width" constant="25" id="out-8h-Ccf"/>
+                                    <constraint firstAttribute="height" constant="25" id="At4-pQ-Yo0"/>
+                                    <constraint firstAttribute="width" constant="25" id="NEa-bb-Hq7"/>
                                 </constraints>
                                 <state key="normal" image="Left Filled-50"/>
                                 <connections>
@@ -4893,10 +4881,10 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zOH-2c-VuO">
-                                <rect key="frame" x="16" y="20" width="30" height="30"/>
+                                <rect key="frame" x="256" y="544" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="2R0-mK-iIN"/>
-                                    <constraint firstAttribute="height" constant="30" id="TGJ-3V-bu3"/>
+                                    <constraint firstAttribute="height" constant="40" id="LsE-3f-616"/>
+                                    <constraint firstAttribute="width" constant="40" id="jdy-zY-Ljw"/>
                                 </constraints>
                                 <state key="normal" image="Switch Camera-100"/>
                                 <connections>
@@ -4904,42 +4892,52 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5qa-zN-NF2">
-                                <rect key="frame" x="167" y="617" width="40" height="40"/>
+                                <rect key="frame" x="80" y="544" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="FtR-F4-yBL"/>
-                                    <constraint firstAttribute="width" constant="40" id="bU4-0T-Qjl"/>
+                                    <constraint firstAttribute="width" constant="40" id="0zF-uh-pzM"/>
+                                    <constraint firstAttribute="height" constant="40" id="cRj-jd-WBg"/>
                                 </constraints>
-                                <state key="normal" image="Report-51">
+                                <state key="normal" image="Restart Filled-100">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="retake:" destination="sCf-VT-dx7" eventType="touchUpInside" id="8Pc-6y-xc0"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONP-OM-NrW">
+                                <rect key="frame" x="16" y="544" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="eEN-G0-EFX"/>
+                                    <constraint firstAttribute="width" constant="40" id="tQZ-Qt-CG7"/>
+                                </constraints>
+                                <state key="normal" image="Download"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="sCf-VT-dx7" eventType="touchUpInside" id="Pym-sa-Yzc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="tXT-SV-iSm" secondAttribute="trailing" id="0dF-W9-aTX"/>
+                            <constraint firstItem="AWF-MY-qPm" firstAttribute="centerX" secondItem="qKJ-QQ-tsQ" secondAttribute="centerX" id="32c-1v-6ae"/>
                             <constraint firstItem="Lra-Iu-6lE" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" id="4Zs-3f-xFJ"/>
-                            <constraint firstItem="ONP-OM-NrW" firstAttribute="leading" secondItem="5qa-zN-NF2" secondAttribute="trailing" constant="117" id="60u-Sh-xh1"/>
-                            <constraint firstItem="AWF-MY-qPm" firstAttribute="centerX" secondItem="qKJ-QQ-tsQ" secondAttribute="centerX" id="6tp-uT-vll"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="ONP-OM-NrW" secondAttribute="bottom" constant="20" id="EvC-7M-9d0"/>
-                            <constraint firstItem="qua-G8-7b8" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" constant="15" id="GzO-ax-ogI"/>
+                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="AWF-MY-qPm" secondAttribute="bottom" constant="58" id="4iK-tz-uEQ"/>
+                            <constraint firstItem="qua-G8-7b8" firstAttribute="leading" secondItem="zOH-2c-VuO" secondAttribute="trailing" constant="23" id="62j-5R-0QL"/>
+                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="ONP-OM-NrW" secondAttribute="bottom" constant="83" id="BaW-OR-5Nz"/>
+                            <constraint firstItem="5qa-zN-NF2" firstAttribute="leading" secondItem="ONP-OM-NrW" secondAttribute="trailing" constant="24" id="BkG-iJ-w9A"/>
                             <constraint firstAttribute="trailing" secondItem="Lra-Iu-6lE" secondAttribute="trailing" id="J2x-6V-rEu"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="5qa-zN-NF2" secondAttribute="bottom" constant="10" id="NUB-7b-GYd"/>
                             <constraint firstItem="tXT-SV-iSm" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" id="NZj-Hf-Ong"/>
-                            <constraint firstItem="a3W-3m-Ttp" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="NfP-7d-r6D"/>
-                            <constraint firstItem="5qa-zN-NF2" firstAttribute="leading" secondItem="a3W-3m-Ttp" secondAttribute="trailing" constant="126" id="Pa6-qe-JUx"/>
-                            <constraint firstAttribute="trailing" secondItem="qua-G8-7b8" secondAttribute="trailing" constant="16" id="RpB-6g-ac8"/>
+                            <constraint firstItem="a3W-3m-Ttp" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="R0W-c2-BhI"/>
+                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="zOH-2c-VuO" secondAttribute="bottom" constant="83" id="SoE-cV-yC8"/>
                             <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="tXT-SV-iSm" secondAttribute="bottom" id="X5l-fU-1XT"/>
-                            <constraint firstItem="5qa-zN-NF2" firstAttribute="top" secondItem="AWF-MY-qPm" secondAttribute="bottom" constant="8" id="Y0u-8I-vU5"/>
-                            <constraint firstAttribute="trailing" secondItem="ONP-OM-NrW" secondAttribute="trailing" constant="21" id="Y2u-EH-06B"/>
                             <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="Lra-Iu-6lE" secondAttribute="bottom" id="YNC-47-vyS"/>
+                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="5qa-zN-NF2" secondAttribute="bottom" constant="83" id="YSv-93-f6n"/>
                             <constraint firstItem="Lra-Iu-6lE" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" id="aDj-QW-cTB"/>
-                            <constraint firstItem="zOH-2c-VuO" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" constant="20" id="cEb-Nz-cAU"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="a3W-3m-Ttp" secondAttribute="bottom" constant="22" id="lEE-eh-3Ke"/>
-                            <constraint firstItem="zOH-2c-VuO" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="v5I-KC-QEp"/>
+                            <constraint firstItem="a3W-3m-Ttp" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" constant="20" id="aDs-KI-UAX"/>
+                            <constraint firstAttribute="trailing" secondItem="qua-G8-7b8" secondAttribute="trailing" constant="16" id="pgk-gK-dVq"/>
                             <constraint firstItem="tXT-SV-iSm" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" id="vAQ-q7-34g"/>
+                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="qua-G8-7b8" secondAttribute="bottom" constant="83" id="w7Z-PC-YV3"/>
+                            <constraint firstItem="ONP-OM-NrW" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="zMO-qy-xoj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="xeE-4q-Xg0"/>
@@ -6908,7 +6906,7 @@
         <image name="AddBestFriend" width="26" height="26"/>
         <image name="Address Book Filled-50" width="25" height="25"/>
         <image name="Chat Filled-50" width="25" height="25"/>
-        <image name="Checked Filled-100" width="75" height="75"/>
+        <image name="Checked Filled-100" width="256" height="256"/>
         <image name="Circled Play Filled-50" width="25" height="25"/>
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="50" height="50"/>
@@ -6924,16 +6922,16 @@
         <image name="Number Pad-48" width="24" height="24"/>
         <image name="Redo-100" width="50" height="50"/>
         <image name="RedplanetLogo" width="256" height="256"/>
-        <image name="Report-51" width="48" height="48"/>
+        <image name="Restart Filled-100" width="50" height="50"/>
         <image name="SLR Camera Filled-Gray" width="50" height="50"/>
         <image name="SaveBlack" width="50" height="50"/>
         <image name="Search-50" width="25" height="25"/>
         <image name="Settings-48" width="24" height="24"/>
         <image name="ShareOP" width="116" height="116"/>
         <image name="Stack of Photos-96" width="48" height="48"/>
-        <image name="Switch Camera-100" width="50" height="50"/>
+        <image name="Switch Camera-100" width="256" height="256"/>
         <image name="Trending" width="246" height="273"/>
-        <image name="Unchecked Circle-100" width="150" height="150"/>
+        <image name="Unchecked Circle-100" width="246" height="246"/>
         <image name="User-48" width="24" height="24"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="WhiteComment" width="50" height="50"/>

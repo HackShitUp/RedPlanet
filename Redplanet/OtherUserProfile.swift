@@ -64,6 +64,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     @IBAction func backButton(_ sender: AnyObject) {
         
+        // Remove last
+        otherObject.removeLast()
+        otherName.removeLast()
+        
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
     }
@@ -505,6 +509,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Stylize title again
+        configureView()
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)

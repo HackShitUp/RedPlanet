@@ -28,24 +28,23 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
     // Arrays to hold titles
     var iconNames = ["Text Post",
                      "Photo",
-                     "Shared",
+                     "Shared Post",
                      "Profile Photo",
                      "Space Post",
                      "Moment"]
     
     // Arrays to hold description
-    var iconDescripts = ["This is content focused on just text, and nothing else.",
-                         "This is content concentrated on a single photo. Photos have a corner radius around its thumbnail.",
-                         "This is content that’s been re-shared by someone publicly.",
+    var iconDescripts = ["This is a post focused and concentrated on just text.",
+                         "Photo posts have a corner radius around its thumbnail.",
+                         "This is a post that’s been shared by someone publicly.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
                          "Comets with a red gradient background indicate that someone wrote in someone else’s Space. Only friends can write in each other’s Space.",
-                         "Rectangular photos are what we call Moments. These are photos caputred directly from the custom camera and shared on Redplanet."
+                         "Rectangular photos are what we call Moments. These are photos captured directly from the custom camera and shared on Redplanet."
                          ]
 
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         self.navigationController?.popViewController(animated: false)
-//        self.dismiss(animated: true, completion: nil)
     }
     
     
@@ -59,7 +58,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Icons Guideline"
+            self.title = "Iconic Previews"
         }
     }
     
