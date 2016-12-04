@@ -1,14 +1,24 @@
 //
-//  MyLikesAndSharesCell.swift
+//  LikesAndSharesCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 11/26/16.
+//  Created by Joshua Choi on 12/3/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
+import CoreData
 
-class MyLikesAndSharesCell: UITableViewCell {
+import Parse
+import ParseUI
+import Bolts
+
+
+class LikesAndSharesCell: UITableViewCell {
+    
+    @IBOutlet weak var iconicPreview: PFImageView!
+    @IBOutlet weak var rpFullName: UILabel!
+    @IBOutlet weak var time: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()

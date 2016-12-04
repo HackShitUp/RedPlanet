@@ -25,7 +25,7 @@ class FollowingCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var mediaPreview: PFImageView!
+    @IBOutlet weak var iconicPreview: PFImageView!
     
     
     override func awakeFromNib() {

@@ -255,6 +255,13 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
+        // Set estimated row height
+        self.tableView!.setNeedsLayout()
+        self.tableView!.layoutSubviews()
+        self.tableView!.layoutIfNeeded()
+        self.tableView!.estimatedRowHeight = 250
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
         // Stylize title
         configureView()
     }
@@ -501,11 +508,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                             SVProgressHUD.show()
                                             
                                             // Delete content
-//                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-//                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-//                                            newsfeeds.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
-//                                            newsfeeds.whereKey("pointObject", equalTo: textPostObject.last!)
-                                                
                                             let content = PFQuery(className: "Newsfeeds")
                                             content.whereKey("byUser", equalTo: PFUser.current()!)
                                             content.whereKey("objectId", equalTo: textPostObject.last!.objectId!)

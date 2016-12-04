@@ -225,8 +225,6 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     // MARK: UICollectionViewHeaderSection datasource
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-        
-        // ofSize should be the same size of the headerView's label size:
 //        return CGSize(width: self.view.frame.size.width, height: 45)
         return CGSize(width: self.view.frame.size.width, height: 0)
     }

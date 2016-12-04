@@ -12,8 +12,6 @@
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
 		7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E31DB981E3003011FA /* FriendsCell.swift */; };
 		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
-		7E240D121DE9EFF100FE2A26 /* MyLikesAndShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E240D111DE9EFF100FE2A26 /* MyLikesAndShares.swift */; };
-		7E240D141DE9EFFF00FE2A26 /* MyLikesAndSharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E240D131DE9EFFF00FE2A26 /* MyLikesAndSharesCell.swift */; };
 		7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
@@ -52,6 +50,8 @@
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */; };
 		7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */; };
+		7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E78CB6F1DF3BA8C001E69D3 /* LikesAndShares.swift */; };
+		7E78CB721DF3BA9C001E69D3 /* LikesAndSharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E78CB711DF3BA9C001E69D3 /* LikesAndSharesCell.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
 		7E7E38BF1DD576C400DEC27B /* BestFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BE1DD576C400DEC27B /* BestFriends.swift */; };
@@ -217,8 +217,6 @@
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E2235E31DB981E3003011FA /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
-		7E240D111DE9EFF100FE2A26 /* MyLikesAndShares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLikesAndShares.swift; sourceTree = "<group>"; };
-		7E240D131DE9EFFF00FE2A26 /* MyLikesAndSharesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyLikesAndSharesCell.swift; sourceTree = "<group>"; };
 		7E3626ED1DB7367A00AB14F4 /* IGCMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGCMenu.h; sourceTree = "<group>"; };
 		7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGCMenu.m; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
@@ -269,6 +267,8 @@
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
 		7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
+		7E78CB6F1DF3BA8C001E69D3 /* LikesAndShares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesAndShares.swift; sourceTree = "<group>"; };
+		7E78CB711DF3BA9C001E69D3 /* LikesAndSharesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikesAndSharesCell.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		7E7E38BE1DD576C400DEC27B /* BestFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestFriends.swift; sourceTree = "<group>"; };
@@ -507,13 +507,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		7E240D151DE9F00300FE2A26 /* MyLikesAndShares */ = {
+		7E240D151DE9F00300FE2A26 /* Likes_Shares */ = {
 			isa = PBXGroup;
 			children = (
-				7E240D111DE9EFF100FE2A26 /* MyLikesAndShares.swift */,
-				7E240D131DE9EFFF00FE2A26 /* MyLikesAndSharesCell.swift */,
+				7E78CB6F1DF3BA8C001E69D3 /* LikesAndShares.swift */,
+				7E78CB711DF3BA9C001E69D3 /* LikesAndSharesCell.swift */,
 			);
-			name = MyLikesAndShares;
+			name = Likes_Shares;
 			sourceTree = "<group>";
 		};
 		7E3626EC1DB7367A00AB14F4 /* IGCMenu */ = {
@@ -1275,7 +1275,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7E240D151DE9F00300FE2A26 /* MyLikesAndShares */,
+				7E240D151DE9F00300FE2A26 /* Likes_Shares */,
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
 				7E46EDD61DE4F4400034E434 /* Password */,
@@ -1748,7 +1748,6 @@
 			files = (
 				7E7E38BF1DD576C400DEC27B /* BestFriends.swift in Sources */,
 				7E4CFF941DB439170087454E /* SpacePost.swift in Sources */,
-				7E240D121DE9EFF100FE2A26 /* MyLikesAndShares.swift in Sources */,
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
@@ -1763,7 +1762,6 @@
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */,
-				7E240D141DE9EFFF00FE2A26 /* MyLikesAndSharesCell.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
@@ -1850,6 +1848,7 @@
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
 				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
+				7E78CB721DF3BA9C001E69D3 /* LikesAndSharesCell.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
@@ -1901,6 +1900,7 @@
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
+				7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,

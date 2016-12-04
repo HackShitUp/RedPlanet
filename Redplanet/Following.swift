@@ -211,16 +211,16 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // LayoutViews for mediaPreview
-        cell.mediaPreview.layoutIfNeeded()
-        cell.mediaPreview.layoutSubviews()
-        cell.mediaPreview.setNeedsLayout()
+        // LayoutViews for iconicPreview
+        cell.iconicPreview.layoutIfNeeded()
+        cell.iconicPreview.layoutSubviews()
+        cell.iconicPreview.setNeedsLayout()
         
         // Set default contentMode
-        cell.mediaPreview.contentMode = .scaleAspectFill
-        // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 10.00
-        cell.mediaPreview.clipsToBounds = true
+        cell.iconicPreview.contentMode = .scaleAspectFill
+        // Make iconicPreview cornered square
+        cell.iconicPreview.layer.cornerRadius = 10.00
+        cell.iconicPreview.clipsToBounds = true
 
         
         // Fetch content
@@ -256,14 +256,14 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
-                    if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
+                    if let iconicPreview = object!["photoAsset"] as? PFFile {
+                        iconicPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Show mediaPreview
-                                cell.mediaPreview.isHidden = false
+                                // Show iconicPreview
+                                cell.iconicPreview.isHidden = false
                                 // Set media
-                                cell.mediaPreview.image = UIImage(data: data!)
+                                cell.iconicPreview.image = UIImage(data: data!)
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -273,10 +273,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
-                    // Set mediaPreview's icon
-                    cell.mediaPreview.image = UIImage(named: "TextPostIcon")
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
+                    // Set iconicPreview's icon
+                    cell.iconicPreview.image = UIImage(named: "TextPostIcon")
                 }
                 
                 
@@ -284,13 +284,13 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // (C) SHARED
                 // Complete this
                 if object!["contentType"] as! String == "sh" {
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
                     
-                    // Set background color for mediaPreview
-                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set background color for iconicPreview
+                    cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.mediaPreview.image = UIImage(named: "BlueShared")
+                    cell.iconicPreview.image = UIImage(named: "BlueShared")
                 }
                 
                 

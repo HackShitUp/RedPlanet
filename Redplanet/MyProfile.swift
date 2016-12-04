@@ -339,16 +339,16 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         cell.rpUserProPic.clipsToBounds = true
         
         
-        // LayoutViews for mediaPreview
-        cell.mediaPreview.layoutIfNeeded()
-        cell.mediaPreview.layoutSubviews()
-        cell.mediaPreview.setNeedsLayout()
+        // LayoutViews for iconicPreview
+        cell.iconicPreview.layoutIfNeeded()
+        cell.iconicPreview.layoutSubviews()
+        cell.iconicPreview.setNeedsLayout()
         
         // Set default contentMode
-        cell.mediaPreview.contentMode = .scaleAspectFill
-        // Make mediaPreview cornered square
-        cell.mediaPreview.layer.cornerRadius = 10.00
-        cell.mediaPreview.clipsToBounds = true
+        cell.iconicPreview.contentMode = .scaleAspectFill
+        // Make iconicPreview cornered square
+        cell.iconicPreview.layer.cornerRadius = 10.00
+        cell.iconicPreview.clipsToBounds = true
         
         
         // Fetch objects
@@ -388,19 +388,19 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
                     
-                    // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 10.00
-                    cell.mediaPreview.clipsToBounds = true
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.clipsToBounds = true
                     
                     // Fetch photo
                     if let photo = object!["photoAsset"] as? PFFile {
                         photo.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Show mediaPreview
-                                cell.mediaPreview.isHidden = false
+                                // Show iconicPreview
+                                cell.iconicPreview.isHidden = false
                                 // Set media
-                                cell.mediaPreview.image = UIImage(data: data!)
+                                cell.iconicPreview.image = UIImage(data: data!)
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -413,30 +413,30 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
-                    // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 10.00
-                    cell.mediaPreview.clipsToBounds = true
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
-                    // Set mediaPreview's icon
-                    cell.mediaPreview.image = UIImage(named: "TextPostIcon")
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.clipsToBounds = true
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
+                    // Set iconicPreview's icon
+                    cell.iconicPreview.image = UIImage(named: "TextPostIcon")
                 }
                 
                 
                 
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
-                    // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = 10.00
-                    cell.mediaPreview.clipsToBounds = true
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.clipsToBounds = true
                     
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
                     
-                    // Set background color for mediaPreview
-                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set background color for iconicPreview
+                    cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.mediaPreview.image = UIImage(named: "BlueShared")
+                    cell.iconicPreview.image = UIImage(named: "BlueShared")
                 }
                 
                 
@@ -446,20 +446,20 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (D) Profile Photo
                 if object!["contentType"] as! String == "pp" {
                     
-                    // Make mediaPreview circular
-                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.layer.frame.size.width/2
-                    cell.mediaPreview.clipsToBounds = true
+                    // Make iconicPreview circular
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.layer.frame.size.width/2
+                    cell.iconicPreview.clipsToBounds = true
                     
                     
                     // Fetch Profile photo
-                    if let mediaPreview = object!["photoAsset"] as? PFFile {
-                        mediaPreview.getDataInBackground(block: {
+                    if let iconicPreview = object!["photoAsset"] as? PFFile {
+                        iconicPreview.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
-                                // Show mediaPreview
-                                cell.mediaPreview.isHidden = false
+                                // Show iconicPreview
+                                cell.iconicPreview.isHidden = false
                                 // Set media
-                                cell.mediaPreview.image = UIImage(data: data!)
+                                cell.iconicPreview.image = UIImage(data: data!)
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -472,9 +472,9 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
                     
-                    cell.mediaPreview.backgroundColor = UIColor.clear
-                    cell.mediaPreview.contentMode = .scaleAspectFit
-                    cell.mediaPreview.clipsToBounds = true
+                    cell.iconicPreview.backgroundColor = UIColor.clear
+                    cell.iconicPreview.contentMode = .scaleAspectFit
+                    cell.iconicPreview.clipsToBounds = true
                     
                     
                     // Fetch photo
@@ -483,10 +483,10 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                             (data: Data?, error: Error?) in
                             if error == nil {
                                 
-                                // Show mediaPreview
-                                cell.mediaPreview.isHidden = false
+                                // Show iconicPreview
+                                cell.iconicPreview.isHidden = false
                                 // Set media
-                                cell.mediaPreview.image = UIImage(data: data!)
+                                cell.iconicPreview.image = UIImage(data: data!)
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -500,33 +500,33 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
-                    // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
-                    cell.mediaPreview.clipsToBounds = true
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                    cell.iconicPreview.clipsToBounds = true
                     
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
                     
-                    // Set background color for mediaPreview
-                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set background color for iconicPreview
+                    cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.mediaPreview.image = UIImage(named: "SpacePost")
+                    cell.iconicPreview.image = UIImage(named: "SpacePost")
                 }
                 
                 
                 // (G) Video
                 if object!["contentType"] as! String == "vi" {
-                    // Make mediaPreview cornered square
-                    cell.mediaPreview.layer.cornerRadius = cell.mediaPreview.frame.size.width/2
-                    cell.mediaPreview.clipsToBounds = true
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                    cell.iconicPreview.clipsToBounds = true
                     
-                    // Show mediaPreview
-                    cell.mediaPreview.isHidden = false
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
                     
-                    // Set background color for mediaPreview
-                    cell.mediaPreview.backgroundColor = UIColor.clear
+                    // Set background color for iconicPreview
+                    cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.mediaPreview.image = UIImage(named: "igcVideo")
+                    cell.iconicPreview.image = UIImage(named: "igcVideo")
                 }
                 
                 // *************************************************************************************************************************

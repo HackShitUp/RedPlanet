@@ -17,7 +17,7 @@ import KILabel
 
 class OtherContentCell: UICollectionViewCell {
     
-    @IBOutlet weak var mediaPreview: PFImageView!
+    @IBOutlet weak var iconicPreview: PFImageView!
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var time: KILabel!
     @IBOutlet weak var rpUsername: KILabel!

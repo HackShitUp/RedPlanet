@@ -160,6 +160,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -178,7 +179,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 6
+            return 7
         } else {
             return 7
         }
@@ -233,18 +234,23 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             }
             
             if indexPath.row == 3 {
+                // Likes & Shares
+                let likedSharedVC = self.storyboard?.instantiateViewController(withIdentifier: "likedSharedVC") as! LikesAndShares
+                self.navigationController?.pushViewController(likedSharedVC, animated: true)
+            }
+            
+            if indexPath.row == 4 {
                 // Reset Password
                 let passwordVC = self.storyboard?.instantiateViewController(withIdentifier: "passwordVC") as! ResetPassword
                 self.navigationController?.pushViewController(passwordVC, animated: true)
             }
             
-            if indexPath.row == 4 {
+            if indexPath.row == 5 {
                 // Privacy
             }
             
-            if indexPath.row == 5 {
+            if indexPath.row == 6 {
                 // LOGOUT
-                
                 // Remove logged in user from app memory
                 PFUser.logOutInBackground(block: {
                     (error: Error?) in
@@ -252,8 +258,8 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                         // Remove logged in user from App Memory
                         UserDefaults.standard.removeObject(forKey: "username")
                         UserDefaults.standard.synchronize()
-
-                        DispatchQueue.main.async(execute: { 
+                        
+                        DispatchQueue.main.async(execute: {
                             // Logout
                             let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
                             self.present(logoutToStart, animated: true, completion: nil)
@@ -262,7 +268,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                         // Clear array
                         username.removeAll()
                     }
-
+                    
                 })
             }
             
