@@ -584,6 +584,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     func keyboardWillHide(notification: NSNotification) {
+        // Define keyboard frame size
+        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
