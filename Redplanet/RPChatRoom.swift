@@ -121,7 +121,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.includeKey("receiver")
         chats.includeKey("sender")
-        chats.order(byDescending: "createdAt")
+        chats.order(byAscending: "createdAt")
         chats.limit = self.page
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -527,6 +527,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if self.messageObjects.count != 0 {
+            let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
+            self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
+            self.tableView!.frame.origin.y -= self.keyboard.height
+        }
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         // Hide tabBarController
@@ -559,13 +568,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Raise Text View
-            self.frontView.frame.origin.y -= self.keyboard.height
-            
+            if self.tableView!.frame.origin.y == 0 {
+                // Scroll to bottom of tableView
+                if self.messageObjects.count != 0 {
+                    let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
+                    self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
+                    self.tableView!.frame.origin.y -= self.keyboard.height
+                }
+                
+                self.frontView.frame.origin.y -= self.keyboard.height
+            }
 
-            print("TABLEVIEW HEIGHT: \(self.tableView!.frame.size.height)")
-            print("NEWCHAT Y ORIGIN: \(self.newChat.frame.origin.y)")
-            print("FrontView y origin: \(self.frontView.frame.origin.y)")
-            print("Scroll view's frame: \(self.tableView.frame)")
         }
         
     }
@@ -575,11 +588,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // Lower Text View
-            self.frontView.frame.origin.y += self.keyboard.height
+            if self.tableView!.frame.origin.y != 0 {
+                self.tableView!.frame.origin.y += self.keyboard.height
+                self.frontView.frame.origin.y += self.keyboard.height
+            } else {
+                self.frontView.frame.origin.y += self.keyboard.height
+            }
 
-            
-            print("newchat frame: \(self.newChat.frame.origin.y)")
-            print("Scroll view's frame: \(self.tableView.frame)")
         }
     }
     

@@ -15,8 +15,7 @@ import CoreData
 var pageMenu : CAPSPageMenu?
 
 
-class Home: UIViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
-    
+class Home: UIViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()

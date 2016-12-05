@@ -270,7 +270,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 350
+        return UITableViewAutomaticDimension
     }
     
     

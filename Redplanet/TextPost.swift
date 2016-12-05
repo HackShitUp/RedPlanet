@@ -301,7 +301,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 250
+        return UITableViewAutomaticDimension
     }
     
     
