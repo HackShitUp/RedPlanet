@@ -14,7 +14,7 @@ import ParseUI
 import Bolts
 
 import KILabel
-
+import OneSignal
 
 class CommentsCell: UITableViewCell {
     
@@ -115,18 +115,29 @@ class CommentsCell: UITableViewCell {
             
         } else {
             // Like object
+            // (1) Likes
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!.username!
             likes["toUser"] = self.commentObject!.value(forKey: "byUser") as! PFUser
             likes["to"] = self.rpUsername.titleLabel!.text!
             likes["forObjectId"] = self.commentObject!.objectId!
-            likes.saveInBackground(block: {
+            // (2) Notifications
+            let notifications = PFObject(className: "Notifications")
+            notifications["fromUser"] = PFUser.current()!
+            notifications["from"] = PFUser.current()!.username!
+            notifications["toUser"] = self.commentObject!.value(forKey: "byUser") as! PFUser
+            notifications["to"] = self.rpUsername.titleLabel!.text!
+            notifications["forObjectId"] = self.commentObject!.objectId!
+            notifications["type"]  = "like co"
+            // (3) Save objects
+            var saveObjects = [PFObject]()
+            saveObjects.removeAll(keepingCapacity: false)
+            saveObjects.append(likes)
+            saveObjects.append(notifications)
+            PFObject.saveAll(inBackground: saveObjects, block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully saved like: \(likes)")
-                    
-                    
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
@@ -143,41 +154,32 @@ class CommentsCell: UITableViewCell {
                     UIView.animate(withDuration: 0.6 ,
                                    animations: {
                                     self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                        },
+                    },
                                    completion: { finish in
                                     UIView.animate(withDuration: 0.5){
                                         self.likeButton.transform = CGAffineTransform.identity
                                     }
                     })
                     
-                    
-                    
-                    // Send to <Notifications>
-                    let notifications = PFObject(className: "Notifications")
-                    notifications["fromUser"] = PFUser.current()!
-                    notifications["from"] = PFUser.current()!.username!
-                    notifications["toUser"] = self.commentObject!.value(forKey: "byUser") as! PFUser
-                    notifications["to"] = self.rpUsername.titleLabel!.text!
-                    notifications["forObjectId"] = self.commentObject!.objectId!
-                    notifications["type"]  = "like co"
-                    notifications.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Sent notification: \(notifications)")
-                            
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
+                    // Send push notification
+                    if let user = self.commentObject!.value(forKey: "byUser") as? PFUser {
+                        if user.value(forKey: "apnsId") != nil {
+                            // MARK: - OneSignal
+                            // Send push notification
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) liked your comment"],
+                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"]
+                                ]
+                            )
                         }
-                    })
-                    
+                    }
                     
                     
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
-            
         }
         
     }

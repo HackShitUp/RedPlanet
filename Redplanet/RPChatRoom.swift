@@ -66,8 +66,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     @IBAction func backButton(_ sender: AnyObject) {
         
         // Clear arrays
-        chatUserObject.removeAll(keepingCapacity: false)
-        chatUsername.removeAll(keepingCapacity: false)
+        chatUserObject.removeLast()
+        chatUsername.removeLast()
         
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
@@ -402,7 +402,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if chatUserObject.last!.value(forKey: "apnsId") != nil {
             OneSignal.postNotification(
                 ["contents":
-                    ["en": "\(PFUser.current()!.username!) screenshotted the conversation"],
+                    ["en": "\(PFUser.current()!.username!.uppercased()) screenshotted the conversation"],
                  "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
                 ]
             )
@@ -432,7 +432,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Set bool
         chatCamera = false
-        
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true

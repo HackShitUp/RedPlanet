@@ -68,6 +68,30 @@ class ProfilePhotoCell: UITableViewCell {
                             if error == nil {
                                 print("Successfully deleted like: \(object)")
                                 
+                                // Delete "Notifications"
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully deleted notification: \(object)")
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                                
+                                
                                 // Re-enable buttons
                                 self.likeButton.isUserInteractionEnabled = true
                                 self.likeButton.isEnabled = true
@@ -81,45 +105,14 @@ class ProfilePhotoCell: UITableViewCell {
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
-                                                           animations: {
-                                                            
-                                                            self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                                    },
-                                                           completion: { finish in
-                                                            UIView.animate(withDuration: 0.5){
-                                                                self.likeButton.transform = CGAffineTransform.identity
-                                                            }
-                                })
-                                
-                                // Save to notification
-                                let notifications = PFObject(className: "Notifications")
-                                notifications["fromUser"] = PFUser.current()!
-                                notifications["from"] = PFUser.current()!.username!
-                                notifications["to"] = self.rpUsername.text!
-                                notifications["toUser"] = otherObject.last!
-                                notifications["forObjectId"] = proPicObject.last!.objectId!
-                                notifications["type"] = "like pp"
-                                notifications.saveInBackground(block: {
-                                    (success: Bool, error: Error?) in
-                                    if success {
-                                        print("Successfully saved notificaiton: \(notifications)")
-                                        
-                                        
-                                        // MARK: - OneSignal
-                                        // Send push notification
-                                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                                            OneSignal.postNotification(
-                                                ["contents":
-                                                    ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
-                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
-                                                ]
-                                            )
-                                        }
-                                        
-                                        
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
+                                               animations: {
+                                                
+                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                                },
+                                               completion: { finish in
+                                                UIView.animate(withDuration: 0.5){
+                                                    self.likeButton.transform = CGAffineTransform.identity
+                                                }
                                 })
                                 
                                 
@@ -146,7 +139,38 @@ class ProfilePhotoCell: UITableViewCell {
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved like: \(likes)")
-                    
+
+                    // Save to notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["to"] = self.rpUsername.text!
+                    notifications["toUser"] = otherObject.last!
+                    notifications["forObjectId"] = proPicObject.last!.objectId!
+                    notifications["type"] = "like pp"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Successfully saved notificaiton: \(notifications)")
+                            
+                            
+                            // MARK: - OneSignal
+                            // Send push notification
+                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                    ]
+                                )
+                            }
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
@@ -161,38 +185,15 @@ class ProfilePhotoCell: UITableViewCell {
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
-                                               animations: {
-                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                        },
-                                               completion: { finish in
-                                                UIView.animate(withDuration: 0.5){
-                                                    self.likeButton.transform = CGAffineTransform.identity
-                                                }
-                    })
-
-
-                    // Delete "Notifications"
-                    let notifications = PFQuery(className: "Notifications")
-                    notifications.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
-                    notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                    notifications.findObjectsInBackground(block: {
-                        (objects: [PFObject]?, error: Error?) in
-                        if error == nil {
-                            for object in objects! {
-                                object.deleteInBackground(block: {
-                                    (success: Bool, error: Error?) in
-                                    if success {
-                                        print("Successfully deleted notification: \(object)")
-                                        
-                                    } else {
-                                        print(error?.localizedDescription as Any)
+                                   animations: {
+                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                    },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5){
+                                        self.likeButton.transform = CGAffineTransform.identity
                                     }
-                                })
-                            }
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
                     })
+
                     
                     
                     

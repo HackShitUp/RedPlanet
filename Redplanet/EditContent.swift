@@ -168,7 +168,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Text Post."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )
@@ -177,7 +177,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Photo."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )
@@ -186,7 +186,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Profile Photo."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Profile Photo."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )
@@ -195,7 +195,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Video."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )
@@ -205,7 +205,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Space Post."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Space Post."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )
@@ -215,7 +215,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!) tagged you in a Share."],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Share."],
                                                                      "include_player_ids": ["\(object["apnsId"] as! String)"]
                                                                     ]
                                                                 )

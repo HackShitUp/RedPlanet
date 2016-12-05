@@ -188,31 +188,7 @@ class SharedPostCell: UITableViewCell {
                             (success: Bool, error: Error?) in
                             if success {
                                 print("Successfully deleted like: \(object)")
-                                
-                                // Re-enable buttons
-                                self.likeButton.isUserInteractionEnabled = true
-                                self.likeButton.isEnabled = true
-                                
-                                
-                                // Change button title and image
-                                self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
-                                
-                                // Send Notification
-                                NotificationCenter.default.post(name: sharedPostNotification, object: nil)
-                                
-                                // Animate like button
-                                UIView.animate(withDuration: 0.6 ,
-                                               animations: {
-                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                                },
-                                               completion: { finish in
-                                                UIView.animate(withDuration: 0.5){
-                                                    self.likeButton.transform = CGAffineTransform.identity
-                                                }
-                                })
-                                
-                                
+
                                 
                                 // Delete "Notifications"
                                 let notifications = PFQuery(className: "Notifications")
@@ -237,6 +213,29 @@ class SharedPostCell: UITableViewCell {
                                     }
                                 })
                                 
+                                
+                                // Re-enable buttons
+                                self.likeButton.isUserInteractionEnabled = true
+                                self.likeButton.isEnabled = true
+                                
+                                
+                                // Change button title and image
+                                self.likeButton.setTitle("notLiked", for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                
+                                // Send Notification
+                                NotificationCenter.default.post(name: sharedPostNotification, object: nil)
+                                
+                                // Animate like button
+                                UIView.animate(withDuration: 0.6 ,
+                                               animations: {
+                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                                },
+                                               completion: { finish in
+                                                UIView.animate(withDuration: 0.5){
+                                                    self.likeButton.transform = CGAffineTransform.identity
+                                                }
+                                })
                                 
                                 
                                 
@@ -265,6 +264,41 @@ class SharedPostCell: UITableViewCell {
                     print("Successfully saved like \(likes)")
                     
                     
+                    
+                    
+                    // Save to notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["to"] = self.rpUsername.text!
+                    notifications["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = sharedObject.last!.objectId!
+                    notifications["type"] = "like sh"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Successfully saved notificaiton: \(notifications)")
+                            
+                            // MARK: - OneSignal
+                            // Send push notification
+                            if self.fromUserObject!.value(forKey: "apnsId") != nil {
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Shared Post"],
+                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"]
+                                    ]
+                                )
+                            }
+                            
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                    
+                    
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
@@ -286,39 +320,6 @@ class SharedPostCell: UITableViewCell {
                                     UIView.animate(withDuration: 0.5){
                                         self.likeButton.transform = CGAffineTransform.identity
                                     }
-                    })
-                    
-                    
-                    
-                    // Save to notification
-                    let notifications = PFObject(className: "Notifications")
-                    notifications["fromUser"] = PFUser.current()!
-                    notifications["from"] = PFUser.current()!.username!
-                    notifications["to"] = self.rpUsername.text!
-                    notifications["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
-                    notifications["forObjectId"] = sharedObject.last!.objectId!
-                    notifications["type"] = "like sh"
-                    notifications.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully saved notificaiton: \(notifications)")
-                            
-                            // MARK: - OneSignal
-                            // Send push notification
-                            if self.fromUserObject!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Share"],
-                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"]
-                                    ]
-                                )
-                            }
-                            
-                            
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
                     })
                     
                     
@@ -402,7 +403,7 @@ class SharedPostCell: UITableViewCell {
                                                                 // Send push notification
                                                                 OneSignal.postNotification(
                                                                     ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared your Post"],
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) re-shared your Shared Post"],
                                                                      "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"]
                                                                     ]
                                                                 )

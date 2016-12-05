@@ -35,67 +35,67 @@ class ContactsCell: UITableViewCell {
         // FRIEND /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if self.friendButton.titleLabel!.text! == "Friend" {
+            
+            // (1) Friends
             let friend = PFObject(className: "FriendMe")
             friend["frontFriend"] = PFUser.current()!
             friend["endFriend"] = self.friend
             friend["frontFriendName"] = PFUser.current()!.username!
             friend["endFriendName"] = self.rpUsername.text!
             friend["isFriends"] = false
-            friend.saveInBackground(block: {
+            // (2) Notifications
+            let notifications = PFObject(className: "Notifications")
+            notifications["fromUser"] = PFUser.current()!
+            notifications["toUser"] = self.friend
+            notifications["from"] = PFUser.current()!.username!
+            notifications["to"] = self.rpUsername.text!
+            notifications["type"] = "friend requested"
+            notifications["forObjectId"] = PFUser.current()!.objectId!
+            // (3) Objects to save
+            var saveObjects = [PFObject]()
+            saveObjects.removeAll(keepingCapacity: false)
+            saveObjects.append(friend)
+            saveObjects.append(notifications)
+            // (4) Save both objects simultaneously
+            PFObject.saveAll(inBackground: saveObjects, block: {
                 (success: Bool, error: Error?) in
                 if success {
                     
-                    // Send to Notifications
-                    let notifications = PFObject(className: "Notifications")
-                    notifications["fromUser"] = PFUser.current()!
-                    notifications["toUser"] = self.friend
-                    notifications["from"] = PFUser.current()!.username!
-                    notifications["to"] = self.rpUsername.text!
-                    notifications["type"] = "friend requested"
-                    notifications["forObjectId"] = PFUser.current()!.objectId!
-                    notifications.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully saved to Notifications: \(notifications)")
-                            
-                            
-                            // Change button's title and design
-                            self.friendButton.setTitle("Friend Requested", for: .normal)
-                            self.friendButton.setTitleColor(UIColor.white, for: .normal)
-                            self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-                            self.friendButton.layer.cornerRadius = 22.00
-                            self.friendButton.clipsToBounds = true
-                            
-                            
-                            // Re-enable buttons
-                            self.friendButton.isUserInteractionEnabled = true
-                            self.friendButton.isEnabled = true
-                            
-                            
-                            // Send push notificaiton
-                            if self.friend!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) sent you a friend request"],
-                                     "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
-                                    ]
-                                )
-                            }
-                            
-                            
-                            // Send to NotificationCenter
-                            NotificationCenter.default.post(name: contactsNotification, object: nil)
-                            
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
+                    print("Successfully saved objects: \(saveObjects)")
                     
+                    // Change button's title and design
+                    self.friendButton.setTitle("Friend Requested", for: .normal)
+                    self.friendButton.setTitleColor(UIColor.white, for: .normal)
+                    self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    self.friendButton.layer.cornerRadius = 22.00
+                    self.friendButton.clipsToBounds = true
+                    
+                    
+                    // Re-enable buttons
+                    self.friendButton.isUserInteractionEnabled = true
+                    self.friendButton.isEnabled = true
+                    
+                    
+                    // Send push notificaiton
+                    if self.friend!.value(forKey: "apnsId") != nil {
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "\(PFUser.current()!.username!.uppercased()) sent you a friend request"],
+                             "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
+                            ]
+                        )
+                    }
+                    
+                    
+                    // Send to NotificationCenter
+                    NotificationCenter.default.post(name: contactsNotification, object: nil)
+
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+
+            
         }
         
         

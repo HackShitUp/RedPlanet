@@ -104,6 +104,31 @@ class SpacePostCell: UITableViewCell {
                             if success {
                                 print("Successfully deleted like: \(object)")
                                 
+                                // Delete "Notifications"
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("forObjectId", equalTo: spaceObject.last!.objectId!)
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully deleted notification: \(object)")
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                                
+                                
+                                
                                 // Re-enable buttons
                                 self.likeButton.isUserInteractionEnabled = true
                                 self.likeButton.isEnabled = true
@@ -127,30 +152,6 @@ class SpacePostCell: UITableViewCell {
                                                 }
                                 })
                                 
-                                
-                                
-                                // Delete "Notifications"
-                                let notifications = PFQuery(className: "Notifications")
-                                notifications.whereKey("forObjectId", equalTo: spaceObject.last!.objectId!)
-                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                notifications.findObjectsInBackground(block: {
-                                    (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            object.deleteInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully deleted notification: \(object)")
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
                                 
                                 
                                 
@@ -180,31 +181,6 @@ class SpacePostCell: UITableViewCell {
                     print("Successfully saved like \(likes)")
                     
                     
-                    // Re-enable buttons
-                    self.likeButton.isUserInteractionEnabled = true
-                    self.likeButton.isEnabled = true
-                    
-                    
-                    // Change button title and image
-                    self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
-                    
-                    // Send Notification
-                    NotificationCenter.default.post(name: spaceNotification, object: nil)
-                    
-                    // Animate like button
-                    UIView.animate(withDuration: 0.6 ,
-                                   animations: {
-                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-                    },
-                                   completion: { finish in
-                                    UIView.animate(withDuration: 0.5){
-                                        self.likeButton.transform = CGAffineTransform.identity
-                                    }
-                    })
-                    
-                    
-                    
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
@@ -228,16 +204,39 @@ class SpacePostCell: UITableViewCell {
                                     ]
                                 )
                             }
-                            
-                            
-                            
-                            
-                            
+
                             
                         } else {
                             print(error?.localizedDescription as Any)
                         }
                     })
+                    
+                    
+                    
+                    
+                    // Re-enable buttons
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.likeButton.isEnabled = true
+                    
+                    
+                    // Change button title and image
+                    self.likeButton.setTitle("liked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: spaceNotification, object: nil)
+                    
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: {
+                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                    },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5){
+                                        self.likeButton.transform = CGAffineTransform.identity
+                                    }
+                    })
+                    
                     
                     
                     

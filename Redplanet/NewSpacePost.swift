@@ -149,7 +149,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                                         // Send push notification
                                                         OneSignal.postNotification(
                                                             ["contents":
-                                                                ["en": "\(PFUser.current()!.username!) tagged you in a space post"],
+                                                                ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
                                                              "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
                                                             ]
                                                         )
@@ -178,7 +178,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         if otherObject.last!.value(forKey: "apnsId") != nil {
                             OneSignal.postNotification(
                                 ["contents":
-                                    ["en": "\(PFUser.current()!.username!.uppercased()) wrote in your Space"],
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) wrote on your Space"],
                                  "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
                                 ])
                             

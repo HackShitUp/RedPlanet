@@ -135,6 +135,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             // Clear chat
             self.newComment.text!.removeAll()
             
+            // Save comment
             let comments = PFObject(className: "Comments")
             comments["byUser"] = PFUser.current()!
             comments["byUsername"] = PFUser.current()!.username!
@@ -198,7 +199,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                             // Send push notification
                                                             OneSignal.postNotification(
                                                                 ["contents":
-                                                                    ["en": "\(PFUser.current()!.username!) tagged you in a comment"],
+                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a comment"],
                                                                  "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
                                                                 ]
                                                             )
