@@ -51,7 +51,11 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Initiaize AppDelegate
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    
     @IBAction func backButton(_ sender: Any) {
+        // Quyery relationships
+        appDelegate.queryRelationships()
+        
         // POP VC
         self.navigationController!.popViewController(animated: true)
     }
