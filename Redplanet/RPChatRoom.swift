@@ -446,8 +446,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)..."
         
         // Add notifications to hide chatBoxx
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
@@ -550,6 +550,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Resign first responder
         self.newChat.resignFirstResponder()
+        
+        // Remove observers
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
     }
 
     override func didReceiveMemoryWarning() {
@@ -571,12 +575,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             if self.tableView!.frame.origin.y == 0 {
                 // Scroll to bottom of tableView
                 if self.messageObjects.count != 0 {
+                    // Count tableView cells
                     let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
+                    // Scroll to the bottom of the tableview
                     self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
+                    // Move tableView up
                     self.tableView!.frame.origin.y -= self.keyboard.height
                 }
                 
+                // Move chatbox up
                 self.frontView.frame.origin.y -= self.keyboard.height
+                
             }
 
         }
@@ -592,9 +601,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Lower Text View
             if self.tableView!.frame.origin.y != 0 {
+                // Move tableView down
                 self.tableView!.frame.origin.y += self.keyboard.height
+                // Move frontView down
                 self.frontView.frame.origin.y += self.keyboard.height
             } else {
+                // Move tableView down
+                self.tableView!.frame.origin.y += self.keyboard.height
+                // Move frontView down
                 self.frontView.frame.origin.y += self.keyboard.height
             }
 

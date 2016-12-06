@@ -4147,7 +4147,7 @@
                                                 <constraint firstAttribute="width" constant="301" id="VW3-TU-agW"/>
                                                 <constraint firstAttribute="height" constant="20" id="jd3-ng-jXq"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
