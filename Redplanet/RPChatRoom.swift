@@ -198,7 +198,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Reload data
                     self.queryChats()
                     
-                    
                 } else {
                     print(error?.localizedDescription as Any)
 
@@ -533,7 +532,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if self.messageObjects.count != 0 {
             let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
             self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
-            self.tableView!.frame.origin.y -= self.keyboard.height
         }
     }
     
@@ -583,11 +581,23 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     self.tableView!.frame.origin.y -= self.keyboard.height
                 }
                 
-                // Move chatbox up
-                self.frontView.frame.origin.y -= self.keyboard.height
-                
+            } else {
+                if self.messageObjects.count != 0 {
+                    // Count tableView cells
+                    let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
+                    // Scroll to the bottom of the tableview
+                    self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
+                    // Move tableView up
+                    self.tableView!.frame.origin.y -= self.keyboard.height
+                }
             }
-
+            
+            // Move chatbox up
+            self.frontView.frame.origin.y -= self.keyboard.height
+            
+            print("TABLEVIEW ORIGIN: \(self.tableView!.frame.origin.y)")
+            print("TABLEVIEW HEIGHT: \(self.tableView!.frame.size.height)")
+            print("KEYBOARD HEIGHT: \(self.keyboard.height)")
         }
         
     }
@@ -622,6 +632,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if (text == "\n") {
             // Send chat
             self.sendChat()
+            
+            if self.messageObjects.count != 0 {
+                // Count tableView cells
+                let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
+                // Scroll to the bottom of the tableview
+                self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
+            }
             
             return false
         } else {
