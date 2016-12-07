@@ -727,17 +727,16 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         
         // Set background colors
+
         // Light Red
-        delete1.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        delete2.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        // Baby blue
+        delete1.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        delete2.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        // Dark Gray
         edit.backgroundColor = UIColor.darkGray
-        //        edit.backgroundColor = UIColor(red:0.45, green:0.69, blue:0.86, alpha:1.0)
-        // Light Gray
+        // Gray
         views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
-        
         
         // Return options
         if spaceObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {

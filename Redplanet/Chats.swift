@@ -570,13 +570,15 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     // Mark: UITableviewDelegate methods
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
+        let chatName = self.finalChatObjects[indexPath.row].value(forKey: "username") as! String
+        
         // Swipe to Delete Messages
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
 
             // Present alert
             let alert = UIAlertController(title: "Delete Conversation Forever?",
-                                          message: "You AND \(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String) cannot restore this conversation once it's forever deleted.",
+                                          message: "Both you and \(chatName.uppercased()) cannot restore this conversation once it's deleted.",
                 preferredStyle: .alert)
             
             let yes = UIAlertAction(title: "yes",

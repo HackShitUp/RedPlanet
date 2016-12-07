@@ -779,12 +779,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Set background colors
         
         // Light Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        // Light Gray
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        // Gray
         views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
-        
         
         if sharedObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
             return [delete, views]

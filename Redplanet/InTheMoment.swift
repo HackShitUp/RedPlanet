@@ -106,7 +106,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     })
         })
         
-        let views = UIAlertAction(title: "🙈\nViews",
+        let views = UIAlertAction(title: "🙈 Views",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
                                     

@@ -149,6 +149,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Reload data
             self.tableView!.reloadData()
             
+            // Run in main thread...
             DispatchQueue.main.async(execute: {
                 // Scroll to the bottom
                 if self.messageObjects.count > 0 {
@@ -546,6 +547,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        // Run in main thread...
+        DispatchQueue.main.async(execute: {
+            // Scroll to the bottom
+            if self.messageObjects.count != 0 && self.messageObjects.count > 8 {
+                self.tableView!.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
+            }
+        })
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -573,8 +581,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
-
             
+            // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
                 
                 // Scroll to the bottom
@@ -588,9 +596,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 // Move chatbox up
                 self.frontView.frame.origin.y -= self.keyboard.height
+                
             }
- 
+            
         }
+        
     }
     
     func keyboardWillHide(notification: NSNotification) {

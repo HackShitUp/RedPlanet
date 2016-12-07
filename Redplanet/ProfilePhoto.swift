@@ -626,15 +626,12 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         
         // Set background colors
-        
-        // Set background colors
-        
+
         // Light Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        // Baby blue
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        // Dark Gray
         edit.backgroundColor = UIColor.darkGray
-        //        edit.backgroundColor = UIColor(red:0.45, green:0.69, blue:0.86, alpha:1.0)
-        // Light Gray
+        // Gray
         views.backgroundColor = UIColor.gray
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
