@@ -44,6 +44,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
         let likesAndShares = PFQuery(className: "Newsfeeds")
         likesAndShares.includeKey("byUser")
         likesAndShares.includeKey("pointObject")
+        likesAndShares.order(byDescending: "createdAt")
         likesAndShares.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -114,6 +115,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
         // Fetch likes
         let likes = PFQuery(className: "Likes")
         likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {

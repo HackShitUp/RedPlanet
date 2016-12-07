@@ -167,7 +167,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Photo\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Photo\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -485,21 +485,12 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Photo
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
-                                            
-                                            // Ask before deleting???
+                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
                                             
                                             // Delete content
-//                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-//                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-//                                            newsfeeds.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
-//                                            newsfeeds.whereKey("pointObject", equalTo: photoAssetObject.last!)
-                                            
-                                            
-                                            
                                             let content = PFQuery(className: "Newsfeeds")
                                             content.whereKey("byUser", equalTo: PFUser.current()!)
                                             content.whereKey("objectId", equalTo: photoAssetObject.last!.objectId!)
@@ -545,7 +536,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "Edit") { (UITableViewRowAction, indexPath) in
+                                        title: "\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Append object
@@ -567,7 +558,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(photoAssetObject.last!)
                                             

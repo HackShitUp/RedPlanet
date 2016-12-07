@@ -161,7 +161,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Shared Post\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Shared Post\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -655,7 +655,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Shared Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -704,7 +704,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(sharedObject.last!)
                                             

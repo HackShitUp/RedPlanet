@@ -148,6 +148,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Reload data
             self.tableView!.reloadData()
+            
+            DispatchQueue.main.async(execute: {
+                // Scroll to the bottom
+                if self.messageObjects.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
+            })
+            
         })
     }
     
@@ -203,6 +212,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
                     // Reload data
                     self.queryChats()
+                    
                 }
             }
 
@@ -445,8 +455,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)..."
         
         // Add notifications to hide chatBoxx
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
@@ -520,20 +530,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 print(error?.localizedDescription as Any)
             }
         })
-        
-        
-        
+
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if self.messageObjects.count != 0 {
-            let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
-            self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
-        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         // Hide tabBarController
@@ -543,6 +542,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -550,8 +555,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.newChat.resignFirstResponder()
         
         // Remove observers
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: self.view.window)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: self.view.window)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -568,60 +573,36 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
+
             
-            // Raise Text View
             if self.tableView!.frame.origin.y == 0 {
-                // Scroll to bottom of tableView
-                if self.messageObjects.count != 0 {
-                    // Count tableView cells
-                    let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
-                    // Scroll to the bottom of the tableview
-                    self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
-                    // Move tableView up
-                    self.tableView!.frame.origin.y -= self.keyboard.height
+                
+                // Scroll to the bottom
+                if self.messageObjects.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
                 }
                 
-            } else {
-                if self.messageObjects.count != 0 {
-                    // Count tableView cells
-                    let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
-                    // Scroll to the bottom of the tableview
-                    self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
-                    // Move tableView up
-                    self.tableView!.frame.origin.y -= self.keyboard.height
-                }
+                // Move tableView up
+                self.tableView!.frame.origin.y -= self.keyboard.height
+                
+                // Move chatbox up
+                self.frontView.frame.origin.y -= self.keyboard.height
             }
-            
-            // Move chatbox up
-            self.frontView.frame.origin.y -= self.keyboard.height
-            
-            print("TABLEVIEW ORIGIN: \(self.tableView!.frame.origin.y)")
-            print("TABLEVIEW HEIGHT: \(self.tableView!.frame.size.height)")
-            print("KEYBOARD HEIGHT: \(self.keyboard.height)")
+ 
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
         keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
         
-        // Move UI up
-        UIView.animate(withDuration: 0.4) { () -> Void in
-            
-            // Lower Text View
-            if self.tableView!.frame.origin.y != 0 {
-                // Move tableView down
-                self.tableView!.frame.origin.y += self.keyboard.height
-                // Move frontView down
-                self.frontView.frame.origin.y += self.keyboard.height
-            } else {
-                // Move tableView down
-                self.tableView!.frame.origin.y += self.keyboard.height
-                // Move frontView down
-                self.frontView.frame.origin.y += self.keyboard.height
-            }
+        if self.tableView!.frame.origin.y != 0 {
+            // Move table view up
+            self.tableView!.frame.origin.y += self.keyboard.height
 
+            // Move chatbox up
+            self.frontView.frame.origin.y += self.keyboard.height
         }
     }
     
@@ -632,17 +613,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if (text == "\n") {
             // Send chat
             self.sendChat()
-            
-            if self.messageObjects.count != 0 {
-                // Count tableView cells
-                let bottomPath = IndexPath(row: self.messageObjects.count - 1, section: 0)
-                // Scroll to the bottom of the tableview
-                self.tableView.scrollToRow(at: bottomPath, at: .top, animated: true)
-            }
-            
+
             return false
+            
         } else {
             return true
+            
         }
     }
     
@@ -663,7 +639,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
     // MARK: - UITableViewDataSource and Delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("Number of cells: \(self.messageObjects.count)")
         return self.messageObjects.count
     }
     

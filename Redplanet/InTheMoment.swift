@@ -61,10 +61,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     // Show Progress
                                     SVProgressHUD.show()
                                 
-//                                    let newsfeeds = PFQuery(className: "Newsfeeds")
-//                                    newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-//                                    newsfeeds.whereKey("objectId", equalTo: itmObject.last!.objectId!)
-                                    
+                                    // Shared and og content
                                     let content = PFQuery(className: "Newsfeeds")
                                     content.whereKey("byUser", equalTo: PFUser.current()!)
                                     content.whereKey("objectId", equalTo: itmObject.last!.objectId!)
@@ -109,7 +106,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     })
         })
         
-        let views = UIAlertAction(title: "Views",
+        let views = UIAlertAction(title: "🙈\nViews",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
                                     

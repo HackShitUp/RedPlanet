@@ -181,7 +181,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Space Post\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Space Post\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -524,7 +524,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // (1) Delete Space Post
         // BY USER
         let delete1 = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -580,7 +580,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Delete Space Post
         let delete2 = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -635,7 +635,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "Edit") { (UITableViewRowAction, indexPath) in
+                                        title: "\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Append object
@@ -654,7 +654,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(spaceObject.last!)
                                             

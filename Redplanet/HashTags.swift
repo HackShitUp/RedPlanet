@@ -546,7 +546,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(self.hashtagObjects[indexPath.row])
                                             

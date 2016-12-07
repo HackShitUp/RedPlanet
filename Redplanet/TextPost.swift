@@ -213,7 +213,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Text Post\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Text Post\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -501,7 +501,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                              title: "Delete") { (UITableViewRowAction, indexPath) in
+                                              title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                                 
                                             
                                             // Show Progress
@@ -553,7 +553,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                         title: "Edit") { (UITableViewRowAction, indexPath) in
+                                         title: "\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Append object
@@ -572,7 +572,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                        title: "Views") { (UITableViewRowAction, indexPath) in
+                                        title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(textPostObject.last!)
                                             
@@ -648,7 +648,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Set background colors
         
         // Light Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
+//        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
+        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
         // Baby blue
         edit.backgroundColor = UIColor.darkGray
         // Light Gray

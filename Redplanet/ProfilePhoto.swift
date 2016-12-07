@@ -157,7 +157,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Profile Photo\n•Swipe right to leave.\n•Swipe left for Views 👁.",
+            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Profile Photo\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -400,7 +400,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Profile Photo
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             /*
                                             (1) If currentUser is trying to delete his/her's most RECENT Profile Photo...
@@ -474,10 +474,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                     } else {
                                                         
                                                         // Delete content
-//                                                        let newsfeeds = PFQuery(className: "Newsfeeds")
-//                                                        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-//                                                        newsfeeds.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
-                                                        
                                                         let content = PFQuery(className: "Newsfeeds")
                                                         content.whereKey("byUser", equalTo: PFUser.current()!)
                                                         content.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
@@ -541,7 +537,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "Edit") { (UITableViewRowAction, indexPath) in
+                                        title: "\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             // Append object
                                             editObjects.append(proPicObject.last!)
@@ -558,7 +554,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Views
         let views = UITableViewRowAction(style: .normal,
-                                         title: "Views") { (UITableViewRowAction, indexPath) in
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
                                             // Append object
                                             viewsObject.append(proPicObject.last!)
                                             
