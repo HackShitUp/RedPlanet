@@ -18,7 +18,7 @@ import Parse
 import ParseUI
 import Bolts
 import OneSignal
-
+import Mixpanel
 
 // Array to hold photo from library
 var shareMediaAsset = [PHAsset]()
@@ -211,6 +211,11 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Function to share photo
     func shareMedia() {
+        
+        // MARK: - Mixpanel
+        Mixpanel.mainInstance().track(event: "Shared Photo",
+                                      properties: ["Username":"\(PFUser.current()!.username!)"]
+        )
         
         // Determine Content Type
         if mediaType == "photo" {

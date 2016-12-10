@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import Mixpanel
 
 // Array to hold other user's relationships
 var oFriends = [PFObject]()
@@ -124,6 +125,12 @@ class OtherUserHeader: UICollectionReusableView {
     
     // FRIEND ACTION
     @IBAction func friendUser(_ sender: Any) {
+        
+        Mixpanel.mainInstance().track(event: "Connected",
+                                      properties: ["Relationship Type" : "Friend"]
+        )
+        
+        
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -202,6 +209,11 @@ class OtherUserHeader: UICollectionReusableView {
     
     // FOLLOW ACTION
     @IBAction func followUser(_ sender: Any) {
+        // MARK: - Mixpanel Analytics
+        Mixpanel.mainInstance().track(event: "Connected",
+                                      properties: ["Relationship Type" : "Follow"]
+        )
+        
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -354,6 +366,11 @@ class OtherUserHeader: UICollectionReusableView {
         // (5A) Sent Follow Request
         // (5B) Received Follow Request
     @IBAction func relationAction(_ sender: Any) {
+        
+        Mixpanel.mainInstance().track(event: "Connected",
+                                      properties: ["Relationship Type" : "Follow"]
+        )
+        
         // (1)
         // ****************************************************************************************************************************
         // ============================================================================================================================

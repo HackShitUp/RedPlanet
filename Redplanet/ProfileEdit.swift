@@ -14,8 +14,7 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
-
-
+import Mixpanel
 
 // Array to hold profile photo's caption
 var profilePhotoCaption = [String]()
@@ -146,6 +145,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                             (success: Bool, error: Error?) in
                             if success {
                                 print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
+                                
+                                // MARK: - Mixpanel
+                                Mixpanel.mainInstance().track(event: "Shared Profile Photo",
+                                                              properties: ["Username":"\(PFUser.current()!.username!)"]
+                                )
                                 
                                 // Dismiss Progress
                                 SVProgressHUD.dismiss()

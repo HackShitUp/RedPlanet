@@ -58,229 +58,244 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // Function to save changes
     func saveChanges(sender: UIButton) {
         
-        
-        // Variable to hold content type for convenience
-        var contentTypeString: String?
-        
-        // Show Progress
-        SVProgressHUD.show()
-        
-        
-        // Fetch object
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("objectId", equalTo: editObjects.last!.objectId!)
-        newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-        newsfeeds.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    
-                    // Set contentTypeString
-                    contentTypeString = object["contentType"] as! String
-                    
-                    // Found object
-                    object["textPost"] = self.textPost.text!
-                    object.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully saved changes")
-                            
-                            
-                            // Check for hashtags
-                            // and user mentions
-                            let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-                            
-                            
-                            // Define #word
-                            for var word in words {
+        if self.textPost.text!.isEmpty {
+            
+            let alert = UIAlertController(title: "Changes Failed",
+                                          message: "You cannot save changes with no text.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            
+            alert.view.tintColor = UIColor.black
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            
+            
+        } else {
+            // Variable to hold content type for convenience
+            var contentTypeString: String?
+            
+            // Show Progress
+            SVProgressHUD.show()
+            
+            
+            // Fetch object
+            let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.whereKey("objectId", equalTo: editObjects.last!.objectId!)
+            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+            newsfeeds.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Set contentTypeString
+                        contentTypeString = object["contentType"] as! String
+                        
+                        // Found object
+                        object["textPost"] = self.textPost.text!
+                        object.saveInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully saved changes")
                                 
                                 
-                                // #####################
-                                if word.hasPrefix("#") {
-                                    // Cut all symbols
-                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                // Check for hashtags
+                                // and user mentions
+                                let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                                
+                                
+                                // Define #word
+                                for var word in words {
                                     
-                                    // Save hashtag to server
-                                    let hashtags = PFObject(className: "Hashtags")
-                                    hashtags["hashtag"] = word.lowercased()
-                                    hashtags["userHash"] = "#" + word.lowercased()
-                                    hashtags["by"] = PFUser.current()!.username!
-                                    hashtags["pointUser"] = PFUser.current()!
-                                    hashtags["forObjectId"] =  object.objectId!
-                                    hashtags.saveInBackground(block: {
-                                        (success: Bool, error: Error?) in
-                                        if success {
-                                            print("#\(word) has been saved!")
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    })
-                                }
-                                // end #
-                                
-                                
-                                
-                                // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                                if word.hasPrefix("@") {
-                                    // Cut all symbols
-                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
                                     
-                                    print("The user's username to notify is: \(word)")
-                                    // Search for user
-                                    let theUsername = PFQuery(className: "_User")
-                                    theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                                    
-                                    let realName = PFQuery(className: "_User")
-                                    realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                                    
-                                    let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                                    mention.findObjectsInBackground(block: {
-                                        (objects: [PFObject]?, error: Error?) in
-                                        if error == nil {
-                                            for object in objects! {
-                                                print("The user is:\(object)")
-                                                
-                                                
-                                                // Variable
-                                                
-                                                // Send notification to user
-                                                let notifications = PFObject(className: "Notifications")
-                                                notifications["from"] = PFUser.current()!.username!
-                                                notifications["fromUser"] = PFUser.current()
-                                                notifications["to"] = word
-                                                notifications["toUser"] = object
-                                                notifications["type"] = "tag \(contentTypeString!)"
-                                                notifications["forObjectId"] = object.objectId!
-                                                notifications.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        
-                                                        print("Successfully sent notification: \(notifications)")
-                                                        
-                                                        
-                                                        // If user's apnsId is not nil
-                                                        if object["apnsId"] != nil {
-                                                            // MARK: - OneSignal
-                                                            
-                                                            if contentTypeString! == "tp" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                            }
-                                                            if contentTypeString! == "ph" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                            }
-                                                            if contentTypeString! == "pp" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Profile Photo."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                            }
-                                                            if contentTypeString! == "vi" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                                
-                                                            }
-                                                            if contentTypeString! == "sp" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Space Post."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                                
-                                                            }
-                                                            if contentTypeString! == "sh" {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Share."],
-                                                                     "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                    ]
-                                                                )
-                                                            }
-                                                        }
-                                                        
-                                                        
-                                                        
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                                
-                                                
+                                    // #####################
+                                    if word.hasPrefix("#") {
+                                        // Cut all symbols
+                                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                        word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                        
+                                        // Save hashtag to server
+                                        let hashtags = PFObject(className: "Hashtags")
+                                        hashtags["hashtag"] = word.lowercased()
+                                        hashtags["userHash"] = "#" + word.lowercased()
+                                        hashtags["by"] = PFUser.current()!.username!
+                                        hashtags["pointUser"] = PFUser.current()!
+                                        hashtags["forObjectId"] =  object.objectId!
+                                        hashtags.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("#\(word) has been saved!")
+                                            } else {
+                                                print(error?.localizedDescription as Any)
                                             }
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                            print("Couldn't find the user...")
-                                        }
-                                    })
+                                        })
+                                    }
+                                    // end #
                                     
-                                } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                                    
+                                    
+                                    // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                                    if word.hasPrefix("@") {
+                                        // Cut all symbols
+                                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                        word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                        
+                                        print("The user's username to notify is: \(word)")
+                                        // Search for user
+                                        let theUsername = PFQuery(className: "_User")
+                                        theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                                        
+                                        let realName = PFQuery(className: "_User")
+                                        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                                        
+                                        let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+                                        mention.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    print("The user is:\(object)")
+                                                    
+                                                    
+                                                    // Variable
+                                                    
+                                                    // Send notification to user
+                                                    let notifications = PFObject(className: "Notifications")
+                                                    notifications["from"] = PFUser.current()!.username!
+                                                    notifications["fromUser"] = PFUser.current()
+                                                    notifications["to"] = word
+                                                    notifications["toUser"] = object
+                                                    notifications["type"] = "tag \(contentTypeString!)"
+                                                    notifications["forObjectId"] = object.objectId!
+                                                    notifications.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            
+                                                            print("Successfully sent notification: \(notifications)")
+                                                            
+                                                            
+                                                            // If user's apnsId is not nil
+                                                            if object["apnsId"] != nil {
+                                                                // MARK: - OneSignal
+                                                                
+                                                                if contentTypeString! == "tp" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
+                                                                if contentTypeString! == "ph" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
+                                                                if contentTypeString! == "pp" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Profile Photo."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
+                                                                if contentTypeString! == "vi" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                    
+                                                                }
+                                                                if contentTypeString! == "sp" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Space Post."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                    
+                                                                }
+                                                                if contentTypeString! == "sh" {
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Share."],
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                        ]
+                                                                    )
+                                                                }
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+                                                    
+                                                    
+                                                }
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                print("Couldn't find the user...")
+                                            }
+                                        })
+                                        
+                                    } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                                }
+                                
+                                
+                                
+                                
+                                
+                                
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                
+                                // Dismiss Progress
+                                SVProgressHUD.dismiss()
                             }
-
-                            
-                            
-                            
-                            
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Dismiss Progress
-                            SVProgressHUD.dismiss()
-                        }
-                    })
+                        })
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
                 }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-            }
-        })
-        
-        
-        
-        // Dismiss Progress
-        SVProgressHUD.dismiss()
-        
-        // Pop view controller
-        self.navigationController?.popViewController(animated: true)
-        
-        
-        // Send to Text Post
-        NotificationCenter.default.post(name: photoNotification, object: nil)
-        
-        // Send to Photo Asset
-        NotificationCenter.default.post(name: textPostNotification, object: nil)
-        
-        // Send to Profile Photo
-        NotificationCenter.default.post(name: profileNotification, object: nil)
-        
+            })
+            
+            
+            
+            // Dismiss Progress
+            SVProgressHUD.dismiss()
+            
+            // Pop view controller
+            self.navigationController?.popViewController(animated: true)
+            
+            
+            // Send to Text Post
+            NotificationCenter.default.post(name: photoNotification, object: nil)
+            
+            // Send to Photo Asset
+            NotificationCenter.default.post(name: textPostNotification, object: nil)
+            
+            // Send to Profile Photo
+            NotificationCenter.default.post(name: profileNotification, object: nil)
+        }
         
     }
     

@@ -14,10 +14,7 @@ import Parse
 import ParseUI
 import Bolts
 import OneSignal
-
-
-
-
+import Mixpanel
 
 class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
@@ -48,11 +45,17 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     // Share
     func postTextPost() {
         
+        // MARK: - Mixpanel
+        Mixpanel.mainInstance().track(event: "Shared Text Post",
+                                      properties: ["Username":"\(PFUser.current()!.username!)"]
+        )
+        
+        
         // Check if textView is empty
         if textView.text!.isEmpty {
             
             let alert = UIAlertController(title: "No Text Post?",
-                                          message: "Share your thoughts within 200 characters about anything.",
+                                          message: "Share your thoughts within 500 characters about anything.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
                                    style: .default,

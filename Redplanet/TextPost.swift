@@ -650,7 +650,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Set background colors
         /*
-        // Light Red
+        // Red
         delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Grey
         edit.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
@@ -669,6 +669,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Yellow
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+        
         
         
         if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
