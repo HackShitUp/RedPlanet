@@ -1015,7 +1015,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // (3) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
+                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
                                                                           message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
@@ -1059,7 +1059,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Set background images
         // Red
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Baby blue
         like.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
         // Yellow

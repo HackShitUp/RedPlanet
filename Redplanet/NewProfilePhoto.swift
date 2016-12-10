@@ -213,7 +213,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         
         // Design profile photo's borders and border colors
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+        self.rpUserProPic.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         self.rpUserProPic.layer.borderWidth = 1.0
         self.rpUserProPic.clipsToBounds = true
         

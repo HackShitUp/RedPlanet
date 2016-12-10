@@ -38,6 +38,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     
     @IBAction func backButton(_ sender: AnyObject) {
+        // Remove last
+        textPostObject.removeLast()
+        
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
     }
@@ -501,7 +504,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                              title: "\nDelete") { (UITableViewRowAction, indexPath) in
+                                              title: "X\nDelete") { (UITableViewRowAction, indexPath) in
                                                 
                                             
                                             // Show Progress
@@ -553,7 +556,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                         title: "\nEdit") { (UITableViewRowAction, indexPath) in
+                                         title: "🔩 \nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Append object
@@ -585,7 +588,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Report Content
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
+                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
                                                                           message: "Please provide your reason for reporting \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post",
@@ -646,24 +649,33 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         // Set background colors
-        
+        /*
         // Light Red
-//        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        // Baby blue
-        edit.backgroundColor = UIColor.darkGray
-        // Light Gray
-        views.backgroundColor = UIColor.gray
+        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        // Grey
+        edit.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
         // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        views.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+        // Blue
+        report.backgroundColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+        */
         
-
+        
+        // Super Dark Gray
+        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
+        // Dark Gray
+        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
+        // Red
+        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        // Yellow
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+        
+        
         if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
             return [delete, edit, views]
         } else {
             return [report]
         }
-        
 
         
         

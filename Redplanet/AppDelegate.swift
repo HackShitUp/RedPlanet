@@ -43,7 +43,7 @@ YELLOW:
 UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
  
 RED:
-UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
 
 #ff004f
  
@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 let banner = Banner(title: "\(fullMessage!)",
                                                     subtitle: "",
                                                     image: UIImage(named: "RedplanetLogo"),
-                                                    backgroundColor: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                                                    backgroundColor: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                                                 )
                                                 banner.dismissesOnTap = true
                                                 banner.show(duration: 3.0)
@@ -298,7 +298,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-            masterTab.tabBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+            masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             self.window?.makeKeyAndVisible()
             window?.rootViewController = masterTab
             

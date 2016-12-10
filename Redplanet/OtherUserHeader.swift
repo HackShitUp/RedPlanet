@@ -1361,17 +1361,17 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         self.friendButton.backgroundColor = UIColor.white
-        self.friendButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+        self.friendButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
         self.friendButton.layer.borderWidth = 3.00
         self.friendButton.layer.cornerRadius = 22.00
-        self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+        self.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         self.friendButton.clipsToBounds = true
         
         self.followButton.backgroundColor = UIColor.white
-        self.followButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+        self.followButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
         self.followButton.layer.borderWidth = 4.00
         self.followButton.layer.cornerRadius = 22.00
-        self.followButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+        self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         self.followButton.clipsToBounds = true
         
         

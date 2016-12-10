@@ -52,7 +52,7 @@ class ContactsCell: UITableViewCell {
                     // Change button's title and design
                     self.friendButton.setTitle("Friend Requested", for: .normal)
                     self.friendButton.setTitleColor(UIColor.white, for: .normal)
-                    self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                    self.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                     self.friendButton.layer.cornerRadius = 22.00
                     self.friendButton.clipsToBounds = true
                     
@@ -142,10 +142,10 @@ class ContactsCell: UITableViewCell {
                                                                 
                                                                 // Set user's friends button
                                                                 self.friendButton.setTitle("Friend", for: .normal)
-                                                                self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                self.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                                                                 self.friendButton.backgroundColor = UIColor.white
                                                                 self.friendButton.layer.cornerRadius = 22.00
-                                                                self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                self.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                                                                 self.friendButton.layer.borderWidth = 2.00
                                                                 self.friendButton.clipsToBounds = true
                                                                 
@@ -170,10 +170,10 @@ class ContactsCell: UITableViewCell {
                                                                 
                                                                 // Set user's friends button
                                                                 self.friendButton.setTitle("Friend", for: .normal)
-                                                                self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                self.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                                                                 self.friendButton.backgroundColor = UIColor.white
                                                                 self.friendButton.layer.cornerRadius = 22.00
-                                                                self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                self.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                                                                 self.friendButton.layer.borderWidth = 2.00
                                                                 self.friendButton.clipsToBounds = true
                                                                 
@@ -243,10 +243,10 @@ class ContactsCell: UITableViewCell {
                                                                     
                                                                     // Set user's friends button
                                                                     self.friendButton.setTitle("Friend", for: .normal)
-                                                                    self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                    self.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                                                                     self.friendButton.backgroundColor = UIColor.white
                                                                     self.friendButton.layer.cornerRadius = 22.00
-                                                                    self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                    self.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                                                                     self.friendButton.layer.borderWidth = 2.00
                                                                     self.friendButton.clipsToBounds = true
                                                                     
@@ -341,7 +341,7 @@ class ContactsCell: UITableViewCell {
                                                                     // Change button's title and design
                                                                     self.friendButton.setTitle("Friends", for: .normal)
                                                                     self.friendButton.setTitleColor(UIColor.white, for: .normal)
-                                                                    self.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                                                                    self.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                                                                     self.friendButton.layer.cornerRadius = 22.00
                                                                     self.friendButton.clipsToBounds = true
                                                                     
@@ -443,10 +443,10 @@ class ContactsCell: UITableViewCell {
                                                                 
                                                                 // Set user's friends button
                                                                 self.friendButton.setTitle("Friend", for: .normal)
-                                                                self.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                                                                self.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                                                                 self.friendButton.backgroundColor = UIColor.white
                                                                 self.friendButton.layer.cornerRadius = 22.00
-                                                                self.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                                                                self.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                                                                 self.friendButton.layer.borderWidth = 2.00
                                                                 self.friendButton.clipsToBounds = true
                                                                 

@@ -35,6 +35,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     var refresher: UIRefreshControl!
     
     @IBAction func backButton(_ sender: Any) {
+        // Remove last
+        sharedObject.removeLast()
+        
         // Pop VC
         self.navigationController?.popViewController(animated: true)
     }
@@ -655,7 +658,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Shared Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
+                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -717,7 +720,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Report Content
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
+                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
                                                                           message: "Please provide your reason for reporting \(sharedObject.last!.value(forKey: "username") as! String)'s Share",
@@ -778,12 +781,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Set background colors
         
-        // Light Red
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
-        // Gray
-        views.backgroundColor = UIColor.gray
+        // Super Dark Gray
+        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
+        // Red
+        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+        
         
         if sharedObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
             return [delete, views]

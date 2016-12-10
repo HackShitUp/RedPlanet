@@ -359,7 +359,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        label.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
         
         if section == 0 {
@@ -407,7 +407,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 // Change button's title and design
                 cell.friendButton.setTitle("Friend Requested", for: .normal)
                 cell.friendButton.setTitleColor(UIColor.white, for: .normal)
-                cell.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+                cell.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                 cell.friendButton.layer.cornerRadius = 22.00
                 cell.friendButton.clipsToBounds = true
                 
@@ -415,10 +415,10 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 
                 // Set user's friends button
                 cell.friendButton.setTitle("Friend", for: .normal)
-                cell.friendButton.setTitleColor( UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0), for: .normal)
+                cell.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                 cell.friendButton.backgroundColor = UIColor.white
                 cell.friendButton.layer.cornerRadius = 22.00
-                cell.friendButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0).cgColor
+                cell.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                 cell.friendButton.layer.borderWidth = 2.00
                 cell.friendButton.clipsToBounds = true
                 
@@ -433,7 +433,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             // Change button's title and design
             cell.friendButton.setTitle("Friends", for: .normal)
             cell.friendButton.setTitleColor(UIColor.white, for: .normal)
-            cell.friendButton.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+            cell.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             cell.friendButton.layer.cornerRadius = 22.00
             cell.friendButton.clipsToBounds = true
         }

@@ -47,9 +47,9 @@ class Home: UIViewController, UINavigationControllerDelegate {
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
             .menuHeight(self.navigationController!.navigationBar.frame.size.height),
-            .selectionIndicatorColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
+            .selectionIndicatorColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
-            .selectedMenuItemLabelColor(UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)),
+            .selectedMenuItemLabelColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.00)!),
             .unselectedMenuItemLabelColor(UIColor.black)
         ]

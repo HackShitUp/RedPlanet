@@ -84,7 +84,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
         comments.includeKey("byUser")
-        comments.order(byDescending: "createdAt")
+//        comments.order(byDescending: "createdAt")
+        comments.order(byAscending: "createdAt")
         comments.limit = self.page
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -278,6 +279,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
+
         // Define keyboard frame size
         keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
         
@@ -285,21 +287,37 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
-            // Raise Text View
-            self.frontView.frame.origin.y -= self.keyboard.height
-
+            // If table view's origin is 0
+            if self.tableView!.frame.origin.y == 0 {
+                
+                // Scroll to the bottom
+                if self.comments.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
+                
+                // Move tableView up
+                self.tableView!.frame.origin.y -= self.keyboard.height
+                
+                // Move chatbox up
+                self.frontView.frame.origin.y -= self.keyboard.height
+                
+            }
+            
         }
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        // Move UI up
-        UIView.animate(withDuration: 0.4) { () -> Void in
+        // Define keyboard frame size
+        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        
+        if self.tableView!.frame.origin.y != 0 {
+            // Move table view up
+            self.tableView!.frame.origin.y += self.keyboard.height
             
-            // Lower Text View
+            // Move chatbox up
             self.frontView.frame.origin.y += self.keyboard.height
-            
-
         }
     }
     
@@ -329,10 +347,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
 
-    
-    
-    
-    
+
     
 
     override func viewDidLoad() {
@@ -748,7 +763,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         
         // Set background colors
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         reply.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
         report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
 

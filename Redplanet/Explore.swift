@@ -118,7 +118,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // SearchbarDelegates
         searchBar.delegate = self
         searchBar.showsCancelButton = true
-        searchBar.tintColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         searchBar.frame.size.width = UIScreen.main.bounds.width - 75
         let searchItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = searchItem

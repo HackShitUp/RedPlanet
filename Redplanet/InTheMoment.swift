@@ -43,6 +43,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     
     // Functiont to go back
     func goBack(sender: UIGestureRecognizer) {
+        // Remove last objects
+        itmObject.removeLast()
+        
         // Pop VC
         self.navigationController?.popViewController(animated: true)
     }
@@ -55,7 +58,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                       message: nil,
                                       preferredStyle: .actionSheet)
         
-        let delete = UIAlertAction(title: "Delete",
+        let delete = UIAlertAction(title: "X Delete",
                                    style: .destructive,
                                    handler: {(alertAction: UIAlertAction!) in
                                     // Show Progress

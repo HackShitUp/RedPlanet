@@ -31,6 +31,9 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     var page: Int = 50
     
     @IBAction func backButton(_ sender: Any) {
+        // Remove last array
+        viewsObject.removeLast()
+        
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
     }
@@ -85,7 +88,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 // Change the font and size of nav bar text
                 if self.viewers.count != 0 && self.navigationController != nil {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont
@@ -100,7 +103,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         }
                     }
                 } else {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont

@@ -37,10 +37,11 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     
     
     @IBAction func backButton(_ sender: AnyObject) {
+        // Remove last
+        photoAssetObject.removeLast()
+        
         // Pop View Controller
         self.navigationController?.popViewController(animated: true)
-        
-        print("Fired with sender: \(sender)")
     }
     
     
@@ -485,7 +486,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (1) Delete Photo
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "\nDelete") { (UITableViewRowAction, indexPath) in
+                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
@@ -536,7 +537,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "\nEdit") { (UITableViewRowAction, indexPath) in
+                                        title: "🔩 \nEdit") { (UITableViewRowAction, indexPath) in
+
                                             
                                             
                                             // Append object
@@ -571,7 +573,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (4) Report user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
+                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
                                                                           message: "Please provide your reason for reporting \(photoAssetObject.last!.value(forKey: "username") as! String)'s Photo",
@@ -633,15 +635,15 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         // Set background colors
-
-        // Light Red
-        delete.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        
+        // Super Dark Gray
+        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
         // Dark Gray
-        edit.backgroundColor = UIColor.darkGray
-        // Gray
-        views.backgroundColor = UIColor.gray
+        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
+        // Red
+        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
         if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {

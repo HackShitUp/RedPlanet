@@ -166,7 +166,7 @@ class BestFriends: UITableViewController, UINavigationControllerDelegate, DZNEmp
         let str = "Add \(forBFObject.last!.value(forKey: "realNameOfUser") as! String) to my Best Friends list."
         let font = UIFont(name: "AvenirNext-Demibold", size: 15.0)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0),
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!
         ]
         

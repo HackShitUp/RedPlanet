@@ -222,7 +222,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.backgroundColor = UIColor(red: 1, green: 0, blue: 0.2627, alpha: 1.0)
+        label.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
         
         if section == 0 {
