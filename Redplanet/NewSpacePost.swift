@@ -18,14 +18,20 @@ import SVProgressHUD
 import OneSignal
 
 
-// Boolean to determine whether there's a photo
-var spacePhotoExists: Bool = false
-
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
     // Array to hold user objects and usernames
     var userObjects = [PFObject]()
     var usernames = [String]()
+    
+    
+    @IBOutlet weak var mediaAsset: PFImageView!
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var photosButton: UIButton!
+    @IBOutlet weak var postButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
     
     
     @IBAction func backButton(_ sender: Any) {
@@ -35,7 +41,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     @IBAction func editAction(_ sender: Any) {
         // If photo exists
-        if spacePhotoExists == true {
+        if self.mediaAsset.image != nil {
             // Show CLImageEditor
             let editor = CLImageEditor(image: self.mediaAsset.image!)
             editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
@@ -44,14 +50,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             self.present(editor!, animated: true, completion: nil)
         }
     }
-    
-    @IBOutlet weak var mediaAsset: PFImageView!
-    @IBOutlet weak var editButton: UIBarButtonItem!
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var moreButton: UIButton!
-    @IBOutlet weak var photosButton: UIButton!
-    @IBOutlet weak var postButton: UIButton!
-    @IBOutlet weak var tableView: UITableView!
     
     
     // Function to share
@@ -71,7 +69,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         space["username"] = PFUser.current()!.username!
         space["contentType"] = "sp"
         // Save parseFile dependent on Boolean
-        if spacePhotoExists == true {
+        if self.mediaAsset.image != nil {
             // Set the mediaAsset
             // for now, image
             let proPicData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
@@ -272,34 +270,22 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     
     // MARK: - CLImageEditor delegate methods
-    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) -> Bool {
+    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
         // Set image
         self.mediaAsset.image = image
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
         
-        // Set bool
-        spacePhotoExists = true
-        
-        // Reload view
-        self.viewDidLoad()
-        
-        // return bool
-        return spacePhotoExists
+        // Enable editButton
+        self.editButton.isEnabled = true
     }
     
-    func imageEditorDidCancel(_ editor: CLImageEditor) -> Bool {
+    func imageEditorDidCancel(_ editor: CLImageEditor) {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
 
-        // Set bool
-        spacePhotoExists = true
-        
-        // Reload view
-        self.viewDidLoad()
-        
-        // return bool
-        return spacePhotoExists
+        // Enable editButton
+        self.editButton.isEnabled = true
     }
 
     
@@ -492,14 +478,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Disable or Enable buttons depending on whether photo exists
-        if spacePhotoExists ==  false {
-            // Disable edit button
-            self.editButton.isEnabled = false
-        } else {
-            // Enabled edit button
-            self.editButton.isEnabled = true
-        }
+        // Disable edit button
+        self.editButton.isEnabled = false
         
         // Set first responder
         self.textView.becomeFirstResponder()

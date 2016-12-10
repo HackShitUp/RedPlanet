@@ -912,7 +912,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (F) Space Post
                 if object!["contentType"] as! String == "sp" {
                     // Make iconicPreview cornered square
-//                    cell.iconicPreview.layer.cornerRadius = 10.00
                     cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
                     cell.iconicPreview.clipsToBounds = true
                     
@@ -1074,10 +1073,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     spaceObject.append(self.contentObjects[indexPath.row])
                     
                     // Append otherObject
-                    otherObject.append(self.contentObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+                    otherObject.append(self.contentObjects[indexPath.row].value(forKey: "toUser") as! PFUser)
                     
                     // Append otherName
-                    otherName.append(self.contentObjects[indexPath.row].value(forKey: "username") as! String)
+                    otherName.append(self.contentObjects[indexPath.row].value(forKey: "toUsername") as! String)
                     
                     // Push VC
                     let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost

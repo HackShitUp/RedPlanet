@@ -58,7 +58,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // Function to save changes
     func saveChanges(sender: UIButton) {
         
-        if self.textPost.text!.isEmpty {
+        if self.textPost.text!.isEmpty && editObjects.last!.value(forKey: "contentType") as! String == "tp" {
             
             let alert = UIAlertController(title: "Changes Failed",
                                           message: "You cannot save changes with no text.",
@@ -73,6 +73,20 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             self.present(alert, animated: true, completion: nil)
             
             
+        } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && editObjects.last!.value(forKey: "photoAsset") == nil {
+            
+            let alert = UIAlertController(title: "Changes Failed",
+                                          message: "You cannot save changes with no text.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            
+            alert.view.tintColor = UIColor.black
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+        
         } else {
             // Variable to hold content type for convenience
             var contentTypeString: String?
