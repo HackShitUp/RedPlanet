@@ -1495,7 +1495,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="PCU-ZY-G4w">
                         <barButtonItem key="rightBarButtonItem" image="NewChat" id="0Lw-Dv-lX4">
-                            <color key="tintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="newChat:" destination="Ac7-BO-mTV" id="5PM-Em-nlZ"/>
                             </connections>

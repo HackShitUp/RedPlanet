@@ -55,158 +55,174 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // Function to share
     func postSpace(sender: UIButton) {
         
-        // Show Progress
-        SVProgressHUD.show()
-        
-        
         // TODO::
         // Change file type depending on whether it's a video or not
-
         
-        // Post to user's Space
-        let space = PFObject(className: "Newsfeeds")
-        space["byUser"] = PFUser.current()!
-        space["username"] = PFUser.current()!.username!
-        space["contentType"] = "sp"
-        // Save parseFile dependent on Boolean
-        if self.mediaAsset.image != nil {
-            // Set the mediaAsset
-            // for now, image
-            let proPicData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
-            let mediaFile = PFFile(data: proPicData!)
-            space["photoAsset"] = mediaFile
-        }
-        // Save textPost
-        if self.textView.text! != "" {
-            // Set textPost
-            space["textPost"] = self.textView.text!
-        }
-        
-        space["toUser"] = otherObject.last!
-        space["toUsername"] = otherName.last!
-        space.saveInBackground {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Successfully shared Space Post: \(space)")
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-                
-                
-                // Send Notification
-                let notifications = PFObject(className: "Notifications")
-                notifications["fromUser"] = PFUser.current()!
-                notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = otherObject.last!
-                notifications["to"] = otherName.last!
-                notifications["type"] = "space"
-                notifications["forObjectId"] = space.objectId!
-                notifications.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if error == nil {
-                        print("Sent Notification: \(notifications)")
-                        
-                        
-                        
-                        // Hashtags only exist for shared content, not comments :/
-                        // Check for user mentions...
-                        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-                        // Loop through words to check for # and @ prefixes
-                        for var word in words {
+        // Check if text is empty 
+        if self.textView!.text!.isEmpty {
+            
+            let alert = UIAlertController(title: "Post Failed",
+                                          message: "Please share something in this Space Post.",
+                                          preferredStyle: .alert)
+            
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            alert.view.tintColor = UIColor.black
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            
+        } else {
+            // Show Progress
+            SVProgressHUD.show()
+            
+            // Post to user's Space
+            let space = PFObject(className: "Newsfeeds")
+            space["byUser"] = PFUser.current()!
+            space["username"] = PFUser.current()!.username!
+            space["contentType"] = "sp"
+            // Save parseFile dependent on Boolean
+            if self.mediaAsset.image != nil {
+                // Set the mediaAsset
+                // for now, image
+                let proPicData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
+                let mediaFile = PFFile(data: proPicData!)
+                space["photoAsset"] = mediaFile
+            }
+            // Save textPost
+            if self.textView.text! != "" {
+                // Set textPost
+                space["textPost"] = self.textView.text!
+            }
+            
+            space["toUser"] = otherObject.last!
+            space["toUsername"] = otherName.last!
+            space.saveInBackground {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully shared Space Post: \(space)")
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
+                    
+                    
+                    // Send Notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = otherObject.last!
+                    notifications["to"] = otherName.last!
+                    notifications["type"] = "space"
+                    notifications["forObjectId"] = space.objectId!
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if error == nil {
+                            print("Sent Notification: \(notifications)")
                             
-                            // Define @username
-                            if word.hasPrefix("@") {
-                                // Get username
-                                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                            
+                            
+                            // Hashtags only exist for shared content, not comments :/
+                            // Check for user mentions...
+                            let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+                            // Loop through words to check for # and @ prefixes
+                            for var word in words {
                                 
-                                // Look for user
-                                let user = PFUser.query()!
-                                user.whereKey("username", equalTo: word.lowercased())
-                                user.findObjectsInBackground(block: {
-                                    (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            
-                                            // Send mention to Parse server, class "Notifications"
-                                            let notifications = PFObject(className: "Notifications")
-                                            notifications["from"] = PFUser.current()!.username!
-                                            notifications["fromUser"] = PFUser.current()!
-                                            notifications["type"] = "tag sp"
-                                            notifications["forObjectId"] = space.objectId!
-                                            notifications["to"] = word
-                                            notifications["toUser"] = object
-                                            notifications.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved tag in notifications: \(notifications)")
-                                                    
-                                                    
-                                                    // Handle optional chaining
-                                                    if object.value(forKey: "apnsId") != nil {
-                                                        // Send push notification
-                                                        OneSignal.postNotification(
-                                                            ["contents":
-                                                                ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
-                                                             "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
-                                                            ]
-                                                        )
+                                // Define @username
+                                if word.hasPrefix("@") {
+                                    // Get username
+                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                    
+                                    // Look for user
+                                    let user = PFUser.query()!
+                                    user.whereKey("username", equalTo: word.lowercased())
+                                    user.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                
+                                                // Send mention to Parse server, class "Notifications"
+                                                let notifications = PFObject(className: "Notifications")
+                                                notifications["from"] = PFUser.current()!.username!
+                                                notifications["fromUser"] = PFUser.current()!
+                                                notifications["type"] = "tag sp"
+                                                notifications["forObjectId"] = space.objectId!
+                                                notifications["to"] = word
+                                                notifications["toUser"] = object
+                                                notifications.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved tag in notifications: \(notifications)")
+                                                        
+                                                        
+                                                        // Handle optional chaining
+                                                        if object.value(forKey: "apnsId") != nil {
+                                                            // Send push notification
+                                                            OneSignal.postNotification(
+                                                                ["contents":
+                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
+                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
+                                                                ]
+                                                            )
+                                                        }
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
                                                     }
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
+                                                })
+                                                
+                                            }
+                                        } else {
+                                            print(error?.localizedDescription as Any)
                                         }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
+                                    })
+                                    
+                                }
+                            }
+                            
+                            
+                            
+                            // Dismiss Progress
+                            SVProgressHUD.dismiss()
+                            
+                            // Send push notification
+                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) wrote on your Space"],
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                    ])
                                 
                             }
-                        }
-
-                        
-                        
-                        // Dismiss Progress
-                        SVProgressHUD.dismiss()
-                        
-                        // Send push notification
-                        if otherObject.last!.value(forKey: "apnsId") != nil {
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "\(PFUser.current()!.username!.uppercased()) wrote on your Space"],
-                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
-                                ])
                             
+                            
+                            // Send Notification to otherUser's Profile
+                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                            
+                            // Send Notification to News Feeds
+                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                            
+                            // Pop View Controller
+                            self.navigationController?.popViewController(animated: true)
+                            
+                            
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
                         }
-                        
-                        
-                        // Send Notification to otherUser's Profile
-                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                        
-                        // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                        
-                        // Pop View Controller
-                        self.navigationController?.popViewController(animated: true)
-                        
-                        
-                        
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
+                    })
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Dismiss Progress
+                    SVProgressHUD.dismiss()
+                }
             }
         }
+        
     }
     
     
