@@ -84,7 +84,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
         comments.includeKey("byUser")
-//        comments.order(byDescending: "createdAt")
         comments.order(byAscending: "createdAt")
         comments.limit = self.page
         comments.findObjectsInBackground(block: {

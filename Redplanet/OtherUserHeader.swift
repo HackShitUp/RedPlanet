@@ -126,6 +126,7 @@ class OtherUserHeader: UICollectionReusableView {
     // FRIEND ACTION
     @IBAction func friendUser(_ sender: Any) {
         
+        // Friend
         Mixpanel.mainInstance().track(event: "Connected",
                                       properties: ["Relationship Type" : "Friend"]
         )
@@ -367,10 +368,6 @@ class OtherUserHeader: UICollectionReusableView {
         // (5B) Received Follow Request
     @IBAction func relationAction(_ sender: Any) {
         
-        Mixpanel.mainInstance().track(event: "Connected",
-                                      properties: ["Relationship Type" : "Follow"]
-        )
-        
         // (1)
         // ****************************************************************************************************************************
         // ============================================================================================================================
@@ -388,6 +385,12 @@ class OtherUserHeader: UICollectionReusableView {
             let yes = UIAlertAction(title: "yes",
                                     style: .default,
                                     handler: {(alertAction: UIAlertAction!) in
+                                        
+                                        
+                                        // UnFriend
+                                        Mixpanel.mainInstance().track(event: "Connected",
+                                                                      properties: ["Relationship Type" : "UnFriend"]
+                                        )
 
                                         // Delete Friend
                                         let eFriend = PFQuery(className: "FriendMe")
@@ -479,6 +482,12 @@ class OtherUserHeader: UICollectionReusableView {
             let yes = UIAlertAction(title: "yes",
                                     style: .default,
                                     handler: {(alertAction: UIAlertAction!) in
+                                        
+                                        // UnFollow
+                                        Mixpanel.mainInstance().track(event: "Connected",
+                                                                      properties: ["Relationship Type" : "UnFollow"]
+                                        )
+                                        
                                         // Unfollow user
                                         let unfollow = PFQuery(className: "FollowMe")
                                         unfollow.whereKey("follower", equalTo: PFUser.current()!)
@@ -558,6 +567,11 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 style: .default,
                                                                 handler: { (alertAction: UIAlertAction!) in
                                                                     
+                                                                    // Friend
+                                                                    Mixpanel.mainInstance().track(event: "Connected",
+                                                                                                  properties: ["Relationship Type" : "Friend"]
+                                                                    )
+                                                                    
                                                                     // Delete relationship in Parse: "FollowMe"
                                                                     let follow = PFQuery(className: "FollowMe")
                                                                     follow.whereKey("follower", equalTo: otherObject.last!)
@@ -583,6 +597,8 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                             if error == nil {
                                                                                                 print("Successfully sent friend request: \(friends)")
                                                                                                 
+                                                                                                self.relationType.setTitle("Friend Requested", for: .normal)
+                                                                                                
                                                                                                 // Send notification to end user
                                                                                                 let notifications = PFObject(className: "Notifications")
                                                                                                 notifications["fromUser"] = PFUser.current()!
@@ -600,7 +616,6 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                         self.friendButton.isHidden = true
                                                                                                         self.followButton.isHidden = true
                                                                                                         self.relationType.isHidden = false
-                                                                                                        self.relationType.setTitle("Friend Requested", for: .normal)
                                                                                                         
                                                                                                         
                                                                                                         // Post Notification
@@ -662,6 +677,11 @@ class OtherUserHeader: UICollectionReusableView {
                                         let yes = UIAlertAction(title: "yes",
                                                                 style: .default,
                                                                 handler: {(UIAlertAction) -> Void in
+                                                                    
+                                                                    // Follow
+                                                                    Mixpanel.mainInstance().track(event: "Connected",
+                                                                                                  properties: ["Relationship Type" : "Follow"]
+                                                                    )
                                                                     
                                                                     if otherObject.last!.value(forKey: "private") as! Bool == true {
                                                                         // Private account
@@ -841,6 +861,10 @@ class OtherUserHeader: UICollectionReusableView {
                                                             if success {
                                                                 print("Successfully confirmed friend request: \(object)")
                                                                 
+                                                                // Friend
+                                                                Mixpanel.mainInstance().track(event: "Connected",
+                                                                                              properties: ["Relationship Type" : "Friend"]
+                                                                )
                                                                 
                                                                 // Delete from "Notifications"
                                                                 let dnotifications = PFQuery(className: "Notifications")
@@ -1109,6 +1133,7 @@ class OtherUserHeader: UICollectionReusableView {
             let confirm = UIAlertAction(title: "Confirm Follow Request",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
+                                            
                                             // Accept Follower's Follow Request
                                             let follow = PFQuery(className: "FollowMe")
                                             follow.whereKey("follower", equalTo: otherObject.last!)

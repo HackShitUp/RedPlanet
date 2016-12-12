@@ -282,16 +282,25 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         
         if libraryType == 0 {
             mediaType = "photo"
+            
+            // Append PHAsset
+            shareMediaAsset.append(photoAssets[indexPath.item])
+            
+            // Push VC
+            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+            self.navigationController!.pushViewController(shareMediaVC, animated: true)
+            
+            
         } else {
             mediaType = "video"
+            
+            // Append PHAsset
+            shareMediaAsset.append(photoAssets[indexPath.item])
+            
+            // Push VC
+            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+            self.navigationController!.pushViewController(shareMediaVC, animated: true)
         }
-        
-        // Append PHAsset
-        shareMediaAsset.append(photoAssets[indexPath.item])
-        
-        // Push VC
-        let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-        self.navigationController!.pushViewController(shareMediaVC, animated: true)
 
     }
 

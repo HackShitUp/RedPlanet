@@ -480,7 +480,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // (1) Delete Text Post
         let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
+                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Show Progress
@@ -527,7 +527,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "Edit") { (UITableViewRowAction, indexPath) in
+                                        title: "🔩\nEdit") { (UITableViewRowAction, indexPath) in
                                             
                                             
                                             // Append object
@@ -621,14 +621,14 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // Set background colors
         
-        // Light Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.29, blue:0.29, alpha:1.0)
-        // Baby blue
-        edit.backgroundColor = UIColor.darkGray
-        // Light Gray
-        views.backgroundColor = UIColor.gray
+        // Super Dark Gray
+        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
+        // Dark Gray
+        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
+        // Red
+        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
         if self.hashtagObjects[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! {

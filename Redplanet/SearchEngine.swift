@@ -25,7 +25,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     // Arrays to hold hashtag searches
     var searchHashes = [String]()
-    var dataHash = [String]()
     
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -100,11 +99,14 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
                     
                     // Clear array
                     self.searchHashes.removeAll(keepingCapacity: false)
-                    self.dataHash.removeAll(keepingCapacity: false)
                     
                     for object in objects! {
-                        self.searchHashes.append(object["userHash"] as! String)
-                        self.dataHash.append(object["hashtag"] as! String)
+                        // Hashtag
+                        if self.searchHashes.contains(object["userHash"] as! String) {
+                            // Skip appending object
+                        } else {
+                            self.searchHashes.append(object["userHash"] as! String)
+                        }
                     }
                     
                 } else {
@@ -145,6 +147,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         }
         
         return true
+        
     }
     
     
@@ -152,6 +155,69 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         // Pop view controller
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Change tableView background
+        self.tableView!.backgroundView = UIView()
+        
+        if searchBar.text!.hasPrefix("#") {
+            // Looking for hashtags...
+            let hashtags = PFQuery(className: "Hashtags")
+            hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
+            hashtags.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    
+                    // Clear array
+                    self.searchHashes.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        // Hashtag
+                        if self.searchHashes.contains(object["userHash"] as! String) {
+                            // Skip appending object
+                        } else {
+                            self.searchHashes.append(object["userHash"] as! String)
+                        }
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+            })
+        } else {
+            // Looking for humans...
+            // Search for user
+            let theUsername = PFQuery(className: "_User")
+            theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+            
+            let realName = PFQuery(className: "_User")
+            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+            
+            let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+            search.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    
+                    // USERNAME: Clear arrays
+                    self.users.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.users.append(object)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+            })
+        }
     }
     
     
@@ -167,7 +233,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
 
     
@@ -192,6 +258,11 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         } else {
             
             cell.userObject = users[indexPath.row]
+            
+            // Show IBObjects
+            cell.rpUserProPic.isHidden = false
+            cell.rpFullName.isHidden = false
+            cell.rpUsername.isHidden = false
             
             // Layout views
             cell.rpUserProPic.layoutSubviews()

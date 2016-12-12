@@ -540,7 +540,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Edit
         let edit = UITableViewRowAction(style: .normal,
-                                        title: "🔩 \nEdit") { (UITableViewRowAction, indexPath) in
+                                        title: "🔩\nEdit") { (UITableViewRowAction, indexPath) in
 
                                             
                                             // Append object
