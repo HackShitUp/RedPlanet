@@ -106,6 +106,26 @@ class ObjectSelector: NSObject {
         return filter
     }
 
+    func selectedClass() -> AnyClass? {
+        if let filterName = filters.last?.name {
+            return NSClassFromString(filterName)
+        }
+        return nil
+    }
+
+    func pathContainsObjectOfClass(_ klass: AnyClass) -> Bool {
+        for filter in filters {
+            if let filterName = filter.name {
+                if let isSubclass = NSClassFromString(filterName)?.isSubclass(of: klass) {
+                    if isSubclass {
+                        return true
+                    }
+                }
+            }
+        }
+        return false
+    }
+
     func selectFrom(root: AnyObject?, evaluateFinalPredicate: Bool = true) -> [AnyObject] {
         var views = [AnyObject]()
         if let root = root {

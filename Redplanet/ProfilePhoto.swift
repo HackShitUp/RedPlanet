@@ -176,6 +176,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
 
         // Set tableView height
+        self.tableView!.setNeedsLayout()
+        self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 540
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
@@ -248,6 +250,10 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 540
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

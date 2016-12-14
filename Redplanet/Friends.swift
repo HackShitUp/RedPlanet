@@ -96,8 +96,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("byUser", containedIn: self.friends)
-                newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.includeKey("byUser")
+                newsfeeds.includeKey("pointObject")
+                newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.limit = self.page
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -641,10 +642,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     
                     // Append object
                     sharedObject.append(self.friendsContent[indexPath.row])
+                    
                     // Push VC
                     let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
                     self.parentNavigator.pushViewController(sharedPostVC, animated: true)
-                    
                 }
                 
                 // PROFILE PHOTO

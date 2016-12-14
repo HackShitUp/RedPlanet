@@ -276,6 +276,10 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         return 1
     }
     
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 570
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -314,9 +318,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                 // (1) Point to User's Object
                 if let user = object!["byUser"] as? PFUser {
                     // (A) Set username
-//                    cell.rpUsername.text! = (user["username"] as! String).uppercased()
                     cell.rpUsername.text! = "\(user["username"] as! String)"
-                    
                     
                     // (B) Get profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {

@@ -180,6 +180,33 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     }
     
     
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by username
+        let name = PFQuery(className: "_User")
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFQuery(className: "_User")
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear arrays
+                self.searchObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    self.searchObjects.append(object)
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+    
     
     
 

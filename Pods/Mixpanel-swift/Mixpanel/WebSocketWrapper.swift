@@ -17,6 +17,12 @@ enum MessageType: String {
     case disconnect = "disconnect"
     case snapshotRequest = "snapshot_request"
     case snapshotResponse = "snapshot_response"
+    case changeRequest = "change_request"
+    case changeResponse = "change_response"
+    case tweakRequest = "tweak_request"
+    case tweakResponse = "tweak_response"
+    case clearRequest = "clear_request"
+    case clearResponse = "clear_response"
 }
 
 class WebSocketWrapper: WebSocketDelegate {
@@ -140,7 +146,15 @@ class WebSocketWrapper: WebSocketDelegate {
                     webSocketMessage = DisconnectMessage()
                 case .bindingRequest:
                     webSocketMessage = BindingRequest(payload: payload)
-                default: break
+                case .changeRequest:
+                    webSocketMessage = ChangeRequest(payload: payload)
+                case .tweakRequest:
+                    webSocketMessage = TweakRequest(payload: payload)
+                case .clearRequest:
+                    webSocketMessage = ClearRequest(payload: payload)
+                default:
+                    Logger.debug(message: "the type that was not parsed: \(type)")
+                    break
                 }
             } else {
                 Logger.warn(message: "Badly formed socket message, expected JSON dictionary.")
@@ -187,7 +201,7 @@ class WebSocketWrapper: WebSocketDelegate {
         } else {
             indeterminateLayer?.removeAnimation(forKey: WebSocketWrapper.startLoadingAnimationKey)
             loadBasicAnimation(duration: 0.4,
-                               fromValue: indeterminateLayer?.presentation()?.value(forKey: "bounds.size.width"),
+                               fromValue: indeterminateLayer?.presentation()?.value(forKey: "bounds.size.width") ?? 0.0,
                                toValue: connectivityIndiciatorWindow!.bounds.size.width * 2,
                                animationKey: WebSocketWrapper.finishLoadingAnimationKey)
         }

@@ -92,7 +92,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         // (3) Fetch shares
                         let newsfeeds = PFQuery(className: "Newsfeeds")
                         newsfeeds.whereKey("contentType", equalTo: "sh")
-//                        newsfeeds.whereKey("pointObject", equalTo: sharedObject.last!.value(forKey: "pointObject") as! PFObject)
                         newsfeeds.whereKey("pointObject", equalTo: sharedObject.last!)
                         newsfeeds.findObjectsInBackground(block: {
                             (objects: [PFObject]?, error: Error?) in
@@ -185,12 +184,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-        
-        // Set estimated row height
+
+        // Set tableView height
         self.tableView!.setNeedsLayout()
-        self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 350
+        self.tableView!.estimatedRowHeight = 470
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
         // Show navBar
@@ -273,7 +271,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 470
     }
     
     
@@ -284,8 +282,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sharedPostCell", for: indexPath) as! SharedPostCell
-        
-        
         
         
         // LayoutViews
@@ -399,13 +395,15 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             createdDate.dateFormat = "MMM d, yyyy"
             cell.sharedTime.text = createdDate.string(from: sharedObject.last!.createdAt!)
         }
-
+        
         // Content
         // Fetch content
         if let content = sharedObject.last!.value(forKey: "pointObject") as? PFObject {
             content.fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
+                    
+                    print("OBJECT IS: \(object)")
 
                     // (1) Get user's object
                     if let user = object!["byUser"] as? PFUser {

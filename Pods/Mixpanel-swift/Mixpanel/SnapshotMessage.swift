@@ -51,7 +51,7 @@ class SnapshotRequest: BaseWebSocketMessage {
             var objectIdentityProvider = connection.getSessionObjectSynchronized(for: "object_identity_provider")
             if objectIdentityProvider == nil {
                 objectIdentityProvider = ObjectIdentityProvider()
-                connection.setSessionObjectSynchronized(with: objectIdentityProvider, for: "object_identity_provider")
+                connection.setSessionObjectSynchronized(with: objectIdentityProvider!, for: "object_identity_provider")
             }
 
             let serializer = ApplicationStateSerializer(application: UIApplication.shared,
@@ -75,10 +75,6 @@ class SnapshotRequest: BaseWebSocketMessage {
                 }
                 connection.setSessionObjectSynchronized(with: serializedObjects, for: "snapshot_hierarchy")
             }
-
-//            for object in serializedObjects {
-//                print(object)
-//            }
 
             response.serializedObjects = serializedObjects
             connection.send(message: response)

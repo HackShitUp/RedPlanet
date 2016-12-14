@@ -142,6 +142,18 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
         }
     }
 
+    /// Controls whether to automatically check for A/B test variants for the
+    /// currently identified user when the application becomes active.
+    /// Defaults to true.
+    open var checkForVariantsOnActive: Bool {
+        set {
+            decideInstance.ABTestingInstance.checkForVariantsOnActive = newValue
+        }
+        get {
+            return decideInstance.ABTestingInstance.checkForVariantsOnActive
+        }
+    }
+
     /// Controls whether to automatically check for notifications for the
     /// currently identified user when the application becomes active.
     /// Defaults to true.
@@ -206,8 +218,9 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
         unarchive()
 
         #if os(iOS)
-        decideInstance.inAppDelegate = self
-        executeCachedCodelessBindings()
+            decideInstance.inAppDelegate = self
+            executeCachedVariants()
+            executeCachedCodelessBindings()
 
             if let notification =
             launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [AnyHashable: Any] {
@@ -218,7 +231,6 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
 
     private func setupListeners() {
         let notificationCenter = NotificationCenter.default
-
         trackIntegration()
         #if os(iOS)
             setCurrentRadio()
@@ -263,19 +275,32 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
     @objc private func applicationDidBecomeActive(_ notification: Notification) {
         flushInstance.applicationDidBecomeActive()
         #if os(iOS)
-        checkDecide { decideResponse in
-            if let decideResponse = decideResponse {
-                if self.showNotificationOnActive && !decideResponse.unshownInAppNotifications.isEmpty {
-                    self.decideInstance.notificationsInstance.showNotification(decideResponse.unshownInAppNotifications.first!)
-                }
+            if checkForVariantsOnActive || checkForNotificationOnActive {
+                checkDecide { decideResponse in
+                    if let decideResponse = decideResponse {
+                        DispatchQueue.main.sync {
+                            decideResponse.toFinishVariants.forEach { $0.finish() }
+                        }
 
-                DispatchQueue.main.sync {
-                    for binding in decideResponse.newCodelessBindings {
-                        binding.execute()
+                        if self.showNotificationOnActive && !decideResponse.unshownInAppNotifications.isEmpty {
+                            self.decideInstance.notificationsInstance.showNotification(decideResponse.unshownInAppNotifications.first!)
+                        }
+
+                        DispatchQueue.main.sync {
+                            for binding in decideResponse.newCodelessBindings {
+                                binding.execute()
+                            }
+                        }
+
+                        DispatchQueue.main.sync {
+                            for variant in decideResponse.newVariants {
+                                variant.execute()
+                                self.markVariantRun(variant)
+                            }
+                        }
                     }
                 }
             }
-        }
         #endif
     }
 
@@ -289,7 +314,6 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
         taskId = sharedApplication.beginBackgroundTask() {
             self.taskId = UIBackgroundTaskInvalid
         }
-
 
         if flushOnBackground {
             flush()
@@ -338,16 +362,42 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
     }
 
     func defaultDistinctId() -> String {
-        var distinctId: String?
-        if NSClassFromString("UIDevice") != nil {
+        var distinctId: String? = IFA()
+        if distinctId == nil && NSClassFromString("UIDevice") != nil {
             distinctId = UIDevice.current.identifierForVendor?.uuidString
         }
-
         guard let distId = distinctId else {
             return UUID().uuidString
         }
-
         return distId
+    }
+
+    func IFA() -> String? {
+        var ifa: String? = nil
+        if let ASIdentifierManagerClass = NSClassFromString("ASIdentifierManager") {
+            let sharedManagerSelector = NSSelectorFromString("sharedManager")
+            if let sharedManagerIMP = ASIdentifierManagerClass.method(for: sharedManagerSelector) {
+                typealias sharedManagerFunc = @convention(c) (AnyObject, Selector) -> AnyObject!
+                let curriedImplementation = unsafeBitCast(sharedManagerIMP, to: sharedManagerFunc.self)
+                if let sharedManager = curriedImplementation(ASIdentifierManagerClass.self, sharedManagerSelector) {
+                    let advertisingTrackingEnabledSelector = NSSelectorFromString("isAdvertisingTrackingEnabled")
+                    if let isTrackingEnabledIMP = sharedManager.method(for: advertisingTrackingEnabledSelector) {
+                        typealias isTrackingEnabledFunc = @convention(c) (AnyObject, Selector) -> Bool
+                        let curriedImplementation2 = unsafeBitCast(isTrackingEnabledIMP, to: isTrackingEnabledFunc.self)
+                        let isTrackingEnabled = curriedImplementation2(self, advertisingTrackingEnabledSelector)
+                        if isTrackingEnabled {
+                            let advertisingIdentifierSelector = NSSelectorFromString("advertisingIdentifier")
+                            if let advertisingIdentifierIMP = sharedManager.method(for: advertisingIdentifierSelector) {
+                                typealias adIdentifierFunc = @convention(c) (AnyObject, Selector) -> NSUUID
+                                let curriedImplementation3 = unsafeBitCast(advertisingIdentifierIMP, to: adIdentifierFunc.self)
+                                ifa = curriedImplementation3(self, advertisingIdentifierSelector).uuidString
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ifa
     }
 
     #if os(iOS)
@@ -369,7 +419,7 @@ open class MixpanelInstance: CustomDebugStringConvertible, FlushDelegate {
             let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.connectGestureRecognized(gesture:)))
             gestureRecognizer.minimumPressDuration = 3
             gestureRecognizer.cancelsTouchesInView = false
-            #if IOS_SIMULATOR
+            #if (arch(i386) || arch(x86_64)) && os(iOS)
                 gestureRecognizer.numberOfTouchesRequired = 2
             #else
                 gestureRecognizer.numberOfTouchesRequired = 4
@@ -430,7 +480,6 @@ extension MixpanelInstance {
                 self.people.unidentifiedQueue.removeAll()
                 Persistence.archivePeople(self.people.peopleQueue, token: self.apiToken)
             }
-
             self.archiveProperties()
         }
     }
@@ -487,6 +536,7 @@ extension MixpanelInstance {
             self.people.unidentifiedQueue = Queue()
             self.decideInstance.notificationsInstance.shownNotifications = Set()
             self.decideInstance.decideFetched = false
+            self.decideInstance.ABTestingInstance.variants = Set()
             self.decideInstance.codelessInstance.codelessBindings = Set()
             self.archive()
         }
@@ -518,6 +568,7 @@ extension MixpanelInstance {
                             peopleQueue: people.peopleQueue,
                             properties: properties,
                             codelessBindings: decideInstance.codelessInstance.codelessBindings,
+                            variants: decideInstance.ABTestingInstance.variants,
                             token: apiToken)
     }
 
@@ -530,7 +581,8 @@ extension MixpanelInstance {
          people.distinctId,
          people.unidentifiedQueue,
          decideInstance.notificationsInstance.shownNotifications,
-         decideInstance.codelessInstance.codelessBindings) = Persistence.unarchive(token: apiToken)
+         decideInstance.codelessInstance.codelessBindings,
+         decideInstance.ABTestingInstance.variants) = Persistence.unarchive(token: apiToken)
 
         if distinctId == "" {
             distinctId = defaultDistinctId()
@@ -581,11 +633,9 @@ extension MixpanelInstance {
             if let shouldFlush = self.delegate?.mixpanelWillFlush(self), !shouldFlush {
                 return
             }
-
             self.flushInstance.flushEventsQueue(&self.eventsQueue)
             self.flushInstance.flushPeopleQueue(&self.people.peopleQueue)
             self.archive()
-
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
             }
@@ -741,7 +791,6 @@ extension MixpanelInstance {
                                                            superProperties: &self.superProperties,
                                                            defaultValue: defaultValue)
         }
-
     }
 
     /**
@@ -801,6 +850,67 @@ extension MixpanelInstance: InAppNotificationsDelegate {
         }
     }
 
+    // MARK: - A/B Testing
+    func markVariantRun(_ variant: Variant) {
+        Logger.info(message: "Marking variant \(variant.ID) shown for experiment \(variant.experimentID)")
+        let shownVariant = ["\(variant.experimentID)": variant.ID]
+        if people.distinctId != nil {
+            people.merge(properties: ["$experiments": shownVariant])
+        }
+        serialQueue.async {
+            var superPropertiesCopy = self.superProperties
+            var shownVariants = superPropertiesCopy["$experiments"] as? [String: Any] ?? [:]
+            shownVariants += shownVariant
+            superPropertiesCopy += ["$experiments": shownVariants]
+            self.superProperties = superPropertiesCopy
+            self.archiveProperties()
+        }
+        track(event: "$experiment_started", properties: ["$experiment_id": variant.experimentID,
+                                                         "$variant_id": variant.ID])
+
+    }
+
+    func executeCachedVariants() {
+        for variant in decideInstance.ABTestingInstance.variants {
+            variant.execute()
+        }
+    }
+
+    func checkForVariants(completion: @escaping (_ variants: Set<Variant>?) -> Void) {
+        checkDecide(forceFetch: true) { response in
+            DispatchQueue.main.sync {
+                response?.toFinishVariants.forEach { $0.finish() }
+            }
+            completion(response?.newVariants)
+        }
+    }
+
+    /**
+     Join any experiments (A/B tests) that are available for the current user.
+
+     Mixpanel will check for A/B tests automatically when your app enters
+     the foreground. Call this method if you would like to to check for,
+     and join, any experiments are newly available for the current user.
+
+     - parameter callback:  Optional callback for after the experiments have been loaded and applied
+     */
+    open func joinExperiments(callback: (() -> Void)? = nil) {
+        checkForVariants { newVariants in
+            guard let newVariants = newVariants else {
+                return
+            }
+            for variant in newVariants {
+                variant.execute()
+                self.markVariantRun(variant)
+            }
+
+            DispatchQueue.main.async {
+                if let callback = callback {
+                    callback()
+                }
+            }
+        }
+    }
 
     // MARK: - In App Notifications
 
@@ -821,7 +931,6 @@ extension MixpanelInstance: InAppNotificationsDelegate {
      Shows a notification with the given type if one is available.
 
      - note: You do not need to call this method on the main thread.
-
      - parameter type: The type of notification to show, either "mini" or "takeover"
     */
     open func showNotification(type: String) {
@@ -840,7 +949,6 @@ extension MixpanelInstance: InAppNotificationsDelegate {
      Shows a notification with the given ID
 
      - note: You do not need to call this method on the main thread.
-
      - parameter ID: The notification ID you want to present
      */
     open func showNotification(ID: Int) {
@@ -856,7 +964,10 @@ extension MixpanelInstance: InAppNotificationsDelegate {
     }
 
     func checkForNotifications(completion: @escaping (_ notifications: [InAppNotification]?) -> Void) {
-        checkDecide { response in
+        checkDecide(forceFetch: true) { response in
+            DispatchQueue.main.sync {
+                response?.toFinishVariants.forEach { $0.finish() }
+            }
             completion(response?.unshownInAppNotifications)
         }
     }
@@ -883,6 +994,5 @@ extension MixpanelInstance: InAppNotificationsDelegate {
                                       "message_subtype": notification.type]
         track(event: event, properties: properties)
     }
-
 }
 #endif
