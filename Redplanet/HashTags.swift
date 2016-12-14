@@ -27,6 +27,9 @@ let hashtagNotification = Notification.Name("hashTag")
 
 class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UINavigationControllerDelegate {
     
+    // Array to hold public users
+    var okUsers = [PFObject]()
+    
     // Array to hold objects
     var hashtagStrings = [String]()
     var hashtagObjects = [PFObject]()
@@ -55,23 +58,51 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     
     // Function to fetch hashtags
     func fetchHashtags() {
-        // Fetch in News Feeds
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("objectId", containedIn: self.hashtagStrings)
-        newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.findObjectsInBackground(block: {
+        
+        // Check which users are public
+        let publicUsers = PFUser.query()!
+        publicUsers.whereKey("private", equalTo: false)
+        publicUsers.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
                 // Clear array
-                self.hashtagObjects.removeAll(keepingCapacity: false)
+                self.okUsers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.hashtagObjects.append(object)
+                    self.okUsers.append(object)
                 }
                 
-                print("Number: \(self.hashtagObjects.count)")
+                
+                // Fetch in News Feeds
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKey("byUser")
+                newsfeeds.whereKey("byUser", containedIn: self.okUsers)
+                newsfeeds.whereKey("objectId", containedIn: self.hashtagStrings)
+                newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
+                newsfeeds.order(byDescending: "createdAt")
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Clear array
+                        self.hashtagObjects.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            self.hashtagObjects.append(object)
+                        }
+                        
+                        print("Number: \(self.hashtagObjects.count)")
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                    
+                    // Reload data
+                    self.tableView!.reloadData()
+                })
+                
+                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -80,6 +111,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             // Reload data
             self.tableView!.reloadData()
         })
+        
+
     }
     
     
@@ -102,8 +135,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // Show Progress
         SVProgressHUD.show()
-        
-        
+    
+        // Get hashtags
         let queryHashtag = PFQuery(className: "Hashtags")
         queryHashtag.whereKey("hashtag", equalTo: hashtags.last!)
         queryHashtag.order(byDescending: "createdAt")
@@ -136,7 +169,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 SVProgressHUD.dismiss()
             }
         })
-
+        
+        
         // Stylize title
         configureView()
         
