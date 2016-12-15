@@ -424,16 +424,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                         videoAsData?.write(to: videoPath!, atomically: true)
                                                         self.parseFile = PFFile(data: videoAsData as! Data)
                                                         
-                                                        
-                                                        // Figure out these protocols
-                                                        // .contentsOfURL
-                                                        // .fileUrlWithPath
-                                                        // .compression
-                                                        
-//                                                        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".m4v")
-//                                                        let videoFile:PFFile = PFFile(name:"yourfilenamewithtype", data:videoData)
-
-                                                        
                                                         // Save to Newsfeeds
                                                         let newsfeeds = PFObject(className: "Newsfeeds")
                                                         newsfeeds["username"] = PFUser.current()!.username!

@@ -425,8 +425,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                             
                                             
                                             // Show Progress
-                                            SVProgressHUD.show()
-                                            
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.show(withStatus: "Deleting")
                                             
                                             // (1) Check if object is most recent by querying getFirstObject
                                             let recentProPic = PFQuery(className: "Newsfeeds")

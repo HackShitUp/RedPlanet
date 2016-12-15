@@ -135,7 +135,6 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         } else {
             // Fetch Photos
             fetchVideos()
-            
         }
         
         
@@ -170,6 +169,20 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Fetch assets depending on type
+        if libraryType == 0 {
+            // Fetch Photos
+            fetchPhotos()
+            
+        } else {
+            // Fetch Photos
+            fetchVideos()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -146,7 +146,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName:  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
@@ -532,6 +532,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
 
                                             // Set content
                                             let content = PFQuery(className: "Newsfeeds")
@@ -588,6 +589,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
                                             
                                             // Set content
                                             let content = PFQuery(className: "Newsfeeds")

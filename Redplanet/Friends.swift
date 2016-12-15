@@ -27,6 +27,13 @@ let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CAPSPageMenuDelegate {
     
+    let friendsType = ["tp",
+                      "ph",
+                      "pp",
+                      "sh",
+                      "sp",
+                      "itm"]
+    
     // Array to hold friends
     var friends = [PFObject]()
     
@@ -67,8 +74,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.includeKey("frontFriend")
         friends.includeKey("endFriend")
-        friends.includeKey("frontFriend")
-        friends.includeKey("endFriend")
         friends.whereKey("isFriends", equalTo: true)
         friends.findObjectsInBackground(block: { (
             objects: [PFObject]?, error: Error?) in
@@ -95,6 +100,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("contentType", containedIn: self.friendsType)
                 newsfeeds.whereKey("byUser", containedIn: self.friends)
                 newsfeeds.includeKey("byUser")
                 newsfeeds.includeKey("pointObject")
@@ -170,6 +176,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Query Friends
         self.queryFriends()
@@ -348,7 +355,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -371,7 +378,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     // Show iconicPreview
                     cell.iconicPreview.isHidden = false
@@ -384,7 +391,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview

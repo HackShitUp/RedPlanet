@@ -297,6 +297,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         
         // Do any additional setup after loading the view, typically from a nib.

@@ -162,6 +162,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         // Show progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Set tablefooter view
         self.tableView!.tableFooterView = UIView()

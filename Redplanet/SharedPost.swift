@@ -660,7 +660,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                                             
                                             
                                             // Show Progress
-                                            SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.show(withStatus: "Deleting")
                                             
                                             // Delete content
                                             let newsfeeds = PFQuery(className: "Newsfeeds")

@@ -99,6 +99,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
 
             // Show Progress
             SVProgressHUD.show()
+            SVProgressHUD.setBackgroundColor(UIColor.white)
             
             // (A) Current User's Birthday
             let dateFormatter = DateFormatter()
@@ -133,6 +134,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     if isNewProPic == true {
                         // Show Progress
                         SVProgressHUD.show()
+                        SVProgressHUD.setBackgroundColor(UIColor.white)
                         
                         // New Profile Photo
                         let newsfeeds = PFObject(className: "Newsfeeds")
@@ -196,6 +198,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     if isNewProPic == false && didChangeCaption == true {
                         // Show Progress
                         SVProgressHUD.show()
+                        SVProgressHUD.setBackgroundColor(UIColor.white)
                         
                         // Change caption
                         // Find in <Newsfeeds>
@@ -383,6 +386,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     
                                     // Show Progress
                                     SVProgressHUD.show()
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
                                     
                                     
                                     // Set boolean and save

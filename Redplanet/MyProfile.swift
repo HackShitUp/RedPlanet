@@ -347,7 +347,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         // Set default contentMode
         cell.iconicPreview.contentMode = .scaleAspectFill
         // Make iconicPreview cornered square
-        cell.iconicPreview.layer.cornerRadius = 10.00
+        cell.iconicPreview.layer.cornerRadius = 12.00
         cell.iconicPreview.clipsToBounds = true
         
         
@@ -389,7 +389,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -414,7 +414,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     // Show iconicPreview
                     cell.iconicPreview.isHidden = false
@@ -427,7 +427,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview

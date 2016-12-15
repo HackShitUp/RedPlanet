@@ -355,6 +355,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Query Comments
         queryComments()

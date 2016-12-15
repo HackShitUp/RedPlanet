@@ -314,6 +314,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Check whether current user has entered his/her number
         checkNumber()

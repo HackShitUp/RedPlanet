@@ -190,6 +190,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Fetch friends
         queryFriends()

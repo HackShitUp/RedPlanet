@@ -44,6 +44,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
         } else {
             // Show Progress
             SVProgressHUD.show()
+            SVProgressHUD.setBackgroundColor(UIColor.white)
             
             
             // Remove non-integers

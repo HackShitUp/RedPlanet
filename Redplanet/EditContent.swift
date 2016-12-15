@@ -93,6 +93,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             
             // Show Progress
             SVProgressHUD.show()
+            SVProgressHUD.setBackgroundColor(UIColor.white)
             
             
             // Fetch object

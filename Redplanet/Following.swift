@@ -98,6 +98,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Query Following
         self.queryFollowing()
@@ -219,7 +220,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Set default contentMode
         cell.iconicPreview.contentMode = .scaleAspectFill
         // Make iconicPreview cornered square
-        cell.iconicPreview.layer.cornerRadius = 10.00
+        cell.iconicPreview.layer.cornerRadius = 12.00
         cell.iconicPreview.clipsToBounds = true
 
         

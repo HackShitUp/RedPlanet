@@ -189,6 +189,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         
         // Show SVProgressHUD
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         
         // Query friends

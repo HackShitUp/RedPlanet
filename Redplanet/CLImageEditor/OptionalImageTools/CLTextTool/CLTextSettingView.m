@@ -92,6 +92,8 @@
     [self addSubview:_scrollView];
     
     _textView = [[UITextView alloc] initWithFrame:CGRectMake(10, 0, self.width-42, 80)];
+    [_textView setFont:[UIFont fontWithName:@"AvenirNext-Medium" size: 17.00]];
+    [_textView setTintColor:[UIColor colorWithRed:1.00 green:0.00 blue:0.31 alpha:1.0]];
     _textView.delegate = self;
     _textView.backgroundColor = [UIColor clearColor];
     [_scrollView addSubview:_textView];

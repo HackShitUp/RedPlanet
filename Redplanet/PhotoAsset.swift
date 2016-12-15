@@ -491,7 +491,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                           title: "X\nDelete") { (UITableViewRowAction, indexPath) in
                                             
                                             // Show Progress
-                                            SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.show(withStatus: "Deleting")
                                             
                                             // Delete content
                                             let content = PFQuery(className: "Newsfeeds")

@@ -755,7 +755,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Set default contentMode
         cell.iconicPreview.contentMode = .scaleAspectFill
         // Make iconicPreview cornered square
-        cell.iconicPreview.layer.cornerRadius = 10.00
+        cell.iconicPreview.layer.cornerRadius = 12.00
         cell.iconicPreview.clipsToBounds = true
         
         
@@ -800,7 +800,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 if object!["contentType"] as! String == "ph" {
                     
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Fetch photo
@@ -823,7 +823,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (B) Text Post
                 if object!["contentType"] as! String == "tp" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     // Show iconicPreview
                     cell.iconicPreview.isHidden = false
@@ -836,7 +836,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 // (C) SHARED
                 if object!["contentType"] as! String == "sh" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 10.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview

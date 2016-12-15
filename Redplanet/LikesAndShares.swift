@@ -111,6 +111,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Fetch likes
         let likes = PFQuery(className: "Likes")
@@ -283,7 +284,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     // (2A) Text Posts
                     if object!["contentType"] as! String == "tp" {
                         // Make iconicPreview cornered square
-                        cell.iconicPreview.layer.cornerRadius = 10.00
+                        cell.iconicPreview.layer.cornerRadius = 12.00
                         cell.iconicPreview.clipsToBounds = true
                         // Show iconicPreview
                         cell.iconicPreview.isHidden = false
@@ -294,7 +295,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     // (2B) Photos
                     if object!["contentType"] as! String == "ph" {
                         // Make iconicPreview cornered square
-                        cell.iconicPreview.layer.cornerRadius = 10.00
+                        cell.iconicPreview.layer.cornerRadius = 12.00
                         cell.iconicPreview.clipsToBounds = true
                         
                         // Fetch photo
@@ -456,7 +457,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     // (2A) Text Posts
                     if object!["contentType"] as! String == "tp" {
                         // Make iconicPreview cornered square
-                        cell.iconicPreview.layer.cornerRadius = 10.00
+                        cell.iconicPreview.layer.cornerRadius = 12.00
                         cell.iconicPreview.clipsToBounds = true
                         // Show iconicPreview
                         cell.iconicPreview.isHidden = false
@@ -467,7 +468,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     // (2B) Photos
                     if object!["contentType"] as! String == "ph" {
                         // Make iconicPreview cornered square
-                        cell.iconicPreview.layer.cornerRadius = 10.00
+                        cell.iconicPreview.layer.cornerRadius = 12.00
                         cell.iconicPreview.clipsToBounds = true
                         
                         // Fetch photo

@@ -47,6 +47,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         let following = PFQuery(className: "FollowMe")
         following.includeKey("follower")

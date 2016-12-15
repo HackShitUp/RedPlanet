@@ -296,6 +296,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Disable done button
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
@@ -428,6 +429,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Query Chats
         queryChats()
@@ -961,6 +963,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
                                             
                                             // delete chat
                                             let chats = PFQuery(className: "Chats")

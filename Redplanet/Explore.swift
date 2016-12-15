@@ -88,6 +88,7 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         
         // Query Public accounts

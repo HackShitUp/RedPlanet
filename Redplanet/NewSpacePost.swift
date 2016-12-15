@@ -76,6 +76,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         } else {
             // Show Progress
             SVProgressHUD.show()
+            SVProgressHUD.setBackgroundColor(UIColor.white)
             
             // Post to user's Space
             let space = PFObject(className: "Newsfeeds")

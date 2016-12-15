@@ -618,6 +618,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                         
                                         // Show Progress
                                         SVProgressHUD.show()
+                                        SVProgressHUD.setBackgroundColor(UIColor.white)
                                         
                                         
                                         // Delete Chats
@@ -646,11 +647,19 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                         (success: Bool, error: Error?) in
                                                         if success {
                                                             
+                                                            // Delete comment from table view
+                                                            // use array
+                                                            self.finalChatObjects.remove(at: indexPath.row)
+                                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                            
                                                             // Query Chats again
                                                             self.queryChats()
                                                             
                                                         } else {
                                                             print(error?.localizedDescription as Any)
+                                                            
+                                                            // Query Chats again
+                                                            self.queryChats()
                                                         }
                                                     })
                                                 }

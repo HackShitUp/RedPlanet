@@ -61,8 +61,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let delete = UIAlertAction(title: "X Delete",
                                    style: .destructive,
                                    handler: {(alertAction: UIAlertAction!) in
+                                    
                                     // Show Progress
-                                    SVProgressHUD.show()
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.show(withStatus: "Deleting")
                                 
                                     // Shared and og content
                                     let content = PFQuery(className: "Newsfeeds")

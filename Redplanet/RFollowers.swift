@@ -46,6 +46,7 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     func queryFollowers() {
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         let followers = PFQuery(className: "FollowMe")
         followers.whereKey("isFollowing", equalTo: true)

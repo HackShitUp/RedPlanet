@@ -135,6 +135,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // Show Progress
         SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
     
         // Get hashtags
         let queryHashtag = PFQuery(className: "Hashtags")
@@ -519,6 +520,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                                             
                                             // Show Progress
                                             SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
 
                                             let content = PFQuery(className: "Newsfeeds")
                                             content.whereKey("byUser", equalTo: PFUser.current()!)
