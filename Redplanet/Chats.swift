@@ -103,6 +103,26 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 // Remove duplicate values in array
                 let talkingProfiles = Array(Set(self.initialChatObjects))
                 
+                
+                // Un-Comment the below code to fetch chats that are less than 24 hours
+                // AKA Chats that occurred ONLY 24 hours ago...
+                /*
+                 // Run for loop to append new non-duplicated array
+                 for profiles in talkingProfiles {
+                 // (3) Set time
+                 let from = profiles.createdAt!
+                 let now = Date()
+                 let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                 let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                 
+                 if difference.day! < 1 {
+                 self.finalChatObjects.append(profiles)
+                 }
+                 
+                 }
+                 */
+                
+                
                 // Run for loop to append new non-duplicated array
                 for profiles in talkingProfiles {
                     self.finalChatObjects.append(profiles)
