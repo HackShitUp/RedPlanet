@@ -160,7 +160,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Profile Photo\n•Swipe right to leave.\n•Swipe left for Views 🙈.",
+            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Profile Photo!\n•Swipe right to leave\n•Swipe left for Views 🙈",
                                           message: nil,
                                           preferredStyle: .alert)
             

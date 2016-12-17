@@ -32,7 +32,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                       "pp",
                       "sh",
                       "sp",
-                      "itm"]
+                      "itm",
+                      "vi"]
     
     // Array to hold friends
     var friends = [PFObject]()
@@ -400,7 +401,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "BlueShared")
+                    cell.iconicPreview.image = UIImage(named: "SharedPostIcon")
                 }
                 
                 
@@ -500,7 +501,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (G) Video
                 if object!["contentType"] as! String == "vi" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                    cell.iconicPreview.layer.cornerRadius = 0.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview
@@ -509,7 +510,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "igcVideo")
+                    cell.iconicPreview.image = UIImage(named: "VideoPreview")
                 }
                 
                 // *************************************************************************************************************************
@@ -702,58 +703,24 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
                     if let video = self.friendsContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                         
-                        /*
-                         //                let videoData = URL(string: video.url!)
-                         //                let videoViewController = VideoViewController(videoURL: videoData!)
-                         //                self.parentNavigator.pushViewController(videoViewController, animated: true)
-                         /*
-                         let filemanager = NSFileManager.defaultManager()
-                         
-                         let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
-                         let destinationPath:NSString = documentsPath.stringByAppendingString("/file.mov")
-                         movieData!.writeToFile ( destinationPath as String, atomically:true)
-                         
-                         
-                         let playerItem = AVPlayerItem(asset: AVAsset(URL: NSURL(fileURLWithPath: destinationPath as String)))
-                         let player = AVPlayer(playerItem: playerItem)
-                         playerController.player = player
-                         player.play()
-                         */
-                         
-                         
-                         
-                         print("fired vi")
-                         print("VIDEO URL: \(video.url)")
-                         
-                         //                let videoUrl = NSURL(string: video.url!)
-                         //                // Create player
-                         //                let playerController = AVPlayerViewController()
-                         //                let avPlayer = AVPlayer(url: videoUrl as! URL)
-                         //                playerController.player = avPlayer
-                         //                self.present(playerController, animated: true, completion: {() -> Void in
-                         //                    playerController.player?.play()
-                         //                })
-                         
-                         video.getDataInBackground(block: {
-                         (data: Data?, error: Error?) in
-                         if error == nil {
-                         
-                         let filemanager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-                         let destinationPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-                         //                        data!.write(toFile: destinationPath as! String, atomic: true)
-                         data!.write(to: URL(string: video.url!)!, options: .atomic)
-                         let playerItem = AVPlayerItem(asset: AVAsset(url: NSURL(fileURLWithPath: destinationPath as! String) as URL))
-                         let player = AVPlayer(playerItem: playerItem)
-                         
-                         
-                         
-                         
-                         
-                         } else {
-                         print(error?.localizedDescription as Any)
-                         }
-                         })
-                         */
+                        
+                        //  SET ONE
+                        // The code works but it plays Apple's Standard of playing Videos
+                        let videoUrl = NSURL(string: video.url!)
+                        // Create player
+//                        let playerController = AVPlayerViewController()
+//                        let avPlayer = AVPlayer(url: videoUrl as! URL)
+//                        playerController.player = avPlayer
+//                        self.parentNavigator.present(playerController, animated: true, completion: {() -> Void in
+//                            // Play once presented
+//                            playerController.player?.play()
+//                        })
+
+                        
+                        
+                        let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+                        self.parentNavigator.present(videoViewController, animated: true, completion: nil)
+                        
                         
                     }
                 }

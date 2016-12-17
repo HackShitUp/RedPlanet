@@ -706,7 +706,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenMoment")
             
 
-            let alert = UIAlertController(title: "🎉\nCongrats\nYou viewed your first Moment\n•Swipe right to leave.",
+            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Moment!\n•Swipe right to leave",
                                           message: nil,
                                           preferredStyle: .alert)
             

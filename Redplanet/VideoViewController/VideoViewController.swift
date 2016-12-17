@@ -141,6 +141,12 @@ open class VideoViewController: UIViewController {
         rewindPreviewImageView.layer.mask = CAShapeLayer()
         rewindContentView.addSubview(rewindPreviewImageView)
     }
+    
+    
+    // Function to leave view controller
+    func dismissVideo() {
+        self.dismiss(animated: true, completion: nil)
+    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
@@ -148,6 +154,13 @@ open class VideoViewController: UIViewController {
         if autoplays {
             play()
         }
+        
+        
+        // Add swipe method to leave view controller
+        let swipeOut = UISwipeGestureRecognizer(target: self, action: #selector(dismissVideo))
+        swipeOut.direction = .down
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(swipeOut)
     }
 
     // MARK: - Methods

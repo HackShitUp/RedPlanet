@@ -106,10 +106,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Power your app with local datastore
         Parse.enableLocalDatastore()
         
+        // Development for Migration
+        // APP NAME: "Redplanet Media"
+//        Parse.setApplicationId("eJwKMLxpPqYhLdIy2Rw5p2u4hze0dHYwplwaIxyu",
+//                               clientKey: "VN39alIfGp5l3ki9CccakkufGzJ07MilWnIwVxT7")
+        
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
         Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
                                clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+
         
         
         // OneSignal for custom push notifications

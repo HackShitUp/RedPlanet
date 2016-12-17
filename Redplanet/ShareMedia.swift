@@ -418,11 +418,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                     if let asset = asset as? AVURLAsset {
                                                         
                                                         // Traverse url to Data
-                                                        videoData = asset.url as NSURL?
-                                                        let videoPath = videoData!.filePathURL
-                                                        let videoAsData = NSData(contentsOf: videoPath!)
-                                                        videoAsData?.write(to: videoPath!, atomically: true)
-                                                        self.parseFile = PFFile(data: videoAsData as! Data)
+                                                        let tempImage = asset.url as NSURL?
+                                                        _ = tempImage?.relativePath
+                                                        let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
+                                                        self.parseFile = PFFile(name: "video.mp4", data: videoData! as Data)
                                                         
                                                         // Save to Newsfeeds
                                                         let newsfeeds = PFObject(className: "Newsfeeds")

@@ -14,6 +14,10 @@ import MobileCoreServices
 import Photos
 import PhotosUI
 
+import Parse
+import ParseUI
+import Bolts
+
 
 // Source type
 var libraryType: Int = 0
@@ -105,6 +109,24 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         
         // Selected image
         let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        
+        mediaType = "photo"
+        
+        // Append PHAsset
+        shareImageAssets.append(image)
+        
+        // Dismiss
+        self.imagePicker.dismiss(animated: true, completion: nil)
+        
+        // Push VC
+        let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+        self.navigationController!.pushViewController(shareMediaVC, animated: true)
+    }
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // Dsimiss image picker
+        self.imagePicker.dismiss(animated: true, completion: nil)
     }
     
     
@@ -163,6 +185,27 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        
+        
+        /*
+         // This allows you to select videos and editing them
+         imagePicker = UIImagePickerController()
+         imagePicker.delegate = self
+         //        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
+         
+         //        imagePicker.sourceType = .camera
+         imagePicker.sourceType = .photoLibrary
+         imagePicker.mediaTypes = [kUTTypeMovie as String]
+         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
+         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeMedium
+         
+         imagePicker.allowsEditing = false
+         imagePicker.allowsEditing = true
+         imagePicker.navigationBar.tintColor = UIColor.black
+         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+ */
+        
+        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -238,8 +281,8 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     // MARK: UICollectionViewHeaderSection datasource
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-//        return CGSize(width: self.view.frame.size.width, height: 45)
-        return CGSize(width: self.view.frame.size.width, height: 0)
+        return CGSize(width: self.view.frame.size.width, height: 45)
+//        return CGSize(width: self.view.frame.size.width, height: 0)
     }
 
     // MARK: UICollectionViewHeader

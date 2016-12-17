@@ -20,7 +20,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
     // Arrays to hold icon images
     var iconImages = [UIImage(named: "TextPostIcon"),               // Text Post
                       UIImage(named: "PhotoGuide"),                 // Photo
-                      UIImage(named: "BlueShared"),                 // Shared
+                      UIImage(named: "SharedPostIcon"),                 // Shared
                       UIImage(named: "Gender Neutral User-100"),    // Profile Photo
                       UIImage(named: "SpacePost"),                  // Space Post
                       UIImage(named: "ITM")]                        // ITM

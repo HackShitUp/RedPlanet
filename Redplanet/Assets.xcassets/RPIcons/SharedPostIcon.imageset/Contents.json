@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "igcVideo.png",
+      "filename" : "SharedPostIcon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "igcVideo-1.png",
+      "filename" : "SharedPostIcon-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "igcVideo-2.png",
+      "filename" : "SharedPostIcon-2.png",
       "scale" : "3x"
     }
   ],
