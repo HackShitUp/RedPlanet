@@ -292,6 +292,34 @@ class ActivityCell: UITableViewCell {
             // VII
             // VIDEO
             if self.activity.titleLabel!.text!.hasSuffix("video") {
+                let video = PFQuery(className: "Newsfeeds")
+                video.whereKey("byUser", equalTo: PFUser.current()!)
+                video.whereKey("contentType", equalTo: "vi")
+                video.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                video.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            videoObject.append(object)
+                            
+                            // Push VC
+                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
                 
             }
             
@@ -995,7 +1023,7 @@ class ActivityCell: UITableViewCell {
         
         // requested to follow you
         // asked to be friends=
-        if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "asked to be friends" {
+        if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "sent you a friend request" {
             // Push VC
             let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
             self.delegate?.navigationController?.pushViewController(rRequestsVC, animated: true)

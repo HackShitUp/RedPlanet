@@ -814,11 +814,69 @@ class OtherUserHeader: UICollectionReusableView {
                                         
             })
             
+            
+            let removeFollower = UIAlertAction(title: "Remove Follower",
+                                               style: .default,
+                                               handler: {(alertAction: UIAlertAction!) in
+                                                
+                                                let alert = UIAlertController(title: "Remove Follower?",
+                                                    message: "\(otherName.last!.uppercased()) from Following you?",
+                                                    preferredStyle: .alert)
+                                                
+                                                let yes = UIAlertAction(title: "yes",
+                                                                          style: .default,
+                                                                          handler: {(alertAction: UIAlertAction!) in
+                                                                            
+                                                                            // Query relationships to check
+                                                                            self.appDelegate.queryRelationships()
+                                                                            
+                                                                            // Remove follower
+                                                                            let follower = PFQuery(className: "FollowMe")
+                                                                            follower.whereKey("follower", equalTo: otherObject.last!)
+                                                                            follower.whereKey("following", equalTo: PFUser.current()!)
+                                                                            follower.whereKey("isFollowing", equalTo: true)
+                                                                            follower.findObjectsInBackground(block: {
+                                                                                (objects: [PFObject]?, error: Error?) in
+                                                                                if error == nil {
+                                                                                    for object in objects! {
+                                                                                        object.deleteInBackground(block: {
+                                                                                            (success: Bool, error: Error?) in
+                                                                                            if success {
+                                                                                                
+                                                                                                // Not following
+                                                                                                self.relationType.isHidden = true
+                                                                                                self.friendButton.isUserInteractionEnabled = true
+                                                                                                self.followButton.isUserInteractionEnabled = true
+                                                                                                
+                                                                                            } else {
+                                                                                                print(error?.localizedDescription as Any)
+                                                                                            }
+                                                                                        })
+                                                                                    }
+                                                                                } else {
+                                                                                    print(error?.localizedDescription as Any)
+                                                                                }
+                                                                            })
+                                                })
+                                                
+                                                let no = UIAlertAction(title: "no",
+                                                                       style: .destructive,
+                                                                       handler: nil)
+                                                
+                                                alert.view.tintColor = UIColor.black
+                                                alert.addAction(no)
+                                                alert.addAction(yes)
+                                                self.delegate?.present(alert, animated: true, completion: nil)
+                                                
+            })
+            
+            
             let cancel = UIAlertAction(title: "Cancel",
                                        style: .cancel,
                                        handler: nil)
             
             options.addAction(follow)
+            options.addAction(removeFollower)
             options.addAction(friend)
             options.addAction(cancel)
             options.view.tintColor = UIColor.black

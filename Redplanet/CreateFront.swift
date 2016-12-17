@@ -559,7 +559,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // (1) Friend Requested
         if myActivity[indexPath.row].value(forKey: "type") as! String == "friend requested" {
-            cell.activity.setTitle("asked to be friends", for: .normal)
+            cell.activity.setTitle("sent you a friend request", for: .normal)
         }
         
         // (2) Friended
@@ -569,7 +569,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // (3) Follow Requested
         if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
-            cell.activity.setTitle("asked to follow you", for: .normal)
+            cell.activity.setTitle("requested to follow you", for: .normal)
         }
         
         // (4) Followed
@@ -630,7 +630,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             cell.activity.setTitle("liked your moment", for: .normal)
         }
         
-        // (7)  Liked Comment
+        // (7) Video
+        if myActivity[indexPath.row].value(forKey: "type") as! String == "like vi" {
+            cell.activity.setTitle("liked your video", for: .normal)
+        }
+        
+        // (9)  Liked Comment
         if myActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
             cell.activity.setTitle("liked your comment", for: .normal)
         }

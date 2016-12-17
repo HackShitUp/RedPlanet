@@ -300,7 +300,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         //set contentView frame and autoresizingMask
-        cell.contentView.frame = cell.bounds
+        cell.contentView.frame = cell.contentView.frame
 
         // Set parent VC
         cell.delegate = self

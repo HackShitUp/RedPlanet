@@ -152,7 +152,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     // if notificaiton titles: "from <Username>"
                                                     // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
                                                     // Reload data for SlackChat
-                                                    
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
                                                 }
 

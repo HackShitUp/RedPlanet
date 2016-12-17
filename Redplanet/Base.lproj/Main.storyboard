@@ -1423,7 +1423,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="495"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Hkg-eJ-9F0" id="7wN-ww-WJ6">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="494"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="494.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U0v-DR-Mfn">
@@ -1460,6 +1460,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="325" id="mWa-xC-z4t"/>
                                                 <constraint firstAttribute="width" constant="325" id="rmC-w1-HzA"/>
+                                                <constraint firstAttribute="width" secondItem="Gul-Mw-z6t" secondAttribute="height" multiplier="1:1" id="v56-SN-7jG"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mib-P6-mh6">
