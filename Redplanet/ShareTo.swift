@@ -188,6 +188,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
+        
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -375,7 +378,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                 print("Successfully saved chat: \(chats)")
                                                 
                                                 let alert = UIAlertController(title: "Shared ✓",
-                                                                             message: "Successfully sent content to \(userName!).",
+                                                                             message: "Successfully sent to \(userName!.uppercased()).",
                                                     preferredStyle: .alert)
                                                 
                                                 let ok = UIAlertAction(title: "ok",

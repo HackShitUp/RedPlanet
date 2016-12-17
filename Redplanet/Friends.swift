@@ -501,7 +501,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // (G) Video
                 if object!["contentType"] as! String == "vi" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 0.00
+                    cell.iconicPreview.layer.cornerRadius = 12.00
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview
@@ -510,7 +510,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "VideoPreview")
+                    cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
                 // *************************************************************************************************************************
@@ -590,24 +590,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
         return cell
     }
-    
-    
-    // define these as class properties:
-    var player:AVPlayer!
-    var playerLayer:AVPlayerLayer!
-    
-    func setupVideoPlayerWithURL(url:NSURL) {
-        
-        player = AVPlayer(url: url as URL)
-        playerLayer = AVPlayerLayer(player: self.player)
-        playerLayer.videoGravity = AVLayerVideoGravityResizeAspect
-        playerLayer.frame = self.view.frame   // take up entire screen
-        self.view.layer.addSublayer(self.playerLayer)
-        player.play()
-        
-    }
-    
-    
+
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -701,28 +684,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // VIDEO
                 if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
-                    if let video = self.friendsContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                        
-                        
-                        //  SET ONE
-                        // The code works but it plays Apple's Standard of playing Videos
-                        let videoUrl = NSURL(string: video.url!)
-                        // Create player
-//                        let playerController = AVPlayerViewController()
-//                        let avPlayer = AVPlayer(url: videoUrl as! URL)
-//                        playerController.player = avPlayer
-//                        self.parentNavigator.present(playerController, animated: true, completion: {() -> Void in
-//                            // Play once presented
-//                            playerController.player?.play()
-//                        })
-
-                        
-                        
-                        let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
-                        self.parentNavigator.present(videoViewController, animated: true, completion: nil)
-                        
-                        
-                    }
+                    // Append content object
+                    videoObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Push VC
+                    let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                    self.parentNavigator.pushViewController(videoVC, animated: true)
                 }
                 
                 

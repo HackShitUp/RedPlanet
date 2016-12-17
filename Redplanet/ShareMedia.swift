@@ -212,29 +212,33 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     // Function to share photo
     func shareMedia() {
         
-        // MARK: - Mixpanel
-        Mixpanel.mainInstance().track(event: "Shared Photo",
-                                      properties: ["Username":"\(PFUser.current()!.username!)"]
-        )
-        
-        // Determine Content Type
-        if mediaType == "photo" {
-            // PHOTO
-            
-            // Share Photo
-            sharePhotoData()
-            
-        } else {
-            // VIDEO
-            
-            // Share Video
-            shareVideoData()
-
-        } // end contentType Determination
-        
         
         // Run in main thread
         DispatchQueue.main.async(execute: {
+            
+            // Determine Content Type
+            if mediaType == "photo" {
+                
+                // Share Photo
+                self.sharePhotoData()
+                
+                // MARK: - Mixpanel
+                Mixpanel.mainInstance().track(event: "Shared Photo",
+                                              properties: ["Username":"\(PFUser.current()!.username!)"]
+                )
+                
+            } else {
+                
+                // Share Video
+                self.shareVideoData()
+                
+                // MARK: - Mixpanel
+                Mixpanel.mainInstance().track(event: "Shared Video",
+                                              properties: ["Username":"\(PFUser.current()!.username!)"]
+                )
+                
+            } // end contentType Determination
+            
             
             // Reset Library Type to 0
             libraryType = 0
