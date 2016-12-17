@@ -171,8 +171,17 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 540
+        self.tableView!.estimatedRowHeight = 495
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
+        // Fetch video data
+        if let video = videoObject.last!.value(forKey: "videoAsset") as? PFFile {
+            // Traverse video url
+            let videoUrl = NSURL(string: video.url!)
+            // MARK: - Periscope Video View Controller
+            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            self.present(videoViewController, animated: true, completion: nil)
+        }
         
         
         // Fetch Likes and Comments
@@ -216,7 +225,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
             
-            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Video!\n•Tap on the preview to play the video\n• Swipe down once the video plays\n•Swipe right to leave\n•Swipe left for Views 🙈",
+            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Video!\n•Tap on the preview to play the video\n• Swipe down to leave the video\n•Swipe left for Views 🙈",
                                           message: nil,
                                           preferredStyle: .alert)
             
@@ -228,7 +237,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
-
         
 
     }
@@ -241,7 +249,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 540
+        return 495
     }
     
     
@@ -263,16 +271,12 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "videoCell", for: indexPath) as! VideoCell
-
-        // Set parent VC
-        cell.delegate = self
         
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        
-        
-        // Instantiate parent vc
+
+        // Set parent VC
         cell.delegate = self
         
         // Declare user's object
@@ -301,8 +305,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Make Vide Preview Circular
         cell.videoPreview.layer.cornerRadius = cell.videoPreview.frame.size.width/2
-        cell.videoPreview.layer.borderColor = UIColor.lightGray.cgColor
-        cell.videoPreview.layer.borderWidth = 0.5
+        cell.videoPreview.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+        cell.videoPreview.layer.borderWidth = 3.00
         cell.videoPreview.clipsToBounds = true
         
         
@@ -469,6 +473,197 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
 
         return cell
     }
+    
+    
+    
+    // MARK: - UITableViewDelegate Method
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    } // end edit boolean
+    
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // (1) Delete Text Post
+        let delete = UITableViewRowAction(style: .normal,
+                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
+                                            
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.show(withStatus: "Deleting")
+                                            
+                                            // Delete content
+                                            let content = PFQuery(className: "Newsfeeds")
+                                            content.whereKey("byUser", equalTo: PFUser.current()!)
+                                            content.whereKey("objectId", equalTo: videoObject.last!.objectId!)
+                                            
+                                            let shares = PFQuery(className: "Newsfeeds")
+                                            shares.whereKey("pointObject", equalTo: videoObject.last!)
+                                            
+                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                            newsfeeds.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        // Delete object
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted object: \(object)")
+                                                                
+                                                                // Dismiss
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                
+                                                                // Reload newsfeed
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                
+                                                                // Reload myProfile
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                self.navigationController?.popViewController(animated: true)
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+        }
+        
+        // (2) Edit
+        let edit = UITableViewRowAction(style: .normal,
+                                        title: "🔩\nEdit") { (UITableViewRowAction, indexPath) in
+                                            
+                                            
+                                            // Append object
+                                            editObjects.append(videoObject.last!)
+                                            
+                                            // Push VC
+                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                            self.navigationController?.pushViewController(editVC, animated: true)
+                                            
+                                            
+                                            // Close cell
+                                            self.tableView!.setEditing(false, animated: true)
+                                            
+        }
+        
+        
+        // (3) Views
+        let views = UITableViewRowAction(style: .normal,
+                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
+                                            // Append object
+                                            viewsObject.append(videoObject.last!)
+                                            
+                                            // Push VC
+                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                            self.navigationController?.pushViewController(viewsVC, animated: true)
+                                            
+        }
+        
+        
+        // (4) Report Content
+        let report = UITableViewRowAction(style: .normal,
+                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
+                                            
+                                            let alert = UIAlertController(title: "Report",
+                                                                          message: "Please provide your reason for reporting \(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                                preferredStyle: .alert)
+                                            
+                                            let report = UIAlertAction(title: "Report", style: .destructive) {
+                                                [unowned self, alert] (action: UIAlertAction!) in
+                                                
+                                                let answer = alert.textFields![0]
+                                                
+                                                // Save to <Block_Reported>
+                                                let report = PFObject(className: "Block_Reported")
+                                                report["from"] = PFUser.current()!.username!
+                                                report["fromUser"] = PFUser.current()!
+                                                report["to"] = videoObject.last!.value(forKey: "username") as! String
+                                                report["toUser"] = videoObject.last!.value(forKey: "byUser") as! PFUser
+                                                report["forObjectId"] = videoObject.last!.objectId!
+                                                report["type"] = answer.text!
+                                                report.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved report: \(report)")
+                                                        
+                                                        // Dismiss
+                                                        let alert = UIAlertController(title: "Successfully Reported",
+                                                                                      message: "\(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                            
+                                            
+                                            let cancel = UIAlertAction(title: "Cancel",
+                                                                       style: .cancel,
+                                                                       handler: nil)
+                                            
+                                            
+                                            alert.addTextField(configurationHandler: nil)
+                                            alert.addAction(report)
+                                            alert.addAction(cancel)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+        }
+        
+        
+        
+        
+        
+        // Set background colors
+        /*
+         // Red
+         delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+         // Grey
+         edit.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
+         // Yellow
+         views.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+         // Blue
+         report.backgroundColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+         */
+        
+        
+        // Super Dark Gray
+        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
+        // Dark Gray
+        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
+        // Red
+        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        // Yellow
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+        
+        
+        
+        if videoObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+            return [delete, edit, views]
+        } else {
+            return [report]
+        }
+        
+        
+        
+    } // End edit action
     
 
     

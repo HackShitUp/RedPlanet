@@ -37,7 +37,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     var refresher: UIRefreshControl!
     
     // Array to hold contenTypes
-    var contentTypes = ["ph", "tp", "sh"]
+    var contentTypes = ["ph",
+                        "tp",
+                        "sh",
+                        "vi"]
     
     
     // Function to refresh data
@@ -294,6 +297,21 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     cell.iconicPreview.image = UIImage(named: "SharedPostIcon")
                 }
                 
+                // (D) VIDEO
+                if object!["contentType"] as! String == "vi" {
+                    // Make iconicPreview cornered square
+                    cell.iconicPreview.layer.cornerRadius = 12.00
+                    cell.iconicPreview.clipsToBounds = true
+                    
+                    // Show iconicPreview
+                    cell.iconicPreview.isHidden = false
+                    
+                    // Set background color for iconicPreview
+                    cell.iconicPreview.backgroundColor = UIColor.clear
+                    // and set icon for indication
+                    cell.iconicPreview.image = UIImage(named: "VideoIcon")
+                }
+                
                 
                 
                 
@@ -416,94 +434,17 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     self.parentNavigator.pushViewController(sharedPostVC, animated: true)
                     
                 }
-                
-                
-                // PROFILE PHOTO
-                if self.followingContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
-                    // Append user's object
-                    otherObject.append(self.followingContent[indexPath.row].value(forKey: "byUser") as! PFUser)
-                    // Append user's username
-                    otherName.append(self.followingContent[indexPath.row].value(forKey: "username") as! String)
-                    
-                    // Append object
-                    proPicObject.append(self.followingContent[indexPath.row])
-                    
-                    // Push VC
-                    let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                    self.parentNavigator.pushViewController(proPicVC, animated: true)
-                    
-                }
-                
-                
-                // ITM
-                if self.followingContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                    // Append content object
-                    itmObject.append(self.followingContent[indexPath.row])
-                    
-                    // Push VC
-                    let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                    self.parentNavigator.pushViewController(itmVC, animated: true)
-                }
-                
-                
+
                 
                 // VIDEO
                 if self.followingContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
                     if let video = self.followingContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                        // Append content object
+                        videoObject.append(self.followingContent[indexPath.row])
                         
-                        /*
-                         //                let videoData = URL(string: video.url!)
-                         //                let videoViewController = VideoViewController(videoURL: videoData!)
-                         //                self.parentNavigator.pushViewController(videoViewController, animated: true)
-                         /*
-                         let filemanager = NSFileManager.defaultManager()
-                         
-                         let documentsPath : AnyObject = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask,true)[0]
-                         let destinationPath:NSString = documentsPath.stringByAppendingString("/file.mov")
-                         movieData!.writeToFile ( destinationPath as String, atomically:true)
-                         
-                         
-                         let playerItem = AVPlayerItem(asset: AVAsset(URL: NSURL(fileURLWithPath: destinationPath as String)))
-                         let player = AVPlayer(playerItem: playerItem)
-                         playerController.player = player
-                         player.play()
-                         */
-                         
-                         
-                         
-                         print("fired vi")
-                         print("VIDEO URL: \(video.url)")
-                         
-                         //                let videoUrl = NSURL(string: video.url!)
-                         //                // Create player
-                         //                let playerController = AVPlayerViewController()
-                         //                let avPlayer = AVPlayer(url: videoUrl as! URL)
-                         //                playerController.player = avPlayer
-                         //                self.present(playerController, animated: true, completion: {() -> Void in
-                         //                    playerController.player?.play()
-                         //                })
-                         
-                         video.getDataInBackground(block: {
-                         (data: Data?, error: Error?) in
-                         if error == nil {
-                         
-                         let filemanager = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-                         let destinationPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
-                         //                        data!.write(toFile: destinationPath as! String, atomic: true)
-                         data!.write(to: URL(string: video.url!)!, options: .atomic)
-                         let playerItem = AVPlayerItem(asset: AVAsset(url: NSURL(fileURLWithPath: destinationPath as! String) as URL))
-                         let player = AVPlayer(playerItem: playerItem)
-                         
-                         
-                         
-                         
-                         
-                         } else {
-                         print(error?.localizedDescription as Any)
-                         }
-                         })
-                         */
-                        
+                        // Push VC
+                        let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                        self.parentNavigator.pushViewController(videoVC, animated: true)
                     }
                 }
 

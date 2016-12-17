@@ -516,7 +516,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 
                 // (G) Video
                 if object!["contentType"] as! String == "vi" {
-                    // Make iconicPreview cornered square
+                    // Make iconicPreview circular
                     cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
                     cell.iconicPreview.clipsToBounds = true
                     
@@ -526,7 +526,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "igcVideo")
+                    cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
                 // *************************************************************************************************************************
@@ -680,6 +680,18 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
             // Push VC
             let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
             self.navigationController?.pushViewController(itmVC, animated: true)
+        }
+        
+        // VIDEO
+        if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+            if let video = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // Append content object
+                videoObject.append(self.myContentObjects[indexPath.row])
+                
+                // Push VC
+                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                self.navigationController?.pushViewController(videoVC, animated: true)
+            }
         }
         
     }

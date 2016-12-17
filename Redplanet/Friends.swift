@@ -8,8 +8,6 @@
 
 import UIKit
 import CoreData
-import AVFoundation
-import AVKit
 
 import Parse
 import ParseUI
@@ -17,8 +15,6 @@ import Bolts
 
 import SVProgressHUD
 import DZNEmptyDataSet
-
-
 
 
 // Define identifier
@@ -500,8 +496,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (G) Video
                 if object!["contentType"] as! String == "vi" {
-                    // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 12.00
+                    // Make iconicPreview circular
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview
