@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -20,7 +22,7 @@ import OneSignal
 // Array 
 var editObjects = [PFObject]()
 
-class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
+class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UINavigationControllerDelegate {
     
     // Array to hold user's objects and usernames
     var userObjects = [PFObject]()
@@ -473,6 +475,40 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     }
     
     
+    // Function to play video
+    func playVideo(sender: AnyObject) {
+        DispatchQueue.main.async(execute: {
+            
+            // Fetch video data
+            if let video = editObjects.last!.value(forKey: "videoAsset") as? PFFile {
+                
+                let videoUrl = NSURL(string: video.url!)
+
+                
+                // MARK: - PeriscopeVideoViewController
+                let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+                videoViewController.modalPresentationStyle = .popover
+                videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+                
+                
+                let popOverVC = videoViewController.popoverPresentationController
+                popOverVC?.permittedArrowDirections = .any
+                popOverVC?.delegate = self
+                popOverVC?.sourceView = self.mediaAsset
+                popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+                
+                
+                self.present(videoViewController, animated: true, completion: nil)
+            }
+            
+        })
+    }
+    
+    
+    // Prevent crash by looping around iPad
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
 
     
     override func viewDidLoad() {
@@ -526,27 +562,35 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 })
             }
             
-        } else {
-            // Video
-            if let video = editObjects.last!.value(forKeyPath: "videoAsset") as? PFFile {
-                // TODO::
-                // Set video thumbnail
-            }
-            
-        }
-        
-        
-        
-        
-        // Add zoom function
-        if editObjects.last!.value(forKey: "photoAsset") != nil {
             // Add zoom-method tap
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
             zoomTap.numberOfTapsRequired = 1
             self.mediaAsset.isUserInteractionEnabled = true
             self.mediaAsset.addGestureRecognizer(zoomTap)
+            
+        } else {
+            // Video
+            if let videoFile = editObjects.last!.value(forKeyPath: "videoAsset") as? PFFile {
+                let videoUrl = NSURL(string: videoFile.url!)
+                do {
+                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                    self.mediaAsset.image = UIImage(cgImage: cgImage)
+                    
+                } catch let error {
+                    print("*** Error generating thumbnail: \(error.localizedDescription)")
+                }
+            }
+            
+            // Add Video preview method tap
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(playTap)
         }
-        
+
     }
 
     override func didReceiveMemoryWarning() {

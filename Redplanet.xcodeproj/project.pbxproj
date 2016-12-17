@@ -588,6 +588,7 @@
 		7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */ = {
 			isa = PBXGroup;
 			children = (
+				7EE5609E1DD2D3B200DA2849 /* EditContent */,
 				7E4CFFA11DB4397F0087454E /* TextPost */,
 				7E4CFFA01DB439780087454E /* PhotoAsset */,
 				7E43077E1DD01F8F00AA2413 /* VideoAsset */,
@@ -1316,7 +1317,6 @@
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
-				7EE5609E1DD2D3B200DA2849 /* EditContent */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,

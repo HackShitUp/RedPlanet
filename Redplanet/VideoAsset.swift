@@ -240,6 +240,32 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Stylize title
+        configureView()
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -351,9 +377,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                         let imgGenerator = AVAssetImageGenerator(asset: asset)
                         imgGenerator.appliesPreferredTrackTransform = true
                         let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        let thumbnail = UIImage(cgImage: cgImage)
-                        cell.videoPreview.image = thumbnail
-                        // thumbnail here
+                        cell.videoPreview.image = UIImage(cgImage: cgImage)
                         
                     } catch let error {
                         print("*** Error generating thumbnail: \(error.localizedDescription)")
