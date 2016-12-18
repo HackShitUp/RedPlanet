@@ -285,6 +285,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "sharedPostCell", for: indexPath) as! SharedPostCell
         
+        // Set bounds
+        cell.contentView.frame = cell.contentView.frame
+        
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

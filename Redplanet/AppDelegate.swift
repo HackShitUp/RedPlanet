@@ -128,11 +128,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             
                                             // This block gets called when the user reacts to a notification received
                                             let payload = notification?.payload
-                                            let fullMessage = payload?.title
-                                            
-                                            print("***NOTIFICATION: \(notification?.payload.title)")
-                                            print("\(fullMessage)")
-                                            
+                                            let fullMessage = payload?.body
+
                                             // Banner for notification
                                             if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") {
                                                 // If PFUser.currentUser()! caused
@@ -182,10 +179,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
-//            Heap.setAppId("3455525110");
-//            #if DEBUG
-//                Heap.enableVisualizer();
-//            #endif
+            Heap.setAppId("3455525110");
+            #if DEBUG
+                Heap.enableVisualizer();
+            #endif
             
             // Mixpanel initialization
             let mixpanel = Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769")

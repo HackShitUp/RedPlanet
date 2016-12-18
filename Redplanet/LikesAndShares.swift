@@ -711,7 +711,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
             
             
             // VIDEO
-            if self.likedPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            if self.likedPosts[indexPath.row].value(forKey: "contentType") as! String == "vi" {
                 // Append content object
                 videoObject.append(self.likedPosts[indexPath.row])
                 
@@ -801,7 +801,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
             }
             
             // VIDEO
-            if self.sharedPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            if self.sharedPosts[indexPath.row].value(forKey: "contentType") as! String == "vi" {
                 // Append content object
                 videoObject.append(self.sharedPosts[indexPath.row])
                 
