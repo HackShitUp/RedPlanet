@@ -118,8 +118,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         
-        
-        
         // OneSignal for custom push notifications
         // 571bbb3a-3612-4496-b3b4-12623256782a
         OneSignal.initWithLaunchOptions(launchOptions,
@@ -130,9 +128,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             let payload = notification?.payload
                                             let fullMessage = payload?.title
                                             
+                                            print("***NOTIFICATION: \(notification?.payload.title)")
                                             print("\(fullMessage)")
                                             
                                             // Banner for notification
+                                            /*
                                             if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
@@ -165,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 )
                                                 banner.dismissesOnTap = true
                                                 banner.show(duration: 3.0)
-                                            }
+                                            }*/
                                             
                                             
             }, handleNotificationAction: { (result) in

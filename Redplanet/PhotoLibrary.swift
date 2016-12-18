@@ -40,9 +40,21 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
     @IBAction func iosPhotos(_ sender: AnyObject) {
         // Load Photo Library
-        DispatchQueue.main.async(execute: {
-            self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
-        })
+//        DispatchQueue.main.async(execute: {
+//            self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+//        })
+        // This allows you to select videos and editing them
+        imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        //        imagePicker.sourceType = .camera
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
+        imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
+        imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
+        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.tintColor = UIColor.black
+        imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
     }
     
     
@@ -107,20 +119,43 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     // UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
-        // Selected image
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
         
-        mediaType = "photo"
         
-        // Append PHAsset
-        shareImageAssets.append(image)
+        if pickerMedia == kUTTypeImage {
+            print("Photo selected")
+            // Selected image
+            let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            
+            mediaType = "photo"
+            
+            // Append PHAsset
+            shareImageAssets.append(image)
+            
+            // Dismiss
+            self.imagePicker.dismiss(animated: true, completion: nil)
+            
+            // Push VC
+            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+            self.navigationController!.pushViewController(shareMediaVC, animated: true)
+        }
         
-        // Dismiss
-        self.imagePicker.dismiss(animated: true, completion: nil)
-        
-        // Push VC
-        let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
-        self.navigationController!.pushViewController(shareMediaVC, animated: true)
+        if pickerMedia == kUTTypeMovie {
+            print("Video selected")
+            
+            // Selected image
+            let video = info[UIImagePickerControllerMediaURL] as! URL
+            instanceVideoData = video
+            
+            mediaType = "video"
+            
+            // Dismiss
+            self.imagePicker.dismiss(animated: true, completion: nil)
+            
+            // Push VC
+            let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
+            self.navigationController!.pushViewController(shareMediaVC, animated: true)
+        }
     }
     
     
@@ -240,12 +275,13 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
     
     
@@ -282,7 +318,6 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
         return CGSize(width: self.view.frame.size.width, height: 45)
-//        return CGSize(width: self.view.frame.size.width, height: 0)
     }
 
     // MARK: UICollectionViewHeader
