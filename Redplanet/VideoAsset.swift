@@ -311,7 +311,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // Declare content's object
         cell.contentObject = videoObject.last!
         
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()

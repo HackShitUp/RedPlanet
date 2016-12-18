@@ -145,6 +145,16 @@ class SharedPostCell: UITableViewCell {
                         let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                         self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
                     }
+                    
+                    if object["contentType"] as! String == "vi" {
+                        // Video
+                        // Append object
+                        videoObject.append(object)
+                        
+                        // Push VC
+                        let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                        self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                    }
                 }
                 
             } else {

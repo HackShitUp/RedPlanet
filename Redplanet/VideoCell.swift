@@ -58,6 +58,12 @@ class VideoCell: UITableViewCell {
     
     @IBOutlet weak var numberOfShares: UIButton!
     @IBAction func showShares(_ sender: Any) {
+        // Append object
+        shareObject.append(videoObject.last!)
+        
+        // Push VC
+        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
+        self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
     }
     
     @IBOutlet weak var likeButton: UIButton!
@@ -231,7 +237,116 @@ class VideoCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
     }
 
+    
     @IBAction func share(_ sender: Any) {
+        let options = UIAlertController(title: nil,
+                                        message: nil,
+                                        preferredStyle: .actionSheet)
+        
+        // TODO:
+        // Change to Everyone
+        
+        let publicShare = UIAlertAction(title: "All Friends",
+                                        style: .default,
+                                        handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Share to public ***FRIENDS ONLY***
+                                            let newsfeeds = PFObject(className: "Newsfeeds")
+                                            newsfeeds["byUser"] = PFUser.current()!
+                                            newsfeeds["username"] = PFUser.current()!.username!
+                                            newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Video: \(self.caption.text!)"
+                                            newsfeeds["pointObject"] = videoObject.last!
+                                            newsfeeds["contentType"] = "sh"
+                                            newsfeeds.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if error == nil {
+                                                    print("Successfully shared text post: \(newsfeeds)")
+                                                    
+                                                    
+                                                    // Send Notification
+                                                    let notifications = PFObject(className: "Notifications")
+                                                    notifications["fromUser"] = PFUser.current()!
+                                                    notifications["from"] = PFUser.current()!.username!
+                                                    notifications["toUser"] = videoObject.last!.value(forKey: "byUser") as! PFUser
+                                                    notifications["to"] = self.rpUsername.text!
+                                                    notifications["type"] = "share vi"
+                                                    notifications["forObjectId"] = videoObject.last!.objectId!
+                                                    notifications.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Sent notification: \(notifications)")
+                                                            
+                                                            
+                                                            // Handle optional chaining
+                                                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                                                // MARK: - OneSignal
+                                                                // Send push notification
+                                                                OneSignal.postNotification(
+                                                                    ["contents":
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared your Video"],
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                    ]
+                                                                )
+                                                            }
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            // Send notification
+                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            
+                                                            // Show alert
+                                                            let alert = UIAlertController(title: "Shared With Friends",
+                                                                                          message: "Successfully shared \(self.rpUsername.text!)'s Video.",
+                                                                preferredStyle: .alert)
+                                                            
+                                                            let ok = UIAlertAction(title: "ok",
+                                                                                   style: .default,
+                                                                                   handler: {(alertAction: UIAlertAction!) in
+                                                                                    // Pop view controller
+                                                                                    self.delegate?.navigationController?.popViewController(animated: true)
+                                                            })
+                                                            
+                                                            alert.addAction(ok)
+                                                            alert.view.tintColor = UIColor.black
+                                                            self.delegate?.present(alert, animated: true, completion: nil)
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+                                                    
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+                                            
+        })
+        
+        let privateShare = UIAlertAction(title: "One Friend",
+                                         style: .default,
+                                         handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Append to contentObject
+                                            shareObject.append(self.contentObject!)
+                                            
+                                            // Share to chats
+                                            let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                            self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+        })
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        options.addAction(publicShare)
+        options.addAction(privateShare)
+        options.addAction(cancel)
+        options.view.tintColor = UIColor.black
+        self.delegate?.present(options, animated: true, completion: nil)
     }
     
     // Function to present video

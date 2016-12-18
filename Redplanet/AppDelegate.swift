@@ -118,12 +118,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         
         
+        
+        
         // OneSignal for custom push notifications
         // 571bbb3a-3612-4496-b3b4-12623256782a
         OneSignal.initWithLaunchOptions(launchOptions,
                                         appId: "571bbb3a-3612-4496-b3b4-12623256782a",
                                         handleNotificationReceived: { (notification) in
-                                            
                                             
                                             // This block gets called when the user reacts to a notification received
                                             let payload = notification?.payload
@@ -154,7 +155,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     // Reload data for SlackChat
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
                                                 }
-
+                                                
                                             } else {
                                                 // Set visible banner
                                                 let banner = Banner(title: "\(fullMessage!)",
@@ -167,13 +168,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             }
                                             
                                             
-                                            
-                                            
             }, handleNotificationAction: { (result) in
-                
-                // Add action
-               
-
+               // Action
                 
             }, settings: [kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInFocusDisplayOption : false])
         
@@ -250,6 +246,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        //
+    }
+
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
         // Set again in Application's data

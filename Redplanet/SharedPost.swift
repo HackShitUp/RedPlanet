@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -402,8 +404,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             content.fetchIfNeededInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
-                    
-                    print("OBJECT IS: \(object)")
 
                     // (1) Get user's object
                     if let user = object!["byUser"] as? PFUser {
@@ -476,7 +476,46 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     }
                     
                     
-                    // (C) Space Post
+                    // (C) Video
+                    if object!["contentType"] as! String == "vi" {
+                        cell.mediaAsset.isHidden = false
+                        cell.textPost.isHidden = true
+                        
+                        // (B1) Fetch video thumbnail
+                        if let video = object!["videoAsset"] as? PFFile {
+                            // Get Video Thumbnail
+                            let videoUrl = NSURL(string: video.url!)
+                            do {
+                                cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
+                                cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                                cell.mediaAsset.layer.borderWidth = 3.00
+                                cell.mediaAsset.clipsToBounds = true
+                                
+                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                                let imgGenerator = AVAssetImageGenerator(asset: asset)
+                                imgGenerator.appliesPreferredTrackTransform = true
+                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                                cell.mediaAsset.image = UIImage(cgImage: cgImage)
+                                
+                            } catch let error {
+                                print("*** Error generating thumbnail: \(error.localizedDescription)")
+                            }
+                        }
+                        
+                        // (B2) Check for textPost
+                        if object!["textPost"] != nil {
+                            // Add lines for sizing constraints
+                            cell.textPost.isHidden = false
+                            cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
+                        } else {
+                            // Add lines for sizing constraints
+                            cell.textPost.isHidden = false
+                            cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                        }
+                    }
+                    
+                    
+                    // (D) Space Post
                     if object!["contentType"] as! String == "sp" {
                         
                         cell.mediaAsset.isHidden = false

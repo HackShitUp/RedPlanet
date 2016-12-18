@@ -68,12 +68,13 @@ class ActivityCell: UITableViewCell {
     
     
     
-    // Function to go to content
-    func goContent(sender: UIButton) {
+    @IBAction func viewPost(_ sender: Any) {
         
+        // ----------------------------------------------------------------------------------------------------------------------------
+        // ==================== L I K E -----------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------------
         
-        // A
-        // LIKED
+        // (A) LIKED POST
         if self.activity.titleLabel!.text!.hasPrefix("liked") {
             
             
@@ -184,7 +185,7 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
-
+            
             // IV
             // SHARE
             if self.activity.titleLabel!.text!.hasSuffix("shared post") {
@@ -326,10 +327,9 @@ class ActivityCell: UITableViewCell {
         } // End Liked Content
         
         
-        // B
-        // LIKED COMMENT
+        // (B) LIKED COMMENT
         if self.activity.titleLabel!.text! == "liked your comment" {
-
+            
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
             self.activity.isEnabled = false
@@ -358,7 +358,7 @@ class ActivityCell: UITableViewCell {
                                 
                                 // PUSH VC
                                 for object in objects! {
-
+                                    
                                     // I TEXT POST
                                     if object["contentType"] as! String  == "tp" {
                                         // Append object
@@ -378,7 +378,7 @@ class ActivityCell: UITableViewCell {
                                         let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                                         self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                                     }
-
+                                    
                                     // III SHARED POST
                                     if object["contentType"] as! String == "sh" {
                                         // Append object
@@ -424,6 +424,16 @@ class ActivityCell: UITableViewCell {
                                         self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
                                     }
                                     
+                                    // VII VIDEO
+                                    if object["contentType"] as! String == "vi" {
+                                        // Append object
+                                        videoObject.append(object)
+                                        
+                                        // Push VC
+                                        let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                                        self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                                    }
+                                    
                                 }
                                 
                                 
@@ -442,17 +452,18 @@ class ActivityCell: UITableViewCell {
                     self.activity.isEnabled = true
                 }
             })
-
-        }// End liked comment
-
+            
+        }
         
         
         
         
-        // C
-        // COMMENT
+        // ----------------------------------------------------------------------------------------------------------------------------
+        // ==================== C O M M E N T -----------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------------
+        
         if self.activity.titleLabel!.text! == "commented on your post" {
-
+            
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
             self.activity.isEnabled = false
@@ -512,7 +523,7 @@ class ActivityCell: UITableViewCell {
                             self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                         }
                         
-                        // VI SPACE POST
+                        // V SPACE POST
                         if object["contentType"] as! String == "sp" {
                             // Append object
                             spaceObject.append(object)
@@ -527,7 +538,7 @@ class ActivityCell: UITableViewCell {
                             self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                         }
                         
-                        // VII MOMENT
+                        // VI MOMENT
                         if object["contentType"] as! String == "itm" {
                             // Append object
                             itmObject.append(object)
@@ -535,6 +546,16 @@ class ActivityCell: UITableViewCell {
                             // Push VC
                             let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                             self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                        }
+                        
+                        // VII VIDEO
+                        if object["contentType"] as! String == "vi" {
+                            // Append object
+                            videoObject.append(object)
+                            
+                            // Push VC
+                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                         }
                         
                     }
@@ -549,14 +570,16 @@ class ActivityCell: UITableViewCell {
                     self.activity.isEnabled = true
                 }
             })
-
+            
             
         }// End commented on your content
         
         
         
-        // D
-        // SHARE
+        // ----------------------------------------------------------------------------------------------------------------------------
+        // ==================== S H A R E D -------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------------
+        
         if self.activity.titleLabel!.text!.hasPrefix("shared your") || self.activity.titleLabel!.text!.hasPrefix("re-shared your") {
             
             // Disable buttons
@@ -594,7 +617,7 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
-
+            
             // (2) Photo
             if self.activity.titleLabel!.text!.hasSuffix("photo") {
                 // Find Photo
@@ -609,7 +632,7 @@ class ActivityCell: UITableViewCell {
                         self.activity.isEnabled = true
                         
                         for object in objects! {
-                           // Append object
+                            // Append object
                             photoAssetObject.append(object)
                             
                             // Push to VC
@@ -752,15 +775,46 @@ class ActivityCell: UITableViewCell {
             }
             
             // (7) VIDEO
-            // TODO::
+            if self.activity.titleLabel!.text!.hasSuffix("video") {
+                // Find Moment
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            videoObject.append(object)
+                            
+                            // Push to VC
+                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                        }
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
+            }
             
-        }// End Shared
+        }
         
         
         
         
         
-        // T A G
+        // --------------------------------------------------------------------------------------------------------------------------------
+        // ==================== T A G -----------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------------------------
+        
         if self.activity.titleLabel!.text!.hasPrefix("tagged you in a") {
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
@@ -814,7 +868,7 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             photoAssetObject.append(object)
-
+                            
                             // Push VC
                             let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                             self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
@@ -899,11 +953,41 @@ class ActivityCell: UITableViewCell {
                         self.activity.isEnabled = true
                     }
                 })
-                    
-
             }
             
-            // V Comment
+            
+            // V VIDEO
+            if self.activity.titleLabel!.text!.hasSuffix("video") {
+                // Find in Newsfeeds
+                let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                newsfeeds.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                        
+                        for object in objects! {
+                            // Append object
+                            videoObject.append(object)
+                            
+                            // Push VC
+                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        
+                        // Re-enable buttons
+                        self.activity.isUserInteractionEnabled = true
+                        self.activity.isEnabled = true
+                    }
+                })
+            }
+            
+            // VI Comment
             if self.activity.titleLabel!.text!.hasSuffix("comment") {
                 print("FIRED")
                 // (1) Filter Comments
@@ -991,7 +1075,17 @@ class ActivityCell: UITableViewCell {
                                             let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                                             self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
                                         }
-
+                                        
+                                        // VII VIDEO
+                                        if object["contentType"] as! String == "vi" {
+                                            // Append object
+                                            videoObject.append(object)
+                                            
+                                            // Push VC
+                                            let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                                            self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+                                        }
+                                        
                                         
                                     }
                                 } else {
@@ -1010,16 +1104,15 @@ class ActivityCell: UITableViewCell {
                     }
                 })
             }
+            
+            
+        }
         
         
-        }// end TAG
- 
         
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ///////////////////////////////////   R E L A T I O N S H I P S   R E Q U E S T S   ////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // ----------------------------------------------------------------------------------------------------------------------------
+        // ==================== R E L A T I O N S H I P S -----------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------------
         
         // requested to follow you
         // asked to be friends=
@@ -1040,10 +1133,10 @@ class ActivityCell: UITableViewCell {
             // Push VC
             let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
             self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
-
+            
         }
-
-
+        
+        
         // started following you
         if self.activity.titleLabel!.text! == "started following you" {
             // Append user's object
@@ -1054,14 +1147,16 @@ class ActivityCell: UITableViewCell {
             // Push VC
             let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
             self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
-
+            
         }
-        ////////// E N D -----> R E L A T I O N S H I P S
         
         
         
-
-        // WRote in Your Space
+        
+        // ----------------------------------------------------------------------------------------------------------------------------
+        // ==================== S P A C E ---------------------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------------------------------------------------------
+        
         if self.activity.titleLabel!.text!.hasPrefix("wrote on your Space") {
             // Space Post
             
@@ -1089,10 +1184,9 @@ class ActivityCell: UITableViewCell {
                 }
             })
         }
-
+        
         
     }
-    
     
 
     override func awakeFromNib() {
@@ -1110,13 +1204,6 @@ class ActivityCell: UITableViewCell {
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
-        
-        
-        // Content tap
-        let activeTap = UITapGestureRecognizer(target: self, action: #selector(goContent))
-        activeTap.numberOfTapsRequired = 1
-        self.activity.isUserInteractionEnabled = true
-        self.activity.addGestureRecognizer(activeTap)
         
     }
 

@@ -300,7 +300,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 // (D) VIDEO
                 if object!["contentType"] as! String == "vi" {
                     // Make iconicPreview cornered square
-                    cell.iconicPreview.layer.cornerRadius = 12.00
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Show iconicPreview

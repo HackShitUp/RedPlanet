@@ -380,6 +380,21 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                         }
                     }
                     
+                    // (2G) Videos
+                    if object!["contentType"] as! String == "vi" {
+                        // Make iconicPreview cornered square
+                        cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                        cell.iconicPreview.clipsToBounds = true
+                        
+                        // Show iconicPreview
+                        cell.iconicPreview.isHidden = false
+                        
+                        // Set background color for iconicPreview
+                        cell.iconicPreview.backgroundColor = UIColor.clear
+                        // and set icon for indication
+                        cell.iconicPreview.image = UIImage(named: "VideoIcon")
+                    }
+                    
                     
                     // (3) Set time
                     let from = object!.createdAt!
@@ -693,6 +708,18 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                 let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                 self.navigationController?.pushViewController(itmVC, animated: true)
             }
+            
+            
+            // VIDEO
+            if self.likedPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+                // Append content object
+                videoObject.append(self.likedPosts[indexPath.row])
+                
+                // Push VC
+                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                self.navigationController?.pushViewController(videoVC, animated: true)
+            }
+            
         } else {
             // Shared Posts
             
@@ -772,6 +799,17 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                 let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                 self.navigationController?.pushViewController(itmVC, animated: true)
             }
+            
+            // VIDEO
+            if self.sharedPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+                // Append content object
+                videoObject.append(self.sharedPosts[indexPath.row])
+                
+                // Push VC
+                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                self.navigationController?.pushViewController(videoVC, animated: true)
+            }
+            
         }
         
     } // end didSelectRow

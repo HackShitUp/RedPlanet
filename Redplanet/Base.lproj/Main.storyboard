@@ -4579,6 +4579,9 @@
                                                     <state key="normal" title="Loading...">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="viewPost:" destination="rbc-8W-RuV" eventType="touchUpInside" id="Laa-3Z-5By"/>
+                                                    </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MNo-KX-Ixe" customClass="PFImageView">
                                                     <rect key="frame" x="8" y="12" width="35" height="35"/>

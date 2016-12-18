@@ -706,8 +706,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         }
         
         
-        
-        
         return header
     }
     

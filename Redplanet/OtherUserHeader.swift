@@ -816,7 +816,7 @@ class OtherUserHeader: UICollectionReusableView {
             
             
             let removeFollower = UIAlertAction(title: "Remove Follower",
-                                               style: .default,
+                                               style: .destructive,
                                                handler: {(alertAction: UIAlertAction!) in
                                                 
                                                 let alert = UIAlertController(title: "Remove Follower?",
