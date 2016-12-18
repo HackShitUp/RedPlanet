@@ -23,7 +23,9 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                       UIImage(named: "SharedPostIcon"),                 // Shared
                       UIImage(named: "Gender Neutral User-100"),    // Profile Photo
                       UIImage(named: "SpacePost"),                  // Space Post
-                      UIImage(named: "ITM")]                        // ITM
+                      UIImage(named: "ITM"),                        // ITM
+        UIImage(named: "VideoIcon")     // Video
+    ]
     
     // Arrays to hold titles
     var iconNames = ["Text Post",
@@ -31,15 +33,17 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                      "Shared Post",
                      "Profile Photo",
                      "Space Post",
-                     "Moment"]
+                     "Moment",
+                     "Video"]
     
     // Arrays to hold description
     var iconDescripts = ["This is a post focused and concentrated on just text.",
-                         "Photo posts have a corner radius around its thumbnail.",
+                         "Photos have a corner radius around its thumbnail.",
                          "This is a post that’s been shared by someone publicly.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
                          "Comets with a red gradient background indicate that someone wrote in someone else’s Space. Only friends can write in each other’s Space.",
-                         "Rectangular photos are what we call Moments. These are photos captured directly from the custom camera and shared on Redplanet."
+                         "Rectangular photos are what we call Moments. These are photos captured directly with the custom camera and shared on Redplanet.",
+                         "Yellow circles with a triangle indicate that someone shared a video."
                          ]
 
     @IBAction func backButton(_ sender: Any) {
@@ -107,7 +111,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 6
+        return 7
     }
 
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -139,6 +143,9 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
             cell.icon.clipsToBounds = true
         } else if indexPath.row == 5 {
             cell.icon.contentMode = .scaleAspectFit
+        } else if indexPath.row == 6 {
+            cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
+            cell.icon.clipsToBounds = true
         }
         
         

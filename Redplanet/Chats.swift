@@ -709,6 +709,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         }
         
         // Set background color
+//        delete.backgroundColor = UIColor(red:1.00, green:0.33, blue:0.33, alpha:1.0)
         delete.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         
         return [delete]

@@ -719,9 +719,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // (3) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "Block") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
             
-            let alert = UIAlertController(title: "Report this comment?",
+            let alert = UIAlertController(title: "Report?",
                                           message: "Are you sure you'd like to report this comment and the user?",
                                           preferredStyle: .alert)
             
@@ -765,7 +765,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Set background colors
         delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         reply.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
+        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
 
         
         
