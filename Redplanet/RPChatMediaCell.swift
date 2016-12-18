@@ -13,15 +13,14 @@ import Parse
 import ParseUI
 import Bolts
 
-//import Agrume
-
-
-
 class RPChatMediaCell: UITableViewCell {
     
     
     // Initialize Parent View Controller
     var delegate: UIViewController?
+    
+    // Initialize object
+    var mediaObject: PFObject?
     
     
     @IBOutlet weak var rpUserProPic: PFImageView!
@@ -30,7 +29,7 @@ class RPChatMediaCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
 
     
-    // Function to zoom/
+    // Function to zoom
     func zoom(sender: AnyObject) {
         
         // Mark: - Agrume
@@ -38,6 +37,20 @@ class RPChatMediaCell: UITableViewCell {
         agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self.delegate!.self)
     }
+    
+    
+    // Function to play video
+    func playVideo() {
+
+        if let video = mediaObject!.value(forKey: "videoAsset") as? PFFile {
+            // Traverse video url
+            let videoUrl = NSURL(string: video.url!)
+            // MARK: - Periscope Video View Controller
+            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            self.delegate?.present(videoViewController, animated: true, completion: nil)
+        }
+    }
+    
     
     // Save
     func savePhoto(sender: UILongPressGestureRecognizer) {
@@ -66,22 +79,42 @@ class RPChatMediaCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
         
-        // Add tap gesture to zoom in
-        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
-        zoomTap.numberOfTapsRequired = 1
-        self.rpMediaAsset.isUserInteractionEnabled = true
-        self.rpMediaAsset.addGestureRecognizer(zoomTap)
+        // Set tap methods depending on type of media
+        if self.mediaObject?.value(forKey: "photoAsset") != nil {
+            print("Photo Cell")
+            // PHOTO
+            
+            // (A) Add tap gesture to zoom in
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.rpMediaAsset.isUserInteractionEnabled = true
+            self.rpMediaAsset.addGestureRecognizer(zoomTap)
+            
+            // (B) Hold to save
+            let hold = UILongPressGestureRecognizer(target: self, action: #selector(savePhoto))
+            hold.minimumPressDuration = 0.50
+            self.rpMediaAsset.isUserInteractionEnabled = true
+            self.rpMediaAsset.addGestureRecognizer(hold)
+            
+        } else if self.mediaObject?.value(forKey: "videoAsset") != nil {
+            
+            print("Video Cell")
+            
+            // VIDEO
+            
+            // (A) Add tap gesture to play video
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.rpMediaAsset.isUserInteractionEnabled = true
+            self.rpMediaAsset.addGestureRecognizer(playTap) 
+        }
         
-        
-        // Hold to save
-        let hold = UILongPressGestureRecognizer(target: self, action: #selector(savePhoto))
-        hold.minimumPressDuration = 0.50
-        self.rpMediaAsset.isUserInteractionEnabled = true
-        self.rpMediaAsset.addGestureRecognizer(hold)
         
     }
+    
+    
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)

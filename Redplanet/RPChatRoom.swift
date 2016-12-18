@@ -8,8 +8,12 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
+import MobileCoreServices
 import Photos
 import PhotosUI
+
 
 import Parse
 import ParseUI
@@ -272,18 +276,73 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-    
-        // Selected image
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
 
-        // Dimsiss VC
-        self.dismiss(animated: true, completion: nil)
+        let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
         
-        // CLImageEditor
-        let editor = CLImageEditor(image: image)
-        editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-        editor?.delegate = self
-        self.present(editor!, animated: true, completion: nil)
+        
+        if pickerMedia == kUTTypeImage {
+            print("Photo selected")
+            // Selected image
+            let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            
+            // Dismiss
+            self.imagePicker.dismiss(animated: true, completion: nil)
+            
+            // CLImageEditor
+            let editor = CLImageEditor(image: image)
+            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+            editor?.delegate = self
+            self.present(editor!, animated: true, completion: nil)
+        }
+        
+        
+        
+        if pickerMedia == kUTTypeMovie {
+            
+            // Show Progress
+            SVProgressHUD.show()
+            SVProgressHUD.setBackgroundColor(UIColor.white)
+            
+            // Selected image
+            let video = info[UIImagePickerControllerMediaURL] as! URL
+            
+            let tempImage = video as NSURL?
+            _ = tempImage?.relativePath
+            let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
+            let parseFile = PFFile(name: "video.mp4", data: videoData! as Data)
+            
+            // Send Video
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUsername.last!
+            chats["read"] = false
+            chats["videoAsset"] = parseFile
+            chats.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    
+                    // Dismiss Progres
+                    SVProgressHUD.dismiss()
+                    
+                    // Dismiss
+                    self.imagePicker.dismiss(animated: true, completion: nil)
+
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    
+                    
+                    
+                    // Dismiss
+                    self.imagePicker.dismiss(animated: true, completion: nil)
+
+                }
+            })
+        }
+        
+        
     }
     
     
@@ -480,10 +539,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Open photo library
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        imagePicker.allowsEditing = false
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
+        imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
+        imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
+        imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        
         
         // Add Photo Library method to photosButton
         let photosTap = UITapGestureRecognizer(target: self, action: #selector(accessPhotos))
@@ -671,7 +734,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         mCell.delegate = self
         
         
-        if messageObjects[indexPath.row].value(forKey: "photoAsset") == nil {
+        if self.messageObjects[indexPath.row].value(forKey: "Message") != nil {
+        
             //////////////////////////////
             ///                       ///
             /// Return TextPost Cell ///
@@ -791,12 +855,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             return cell
             
         } else {
+            
             //////////////////////////////
             ///                       ///
             /// Return Media Cell    ///
             ///                     ///
             //////////////////////////
             
+            // Set mCell's content object
+            mCell.mediaObject = self.messageObjects[indexPath.row]
             
             // Set layouts
             mCell.rpUserProPic.layoutIfNeeded()
@@ -828,6 +895,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             (data: Data?, error: Error?) in
                             if error == nil {
                                 
+                                // Create rounded corners
+                                mCell.rpMediaAsset.layer.cornerRadius = 16.00
+                                mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                                mCell.rpMediaAsset.layer.borderColor = UIColor.white.cgColor
+                                mCell.rpMediaAsset.layer.borderWidth = 0.0
+                                mCell.rpMediaAsset.clipsToBounds = true
+                                
                                 // Set Media Asset
                                 mCell.rpMediaAsset.image = UIImage(data: data!)
                                 
@@ -838,12 +912,40 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                 // Set Default
                             }
                         })
+                    } else {
+                        // Get media preview
+                        if let video = object!["videoAsset"] as? PFFile {
+                            
+                            // Make circular
+                            mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                            mCell.rpMediaAsset.contentMode = .scaleAspectFill
+                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                            mCell.rpMediaAsset.layer.borderWidth = 3.00
+                            mCell.rpMediaAsset.clipsToBounds = true
+                            
+                            let videoUrl = NSURL(string: video.url!)
+                            do {
+                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                                let imgGenerator = AVAssetImageGenerator(asset: asset)
+                                imgGenerator.appliesPreferredTrackTransform = true
+                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                                mCell.rpMediaAsset.image = UIImage(cgImage: cgImage)
+                                
+                            } catch let error {
+                                print("*** Error generating thumbnail: \(error.localizedDescription)")
+                            }
+
+                        }
                     }
                     
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            
+            // Call Media Cell's awakeFromNib to layout the tap functions
+            mCell.awakeFromNib()
             
             
             // Fetch objects
