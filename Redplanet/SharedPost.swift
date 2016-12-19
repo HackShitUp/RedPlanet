@@ -452,6 +452,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         cell.mediaAsset.isHidden = false
                         cell.textPost.isHidden = true
                         
+                        // Set content mode
+                        cell.mediaAsset.contentMode = .scaleAspectFit
+                        
                         // (B1) Fetch photo
                         if let photo = object!["photoAsset"] as? PFFile {
                             photo.getDataInBackground(block: {
@@ -483,6 +486,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     if object!["contentType"] as! String == "vi" {
                         cell.mediaAsset.isHidden = false
                         cell.textPost.isHidden = true
+                        
+                        // Set content mode
+                        cell.mediaAsset.contentMode = .scaleAspectFill
                         
                         // (B1) Fetch video thumbnail
                         if let video = object!["videoAsset"] as? PFFile {

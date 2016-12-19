@@ -9,6 +9,9 @@
 import UIKit
 import CoreData
 
+import AVFoundation
+import AVKit
+
 import Parse
 import ParseUI
 import Bolts
@@ -40,7 +43,9 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     var shares = [PFObject]()
     
     // Array to determine content types
-    let contentTypes = ["tp", "ph"]
+    let contentTypes = ["tp",
+                        "ph",
+                        "vi"]
     
     @IBAction func backButton(_ sender: Any) {
         // Pop VC
@@ -270,10 +275,15 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         cell.textPost.layoutSubviews()
         cell.textPost.setNeedsLayout()
         
+        // Layout views
+        cell.photoAsset.layoutIfNeeded()
+        cell.photoAsset.layoutSubviews()
+        cell.photoAsset.setNeedsLayout()
         
         
         //set contentView frame and autoresizingMask
-        cell.contentView.frame = cell.bounds
+//        cell.contentView.frame = cell.bounds
+        cell.contentView.frame = cell.contentView.frame
         
         
         // Instantiate parent vc
@@ -281,6 +291,13 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
         // Set content's object
         cell.contentObject = hashtagObjects[indexPath.row]
+        
+        // By default, design IBOutlets
+        cell.photoAsset.contentMode = .scaleAspectFit
+        cell.photoAsset.layer.cornerRadius = 0.0
+        cell.photoAsset.layer.borderColor = UIColor.clear.cgColor
+        cell.photoAsset.layer.borderWidth = 0.0
+        cell.photoAsset.clipsToBounds = true
         
         // (1) Fetch user
         if let user = hashtagObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
@@ -360,7 +377,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         
         // (3) Set Content
-        // (A) Text Post
+        // (A) TEXT POST
         if hashtagObjects[indexPath.row].value(forKey:"contentType") as! String == "tp" {
             
             // Hide Photo
@@ -371,11 +388,14 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             cell.textPost.text! = hashtagObjects[indexPath.row].value(forKey: "textPost") as! String
         }
         
-        // (B) Photo OR Profile Photo
+        // (B) PHOTO
         if hashtagObjects[indexPath.row].value(forKey:"contentType") as! String == "ph" {
             
             cell.photoAsset.isHidden = false
             cell.textPost.isHidden = true
+            
+            // Set content mode
+            cell.photoAsset.contentMode = .scaleAspectFit
             
             // (B1) Fetch photo
             if let photo = hashtagObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
@@ -403,9 +423,59 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             
         }
 
+        // (C) VIDEO
+        if hashtagObjects[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+            // Show thumbnail
+            cell.photoAsset.isHidden = false
+            // Hide text post
+            cell.textPost.isHidden = true
+            
+            // Set content mode
+            cell.photoAsset.contentMode = .scaleAspectFill
+
+            // Make Vide Preview Circular
+            cell.photoAsset.layer.cornerRadius = cell.photoAsset.frame.size.width/2
+            cell.photoAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+            cell.photoAsset.layer.borderWidth = 3.50
+            cell.photoAsset.clipsToBounds = true
+            
+            // (C1) Get video preview
+            if let videoFile = hashtagObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                let videoUrl = NSURL(string: videoFile.url!)
+                do {
+                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                    cell.photoAsset.image = UIImage(cgImage: cgImage)
+                    
+                } catch let error {
+                    print("*** Error generating thumbnail: \(error.localizedDescription)")
+                }
+            }
+            
+            
+            // (C2) Check for textPost
+            if hashtagObjects[indexPath.row].value(forKey: "textPost") != nil {
+                // Add lines for sizing constraints
+                cell.textPost.isHidden = false
+                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(hashtagObjects[indexPath.row].value(forKey: "textPost") as! String)"
+            } else {
+                // Add lines for sizing constraints
+                cell.textPost.isHidden = false
+                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            }
+            
+            
+        }
         
         
-        // (4) Set count title for likes
+        
+        // (4) Call cell's awakeFromNib
+        cell.awakeFromNib()
+        
+        
+        // (5) Set count title for likes
         // (A)
         let likes = PFQuery(className: "Likes")
         likes.includeKey("fromUser")
@@ -527,7 +597,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                                             content.whereKey("objectId", equalTo: self.hashtagObjects[indexPath.row].objectId!)
                                             
                                             let shares = PFQuery(className: "Newsfeeds")
-                                            shares.whereKey("pointObject", equalTo: self.hashtagObjects[indexPath.row].objectId!)
+                                            shares.whereKey("pointObject", equalTo: self.hashtagObjects[indexPath.row])
                                             
                                             let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                             newsfeeds.findObjectsInBackground(block: {

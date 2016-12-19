@@ -102,6 +102,8 @@ class HashTagsCell: UITableViewCell {
                                                     notifications["to"] = self.rpUsername.text!
                                                     if self.contentObject!.value(forKey: "contentType") as! String == "ph" {
                                                         notifications["type"] = "share ph"
+                                                    } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
+                                                        notifications["type"] = "share vi"
                                                     } else {
                                                         notifications["type"] = "share tp"
                                                     }
@@ -123,6 +125,17 @@ class HashTagsCell: UITableViewCell {
                                                                          "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
                                                                         ]
                                                                     )
+                                                                } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
+                                                                    
+                                                                    // MARK: - OneSignal
+                                                                    // Send push notification
+                                                                    OneSignal.postNotification(
+                                                                        ["contents":
+                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) shared your Video"],
+                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                        ]
+                                                                    )
+                                                                    
                                                                 } else {
                                                                     // MARK: - OneSignal
                                                                     // Send push notification
@@ -143,7 +156,7 @@ class HashTagsCell: UITableViewCell {
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
-                                                                                          message: "Successfully shared \(self.rpUsername.text!)'s Text Post.",
+                                                                                          message: "Successfully shared \(self.rpUsername.text!.uppercased())'s Post.",
                                                                 preferredStyle: .alert)
                                                             
                                                             let ok = UIAlertAction(title: "ok",
@@ -342,6 +355,13 @@ class HashTagsCell: UITableViewCell {
                                          "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
                                         ]
                                     )
+                                } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                        ]
+                                    )
                                 } else {
                                     OneSignal.postNotification(
                                         ["contents":
@@ -402,6 +422,21 @@ class HashTagsCell: UITableViewCell {
     }
     
     
+    
+    // Function to play video
+    func playVideo() {
+        
+        // Fetch video data
+        if let video = self.contentObject!.value(forKey: "videoAsset") as? PFFile {
+            // Traverse video url
+            let videoUrl = NSURL(string: video.url!)
+            // MARK: - Periscope Video View Controller
+            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            self.delegate?.present(videoViewController, animated: true, completion: nil)
+        }
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -452,12 +487,19 @@ class HashTagsCell: UITableViewCell {
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (9) Add zoom function
-        if self.photoAsset.isHidden == false {
+        // (9)
+        if self.contentObject?.value(forKey: "photoAsset") != nil {
+            // (A) Zoom for Photo
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
             zoomTap.numberOfTapsRequired = 1
             self.photoAsset.isUserInteractionEnabled = true
             self.photoAsset.addGestureRecognizer(zoomTap)
+        } else if self.contentObject?.value(forKey: "videoAsset") != nil {
+            // (B) Play for Videos
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.photoAsset.isUserInteractionEnabled = true
+            self.photoAsset.addGestureRecognizer(playTap)
         }
         
         
