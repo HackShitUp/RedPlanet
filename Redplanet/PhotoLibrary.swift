@@ -35,7 +35,7 @@ class PhotoLibrary: UICollectionViewController, UINavigationControllerDelegate, 
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop View Controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func iosPhotos(_ sender: AnyObject) {

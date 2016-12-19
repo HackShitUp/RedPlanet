@@ -19,7 +19,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -48,7 +48,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                                                    style: .default,
                                                                    handler: {(alertAction: UIAlertAction!) in
                                                                     // Pop back view controller
-                                                                    self.navigationController?.popViewController(animated: true)
+                                                                    _ = self.navigationController?.popViewController(animated: true)
                                             })
                                             alert.addAction(ok)
                                             alert.view.tintColor = UIColor.black

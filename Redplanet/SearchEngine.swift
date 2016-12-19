@@ -29,7 +29,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     override func viewDidLoad() {
@@ -154,7 +154,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     // Cancel
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     

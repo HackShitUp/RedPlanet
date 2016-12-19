@@ -41,7 +41,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         videoObject.removeLast()
         
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -548,7 +548,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

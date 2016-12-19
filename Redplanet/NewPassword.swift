@@ -23,7 +23,7 @@ class NewPassword: UIViewController, UINavigationControllerDelegate, UITextField
     
     @IBAction func backButton(_ sender: Any) {
         // Pop View Controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBOutlet weak var saveButton: UIButton!

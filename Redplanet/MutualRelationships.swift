@@ -39,7 +39,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {

@@ -33,7 +33,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     

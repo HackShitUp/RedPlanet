@@ -28,7 +28,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
     
     @IBAction func backButton(_ sender: Any) {
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {

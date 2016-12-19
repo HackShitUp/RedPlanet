@@ -37,7 +37,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -301,7 +301,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             SVProgressHUD.dismiss()
             
             // Pop view controller
-            self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
             
             
             // Send to Text Post

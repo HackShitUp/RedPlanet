@@ -35,7 +35,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         forFriends.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {

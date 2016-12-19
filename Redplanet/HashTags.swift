@@ -44,7 +44,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     
     @IBAction func backButton(_ sender: Any) {
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -547,7 +547,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                                                                 NotificationCenter.default.post(name: hashtagNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

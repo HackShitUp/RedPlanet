@@ -62,7 +62,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {

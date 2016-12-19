@@ -41,7 +41,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         photoAssetObject.removeLast()
         
         // Pop View Controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -524,7 +524,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -670,7 +670,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-//            self.navigationController?.popViewController(animated: true)
+//            _ = self.navigationController?.popViewController(animated: true)
         }
     }
     

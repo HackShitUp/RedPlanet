@@ -69,7 +69,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         otherName.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBOutlet weak var moreButton: UIBarButtonItem!

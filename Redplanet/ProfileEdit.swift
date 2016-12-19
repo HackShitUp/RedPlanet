@@ -40,7 +40,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     @IBOutlet weak var backButton: UIBarButtonItem!
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
@@ -177,7 +177,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop view controller
-                                                        self.navigationController?.popViewController(animated: true)
+                                                        _ = self.navigationController?.popViewController(animated: true)
                                 })
                                 
                                 
@@ -241,7 +241,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                         })
                                         
                                         
@@ -285,7 +285,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                             
                                             // Pop view controller
-                                            self.navigationController?.popViewController(animated: true)
+                                            _ = self.navigationController?.popViewController(animated: true)
                     })
                     
                     

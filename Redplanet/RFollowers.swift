@@ -34,7 +34,7 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         forFollowers.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {

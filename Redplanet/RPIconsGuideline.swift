@@ -48,7 +48,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
 
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: false)
+        _ = self.navigationController?.popViewController(animated: false)
     }
     
     

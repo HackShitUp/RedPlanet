@@ -44,7 +44,7 @@ class FAQ: UITableViewController, UINavigationControllerDelegate {
 
     @IBAction func backButton(_ sender: Any) {
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     override func viewDidLoad() {

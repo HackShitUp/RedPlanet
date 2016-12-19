@@ -438,14 +438,12 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // VIDEO
                 if self.followingContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
-                    if let video = self.followingContent[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                        // Append content object
-                        videoObject.append(self.followingContent[indexPath.row])
-                        
-                        // Push VC
-                        let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                        self.parentNavigator.pushViewController(videoVC, animated: true)
-                    }
+                    // Append content object
+                    videoObject.append(self.followingContent[indexPath.row])
+                    
+                    // Push VC
+                    let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                    self.parentNavigator.pushViewController(videoVC, animated: true)
                 }
 
             } else {

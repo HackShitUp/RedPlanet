@@ -26,7 +26,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func moreButton(_ sender: Any) {

@@ -74,7 +74,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatUsername.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func moreButton(_ sender: Any) {

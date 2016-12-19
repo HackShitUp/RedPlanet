@@ -36,7 +36,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func editAction(_ sender: Any) {
@@ -205,7 +205,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                             
                             // Pop View Controller
-                            self.navigationController?.popViewController(animated: true)
+                            _ = self.navigationController?.popViewController(animated: true)
                             
                             
                             

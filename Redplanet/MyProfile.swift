@@ -684,14 +684,12 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // VIDEO
         if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "vi" {
-            if let video = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // Append content object
-                videoObject.append(self.myContentObjects[indexPath.row])
-                
-                // Push VC
-                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                self.navigationController?.pushViewController(videoVC, animated: true)
-            }
+            // Append content object
+            videoObject.append(self.myContentObjects[indexPath.row])
+            
+            // Push VC
+            let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+            self.navigationController?.pushViewController(videoVC, animated: true)
         }
         
     }

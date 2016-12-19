@@ -30,7 +30,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func edit(_ sender: AnyObject) {

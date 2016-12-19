@@ -35,7 +35,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         viewsObject.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     

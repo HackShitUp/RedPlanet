@@ -42,7 +42,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         textPostObject.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: AnyObject) {
@@ -541,7 +541,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -691,7 +691,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -70 {
             // Pop view controller
-//            self.navigationController?.popViewController(animated: true)
+//            _ = self.navigationController?.popViewController(animated: true)
         }
     }
     

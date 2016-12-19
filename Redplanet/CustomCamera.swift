@@ -75,7 +75,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     @IBAction func exit(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func retake(_ sender: AnyObject) {

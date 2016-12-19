@@ -564,7 +564,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -621,7 +621,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

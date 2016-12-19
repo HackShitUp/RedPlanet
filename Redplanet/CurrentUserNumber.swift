@@ -22,7 +22,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     
     @IBAction func dismiss(_ sender: Any) {
         // Pop VC
-        self.navigationController?.popViewController(animated: false)
+        _ = self.navigationController?.popViewController(animated: false)
     }
     
     @IBAction func saveAction(_ sender: Any) {
@@ -65,7 +65,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
                     NotificationCenter.default.post(name: contactsNotification, object: nil)
                     
                     // Pop VC
-                    self.navigationController?.popViewController(animated: false)
+                    _ = self.navigationController?.popViewController(animated: false)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -74,7 +74,7 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
                     SVProgressHUD.dismiss()
                     
                     // Pop VC
-                    self.navigationController?.popViewController(animated: false)
+                    _ = self.navigationController?.popViewController(animated: false)
                 }
             })
         }

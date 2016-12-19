@@ -20,7 +20,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     @IBAction func invitePeople(_ sender: Any) {

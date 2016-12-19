@@ -40,7 +40,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         proPicObject.removeLast()
         
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -469,7 +469,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                         
                                                                         // Pop view controller
-                                                                        self.navigationController?.popViewController(animated: true)
+                                                                        _ = self.navigationController?.popViewController(animated: true)
                                                                     } else {
                                                                         print(error?.localizedDescription as Any)
                                                                     }
@@ -515,7 +515,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                             
                                                                             // Pop view controller
-                                                                            self.navigationController?.popViewController(animated: true)
+                                                                            _ = self.navigationController?.popViewController(animated: true)
                                                                             
                                                                             
                                                                         } else {

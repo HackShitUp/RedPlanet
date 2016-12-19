@@ -47,7 +47,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         itmObject.removeLast()
         
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -96,7 +96,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop VC
-                                                        self.navigationController?.popViewController(animated: true)
+                                                        _ = self.navigationController?.popViewController(animated: true)
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
@@ -631,7 +631,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                                                    style: .default,
                                                                                    handler: {(alertAction: UIAlertAction!) in
                                                                                     // Pop view controller
-                                                                                    self.navigationController?.popViewController(animated: true)
+                                                                                    _ = self.navigationController?.popViewController(animated: true)
                                                             })
                                                             
                                                             alert.addAction(ok)

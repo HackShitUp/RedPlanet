@@ -41,7 +41,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         sharedObject.removeLast()
         
         // Pop VC
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -626,7 +626,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                                            style: .default,
                                            handler: {(alertAction: UIAlertAction!) in
                                             // Pop VC
-                                            self.navigationController?.popViewController(animated: true)
+                                            _ = self.navigationController?.popViewController(animated: true)
                     })
                     
                     alert.addAction(ok)
@@ -730,7 +730,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
-                                                                self.navigationController?.popViewController(animated: true)
+                                                                _ = self.navigationController?.popViewController(animated: true)
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)

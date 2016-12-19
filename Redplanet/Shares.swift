@@ -31,7 +31,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     

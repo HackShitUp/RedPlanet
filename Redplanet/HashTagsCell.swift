@@ -150,7 +150,7 @@ class HashTagsCell: UITableViewCell {
                                                                                    style: .default,
                                                                                    handler: {(alertAction: UIAlertAction!) in
                                                                                     // Pop view controller
-                                                                                    self.delegate?.navigationController?.popViewController(animated: true)
+                                                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
                                                             })
                                                             
                                                             alert.addAction(ok)
