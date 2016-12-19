@@ -1,8 +1,8 @@
 //
-//  ExploreCell.swift
+//  LibPhotosCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/16/16.
+//  Created by Joshua Choi on 12/19/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -13,15 +13,11 @@ import Parse
 import ParseUI
 import Bolts
 
-class ExploreCell: UICollectionViewCell {
+class LibPhotosCell: UICollectionViewCell {
     
-    @IBOutlet weak var rpUserProPic: PFImageView!
-    @IBOutlet weak var rpUsername: UILabel!
-    
+    @IBOutlet weak var photo: PFImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
     }
-    
 }

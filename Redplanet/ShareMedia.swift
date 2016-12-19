@@ -273,8 +273,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         // (B) Selected from collection or photo library
         // Then, set image
         
-        // TODO::
-        // Later, delegate this task dependent on String variable, <mediaType>
+        
+        // PHOTO
+        // PHAsset
         if shareMediaAsset.count != 0 {
             PHImageManager.default().requestImage(for: shareMediaAsset.last!,
                                                   targetSize: targetSize,
@@ -286,14 +287,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                     self.mediaAsset.image = img
             }
         } else if shareImageAssets.count != 0 {
-            
+            // PHOTO
+            // UIImage
             // Set image
             // photo selected from UIImagePickerController
             self.mediaAsset.image = shareImageAssets.last!
             
         } else {
-            
-            // Video
+            // VIDEO
             // Get video thumbnail
             do {
                 let asset = AVURLAsset(url: instanceVideoData!, options: nil)
@@ -405,10 +406,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 )
                 
             } // end contentType Determination
-            
-            
-            // Reset Library Type to 0
-            libraryType = 0
             
             // Clear arrays
             shareMediaAsset.removeAll(keepingCapacity: false)

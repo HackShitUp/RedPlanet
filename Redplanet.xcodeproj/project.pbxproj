@@ -23,7 +23,6 @@
 		7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077C1DD01F8900AA2413 /* VideoCell.swift */; };
 		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
 		7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307811DD021A100AA2413 /* VideoViewController.swift */; };
-		7E43078A1DD0294F00AA2413 /* LibraryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307891DD0294F00AA2413 /* LibraryHeader.swift */; };
 		7E43833C1DD9138000337007 /* HashTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833B1DD9138000337007 /* HashTags.swift */; };
 		7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833D1DD9138F00337007 /* HashTagsCell.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
@@ -120,8 +119,6 @@
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
 		7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */; };
-		7EA45CD11DB6BB0500A466D9 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */; };
-		7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */; };
 		7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D371DD6B38400B3471F /* SharedPostCell.swift */; };
 		7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D391DD6B38F00B3471F /* SharedPost.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
@@ -179,6 +176,11 @@
 		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
 		7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91A1DBEBDF90016698F /* LikersCell.swift */; };
 		7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91C1DBEBE020016698F /* ShareToCell.swift */; };
+		7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4361E07C0A5005C68C9 /* Library.swift */; };
+		7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */; };
+		7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */; };
+		7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4461E07C694005C68C9 /* LibVideos.swift */; };
+		7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */; };
 		7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6361DDBDC60004AE090 /* FAQ.swift */; };
 		7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */; };
 		7EDFB6411DDC2DD2004AE090 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6401DDC2DD2004AE090 /* CameraManager.swift */; };
@@ -230,7 +232,6 @@
 		7E43077C1DD01F8900AA2413 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		7E4307811DD021A100AA2413 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
-		7E4307891DD0294F00AA2413 /* LibraryHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryHeader.swift; sourceTree = "<group>"; };
 		7E43833B1DD9138000337007 /* HashTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTags.swift; sourceTree = "<group>"; };
 		7E43833D1DD9138F00337007 /* HashTagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTagsCell.swift; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
@@ -383,8 +384,6 @@
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
 		7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardFollowCell.swift; sourceTree = "<group>"; };
-		7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
-		7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoLibraryCell.swift; sourceTree = "<group>"; };
 		7EA87D371DD6B38400B3471F /* SharedPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPostCell.swift; sourceTree = "<group>"; };
 		7EA87D391DD6B38F00B3471F /* SharedPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPost.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoomCell.swift; sourceTree = "<group>"; };
@@ -449,6 +448,11 @@
 		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
 		7ED4A91A1DBEBDF90016698F /* LikersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikersCell.swift; sourceTree = "<group>"; };
 		7ED4A91C1DBEBE020016698F /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
+		7EDDF4361E07C0A5005C68C9 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
+		7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotosCell.swift; sourceTree = "<group>"; };
+		7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideosCell.swift; sourceTree = "<group>"; };
+		7EDDF4461E07C694005C68C9 /* LibVideos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideos.swift; sourceTree = "<group>"; };
+		7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotos.swift; sourceTree = "<group>"; };
 		7EDFB6361DDBDC60004AE090 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
 		7EDFB6401DDC2DD2004AE090 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
@@ -1055,9 +1059,11 @@
 		7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */ = {
 			isa = PBXGroup;
 			children = (
-				7EA45CD01DB6BB0500A466D9 /* PhotoLibrary.swift */,
-				7E4307891DD0294F00AA2413 /* LibraryHeader.swift */,
-				7EA45CD21DB6BB1500A466D9 /* PhotoLibraryCell.swift */,
+				7EDDF4361E07C0A5005C68C9 /* Library.swift */,
+				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
+				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
+				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
+				7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */,
 			);
 			name = PhotosLibrary;
 			sourceTree = "<group>";
@@ -1503,7 +1509,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Redplanet Media, LLC";
 				TargetAttributes = {
 					7EC5D12E1DB2FE4F00437219 = {
@@ -1744,9 +1750,9 @@
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
+				7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */,
-				7EA45CD11DB6BB0500A466D9 /* PhotoLibrary.swift in Sources */,
 				7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
@@ -1758,7 +1764,6 @@
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
-				7E43078A1DD0294F00AA2413 /* LibraryHeader.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
@@ -1781,9 +1786,11 @@
 				7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
+				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
+				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */,
 				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
@@ -1817,6 +1824,7 @@
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,
+				7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
@@ -1845,6 +1853,7 @@
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
+				7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */,
 				7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
@@ -1854,7 +1863,6 @@
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
 				7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */,
-				7EA45CD31DB6BB1500A466D9 /* PhotoLibraryCell.swift in Sources */,
 				7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
@@ -1986,6 +1994,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2000,6 +2009,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2035,6 +2045,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2049,6 +2060,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -2077,6 +2089,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3720A73759C6BE639FDFC816 /* Pods-Redplanet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
@@ -2094,6 +2107,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
