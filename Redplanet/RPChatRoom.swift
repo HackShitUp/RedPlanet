@@ -888,10 +888,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Set mCell's content object
             mCell.mediaObject = self.messageObjects[indexPath.row]
             
+            // Create cell's bounds
+            mCell.contentView.frame = mCell.contentView.frame
+            
             // Set layouts
             mCell.rpUserProPic.layoutIfNeeded()
             mCell.rpUserProPic.layoutSubviews()
             mCell.rpUserProPic.setNeedsLayout()
+            
+            // Make profile photo circualr
             mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
             mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             mCell.rpUserProPic.layer.borderWidth = 0.5

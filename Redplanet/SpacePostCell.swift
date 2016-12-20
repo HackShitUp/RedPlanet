@@ -541,6 +541,24 @@ class SpacePostCell: UITableViewCell {
             })
         }
         
+        
+        // Handle #object tap
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        
+        // Handle http: tap
+        textPost.urlLinkTapHandler = { label, handle, range in
+            // Open url
+            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
+            self.delegate?.present(modalWeb, animated: true, completion: nil)
+        }
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

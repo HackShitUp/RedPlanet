@@ -151,9 +151,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 20.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName:  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSForegroundColorAttributeName:  UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -419,9 +419,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             // (A) Configure video preview
             cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-//            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
-            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-            cell.mediaAsset.layer.borderWidth = 5.00
+            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+            cell.mediaAsset.layer.borderWidth = 3.50
             cell.mediaAsset.clipsToBounds = true
             
             

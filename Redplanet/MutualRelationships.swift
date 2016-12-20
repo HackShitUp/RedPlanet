@@ -406,6 +406,8 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
+        //set contentView frame and autoresizingMask
+        cell.contentView.frame = cell.contentView.frame
         
         
         if sourceType == 0 {
