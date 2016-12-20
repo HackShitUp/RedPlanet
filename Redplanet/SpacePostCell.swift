@@ -410,7 +410,47 @@ class SpacePostCell: UITableViewCell {
         agrume.showFrom(self.delegate!.self)
     }
     
+    // Function to play video
+    func playVideo() {
+        
+        // Fetch video data
+        if let video = spaceObject.last!.value(forKey: "videoAsset") as? PFFile {
+            // Traverse video url
+            let videoUrl = NSURL(string: video.url!)
+            // MARK: - Periscope Video View Controller
+            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            self.delegate?.present(videoViewController, animated: true, completion: nil)
+        }
+    }
     
+    
+    // Function to layout taps
+    func layoutTaps() {
+        if spaceObject.last!.value(forKey: "photoAsset") != nil {
+            
+            // Hold to save
+            let mediaHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
+            mediaHold.minimumPressDuration = 0.50
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(mediaHold)
+            
+            // Tap to zoom
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(zoomTap)
+            
+        } else if spaceObject.last!.value(forKey: "videoAsset") != nil {
+            
+            // Play video tap
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(playTap)
+            
+            
+        }
+    }
     
     
     
@@ -465,23 +505,11 @@ class SpacePostCell: UITableViewCell {
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (7) Hold photo or text to share it or save it
-        let mediaHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-        mediaHold.minimumPressDuration = 0.50
-        self.mediaAsset.isUserInteractionEnabled = true
-        self.mediaAsset.addGestureRecognizer(mediaHold)
-        
-        // (8) Add method to textPost
+        // (7) Add method to textPost
         let tpHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
         tpHold.minimumPressDuration = 0.50
         self.textPost.isUserInteractionEnabled = true
         self.textPost.addGestureRecognizer(tpHold)
-        
-        // (9) mediaZoom
-        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
-        zoomTap.numberOfTapsRequired = 1
-        self.mediaAsset.isUserInteractionEnabled = true
-        self.mediaAsset.addGestureRecognizer(zoomTap)
         
         
         // Handle @username tap

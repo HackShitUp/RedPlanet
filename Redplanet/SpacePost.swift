@@ -8,6 +8,11 @@
 
 import UIKit
 import CoreData
+import MobileCoreServices
+import Photos
+import PhotosUI
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -362,8 +367,19 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // (3) Fetch content
         if spaceObject.last!.value(forKey: "photoAsset") != nil {
-            // Photo Exists
-            // (A) Fetch Photo
+            
+            // ==========================================================================================================================
+            // PHOTO ====================================================================================================================
+            // ==========================================================================================================================
+            
+            // (A) Configure image
+            cell.mediaAsset.contentMode = .scaleAspectFit
+            cell.mediaAsset.layer.cornerRadius = 0.0
+            cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
+            cell.mediaAsset.layer.borderWidth = 0.0
+            cell.mediaAsset.clipsToBounds = true
+            
+            // (B) Fetch Photo
             if let photo = spaceObject.last!.value(forKey: "photoAsset") as? PFFile {
                 photo.getDataInBackground(block: {
                     (data: Data?, error: Error?) in
@@ -376,7 +392,55 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                 })
             }
             
-            // (B) Check for textPost & handle optional chaining
+            // (C) Check for textPost & handle optional chaining
+            if spaceObject.last!.value(forKey: "textPost") != nil {
+                // Caption Exists
+                // show mediaAsset
+                cell.mediaAsset.isHidden = false
+                // show textPost
+                cell.textPost.isHidden = false
+                
+                // (A) Set textPost
+                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
+            } else {
+                // Caption DOES NOT exist
+                // show mediaAsset
+                cell.mediaAsset.isHidden = false
+                // show textPost
+                cell.textPost.isHidden = false
+                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            }
+            
+        } else if spaceObject.last!.value(forKey: "videoAsset") != nil {
+            
+            // ==========================================================================================================================
+            // VIDEO ====================================================================================================================
+            // ==========================================================================================================================
+            
+            // (A) Configure video preview
+            cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
+//            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+            cell.mediaAsset.layer.borderWidth = 5.00
+            cell.mediaAsset.clipsToBounds = true
+            
+            
+            // (B) Fetch Video Thumbnail
+            if let video = spaceObject.last!.value(forKey: "videoAsset") as? PFFile {
+                let videoUrl = NSURL(string: video.url!)
+                do {
+                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                    cell.mediaAsset.image = UIImage(cgImage: cgImage)
+                    
+                } catch let error {
+                    print("*** Error generating thumbnail: \(error.localizedDescription)")
+                }
+            }
+            
+            // (C) Check for textPost & handle optional chaining
             if spaceObject.last!.value(forKey: "textPost") != nil {
                 // Caption Exists
                 // show mediaAsset
@@ -396,6 +460,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             }
             
         } else {
+            
+            // ==========================================================================================================================
+            // TEXT POST ================================================================================================================
+            // ==========================================================================================================================
+            
             // No Photo
             // hide mediaAsset
             cell.mediaAsset.isHidden = true
@@ -407,8 +476,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         }
         
         
+        // (4) Layout taps
+        cell.layoutTaps()
         
-        // (4) Set time
+        
+        // (5) Set time
         let from = spaceObject.last!.createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
@@ -460,7 +532,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         
         
-        // (5) Determine whether the current user has liked this object or not
+        // (6) Determine whether the current user has liked this object or not
         if self.likes.contains(PFUser.current()!) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
@@ -531,7 +603,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                             
                                             
                                             // Show Progress
-                                            SVProgressHUD.show()
+                                            SVProgressHUD.show(withStatus: "Deleting")
                                             SVProgressHUD.setBackgroundColor(UIColor.white)
 
                                             // Set content

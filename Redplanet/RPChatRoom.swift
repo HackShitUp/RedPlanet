@@ -326,14 +326,37 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Dismiss Progres
                     SVProgressHUD.dismiss()
                     
+                    // Clear newChat
+                    self.newChat.text!.removeAll()
+                    
+                    
+                    // Handle optional chaining
+                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                        // MARK: - OneSignal
+                        // Send Push Notification to user
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                            ]
+                        )
+                    }
+                    
+                    
+                    
+                    // Reload data
+                    self.queryChats()
+                    
+                    
                     // Dismiss
                     self.imagePicker.dismiss(animated: true, completion: nil)
+                    
 
                 } else {
                     print(error?.localizedDescription as Any)
                     
-                    
-                    
+                    // Reload data
+                    self.queryChats()
                     
                     // Dismiss
                     self.imagePicker.dismiss(animated: true, completion: nil)
@@ -896,10 +919,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             if error == nil {
                                 
                                 // Create rounded corners
-                                mCell.rpMediaAsset.layer.cornerRadius = 16.00
+                                mCell.rpMediaAsset.layer.cornerRadius = 0.00
                                 mCell.rpMediaAsset.contentMode = .scaleAspectFit
-                                mCell.rpMediaAsset.layer.borderColor = UIColor.white.cgColor
-                                mCell.rpMediaAsset.layer.borderWidth = 0.0
+                                mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
+                                mCell.rpMediaAsset.layer.borderWidth = 0.00
                                 mCell.rpMediaAsset.clipsToBounds = true
                                 
                                 // Set Media Asset
@@ -919,8 +942,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Make circular
                             mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
                             mCell.rpMediaAsset.contentMode = .scaleAspectFill
-                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
-                            mCell.rpMediaAsset.layer.borderWidth = 3.00
+                            mCell.rpMediaAsset.layer.borderColor = UIColor.white.cgColor
+                            mCell.rpMediaAsset.layer.borderWidth = 12.00
                             mCell.rpMediaAsset.clipsToBounds = true
                             
                             let videoUrl = NSURL(string: video.url!)

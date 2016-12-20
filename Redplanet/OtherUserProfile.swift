@@ -79,7 +79,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                       preferredStyle: .actionSheet)
         
         // (1) Write in space
-        let space = UIAlertAction(title: "Write in Space ☄️",
+        let space = UIAlertAction(title: "Write on Space ☄️",
                                   style: .default,
                                   handler: {(alertAction: UIAlertAction!) in
                                     // Append to otherObject

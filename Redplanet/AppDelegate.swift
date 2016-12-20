@@ -108,6 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Development for Migration
         // APP NAME: "Redplanet Media"
+        // Change bundle identifier for this as well
 //        Parse.setApplicationId("eJwKMLxpPqYhLdIy2Rw5p2u4hze0dHYwplwaIxyu",
 //                               clientKey: "VN39alIfGp5l3ki9CccakkufGzJ07MilWnIwVxT7")
         
@@ -241,11 +242,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("pushToken:%@", pushToken)
             }
         })
-    }
-    
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
-        //
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
