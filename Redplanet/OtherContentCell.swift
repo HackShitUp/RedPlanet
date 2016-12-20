@@ -20,14 +20,14 @@ class OtherContentCell: UICollectionViewCell {
     @IBOutlet weak var iconicPreview: PFImageView!
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var time: KILabel!
-    @IBOutlet weak var rpUsername: KILabel!
+    @IBOutlet weak var rpUsername: UILabel!
     
     
     override func awakeFromNib() {
         // Add top border to distinguish content
         let upperBorder = CALayer()
         upperBorder.backgroundColor = UIColor.lightGray.cgColor
-        upperBorder.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0.50)
+        upperBorder.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0.50)
         self.layer.addSublayer(upperBorder)
     }
     

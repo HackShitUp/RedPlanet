@@ -760,6 +760,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Set default contentMode
         cell.iconicPreview.contentMode = .scaleAspectFill
         
+        // Set name's layout
+        cell.rpUsername.sizeToFit()
+        
     
         // Configure the cell
         contentObjects[indexPath.row].fetchIfNeededInBackground(block: {

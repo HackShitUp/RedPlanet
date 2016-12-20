@@ -249,6 +249,7 @@ class VideoCell: UITableViewCell {
         let publicShare = UIAlertAction(title: "All Friends",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
+
                                             
                                             // Share to public ***FRIENDS ONLY***
                                             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -256,6 +257,7 @@ class VideoCell: UITableViewCell {
                                             newsfeeds["username"] = PFUser.current()!.username!
                                             newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Video: \(self.caption.text!)"
                                             newsfeeds["pointObject"] = videoObject.last!
+                                            newsfeeds["videoAsset"] = videoObject.last!.value(forKey: "videoAsset") as! PFFile
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in

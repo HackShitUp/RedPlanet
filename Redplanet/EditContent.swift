@@ -75,11 +75,12 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             self.present(alert, animated: true, completion: nil)
             
             
-        } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && editObjects.last!.value(forKey: "photoAsset") == nil {
+        } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && editObjects.last!.value(forKey: "photoAsset") == nil || editObjects.last!.value(forKey: "videoAsset") == nil {
             
             let alert = UIAlertController(title: "Changes Failed",
                                           message: "You cannot save changes with no text.",
                                           preferredStyle: .alert)
+            
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
@@ -243,15 +244,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     )
                                                                     
                                                                 }
-                                                                if contentTypeString! == "sh" {
-                                                                    // Send push notification
-                                                                    OneSignal.postNotification(
-                                                                        ["contents":
-                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Share."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
-                                                                        ]
-                                                                    )
-                                                                }
                                                             }
                                                             
                                                             
@@ -300,18 +292,31 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             // Dismiss Progress
             SVProgressHUD.dismiss()
             
+            
+
+            // Reload data
+            if editObjects.last!.value(forKey: "contentType") as! String == "tp" {
+                // Send to Text Post
+                NotificationCenter.default.post(name: textPostNotification, object: nil)
+            } else if editObjects.last!.value(forKey: "contentType") as! String == "ph" {
+                // Send to Photo Asset
+                NotificationCenter.default.post(name: photoNotification, object: nil)
+            } else if editObjects.last!.value(forKey: "contentType") as! String == "pp" {
+                // Send to Profile Photo
+                NotificationCenter.default.post(name: profileNotification, object: nil)
+            } else if editObjects.last!.value(forKey: "contentType") as! String == "vi" {
+                // Send to Video
+                NotificationCenter.default.post(name: videoNotification, object: nil)
+            } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" {
+                // Send to Space Post
+                NotificationCenter.default.post(name: spaceNotification, object: nil)
+            }
+            
+
+            
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
-            
-            
-            // Send to Text Post
-            NotificationCenter.default.post(name: photoNotification, object: nil)
-            
-            // Send to Photo Asset
-            NotificationCenter.default.post(name: textPostNotification, object: nil)
-            
-            // Send to Profile Photo
-            NotificationCenter.default.post(name: profileNotification, object: nil)
+
         }
         
     }

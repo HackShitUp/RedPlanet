@@ -29,7 +29,7 @@ class MyContentCell: UICollectionViewCell {
         // Add top border to distinguish content
         let upperBorder = CALayer()
         upperBorder.backgroundColor = UIColor.lightGray.cgColor
-        upperBorder.frame = CGRect(x: 0, y: 0, width: self.frame.width, height: 0.50)
+        upperBorder.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: 0.50)
         self.layer.addSublayer(upperBorder)
     }
 }

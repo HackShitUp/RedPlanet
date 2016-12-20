@@ -108,7 +108,7 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Library"
+            self.title = "Library"
         }
     }
     

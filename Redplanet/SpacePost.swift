@@ -33,6 +33,10 @@ let spaceNotification = Notification.Name("spaceNotification")
 class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     
+    // Variable to determine string
+    var layoutText: String?
+    
+    
     // Array to hold likers, comments, and shares
     var likes = [PFObject]()
     var comments = [PFObject]()
@@ -289,6 +293,52 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     }
     
     
+    // Function to calculate how many new lines UILabel should create before laying out the text
+    func createText() -> String? {
+        
+        
+        // Check for textPost & handle optional chaining
+        if spaceObject.last!.value(forKey: "textPost") != nil {
+            
+            // (A) Set textPost
+            // Calculate screen height
+            if UIScreen.main.nativeBounds.height == 960 {
+                // iPhone 4
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 1136 {
+                // iPhone 5 √
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 1334 {
+                // iPhone 6 √
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                // iPhone 6+ √???
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
+            }
+            
+        } else {
+            // Caption DOES NOT exist
+            
+            // (A) Set textPost
+            // Calculate screen height
+            if UIScreen.main.nativeBounds.height == 960 {
+                // iPhone 4
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 1136 {
+                // iPhone 5
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 1334 {
+                // iPhone 6
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                // iPhone 6+
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            }
+        }
+    
+        return layoutText!
+    }
+    
     
 
     
@@ -333,7 +383,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // set parent vc
         cell.delegate = self
         
-
         // (1) Get byUser's data
         if let user = spaceObject.last!.value(forKey: "byUser") as? PFUser {
             // (A) Set username
@@ -392,24 +441,14 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                 })
             }
             
-            // (C) Check for textPost & handle optional chaining
-            if spaceObject.last!.value(forKey: "textPost") != nil {
-                // Caption Exists
-                // show mediaAsset
-                cell.mediaAsset.isHidden = false
-                // show textPost
-                cell.textPost.isHidden = false
-                
-                // (A) Set textPost
-                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            } else {
-                // Caption DOES NOT exist
-                // show mediaAsset
-                cell.mediaAsset.isHidden = false
-                // show textPost
-                cell.textPost.isHidden = false
-                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            }
+            // (C) Configure textPost
+            // show mediaAsset
+            cell.mediaAsset.isHidden = false
+            // show textPost
+            cell.textPost.isHidden = false
+            // create text's height
+            _ = createText()
+            cell.textPost.text! = self.layoutText!
             
         } else if spaceObject.last!.value(forKey: "videoAsset") != nil {
             
@@ -439,24 +478,14 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                 }
             }
             
-            // (C) Check for textPost & handle optional chaining
-            if spaceObject.last!.value(forKey: "textPost") != nil {
-                // Caption Exists
-                // show mediaAsset
-                cell.mediaAsset.isHidden = false
-                // show textPost
-                cell.textPost.isHidden = false
-                
-                // (A) Set textPost
-                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            } else {
-                // Caption DOES NOT exist
-                // show mediaAsset
-                cell.mediaAsset.isHidden = false
-                // show textPost
-                cell.textPost.isHidden = false
-                cell.textPost.text! = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            }
+            // (C) Configure textPost
+            // show mediaAsset
+            cell.mediaAsset.isHidden = false
+            // show textPost
+            cell.textPost.isHidden = false
+            // create text's height
+            _ = createText()
+            cell.textPost.text! = self.layoutText!
             
         } else {
             

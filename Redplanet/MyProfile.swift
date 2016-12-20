@@ -89,6 +89,9 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         toUser.whereKey("toUser", equalTo: PFUser.current()!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
+        newsfeeds.includeKey("byUser")
+        newsfeeds.includeKey("toUser")
+        newsfeeds.includeKey("pointObject")
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {
@@ -151,6 +154,15 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         
         // Fetch current user's content
         fetchMine()
+        
+        
+        // Set collectionview's cell size
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 65.00)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
         
         
         // Register to receive notification
@@ -326,6 +338,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myContentCell", for: indexPath) as! MyContentCell
     
+        // Set cell's bounds
+        cell.contentView.frame = cell.contentView.frame
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
@@ -661,10 +675,10 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
             spaceObject.append(self.myContentObjects[indexPath.row])
             
             // Append otherObject
-            otherObject.append(PFUser.current()!)
+            otherObject.append(self.myContentObjects[indexPath.row].value(forKey: "toUser") as! PFUser)
             
             // Append otherName
-            otherName.append(PFUser.current()!.username!)
+            otherName.append(self.myContentObjects[indexPath.row].value(forKey: "toUsername") as! String)
             
             // Push VC
             let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost

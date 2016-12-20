@@ -80,19 +80,12 @@ class PhotoAssetCell: UITableViewCell {
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
     
-                                            // Share to public ***FRIENDS ONLY***
-
-                                            
-                                            // Convert UIImage to NSData
-                                            let imageData = UIImageJPEGRepresentation(self.rpMedia.image!, 0.5)
-                                            // Change UIImage to PFFile
-                                            let parseFile = PFFile(data: imageData!)
-                                            
+                                            // Share to public ***FRIENDS ONLY***                                            
                                             let newsfeeds = PFObject(className: "Newsfeeds")
                                             newsfeeds["byUser"] = PFUser.current()!
                                             newsfeeds["username"] = PFUser.current()!.username!
                                             newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Photo: \(self.caption.text!)"
-                                            newsfeeds["photoAsset"] = parseFile
+                                            newsfeeds["photoAsset"] = photoAssetObject.last!.value(forKey: "photoAsset") as! PFFile
                                             newsfeeds["pointObject"] = photoAssetObject.last!
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds.saveInBackground(block: {

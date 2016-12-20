@@ -1283,9 +1283,9 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7E240D151DE9F00300FE2A26 /* Likes_Shares */,
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
+				7E240D151DE9F00300FE2A26 /* Likes_Shares */,
 				7E46EDD61DE4F4400034E434 /* Password */,
 			);
 			name = MYPROFILE;

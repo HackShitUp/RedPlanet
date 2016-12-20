@@ -574,7 +574,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                             let newsfeeds = PFObject(className: "Newsfeeds")
                                             newsfeeds["byUser"] = PFUser.current()!
                                             newsfeeds["username"] = PFUser.current()!.username!
-                                            newsfeeds["textPost"] = "shared @\(self.rpUsername.titleLabel!.text!)'s Moment: "
                                             newsfeeds["pointObject"] = itmObject.last!
                                             newsfeeds["contentType"] = "sh"
                                             newsfeeds["photoAsset"] = parseFile
