@@ -87,6 +87,7 @@ open class VideoViewController: UIViewController {
         super.loadView()
         
         view.backgroundColor = .black
+        view.layer.cornerRadius = 20.00
         view.layer.addSublayer(playerLayer)
         
         longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(VideoViewController.longPressed(_:)))
@@ -161,6 +162,13 @@ open class VideoViewController: UIViewController {
         swipeOut.direction = .down
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(swipeOut)
+        
+        // Add tap to dismiss view controller
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissVideo))
+        tap.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(tap)
+
     }
 
     // MARK: - Methods
