@@ -1094,6 +1094,17 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                     self.navigationController?.pushViewController(itmVC, animated: true)
                 }
+                
+                
+                // VIDEO
+                if self.contentObjects[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+                    // Append content object
+                    videoObject.append(self.contentObjects[indexPath.row])
+                    
+                    // Push VC
+                    let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                    self.navigationController?.pushViewController(videoVC, animated: true)
+                }
 
                 
             } else {
