@@ -938,7 +938,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "igcVideo")
+                    cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
                 // *************************************************************************************************************************

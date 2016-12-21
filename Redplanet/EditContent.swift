@@ -62,6 +62,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         
         if self.textPost.text!.isEmpty && editObjects.last!.value(forKey: "contentType") as! String == "tp" {
             
+            print("there")
+            
             let alert = UIAlertController(title: "Changes Failed",
                                           message: "You cannot save changes with no text.",
                                           preferredStyle: .alert)
@@ -75,7 +77,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             self.present(alert, animated: true, completion: nil)
             
             
-        } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && editObjects.last!.value(forKey: "photoAsset") == nil || editObjects.last!.value(forKey: "videoAsset") == nil {
+        } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && (editObjects.last!.value(forKey: "photoAsset") == nil || editObjects.last!.value(forKey: "videoAsset") == nil) {
+            
+            print("here")
             
             let alert = UIAlertController(title: "Changes Failed",
                                           message: "You cannot save changes with no text.",

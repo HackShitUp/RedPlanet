@@ -173,7 +173,7 @@ class SpacePostCell: UITableViewCell {
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!.username!
             likes["toUser"] = self.toUserObject!
-            likes["to"] = self.toUserObject!.value(forKey: "username") as! String
+            likes["to"] = spaceObject.last!.value(forKey: "username") as! String
             likes["forObjectId"] = spaceObject.last!.objectId!
             likes.saveInBackground(block: {
                 (success: Bool, error: Error?) in
@@ -185,7 +185,7 @@ class SpacePostCell: UITableViewCell {
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
-                    notifications["to"] = self.toUserObject!.value(forKey: "username") as! String
+                    notifications["to"] = spaceObject.last!.value(forKey: "username") as! String
                     notifications["toUser"] = self.toUserObject!
                     notifications["forObjectId"] = spaceObject.last!.objectId!
                     notifications["type"] = "like sp"
