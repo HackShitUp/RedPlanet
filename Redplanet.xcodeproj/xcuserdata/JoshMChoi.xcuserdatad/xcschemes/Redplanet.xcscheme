@@ -106,6 +106,7 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Redplanet"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
