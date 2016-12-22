@@ -8,6 +8,7 @@ target 'Redplanet' do
 	pod ‘Parse’
 	pod ‘ParseUI’
 	pod ‘Bolts’
+	pod ‘SimpleAlert’
 	pod ‘OneSignal’
 	pod ‘Heap’
 	pod ‘Mixpanel-swift’

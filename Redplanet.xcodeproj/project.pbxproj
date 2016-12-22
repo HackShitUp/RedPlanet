@@ -182,8 +182,6 @@
 		7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */; };
 		7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6361DDBDC60004AE090 /* FAQ.swift */; };
 		7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */; };
-		7EDFB6411DDC2DD2004AE090 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6401DDC2DD2004AE090 /* CameraManager.swift */; };
-		7EDFB6431DDC2DF9004AE090 /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6421DDC2DF9004AE090 /* RPCamera.swift */; };
 		7EE1C22C1DBC78C100F75557 /* Agrume.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2261DBC78C100F75557 /* Agrume.swift */; };
 		7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2271DBC78C100F75557 /* AgrumeCell.swift */; };
 		7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C2281DBC78C100F75557 /* AgrumeServiceLocator.swift */; };
@@ -453,8 +451,6 @@
 		7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotos.swift; sourceTree = "<group>"; };
 		7EDFB6361DDBDC60004AE090 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
 		7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
-		7EDFB6401DDC2DD2004AE090 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
-		7EDFB6421DDC2DF9004AE090 /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EE1C2251DBC78C100F75557 /* Agrume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Agrume.h; sourceTree = "<group>"; };
 		7EE1C2261DBC78C100F75557 /* Agrume.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Agrume.swift; sourceTree = "<group>"; };
 		7EE1C2271DBC78C100F75557 /* AgrumeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AgrumeCell.swift; sourceTree = "<group>"; };
@@ -1070,7 +1066,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
-				7EDFB6421DDC2DF9004AE090 /* RPCamera.swift */,
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */,
 			);
@@ -1186,7 +1181,6 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
-				7EDFB6401DDC2DD2004AE090 /* CameraManager.swift */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
@@ -1855,7 +1849,6 @@
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
 				7EC5D1AF1DB359EE00437219 /* OtherContentCell.swift in Sources */,
-				7EDFB6411DDC2DD2004AE090 /* CameraManager.swift in Sources */,
 				7E98E9451DB75057001B7329 /* CLHighlightShadowEffect.m in Sources */,
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
@@ -1883,7 +1876,6 @@
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,
 				7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */,
 				7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */,
-				7EDFB6431DDC2DF9004AE090 /* RPCamera.swift in Sources */,
 				7E98E9561DB75057001B7329 /* UIView+CLImageToolInfo.m in Sources */,
 				7EC5D19E1DB3566600437219 /* MyProfile.swift in Sources */,
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,

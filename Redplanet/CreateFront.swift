@@ -87,8 +87,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 // Push VC
                 let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
                 self.navigationController!.pushViewController(cameraVC, animated: true)
-//                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "rpCameraVC") as! RPCamera
-//                self.navigationController!.pushViewController(cameraVC, animated: true)
             })
             
             
@@ -157,9 +155,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
                 // Load Photo Library
                 DispatchQueue.main.async(execute: { 
-//                    let library = self.storyboard?.instantiateViewController(withIdentifier: "photoLibraryVC") as! PhotoLibrary
-//                    self.navigationController!.pushViewController(library, animated: true)
-                    
+                    // Push to library
                     let library = self.storyboard?.instantiateViewController(withIdentifier: "photoLibraryVC") as! Library
                     self.navigationController!.pushViewController(library, animated: true)
 

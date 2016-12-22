@@ -16,6 +16,7 @@ import Bolts
 import KILabel
 import OneSignal
 import Mixpanel
+import SimpleAlert
 
 // Array to hold other user's relationships
 var oFriends = [PFObject]()
@@ -377,14 +378,33 @@ class OtherUserHeader: UICollectionReusableView {
         // ============================================================================================================================
         // ****************************************************************************************************************************
         if self.relationType.titleLabel!.text == "Friends" {
-            // Unfriend user
-            let alert = UIAlertController(title: "Unfriend?",
-                                          message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
-                preferredStyle: .alert)
             
-            let yes = UIAlertAction(title: "yes",
+            // Unfriend user
+            
+            // MARK: - SimpleAlert
+            let alert = AlertController(title: "Unfriend?",
+                                          message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
+                style: .alert)
+            // Design content view
+            alert.configContentView = { [weak self] view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.textColor = UIColor.black
+                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 21)
+                    view.messageLabel.textColor = UIColor.darkGray
+                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let yes = AlertAction(title: "yes",
                                     style: .default,
-                                    handler: {(alertAction: UIAlertAction!) in
+                                    handler: { (AlertAction) in
                                         
                                         
                                         // UnFriend
@@ -452,10 +472,11 @@ class OtherUserHeader: UICollectionReusableView {
                                         
             })
             
-            let no = UIAlertAction(title: "no",
+            let no = AlertAction(title: "no",
                                    style: .destructive,
                                    handler: nil)
             
+
             alert.addAction(no)
             alert.addAction(yes)
             alert.view.tintColor = UIColor.black
@@ -478,6 +499,9 @@ class OtherUserHeader: UICollectionReusableView {
             let alert = UIAlertController(title: "Unfollow?",
                                           message: "Are you sure you would like to unfollow \(otherName.last!.uppercased())?",
                 preferredStyle: .alert)
+            
+            
+            
             
             let yes = UIAlertAction(title: "yes",
                                     style: .default,
