@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-
 import AVFoundation
 import AVKit
 
@@ -17,6 +16,7 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import SimpleAlert
 
 // Global array to hold video asset object
 var videoObject = [PFObject]()
@@ -174,15 +174,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.estimatedRowHeight = 495
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
-        // Fetch video data
-        if let video = videoObject.last!.value(forKey: "videoAsset") as? PFFile {
-            // Traverse video url
-            let videoUrl = NSURL(string: video.url!)
-            // MARK: - Periscope Video View Controller
-            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
-            self.present(videoViewController, animated: true, completion: nil)
-        }
-        
         
         // Fetch Likes and Comments
         fetchInteractions()
@@ -225,11 +216,28 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
             
-            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Video!\n•Tap on the preview to play the video\n• Swipe down to leave the video\n•Swipe left for Views 🙈",
-                                          message: nil,
-                                          preferredStyle: .alert)
+            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Video!",
+                                          message: "•Tap on the preview to play the video\n• Swipe down to leave the video\n•Swipe left for Views 🙈",
+                                          style: .alert)
             
-            let ok = UIAlertAction(title: "ok",
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.textColor = UIColor.black
+                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+                    view.messageLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let ok = AlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
             

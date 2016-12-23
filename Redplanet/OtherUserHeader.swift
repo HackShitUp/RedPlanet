@@ -386,13 +386,13 @@ class OtherUserHeader: UICollectionReusableView {
                                           message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
                 style: .alert)
             // Design content view
-            alert.configContentView = { [weak self] view in
+            alert.configContentView = { view in
                 if let view = view as? AlertContentView {
                     view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
                     view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 21)
-                    view.messageLabel.textColor = UIColor.darkGray
-                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
                 }
@@ -494,18 +494,37 @@ class OtherUserHeader: UICollectionReusableView {
         // ****************************************************************************************************************************
         if self.relationType.titleLabel!.text == "Following" {
             
-            
             // UNFOLLOW
-            let alert = UIAlertController(title: "Unfollow?",
+            
+            // MARK: - SimpleAlert
+            let alert = AlertController(title: "Unfollow?",
                                           message: "Are you sure you would like to unfollow \(otherName.last!.uppercased())?",
-                preferredStyle: .alert)
+                style: .alert)
+            
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+
+                }
+            }
+            
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+
             
             
-            
-            
-            let yes = UIAlertAction(title: "yes",
+            let yes = AlertAction(title: "yes",
                                     style: .default,
-                                    handler: {(alertAction: UIAlertAction!) in
+                                    handler: { (AlertAction) in
                                         
                                         // UnFollow
                                         Mixpanel.mainInstance().track(event: "Connected",
@@ -550,11 +569,11 @@ class OtherUserHeader: UICollectionReusableView {
                                         })
             })
             
-            let cancel = UIAlertAction(title: "no",
+            let no = AlertAction(title: "no",
                                        style: .destructive,
                                        handler: nil)
             
-            alert.addAction(cancel)
+            alert.addAction(no)
             alert.addAction(yes)
             alert.view.tintColor = UIColor.black
             self.delegate?.present(alert, animated: true, completion: nil)
@@ -574,14 +593,37 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         if self.relationType.titleLabel!.text == "Follower" {
-            // Block user from following you
-            let options = UIAlertController(title: nil,
-                                            message: nil,
-                                            preferredStyle: .alert)
             
-            let friend = UIAlertAction(title: "Add Friend",
+            
+            // MARK: - SimpleAlert
+            let options = AlertController(title: "Options",
+                                          message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
+                                            style: .alert)
+            
+            // Design content view
+            options.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                    
+                }
+            }
+            
+            // Design corner radius
+            options.configContainerCornerRadius = {
+                return 14.00
+            }
+
+            
+            
+            let friend = AlertAction(title: "Add Friend",
                                        style: .default,
-                                       handler: { (alertAction: UIAlertAction!) in
+                                       handler: { (AlertAction) in
                                         
                                         let alert = UIAlertController(title: "Friend?",
                                                                       message: "Would you like \(otherName.last!.uppercased()) to stop Following you and be Friends instead?",
@@ -690,9 +732,9 @@ class OtherUserHeader: UICollectionReusableView {
                                         self.delegate?.present(alert, animated: true, completion: nil)
             })
             
-            let follow = UIAlertAction(title: "Follow",
+            let follow = AlertAction(title: "Follow",
                                        style: .default,
-                                       handler: { (alertAction: UIAlertAction!) in
+                                       handler: { (AlertAction) in
                                         
                                         let alert = UIAlertController(title: "Follow Back?",
                                                                       message: "Would you like to follow \(otherName.last!.uppercased())?",
@@ -839,9 +881,9 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let removeFollower = UIAlertAction(title: "Remove Follower",
+            let removeFollower = AlertAction(title: "Remove Follower",
                                                style: .destructive,
-                                               handler: {(alertAction: UIAlertAction!) in
+                                               handler: { (AlertAction) in
                                                 
                                                 let alert = UIAlertController(title: "Remove Follower?",
                                                     message: "\(otherName.last!.uppercased()) from Following you?",
@@ -895,7 +937,7 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let cancel = UIAlertAction(title: "Cancel",
+            let cancel = AlertAction(title: "Cancel",
                                        style: .cancel,
                                        handler: nil)
             
@@ -921,13 +963,26 @@ class OtherUserHeader: UICollectionReusableView {
         if self.relationType.titleLabel!.text! == "Friend Requested" {
             
             
-            let options = UIAlertController(title: nil,
-                                            message: nil,
-                                            preferredStyle: .alert)
+            let options = AlertController(title: nil,
+                                          message: nil,
+                                          style: .alert)
             
-            let confirm = UIAlertAction(title: "Confirm Friend Request",
+            // Design content view
+            options.configContentView = { [weak self] view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            options.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let confirm = AlertAction(title: "Confirm Friend Request",
                                         style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+                                        handler: { (AlertAction) in
                                             // Confirm friend request
                                             let friends = PFQuery(className: "FriendMe")
                                             friends.whereKey("endFriend", equalTo: PFUser.current()!)
@@ -1028,9 +1083,9 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let ignore = UIAlertAction(title: "Ignore Friend Request",
-                                       style: .destructive,
-                                       handler: {(alertAction: UIAlertAction!) in
+            let ignore = AlertAction(title: "Ignore Friend Request",
+                                     style: .destructive,
+                                     handler: { (AlertAction) in
                                         // Delete Friend Request
                                         // Confirm friend request
                                         let friends = PFQuery(className: "FriendMe")
@@ -1095,9 +1150,9 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let unfriend = UIAlertAction(title: "Rescind Friend Request",
-                                         style: .default,
-                                         handler: {(alertAction: UIAlertAction!) in
+            let unfriend = AlertAction(title: "Rescind Friend Request",
+                                       style: .default,
+                                       handler: { (AlertAction) in
                                             // Rescind friend request
                                             let friends = PFQuery(className: "FriendMe")
                                             friends.whereKey("frontFriend", equalTo: PFUser.current()!)
@@ -1157,7 +1212,7 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let cancel = UIAlertAction(title: "Cancel",
+            let cancel = AlertAction(title: "Cancel",
                                        style: .cancel,
                                        handler: nil)
             
@@ -1205,16 +1260,27 @@ class OtherUserHeader: UICollectionReusableView {
         if self.relationType.titleLabel!.text! == "Follow Requested" {
             
             
-            let options = UIAlertController(title: nil,
-                                            message: nil,
-                                            preferredStyle: .alert)
+            let options = AlertController(title: nil,
+                                          message: nil,
+                                          style: .alert)
             
-            // RECEIVED
+            // Design content view
+            options.configContentView = { [weak self] view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            options.configContainerCornerRadius = {
+                return 14.00
+            }
             
             // Confirm
-            let confirm = UIAlertAction(title: "Confirm Follow Request",
+            let confirm = AlertAction(title: "Confirm Follow Request",
                                         style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+                                        handler: { (AlertAction) in
                                             
                                             // Accept Follower's Follow Request
                                             let follow = PFQuery(className: "FollowMe")
@@ -1266,9 +1332,9 @@ class OtherUserHeader: UICollectionReusableView {
             
             
             // Ignore
-            let ignore = UIAlertAction(title: "Ignore Follow Request",
-                                       style: .destructive,
-                                       handler: {(alertAction: UIAlertAction!) in
+            let ignore = AlertAction(title: "Ignore Follow Request",
+                                     style: .destructive,
+                                     handler: { (AlertAction) in
                                         
                                         // Delete request
                                         let follower = PFQuery(className: "FollowMe")
@@ -1330,9 +1396,11 @@ class OtherUserHeader: UICollectionReusableView {
                                         
             })
             
-            let rescind = UIAlertAction(title: "Rescind Follow Request",
-                                        style: .default,
-                                        handler: {(alertAction: UIAlertAction) in
+            let rescind = AlertAction(title: "Rescind Follow Request",
+                                      style: .default,
+                                      handler: { (AlertAction) in
+                                        
+                                        // Unfollow
                                             let follow = PFQuery(className: "FollowMe")
                                             follow.whereKey("follower", equalTo: PFUser.current()!)
                                             follow.whereKey("following", equalTo: otherObject.last!)
@@ -1393,9 +1461,9 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let cancel = UIAlertAction(title: "Cancel",
-                                       style: .cancel,
-                                       handler: nil)
+            let cancel = AlertAction(title: "Cancel",
+                                     style: .cancel,
+                                     handler: nil)
             
             
             

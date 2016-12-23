@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import SimpleAlert
 
 class ProfilePhotoCell: UITableViewCell {
     
@@ -238,13 +239,31 @@ class ProfilePhotoCell: UITableViewCell {
 
     // Function to share 
     func shareContent() {
-        let options = UIAlertController(title: nil,
-                                        message: nil,
-                                        preferredStyle: .actionSheet)
         
-        let publicShare = UIAlertAction(title: "All Friends",
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Share To",
+                                        message: nil,
+                                        style: .actionSheet)
+        // Design content view
+        options.configContentView = { [weak self] view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+
+        
+        
+        let publicShare = AlertAction(title: "All Friends",
                                         style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+                                        handler: { (AlertAction) in
                                             
                                             // Share to public ***FRIENDS ONLY***
                                             
@@ -332,9 +351,9 @@ class ProfilePhotoCell: UITableViewCell {
         
         
 
-        let privateShare = UIAlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Friend",
                                         style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+                                        handler: { (AlertAction) in
                                             
                                             // Share privately only
                                             // Append to contentObject
@@ -348,7 +367,7 @@ class ProfilePhotoCell: UITableViewCell {
 
         
         
-        let cancel = UIAlertAction(title: "Cancel",
+        let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         

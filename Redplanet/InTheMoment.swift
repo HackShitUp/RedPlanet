@@ -13,9 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
-
 import SVProgressHUD
 import OneSignal
+import SimpleAlert
 
 // Array to hold object
 var itmObject = [PFObject]()
@@ -53,14 +53,30 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     
     // Function to show options
     func showMore(sender: UIButton) {
-        // Show Options
-        let alert = UIAlertController(title: nil,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
         
-        let delete = UIAlertAction(title: "X Delete",
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .actionSheet)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let delete = AlertAction(title: "X Delete",
                                    style: .destructive,
-                                   handler: {(alertAction: UIAlertAction!) in
+                                   handler: { (AlertAction) in
                                     
                                     // Show Progress
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -111,9 +127,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     })
         })
         
-        let views = UIAlertAction(title: "🙈 Views",
+        let views = AlertAction(title: "🙈 Views",
                                   style: .default,
-                                  handler: {(alertAction: UIAlertAction!) in
+                                  handler: { (AlertAction) in
                                     
                                     // Append object
                                     viewsObject.append(itmObject.last!)
@@ -123,21 +139,21 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let share = UIAlertAction(title: "Share Via",
+        let share = AlertAction(title: "Share Via",
                                   style: .default,
-                                  handler: {(alertAction: UIAlertAction!) in
+                                  handler: { (AlertAction) in
         })
         
-        let cancel = UIAlertAction(title: "Cancel",
+        let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         
-        alert.addAction(delete)
-        alert.addAction(views)
-        alert.addAction(share)
-        alert.addAction(cancel)
-        alert.view.tintColor = UIColor.black
-        self.present(alert, animated: true, completion: nil)
+        options.addAction(delete)
+        options.addAction(views)
+        options.addAction(share)
+        options.addAction(cancel)
+        options.view.tintColor = UIColor.black
+        self.present(options, animated: true, completion: nil)
     }
     
     
@@ -549,21 +565,30 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     
     // Function to share
     func shareOptions(sender: UIButton) {
-        let options = UIAlertController(title: nil,
-                                        message: nil,
-                                        preferredStyle: .actionSheet)
         
-        // TODO::
-        // Share the moment as a photo
-        // 'photoAsset'
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Share To",
+                                      message: nil,
+                                      style: .actionSheet)
         
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
         
-        // TODO:
-        // Add option to share to followers
-        
-        let publicShare = UIAlertAction(title: "All Friends",
-                                        style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+        let publicShare = AlertAction(title: "All Friends",
+                                      style: .default,
+                                      handler: { (AlertAction) in
                                             
                                             
                                             // Turn image to readable PFFile
@@ -651,9 +676,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                             
         })
         
-        let privateShare = UIAlertAction(title: "One Friend",
-                                         style: .default,
-                                         handler: {(alertAction: UIAlertAction!) in
+        let privateShare = AlertAction(title: "One Friend",
+                                       style: .default,
+                                       handler: { (AlertAction) in
                                             
                                             // Append to contentObject
                                             shareObject.append(itmObject.last!)
@@ -663,9 +688,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                             self.navigationController?.pushViewController(shareToVC, animated: true)
         })
         
-        let cancel = UIAlertAction(title: "Cancel",
+        let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
+        
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
@@ -705,11 +731,28 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenMoment")
             
 
-            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Moment!\n•Swipe right to leave",
-                                          message: nil,
-                                          preferredStyle: .alert)
+            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Moment!",
+                                          message: "•Swipe right to leave",
+                                          style: .alert)
             
-            let ok = UIAlertAction(title: "ok",
+            // Design content view
+            alert.configContentView = { [weak self] view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.textColor = UIColor.black
+                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+                    view.messageLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let ok = AlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
             

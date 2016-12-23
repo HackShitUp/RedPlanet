@@ -18,9 +18,9 @@ import Parse
 import ParseUI
 import Bolts
 
-
 import SVProgressHUD
 import OneSignal
+import SimpleAlert
 
 
 // Array to hold space post object
@@ -193,11 +193,27 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
-            let alert = UIAlertController(title: "🎉\nCongrats, you viewed your first Space Post!\n•Swipe right to leave\n•Swipe left for Views 🙈",
-                                          message: nil,
-                                          preferredStyle: .alert)
+            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Space Post!",
+                                          message: "•Swipe right to leave\n•Swipe left for Views 🙈",
+                                          style: .alert)
+            // Design content view
+            alert.configContentView = { [weak self] view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.textColor = UIColor.black
+                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+                    view.messageLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
             
-            let ok = UIAlertAction(title: "ok",
+            let ok = AlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
             

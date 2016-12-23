@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SimpleAlert
 
 
 // Global variable to hold other user's object
@@ -74,14 +75,32 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     @IBOutlet weak var moreButton: UIBarButtonItem!
     @IBAction func moreButton(_ sender: AnyObject) {
-        let alert = UIAlertController(title: nil,
+        
+        // MARK: - SimpleAlert
+        let alert = AlertController(title: "Options",
                                       message: nil,
-                                      preferredStyle: .actionSheet)
+                                      style: .actionSheet)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
         
         // (1) Write in space
-        let space = UIAlertAction(title: "Write on Space ☄️",
-                                  style: .default,
-                                  handler: {(alertAction: UIAlertAction!) in
+        let space = AlertAction(title: "Write on Space ☄️",
+                                style: .default,
+                                handler: { (AlertAction) in
                                     // Append to otherObject
                                     otherObject.append(otherObject.last!)
                                     // Append to otherName
@@ -93,9 +112,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         // (2) Chat
-        let chat = UIAlertAction(title: "Chat 💬",
+        let chat = AlertAction(title: "Chat 💬",
                                  style: .default,
-                                 handler: {(alertAction: UIAlertAction!) in
+                                 handler: { (AlertAction) in
                                     
                                     // Append user's object
                                     chatUserObject.append(otherObject.last!)
@@ -109,9 +128,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         // (3) Best Friends
-        let bestFriends = UIAlertAction(title: "Best Friends 🔥",
+        let bestFriends = AlertAction(title: "Best Friends 🔥",
                                  style: .default,
-                                 handler: {(alertAction: UIAlertAction!) in
+                                 handler: { (AlertAction) in
                                     // Append object
                                     forBFObject.append(otherObject.last!)
                                     
@@ -121,9 +140,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         // (3) Mutual
-        let mutual = UIAlertAction(title: "Mutual Relationships 🤗",
-                                   style: .default,
-                                   handler: {(alertAction: UIAlertAction!) in
+        let mutual = AlertAction(title: "Mutual Relationships 🤗",
+                                style: .default,
+                                handler: { (AlertAction) in
                                     
                                     // Append object
                                     forMutual.append(otherObject.last!)
@@ -134,9 +153,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         // (5) Report or block
-        let reportOrBlock = UIAlertAction(title: "Report or Block",
+        let reportOrBlock = AlertAction(title: "Report or Block",
                                    style: .destructive,
-                                   handler: {(alertAction: UIAlertAction!) in
+                                   handler: { (AlertAction) in
                                     
                                     let alert = UIAlertController(title: nil,
                                                                   message: nil,
@@ -249,9 +268,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // (6) Cancel
-        let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel,
-                                   handler: nil)
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
         
         
 
@@ -463,24 +482,44 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Show which button to tap!
         let openedProfile = UserDefaults.standard.bool(forKey: "DidOpenOtherUserProfile")
         if openedProfile == false && otherObject.last! != PFUser.current()! {
+            
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenOtherUserProfile")
             
-            let alert = UIAlertController(title: "🤗\nFriend or Follow",
+            let alert = AlertController(title: "🤗\nFriend or Follow",
                                           message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
-                                          preferredStyle: .alert)
+                                          style: .alert)
             
-            let learnMore = UIAlertAction(title: "I'm Confused",
-                                          style: .destructive,
-                                          handler: {(alertAction: UIAlertAction!) in
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.textColor = UIColor.black
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
+                    view.messageLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            
+            
+            let learnMore = AlertAction(title: "I'm Confused",
+                                        style: .destructive,
+                                        handler: { (AlertAction) in
                                             // Push VC
                                             let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
                                             self.navigationController?.pushViewController(faqVC, animated: true)
             })
             
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
+            let ok = AlertAction(title: "ok",
+                                 style: .default,
+                                 handler: nil)
             
             alert.addAction(learnMore)
             alert.addAction(ok)

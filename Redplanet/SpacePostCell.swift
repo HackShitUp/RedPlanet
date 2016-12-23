@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import SimpleAlert
 
 class SpacePostCell: UITableViewCell {
     
@@ -266,16 +267,29 @@ class SpacePostCell: UITableViewCell {
     
     // Function to share
     func shareOptions() {
-        let options = UIAlertController(title: nil,
-                                        message: nil,
-                                        preferredStyle: .actionSheet)
         
-        // TODO:
-        // Add option to share to followers
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Share To",
+                                      message: nil,
+                                      style: .actionSheet)
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
         
-        let publicShare = UIAlertAction(title: "All Friends",
+        let publicShare = AlertAction(title: "All Friends",
                                         style: .default,
-                                        handler: {(alertAction: UIAlertAction!) in
+                                        handler: { (AlertAction) in
                                             
                                             // Share to public ***FRIENDS ONLY***
                                             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -355,9 +369,9 @@ class SpacePostCell: UITableViewCell {
         
         
         
-        let privateShare = UIAlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Friend",
                                          style: .default,
-                                         handler: {(alertAction: UIAlertAction!) in
+                                         handler: { (AlertAction) in
                                             
                                             // Append to contentObject
                                             shareObject.append(spaceObject.last!)
@@ -369,9 +383,10 @@ class SpacePostCell: UITableViewCell {
         
         
         
-        let cancel = UIAlertAction(title: "Cancel",
+        let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
+        
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
