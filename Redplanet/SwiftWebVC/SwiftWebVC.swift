@@ -101,9 +101,22 @@ public class SwiftWebVC: UIViewController, UIWebViewDelegate {
     ////////////////////////////////////////////////
     // View Lifecycle
     
+    
+    // Function to dismiss vie
+    func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     override public func loadView() {
         view = webView
         loadRequest(request)
+        
+        // Add method to swipe out
+//        let swipeOut = UISwipeGestureRecognizer(target: self, action: #selector(dismissView))
+//        swipeOut.direction = .down
+//        self.view.isUserInteractionEnabled = true
+//        self.view.addGestureRecognizer(swipeOut)
+        
     }
     
     override public func viewDidLoad() {

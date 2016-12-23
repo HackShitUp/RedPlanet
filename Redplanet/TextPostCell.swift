@@ -73,7 +73,7 @@ class TextPostCell: UITableViewCell {
                                         style: .actionSheet)
         
         // Design content view
-        options.configContentView = { [weak self] view in
+        options.configContentView = { view in
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
                 view.titleLabel.textColor = UIColor.black

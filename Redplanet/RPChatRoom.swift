@@ -535,9 +535,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
         // Set title
         self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
-
-        // Set placeholder for newChat
-        self.newChat.text! = "Chatting with \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)..."
         
         // Add notifications to hide chatBoxx
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)

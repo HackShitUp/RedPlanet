@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import SimpleAlert
 
 class RelationshipRequestsCell: UICollectionViewCell {
     
@@ -407,13 +408,32 @@ class RelationshipRequestsCell: UICollectionViewCell {
         
         // R E S C I N D      F R I E N D      R E Q U E S T
         if self.relationState.titleLabel!.text == "Rescind Friend Request" {
-            let alert = UIAlertController(title: "Rescind Friend Request?",
-                                          message: "Are you sure you'd like to unfriend \(self.rpFullName.text!)?",
-                preferredStyle: .alert)
             
-            let yes = UIAlertAction(title: "yes",
+            // MARK: - SimpleAlert
+            let alert = AlertController(title: "Rescind Friend Request?",
+                                          message: "Are you sure you'd like to unfriend \(self.rpFullName.text!)?",
+                style: .alert)
+            
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let yes = AlertAction(title: "yes",
                                     style: .destructive,
-                                    handler: {(alertAction: UIAlertAction!) in
+                                    handler: { (AlertAction) in
                                         // Delete from parse: "FriendMe"
                                         let friend = PFQuery(className: "FriendMe")
                                         friend.whereKey("frontFriend", equalTo: PFUser.current()!)
@@ -470,7 +490,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                         })
             })
             
-            let no = UIAlertAction(title: "no",
+            let no = AlertAction(title: "no",
                                    style: .cancel,
                                    handler: nil)
             
@@ -484,13 +504,33 @@ class RelationshipRequestsCell: UICollectionViewCell {
         
         // R E S C I N D     F O L L O W     R E Q U E S T
         if self.relationState.titleLabel!.text! == "Rescind Follow Request" {
-            let alert = UIAlertController(title: "Rescind Follow Request?",
-                                          message: "Are you sure you'd like to unfollow \(self.rpUsername.text!)?",
-                preferredStyle: .alert)
             
-            let yes = UIAlertAction(title: "yes",
+            
+            // MARK: - SimpleAlert
+            let alert = AlertController(title: "Rescind Follow Request?",
+                                          message: "Are you sure you'd like to unfollow \(self.rpUsername.text!)?",
+                style: .alert)
+            
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                }
+            }
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let yes = AlertAction(title: "yes",
                                     style: .destructive,
-                                    handler: {(alertAction: UIAlertAction!) in
+                                    handler: { (AlertAction) in
                                         // Delete from parse: "FollowMe"
                                         let follow = PFQuery(className: "FollowMe")
                                         follow.whereKey("follower", equalTo: PFUser.current()!)
@@ -549,7 +589,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                         
             })
             
-            let no = UIAlertAction(title: "no",
+            let no = AlertAction(title: "no",
                                    style: .cancel,
                                    handler: nil)
             

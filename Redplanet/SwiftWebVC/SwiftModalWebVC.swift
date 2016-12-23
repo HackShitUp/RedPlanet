@@ -78,6 +78,23 @@ public class SwiftModalWebVC: UINavigationController {
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        
+        // Create cornerradius
+        self.view.layer.cornerRadius = 12.00
+        self.view.clipsToBounds = true
+        
+        // Add swipe method
+        let swipeOut = UISwipeGestureRecognizer(target: self, action: #selector(dismissView))
+        swipeOut.direction = .down
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(swipeOut)
     }
+    
+    
+    // Function to dismiss
+    func dismissView() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     
 }

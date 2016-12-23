@@ -370,13 +370,12 @@ class OtherUserHeader: UICollectionReusableView {
     @IBAction func relationAction(_ sender: Any) {
         
         // (1)
-        // ****************************************************************************************************************************
         // ============================================================================================================================
         // ============================================================================================================================
         // ======================================= F R I E N D S ======================================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        // ****************************************************************************************************************************
+
         if self.relationType.titleLabel!.text == "Friends" {
             
             // Unfriend user
@@ -485,13 +484,12 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         // (5)
-        // ****************************************************************************************************************************
         // ============================================================================================================================
         // ============================================================================================================================
         // ======================================= F O L L O W I N G ==================================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        // ****************************************************************************************************************************
+
         if self.relationType.titleLabel!.text == "Following" {
             
             // UNFOLLOW
@@ -583,13 +581,11 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         // (3)
-        // ****************************************************************************************************************************
         // ============================================================================================================================
         // ============================================================================================================================
         // ======================================= F O L L O W E R  ===================================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text == "Follower" {
@@ -951,26 +947,28 @@ class OtherUserHeader: UICollectionReusableView {
         }
         
         // (4)
-        // ****************************************************************************************************************************
         // ============================================================================================================================
         // ============================================================================================================================
         // ======================================= F R I E N D     R E Q U E S T E D ==================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text! == "Friend Requested" {
             
-            
-            let options = AlertController(title: nil,
-                                          message: nil,
+            // MARK: - SimpleAlert
+            let options = AlertController(title: "Friend Requested",
+                                          message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
                                           style: .alert)
             
             // Design content view
-            options.configContentView = { [weak self] view in
+            options.configContentView = { view in
                 if let view = view as? AlertContentView {
                     view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
                 }
@@ -1150,8 +1148,8 @@ class OtherUserHeader: UICollectionReusableView {
             })
             
             
-            let unfriend = AlertAction(title: "Rescind Friend Request",
-                                       style: .default,
+            let unfriend = AlertAction(title: "Rescind",
+                                       style: .destructive,
                                        handler: { (AlertAction) in
                                             // Rescind friend request
                                             let friends = PFQuery(className: "FriendMe")
@@ -1222,19 +1220,16 @@ class OtherUserHeader: UICollectionReusableView {
             // Set friend requests
             if myRequestedFriends.contains(otherObject.last!) {
                 // "Rescind Friend Request"
-                options.addAction(unfriend)
-                // "Cancel"
                 options.addAction(cancel)
+                options.addAction(unfriend)
                 options.view.tintColor = UIColor.black
                 self.delegate!.present(options, animated: true, completion: nil)
             }
             
             if requestedToFriendMe.contains(otherObject.last!) {
-                // "Confirm Friend Request"
-                options.addAction(confirm)
-                // "Ignore Friend Request"
+
                 options.addAction(ignore)
-                // "Cancel"
+                options.addAction(confirm)
                 options.addAction(cancel)
                 options.view.tintColor = UIColor.black
                 self.delegate!.present(options, animated: true, completion: nil)
@@ -1248,26 +1243,28 @@ class OtherUserHeader: UICollectionReusableView {
         
         
         // (5)
-        // ****************************************************************************************************************************
         // ============================================================================================================================
         // ============================================================================================================================
         // ======================================= F O L L O W     R E Q U E S T E D ==================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        // ****************************************************************************************************************************
         
         
         if self.relationType.titleLabel!.text! == "Follow Requested" {
             
             
-            let options = AlertController(title: nil,
-                                          message: nil,
+            let options = AlertController(title: "Follow Requested",
+                                          message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
                                           style: .alert)
             
             // Design content view
-            options.configContentView = { [weak self] view in
+            options.configContentView = { view in
                 if let view = view as? AlertContentView {
                     view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
                 }
@@ -1396,68 +1393,70 @@ class OtherUserHeader: UICollectionReusableView {
                                         
             })
             
-            let rescind = AlertAction(title: "Rescind Follow Request",
-                                      style: .default,
+            let rescind = AlertAction(title: "Rescind",
+                                      style: .destructive,
                                       handler: { (AlertAction) in
                                         
                                         // Unfollow
-                                            let follow = PFQuery(className: "FollowMe")
-                                            follow.whereKey("follower", equalTo: PFUser.current()!)
-                                            follow.whereKey("following", equalTo: otherObject.last!)
-                                            follow.whereKey("isFollowing", equalTo: false)
-                                            follow.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted follow request: \(object)")
-                                                                
-                                                                // Delete in notifications
-                                                                let notifications = PFQuery(className: "Notifications")
-                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                                notifications.whereKey("toUser", equalTo: otherObject.last!)
-                                                                notifications.whereKey("type", equalTo: "follow requested")
-                                                                notifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted follow request notification: \(object)")
-                                                                                    
-                                                                                    // Send to Notification Center
-                                                                                    NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                                    
-                                                                                    // Hide and show buttons
-                                                                                    self.relationType.isHidden = true
-                                                                                    self.friendButton.isHidden = false
-                                                                                    self.followButton.isHidden = false
-                                                                                    
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
+                                        let follow = PFQuery(className: "FollowMe")
+                                        follow.whereKey("follower", equalTo: PFUser.current()!)
+                                        follow.whereKey("following", equalTo: otherObject.last!)
+                                        follow.whereKey("isFollowing", equalTo: false)
+                                        follow.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully deleted follow request: \(object)")
+                                                            
+                                                            // Delete in notifications
+                                                            let notifications = PFQuery(className: "Notifications")
+                                                            notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                                            notifications.whereKey("toUser", equalTo: otherObject.last!)
+                                                            notifications.whereKey("type", equalTo: "follow requested")
+                                                            notifications.findObjectsInBackground(block: {
+                                                                (objects: [PFObject]?, error: Error?) in
+                                                                if error == nil {
+                                                                    for object in objects! {
+                                                                        object.deleteInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully deleted follow request notification: \(object)")
+                                                                                
+                                                                                // Send to Notification Center
+                                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                                                
+                                                                                // Hide and show buttons
+                                                                                self.relationType.isHidden = true
+                                                                                self.friendButton.isHidden = false
+                                                                                self.followButton.isHidden = false
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
                                                                     }
-                                                                })
-                                                                
-                                                                // Post Notification
-                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
+                                                                } else {
+                                                                    print(error?.localizedDescription as Any)
+                                                                }
+                                                            })
+                                                            
+                                                            // Post Notification
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                 }
-                                            })
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+
+                                        
             })
             
             
@@ -1476,8 +1475,8 @@ class OtherUserHeader: UICollectionReusableView {
             }
             
             if myRequestedFollowing.contains(otherObject.last!) {
-                options.addAction(rescind)
                 options.addAction(cancel)
+                options.addAction(rescind)
                 options.view.tintColor = UIColor.black
                 self.delegate?.present(options, animated: true, completion: nil)
             }

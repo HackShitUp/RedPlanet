@@ -15,7 +15,7 @@ import Bolts
 
 import SVProgressHUD
 import DZNEmptyDataSet
-
+import SimpleAlert
 
 class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -627,14 +627,35 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
 
-            // Present alert
-            let alert = UIAlertController(title: "Delete Conversation Forever?",
-                                          message: "Both you and \(chatName.uppercased()) cannot restore this conversation once it's deleted.",
-                preferredStyle: .alert)
             
-            let yes = UIAlertAction(title: "yes",
+            // MARK: - SimpleAlert
+            // Present alert
+            let alert = AlertController(title: "Delete Conversation Forever?",
+                                        message: "Both you and \(chatName.uppercased()) cannot restore this conversation once it's deleted.",
+                style: .alert)
+            
+            // Design content view
+            alert.configContentView = { view in
+                if let view = view as? AlertContentView {
+                    view.backgroundColor = UIColor.white
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                    view.titleLabel.textColor = UIColor.black
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                    view.messageLabel.textColor = UIColor.black
+                    view.textBackgroundView.layer.cornerRadius = 3.00
+                    view.textBackgroundView.clipsToBounds = true
+                    
+                }
+            }
+            
+            // Design corner radius
+            alert.configContainerCornerRadius = {
+                return 14.00
+            }
+            
+            let yes = AlertAction(title: "yes",
                                     style: .destructive,
-                                    handler: { (alertAction: UIAlertAction!) in
+                                    handler: { (AlertAction) in
                                         
                                         // Show Progress
                                         SVProgressHUD.show()
@@ -667,11 +688,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                         (success: Bool, error: Error?) in
                                                         if success {
                                                             
-                                                            // Delete comment from table view
-                                                            // use array
-                                                            self.finalChatObjects.remove(at: indexPath.row)
-                                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                            
                                                             // Query Chats again
                                                             self.queryChats()
                                                             
@@ -695,7 +711,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     
             })
             
-            let no = UIAlertAction(title: "no",
+            let no = AlertAction(title: "no",
                                    style: .cancel,
                                    handler: nil)
             
@@ -709,8 +725,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         }
         
         // Set background color
-//        delete.backgroundColor = UIColor(red:1.00, green:0.33, blue:0.33, alpha:1.0)
-        delete.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+//        delete.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        delete.backgroundColor = UIColor(red:1.00, green:0.19, blue:0.19, alpha:1.0)
         
         return [delete]
     }

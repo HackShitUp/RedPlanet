@@ -309,6 +309,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         toUser.whereKey("toUser", equalTo: otherObject.last!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
+        newsfeeds.includeKey("toUser")
+        newsfeeds.includeKey("byUser")
+        newsfeeds.includeKey("pointObject")
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
