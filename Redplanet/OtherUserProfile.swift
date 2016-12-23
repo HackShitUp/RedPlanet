@@ -85,7 +85,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         alert.configContentView = { view in
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
-                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
                 view.textBackgroundView.layer.cornerRadius = 3.00
                 view.textBackgroundView.clipsToBounds = true
             }

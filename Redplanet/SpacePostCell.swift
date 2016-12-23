@@ -277,7 +277,7 @@ class SpacePostCell: UITableViewCell {
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
                 view.titleLabel.textColor = UIColor.black
-                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
                 view.textBackgroundView.layer.cornerRadius = 3.00
                 view.textBackgroundView.clipsToBounds = true
             }

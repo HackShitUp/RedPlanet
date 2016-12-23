@@ -197,13 +197,13 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                           message: "•Swipe right to leave\n•Swipe left for Views 🙈",
                                           style: .alert)
             // Design content view
-            alert.configContentView = { [weak self] view in
+            alert.configContentView = { view in
                 if let view = view as? AlertContentView {
                     view.backgroundColor = UIColor.white
                     view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
                     view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
                 }
@@ -789,7 +789,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // (5) Report Content
         let report = UITableViewRowAction(style: .normal,
-                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
                                                                           message: "Please provide your reason for reporting \(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",

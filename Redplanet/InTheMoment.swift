@@ -64,7 +64,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
                 view.titleLabel.textColor = UIColor.black
-                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
                 view.textBackgroundView.layer.cornerRadius = 3.00
                 view.textBackgroundView.clipsToBounds = true
             }
@@ -576,7 +576,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
                 view.titleLabel.textColor = UIColor.black
-                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
                 view.textBackgroundView.layer.cornerRadius = 3.00
                 view.textBackgroundView.clipsToBounds = true
             }
@@ -736,13 +736,13 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                           style: .alert)
             
             // Design content view
-            alert.configContentView = { [weak self] view in
+            alert.configContentView = { view in
                 if let view = view as? AlertContentView {
                     view.backgroundColor = UIColor.white
                     view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont.boldSystemFont(ofSize: 17)
+                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
                     view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont.boldSystemFont(ofSize: 15)
+                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
                 }

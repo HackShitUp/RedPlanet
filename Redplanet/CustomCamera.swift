@@ -80,7 +80,7 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
     
     @IBAction func retake(_ sender: AnyObject) {
         // Call function to reload data
-        reload()
+        _ = reload()
     }
     
     @IBOutlet weak var flashButton: UIButton!

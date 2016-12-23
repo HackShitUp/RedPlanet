@@ -665,7 +665,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         // (4) Report Content
         let report = UITableViewRowAction(style: .normal,
-                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report",
                                                                           message: "Please provide your reason for reporting \(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",

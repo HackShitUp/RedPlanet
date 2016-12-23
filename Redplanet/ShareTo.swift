@@ -17,6 +17,7 @@ import Bolts
 import OneSignal
 import SVProgressHUD
 import DZNEmptyDataSet
+import SimpleAlert
 
 
 class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
@@ -355,13 +356,32 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         }
         
         
-        let alert = UIAlertController(title: "Share With \(userName!.uppercased())?",
+        let alert = AlertController(title: "Share With \(userName!.uppercased())?",
             message: "Are you sure you'd like to share this with \(userName!.uppercased())?",
-            preferredStyle: .alert)
+            style: .alert)
         
-        let yes = UIAlertAction(title: "yes",
-                                style: .default,
-                                handler: {(alertAction: UIAlertAction!) in
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                view.titleLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                view.messageLabel.textColor = UIColor.black
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+                
+            }
+        }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let yes = AlertAction(title: "yes",
+                              style: .default,
+                              handler: { (AlertAction) in
                                     
                                     if shareObject.last!.value(forKey: "photoAsset") != nil {
                                         // PHOTO
@@ -510,9 +530,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                     
         })
         
-        let no = UIAlertAction(title: "no",
-                               style: .destructive,
-                               handler: nil)
+        let no = AlertAction(title: "no",
+                             style: .destructive,
+                             handler: nil)
         
         
         alert.addAction(no)

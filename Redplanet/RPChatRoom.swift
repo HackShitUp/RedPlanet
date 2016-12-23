@@ -1145,7 +1145,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // (3) Block user
         let report = UITableViewRowAction(style: .normal,
-                                          title: "REPORT") { (UITableViewRowAction, indexPath) in
+                                          title: "Report") { (UITableViewRowAction, indexPath) in
                                             
                                             let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
                                                                           message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
