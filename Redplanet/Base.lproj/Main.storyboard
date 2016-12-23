@@ -1717,7 +1717,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="PCU-ZY-G4w">
                         <barButtonItem key="rightBarButtonItem" image="NewChat" id="0Lw-Dv-lX4">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="newChat:" destination="Ac7-BO-mTV" id="5PM-Em-nlZ"/>
                             </connections>
@@ -4154,6 +4154,7 @@
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yKx-5O-15d">
                                         <rect key="frame" x="0.0" y="2" width="298" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="298" id="6FD-3W-yKL"/>
                                             <constraint firstAttribute="height" constant="50" id="Joi-bw-LC1"/>

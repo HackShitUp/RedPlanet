@@ -505,6 +505,21 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     
     
+    // Stylize title
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
+        }
+    }
+    
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -532,9 +547,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
         // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 60
-
-        // Set title
-        self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         
         // Add notifications to hide chatBoxx
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -621,6 +633,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
+        
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         

@@ -1054,10 +1054,10 @@
 			isa = PBXGroup;
 			children = (
 				7EDDF4361E07C0A5005C68C9 /* Library.swift */,
-				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
-				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
-				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
 				7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */,
+				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
+				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
+				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
 			);
 			name = PhotosLibrary;
 			sourceTree = "<group>";
