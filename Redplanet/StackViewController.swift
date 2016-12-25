@@ -29,6 +29,8 @@ var stackObject = [PFObject]()
 
 class StackViewController: UIViewController {
     
+    // Variable to hold text for the post
+    var layoutText: String?
     
     
     // Arrays to hold likes, comments, and shares
@@ -39,6 +41,7 @@ class StackViewController: UIViewController {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var container: UIView!
     @IBOutlet weak var textPost: KILabel!
     @IBOutlet weak var mediaAsset: PFImageView!
     @IBOutlet weak var numberOfLikes: UIButton!
@@ -47,7 +50,7 @@ class StackViewController: UIViewController {
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
-    
+    // @IBOutlet functions
     @IBAction func showLikes(_ sender: Any) {
     }
     @IBAction func likePost(_ sender: Any) {
@@ -61,32 +64,150 @@ class StackViewController: UIViewController {
     @IBAction func showShares(_ sender: Any) {
     }
     
+    // Function to leave view
+    func backButton(sender: Any) {
+        // Pop VC
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    
     // Function to fetch interactions
     func fetchInteractions() {
         
     }
     
+    
+    // Function to determine size of iphone
+    func createTextSize() -> String {
+        
+        // Check for textPost & handle optional chaining
+        if stackObject.last!.value(forKey: "textPost") != nil {
+            
+            // (A) Set textPost
+            // Calculate screen height
+            if UIScreen.main.nativeBounds.height == 960 {
+                // iPhone 4
+                layoutText = "\n\n\n\n\n\n\n\n\n\(stackObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 1136 {
+                // iPhone 5 √
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\(stackObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 1334 {
+                // iPhone 6 √
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(stackObject.last!.value(forKey: "textPost") as! String)"
+            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                // iPhone 6+ √???
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(stackObject.last!.value(forKey: "textPost") as! String)"
+            }
+            
+        } else {
+            // Caption DOES NOT exist
+            
+            // (A) Set textPost
+            // Calculate screen height
+            if UIScreen.main.nativeBounds.height == 960 {
+                // iPhone 4
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 1136 {
+                // iPhone 5
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 1334 {
+                // iPhone 6
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                // iPhone 6+
+                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+            }
+        }
+        
+        return layoutText!
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // (I) Fetch profile photo
+        if let user = stackObject.last!.value(forKey: "byUser") as? PFUser {
+            
+            // Design profile photo
+            self.rpUserProPic.layoutIfNeeded()
+            self.rpUserProPic.layoutSubviews()
+            self.rpUserProPic.setNeedsLayout()
+            
+            // Make circular
+            self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
+            self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            self.rpUserProPic.layer.borderWidth = 0.5
+            self.rpUserProPic.clipsToBounds = true
+            
+            // Get and set profile photo
+            if let proPic = user["userProfilePicture"] as? PFFile {
+                proPic.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        // Fetched, set user's profile photo
+                        self.rpUserProPic.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Couldn't fetch, set default for now
+                        self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+                    }
+                })
+            } else {
+                // Set default
+                self.rpUserProPic.image = UIImage(named: "Gender Neutral User-96")
+            }
+            
+            // Set name
+            self.rpUsername.text! = user["realNameOfUser"] as! String
+        }
+        
         // Handle content type
-        // (I) Text Post
+        // (II) Text Post
         if stackObject.last!.value(forKey: "contentType") as! String == "tp" {
+            
             // (1) Hide mediaAsset
             self.mediaAsset.isHidden = true
+            
             // (2) Set text post
-            self.textPost.text! = stackObject.last!.value(forKey: "textPost") as! String
-            self.textPost.sizeToFit()
+            self.textPost.layoutIfNeeded()
+            self.textPost.layoutSubviews()
             self.textPost.setNeedsLayout()
-            self.textPost.setNeedsDisplay()
+            self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+            self.textPost.text! = "\n\(stackObject.last!.value(forKey: "textPost") as! String)\n"
+        
         } else if stackObject.last!.value(forKey: "contentType") as! String == "ph" {
             
-        } else if stackObject.last!.value(forKey: "contentType") as! String == "ph" {
-        
-        } else if stackObject.last!.value(forKey: "contentType") as! String == "ph" {
+            // (1) Get photo
+            if let photoAsset = stackObject.last!.value(forKey: "photoAsset") as? PFFile {
+                photoAsset.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        // Set photo
+                        self.mediaAsset.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            // (2) Set caption
+            // Call function
+            _ = createTextSize()
+            // Design
+            self.textPost.layoutIfNeeded()
+            self.textPost.layoutSubviews()
+            self.textPost.setNeedsLayout()
+            // Set
+            self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
+            self.textPost.text! = self.layoutText!
+
+            
+        } else if stackObject.last!.value(forKey: "contentType") as! String == "pp" {
+            
+        } else if stackObject.last!.value(forKey: "contentType") as! String == "sp" {
         
         }
+        
         
         // (2) Photo
         // (3) Profile Photo
@@ -94,6 +215,13 @@ class StackViewController: UIViewController {
         // (5) Shared Post
         // (6) Video
         // (7) Moment
+        
+        
+        // Swipe to leave
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
+        backSwipe.direction = .right
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(backSwipe)
 
     }
     
@@ -105,18 +233,10 @@ class StackViewController: UIViewController {
         
         // Hide tab bar controller
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Create corner radius
-        self.view.layer.cornerRadius = 12.00
-        self.view.clipsToBounds = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Reset corner radius
-        self.view.layer.cornerRadius = 0.0
-        self.view.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {

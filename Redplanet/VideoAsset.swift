@@ -196,9 +196,9 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         // Pull to refresh
-        refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+//        refresher = UIRefreshControl()
+//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+//        self.tableView!.addSubview(refresher)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

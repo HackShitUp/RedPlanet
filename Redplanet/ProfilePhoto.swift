@@ -49,7 +49,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         fetchInteractions()
         
         // End refresher
-        self.refresher.endRefreshing()
+//        self.refresher.endRefreshing()
         
         // Reload data
         self.tableView!.reloadData()
@@ -214,9 +214,9 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+//        refresher = UIRefreshControl()
+//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+//        self.tableView!.addSubview(refresher)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
