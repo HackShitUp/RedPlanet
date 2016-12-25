@@ -58,7 +58,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         fetchInteractions()
         
         // End refresher
-        self.refresher.endRefreshing()
+//        self.refresher.endRefreshing()
         
         // Reload data
         self.tableView!.reloadData()
@@ -249,10 +249,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: spaceNotification, object: nil)
         
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+//        // Pull to refresh action
+//        refresher = UIRefreshControl()
+//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+//        self.tableView!.addSubview(refresher)
         
         
         // Back swipe implementation
@@ -885,7 +885,13 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
 
     
     
-    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y < -90 {
+            // Pop view controller
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
     
 
 

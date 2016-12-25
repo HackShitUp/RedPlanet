@@ -50,7 +50,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         fetchInteractions()
         
         // End refresher
-        refresher.endRefreshing()
+//        refresher.endRefreshing()
         
         // Reload data
         self.tableView!.reloadData()
@@ -695,6 +695,17 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
     } // End edit action
+    
+    
+    
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y < -90 {
+            // Pop view controller
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
     
 
     

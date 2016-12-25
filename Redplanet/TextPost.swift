@@ -715,7 +715,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y < -90 {
             // Pop view controller
-//            _ = self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: true)
         }
     }
     
