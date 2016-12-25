@@ -20,7 +20,6 @@ import SimpleAlert
 // Global variable to hold object
 var textPostObject = [PFObject]()
 
-
 // Define identifier
 let textPostNotification = Notification.Name("textPost")
 
@@ -50,7 +49,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         fetchInteractions()
         
         // End refresher
-        refresher.endRefreshing()
+//        refresher.endRefreshing()
         
         // Reload data
         self.tableView!.reloadData()
@@ -196,9 +195,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         // Pull to refresh
-        refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+//        refresher = UIRefreshControl()
+//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+//        self.tableView!.addSubview(refresher)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -255,6 +254,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        // Rid of view corner radius
+//        self.navigationController!.view.layer.cornerRadius = 0.00
+//        self.navigationController!.view.clipsToBounds = true
+        
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
@@ -268,6 +271,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Create view corner radius
+//        self.navigationController!.view.layer.cornerRadius = 12.00
+//        self.navigationController!.view.clipsToBounds = true
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -706,7 +713,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -70 {
+        if self.tableView!.contentOffset.y < -90 {
             // Pop view controller
 //            _ = self.navigationController?.popViewController(animated: true)
         }

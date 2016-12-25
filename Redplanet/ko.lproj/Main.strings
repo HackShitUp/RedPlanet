@@ -1,0 +1,447 @@
+
+/* Class = "UILabel"; text = "LOGOUT"; ObjectID = "170-ym-d50"; */
+"170-ym-d50.text" = "LOGOUT";
+
+/* Class = "UILabel"; text = "Relationship Requests"; ObjectID = "17l-L2-NeW"; */
+"17l-L2-NeW.text" = "Relationship Requests";
+
+/* Class = "UINavigationItem"; title = "Contacts"; ObjectID = "20w-74-JaD"; */
+"20w-74-JaD.title" = "Contacts";
+
+/* Class = "UILabel"; text = "When's Your Birthday?"; ObjectID = "2in-S8-qjk"; */
+"2in-S8-qjk.text" = "When's Your Birthday?";
+
+/* Class = "UIButton"; normalTitle = "continue"; ObjectID = "2zd-Qn-zKM"; */
+"2zd-Qn-zKM.normalTitle" = "continue";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "40V-PS-H91"; */
+"40V-PS-H91.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "4uo-IC-cIO"; */
+"4uo-IC-cIO.normalTitle" = "comments";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "4yS-Tf-EP2"; */
+"4yS-Tf-EP2.normalTitle" = "Done";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "5iX-FZ-tgY"; */
+"5iX-FZ-tgY.normalTitle" = "shares";
+
+/* Class = "UIButton"; normalTitle = "Loading..."; ObjectID = "5s1-Og-6eq"; */
+"5s1-Og-6eq.normalTitle" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Confirm"; ObjectID = "7U4-NM-kps"; */
+"7U4-NM-kps.normalTitle" = "Confirm";
+
+/* Class = "UIButton"; normalTitle = "following"; ObjectID = "7iJ-Ns-tFD"; */
+"7iJ-Ns-tFD.normalTitle" = "following";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "7zP-xJ-0XE"; */
+"7zP-xJ-0XE.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Confirmed"; ObjectID = "84m-yW-K8A"; */
+"84m-yW-K8A.normalTitle" = "Confirmed";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "8l0-y7-Rxz"; */
+"8l0-y7-Rxz.normalTitle" = "shares";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "8ll-Tm-DYe"; */
+"8ll-Tm-DYe.normalTitle" = "comments";
+
+/* Class = "UIButton"; normalTitle = "continue"; ObjectID = "8ps-5B-Lai"; */
+"8ps-5B-Lai.normalTitle" = "continue";
+
+/* Class = "UILabel"; text = "Likes & Shares"; ObjectID = "9ye-eS-Y9G"; */
+"9ye-eS-Y9G.text" = "Likes & Shares";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "ABv-SK-ScR"; */
+"ABv-SK-ScR.normalTitle" = "likes";
+
+/* Class = "UIButton"; normalTitle = "Loading..."; ObjectID = "AII-BY-gJQ"; */
+"AII-BY-gJQ.normalTitle" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "Aze-oC-3Wj"; */
+"Aze-oC-3Wj.normalTitle" = "shares";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "BS6-Fr-1mJ"; */
+"BS6-Fr-1mJ.text" = "Name";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "BVN-96-VRZ"; */
+"BVN-96-VRZ.text" = "Loading...";
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "BWr-3U-ip5"; */
+"BWr-3U-ip5.placeholder" = "Password";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "BvC-lg-W70"; */
+"BvC-lg-W70.text" = "Label";
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "BzN-go-vOz"; */
+"BzN-go-vOz.text" = "Password";
+
+/* Class = "UITextField"; placeholder = "Last Name"; ObjectID = "CAu-Lt-hB8"; */
+"CAu-Lt-hB8.placeholder" = "Last Name";
+
+/* Class = "UITextView"; text = "Introduce yourself..."; ObjectID = "CFq-EE-azv"; */
+"CFq-EE-azv.text" = "Introduce yourself...";
+
+/* Class = "UITabBarItem"; title = "News Feeds"; ObjectID = "Cgp-1o-TyI"; */
+"Cgp-1o-TyI.title" = "News Feeds";
+
+/* Class = "UINavigationItem"; title = "Notifications"; ObjectID = "Cgs-Ze-POb"; */
+"Cgs-Ze-POb.title" = "Notifications";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Dp6-3x-Xai"; */
+"Dp6-3x-Xai.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "followers"; ObjectID = "DsI-YY-4GD"; */
+"DsI-YY-4GD.normalTitle" = "followers";
+
+/* Class = "UILabel"; text = "Sign Up"; ObjectID = "E97-uC-uMM"; */
+"E97-uC-uMM.text" = "Sign Up";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "Feq-jJ-OlN"; */
+"Feq-jJ-OlN.normalTitle" = "comments";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "G1A-mi-csk"; */
+"G1A-mi-csk.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "Gq1-dm-cq2"; */
+"Gq1-dm-cq2.normalTitle" = "likes";
+
+/* Class = "UILabel"; text = "About Us"; ObjectID = "H5a-BR-8yj"; */
+"H5a-BR-8yj.text" = "About Us";
+
+/* Class = "UITextField"; placeholder = "New password"; ObjectID = "H6h-cc-qAi"; */
+"H6h-cc-qAi.placeholder" = "New password";
+
+/* Class = "UITextField"; placeholder = "What's your email?"; ObjectID = "Hbt-0w-dmU"; */
+"Hbt-0w-dmU.placeholder" = "What's your email?";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "HlC-kd-SkQ"; */
+"HlC-kd-SkQ.normalTitle" = "shares";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Hnd-j9-c0b"; */
+"Hnd-j9-c0b.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Birthday"; ObjectID = "IDP-L2-2y3"; */
+"IDP-L2-2y3.text" = "Birthday";
+
+/* Class = "UIButton"; normalTitle = "friends"; ObjectID = "IZ9-oB-F5x"; */
+"IZ9-oB-F5x.normalTitle" = "friends";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Iym-b6-L4C"; */
+"Iym-b6-L4C.text" = "Loading...";
+
+/* Class = "UITextView"; text = "What are you doing?"; ObjectID = "JRN-fH-AcO"; */
+"JRN-fH-AcO.text" = "What are you doing?";
+
+/* Class = "UINavigationItem"; title = "About Us"; ObjectID = "JfD-NT-EIh"; */
+"JfD-NT-EIh.title" = "About Us";
+
+/* Class = "UITextField"; placeholder = "First Name"; ObjectID = "K0V-kt-9hL"; */
+"K0V-kt-9hL.placeholder" = "First Name";
+
+/* Class = "UIButton"; normalTitle = "share"; ObjectID = "Ka0-7Z-m5I"; */
+"Ka0-7Z-m5I.normalTitle" = "share";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Kv0-UV-Sjm"; */
+"Kv0-UV-Sjm.text" = "Loading...";
+
+/* Class = "UITableViewSection"; headerTitle = "About"; ObjectID = "L75-E1-udv"; */
+"L75-E1-udv.headerTitle" = "About";
+
+/* Class = "UILabel"; text = "Redplaneters in Contacts"; ObjectID = "LHq-jK-zri"; */
+"LHq-jK-zri.text" = "Redplaneters in Contacts";
+
+/* Class = "UINavigationItem"; title = "Terms of Service"; ObjectID = "MHN-Oi-sWs"; */
+"MHN-Oi-sWs.title" = "Terms of Service";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "MS6-dU-yrE"; */
+"MS6-dU-yrE.text" = "Loading...";
+
+/* Class = "UITabBarItem"; title = "Explore"; ObjectID = "MUZ-Nz-NN5"; */
+"MUZ-Nz-NN5.title" = "Explore";
+
+/* Class = "UILabel"; text = "Privacy 🔐"; ObjectID = "NdU-WB-sDv"; */
+"NdU-WB-sDv.text" = "Privacy 🔐";
+
+/* Class = "UILabel"; text = "2 days ago"; ObjectID = "NyL-jY-Xk3"; */
+"NyL-jY-Xk3.text" = "2 days ago";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "OMN-Rr-U0S"; */
+"OMN-Rr-U0S.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "Oas-kL-jII"; */
+"Oas-kL-jII.normalTitle" = "comments";
+
+/* Class = "UINavigationItem"; title = "Password"; ObjectID = "SF0-4Y-GDt"; */
+"SF0-4Y-GDt.title" = "Password";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "STW-TL-96F"; */
+"STW-TL-96F.normalTitle" = "Save";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Sn0-p0-7Le"; */
+"Sn0-p0-7Le.text" = "Loading...";
+
+/* Class = "UILabel"; text = "What's Your Name?"; ObjectID = "Ssk-PB-Uah"; */
+"Ssk-PB-Uah.text" = "What's Your Name?";
+
+/* Class = "UITextView"; text = "Introduce yourself!"; ObjectID = "T2t-Ch-oEv"; */
+"T2t-Ch-oEv.text" = "Introduce yourself!";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "T4W-6m-bw7"; */
+"T4W-6m-bw7.normalTitle" = "likes";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Tut-UJ-1uW"; */
+"Tut-UJ-1uW.text" = "Label";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Uky-zB-312"; */
+"Uky-zB-312.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "friend"; ObjectID = "V74-PF-YQr"; */
+"V74-PF-YQr.normalTitle" = "friend";
+
+/* Class = "UILabel"; text = "Profile"; ObjectID = "VKc-aA-rCz"; */
+"VKc-aA-rCz.text" = "Profile";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "Vt8-pJ-ZVF"; */
+"Vt8-pJ-ZVF.normalTitle" = "likes";
+
+/* Class = "UINavigationItem"; title = "Privacy Policy"; ObjectID = "WKb-Ok-4sd"; */
+"WKb-Ok-4sd.title" = "Privacy Policy";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "WOf-1N-3x5"; */
+"WOf-1N-3x5.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "WeE-dd-kfS"; */
+"WeE-dd-kfS.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Privacy Policy"; ObjectID = "X6N-KA-iCa"; */
+"X6N-KA-iCa.text" = "Privacy Policy";
+
+/* Class = "UITabBarItem"; title = "Redplanet"; ObjectID = "X76-jS-IPb"; */
+"X76-jS-IPb.title" = "Redplanet";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "XMU-6a-Wgy"; */
+"XMU-6a-Wgy.text" = "Username";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "XRo-Gq-yrh"; */
+"XRo-Gq-yrh.normalTitle" = "likes";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "XRu-Kf-UOz"; */
+"XRu-Kf-UOz.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Invite Friends"; ObjectID = "Xan-nR-AaM"; */
+"Xan-nR-AaM.text" = "Invite Friends";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "Xmr-Bk-PJq"; */
+"Xmr-Bk-PJq.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "Xux-7d-Cvt"; */
+"Xux-7d-Cvt.normalTitle" = "Next";
+
+/* Class = "UILabel"; text = "Loading"; ObjectID = "Y2x-y6-eA1"; */
+"Y2x-y6-eA1.text" = "Loading";
+
+/* Class = "UITextField"; placeholder = "Re-enter new password"; ObjectID = "Y7u-Jv-u0E"; */
+"Y7u-Jv-u0E.placeholder" = "Re-enter new password";
+
+/* Class = "UINavigationItem"; title = "Friend Or Follow"; ObjectID = "YAf-B9-l0f"; */
+"YAf-B9-l0f.title" = "Friend Or Follow";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "YIc-Ew-Vju"; */
+"YIc-Ew-Vju.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Don't have an account? SIGN UP"; ObjectID = "Ywh-Z8-tSI"; */
+"Ywh-Z8-tSI.normalTitle" = "Don't have an account? SIGN UP";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Z8T-c5-aM6"; */
+"Z8T-c5-aM6.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "ZvW-T3-nub"; */
+"ZvW-T3-nub.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "following"; ObjectID = "aSz-qz-jD1"; */
+"aSz-qz-jD1.normalTitle" = "following";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "alp-an-M34"; */
+"alp-an-M34.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "b5d-jV-ihn"; */
+"b5d-jV-ihn.normalTitle" = "likes";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "btB-Vx-pt0"; */
+"btB-Vx-pt0.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "bza-a1-Bmf"; */
+"bza-a1-Bmf.text" = "Loading...";
+
+/* Class = "UINavigationItem"; title = "My Number"; ObjectID = "cth-D5-4tz"; */
+"cth-D5-4tz.title" = "My Number";
+
+/* Class = "UIButton"; normalTitle = "continue"; ObjectID = "czC-DH-ADI"; */
+"czC-DH-ADI.normalTitle" = "continue";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "dXW-kg-FX7"; */
+"dXW-kg-FX7.normalTitle" = "comments";
+
+/* Class = "UITabBarItem"; title = "Chats"; ObjectID = "fR1-eB-hJf"; */
+"fR1-eB-hJf.title" = "Chats";
+
+/* Class = "UIButton"; normalTitle = "continue"; ObjectID = "fu4-Km-b0l"; */
+"fu4-Km-b0l.normalTitle" = "continue";
+
+/* Class = "UIButton"; normalTitle = "Friends"; ObjectID = "fuM-fs-59g"; */
+"fuM-fs-59g.normalTitle" = "Friends";
+
+/* Class = "UITableViewSection"; headerTitle = "Account"; ObjectID = "g0u-zc-n7x"; */
+"g0u-zc-n7x.headerTitle" = "Account";
+
+/* Class = "UITextField"; placeholder = "Create your username (6-15 characters)"; ObjectID = "g6D-b3-jJX"; */
+"g6D-b3-jJX.placeholder" = "Create your username (6-15 characters)";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "gFx-tS-QSJ"; */
+"gFx-tS-QSJ.normalTitle" = "shares";
+
+/* Class = "UITextField"; placeholder = "_ _ _ _ _ _ _ _ _ _ "; ObjectID = "gHe-Lh-wSJ"; */
+"gHe-Lh-wSJ.placeholder" = "_ _ _ _ _ _ _ _ _ _ ";
+
+/* Class = "UIButton"; normalTitle = "friends"; ObjectID = "gdd-JV-erJ"; */
+"gdd-JV-erJ.normalTitle" = "friends";
+
+/* Class = "UIButton"; normalTitle = "Forgot your password?"; ObjectID = "goN-vc-6Yf"; */
+"goN-vc-6Yf.normalTitle" = "Forgot your password?";
+
+/* Class = "UIButton"; normalTitle = "Username"; ObjectID = "hVh-kl-YC3"; */
+"hVh-kl-YC3.normalTitle" = "Username";
+
+/* Class = "UILabel"; text = "Username"; ObjectID = "hiB-77-4P2"; */
+"hiB-77-4P2.text" = "Username";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "hxp-5X-Ywn"; */
+"hxp-5X-Ywn.text" = "Label";
+
+/* Class = "UITextField"; placeholder = "Create your password (at least 8 characters)"; ObjectID = "iGe-of-LvW"; */
+"iGe-of-LvW.placeholder" = "Create your password (at least 8 characters)";
+
+/* Class = "UILabel"; text = "Email"; ObjectID = "iuD-m3-tMu"; */
+"iuD-m3-tMu.text" = "Email";
+
+/* Class = "UIButton"; normalTitle = "follow"; ObjectID = "jk6-S7-kVC"; */
+"jk6-S7-kVC.normalTitle" = "follow";
+
+/* Class = "UIButton"; normalTitle = "followers"; ObjectID = "l8L-Ss-QwI"; */
+"l8L-Ss-QwI.normalTitle" = "followers";
+
+/* Class = "UITextField"; placeholder = "Username"; ObjectID = "m7h-14-Yxo"; */
+"m7h-14-Yxo.placeholder" = "Username";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "m82-mJ-9JC"; */
+"m82-mJ-9JC.normalTitle" = "shares";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "m8r-KU-iZt"; */
+"m8r-KU-iZt.normalTitle" = "likes";
+
+/* Class = "UIButton"; normalTitle = "Loading..."; ObjectID = "nOk-m9-PUO"; */
+"nOk-m9-PUO.normalTitle" = "Loading...";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "nzM-zz-UeT"; */
+"nzM-zz-UeT.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "login"; ObjectID = "o4i-TT-tPh"; */
+"o4i-TT-tPh.normalTitle" = "login";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "o94-au-U59"; */
+"o94-au-U59.text" = "Loading...";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "oCK-hq-xMx"; */
+"oCK-hq-xMx.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "New Password"; ObjectID = "ofy-1e-ghx"; */
+"ofy-1e-ghx.title" = "New Password";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "pUK-ho-1CU"; */
+"pUK-ho-1CU.text" = "Loading...";
+
+/* Class = "UISegmentedControl"; pq6-Jm-NtL.segmentTitles[0] = "FRIENDS"; ObjectID = "pq6-Jm-NtL"; */
+"pq6-Jm-NtL.segmentTitles[0]" = "FRIENDS";
+
+/* Class = "UISegmentedControl"; pq6-Jm-NtL.segmentTitles[1] = "FOLLOW"; ObjectID = "pq6-Jm-NtL"; */
+"pq6-Jm-NtL.segmentTitles[1]" = "FOLLOW";
+
+/* Class = "UISegmentedControl"; pq6-Jm-NtL.segmentTitles[2] = "SENT"; ObjectID = "pq6-Jm-NtL"; */
+"pq6-Jm-NtL.segmentTitles[2]" = "SENT";
+
+/* Class = "UIButton"; normalTitle = "friends"; ObjectID = "pxh-sS-sTF"; */
+"pxh-sS-sTF.normalTitle" = "friends";
+
+/* Class = "UIButton"; normalTitle = "likes"; ObjectID = "pzm-w4-TRo"; */
+"pzm-w4-TRo.normalTitle" = "likes";
+
+/* Class = "UILabel"; text = "13w ago"; ObjectID = "qAW-g0-GDL"; */
+"qAW-g0-GDL.text" = "13w ago";
+
+/* Class = "UIButton"; normalTitle = "Ignore"; ObjectID = "qCn-IN-4C6"; */
+"qCn-IN-4C6.normalTitle" = "Ignore";
+
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "qgD-yo-oEP"; */
+"qgD-yo-oEP.title" = "Settings";
+
+/* Class = "UILabel"; text = "500"; ObjectID = "rNJ-jV-7Am"; */
+"rNJ-jV-7Am.text" = "500";
+
+/* Class = "UILabel"; text = "Terms of Service"; ObjectID = "rbQ-0o-OUB"; */
+"rbQ-0o-OUB.text" = "Terms of Service";
+
+/* Class = "UINavigationItem"; title = "FAQ"; ObjectID = "rrh-Wg-TpJ"; */
+"rrh-Wg-TpJ.title" = "FAQ";
+
+/* Class = "UILabel"; text = "Icons Guideline"; ObjectID = "smq-01-UKr"; */
+"smq-01-UKr.text" = "Icons Guideline";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "srz-Kf-bcx"; */
+"srz-Kf-bcx.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Follow"; ObjectID = "uG2-dd-sDx"; */
+"uG2-dd-sDx.normalTitle" = "Follow";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "uHQ-ZX-fss"; */
+"uHQ-ZX-fss.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Save"; ObjectID = "v1f-TN-3Li"; */
+"v1f-TN-3Li.normalTitle" = "Save";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "vOQ-7A-pb7"; */
+"vOQ-7A-pb7.normalTitle" = "comments";
+
+/* Class = "UIButton"; normalTitle = "shares"; ObjectID = "vot-AD-3oC"; */
+"vot-AD-3oC.normalTitle" = "shares";
+
+/* Class = "UITextView"; text = "Write a comment!"; ObjectID = "yE8-wa-0Rb"; */
+"yE8-wa-0Rb.text" = "Write a comment!";
+
+/* Class = "UITextField"; placeholder = "Current Password"; ObjectID = "yQh-rs-jw4"; */
+"yQh-rs-jw4.placeholder" = "Current Password";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "yTv-3k-VGL"; */
+"yTv-3k-VGL.normalTitle" = "comments";
+
+/* Class = "UIButton"; normalTitle = "comments"; ObjectID = "yeW-nN-ZgF"; */
+"yeW-nN-ZgF.normalTitle" = "comments";
+
+/* Class = "UILabel"; text = "Frequent Asked Questions"; ObjectID = "yx6-bO-xJu"; */
+"yx6-bO-xJu.text" = "Frequent Asked Questions";
+
+/* Class = "UILabel"; text = "Loading..."; ObjectID = "zaG-Xr-CY2"; */
+"zaG-Xr-CY2.text" = "Loading...";
+
+/* Class = "UISegmentedControl"; znJ-Yb-Wet.segmentTitles[0] = "FRIENDS"; ObjectID = "znJ-Yb-Wet"; */
+"znJ-Yb-Wet.segmentTitles[0]" = "FRIENDS";
+
+/* Class = "UISegmentedControl"; znJ-Yb-Wet.segmentTitles[1] = "FOLLOWERS"; ObjectID = "znJ-Yb-Wet"; */
+"znJ-Yb-Wet.segmentTitles[1]" = "FOLLOWERS";
+
+/* Class = "UISegmentedControl"; znJ-Yb-Wet.segmentTitles[2] = "FOLLOWING"; ObjectID = "znJ-Yb-Wet"; */
+"znJ-Yb-Wet.segmentTitles[2]" = "FOLLOWING";
+
+/* Class = "UILabel"; text = "time"; ObjectID = "zzv-la-Dxl"; */
+"zzv-la-Dxl.text" = "time";

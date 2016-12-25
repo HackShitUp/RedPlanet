@@ -384,6 +384,20 @@ class VideoCell: UITableViewCell {
     }
     
     
+    // Function to go to OtherUser
+    func goOther() {
+        
+        // Append user's object
+        otherObject.append(self.userObject!)
+        // Append username
+        otherName.append(self.rpUsername.text!.lowercased())
+        
+        // Push VC
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Add tap for playing video
@@ -391,6 +405,18 @@ class VideoCell: UITableViewCell {
         playTap.numberOfTapsRequired = 1
         self.videoPreview.isUserInteractionEnabled = true
         self.videoPreview.addGestureRecognizer(playTap)
+        
+        // Add user's profile photo tap to go to user's profile
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        userTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(userTap)
+        
+        // Add username tap to go to user's profile
+        let usernameTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        usernameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(usernameTap)
         
         // Handle @username tap
         caption.userHandleLinkTapHandler = { label, handle, range in
