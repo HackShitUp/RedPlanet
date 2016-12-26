@@ -27,6 +27,220 @@ import SVProgressHUD
 var stackObject = [PFObject]()
 
 
+
+
+class ViewController: UIViewController, StackViewDataSource {
+    
+    var stackPageView: StackPageView!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        stackPageView.dataSource = self
+        stackPageView.parentViewController = self
+    }
+    
+    func stackViewNext(_ currentViewController: UIViewController?) -> UIViewController? {
+
+        var viewController: UIViewController?
+        
+        for content in Friends().friendsContent {
+            if content.value(forKey: "contentType") as! String == "tp" {
+                // Append Object
+                textPostObject.append(content)
+                
+                // Present VC
+                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+
+                // Set view controller
+                viewController = textPostVC
+                
+            } else if content.value(forKey: "contentType") as! String == "ph" {
+                
+                // Append Object
+                photoAssetObject.append(content)
+                
+                // Present VC
+                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                
+                // Set view controller
+                viewController = photoVC
+            
+            } else if content.value(forKey: "contentType") as! String == "pp" {
+                
+                // Append user's object
+                otherObject.append(content.value(forKey: "byUser") as! PFUser)
+                // Append user's username
+                otherName.append(content.value(forKey: "username") as! String)
+                
+                // Append object
+                proPicObject.append(content)
+                
+                // Push VC
+                let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+
+                
+                // Set view controller
+                viewController = proPicVC
+            
+            } else if content.value(forKey: "contentType") as! String == "sh" {
+                
+                // Append object
+                sharedObject.append(content)
+                
+                // Push VC
+                let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                
+                // Set view controller
+                viewController = sharedPostVC
+            
+            } else if content.value(forKey: "contentType") as! String == "sp" {
+                
+                // Append object
+                spaceObject.append(content)
+                
+                // Append otherObject
+                otherObject.append(content.value(forKey: "toUser") as! PFUser)
+                
+                // Append otherName
+                otherName.append(content.value(forKey: "toUsername") as! String)
+                
+                // Push VC
+                let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                
+                // Set view controller
+                viewController = spacePostVC
+                
+            } else if content.value(forKey: "contentType") as! String == "itm" {
+                
+                // Append content object
+                itmObject.append(content)
+                
+                // Push VC
+                let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                
+                // Set view controller
+                viewController = itmVC
+                
+            } else if content.value(forKey: "contentType") as! String == "vi" {
+                
+                // Append content object
+                videoObject.append(content)
+                
+                // Push VC
+                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                
+                // Set view controller
+                viewController = videoVC
+            
+            }
+        }
+        
+        return viewController!
+    }
+    
+    func stackViewPrev(_ currentViewController: UIViewController?) -> UIViewController? {
+        var viewController: UIViewController?
+        
+        for content in Friends().friendsContent {
+            if content.value(forKey: "contentType") as! String == "tp" {
+                // Append Object
+                textPostObject.append(content)
+                
+                // Present VC
+                let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                
+                // Set view controller
+                viewController = textPostVC
+                
+            } else if content.value(forKey: "contentType") as! String == "ph" {
+                
+                // Append Object
+                photoAssetObject.append(content)
+                
+                // Present VC
+                let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                
+                // Set view controller
+                viewController = photoVC
+                
+            } else if content.value(forKey: "contentType") as! String == "pp" {
+                
+                // Append user's object
+                otherObject.append(content.value(forKey: "byUser") as! PFUser)
+                // Append user's username
+                otherName.append(content.value(forKey: "username") as! String)
+                
+                // Append object
+                proPicObject.append(content)
+                
+                // Push VC
+                let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                
+                
+                // Set view controller
+                viewController = proPicVC
+                
+            } else if content.value(forKey: "contentType") as! String == "sh" {
+                
+                // Append object
+                sharedObject.append(content)
+                
+                // Push VC
+                let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                
+                // Set view controller
+                viewController = sharedPostVC
+                
+            } else if content.value(forKey: "contentType") as! String == "sp" {
+                
+                // Append object
+                spaceObject.append(content)
+                
+                // Append otherObject
+                otherObject.append(content.value(forKey: "toUser") as! PFUser)
+                
+                // Append otherName
+                otherName.append(content.value(forKey: "toUsername") as! String)
+                
+                // Push VC
+                let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                
+                // Set view controller
+                viewController = spacePostVC
+                
+            } else if content.value(forKey: "contentType") as! String == "itm" {
+                
+                // Append content object
+                itmObject.append(content)
+                
+                // Push VC
+                let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                
+                // Set view controller
+                viewController = itmVC
+                
+            } else if content.value(forKey: "contentType") as! String == "vi" {
+                
+                // Append content object
+                videoObject.append(content)
+                
+                // Push VC
+                let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                
+                // Set view controller
+                viewController = videoVC
+                
+            }
+        }
+        
+        return viewController!
+    }
+    
+}
+
+
+
+
 class StackViewController: UIViewController {
     
     // Variable to hold text for the post

@@ -124,6 +124,7 @@
 		7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D391DD6B38F00B3471F /* SharedPost.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EBA86521E10D12900FE5D8E /* EZSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */; };
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
 		7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
@@ -391,6 +392,7 @@
 		7EA87D391DD6B38F00B3471F /* SharedPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPost.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EZSwipeController.swift; sourceTree = "<group>"; };
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
 		7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharesCell.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
@@ -1189,6 +1191,7 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
+				7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */,
 				7E10DFCB1E0F6E15001336BA /* StackPageView.swift */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
@@ -1904,6 +1907,7 @@
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
+				7EBA86521E10D12900FE5D8E /* EZSwipeController.swift in Sources */,
 				7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */,
 				7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,

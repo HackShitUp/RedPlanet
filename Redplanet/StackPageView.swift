@@ -16,7 +16,7 @@ protocol StackViewDataSource{
 
 class StackPageView:UIView {
     //MustInit!!
-    var parentViewController:UIViewController!
+    var parentViewController: UIViewController!
     
     var prevContainer:PageView?
     var currentContainer = PageView()
@@ -53,6 +53,7 @@ class StackPageView:UIView {
     func panAction(_ gesture:UIPanGestureRecognizer){
         let p = gesture.translation(in: self)
         if gesture.state == .began {
+            print("FIRED***ONE")
             if let prev = dataSource?.stackViewPrev(currentContainer.viewController) {
                 parentViewController.addChildViewController(prev)
                 prevContainer = PageView()
@@ -71,6 +72,7 @@ class StackPageView:UIView {
                 next.didMove(toParentViewController: parentViewController)
             }
         }else if gesture.state == .changed {
+            print("FIRED***TWO")
             if p.y < 0 {
                 currentContainer.center.y = bounds.height/2 + p.y
                 prevContainer?.center.y = -bounds.height/2
@@ -84,6 +86,7 @@ class StackPageView:UIView {
                 }
             }
         }else if gesture.state == .ended {
+            print("FIRED***THREE")
             UIView.animate(withDuration: 0.5, delay: 0,
                 options: [.curveEaseOut], animations: { () -> Void in
                     

@@ -157,11 +157,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 
                                             } else {
                                                 // Set visible banner
-                                                let banner = Banner(title: "\(fullMessage!)",
-                                                    subtitle: "",
+                                                let banner = Banner(title: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String):",
+                                                    subtitle: "\(fullMessage!)",
                                                     image: UIImage(named: "RedplanetLogo"),
-                                                    backgroundColor: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                                                    backgroundColor: UIColor.white
                                                 )
+                                                banner.adjustsStatusBarStyle = true
+                                                banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                                banner.titleLabel.textColor = UIColor.black
+                                                banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                                banner.detailLabel.textColor = UIColor.black
                                                 banner.dismissesOnTap = true
                                                 banner.show(duration: 3.0)
                                             }
