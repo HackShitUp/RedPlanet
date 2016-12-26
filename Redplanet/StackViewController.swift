@@ -28,7 +28,71 @@ var stackObject = [PFObject]()
 
 
 
+/*
+class MySwipeVC: EZSwipeController, EZSwipeControllerDataSource {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.yellow
+        print("LOADED")
+    }
+    
+    override func setupView() {
+        datasource = self
+    }
+    
+    
+    // Array to hold view controllers
+    
+    func viewControllerData() -> [UIViewController] {
+        let redVC = UIViewController()
+        redVC.view.backgroundColor = UIColor.red
+        
+        let blueVC = UIViewController()
+        blueVC.view.backgroundColor = UIColor.blue
+        
+        let greenVC = UIViewController()
+        greenVC.view.backgroundColor = UIColor.green
+        
+        return [redVC, blueVC, greenVC]
+    }
+    
+    
+    func indexOfStartingPage() -> Int {
+        return 0 // EZSwipeController starts from 2nd, green page
+    }
+}
+*/
 
+
+/*
+extension MySwipeVC: EZSwipeControllerDataSource {
+    
+    // Array to hold view controllers
+    
+    func viewControllerData() -> [UIViewController] {
+        let redVC = UIViewController()
+        redVC.view.backgroundColor = UIColor.red
+        
+        let blueVC = UIViewController()
+        blueVC.view.backgroundColor = UIColor.blue
+        
+        let greenVC = UIViewController()
+        greenVC.view.backgroundColor = UIColor.green
+        
+        return [redVC, blueVC, greenVC]
+    }
+    
+    
+    func indexOfStartingPage() -> Int {
+        return 0 // EZSwipeController starts from 2nd, green page
+    }
+}
+*/
+
+
+
+/*
 class ViewController: UIViewController, StackViewDataSource {
     
     var stackPageView: StackPageView!
@@ -237,11 +301,42 @@ class ViewController: UIViewController, StackViewDataSource {
     }
     
 }
+*/
 
 
 
 
-class StackViewController: UIViewController {
+class StackViewController: EZSwipeController, EZSwipeControllerDataSource {
+    
+    
+
+    override func setupView() {
+        datasource = self
+    }
+    
+    
+    // Array to hold view controllers
+    
+    func viewControllerData() -> [UIViewController] {
+        let redVC = UIViewController()
+        redVC.view.backgroundColor = UIColor.red
+        
+        let blueVC = UIViewController()
+        blueVC.view.backgroundColor = UIColor.blue
+        
+        let greenVC = UIViewController()
+        greenVC.view.backgroundColor = UIColor.green
+        
+        return [redVC, blueVC, greenVC]
+    }
+    
+    
+    func indexOfStartingPage() -> Int {
+        return 0 // EZSwipeController starts from 2nd, green page
+    }
+    
+    
+    
     
     // Variable to hold text for the post
     var layoutText: String?
@@ -338,6 +433,9 @@ class StackViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.yellow
+        print("LOADED")
         
         // (I) Fetch profile photo
         if let user = stackObject.last!.value(forKey: "byUser") as? PFUser {

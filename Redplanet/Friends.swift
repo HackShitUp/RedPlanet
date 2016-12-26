@@ -690,11 +690,17 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 print(error?.localizedDescription as Any)
             }
         })
-        
+ 
         
 //        stackObject.append(self.friendsContent[indexPath.row])
 //        let stackVC = self.storyboard?.instantiateViewController(withIdentifier: "stackVC") as! StackViewController
 //        self.parentNavigator.pushViewController(stackVC, animated: true)
+        
+        
+//        stackObject.append(self.friendsContent[indexPath.row])
+//        let stackVC = self.storyboard?.instantiateViewController(withIdentifier: "stackVC") as! StackViewController
+//        self.parentNavigator.present(stackVC, animated: true, completion: nil)
+
 
     } // end didSelectRowAt
     
