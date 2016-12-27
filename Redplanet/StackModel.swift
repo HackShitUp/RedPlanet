@@ -25,13 +25,7 @@ var postControllers = [UIViewController]()
 var returnIndex: Int? = 0
 
 class StackModel: EZSwipeController, UINavigationControllerDelegate {
-    
-    // Pop vc
-    func leave() {
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    
+
     
     override func setupView() {
         datasource = self
@@ -45,11 +39,24 @@ class StackModel: EZSwipeController, UINavigationControllerDelegate {
         // Set background color
         self.view.backgroundColor = UIColor.white
         
-        // Double tap
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(leave))
-        doubleTap.numberOfTapsRequired = 2
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(doubleTap)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide tabBarController's tabBar
+        self.navigationController!.tabBarController!.tabBar.isHidden = true
+        
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        // Hide tabBarController's tabBar
+        self.navigationController!.tabBarController!.tabBar.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,38 +73,28 @@ class StackModel: EZSwipeController, UINavigationControllerDelegate {
 extension StackModel: EZSwipeControllerDataSource {
     
     
-//    func navigationBarDataForPageIndex(index: Int) -> UINavigationBar {
-//        
-//        var navigator: UINavigationBar!
-//        
-//        for i in postControllers {
-//            
-//            i.navigationController!.setNavigationBarHidden(true, animated: false)
-//            navigator = i.navigationController!.navigationBar
-//        }
-//        
-//        
-//        return navigator
-//    }
-//    
-    
-    
-    func indexOfStartingPage() -> Int {
-        print("returning: \(returnIndex!)")
-        return returnIndex!
+    // UINavigationBar DataSource
+    func navigationBarDataForPageIndex(_ index: Int) -> UINavigationBar {
+
+        return self.navigationController!.navigationBar
     }
     
     
     
+    func indexOfStartingPage() -> Int {
+        
+        return returnIndex!
+    }
+
     
     
     
     func viewControllerData() -> [UIViewController] {
         
-    
-        
         // Loop through objects to determine which view controller to show
         for postObject in stackObjects {
+            
+            print("***STACKOBJECTS:***\(stackObjects)\n****")
             
             if postObject.value(forKey: "contentType") as! String == "tp" {
                 // I) TEXT POST
@@ -132,6 +129,8 @@ extension StackModel: EZSwipeControllerDataSource {
             } else if postObject.value(forKey: "contentType") as! String == "sp" {
                 // V) SPACE POST
                 spaceObject.append(postObject)
+                otherObject.append(postObject.value(forKey: "toUser") as! PFUser)
+                otherName.append(postObject.value(forKey: "toUsername") as! String)
                 let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                 // Append VC
                 postControllers.append(spacePostVC)

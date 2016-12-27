@@ -143,7 +143,6 @@ open class EZSwipeController: UIViewController {
 
     private func setupViewControllers() {
         stackPageVC = [UIViewController]()
-//        stackPageVC = [UITableViewController]()
         stackVC.enumerated().forEach { index, viewController in
             let pageViewController = UIViewController()
             if !navigationBarShouldBeOnBottom && !navigationBarShouldNotExist {
@@ -188,7 +187,9 @@ open class EZSwipeController: UIViewController {
     }
     
     public func setFrameForCurrentOrientation(){
-        pageViewController.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
+        pageViewController.view.frame = CGRect(x: 0, y: 20, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
     }
     
     override open func loadView() {
@@ -199,6 +200,7 @@ open class EZSwipeController: UIViewController {
             print("Problem: EZSwipeController needs ViewController Data, please implement EZSwipeControllerDataSource")
             return
         }
+        
         setupNavigationBar()
         setupViewControllers()
         setupPageViewController()

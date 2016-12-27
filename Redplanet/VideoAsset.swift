@@ -158,7 +158,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Video"
+            self.navigationController?.navigationBar.topItem?.title = "Video"
         }
     }
     

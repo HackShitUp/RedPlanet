@@ -1122,6 +1122,7 @@
 			children = (
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
+				7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */,
 				7E03B1BD1E12349100D13903 /* StackModel.swift */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
@@ -1191,7 +1192,6 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
-				7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */,
 				7E10DFCB1E0F6E15001336BA /* StackPageView.swift */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,

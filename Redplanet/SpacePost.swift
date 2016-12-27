@@ -161,7 +161,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(otherName.last!.uppercased())'s Space"
+            self.navigationController?.navigationBar.topItem?.title = "\(otherName.last!.uppercased())'s Space"
         }
     }
     

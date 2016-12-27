@@ -144,7 +144,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Profile Photo"
+            self.navigationController?.navigationBar.topItem?.title = "Profile Photo"
         }
     }
     
