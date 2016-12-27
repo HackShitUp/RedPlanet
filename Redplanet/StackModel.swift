@@ -35,6 +35,7 @@ class StackModel: EZSwipeController, UINavigationControllerDelegate {
     
     override func setupView() {
         datasource = self
+        navigationBarShouldNotExist = false
     }
     
 
@@ -81,10 +82,10 @@ extension StackModel: EZSwipeControllerDataSource {
 //    
     
     
-//    func indexOfStartingPage() -> Int {
-//        print("returning: \(returnIndex!)")
-//        return returnIndex!
-//    }
+    func indexOfStartingPage() -> Int {
+        print("returning: \(returnIndex!)")
+        return returnIndex!
+    }
     
     
     
@@ -115,6 +116,8 @@ extension StackModel: EZSwipeControllerDataSource {
             } else if postObject.value(forKey: "contentType") as! String == "pp" {
                 // III) PROFILE PHOTO
                 proPicObject.append(postObject)
+                otherObject.append(postObject.value(forKey: "byUser") as! PFUser)
+                otherName.append(postObject.value(forKey: "username") as! String)
                 let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                 // Append VC
                 postControllers.append(proPicVC)
@@ -152,14 +155,6 @@ extension StackModel: EZSwipeControllerDataSource {
         }
         
         
-        
-//        let redVC = UIViewController()
-//        redVC.view.backgroundColor = UIColor.red
-//        let blueVC = UIViewController()
-//        blueVC.view.backgroundColor = UIColor.blue
-//        let greenVC = UIViewController()
-//        greenVC.view.backgroundColor = UIColor.green
-//        return [redVC, blueVC, greenVC]
         
         print("***VIEW CONTROLLERS:***\n\(postControllers)\n\n")        
         return postControllers

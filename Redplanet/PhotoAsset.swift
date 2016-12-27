@@ -234,7 +234,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+//        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {
