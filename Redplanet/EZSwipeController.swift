@@ -143,6 +143,7 @@ open class EZSwipeController: UIViewController {
 
     private func setupViewControllers() {
         stackPageVC = [UIViewController]()
+//        stackPageVC = [UITableViewController]()
         stackVC.enumerated().forEach { index, viewController in
             let pageViewController = UIViewController()
             if !navigationBarShouldBeOnBottom && !navigationBarShouldNotExist {
@@ -161,7 +162,7 @@ open class EZSwipeController: UIViewController {
     }
 
     private func setupPageViewController() {
-        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         pageViewController.dataSource = self
         pageViewController.delegate = self
         pageViewController.setViewControllers([stackPageVC[stackStartLocation]], direction: .forward, animated: true, completion: nil)
