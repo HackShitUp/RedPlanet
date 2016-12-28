@@ -591,112 +591,193 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // Save to Views
-//        let view = PFObject(className: "Views")
-//        view["byUser"] = PFUser.current()!
-//        view["username"] = PFUser.current()!.username!
-//        view["forObjectId"] = friendsContent[indexPath.row].objectId!
-//        view.saveInBackground(block: {
-//            (success: Bool, error: Error?) in
-//            if success {
-//                
-//                // TEXT POST
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-//                    
-//                    // Append Object
-//                    textPostObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Present VC
-//                    let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-//                    self.parentNavigator.pushViewController(textPostVC, animated: true)
-//                }
-//                
-//                // PHOTO
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-//                    
-//                    // Append Object
-//                    photoAssetObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Present VC
-//                    let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-//                    self.parentNavigator.pushViewController(photoVC, animated: true)
-//                }
-//                
-//                // SHARED
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-//                    
-//                    // Append object
-//                    sharedObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Push VC
-//                    let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-//                    self.parentNavigator.pushViewController(sharedPostVC, animated: true)
-//                }
-//                
-//                // PROFILE PHOTO
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
-//                    // Append user's object
-//                    otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
-//                    // Append user's username
-//                    otherName.append(self.friendsContent[indexPath.row].value(forKey: "username") as! String)
-//                    
-//                    // Append object
-//                    proPicObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Push VC
-//                    let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-//                    self.parentNavigator.pushViewController(proPicVC, animated: true)
-//                    
-//                }
-//                
-//                
-//                // SPACE POST
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sp" {
-//                    // Append object
-//                    spaceObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Append otherObject
-//                    otherObject.append(self.friendsContent[indexPath.row].value(forKey: "toUser") as! PFUser)
-//                    
-//                    // Append otherName
-//                    otherName.append(self.friendsContent[indexPath.row].value(forKey: "toUsername") as! String)
-//                    
-//                    // Push VC
-//                    let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-//                    self.parentNavigator.pushViewController(spacePostVC, animated: true)
-//                }
-//                
-//                // ITM
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-//                    // Append content object
-//                    itmObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Push VC
-//                    let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-//                    self.parentNavigator.pushViewController(itmVC, animated: true)
-//                }
-//                
-//                // VIDEO
-//                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
-//                    // Append content object
-//                    videoObject.append(self.friendsContent[indexPath.row])
-//                    
-//                    // Push VC
-//                    let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-//                    self.parentNavigator.pushViewController(videoVC, animated: true)
-//                }
-//                
-//                
-//            } else {
-//                print(error?.localizedDescription as Any)
-//            }
-//        })
+        let view = PFObject(className: "Views")
+        view["byUser"] = PFUser.current()!
+        view["username"] = PFUser.current()!.username!
+        view["forObjectId"] = friendsContent[indexPath.row].objectId!
+        view.saveInBackground(block: {
+            (success: Bool, error: Error?) in
+            if success {
+                
+                // TEXT POST
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+                    
+                    // Append Object
+                    textPostObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Present VC
+                    let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+                    self.parentNavigator.pushViewController(textPostVC, animated: true)
+                }
+                
+                // PHOTO
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+                    
+                    // Append Object
+                    photoAssetObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Present VC
+                    let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+                    self.parentNavigator.pushViewController(photoVC, animated: true)
+                }
+                
+                // SHARED
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+                    
+                    // Append object
+                    sharedObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Push VC
+                    let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+                    self.parentNavigator.pushViewController(sharedPostVC, animated: true)
+                }
+                
+                // PROFILE PHOTO
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+                    // Append user's object
+                    otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
+                    // Append user's username
+                    otherName.append(self.friendsContent[indexPath.row].value(forKey: "username") as! String)
+                    
+                    // Append object
+                    proPicObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Push VC
+                    let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+                    self.parentNavigator.pushViewController(proPicVC, animated: true)
+                    
+                }
+                
+                
+                // SPACE POST
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+                    // Append object
+                    spaceObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Append otherObject
+                    otherObject.append(self.friendsContent[indexPath.row].value(forKey: "toUser") as! PFUser)
+                    
+                    // Append otherName
+                    otherName.append(self.friendsContent[indexPath.row].value(forKey: "toUsername") as! String)
+                    
+                    // Push VC
+                    let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+                    self.parentNavigator.pushViewController(spacePostVC, animated: true)
+                }
+                
+                // ITM
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+                    // Append content object
+                    itmObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Push VC
+                    let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                    self.parentNavigator.pushViewController(itmVC, animated: true)
+                }
+                
+                // VIDEO
+                if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+                    // Append content object
+                    videoObject.append(self.friendsContent[indexPath.row])
+                    
+                    // Push VC
+                    let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+                    self.parentNavigator.pushViewController(videoVC, animated: true)
+                }
 
-        print("***POSTS:\n\(self.friendsContent)\n***")
-        
-        stackObjects.append(contentsOf: self.friendsContent)
-        returnIndex = indexPath.row
-        let stackVC = self.storyboard?.instantiateViewController(withIdentifier: "stackVC") as! StackModel
-        self.parentNavigator.pushViewController(stackVC, animated: true)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+
+//        print("***POSTS:\n\(self.friendsContent)\n***")
+//        
+//        stackObjects.append(contentsOf: self.friendsContent)
+//        returnIndex = indexPath.row
+//        // Clear array
+////        postControllers.removeAll(keepingCapacity: false)
+//        
+//        
+//        
+//        for post in self.friendsContent {
+//            print("***POST:\n\(post)\n***\n")
+//        }
+//        
+//        if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+//            
+//            // Append Object
+//            textPostObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Present VC
+//            let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+//            postControllers.append(textPostVC)
+//            
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+//            
+//            // Append Object
+//            photoAssetObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Present VC
+//            let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+//            postControllers.append(photoVC)
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+//            
+//            // Append object
+//            sharedObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Push VC
+//            let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+//            postControllers.append(sharedPostVC)
+//            
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+//            // Append user's object
+//            otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
+//            // Append user's username
+//            otherName.append(self.friendsContent[indexPath.row].value(forKey: "username") as! String)
+//            
+//            // Append object
+//            proPicObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Push VC
+//            let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+//            postControllers.append(proPicVC)
+//            
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+//            // Append object
+//            spaceObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Append otherObject
+//            otherObject.append(self.friendsContent[indexPath.row].value(forKey: "toUser") as! PFUser)
+//            
+//            // Append otherName
+//            otherName.append(self.friendsContent[indexPath.row].value(forKey: "toUsername") as! String)
+//            
+//            // Push VC
+//            let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+//            postControllers.append(spacePostVC)
+//            
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+//            // Append content object
+//            itmObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Push VC
+//            let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+//            postControllers.append(itmVC)
+//            
+//        } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
+//            // Append content object
+//            videoObject.append(self.friendsContent[indexPath.row])
+//            
+//            // Push VC
+//            let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+//            postControllers.append(videoVC)
+//        }
+//
+//        
+//        
+//        let stackVC = self.storyboard?.instantiateViewController(withIdentifier: "stackVC") as! StackModel
+//        self.parentNavigator.pushViewController(stackVC, animated: true)
 
 
     } // end didSelectRowAt

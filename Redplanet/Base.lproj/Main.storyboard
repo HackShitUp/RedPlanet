@@ -3767,6 +3767,49 @@
             </objects>
             <point key="canvasLocation" x="2988" y="-3083"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="Ujb-3X-v04">
+            <objects>
+                <tableViewController id="oM9-fg-rjg" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="FHc-Lo-rlD">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="575" id="NX6-BW-4pt">
+                                <rect key="frame" x="0.0" y="28" width="375" height="575"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NX6-BW-4pt" id="yKN-I0-cUx">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lfF-1D-Lx2">
+                                            <rect key="frame" x="8" y="8" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="oM9-fg-rjg" id="lWx-TF-xzd"/>
+                            <outlet property="delegate" destination="oM9-fg-rjg" id="UTs-gs-fs8"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Lqc-Tf-UxH">
+                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="tmd-Xv-jcT">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="iQQ-ul-O4X">
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ugs-15-H4E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3861.5" y="-3914.5"/>
+        </scene>
         <!--Stack Model-->
         <scene sceneID="zOO-a6-31g">
             <objects>
@@ -3792,7 +3835,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ybn-0I-RaA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3862" y="-3914"/>
+            <point key="canvasLocation" x="4853.5" y="-3913.5"/>
         </scene>
         <!--Space Post-->
         <scene sceneID="DB3-Os-hxL">

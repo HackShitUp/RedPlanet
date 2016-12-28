@@ -860,6 +860,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        // Hide navigationBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
