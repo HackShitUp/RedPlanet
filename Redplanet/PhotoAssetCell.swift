@@ -74,7 +74,7 @@ class PhotoAssetCell: UITableViewCell {
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share To",
                                       message: nil,
-                                      style: .actionSheet)
+                                      style: .alert)
         
         // Design content view
         options.configContentView = { view in
@@ -181,7 +181,7 @@ class PhotoAssetCell: UITableViewCell {
         })
         
         let cancel = AlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
         
         options.addAction(publicShare)

@@ -58,13 +58,13 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         
         if pickerMedia == kUTTypeImage {
             print("Photo selected")
-            // Selected image
-            let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            // Edited image
+            if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
+                // Append PHAsset
+                shareImageAssets.append(image)
+            }
             
             mediaType = "photo"
-            
-            // Append PHAsset
-            shareImageAssets.append(image)
             
             // Dismiss
             self.imagePicker.dismiss(animated: true, completion: nil)
@@ -78,8 +78,9 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
             print("Video selected")
             
             // Selected image
-            let video = info[UIImagePickerControllerMediaURL] as! URL
-            instanceVideoData = video
+            if let video = info[UIImagePickerControllerMediaURL] as? URL {
+                instanceVideoData = video
+            }
             
             mediaType = "video"
             

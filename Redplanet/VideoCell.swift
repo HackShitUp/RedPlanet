@@ -245,7 +245,7 @@ class VideoCell: UITableViewCell {
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share To",
                                         message: nil,
-                                        style: .actionSheet)
+                                        style: .alert)
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
@@ -360,7 +360,7 @@ class VideoCell: UITableViewCell {
         })
         
         let cancel = AlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
         
         options.addAction(publicShare)

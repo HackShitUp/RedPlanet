@@ -70,7 +70,7 @@ class TextPostCell: UITableViewCell {
         
         let options = AlertController(title: "Share To",
                                         message: nil,
-                                        style: .actionSheet)
+                                        style: .alert)
         
         // Design content view
         options.configContentView = { view in
@@ -181,8 +181,9 @@ class TextPostCell: UITableViewCell {
         })
         
         let cancel = AlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
+        
         
         options.addAction(publicShare)
         options.addAction(privateShare)

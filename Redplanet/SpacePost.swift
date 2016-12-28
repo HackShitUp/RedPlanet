@@ -879,7 +879,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -90 {
+        if self.tableView!.contentOffset.y < -85 {
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
         }

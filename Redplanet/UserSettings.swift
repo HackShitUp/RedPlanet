@@ -114,6 +114,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             
             
             alert.addAction(okAction)
+            alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
         

@@ -57,7 +57,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // MARK: - SimpleAlert
         let options = AlertController(title: "Options",
                                       message: nil,
-                                      style: .actionSheet)
+                                      style: .alert)
         
         // Design content view
         options.configContentView = { view in
@@ -689,7 +689,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         })
         
         let cancel = AlertAction(title: "Cancel",
-                                   style: .cancel,
+                                   style: .destructive,
                                    handler: nil)
         
         options.addAction(publicShare)

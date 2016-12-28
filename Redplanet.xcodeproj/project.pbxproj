@@ -692,6 +692,7 @@
 		7E5A98051DDD2CFA006DA985 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
 				7EDFB63A1DDBDC71004AE090 /* FAQ */,
@@ -1288,7 +1289,6 @@
 		7EC5D19F1DB3566D00437219 /* MYPROFILE */ = {
 			isa = PBXGroup;
 			children = (
-				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7EC05B181DB5FABF0039B357 /* MyProfile */,
 				7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */,
 				7E240D151DE9F00300FE2A26 /* Likes_Shares */,

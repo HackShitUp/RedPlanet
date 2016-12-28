@@ -690,19 +690,15 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                     object.deleteInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            
-                                                            // Query Chats again
-                                                            self.queryChats()
-                                                            
+                                                            print("Successfully deleted chat: \(object)")
                                                         } else {
                                                             print(error?.localizedDescription as Any)
-                                                            
-                                                            // Query Chats again
-                                                            self.queryChats()
                                                         }
                                                     })
                                                 }
                                                 
+                                                // Query Chats again
+                                                self.queryChats()
                                                 
                                             } else {
                                                 print(error?.localizedDescription as Any)

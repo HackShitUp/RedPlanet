@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import SimpleAlert
 import Mixpanel
 
 // Array to hold profile photo's caption
@@ -157,13 +158,30 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 SVProgressHUD.dismiss()
                                 
                                 // Present alert
-                                let alert = UIAlertController(title: "Successfully Saved Changes",
+                                let alert = AlertController(title: "Successfully Saved Changes",
                                                               message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                              preferredStyle: .alert)
+                                                              style: .alert)
                                 
-                                let ok = UIAlertAction(title: "ok",
+                                // Design content view
+                                alert.configContentView = { view in
+                                    if let view = view as? AlertContentView {
+                                        view.backgroundColor = UIColor.white
+                                        view.titleLabel.textColor = UIColor.black
+                                        view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                                        view.messageLabel.textColor = UIColor.black
+                                        view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                        view.textBackgroundView.layer.cornerRadius = 3.00
+                                        view.textBackgroundView.clipsToBounds = true
+                                    }
+                                }
+                                // Design corner radius
+                                alert.configContainerCornerRadius = {
+                                    return 14.00
+                                }
+                                
+                                let ok = AlertAction(title: "ok",
                                                        style: .default,
-                                                       handler: { (alertAction: UIAlertAction!) in
+                                                       handler: { (AlertAction) in
                                                         
                                                         
                                                         // Re-enable backButton

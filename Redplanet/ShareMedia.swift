@@ -320,7 +320,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         self.mediaAsset.addGestureRecognizer(zoomTap)
         
         // (6) Add tap to save photo
-        let saveTap = UITapGestureRecognizer(target: self, action: #selector(savePhoto))
+        let saveTap = UITapGestureRecognizer(target: self, action: #selector(saveMedia))
         saveTap.numberOfTapsRequired = 1
         self.saveButton.isUserInteractionEnabled = true
         self.saveButton.addGestureRecognizer(saveTap)
@@ -330,6 +330,11 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
     }
     
@@ -347,6 +352,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         
         // Hide tabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+//        // Hide save button
+//        if mediaType == "photo" {
+//            self.saveButton.isHidden = false
+//        } else {
+//            self.saveButton.isHidden = true
+//        }
     }
     
     
@@ -360,18 +372,77 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     
     // Function to save photo
-    func savePhoto() {
-        UIView.animate(withDuration: 0.5) { () -> Void in
-            
-            self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-        }
+    func saveMedia() {
         
-        UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+        
+        if mediaType == "photo" {
             
-            self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+            UIView.animate(withDuration: 0.5) { () -> Void in
+                
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            }
+            
+            UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+                
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
             }, completion: nil)
-        
-        UIImageWriteToSavedPhotosAlbum(self.mediaAsset.image!, self, nil, nil)
+            
+            UIImageWriteToSavedPhotosAlbum(self.mediaAsset.image!, self, nil, nil)
+
+        } else {
+            
+            if shareMediaAsset.isEmpty {
+                // Save video URL
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: instanceVideoData!)
+                }) { saved, error in
+                    if saved {
+                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                }
+
+
+            } else {
+                // PHASSET
+                // Set video options
+                let videoOptions = PHVideoRequestOptions()
+                videoOptions.deliveryMode = .automatic
+                videoOptions.isNetworkAccessAllowed = true
+                videoOptions.version = .current
+                PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
+                                                       options: videoOptions,
+                                                       resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
+
+                                                        
+                                                        DispatchQueue.main.async(execute: {
+                                                            
+                                                            /* Did we get the URL to the video? */
+                                                            if let asset = asset as? AVURLAsset{
+                                                                
+                                                                
+                                                                PHPhotoLibrary.shared().performChanges({
+                                                                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: asset.url)
+                                                                }) { saved, error in
+                                                                    if saved {
+                                                                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                                                                    } else {
+                                                                        print(error?.localizedDescription as Any)
+                                                                    }
+                                                                }
+                                                                
+                                     
+                                                            } else {
+                                                                // Did not get the AVAssetUrl
+                                                                print("This is not a URL asset. Cannot play")
+                                                            }
+                                                            
+                                                        })
+                })
+            }
+
+        }
     }
     
     
