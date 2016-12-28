@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 
-
 class UserSettings: UITableViewController, UINavigationControllerDelegate {
 
     @IBOutlet weak var privacy: UISwitch!

@@ -60,8 +60,6 @@
 		7E7E38C11DD576D100DEC27B /* BestFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C01DD576D100DEC27B /* BestFriendsCell.swift */; };
 		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };
 		7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C51DD595E800DEC27B /* TOSCell.swift */; };
-		7E81BC081E13434F00D9BC1D /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81BC071E13434F00D9BC1D /* Timeline.swift */; };
-		7E81BC0A1E13436000D9BC1D /* TimelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E81BC091E13436000D9BC1D /* TimelineCell.swift */; };
 		7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */; };
 		7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */; };
 		7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E989A251DE4F17E000215A1 /* NewPassword.swift */; };
@@ -284,8 +282,6 @@
 		7E7E38C01DD576D100DEC27B /* BestFriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestFriendsCell.swift; sourceTree = "<group>"; };
 		7E7E38C31DD5951700DEC27B /* TermsOfService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		7E7E38C51DD595E800DEC27B /* TOSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TOSCell.swift; sourceTree = "<group>"; };
-		7E81BC071E13434F00D9BC1D /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
-		7E81BC091E13436000D9BC1D /* TimelineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineCell.swift; sourceTree = "<group>"; };
 		7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPostCell.swift; sourceTree = "<group>"; };
 		7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMediaCell.swift; sourceTree = "<group>"; };
 		7E989A251DE4F17E000215A1 /* NewPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPassword.swift; sourceTree = "<group>"; };
@@ -769,15 +765,6 @@
 			name = TermsOfService;
 			sourceTree = "<group>";
 		};
-		7E81BC0B1E1344D100D9BC1D /* Timeline */ = {
-			isa = PBXGroup;
-			children = (
-				7E81BC071E13434F00D9BC1D /* Timeline.swift */,
-				7E81BC091E13436000D9BC1D /* TimelineCell.swift */,
-			);
-			name = Timeline;
-			sourceTree = "<group>";
-		};
 		7E98E8CB1DB75057001B7329 /* CLImageEditor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1137,7 +1124,6 @@
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
 				7EBA86511E10D12900FE5D8E /* EZSwipeController.swift */,
 				7E03B1BD1E12349100D13903 /* StackModel.swift */,
-				7E81BC0B1E1344D100D9BC1D /* Timeline */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
 			);
@@ -1796,7 +1782,6 @@
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7E55DEB51DFDD38B0002210B /* BestFriends.swift in Sources */,
-				7E81BC081E13434F00D9BC1D /* Timeline.swift in Sources */,
 				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
 				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
 				7ED0DFA11DD19BC100BC81A1 /* RPIconsGuideline.swift in Sources */,
@@ -1902,7 +1887,6 @@
 				7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */,
 				7E4CFF971DB4394A0087454E /* TextPostCell.swift in Sources */,
 				7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */,
-				7E81BC0A1E13436000D9BC1D /* TimelineCell.swift in Sources */,
 				7E98E95A1DB75057001B7329 /* CLSplashTool.m in Sources */,
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,
 				7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */,

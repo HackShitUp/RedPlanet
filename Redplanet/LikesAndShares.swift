@@ -354,6 +354,21 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                         cell.iconicPreview.image = UIImage(named: "SpacePost")
                     }
                     
+                    // (2E) Shared Posts
+                    if object!["contentType"] as! String == "sh" {
+                        // Make iconicPreview cornered square
+                        cell.iconicPreview.layer.cornerRadius = 0.0
+                        cell.iconicPreview.clipsToBounds = true
+                        
+                        // Show iconicPreview
+                        cell.iconicPreview.isHidden = false
+                        
+                        // Set background color for iconicPreview
+                        cell.iconicPreview.backgroundColor = UIColor.clear
+                        // and set icon for indication
+                        cell.iconicPreview.image = UIImage(named: "SharedPostIcon")
+                    }
+                    
                     // (2F) Moments
                     if object!["contentType"] as! String == "itm" {
                         cell.iconicPreview.layer.cornerRadius = 0

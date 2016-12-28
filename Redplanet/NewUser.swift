@@ -47,6 +47,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 let alert = UIAlertController(title: "😁\nAlmost Finished",
                                               message: "Please check your email when you can. We've sent you something!",
                                               preferredStyle: .alert)
+                
                 let ok = UIAlertAction(title: "next",
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
@@ -58,14 +59,12 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                         }
                                         
                                         let secondPage = OnboardingContentViewController(title: "How?", body: "By dividng your news feeds in two: One for your friends, and one for the things you're following.", image: nil, buttonText: nil) { () -> Void in
-                                            // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                                         }
                                         
                                         let thirdPage = OnboardingContentViewController(title: "Friends OR Following", body: "You can't be friends and follow someone at the same time on Redplanet.", image: nil, buttonText: nil) { () -> Void in
                                         }
                                         
                                         
-                                        //
                                         let fourthPage = OnboardingContentViewController(title: "Key Differences", body: "Friends are mutual relationships, while following is not.\nWe built many cool features that clarify these differences.", image: nil, buttonText: nil) { () -> Void in
                                             
                                         }

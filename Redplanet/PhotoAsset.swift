@@ -223,18 +223,12 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: photoNotification, object: nil)
-        
-        
-//        // Pull to refresh action
-//        refresher = UIRefreshControl()
-//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-//        self.tableView!.addSubview(refresher)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
-//        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -56,10 +56,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func refresh(_ sender: Any) {
         // Fetch interactions
         fetchInteractions()
-        
-        // End refresher
-//        self.refresher.endRefreshing()
-        
+
         // Reload data
         self.tableView!.reloadData()
     }
@@ -249,11 +246,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: spaceNotification, object: nil)
         
-//        // Pull to refresh action
-//        refresher = UIRefreshControl()
-//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-//        self.tableView!.addSubview(refresher)
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -433,9 +425,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // (3) Fetch content
         if spaceObject.last!.value(forKey: "photoAsset") != nil {
             
-            // ==========================================================================================================================
-            // PHOTO ====================================================================================================================
-            // ==========================================================================================================================
+            // ======================================================================================================================
+            // PHOTO ================================================================================================================
+            // ======================================================================================================================
             
             // (A) Configure image
             cell.mediaAsset.contentMode = .scaleAspectFit
@@ -468,9 +460,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
         } else if spaceObject.last!.value(forKey: "videoAsset") != nil {
             
-            // ==========================================================================================================================
-            // VIDEO ====================================================================================================================
-            // ==========================================================================================================================
+            // ======================================================================================================================
+            // VIDEO ================================================================================================================
+            // ======================================================================================================================
             
             // (A) Configure video preview
             cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
@@ -505,9 +497,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
         } else {
             
-            // ==========================================================================================================================
-            // TEXT POST ================================================================================================================
-            // ==========================================================================================================================
+            // ======================================================================================================================
+            // TEXT POST ============================================================================================================
+            // ======================================================================================================================
             
             // No Photo
             // hide mediaAsset

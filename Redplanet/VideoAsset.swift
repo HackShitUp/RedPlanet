@@ -49,9 +49,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
-        // End refresher
-//        refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }
@@ -193,12 +190,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-        
-        
-        // Pull to refresh
-//        refresher = UIRefreshControl()
-//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-//        self.tableView!.addSubview(refresher)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

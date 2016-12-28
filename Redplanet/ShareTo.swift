@@ -206,6 +206,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Add searchbar to header
         self.searchBar.delegate = self
+        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
         

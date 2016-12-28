@@ -181,6 +181,66 @@ class MyHeader: UICollectionReusableView {
         }
         
         
+        // (4) Handle KILabel taps
+        // Handle @username tap
+        userBio.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Show alert
+                    let alert = UIAlertController(title: "Unknown Account",
+                                                  message: "Looks like this account doesn't exist yet.",
+                                                  preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.delegate?.present(alert, animated: true)
+                }
+            })
+            
+        }
+        
+        
+        // Handle #object tap
+        userBio.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+        }
+        
+        
+        // Handle http: tap
+        userBio.urlLinkTapHandler = { label, handle, range in
+            // Open url
+            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
+            self.delegate?.present(modalWeb, animated: true, completion: nil)
+        }
         
     }// end awakeFromNib
 }

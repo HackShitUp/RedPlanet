@@ -777,6 +777,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         
+        // Tap out implementation
+        let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
+        tapOut.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(tapOut)
         
         // (1) Add more tap method
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
@@ -829,7 +834,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
         
-        // (10) Add Save??
+        // (10) Add Save
         let holdTap = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
         holdTap.minimumPressDuration = 0.5
         self.itmMedia.isUserInteractionEnabled = true

@@ -39,6 +39,8 @@ class StackModel: EZSwipeController, UINavigationControllerDelegate {
         // Set background color
         self.view.backgroundColor = UIColor.white
         
+        print("\n\nStackObjects:\n\(stackObjects)\n\n")
+        
     }
     
     
@@ -82,7 +84,7 @@ extension StackModel: EZSwipeControllerDataSource {
     
     
     func indexOfStartingPage() -> Int {
-        
+        print("RETURN INDEX: \(returnIndex!)")
         return returnIndex!
     }
 

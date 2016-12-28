@@ -47,10 +47,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func refresh(_ sender: AnyObject) {
         // Fetch interactions
         fetchInteractions()
-        
-        // End refresher
-//        refresher.endRefreshing()
-        
+
         // Reload data
         self.tableView!.reloadData()
     }
@@ -193,19 +190,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
         
-        
-        // Pull to refresh
-//        refresher = UIRefreshControl()
-//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-//        self.tableView!.addSubview(refresher)
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        
-        
         
         
         // Show the user what to do!
@@ -254,10 +243,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Rid of view corner radius
-//        self.navigationController!.view.layer.cornerRadius = 0.00
-//        self.navigationController!.view.clipsToBounds = true
-        
         // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
@@ -271,10 +256,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Create view corner radius
-//        self.navigationController!.view.layer.cornerRadius = 12.00
-//        self.navigationController!.view.clipsToBounds = true
         
         // Show navigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
@@ -381,7 +362,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 // (1) Point to User's Object
                 if let user = object!["byUser"] as? PFUser {
                     // (A) Set username
-//                    cell.rpUsername.text! = (user["username"] as! String).uppercased()
                     cell.rpUsername.text! = "\(user["username"] as! String)"
 
                     

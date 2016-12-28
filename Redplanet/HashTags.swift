@@ -282,7 +282,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
         
         //set contentView frame and autoresizingMask
-//        cell.contentView.frame = cell.bounds
         cell.contentView.frame = cell.contentView.frame
         
         
