@@ -191,7 +191,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
             let alert = AlertController(title: "🎉\nCongrats, you viewed your first Space Post!",
-                                          message: "•Swipe right to leave\n•Swipe left for Views 🙈",
+                                          message: "•Swipe down to leave\n•Swipe left for Views 🙈",
                                           style: .alert)
             // Design content view
             alert.configContentView = { view in

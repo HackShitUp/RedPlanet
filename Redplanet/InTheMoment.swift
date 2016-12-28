@@ -732,7 +732,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             
 
             let alert = AlertController(title: "🎉\nCongrats, you viewed your first Moment!",
-                                          message: "•Swipe right to leave",
+                                          message: "•Swipe right or tap once to leave",
                                           style: .alert)
             
             // Design content view
