@@ -115,6 +115,7 @@
 		7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */; };
 		7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */; };
 		7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955661DC99A98003D9D73 /* InTheMoment.swift */; };
+		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA09E111DD3EF9200BD2D51 /* NewSpacePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA09E101DD3EF9200BD2D51 /* NewSpacePostCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
@@ -383,6 +384,7 @@
 		7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsCell.swift; sourceTree = "<group>"; };
 		7E9955661DC99A98003D9D73 /* InTheMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTheMoment.swift; sourceTree = "<group>"; };
+		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA09E101DD3EF9200BD2D51 /* NewSpacePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePostCell.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
@@ -1034,6 +1036,14 @@
 			name = MutualRelationships;
 			sourceTree = "<group>";
 		};
+		7E9DA1891E14DA900001E8C0 /* NSBadge */ = {
+			isa = PBXGroup;
+			children = (
+				7E9DA1871E14D9480001E8C0 /* NSBadge.swift */,
+			);
+			name = NSBadge;
+			sourceTree = "<group>";
+		};
 		7EA09E121DD3EF9700BD2D51 /* NewSpacePost */ = {
 			isa = PBXGroup;
 			children = (
@@ -1194,6 +1204,7 @@
 			isa = PBXGroup;
 			children = (
 				7E10DFCB1E0F6E15001336BA /* StackPageView.swift */,
+				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
@@ -1825,6 +1836,7 @@
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,
 				7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */,
+				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,

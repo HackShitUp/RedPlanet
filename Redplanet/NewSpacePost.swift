@@ -441,10 +441,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Find the user
-                let fullName = PFQuery(className: "_User")
+                let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
                 
-                let theUsername = PFQuery(className: "_User")
+                let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
                 
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])

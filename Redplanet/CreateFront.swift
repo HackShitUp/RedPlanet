@@ -55,6 +55,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var relationshipRequestsButton: UIBarButtonItem!
     @IBAction func relationshipRequests(_ sender: Any) {
         // Push
         let relationshipRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
@@ -313,6 +314,13 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+
+        // MARK: - NSBadge
+        // Set badge for Relationship Requests...
+        if (requestedToFriendMe.count + myRequestedFollowers.count) != 0 {
+            relationshipRequestsButton.badge(text: "\(requestedToFriendMe.count + myRequestedFollowers.count)")
+        }
         
         // Clean tableView
         self.tableView!.tableFooterView = UIView()

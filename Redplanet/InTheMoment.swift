@@ -569,7 +569,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share To",
                                       message: nil,
-                                      style: .actionSheet)
+                                      style: .alert)
         
         // Design content view
         options.configContentView = { view in

@@ -10,7 +10,6 @@ target 'Redplanet' do
 	pod ‘Bolts’
 	pod ‘SimpleAlert’
 	pod ‘OneSignal’
-	pod ‘Pulsator’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
 	pod 'DZNEmptyDataSet'

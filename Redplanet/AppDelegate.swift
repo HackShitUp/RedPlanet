@@ -75,6 +75,7 @@ import Bolts
 import OneSignal
 import Mixpanel
 
+
 // Current Username
 var username = [String]()
 
@@ -213,6 +214,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set("false", forKey: "DidOpenMoment")
             // Save UserDefaults for User's Profile
             UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
+            // Save Default for Birthday
+            UserDefaults.standard.set("false", forKey: "BirthdayHappened")
             // Synchronize
             UserDefaults.standard.synchronize()
             
@@ -223,7 +226,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Call Login Function...
         // Which also calls <queryRelationships()>
         login()
-        
         
         return true
     }
@@ -515,6 +517,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
 
             if today == birthDate {
+                
+                // Save Bool for BirthdayHappened
+                let bdayOccured = UserDefaults.standard.bool(forKey: "BirthdayHappened")
+                if bdayOccured == false {
+                    // Save
+                    UserDefaults.standard.set(true, forKey: "BirthdayHappened")
+                }
+                
+                
                 // HAPPY BIRTHDAY
                 let alert = UIAlertController(title: "🎂 🎊 🎉\nHappy Birthday \(PFUser.current()!.username!.uppercased())",
                     message: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String), we'll send your friends push notifications to remind them it's your birthday.",
@@ -524,29 +535,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
                                         
-                                        
-                                        // use this
-                                        for friend in myFriends.indices {
-                                            // print(friend)
-                                            // TODO::
-                                            // Fix the above code.
-                                            // When printed, it only prints the number of friends,
-                                            // in other words, the array's indices...
-                                            
-                                            
-                                            // TODO::
-                                            // Send push notification for friends
-                                            
-                                            //                                            if friend.value(forKey: "apnsId") != nil {
-                                            //                                        // Send push notification
-                                            //                                        OneSignal.postNotification(
-                                            //                                            ["contents":
-                                            //                                                ["en": "Today is \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s birthday!"],
-                                            //                                             "include_player_ids": ["\(myFriends[i].value(forKey: "apnsId") as! String)"]
-                                            //                                            ]
-                                            //                                        )
-                                            //                                            }
+                                        for theFriend in myFriends {
+                                            if theFriend.value(forKey: "apnsId") != nil {
+                                                // MARK: - OneSignal 
+                                                // Send push notification
+                                                OneSignal.postNotification(
+                                                    ["contents":
+                                                        ["en": "Write in \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Space to say Happy Birthday!"],
+                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"]
+                                                    ]
+                                                )
+                                                
+                                            }
                                         }
+                                        
                                         
                                         
                                         
@@ -558,6 +560,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 alert.addAction(ok)
                 alert.view.tintColor = UIColor.black
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+                
+                
+            } else {
+                // Save
+                UserDefaults.standard.set(false, forKey: "BirthdayHappened")
             }
             
             

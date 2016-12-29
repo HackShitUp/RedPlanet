@@ -21,11 +21,22 @@ import DZNEmptyDataSet
 // Array to hold like object
 var likeObject = [PFObject]()
 
-class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
+    
     
     
     // Array to hold likers
     var likers = [PFObject]()
+    
+    // Array to hold search
+    var searchNames = [String]()
+    var searchObjects = [PFObject]()
+    
+    // Searchbar
+    var searchBar = UISearchBar()
+    
+    // Bool to determine if search is active
+    var searchActive: Bool = false
     
     // Set pipeline method
     var page: Int = 50
@@ -47,6 +58,10 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     // Query Likes
     func queryLikes() {
+        
+        // Disable searchBar until complete
+        self.searchBar.isUserInteractionEnabled = false
+        
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: likeObject.last!.objectId!)
         likes.includeKey("fromUser")
@@ -70,9 +85,16 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
                     self.tableView!.emptyDataSetDelegate = self
                 }
                 
+                // Enable searchBar
+                self.searchBar.isUserInteractionEnabled = true
+                
             } else {
                 print(error?.localizedDescription as Any)
+                
+                // Enable searchBar
+                self.searchBar.isUserInteractionEnabled = true
             }
+            
             // Reload data
             self.tableView!.reloadData()
         }
@@ -119,6 +141,67 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     }
     
     
+    // Dismiss keyboard when UITableView is scrolled
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Set Boolean
+        searchActive = false
+        // Set tableView background
+        self.tableView.backgroundView = UIView()
+        // Reload data
+        queryLikes()
+    }
+    
+    
+    // MARK: - UISearchBarDelegate methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Set boolean
+        searchActive = true
+    }
+    
+    // Search
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by username
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear arrays
+                self.searchNames.removeAll(keepingCapacity: false)
+                self.searchObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    if self.likers.contains(object) {
+                        self.searchNames.append(object["username"] as! String)
+                        self.searchObjects.append(object)
+                    }
+                }
+
+                
+                // Reload data
+                if self.searchObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +211,14 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Stylize title
         configureView()
+        
+        
+        // Add searchbar to header
+        self.searchBar.delegate = self
+        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.searchBar.barTintColor = UIColor.white
+        self.searchBar.sizeToFit()
+        self.tableView.tableHeaderView = self.searchBar
         
         
         // Set blank
@@ -171,7 +262,15 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return self.likers.count
+        if searchActive == true && searchBar.text != "" {
+            // Return searched users
+            return searchObjects.count
+            
+        } else {
+            
+            // Return friends
+            return likers.count
+        }
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -193,34 +292,75 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         cell.rpUserProPic.clipsToBounds = true
         
         
-        // Fetch users
-        likers[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                }
-                
-                
-                // (2) Set real name
-                cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
+        
+        // If Searched
+        if searchActive == true && searchBar.text != "" {
 
+            // Fetch users
+            searchObjects[indexPath.row].fetchIfNeededInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (1) Get and set user's profile photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                            }
+                        })
+                    }
+                    
+                    
+                    // (2) Set real name
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    
+                    // Set result
+                    cell.rpUsername.text! = "Couldn't find anyone by that name..."
+                }
+            }
+            
+            
+        } else {
+            // Fetch users
+            likers[indexPath.row].fetchIfNeededInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (1) Get and set user's profile photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                            }
+                        })
+                    }
+                    
+                    
+                    // (2) Set real name
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            }
+
+        }
+        
+        
         return cell
     }
     

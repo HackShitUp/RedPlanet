@@ -17,7 +17,7 @@ import Bolts
 
 import OneSignal
 import SVProgressHUD
-import Pulsator
+//import Pulsator
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false

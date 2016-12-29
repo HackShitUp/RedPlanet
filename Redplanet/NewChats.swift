@@ -168,9 +168,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     // Look for users
     func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // Search by username
-        let name = PFQuery(className: "_User")
+        let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFQuery(className: "_User")
+        let realName = PFUser.query()!
         realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
@@ -198,9 +198,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
-        let name = PFQuery(className: "_User")
+        let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFQuery(className: "_User")
+        let realName = PFUser.query()!
         realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
@@ -215,7 +215,15 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 }
                 
                 // Reload data
-                self.tableView!.reloadData()
+                if self.searchObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -359,6 +367,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         self.searchBar.resignFirstResponder()
         // Set Boolean
         searchActive = false
+        // Set tableView background
+        self.tableView.backgroundView = UIView()
         // Reload data
         queryFriends()
     }

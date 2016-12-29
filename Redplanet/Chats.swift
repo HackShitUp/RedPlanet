@@ -143,6 +143,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         self.searchBar.text! = ""
         // Set Boolean
         searchActive = false
+        // Set tableView
+        self.tableView.backgroundView = UIView()
         // Reload data
         queryChats()
     }
@@ -157,44 +159,12 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
 
     }
     
-    // Begin searching
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        // Search by username
-        let name = PFQuery(className: "_User")
-        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFQuery(className: "_User")
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-        let user = PFQuery.orQuery(withSubqueries: [name, realName])
-        user.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear arrays
-                self.searchNames.removeAll(keepingCapacity: false)
-                self.searchObjects.removeAll(keepingCapacity: false)
-                
-                for object in objects! {
-                    self.searchNames.append(object["username"] as! String)
-                    self.searchObjects.append(object)
-                }
-                
-                // Reload data
-                self.tableView!.reloadData()
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
-        
-        return true
-    }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
-        let name = PFQuery(className: "_User")
+        let name = PFUser.query()!
         name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFQuery(className: "_User")
+        let realName = PFUser.query()!
         realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
         let user = PFQuery.orQuery(withSubqueries: [name, realName])
         user.findObjectsInBackground(block: {
@@ -206,12 +176,23 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.searchNames.append(object["username"] as! String)
-                    self.searchObjects.append(object)
+                    if self.chatObjects.contains(object) {
+                        self.searchNames.append(object["username"] as! String)
+                        self.searchObjects.append(object)
+                    }
                 }
                 
+                
                 // Reload data
-                self.tableView!.reloadData()
+                if self.searchObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -225,7 +206,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-//                NSForegroundColorAttributeName: UIColor.black,
                 NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
@@ -403,40 +383,35 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             cell.time.text = searchNames[indexPath.row]
             
             // Get and set user's profile photo
-            let user = PFUser.query()!
-            user.whereKey("username", equalTo: searchNames[indexPath.row])
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            searchObjects[indexPath.row].fetchIfNeededInBackground(block: {
+                (object: PFObject?, error: Error?) in
                 if error == nil {
-
-                    
-                    for object in objects! {
-                        if let proPic = object["userProfilePicture"] as? PFFile {
-                            proPic.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    cell.rpUserProPic.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                }
-                            })
-
-                        } else {
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
+                    // (1) Get Profile Photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
                         
-                        // Handle optional chaining for user's real name
-                        if let fullName = object["realNameOfUser"] as? String {
-                            cell.rpUsername.text! = fullName
-                        } else {
-                            cell.rpUsername.text! = "Loading..."
-                        }
+                    } else {
+                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                    }
+                    
+                    // Set full name
+                    // Handle optional chaining for user's real name
+                    if let fullName = object!["realNameOfUser"] as? String {
+                        cell.rpUsername.text! = fullName
+                    } else {
+                        cell.rpUsername.text! = object!["username"] as! String
                     }
                     
                     
                 } else {
                     print(error?.localizedDescription as Any)
-
                 }
             })
             

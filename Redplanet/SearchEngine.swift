@@ -119,10 +119,10 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         } else {
             // Looking for humans...
             // Search for user
-            let theUsername = PFQuery(className: "_User")
+            let theUsername = PFUser.query()!
             theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
             
-            let realName = PFQuery(className: "_User")
+            let realName = PFUser.query()!
             realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
             
             let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
@@ -192,10 +192,10 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         } else {
             // Looking for humans...
             // Search for user
-            let theUsername = PFQuery(className: "_User")
+            let theUsername = PFUser.query()!
             theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
             
-            let realName = PFQuery(className: "_User")
+            let realName = PFUser.query()!
             realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
             
             let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])

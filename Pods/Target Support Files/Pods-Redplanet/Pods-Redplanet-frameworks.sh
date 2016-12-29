@@ -91,7 +91,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Onboard/Onboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ParseUI/ParseUI.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Pulsator/Pulsator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SVProgressHUD/SVProgressHUD.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SimpleAlert/SimpleAlert.framework"
 fi
@@ -103,7 +102,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/Onboard/Onboard.framework"
   install_framework "$BUILT_PRODUCTS_DIR/Parse/Parse.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ParseUI/ParseUI.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/Pulsator/Pulsator.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SVProgressHUD/SVProgressHUD.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SimpleAlert/SimpleAlert.framework"
 fi

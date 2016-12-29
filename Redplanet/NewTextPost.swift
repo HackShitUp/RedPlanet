@@ -131,10 +131,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             
                             print("The user's username to notify is: \(word)")
                             // Search for user
-                            let theUsername = PFQuery(className: "_User")
+                            let theUsername = PFUser.query()!
                             theUsername.whereKey("username", matchesRegex: "(?i)" + word)
                             
-                            let realName = PFQuery(className: "_User")
+                            let realName = PFUser.query()!
                             realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
                             
                             let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
@@ -287,10 +287,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Find the user
-                let fullName = PFQuery(className: "_User")
+                let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
                 
-                let theUsername = PFQuery(className: "_User")
+                let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
                 
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
