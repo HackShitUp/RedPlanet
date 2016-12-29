@@ -515,8 +515,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
 
             if today == birthDate {
-                print("HAPPY BDAY")
-                
+                // HAPPY BIRTHDAY
                 let alert = UIAlertController(title: "🎂 🎊 🎉\nHappy Birthday \(PFUser.current()!.username!.uppercased())",
                     message: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String), we'll send your friends push notifications to remind them it's your birthday.",
                     preferredStyle: .alert)

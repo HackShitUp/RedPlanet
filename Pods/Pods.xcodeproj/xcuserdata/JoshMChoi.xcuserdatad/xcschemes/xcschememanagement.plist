@@ -54,6 +54,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pulsator.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SVProgressHUD.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,7 +72,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0D9F9BE127F06D6961B6ABFB9F937A42</key>
+		<key>1772D9D3E15EDF8D421FD5159F114F1B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,17 +92,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8EE32A6F44D6EF46695906FB3DF0BDB2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A351E7863091E516E0E20FAEB1DE09EE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A4ED3B739DD954866F0E264DBF8145D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -117,7 +117,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>D2611437EBC57F0A6FBDEFE76B77C9F2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>D386C75EFD4F03725E4EFB866B600B9A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E411CE9B5FA2F0A4A5FF015188BFEB32</key>
 		<dict>
 			<key>primary</key>
 			<true/>

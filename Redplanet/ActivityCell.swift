@@ -989,7 +989,6 @@ class ActivityCell: UITableViewCell {
             
             // VI Comment
             if self.activity.titleLabel!.text!.hasSuffix("comment") {
-                print("FIRED")
                 // (1) Filter Comments
                 // (2) Find Content
                 let comments = PFQuery(className: "Comments")

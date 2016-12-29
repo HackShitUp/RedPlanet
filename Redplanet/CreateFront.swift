@@ -80,8 +80,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func cameraAuthorization() {
         if AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) ==  AVAuthorizationStatus.authorized {
             // Already Authorized
-            print("Already Authroized")
-            
             // Load Camera
             DispatchQueue.main.async(execute: {
                 // Push VC
@@ -94,8 +92,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in
                 if granted == true {
                     // User granted camera access
-                    print("Authorized")
-                    
                     // Load Camera
                     DispatchQueue.main.async(execute: {
                         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
@@ -104,7 +100,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     
                 } else {
                     // User denied camera access
-                    print("Denied")
                     let alert = UIAlertController(title: "Camera Access Denied",
                                                   message: "Please allow Redplanet to use your camera.",
                                                   preferredStyle: .alert)
@@ -151,8 +146,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         PHPhotoLibrary.requestAuthorization({(status:PHAuthorizationStatus) in
             switch status{
             case .authorized:
-                print("Authorized")
-                
                 // Load Photo Library
                 DispatchQueue.main.async(execute: { 
                     // Push to library
@@ -164,7 +157,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
                 break
             case .denied:
-                print("Denied")
                 let alert = UIAlertController(title: "Photos Access Denied",
                                               message: "Please allow Redplanet access your Photos.",
                                               preferredStyle: .alert)
@@ -187,7 +179,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
                 break
             default:
-                print("Default")
 
                 break
             }
@@ -472,8 +463,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        print("returning: \(myActivity.count)")
         return myActivity.count
     }
     

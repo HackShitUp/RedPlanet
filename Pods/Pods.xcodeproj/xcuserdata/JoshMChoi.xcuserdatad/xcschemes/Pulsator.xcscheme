@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'E411CE9B5FA2F0A4A5FF015188BFEB32'
-               BlueprintName = 'SimpleAlert'
+               BlueprintIdentifier = 'D2611437EBC57F0A6FBDEFE76B77C9F2'
+               BlueprintName = 'Pulsator'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'SimpleAlert.framework'>
+               BuildableName = 'Pulsator.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

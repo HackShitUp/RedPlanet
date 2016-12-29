@@ -10,12 +10,13 @@ target 'Redplanet' do
 	pod ‘Bolts’
 	pod ‘SimpleAlert’
 	pod ‘OneSignal’
-	pod ‘Heap’
-	pod ‘Mixpanel-swift’
+	pod ‘Pulsator’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'
 	pod 'DZNEmptyDataSet'
 	pod 'Onboard'
+	pod ‘Heap’
+	pod ‘Mixpanel-swift’
 
   target 'RedplanetTests' do
     inherit! :search_paths

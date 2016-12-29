@@ -23,13 +23,11 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     // Boolean to determine what to show in UITableView
     var searchActive: Bool = false
     
-    // People the current user is chatting with
-    // other user's objects
-    // initial
-    var initialChatObjects = [PFObject]()
-    // Chatting with...
-    // Final list; removed duplicate values
-    var finalChatObjects = [PFObject]()
+    // Chat objects
+    var chatObjects = [PFObject]()
+
+    // Page size
+    var page: Int = 100
     
     
     // Search
@@ -72,6 +70,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         receiver.whereKey("sender", notEqualTo: PFUser.current()!)
         
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+        chats.limit = self.page
         chats.order(byDescending: "createdAt")
         chats.includeKey("receiver")
         chats.includeKey("sender")
@@ -80,29 +79,21 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             if error == nil {
                 
                 // Clear array
-                self.initialChatObjects.removeAll(keepingCapacity: false)
+                self.chatObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     // Append user's objects
-                    if object["receiver"] as! PFUser == PFUser.current()! {
-                        self.initialChatObjects.append(object["sender"] as! PFUser)
+                    if object["receiver"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["sender"] as! PFUser) {
+                        self.chatObjects.append(object["sender"] as! PFUser)
                     }
                     
-                    if object["sender"] as! PFUser == PFUser.current()! {
-                        self.initialChatObjects.append(object["receiver"] as! PFUser)
+                    if object["sender"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["receiver"] as! PFUser) {
+                        self.chatObjects.append(object["receiver"] as! PFUser)
                     }
 
                 }// end for loop
                 
-                
-                
-                // Clear array
-                self.finalChatObjects.removeAll(keepingCapacity: false)
-                
-                
-                // Remove duplicate values in array
-                let talkingProfiles = Array(Set(self.initialChatObjects))
-                
+
                 
                 // Un-Comment the below code to fetch chats that are less than 24 hours
                 // AKA Chats that occurred ONLY 24 hours ago...
@@ -121,16 +112,10 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                  
                  }
                  */
-                
-                
-                // Run for loop to append new non-duplicated array
-                for profiles in talkingProfiles {
-                    self.finalChatObjects.append(profiles)
-                }
-                
+
                 
                 // Initialize DZNEmptyDataset
-                if self.finalChatObjects.count == 0 || self.initialChatObjects.count == 0 {
+                if self.chatObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.tableFooterView = UIView()
@@ -256,7 +241,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     
     // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if finalChatObjects.count == 0 {
+        if chatObjects.count == 0 {
             return true
         } else {
             return false
@@ -371,14 +356,12 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         if searchActive == true && searchBar.text != "" {
             // Return searched users
-            print("Returning: \(self.searchObjects.count)")
             return searchObjects.count
             
         } else {
             
-            print("Returning: \(self.finalChatObjects.count)")
             // Return friends
-            return finalChatObjects.count
+            return chatObjects.count
         }
     }
     
@@ -456,6 +439,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
 
                 }
             })
+            
         } else {
             
             // Show read receipets
@@ -467,11 +451,11 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             // Read reciepts
             let sender = PFQuery(className: "Chats")
             sender.whereKey("sender", equalTo: PFUser.current()!)
-            sender.whereKey("receiver", equalTo: self.finalChatObjects[indexPath.row])
+            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
             
             let receiver = PFQuery(className: "Chats")
             receiver.whereKey("receiver", equalTo: PFUser.current()!)
-            receiver.whereKey("sender", equalTo: self.finalChatObjects[indexPath.row])
+            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
             
             let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
             chats.includeKey("sender")
@@ -534,7 +518,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                     // If PFUser.currentUser()! received last message
-                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.finalChatObjects[indexPath.row] {
+                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.chatObjects[indexPath.row] {
                         // Handle optional chaining for OtherUser's Object
                         // SENDER
                         if let theSender = object!["sender"] as? PFUser {
@@ -573,7 +557,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                     // If PFUser.currentUser()! sent last message
-                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.finalChatObjects[indexPath.row] {
+                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.chatObjects[indexPath.row] {
                         if let theReceiver = object!["receiver"] as? PFUser {
                             // Set username
                             cell.rpUsername.text! = theReceiver["realNameOfUser"] as! String
@@ -624,7 +608,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     // Mark: UITableviewDelegate methods
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        let chatName = self.finalChatObjects[indexPath.row].value(forKey: "username") as! String
+        let chatName = self.chatObjects[indexPath.row].value(forKey: "username") as! String
         
         // Swipe to Delete Messages
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
@@ -670,11 +654,11 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                         // (A) Sender
                                         let sender = PFQuery(className: "Chats")
                                         sender.whereKey("sender", equalTo: PFUser.current()!)
-                                        sender.whereKey("receiver", equalTo: self.finalChatObjects[indexPath.row])
+                                        sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
                                         // (B) Receiver
                                         let receiver = PFQuery(className: "Chats")
                                         receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                                        receiver.whereKey("sender", equalTo: self.finalChatObjects[indexPath.row])
+                                        receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
                                         
                                         // (1) Chats subqueries
                                         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
@@ -765,9 +749,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
 
             // Append...
             // (1) User's Object
-            chatUserObject.append(self.finalChatObjects[indexPath.row])
+            chatUserObject.append(self.chatObjects[indexPath.row])
             // (2) Username
-            chatUsername.append(self.finalChatObjects[indexPath.row].value(forKey: "username") as! String)
+            chatUsername.append(self.chatObjects[indexPath.row].value(forKey: "username") as! String)
             
             // Push View controller
             let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
@@ -775,8 +759,27 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             
             
         }
-    }
+    } // end didSelectRowAt method
  
 
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= chatObjects.count {
+            
+            // Increase page size to load more posts
+            page = page + 100
+            
+            // Query friends
+            self.queryChats()
+        }
+    }
 
 }

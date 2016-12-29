@@ -16,6 +16,8 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import SVProgressHUD
+import Pulsator
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
@@ -519,6 +521,15 @@ class CustomCamera: UIViewController, UINavigationControllerDelegate, CLImageEdi
                     device.focusMode = .autoFocus
                     device.exposurePointOfInterest = focusPoint
                     device.exposureMode = .continuousAutoExposure
+                    
+                    print("POSITION:\n\(focusPoint)\n***")
+                    
+//                    let pulsator = Pulsator()
+//                    pulsator.position = view.center
+//                    pulsator.numPulse = 3
+//                    pulsator.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+//                    self.view.layer.addSublayer(pulsator)
+//                    pulsator.start()
                     
                     /*
                     // BACK

@@ -116,9 +116,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                         object.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
-                                print("Successfully saved changes")
-                                
-                                
+
                                 // Check for hashtags
                                 // and user mentions
                                 let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
@@ -144,7 +142,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                         hashtags.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if success {
-                                                print("#\(word) has been saved!")
+
                                             } else {
                                                 print(error?.localizedDescription as Any)
                                             }

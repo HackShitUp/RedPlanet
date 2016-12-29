@@ -111,6 +111,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Add searchbar to header
         self.searchBar.delegate = self
         self.searchBar.sizeToFit()
+        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.searchBar.barTintColor = UIColor.white
         self.tableView.tableHeaderView = self.searchBar
         
         // Clear tableView
@@ -132,6 +134,20 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Resign first responder
+        self.searchBar.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
