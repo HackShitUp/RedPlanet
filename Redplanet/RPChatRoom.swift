@@ -678,7 +678,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
         
         
         // Move UI up
@@ -707,7 +707,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
         
         if self.tableView!.frame.origin.y != 0 {
             // Move table view up
@@ -733,12 +733,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
         }
     }
-    
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        // Clear placeholder
-        self.newChat.text! = ""
-    }
-    
+
     
     // MARK: - UIScrollViewDelegate
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -894,9 +889,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         } else {
             
             //////////////////////////////
-            ///                       ///
-            /// Return Media Cell    ///
-            ///                     ///
+            /////////////////////////////
+            /// Return Media Cell //////
+            ///////////////////////////
             //////////////////////////
             
             // Set mCell's content object
@@ -1097,6 +1092,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         return true
     } // end edit boolean
     
+    
+    func textViewDidChange(_ textView: UITextView) {
+
+
+    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 

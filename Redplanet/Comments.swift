@@ -61,6 +61,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
         
         
+        
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -235,19 +236,17 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                     
                                 }
                             }
-                            
-                            
-                            // Query Comments
-                            self.queryComments()
+
                             
                         } else {
                             print(error?.localizedDescription as Any)
-                            
-                            // Query Comments
-                            self.queryComments()
+
                         }
                     })
                     
+                    
+                    // Query Comments
+                    self.queryComments()
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -437,13 +436,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     
     // MARK: - UITextViewDelegate Method
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        // Clear placeholder
-        self.newComment.text! = ""
-    }
-    
-    
-
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
             // Send comment
@@ -455,32 +447,18 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if self.newComment.text! != "Write a comment!" {
+            self.newComment.text! = self.newComment.text
+        } else {
+            self.newComment.text! = ""
+        }
+    }
+    
 
     // Raise text view in the future...
     func textViewDidChange(_ textView: UITextView) {
-//        if self.newComment.contentSize.height > self.newComment.frame.size.height && self.newComment.frame.size.height < 50 {
-//            let difference = self.newComment.contentSize.height - self.newComment.frame.size.height
-//            
-//            self.newComment.frame.origin.y = self.newComment.frame.origin.y - difference
-//            self.newComment.frame.size.height = self.newComment.contentSize.height
-//            
-//            // Move up tableview
-//            if self.newComment.contentSize.height + keyboard.height + 50 >= self.tableView!.frame.size.height {
-//                self.tableView!.frame.size.height = self.tableView!.frame.size.height - difference
-//            }
-//            
-//        } else if self.newComment.contentSize.height < self.newComment.frame.size.height {
-//            let difference = self.newComment.frame.size.height - self.newComment.frame.size.height
-//            
-//            self.newComment.frame.origin.y = self.newComment.frame.origin.y + difference
-//            self.newComment.frame.size.height = self.newComment.contentSize.height
-//            
-//            // Move tableView down
-//            if self.newComment.contentSize.height + keyboard.height + 50 > self.tableView!.frame.size.height {
-//                self.tableView!.frame.size.height = self.tableView!.frame.size.height + difference
-//            }
-//            
-//        }
+        
     }
     
     

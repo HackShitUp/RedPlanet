@@ -488,13 +488,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
 
     }
     
-    
-    
-    
-    
-    
-    
-    
+
     
     // MARK: - UIImagePickerController Delegate method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {

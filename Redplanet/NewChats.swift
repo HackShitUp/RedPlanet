@@ -375,7 +375,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     
     
-    
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
