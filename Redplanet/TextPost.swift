@@ -159,8 +159,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     }
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
 
         // Set estimated row height
@@ -273,7 +276,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Stylize title
         configureView()
     }
-    
+
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -286,7 +290,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
-
+*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

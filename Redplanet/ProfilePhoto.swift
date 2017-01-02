@@ -146,9 +146,11 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     }
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -230,6 +232,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         configureView()
     }
     
+    
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -242,6 +246,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Stylize title again
         configureView()
     }
+    */
     
 
     override func didReceiveMemoryWarning() {

@@ -720,9 +720,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
         
         // Show the user what to do!
         let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
@@ -862,6 +864,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -871,6 +874,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
+    */
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -155,9 +155,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -253,6 +255,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         configureView()
     }
     
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -265,6 +268,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
+    */
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

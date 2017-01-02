@@ -690,14 +690,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 print(error?.localizedDescription as Any)
             }
         })
- 
+        
  
 
-        
-//        timelineObjects.append(contentsOf: self.friendsContent)
-//        let timelineVC = self.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
-//        self.parentNavigator.pushViewController(timelineVC, animated: true)
- 
+/*
+        timelineObjects.append(contentsOf: self.friendsContent)
+        let timelineVC = self.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
+        self.parentNavigator.pushViewController(timelineVC, animated: true)
+*/
 
     } // end didSelectRowAt
     

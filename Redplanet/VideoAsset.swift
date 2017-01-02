@@ -160,9 +160,11 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     }
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -240,6 +242,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
 
     }
     
+    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -252,6 +255,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
+    */
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
