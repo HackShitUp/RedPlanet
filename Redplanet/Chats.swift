@@ -82,6 +82,18 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 self.chatObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
+                    
+                    // Run for loop to append new non-duplicated array
+                    // (3) Set time
+                    /*
+                    let from = object.createdAt!
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                    if difference.day! < 1 {
+                    }
+                    */
+                
                     // Append user's objects
                     if object["receiver"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["sender"] as! PFUser) {
                         self.chatObjects.append(object["sender"] as! PFUser)
@@ -92,26 +104,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     }
 
                 }// end for loop
-                
 
-                
-                // Un-Comment the below code to fetch chats that are less than 24 hours
-                // AKA Chats that occurred ONLY 24 hours ago...
-                /*
-                 // Run for loop to append new non-duplicated array
-                 for profiles in talkingProfiles {
-                 // (3) Set time
-                 let from = profiles.createdAt!
-                 let now = Date()
-                 let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                 let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                 
-                 if difference.day! < 1 {
-                 self.finalChatObjects.append(profiles)
-                 }
-                 
-                 }
-                 */
 
                 
                 // Initialize DZNEmptyDataset

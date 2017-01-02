@@ -20,8 +20,11 @@ import SimpleAlert
 // Array to hold object
 var itmObject = [PFObject]()
 
+
+// Define Notification
+let itmNotification = Notification.Name("itmNotification")
+
 class InTheMoment: UIViewController, UINavigationControllerDelegate {
-    
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -718,12 +721,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     }
     
     
-    
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     
         
         // Show the user what to do!
@@ -772,6 +772,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(goBack))
@@ -853,28 +856,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         }
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Hide navigationBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-    
-    /*
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Hide navigationBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-    */
+
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

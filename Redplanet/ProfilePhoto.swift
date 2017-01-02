@@ -146,10 +146,9 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     }
     
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
     
         
         // Show the user what to do!
@@ -219,35 +218,15 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Stylize title again
-        configureView()
-    }
-    
-    
-    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Stylize title again
+        // Stylize title
         configureView()
+        
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
     }
-    */
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

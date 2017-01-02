@@ -160,10 +160,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     }
     
 
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     
         
         // Set estimated row height
@@ -241,35 +239,19 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
 
     }
+
     
-    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Stylize title
         configureView()
         
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
     }
-    */
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Stylize title
-        configureView()
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

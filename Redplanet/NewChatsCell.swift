@@ -32,7 +32,7 @@ class NewChatsCell: UITableViewCell {
     
     
     // Share With
-    func showAlert() {
+    func createChat() {
         
         // Append chat objects
         chatUsername.append(self.userObject!.value(forKey: "username") as! String)
@@ -51,8 +51,9 @@ class NewChatsCell: UITableViewCell {
         
         
         // Add alert function
-        let alertTap = UITapGestureRecognizer(target: self, action: #selector(showAlert))
+        let alertTap = UITapGestureRecognizer(target: self, action: #selector(createChat))
         alertTap.numberOfTapsRequired = 1
+        self.contentView.isUserInteractionEnabled = true
         self.contentView.addGestureRecognizer(alertTap)
         
         // Set layouts

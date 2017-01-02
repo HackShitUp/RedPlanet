@@ -180,12 +180,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     }
     
     
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
     
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -226,6 +224,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
+        // Stylize navigation bar
+        configureView()
+        
         // Add method tap
         let goUserTap = UITapGestureRecognizer(target: self, action: #selector(goToUser))
         goUserTap.numberOfTapsRequired = 1
@@ -245,6 +246,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Show navBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
+        // Hide tabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: spaceNotification, object: nil)
@@ -257,48 +261,15 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Stylize title
-        configureView()
-    }
-    
-    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Stylize title
         configureView()
         
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // Remove lines on load
+        self.tableView!.tableFooterView = UIView()
     }
-    */
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -158,12 +158,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         }
     }
     
-
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
 
         // Set estimated row height
@@ -242,56 +239,17 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
     }
 
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-     
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Set estimated row height
-        self.tableView!.setNeedsLayout()
-        self.tableView!.layoutSubviews()
-        self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 250
-        self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        // Stylize title
-        configureView()
-    }
-
-    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Stylize title
         configureView()
         
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
     }
-*/
-    
+
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

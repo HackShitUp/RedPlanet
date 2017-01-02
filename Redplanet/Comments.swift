@@ -52,12 +52,33 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Reload view depending on content type
-        if commentsObject.last!.value(forKey: "photoAsset") != nil {
-            // Send Notification to Photo
-            NotificationCenter.default.post(name: photoNotification, object: nil)
-        } else {
+        if commentsObject.last!.value(forKey: "contentType") as! String == "tp" {
             // Send Notification to Text Post
             NotificationCenter.default.post(name: textPostNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "ph" {
+            // Send Notification to Photo
+            NotificationCenter.default.post(name: photoNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "pp" {
+            // Send Notification to Profile Photo
+            NotificationCenter.default.post(name: profileNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "sh" {
+            // Send Notification to Shared Post
+            NotificationCenter.default.post(name: sharedPostNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "sp" {
+            // Send Notification to Space Post
+            NotificationCenter.default.post(name: spaceNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "itm" {
+            // Send Notification to ITM
+            NotificationCenter.default.post(name: itmNotification, object: nil)
+            
+        } else if commentsObject.last!.value(forKey: "contentType") as! String == "vi" {
+            // Send Notification to Text Post
+            NotificationCenter.default.post(name: videoNotification, object: nil)
         }
         
         

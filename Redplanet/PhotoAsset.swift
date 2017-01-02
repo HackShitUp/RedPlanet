@@ -49,9 +49,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
-        // End refresher
-//        refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }
@@ -157,11 +154,9 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         }
     }
     
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     
         
         // Show the user what to do!
@@ -232,48 +227,18 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
+
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Stylize title
-        configureView()
-    }
-    
-    /*
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         // Stylize title
         configureView()
         
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // Clear tableView
+        self.tableView!.tableFooterView = UIView()
     }
-    */
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

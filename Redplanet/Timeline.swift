@@ -16,10 +16,7 @@ import Bolts
 
 // Array to hold objects
 var timelineObjects = [PFObject]()
-
 // Array to hold view controllers
-var postControllers = [UIViewController]()
-
 var timelineVCS = [UIViewController]()
 
 // Variable to return selected index
@@ -37,6 +34,7 @@ class Timeline: EZSwipeController, UINavigationControllerDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.frame.origin.y = UIApplication.shared.statusBarFrame.height
         
         // Set background color
         self.view.backgroundColor = UIColor.white
@@ -55,25 +53,16 @@ class Timeline: EZSwipeController, UINavigationControllerDelegate  {
 
 extension Timeline: EZSwipeControllerDataSource {
     
-    
-    // UINavigationBar DataSource
-    func navigationBarDataForPageIndex(_ index: Int) -> UINavigationBar {
-        
-        return self.navigationController!.navigationBar
-    }
-    
-    
-    
     func indexOfStartingPage() -> Int {
         print("\nINDEX: \(returnIndex!)\n")
         return returnIndex!
     }
     
     
-
-    
-    
     func viewControllerData() -> [UIViewController] {
+
+        // Remove the first object
+        timelineObjects.remove(at: 0)
         
         // Loop through objects to determine which view controller to show
         for postObject in timelineObjects {
@@ -134,31 +123,22 @@ extension Timeline: EZSwipeControllerDataSource {
 
         }
         
-        
-        /*
-        textPostObject.removeAll(keepingCapacity: false)
-        photoAssetObject.removeAll(keepingCapacity: false)
-        proPicObject.removeAll(keepingCapacity: false)
-        sharedObject.removeAll(keepingCapacity: false)
-        spaceObject.removeAll(keepingCapacity: false)
-        otherObject.removeAll(keepingCapacity: false)
-        otherName.removeAll(keepingCapacity: false)
-        itmObject.removeAll(keepingCapacity: false)
-        videoObject.removeAll(keepingCapacity: false)
-        
-        print("\nTP_OBJECT:\(textPostObject)\n")
-        print("\nPH_OBJECT:\(photoAssetObject)\n")
-        print("\nSH_OBJECT:\(sharedObject)\n")
-        print("\nSP_OBJECT:\(spaceObject)\n")
-        print("\nPP_OBJECT:\(proPicObject)\n")
-        print("\nITM_OBJECT:\(itmObject)\n")
-        print("\nVI_OBJECT:\(videoObject)\n")
-        */
-        
-        
-        print("TIMELINEVCS: \(timelineVCS)")
+
+        print("\nCOUNTING VCS: \(timelineVCS.count)\n")
+        print("\nCOUNTING OBJECTS: \(timelineObjects.count)\n")
         return timelineVCS
     }
+    
+    
+    
+    
+    // UINavigationBar DataSource
+    func navigationBarDataForPageIndex(_ index: Int) -> UINavigationBar {
+        
+        return self.navigationController!.navigationBar
+    }
+
+    
     
     
 }

@@ -20,7 +20,7 @@ import DZNEmptyDataSet
 // Array to hold which user's friends to fetch
 var forFriends = [PFObject]()
 
-class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     
     // Array to hold friend
@@ -28,6 +28,17 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Set pipeline
     var page: Int = 50
+    
+    // Searchbar
+    var searchBar = UISearchBar()
+    
+    // Bool to determine if search is active
+    var searchActive: Bool = false
+    
+    
+    // Search
+    var searchNames = [String]()
+    var searchObjects = [PFObject]()
 
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -190,6 +201,14 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         // Show SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
+        
+        
+        // Add searchbar to header
+        self.searchBar.delegate = self
+        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.searchBar.barTintColor = UIColor.white
+        self.searchBar.sizeToFit()
+        self.tableView.tableHeaderView = self.searchBar
 
         
         // Query friends
@@ -201,7 +220,6 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-        
         
         
         // Back swipe implementation
@@ -235,6 +253,76 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    // Dismiss keyboard when UITableView is scrolled
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Clear text
+        self.searchBar.text! = ""
+        // Set Boolean
+        searchActive = false
+        // Set tableView
+        self.tableView.backgroundView = UIView()
+        // Reload data
+        queryFriends()
+    }
+    
+    
+    
+    
+    // MARK: - UISearchBarDelegate methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Set boolean
+        searchActive = true
+        
+    }
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by username
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear arrays
+                self.searchNames.removeAll(keepingCapacity: false)
+                self.searchObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    if self.friends.contains(object) {
+                        self.searchNames.append(object["username"] as! String)
+                        self.searchObjects.append(object)
+                    }
+                }
+                
+                
+                // Reload data
+                if self.searchObjects.count != 0 {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIView()
+                    // Reload data
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+    
 
     
     
@@ -246,7 +334,16 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return friends.count
+        if searchActive == true && searchBar.text != "" {
+            
+            // Return searched users
+            return searchObjects.count
+            
+        } else {
+            
+            // Return friends
+            return friends.count
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -266,32 +363,68 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
-
-        // (1) Get user's object
-        friends[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (A) Set user's full name
-                cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                
-                // (B) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set user's profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+        
+        
+        
+        // If Searched
+        if searchActive == true && searchBar.text != "" {
+            
+            // Fetch users
+            searchObjects[indexPath.row].fetchIfNeededInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (1) Get and set user's profile photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                            }
+                        })
+                    }
+                    
+                    
+                    // (2) Set real name
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
                 }
-            } else {
-                print(error?.localizedDescription as Any)
-                // Set default
-                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+            }
+            
+
+        } else {
+            // (1) Get user's object
+            friends[indexPath.row].fetchIfNeededInBackground {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (A) Set user's full name
+                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
+                    
+                    // (B) Get and set user's profile photo
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set user's profile photo
+                                cell.rpUserProPic.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Set default
+                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                            }
+                        })
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Set default
+                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                }
             }
         }
 
@@ -304,10 +437,17 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Append to otherObject
-        otherObject.append(friends[indexPath.row])
-        // Append otherName
-        otherName.append(friends[indexPath.row].value(forKey: "username") as! String)
+        if searchActive == true && self.searchBar.text! != "" {
+            // Append to otherObject
+            otherObject.append(searchObjects[indexPath.row])
+            // Append otherName
+            otherName.append(searchObjects[indexPath.row].value(forKey: "username") as! String)
+        } else {
+            // Append to otherObject
+            otherObject.append(friends[indexPath.row])
+            // Append otherName
+            otherName.append(friends[indexPath.row].value(forKey: "username") as! String)
+        }
         
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile

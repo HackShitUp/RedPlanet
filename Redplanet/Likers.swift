@@ -186,6 +186,8 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
                 
                 // Reload data
                 if self.searchObjects.count != 0 {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIView()
                     // Reload data
                     self.tableView!.reloadData()
                 } else {
@@ -263,6 +265,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if searchActive == true && searchBar.text != "" {
+            
             // Return searched users
             return searchObjects.count
             
@@ -368,10 +371,21 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        // Append to otherObject
-        otherObject.append(likers[indexPath.row])
-        // Append otherName
-        otherName.append(likers[indexPath.row].value(forKey: "username") as! String)
+        
+        if searchActive == true && self.searchBar.text! != "" {
+            // Append to otherObject
+            otherObject.append(self.searchObjects[indexPath.row])
+            // Append otherName
+            otherName.append(self.searchObjects[indexPath.row].value(forKey: "username") as! String)
+            
+        } else {
+            // Append to otherObject
+            otherObject.append(likers[indexPath.row])
+            // Append otherName
+            otherName.append(likers[indexPath.row].value(forKey: "username") as! String)
+            
+        }
+        
         
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
