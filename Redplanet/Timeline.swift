@@ -30,17 +30,16 @@ class Timeline: EZSwipeController, UINavigationControllerDelegate  {
     override func setupView() {
         datasource = self
         navigationBarShouldNotExist = false
+        navigationBarShouldBeOnBottom = false
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         // Set background color
         self.view.backgroundColor = UIColor.white
-        
-        
-        
     }
 
 
@@ -51,80 +50,6 @@ class Timeline: EZSwipeController, UINavigationControllerDelegate  {
 
 
 }
-
-
-
-/*
- if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "tp" {
- 
- // Append Object
- textPostObject.append(self.friendsContent[indexPath.row])
- 
- // Present VC
- let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
- postControllers.append(textPostVC)
- 
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "ph" {
- 
- // Append Object
- photoAssetObject.append(self.friendsContent[indexPath.row])
- 
- // Present VC
- let photoVC = self.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
- postControllers.append(photoVC)
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sh" {
- 
- // Append object
- sharedObject.append(self.friendsContent[indexPath.row])
- 
- // Push VC
- let sharedPostVC = self.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
- postControllers.append(sharedPostVC)
- 
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "pp" {
- // Append user's object
- otherObject.append(self.friendsContent[indexPath.row].value(forKey: "byUser") as! PFUser)
- // Append user's username
- otherName.append(self.friendsContent[indexPath.row].value(forKey: "username") as! String)
- 
- // Append object
- proPicObject.append(self.friendsContent[indexPath.row])
- 
- // Push VC
- let proPicVC = self.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
- postControllers.append(proPicVC)
- 
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "sp" {
- // Append object
- spaceObject.append(self.friendsContent[indexPath.row])
- 
- // Append otherObject
- otherObject.append(self.friendsContent[indexPath.row].value(forKey: "toUser") as! PFUser)
- 
- // Append otherName
- otherName.append(self.friendsContent[indexPath.row].value(forKey: "toUsername") as! String)
- 
- // Push VC
- let spacePostVC = self.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
- postControllers.append(spacePostVC)
- 
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
- // Append content object
- itmObject.append(self.friendsContent[indexPath.row])
- 
- // Push VC
- let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
- postControllers.append(itmVC)
- 
- } else if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "vi" {
- // Append content object
- videoObject.append(self.friendsContent[indexPath.row])
- 
- // Push VC
- let videoVC = self.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
- postControllers.append(videoVC)
- }
- */
 
 
 
@@ -140,7 +65,7 @@ extension Timeline: EZSwipeControllerDataSource {
     
     
     func indexOfStartingPage() -> Int {
-        
+        print("\nINDEX: \(returnIndex!)\n")
         return returnIndex!
     }
     

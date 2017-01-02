@@ -49,7 +49,7 @@ open class EZSwipeController: UIViewController {
                 return UIScreen.main.bounds.width - StatusBarHeight
             }
         }
-        public static let navigationBarHeight: CGFloat = 44
+        public static let navigationBarHeight: CGFloat = 44.00
         public static let lightGrayColor = UIColor(red: 248, green: 248, blue: 248, alpha: 1)
     }
 
@@ -171,10 +171,11 @@ open class EZSwipeController: UIViewController {
             pageViewControllerY = 0
             pageViewControllerH = Constants.ScreenHeight
         } else {
-            pageViewControllerY = Constants.StatusBarHeight
+            pageViewControllerY = Constants.StatusBarHeight + 44
             pageViewControllerH = Constants.ScreenHeightWithoutStatusBar
         }
-        pageViewController.view.frame = CGRect(x: 0, y: pageViewControllerY, width: Constants.ScreenWidth, height: pageViewControllerH)
+//        pageViewController.view.frame = CGRect(x: 0, y: pageViewControllerY, width: Constants.ScreenWidth, height: pageViewControllerH)
+        pageViewController.view.frame = CGRect(x: 0, y: 0, width: Constants.ScreenWidth, height: UIScreen.main.bounds.size.height)
         pageViewController.view.backgroundColor = UIColor.clear
         addChildViewController(pageViewController)
         view.addSubview(pageViewController.view)
@@ -188,6 +189,7 @@ open class EZSwipeController: UIViewController {
     
     public func setFrameForCurrentOrientation(){
         pageViewController.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+        print("PAGE VIEW CONTROLLER FRAME: \(pageViewController.view.frame)")
     }
     
     override open func loadView() {
@@ -272,6 +274,26 @@ extension EZSwipeController: UIPageViewControllerDataSource {
         if viewController == stackPageVC.first {
             return nil
         }
+        
+        
+        
+        print("***\nBefore Timeline Objects:\n\(timelineObjects[stackPageVC.index(of: viewController)! - 1])\n***")
+        textPostObject.removeAll(keepingCapacity: false)
+        photoAssetObject.removeAll(keepingCapacity: false)
+        proPicObject.removeAll(keepingCapacity: false)
+        sharedObject.removeAll(keepingCapacity: false)
+        spaceObject.removeAll(keepingCapacity: false)
+        itmObject.removeAll(keepingCapacity: false)
+        videoObject.removeAll(keepingCapacity: false)
+        textPostObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        photoAssetObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        proPicObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        sharedObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        spaceObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        itmObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        videoObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
+        
+        
         return stackPageVC[stackPageVC.index(of: viewController)! - 1]
     }
 
@@ -279,6 +301,24 @@ extension EZSwipeController: UIPageViewControllerDataSource {
         if viewController == stackPageVC.last {
             return nil
         }
+        
+        print("***After Timeline Objects:\n\(timelineObjects[stackPageVC.index(of: viewController)! + 1])\n***")
+        textPostObject.removeAll(keepingCapacity: false)
+        photoAssetObject.removeAll(keepingCapacity: false)
+        proPicObject.removeAll(keepingCapacity: false)
+        sharedObject.removeAll(keepingCapacity: false)
+        spaceObject.removeAll(keepingCapacity: false)
+        itmObject.removeAll(keepingCapacity: false)
+        videoObject.removeAll(keepingCapacity: false)
+        textPostObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        photoAssetObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        proPicObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        sharedObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        spaceObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        itmObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        videoObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
+        
+ 
         return stackPageVC[stackPageVC.index(of: viewController)! + 1]
     }
 }
