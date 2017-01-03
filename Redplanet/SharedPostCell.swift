@@ -84,9 +84,13 @@ class SharedPostCell: UITableViewCell {
     // Function to push to conetnt
     func pushContent(sender: UIButton) {
         
+        
+        
         // Find Original Content
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("objectId", equalTo: self.cellSharedObject!.objectId!)
+        newsfeeds.includeKey("byUser")
+        newsfeeds.includeKey("toUser")
         newsfeeds.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -116,6 +120,8 @@ class SharedPostCell: UITableViewCell {
                         // Profile Photo
                         // Append object
                         proPicObject.append(object)
+                        otherObject.append(object.value(forKey: "byUser") as! PFUser)
+                        otherName.append(object.value(forKey: "username") as! String)
                         
                         // Push VC
                         let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
@@ -126,10 +132,7 @@ class SharedPostCell: UITableViewCell {
                         // Space Post
                         // Append object
                         spaceObject.append(object)
-                        
-                        // Append otherObject
-                        otherObject.append(object["byUser"] as! PFUser)
-                        // Append otherName
+                        otherObject.append(object["toUser"] as! PFUser)
                         otherName.append(object["username"] as! String)
                         
                         // Push VC

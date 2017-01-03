@@ -69,6 +69,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
+        friends.includeKey("endFriend")
+        friends.includeKey("frontFriend")
         friends.whereKey("isFriends", equalTo: true)
         friends.order(byDescending: "createdAt")
         friends.findObjectsInBackground(block: {
@@ -93,6 +95,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     }
                 }
                 
+                // Reload data
+                self.tableView!.reloadData()
+
+                
             } else {
                 print(error?.localizedDescription as Any)
                 
@@ -100,8 +106,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 SVProgressHUD.dismiss()
             }
             
-            // Reload data
-            self.tableView!.reloadData()
+//            // Reload data
+//            self.tableView!.reloadData()
         })
     }
     
@@ -254,7 +260,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         configureView()
         
         // Query relationships
-        appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
         
         // Add searchbar to header
         self.searchBar.delegate = self

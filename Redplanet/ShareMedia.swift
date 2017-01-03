@@ -768,6 +768,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    print("ERROR SHARING VIDEOS")
                 }
             }
 
@@ -919,6 +921,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                     
                                                                 } else {
                                                                     print(error?.localizedDescription as Any)
+                                                                    print("ERROR SHARING VIDEOS")
                                                                 }
                                                             }
                                                             

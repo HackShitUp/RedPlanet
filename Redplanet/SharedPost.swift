@@ -446,6 +446,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             cell.textPost.isHidden = true
             
             
+            // (4) Set shared content's object
+            cell.cellSharedObject = content
+            
+            
             // (1) Get user's object
             if let user = content["byUser"] as? PFUser {
                 user.fetchIfNeededInBackground(block: {
@@ -696,10 +700,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.time.text = createdDate.string(from: content.createdAt!)
             }
             
-            
-            // (4) Set shared content's object
-            cell.cellSharedObject = content
-        }
+        } // end handling of optional chaining
         
         
         // Manipulate likes, comments, and shares

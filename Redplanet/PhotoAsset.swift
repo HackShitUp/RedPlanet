@@ -290,18 +290,18 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.clipsToBounds = true
         
 
-        // Get Media Asset Object
-        photoAssetObject.last!.fetchInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                
-                // (1) Point to User's Object
-                if let user = object!["byUser"] as? PFUser {
+        // Get Photo Assets
+        // (1) Point to User's Object
+        if let user = photoAssetObject.last!["byUser"] as? PFUser {
+            user.fetchIfNeededInBackground(block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    
                     // (A) Set username
-                    cell.rpUsername.text! = "\(user["username"] as! String)"
+                    cell.rpUsername.text! = "\(object!["username"] as! String)"
                     
                     // (B) Get profile photo
-                    if let proPic = user["userProfilePicture"] as? PFFile {
+                    if let proPic = object!["userProfilePicture"] as? PFFile {
                         proPic.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -314,133 +314,137 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                             }
                         })
                     }
-                }
-                
-                
-                // (2)
-                if let media = object!["photoAsset"] as? PFFile {
-                    media.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // set media asset
-                            cell.rpMedia.image = UIImage(data: data!)
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                }
-                
-                // Set caption
-                if object!["textPost"] != nil {
-                    cell.caption.text! = object!["textPost"] as! String
-                } else {
-                    cell.caption.isHidden = true
-                }
-                
-                // (3) Set time
-                let from = object!.createdAt!
-                let now = Date()
-                let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                
-                // logic what to show : Seconds, minutes, hours, days, or weeks
-                if difference.second! <= 0 {
-                    cell.time.text = "right now"
-                }
-                
-                if difference.second! > 0 && difference.minute! == 0 {
-                    if difference.second! == 1 {
-                        cell.time.text = "1 second ago"
-                    } else {
-                        cell.time.text = "\(difference.second!) seconds ago"
-                    }
-                }
-                
-                if difference.minute! > 0 && difference.hour! == 0 {
-                    if difference.minute! == 1 {
-                        cell.time.text = "1 minute ago"
-                    } else {
-                        cell.time.text = "\(difference.minute!) minutes ago"
-                    }
-                }
-                
-                if difference.hour! > 0 && difference.day! == 0 {
-                    if difference.hour! == 1 {
-                        cell.time.text = "1 hour ago"
-                    } else {
-                        cell.time.text = "\(difference.hour!) hours ago"
-                    }
-                }
-                
-                if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    if difference.day! == 1 {
-                        cell.time.text = "1 day ago"
-                    } else {
-                        cell.time.text = "\(difference.day!) days ago"
-                    }
-                }
-                
-                if difference.weekOfMonth! > 0 {
-                    let createdDate = DateFormatter()
-                    createdDate.dateFormat = "MMM d, yyyy"
-                    cell.time.text = createdDate.string(from: object!.createdAt!)
-                }
-                
-                
-                
-                // (4) Determine whether the current user has liked this object or not
-                if self.likes.contains(PFUser.current()!) {
-                    // Set button title
-                    cell.likeButton.setTitle("liked", for: .normal)
-                    // Set/ button image
-                    cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
-                } else {
-                    // Set button title
-                    cell.likeButton.setTitle("notLiked", for: .normal)
-                    // Set button image
-                    cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
-                }
-                
-                
-                // Set number of likes
-                if self.likes.count == 0 {
-                    cell.numberOfLikes.setTitle("likes", for: .normal)
-                    
-                } else if self.likes.count == 1 {
-                    cell.numberOfLikes.setTitle("1 like", for: .normal)
-                    
-                } else {
-                    cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
-                }
-                
-                // Set number of comments
-                if self.comments.count == 0 {
-                    cell.numberOfComments.setTitle("comments", for: .normal)
-                    
-                } else if self.comments.count == 1 {
-                    cell.numberOfComments.setTitle("1 comment", for: .normal)
-                    
-                } else {
-                    cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
-                    
-                }
-                
-                // Set number of shares
-                if self.sharers.count == 0 {
-                    cell.numberOfShares.setTitle("shares", for: .normal)
-                } else if self.sharers.count == 1 {
-                    cell.numberOfShares.setTitle("1 share", for: .normal)
-                } else {
-                    cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
-                }
 
-                
-                
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+        }
+        
+        
+        // (2)
+        if let media = photoAssetObject.last!["photoAsset"] as? PFFile {
+            media.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    // set media asset
+                    cell.rpMedia.image = UIImage(data: data!)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        // Set caption
+        if photoAssetObject.last!["textPost"] != nil {
+            cell.caption.text! = photoAssetObject.last!["textPost"] as! String
+        } else {
+            cell.caption.isHidden = true
+        }
+        
+        // (3) Set time
+        let from = photoAssetObject.last!.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
+        // logic what to show : Seconds, minutes, hours, days, or weeks
+        if difference.second! <= 0 {
+            cell.time.text = "right now"
+        }
+        
+        if difference.second! > 0 && difference.minute! == 0 {
+            if difference.second! == 1 {
+                cell.time.text = "1 second ago"
             } else {
-                print(error?.localizedDescription as Any)
+                cell.time.text = "\(difference.second!) seconds ago"
             }
         }
+        
+        if difference.minute! > 0 && difference.hour! == 0 {
+            if difference.minute! == 1 {
+                cell.time.text = "1 minute ago"
+            } else {
+                cell.time.text = "\(difference.minute!) minutes ago"
+            }
+        }
+        
+        if difference.hour! > 0 && difference.day! == 0 {
+            if difference.hour! == 1 {
+                cell.time.text = "1 hour ago"
+            } else {
+                cell.time.text = "\(difference.hour!) hours ago"
+            }
+        }
+        
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            if difference.day! == 1 {
+                cell.time.text = "1 day ago"
+            } else {
+                cell.time.text = "\(difference.day!) days ago"
+            }
+        }
+        
+        if difference.weekOfMonth! > 0 {
+            let createdDate = DateFormatter()
+            createdDate.dateFormat = "MMM d, yyyy"
+            cell.time.text = createdDate.string(from: photoAssetObject.last!.createdAt!)
+        }
+        
+        
+        
+        // (4) Determine whether the current user has liked this object or not
+        if self.likes.contains(PFUser.current()!) {
+            // Set button title
+            cell.likeButton.setTitle("liked", for: .normal)
+            // Set/ button image
+            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+        } else {
+            // Set button title
+            cell.likeButton.setTitle("notLiked", for: .normal)
+            // Set button image
+            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+        }
+        
+        
+        // Set number of likes
+        if self.likes.count == 0 {
+            cell.numberOfLikes.setTitle("likes", for: .normal)
+            
+        } else if self.likes.count == 1 {
+            cell.numberOfLikes.setTitle("1 like", for: .normal)
+            
+        } else {
+            cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+        }
+        
+        // Set number of comments
+        if self.comments.count == 0 {
+            cell.numberOfComments.setTitle("comments", for: .normal)
+            
+        } else if self.comments.count == 1 {
+            cell.numberOfComments.setTitle("1 comment", for: .normal)
+            
+        } else {
+            cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+            
+        }
+        
+        // Set number of shares
+        if self.sharers.count == 0 {
+            cell.numberOfShares.setTitle("shares", for: .normal)
+        } else if self.sharers.count == 1 {
+            cell.numberOfShares.setTitle("1 share", for: .normal)
+        } else {
+            cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
+        }
+
+        
+        
+        
         
         // Grow height
         cell.layoutIfNeeded()
