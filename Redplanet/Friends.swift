@@ -69,8 +69,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-        friends.includeKey("frontFriend")
-        friends.includeKey("endFriend")
+        friends.includeKeys(["frontFriend", "endFriend"])
         friends.whereKey("isFriends", equalTo: true)
         friends.findObjectsInBackground(block: { (
             objects: [PFObject]?, error: Error?) in
@@ -83,6 +82,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 self.friends.append(PFUser.current()!)
                 
                 for object in objects! {
+                    
                     if object["frontFriend"] as! PFUser == PFUser.current()! {
                         self.friends.append(object["endFriend"] as! PFUser)
                     }
@@ -93,15 +93,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
                 
                 print("Friends Count: \(self.friends.count)")
-                
+                print("\nFRIENDS DATA:\n\(self.friends)\n")
                 
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser","pointObject","toUser"])
                 newsfeeds.whereKey("contentType", containedIn: self.friendsType)
                 newsfeeds.whereKey("byUser", containedIn: self.friends)
-                newsfeeds.includeKey("byUser")
-                newsfeeds.includeKey("pointObject")
-                newsfeeds.includeKey("toUser")
                 newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.limit = self.page
                 newsfeeds.findObjectsInBackground(block: {
