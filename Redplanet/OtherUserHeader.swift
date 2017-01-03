@@ -1485,7 +1485,7 @@ class OtherUserHeader: UICollectionReusableView {
         }
         
         // Reload relationships
-        appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
 
     } // end Relation Action
 
@@ -1595,7 +1595,7 @@ class OtherUserHeader: UICollectionReusableView {
                     
                     // Show alert
                     let alert = UIAlertController(title: "Unknown Account",
-                                                  message: "Looks like this account doesn't exist yet.",
+                                                  message: "Looks like this account doesn't exist.",
                                                   preferredStyle: .alert)
                     let ok = UIAlertAction(title: "ok",
                                            style: .default,

@@ -253,9 +253,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // Append to otherObject
-        otherObject.append(exploreObjects[indexPath.row])
+        otherObject.append(self.exploreObjects[indexPath.row])
         // Append to otherName
-        otherName.append(exploreObjects[indexPath.row].value(forKey: "username") as! String)
+        otherName.append(self.exploreObjects[indexPath.row].value(forKey: "username") as! String)
         
         // Push to VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile

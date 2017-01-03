@@ -107,12 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Power your app with local datastore
         Parse.enableLocalDatastore()
         
-        // Development for Migration
-        // APP NAME: "Redplanet Media"
-        // Change bundle identifier for this as well
-//        Parse.setApplicationId("133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA",
-//                               clientKey: "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT")
-        
+
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
         Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",

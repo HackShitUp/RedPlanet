@@ -426,7 +426,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     func refresh() {
         
         // Run relationships
-        appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
         
         // Query Content
         queryContent()
@@ -615,7 +615,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Query relationships
-        appDelegate.queryRelationships()
+        _ = appDelegate.queryRelationships()
         
         // Declare parent VC
         header.delegate = self

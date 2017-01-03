@@ -347,7 +347,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 
                 
-                // *************************************************************************************************************************
+                // ***********************************************************************************************************************
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {

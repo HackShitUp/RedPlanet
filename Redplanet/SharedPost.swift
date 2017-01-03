@@ -252,48 +252,41 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     func createText() -> String? {
         
         if let content = sharedObject.last!.value(forKey: "pointObject") as? PFObject {
-            content.fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // Check for textPost & handle optional chaining
-                    if sharedObject.last!.value(forKey: "textPost") != nil && sharedObject.last!.value(forKey: "contentType") as! String != "itm" {
-                        // Caption exists
-                        // Calculate screen height
-                        if UIScreen.main.nativeBounds.height == 960 {
-                            // iPhone 4
-                            self.layoutText = "\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
-                        } else if UIScreen.main.nativeBounds.height == 1136 {
-                            // iPhone 5 √
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
-                        } else if UIScreen.main.nativeBounds.height == 1334 {
-                            // iPhone 6 √
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
-                        } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
-                            // iPhone 6+ √
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(object!["textPost"] as! String)"
-                        }
-                        
-                    } else {
-                        // Caption DOES NOT exist
-                        // Calculate screen height
-                        if UIScreen.main.nativeBounds.height == 960 {
-                            // iPhone 4
-                            self.layoutText = "\n\n\n\n\n\n\n\n"
-                        } else if UIScreen.main.nativeBounds.height == 1136 {
-                            // iPhone 5
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n"
-                        } else if UIScreen.main.nativeBounds.height == 1334 {
-                            // iPhone 6
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                        } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
-                            // iPhone 6+
-                            self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                        }
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
+            // Check for textPost & handle optional chaining
+            if content.value(forKey: "textPost") != nil && content.value(forKey: "contentType") as! String != "itm" {
+                // Caption exists
+                // Calculate screen height
+                if UIScreen.main.nativeBounds.height == 960 {
+                    // iPhone 4
+                    self.layoutText = "\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
+                } else if UIScreen.main.nativeBounds.height == 1136 {
+                    // iPhone 5 √
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
+                } else if UIScreen.main.nativeBounds.height == 1334 {
+                    // iPhone 6 √
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
+                } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                    // iPhone 6+ √
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
                 }
-            })
+                
+            } else {
+                // Caption DOES NOT exist
+                // Calculate screen height
+                if UIScreen.main.nativeBounds.height == 960 {
+                    // iPhone 4
+                    self.layoutText = "\n\n\n\n\n\n\n\n"
+                } else if UIScreen.main.nativeBounds.height == 1136 {
+                    // iPhone 5
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n"
+                } else if UIScreen.main.nativeBounds.height == 1334 {
+                    // iPhone 6
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
+                    // iPhone 6+
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                }
+            }
             
         }
         
@@ -448,22 +441,21 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Content
         // Fetch content
         if let content = sharedObject.last!.value(forKey: "pointObject") as? PFObject {
-            content.fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    
-                    // Hide both objects
-                    cell.mediaAsset.isHidden = true
-                    cell.textPost.isHidden = true
-                    
-
-                    // (1) Get user's object
-                    if let user = object!["byUser"] as? PFUser {
+            // Hide both objects
+            cell.mediaAsset.isHidden = true
+            cell.textPost.isHidden = true
+            
+            
+            // (1) Get user's object
+            if let user = content["byUser"] as? PFUser {
+                user.fetchIfNeededInBackground(block: {
+                    (object: PFObject?, error: Error?) in
+                    if error == nil {
                         // (A) Set username
-                        cell.rpUsername.text! = user["username"] as! String
+                        cell.rpUsername.text! = object!["username"] as! String
                         
                         // (B) Get user's profile photo
-                        if let proPic = user["userProfilePicture"] as? PFFile {
+                        if let proPic = object!["userProfilePicture"] as? PFFile {
                             proPic.getDataInBackground(block: {
                                 (data: Data?, error: Error?) in
                                 if error == nil {
@@ -478,252 +470,235 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         }
                         
                         // (C) Set byUser's object
-                        cell.byUserObject = user
+                        cell.byUserObject = object
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
                     }
-                    
-                    
-                    
-                    
-                    // (2) Fetch content
-                    // Create text
-                    _ = self.createText()
-                    
-                    // ==============================================================================================================
-                    // TEXT POST ====================================================================================================
-                    // ==============================================================================================================
-                    if object!["contentType"] as! String == "tp" {
-                        // Show text post
-                        cell.textPost.isHidden = false
-                        
-                        // Text post
-                        cell.textPost.text! = object!["textPost"] as! String
-                    }
-                    
-                    
-                    // ==============================================================================================================
-                    // PHOTO ========================================================================================================
-                    // ==============================================================================================================
-
-                    if object!["contentType"] as! String == "ph" || object!["contentType"] as! String == "pp" || object!["contentType"] as! String == "itm" {
-                        
-                        // (A) Configure photo
-                        cell.mediaAsset.layer.cornerRadius = 0.0
-                        cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
-                        cell.mediaAsset.layer.borderWidth = 0.0
-                        cell.mediaAsset.contentMode = .scaleAspectFill
-                        cell.mediaAsset.isHidden = false
-                        cell.mediaAsset.clipsToBounds = true
-                        
-                        // (A) Fetch photo
-                        if let photo = object!["photoAsset"] as? PFFile {
-                            photo.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    // Set Photo
-                                    cell.mediaAsset.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                }
-                            })
+                })
+            }
+            
+            
+            
+            
+            // (2) Fetch content
+            // Create text
+            _ = self.createText()
+            
+            // ==============================================================================================================
+            // TEXT POST ====================================================================================================
+            // ==============================================================================================================
+            if content["contentType"] as! String == "tp" {
+                // Show text post
+                cell.textPost.isHidden = false
+                
+                // Text post
+                cell.textPost.text! = content["textPost"] as! String
+            }
+            
+            
+            // ============================================================================================================================
+            // PHOTO,  PROFILE PHOTO,    &   ITM ==========================================================================================
+            // ============================================================================================================================
+            
+            if content["contentType"] as! String == "ph" || content["contentType"] as! String == "pp" || content["contentType"] as! String == "itm" {
+                
+                // (A) Configure photo
+                cell.mediaAsset.layer.cornerRadius = 0.0
+                cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
+                cell.mediaAsset.layer.borderWidth = 0.0
+                cell.mediaAsset.contentMode = .scaleAspectFill
+                cell.mediaAsset.isHidden = false
+                cell.mediaAsset.clipsToBounds = true
+                
+                // (A) Fetch photo
+                if let photo = content["photoAsset"] as? PFFile {
+                    photo.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            // Set Photo
+                            cell.mediaAsset.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription as Any)
                         }
+                    })
+                }
+                
+                // (B) Configure Text
+                cell.textPost.isHidden = false
+                cell.textPost.text! = self.layoutText!
+            }
+            
+            
+            // ==============================================================================================================
+            // VIDEO ========================================================================================================
+            // ==============================================================================================================
+            
+            if content["contentType"] as! String == "vi" {
+                // (A) Stylize video preview
+                cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
+                cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                cell.mediaAsset.layer.borderWidth = 3.50
+                cell.mediaAsset.contentMode = .scaleAspectFill
+                cell.mediaAsset.isHidden = false
+                cell.mediaAsset.clipsToBounds = true
+                
+                // (B) Fetch video thumbnail
+                if let video = sharedObject.last!.value(forKey: "videoAsset") as? PFFile {
+                    let videoUrl = NSURL(string: video.url!)
+                    do {
+                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                        let imgGenerator = AVAssetImageGenerator(asset: asset)
+                        imgGenerator.appliesPreferredTrackTransform = true
+                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                        cell.mediaAsset.image = UIImage(cgImage: cgImage)
                         
-                        // (B) Configure Text
-                        cell.textPost.isHidden = false
-                        cell.textPost.text! = self.layoutText!
+                    } catch let error {
+                        print("*** Error generating thumbnail: \(error.localizedDescription)")
                     }
+                }
+                
+                
+                // (C) Configure Text
+                cell.textPost.isHidden = false
+                cell.textPost.text! = self.layoutText!
+            }
+            
+            
+            
+            
+            
+            
+            // ==============================================================================================================
+            // SPACE POST ===================================================================================================
+            // ==============================================================================================================
+            if content["contentType"] as! String == "sp" {
+                
+                // (1) PHOTO
+                if content["photoAsset"] != nil {
                     
                     
-                    // ==============================================================================================================
-                    // VIDEO ========================================================================================================
-                    // ==============================================================================================================
-                    if object!["contentType"] as! String == "vi" {
-                        // (A) Stylize video preview
-                        cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-                        cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
-                        cell.mediaAsset.layer.borderWidth = 3.50
-                        cell.mediaAsset.contentMode = .scaleAspectFill
-                        cell.mediaAsset.isHidden = false
-                        cell.mediaAsset.clipsToBounds = true
-                        
-                        // (B) Fetch video thumbnail
-                        if let video = sharedObject.last!.value(forKey: "videoAsset") as? PFFile {
-                            let videoUrl = NSURL(string: video.url!)
-                            do {
-                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                                imgGenerator.appliesPreferredTrackTransform = true
-                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                                cell.mediaAsset.image = UIImage(cgImage: cgImage)
-                                
-                            } catch let error {
-                                print("*** Error generating thumbnail: \(error.localizedDescription)")
+                    // (A) Configure photo
+                    cell.mediaAsset.layer.cornerRadius = 0.0
+                    cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
+                    cell.mediaAsset.layer.borderWidth = 0.0
+                    cell.mediaAsset.contentMode = .scaleAspectFill
+                    cell.mediaAsset.isHidden = false
+                    cell.mediaAsset.clipsToBounds = true
+                    
+                    // (A) Fetch photo
+                    if let photo = content["photoAsset"] as? PFFile {
+                        photo.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                // Set Photo
+                                cell.mediaAsset.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
                             }
-                        }
-                        
-                        
-                        // (C) Configure Text
-                        cell.textPost.isHidden = false
-                        cell.textPost.text! = self.layoutText!
+                        })
                     }
                     
+                    // (B) Configure Text
+                    cell.textPost.isHidden = false
+                    cell.textPost.text! = self.layoutText!
                     
                     
+                } else if content["videoAsset"] != nil {
                     
+                    // (2) VIDEO
                     
+                    // (A) Stylize video preview
+                    cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
+                    cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                    cell.mediaAsset.layer.borderWidth = 3.50
+                    cell.mediaAsset.contentMode = .scaleAspectFill
+                    cell.mediaAsset.isHidden = false
+                    cell.mediaAsset.clipsToBounds = true
                     
-                    // ==============================================================================================================
-                    // SPACE POST ===================================================================================================
-                    // ==============================================================================================================
-                    if object!["contentType"] as! String == "sp" {
-                        
-                        // (1) PHOTO
-                        if object!["photoAsset"] != nil {
+                    // (B) Fetch video thumbnail
+                    if let video = content["videoAsset"] as? PFFile {
+                        let videoUrl = NSURL(string: video.url!)
+                        do {
+                            let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                            let imgGenerator = AVAssetImageGenerator(asset: asset)
+                            imgGenerator.appliesPreferredTrackTransform = true
+                            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                            cell.mediaAsset.image = UIImage(cgImage: cgImage)
                             
-                            
-                            // (A) Configure photo
-                            cell.mediaAsset.layer.cornerRadius = 0.0
-                            cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
-                            cell.mediaAsset.layer.borderWidth = 0.0
-                            cell.mediaAsset.contentMode = .scaleAspectFill
-                            cell.mediaAsset.isHidden = false
-                            cell.mediaAsset.clipsToBounds = true
-                            
-                            // (A) Fetch photo
-                            if let photo = object!["photoAsset"] as? PFFile {
-                                photo.getDataInBackground(block: {
-                                    (data: Data?, error: Error?) in
-                                    if error == nil {
-                                        // Set Photo
-                                        cell.mediaAsset.image = UIImage(data: data!)
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                            }
-                            
-                            // (B) Configure Text
-                            cell.textPost.isHidden = false
-                            cell.textPost.text! = self.layoutText!
-                            
-                            
-                        } else if object!["videoAsset"] != nil {
-                            
-                        // (2) VIDEO
-                            
-                            // (A) Stylize video preview
-                            cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-                            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
-                            cell.mediaAsset.layer.borderWidth = 3.50
-                            cell.mediaAsset.contentMode = .scaleAspectFill
-                            cell.mediaAsset.isHidden = false
-                            cell.mediaAsset.clipsToBounds = true
-                            
-                            // (B) Fetch video thumbnail
-                            if let video = object!["videoAsset"] as? PFFile {
-                                let videoUrl = NSURL(string: video.url!)
-                                do {
-                                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                                    imgGenerator.appliesPreferredTrackTransform = true
-                                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                                    cell.mediaAsset.image = UIImage(cgImage: cgImage)
-                                    
-                                } catch let error {
-                                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                                }
-                            }
-                            
-                            
-                            // (C) Configure Text
-                            cell.textPost.isHidden = false
-                            cell.textPost.text! = self.layoutText!
-                            
-                        } else {
-                            
-                            // Add lines for sizing constraints
-                            cell.textPost.isHidden = false
-                            cell.textPost.text! = "\(object!["textPost"] as! String)"
-                        }
-                        
-                        
-                    }
-                    
-                    
-                    // (3) set time
-                    let from = object!.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    
-                    // logic what to show : Seconds, minutes, hours, days, or weeks
-                    if difference.second! <= 0 {
-                        cell.sharedTime.text = "right now"
-                    }
-                    
-                    if difference.second! > 0 && difference.minute! == 0 {
-                        if difference.second! == 1 {
-                            cell.time.text = "1 second ago"
-                        } else {
-                            cell.time.text = "\(difference.second!) seconds ago"
+                        } catch let error {
+                            print("*** Error generating thumbnail: \(error.localizedDescription)")
                         }
                     }
                     
-                    if difference.minute! > 0 && difference.hour! == 0 {
-                        if difference.minute! == 1 {
-                            cell.time.text = "1 minute ago"
-                        } else {
-                            cell.time.text = "\(difference.minute!) minutes ago"
-                        }
-                    }
                     
-                    if difference.hour! > 0 && difference.day! == 0 {
-                        if difference.hour! == 1 {
-                            cell.time.text = "1 hour ago"
-                        } else {
-                            cell.time.text = "\(difference.hour!) hours ago"
-                        }
-                    }
-                    
-                    if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        if difference.day! == 1 {
-                            cell.time.text = "1 day ago"
-                        } else {
-                            cell.time.text = "\(difference.day!) days ago"
-                        }
-                    }
-                    
-                    if difference.weekOfMonth! > 0 {
-                        let createdDate = DateFormatter()
-                        createdDate.dateFormat = "MMM d, yyyy"
-                        cell.time.text = createdDate.string(from: object!.createdAt!)
-                    }
-                    
-                    
-                    // (4) Set shared content's object
-                    cell.cellSharedObject = object!
-                    
+                    // (C) Configure Text
+                    cell.textPost.isHidden = false
+                    cell.textPost.text! = self.layoutText!
                     
                 } else {
-                    print(error?.localizedDescription as Any)
                     
-                    
-                    // Show alert
-                    let alert = UIAlertController(title: "Post Not Found",
-                                                  message: "Looks like this post was deleted.",
-                                                  preferredStyle: .alert)
-                    
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: {(alertAction: UIAlertAction!) in
-                                            // Pop VC
-                                            _ = self.navigationController?.popViewController(animated: true)
-                    })
-                    
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // Add lines for sizing constraints
+                    cell.textPost.isHidden = false
+                    cell.textPost.text! = "\(content["textPost"] as! String)"
                 }
-            })
+                
+                
+            }
+            
+            
+            // (3) set time
+            let from = content.createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+            
+            // logic what to show : Seconds, minutes, hours, days, or weeks
+            if difference.second! <= 0 {
+                cell.sharedTime.text = "right now"
+            }
+            
+            if difference.second! > 0 && difference.minute! == 0 {
+                if difference.second! == 1 {
+                    cell.time.text = "1 second ago"
+                } else {
+                    cell.time.text = "\(difference.second!) seconds ago"
+                }
+            }
+            
+            if difference.minute! > 0 && difference.hour! == 0 {
+                if difference.minute! == 1 {
+                    cell.time.text = "1 minute ago"
+                } else {
+                    cell.time.text = "\(difference.minute!) minutes ago"
+                }
+            }
+            
+            if difference.hour! > 0 && difference.day! == 0 {
+                if difference.hour! == 1 {
+                    cell.time.text = "1 hour ago"
+                } else {
+                    cell.time.text = "\(difference.hour!) hours ago"
+                }
+            }
+            
+            if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                if difference.day! == 1 {
+                    cell.time.text = "1 day ago"
+                } else {
+                    cell.time.text = "\(difference.day!) days ago"
+                }
+            }
+            
+            if difference.weekOfMonth! > 0 {
+                let createdDate = DateFormatter()
+                createdDate.dateFormat = "MMM d, yyyy"
+                cell.time.text = createdDate.string(from: content.createdAt!)
+            }
+            
+            
+            // (4) Set shared content's object
+            cell.cellSharedObject = content
         }
         
         
