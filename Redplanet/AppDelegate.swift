@@ -110,14 +110,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Development for Migration
         // APP NAME: "Redplanet Media"
         // Change bundle identifier for this as well
-//        Parse.setApplicationId("eJwKMLxpPqYhLdIy2Rw5p2u4hze0dHYwplwaIxyu",
-//                               clientKey: "VN39alIfGp5l3ki9CccakkufGzJ07MilWnIwVxT7")
+//        Parse.setApplicationId("133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA",
+//                               clientKey: "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT")
         
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
         Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
                                clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
-
+        
+        
+        
+//        let configuration = ParseClientConfiguration {
+//            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
+//            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
+//            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+//        }
+//        Parse.initialize(with: configuration)
         
         
         // OneSignal for custom push notifications
@@ -329,7 +337,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     // (2) Query Relationships --- Checks all of the current user's friends, followers, and followings
-    func queryRelationships() {
+    func queryRelationships() -> ([PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject]) {
         // TODO::
         print("Fetching Relationships...")
         // Query Friends && Users you've requested to be friends WITH
@@ -472,8 +480,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        
-        
+    
+    
+        return (myFriends, requestedToFriendMe, myRequestedFriends, myFollowers, myRequestedFollowers, myFollowing, myRequestedFollowing)
     }
 
     

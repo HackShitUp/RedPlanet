@@ -57,6 +57,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     func queryFollowing() {
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.includeKey("byUser")
+        newsfeeds.includeKey("toUser")
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
         newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
         newsfeeds.limit = self.page
@@ -228,7 +230,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
 
         
         // Fetch content
-        self.followingContent[indexPath.row].fetchIfNeededInBackground {
+        self.followingContent[indexPath.row].fetchIfNeededInBackground(block: {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 // (1) Get and set user's object
@@ -382,7 +384,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
             } else{
                 print(error?.localizedDescription as Any)
             }
-        }
+        })
         
 
         return cell

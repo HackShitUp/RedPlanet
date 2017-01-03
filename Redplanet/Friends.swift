@@ -101,6 +101,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 newsfeeds.whereKey("byUser", containedIn: self.friends)
                 newsfeeds.includeKey("byUser")
                 newsfeeds.includeKey("pointObject")
+                newsfeeds.includeKey("toUser")
                 newsfeeds.order(byDescending: "createdAt")
                 newsfeeds.limit = self.page
                 newsfeeds.findObjectsInBackground(block: {

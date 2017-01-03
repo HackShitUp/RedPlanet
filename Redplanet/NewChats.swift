@@ -216,6 +216,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 
                 // Reload data
                 if self.searchObjects.count != 0 {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIView()
                     // Reload data
                     self.tableView!.reloadData()
                 } else {
