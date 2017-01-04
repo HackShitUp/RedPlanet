@@ -592,7 +592,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                         self.likers.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-                            self.likers.append(object["fromUser"] as! PFUser)
+//                            self.likers.append(object["fromUser"] as! PFUser)
+                            self.likers.append(object.object(forKey: "fromUser") as! PFUser)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -603,7 +604,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     
                     
                     // Check whether user has liked it or not
-                    if self.likers.contains(PFUser.current()!) {
+//                    if self.likers.contains(PFUser.current()!) {
+                    if self.likers.contains(where: { $0.objectId == PFUser.current()!.objectId!}) {
                         // unlike
                         cell.likeButton.setTitle("liked", for: .normal)
                         cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
@@ -768,9 +770,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
 
         
         
-        if self.comments[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if self.comments[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (self.comments[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete]
-        } else if commentsObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        } else if commentsObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        } else if (commentsObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, reply, report]
         } else {
             return [reply, report]
