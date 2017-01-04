@@ -315,7 +315,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             
             // Call relationships function
-            queryRelationships()
+            _ = queryRelationships()
 
             // Check birthday
             checkBirthday()
@@ -346,8 +346,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-        friends.includeKey("endFriend")
-        friends.includeKey("frontFriend")
+        friends.includeKeys(["frontFriend", "endFriend"])
         friends.whereKey("isFriends", equalTo: true)
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -359,8 +358,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 requestedToFriendMe.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
+                    // Fetch object first???
+                    // WORKS for both
+//                    if let eFriend = object["endFriend"] as? PFUser {
+//                        eFriend.fetchIfNeededInBackground(block: {
+//                            (object: PFObject?, error: Error?) in
+//                            if error == nil {
+//                                if eFriend != PFUser.current()! {
+//                                    myFriends.append(eFriend)
+//                                }
+//                            } else {
+//                                print(error?.localizedDescription as Any)
+//                            }
+//                        })
+//                    } else if let fFriend = object["frontFriend"] as? PFUser {
+//                        fFriend.fetchIfNeededInBackground(block: {
+//                            (object: PFObject?, error: Error?) in
+//                            if error == nil {
+//                                if fFriend != PFUser.current()! {
+//                                    myFriends.append(fFriend)
+//                                }
+//                            } else {
+//                                print(error?.localizedDescription as Any)
+//                            }
+//                        })
+//                    }
+
+                    
+                    
+                    // The below code doesn't work for com.redplanetapp.redplanet
+                    // BUT WORKS for com.redplanetmedia.redplanet
+//                    if object.object(forKey: "endFriend") as! PFUser != PFUser.current()! {
+//                        myFriends.append(object.object(forKey: "frontFriend") as! PFUser)
+//                    } else {
+//                        myFriends.append(object.object(forKey: "endFriend") as! PFUser)
+//                    }
+                    
                     // If FRIENDS
                     // "isFriends" == true
+                    // The below code WORKS for com.redplanetapp.redplanet
+                    // BUT NOT for com.redplanetmedia.redplanet
                     if object["endFriend"] as! PFUser == PFUser.current()! {
                         myFriends.append(object["frontFriend"] as! PFUser)
                     }
@@ -368,7 +405,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if object["frontFriend"] as! PFUser == PFUser.current()! {
                         myFriends.append(object["endFriend"] as! PFUser)
                     }
+
                 }
+                
+                
+                print("\n***\nMY FRIENDS:\n\(myFriends)\n***\n")
                 
                 
                 
@@ -437,6 +478,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         myRequestedFollowing.append(object["following"] as! PFUser)
                     }
                 }
+                
+                print("\n***\nMY FOLLOWING:\n\(myFollowing)\n***\n")
                 
             } else {
                 print(error?.localizedDescription as Any)

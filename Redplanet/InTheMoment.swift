@@ -258,7 +258,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                             
                             
                             // (B) Manipulate likes
-                            if self.likes.contains(PFUser.current()!) {
+//                            if self.likes.contains(PFUser.current()!) {
+                            if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
                                 // liked
                                 self.likeButton.setTitle("liked", for: .normal)
                                 self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
@@ -847,7 +848,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         
         // Hide moreButton if not user's content
-        if itmObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if itmObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Show button
             self.moreButton.isHidden = false
         } else {

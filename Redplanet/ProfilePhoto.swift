@@ -353,7 +353,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         }
         
         // (FA) Manipulate likes
-        if self.likes.contains(PFUser.current()!) {
+//        if self.likes.contains(PFUser.current()!) {
+        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
             // liked
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
             cell.likeButton.setTitle("liked", for: .normal)
@@ -640,7 +641,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
-        if proPicObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if proPicObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (proPicObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {
             return [report]

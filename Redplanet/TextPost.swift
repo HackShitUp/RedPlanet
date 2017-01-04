@@ -57,8 +57,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     func fetchInteractions() {
         // (1) Fetch Likes
         let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
         likes.includeKey("fromUser")
+        likes.whereKey("forObjectId", equalTo: textPostObject.last!.objectId!)
         likes.order(byDescending: "createdAt")
         likes.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -68,7 +68,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                 self.likes.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.likes.append(object["fromUser"] as! PFUser)
+                    self.likes.append(object.object(forKey: "fromUser") as! PFUser)
                 }
                 
                 
@@ -398,14 +398,17 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         }
         
         
-        print("\nLIKERS:\n\(self.likes)\nUSER:\n\(PFUser.current()!)\n")
+        
         // (4) Determine whether the current user has liked this object or not
-        if self.likes.contains(PFUser.current()!) {
+//        if self.likes.contains(PFUser.current()!) {
+        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
+            print("TRUE")
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
         } else {
+            print("FALSE")
             // Set button title
             cell.likeButton.setTitle("notLiked", for: .normal)
             // Set button image
@@ -635,7 +638,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         
-        if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (textPostObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {
             return [report]

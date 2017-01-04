@@ -706,7 +706,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Manipulate likes, comments, and shares
         
         // Set Like Button
-        if self.likes.contains(PFUser.current()!) {
+//        if self.likes.contains(PFUser.current()!) {
+        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
             cell.likeButton.setTitle("liked", for: .normal)
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
         } else {
@@ -896,7 +897,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
-        if sharedObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if sharedObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (sharedObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, views]
         } else {
             return [report]

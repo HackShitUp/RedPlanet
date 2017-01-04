@@ -397,7 +397,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         // (4) Determine whether the current user has liked this object or not
-        if self.likes.contains(PFUser.current()!) {
+//        if self.likes.contains(PFUser.current()!) {
+        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
@@ -633,7 +634,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
-        if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (photoAssetObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {
             return [report]

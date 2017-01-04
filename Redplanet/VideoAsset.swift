@@ -426,7 +426,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         // (5) Determine whether the current user has liked this object or not
-        if self.likes.contains(PFUser.current()!) {
+//        if self.likes.contains(PFUser.current()!) {
+        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
@@ -659,7 +660,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         
-        if videoObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+//        if videoObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if (videoObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {
             return [report]

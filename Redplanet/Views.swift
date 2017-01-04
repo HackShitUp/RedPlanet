@@ -70,11 +70,17 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 // Append objects
                 for object in objects! {
-                    if self.viewers.contains(object["byUser"] as! PFUser) || object["byUser"] as! PFUser == PFUser.current()! {
-                        // Skip appending the object
+                    
+//                    if self.viewers.contains(object["byUser"] as! PFUser) || object["byUser"] as! PFUser == PFUser.current()! {
+//                        // Skip appending the object
+//                    } else {
+//                        // Append the object
+//                        self.viewers.append(object["byUser"] as! PFUser)
+//                    }
+                    // Skip appending (1) Already existing object AND (2) Current User
+                    if self.viewers.contains(object.object(forKey: "byUser") as! PFUser) || object.object(forKey: "byUser") as! PFUser == PFUser.current()! {
                     } else {
-                        // Append the object
-                        self.viewers.append(object["byUser"] as! PFUser)
+                        self.viewers.append(object.object(forKey: "byUser") as! PFUser)
                     }
                 }
                 
