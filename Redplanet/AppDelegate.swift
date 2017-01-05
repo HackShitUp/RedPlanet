@@ -53,14 +53,14 @@ UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
 BLUE:
 UIColor(red:0.00, green:0.76, blue:1.00, alpha:1.0)
 
- 
- 
- F R A M E W O R K S    T O     L O O K     A T 
+ F R A M E W O R K S    T O     L O O K     A T
  • ALERTS: https://github.com/Orderella/PopupDialog
  • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
  • CIRCULAR CROP: https://github.com/ruslanskorb/RSKImageCropper
  
- */
+
+ 
+*/
 
 
 
@@ -110,8 +110,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
-        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+//        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
+//                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+        
+        
+        // TEST 2
+        Parse.setApplicationId("wfDQkAvUSEw8VtqfvP2roBgz9vsHNar1MWbChGES",
+                               clientKey: "rTVN9oK8SPQ4c55dhaQVvoPf4qbo39RnxZXLqZNe")
         
         
         
@@ -333,6 +338,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // (2) Query Relationships --- Checks all of the current user's friends, followers, and followings
     func queryRelationships() -> ([PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject]) {
+        
         // TODO::
         print("Fetching Relationships...")
         // Query Friends && Users you've requested to be friends WITH

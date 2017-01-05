@@ -62,7 +62,7 @@ class OnBoardFollowCell: UITableViewCell {
                     self.followButton.isEnabled = true
                     
                     // Trigger relationship function
-                    self.appDelegate.queryRelationships()
+                    _ = self.appDelegate.queryRelationships()
                     
                     // Reload data
                     NotificationCenter.default.post(name: onBoardNotification, object: nil)

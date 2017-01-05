@@ -890,7 +890,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                           handler: {(alertAction: UIAlertAction!) in
                                                                             
                                                                             // Query relationships to check
-                                                                            self.appDelegate.queryRelationships()
+                                                                            _ = self.appDelegate.queryRelationships()
                                                                             
                                                                             // Remove follower
                                                                             let follower = PFQuery(className: "FollowMe")
