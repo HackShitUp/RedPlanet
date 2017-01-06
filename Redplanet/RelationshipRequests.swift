@@ -77,8 +77,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         // Fetch friends
         let friends = PFQuery(className: "FriendMe")
         friends.whereKey("isFriends", equalTo: false)
-        friends.includeKey("endFriend")
-        friends.includeKey("frontFriend")
+        friends.includeKeys(["endFriend", "frontFriend"])
         friends.whereKey("endFriend", equalTo: PFUser.current()!)
         friends.order(byDescending: "createdAt")
         friends.findObjectsInBackground {
@@ -113,8 +112,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // Query followers
     func fetchFollowers() {
         let followers = PFQuery(className: "FollowMe")
-        followers.includeKey("endFriend")
-        followers.includeKey("frontFriend")
+        followers.includeKeys(["endFriend", "frontFriend"])
         followers.whereKey("following", equalTo: PFUser.current()!)
         followers.whereKey("isFollowing", equalTo: false)
         followers.order(byDescending: "createdAt")
@@ -152,8 +150,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         // (1) Friend Request: "frontFriend" == PFUser.currentUser()!
         // (2) Follow Requests: "follower" == PFUser.currentUser()!
         let friend = PFQuery(className: "FriendMe")
-        friend.includeKey("frontFriend")
-        friend.includeKey("endFriend")
+        friend.includeKeys(["frontFriend", "endFriend"])
         friend.whereKey("isFriends", equalTo: false)
         friend.whereKey("frontFriend", equalTo: PFUser.current()!)
         friend.order(byDescending: "createdAt")
@@ -173,8 +170,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 
                 // Fetch Sent Follow Requests
                 let follow = PFQuery(className: "FollowMe")
-                follow.includeKey("following")
-                follow.includeKey("follower")
+                follow.includeKeys(["following", "follower"])
                 follow.whereKey("isFollowing", equalTo: false)
                 follow.whereKey("follower", equalTo: PFUser.current()!)
                 follow.findObjectsInBackground(block: {

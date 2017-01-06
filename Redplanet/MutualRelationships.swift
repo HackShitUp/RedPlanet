@@ -62,8 +62,7 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
         
         // Query other user's friends
         let mFriends = PFQuery.orQuery(withSubqueries: [fFriends, eFriends])
-        mFriends.includeKey("endFriend")
-        mFriends.includeKey("frontFriend")
+        mFriends.includeKeys(["endFriend", "frontFriend"])
         mFriends.whereKey("isFriends", equalTo: true)
         mFriends.order(byDescending: "createdAt")
         mFriends.findObjectsInBackground(block: {
@@ -78,12 +77,11 @@ class MutualRelationships: UICollectionViewController, DZNEmptyDataSetSource, DZ
                 
                 for object in objects! {
                     
-                    if object["endFriend"] as! PFUser == forMutual.last! {
-                        self.mFriends.append(object["frontFriend"] as! PFUser)
-                    }
-                    
-                    if object["frontFriend"] as! PFUser == forMutual.last! {
-                        self.mFriends.append(object["endFriend"] as! PFUser)
+                    // Append Friend
+                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == forMutual.last!.objectId! {
+                        self.mFriends.append(object.object(forKey: "frontFriend") as! PFUser)
+                    } else {
+                        self.mFriends.append(object.object(forKey: "endFriend") as! PFUser)
                     }
                 }
                 

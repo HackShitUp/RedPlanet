@@ -422,12 +422,15 @@ class OtherUserHeader: UICollectionReusableView {
                                         
                                         let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
                                         friend.whereKey("isFriends", equalTo: true)
+                                        friend.includeKeys(["endFriend", "frontFriend"])
                                         friend.findObjectsInBackground(block: {
                                             (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
                                                 for object in objects! {
                                                     // If frontFriend
-                                                    if object["frontFriend"] as! PFUser == PFUser.current()! && object["endFriend"] as! PFUser ==  otherObject.last! {
+                                                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "endFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
+                                                        
+                                                        // Delete
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
@@ -446,7 +449,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                     }
                                                     
                                                     // If endFriend
-                                                    if object["endFriend"] as! PFUser == PFUser.current()! && object["frontFriend"] as! PFUser == otherObject.last! {
+                                                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "frontFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
+                                                        
+                                                        // Delete
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {

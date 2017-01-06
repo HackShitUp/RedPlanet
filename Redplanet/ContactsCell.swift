@@ -128,13 +128,14 @@ class ContactsCell: UITableViewCell {
                                         fFriend.whereKey("frontFriend", equalTo: self.friend!)
                                         
                                         let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
+                                        friend.includeKeys(["frontFriend", "endFriend"])
                                         friend.whereKey("isFriends", equalTo: true)
                                         friend.findObjectsInBackground(block: {
                                             (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
                                                 for object in objects! {
                                                     // If frontFriend
-                                                    if object["frontFriend"] as! PFUser == PFUser.current()! && object["endFriend"] as! PFUser ==  self.friend! {
+                                                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "endFriend") as! PFUser).objectId! == self.friend!.objectId! {
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
@@ -162,7 +163,7 @@ class ContactsCell: UITableViewCell {
                                                     }
                                                     
                                                     // If endFriend
-                                                    if object["endFriend"] as! PFUser == PFUser.current()! && object["frontFriend"] as! PFUser == self.friend! {
+                                                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "frontFriend") as! PFUser).objectId! == self.friend!.objectId! {
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {

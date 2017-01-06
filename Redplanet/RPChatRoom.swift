@@ -123,8 +123,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // (1) Chats subqueries
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.includeKey("receiver")
-        chats.includeKey("sender")
+        chats.includeKeys(["receiver", "sender"])
         chats.order(byAscending: "createdAt")
         chats.limit = self.page
         chats.findObjectsInBackground(block: {
@@ -787,7 +786,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
             
             // (1) Set usernames depending on who sent what
-//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
@@ -803,8 +801,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
             //
-//            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
-            
             if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
             
                 // Get and set profile photo
@@ -825,7 +821,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
             //
-//            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
                 
                 // Get and set Profile Photo
@@ -917,7 +912,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             
             // (1) Set usernames depending on who sent what
-//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
@@ -992,7 +986,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Fetch objects
             // (3) Set usernames depending on who sent what
-//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
@@ -1005,7 +998,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
             //
-//            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
             if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
             
                 // Get and set profile photo
@@ -1027,7 +1019,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
             //
-//            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
                 
                 // Get and set Profile Photo
@@ -1224,7 +1215,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         
         // Return specific actions depending on user's object
-        if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+        if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete]
         } else {
             return [report]

@@ -202,7 +202,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && videoObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if openedPost == false && (videoObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
@@ -660,7 +660,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         
-//        if videoObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
         if (videoObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {

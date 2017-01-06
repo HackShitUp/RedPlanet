@@ -42,8 +42,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
     // Function to fetch liked posts
     func fetchLikesAndShares() {
         let likesAndShares = PFQuery(className: "Newsfeeds")
-        likesAndShares.includeKey("byUser")
-        likesAndShares.includeKey("pointObject")
+        likesAndShares.includeKeys(["byUser", "pointObject"])
         likesAndShares.order(byDescending: "createdAt")
         likesAndShares.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -62,7 +61,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                         }
                     }
                     
-                    if object["contentType"] as! String == "sh" && object["byUser"] as! PFUser == PFUser.current()! {
+                    if object["contentType"] as! String == "sh" && (object["byUser"] as! PFUser).objectId! == PFUser.current()!.objectId! {
                         // Shared
                         self.sharedPosts.append(object["pointObject"] as! PFObject)
                     }

@@ -89,9 +89,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         toUser.whereKey("toUser", equalTo: PFUser.current()!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
-        newsfeeds.includeKey("byUser")
-        newsfeeds.includeKey("toUser")
-        newsfeeds.includeKey("pointObject")
+        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
         newsfeeds.findObjectsInBackground {

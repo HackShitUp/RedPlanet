@@ -187,7 +187,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && spaceObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if openedPost == false && (spaceObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
@@ -840,10 +840,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         // Return options
-//        if spaceObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
         if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete1, edit, views]
-        } else if spaceObject.last!.value(forKey: "toUser") as! PFUser == PFUser.current()! {
+        } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete2, views]
         } else {
             return [report]

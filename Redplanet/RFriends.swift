@@ -67,6 +67,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
         eFriends.whereKey("endFriend", notEqualTo: forFriends.last!)
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
+        friends.includeKeys(["frontFriend", "endFriend"])
         friends.whereKey("isFriends", equalTo: true)
         friends.order(byDescending: "createdAt")
         friends.limit = self.page
@@ -81,12 +82,11 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
                 self.friends.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if object["endFriend"] as! PFUser == forFriends.last! {
-                        self.friends.append(object["frontFriend"] as! PFUser)
-                    }
                     
-                    if object["frontFriend"] as! PFUser == forFriends.last! {
-                        self.friends.append(object["endFriend"] as! PFUser)
+                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == forFriends.last!.objectId! {
+                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
+                    } else {
+                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
                     }
                 }
                 

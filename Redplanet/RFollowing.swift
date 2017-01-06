@@ -50,10 +50,9 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         SVProgressHUD.setBackgroundColor(UIColor.white)
         
         let following = PFQuery(className: "FollowMe")
-        following.includeKey("follower")
+        following.includeKeys(["follower", "following"])
         following.whereKey("isFollowing", equalTo: true)
         following.whereKey("follower", equalTo: forFollowing.last!)
-        following.includeKey("following")
         following.limit = self.page
         following.order(byDescending: "createdAt")
         following.findObjectsInBackground(block: {

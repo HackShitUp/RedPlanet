@@ -736,7 +736,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
-        if self.hashtagObjects[indexPath.row].value(forKey: "byUser") as! PFUser == PFUser.current()! {
+
+        if (self.hashtagObjects[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {
             return [report]

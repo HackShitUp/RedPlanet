@@ -199,7 +199,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if openedPost == false && (textPostObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
@@ -638,7 +638,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         
-//        if textPostObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
         if (textPostObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {

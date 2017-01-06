@@ -69,8 +69,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
-        friends.includeKey("endFriend")
-        friends.includeKey("frontFriend")
+        friends.includeKeys(["endFriend", "frontFriend"])
         friends.whereKey("isFriends", equalTo: true)
         friends.order(byDescending: "createdAt")
         friends.findObjectsInBackground(block: {
@@ -86,12 +85,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 
                 // Append objects
                 for object in objects! {
-                    if object["endFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["frontFriend"] as! PFUser)
-                    }
                     
-                    if object["frontFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["endFriend"] as! PFUser)
+                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
+                    } else {
+                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
                     }
                 }
                 

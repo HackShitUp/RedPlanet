@@ -70,27 +70,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 // Append objects
                 for object in objects! {
-                    
-//                    if self.viewers.contains(object["byUser"] as! PFUser) || object["byUser"] as! PFUser == PFUser.current()! {
-//                        // Skip appending the object
-//                    } else {
-//                        // Append the object
-//                        self.viewers.append(object["byUser"] as! PFUser)
-//                    }
-                    // Skip appending (1) Already existing object AND (2) Current User
-//                    if self.viewers.contains(object.object(forKey: "byUser") as! PFUser) || object.object(forKey: "byUser") as! PFUser == PFUser.current()! {
-//                    } else {
-//                        self.viewers.append(object.object(forKey: "byUser") as! PFUser)
-//                    }
-                    
+
                     
                     // TODO::
                     // Shorten this
                     if self.viewers.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        
+                        // Skip appending
                     } else {
                         self.viewers.append(object.object(forKey: "byUser") as! PFUser)
                     }
+
                 }
                 
                 
@@ -264,7 +253,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 
                 // (2) Set username
-//                cell.rpUsername.text! = object!["username"] as! String
                 cell.rpUsername.text! = object!["realNameOfUser"] as! String
                 
             } else {

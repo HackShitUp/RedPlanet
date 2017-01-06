@@ -89,8 +89,7 @@ class SharedPostCell: UITableViewCell {
         // Find Original Content
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("objectId", equalTo: self.cellSharedObject!.objectId!)
-        newsfeeds.includeKey("byUser")
-        newsfeeds.includeKey("toUser")
+        newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {

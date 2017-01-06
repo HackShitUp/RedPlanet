@@ -57,8 +57,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     func queryFollowing() {
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.includeKey("byUser")
-        newsfeeds.includeKey("toUser")
+        newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
         newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
         newsfeeds.limit = self.page

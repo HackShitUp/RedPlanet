@@ -161,7 +161,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
+        if openedPost == false && (photoAssetObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Save
             UserDefaults.standard.set(true, forKey: "DidOpenPost")
             
@@ -634,7 +634,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
         
         
-//        if photoAssetObject.last!.value(forKey: "byUser") as! PFUser == PFUser.current()! {
         if (photoAssetObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             return [delete, edit, views]
         } else {

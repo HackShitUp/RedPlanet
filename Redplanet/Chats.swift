@@ -94,14 +94,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     */
                 
                     // Append user's objects
-//                    if object["receiver"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["sender"] as! PFUser) {
-//                        self.chatObjects.append(object["sender"] as! PFUser)
-//                    }
-//                    
-//                    if object["sender"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["receiver"] as! PFUser) {
-//                        self.chatObjects.append(object["receiver"] as! PFUser)
-//                    }
-                    
                     if (object.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "sender") as! PFUser).objectId!}) {
                         self.chatObjects.append(object["sender"] as! PFUser)
                     }
@@ -497,8 +489,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                     // If PFUser.currentUser()! received last message
-//                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.chatObjects[indexPath.row] {
-                    
                     if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         // Handle optional chaining for OtherUser's Object
                         // SENDER
@@ -540,10 +530,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                     // If PFUser.currentUser()! sent last message
-//                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.chatObjects[indexPath.row] {
                     if (object!.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "receiver") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         
-//                        if let theReceiver = object!["receiver"] as? PFUser {
                         if let theReceiver = object!.object(forKey: "receiver") as? PFUser {
                             
                             // Set username
