@@ -399,8 +399,13 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
             
 
         } else {
+            
+            
+            // Sort Friends
+            let abcFriends = self.friends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            
             // (1) Get user's object
-            friends[indexPath.row].fetchIfNeededInBackground {
+            abcFriends[indexPath.row].fetchIfNeededInBackground {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // (A) Set user's full name
