@@ -53,12 +53,11 @@ UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
 BLUE:
 UIColor(red:0.00, green:0.76, blue:1.00, alpha:1.0)
 
+ 
  F R A M E W O R K S    T O     L O O K     A T
  • ALERTS: https://github.com/Orderella/PopupDialog
  • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
  • CIRCULAR CROP: https://github.com/ruslanskorb/RSKImageCropper
- 
-
  
 */
 
@@ -113,6 +112,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
                                clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
+        
+        // RPTESTTWO
+//        Parse.setApplicationId("ruvKM6wYHJgFZOycJhHF9hkHvRHOFeISlJNeYJ2z", clientKey: "fTPwz4jPcct5UTWMlAn7F0hxvKr4CQk0padwX1HN")
         
 //        let configuration = ParseClientConfiguration {
 //            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"

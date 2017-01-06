@@ -92,8 +92,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     }
                 }
                 
-                print("NF FRIENDS:\(self.friends)")
-                
                 
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")

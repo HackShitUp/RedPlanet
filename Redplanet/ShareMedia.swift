@@ -462,7 +462,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 self.sharePhotoData()
                 
                 // MARK: - Mixpanel
-                Mixpanel.mainInstance().track(event: "Shared Photo",
+                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Photo",
                                               properties: ["Username":"\(PFUser.current()!.username!)"]
                 )
                 
@@ -472,7 +472,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 self.shareVideoData()
                 
                 // MARK: - Mixpanel
-                Mixpanel.mainInstance().track(event: "Shared Video",
+                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Video",
                                               properties: ["Username":"\(PFUser.current()!.username!)"]
                 )
                 

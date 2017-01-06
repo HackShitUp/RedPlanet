@@ -150,7 +150,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
                                 
                                 // MARK: - Mixpanel
-                                Mixpanel.mainInstance().track(event: "Shared Profile Photo",
+                                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Profile Photo",
                                                               properties: ["Username":"\(PFUser.current()!.username!)"]
                                 )
                                 

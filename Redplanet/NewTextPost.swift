@@ -46,7 +46,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     func postTextPost() {
         
         // MARK: - Mixpanel
-        Mixpanel.mainInstance().track(event: "Shared Text Post",
+        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Text Post",
                                       properties: ["Username":"\(PFUser.current()!.username!)"]
         )
         

@@ -128,7 +128,7 @@ class OtherUserHeader: UICollectionReusableView {
     @IBAction func friendUser(_ sender: Any) {
         
         // Friend
-        Mixpanel.mainInstance().track(event: "Connected",
+        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                       properties: ["Relationship Type" : "Friend"]
         )
         
@@ -212,7 +212,7 @@ class OtherUserHeader: UICollectionReusableView {
     // FOLLOW ACTION
     @IBAction func followUser(_ sender: Any) {
         // MARK: - Mixpanel Analytics
-        Mixpanel.mainInstance().track(event: "Connected",
+        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                       properties: ["Relationship Type" : "Follow"]
         )
         
@@ -407,7 +407,7 @@ class OtherUserHeader: UICollectionReusableView {
                                         
                                         
                                         // UnFriend
-                                        Mixpanel.mainInstance().track(event: "Connected",
+                                        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                                                       properties: ["Relationship Type" : "UnFriend"]
                                         )
 
@@ -530,7 +530,7 @@ class OtherUserHeader: UICollectionReusableView {
                                     handler: { (AlertAction) in
                                         
                                         // UnFollow
-                                        Mixpanel.mainInstance().track(event: "Connected",
+                                        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                                                       properties: ["Relationship Type" : "UnFollow"]
                                         )
                                         
@@ -635,7 +635,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 handler: { (alertAction: UIAlertAction!) in
                                                                     
                                                                     // Friend
-                                                                    Mixpanel.mainInstance().track(event: "Connected",
+                                                                    Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                                                                                   properties: ["Relationship Type" : "Friend"]
                                                                     )
                                                                     
@@ -746,7 +746,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 handler: {(UIAlertAction) -> Void in
                                                                     
                                                                     // Follow
-                                                                    Mixpanel.mainInstance().track(event: "Connected",
+                                                                    Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                                                                                   properties: ["Relationship Type" : "Follow"]
                                                                     )
                                                                     
@@ -1002,7 +1002,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                                 print("Successfully confirmed friend request: \(object)")
                                                                 
                                                                 // Friend
-                                                                Mixpanel.mainInstance().track(event: "Connected",
+                                                                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
                                                                                               properties: ["Relationship Type" : "Friend"]
                                                                 )
                                                                 

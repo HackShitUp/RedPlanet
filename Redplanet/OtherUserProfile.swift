@@ -55,7 +55,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     var refresher: UIRefreshControl!
     
     // Page size
-    var page: Int = 10
+    var page: Int = 50
     
     
     
@@ -1172,7 +1172,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         if page <= self.contentObjects.count {
             
             // Increase page size to load more posts
-            page = page + 10
+            page = page + 50
             
             // Query content
             // ISSUE:
