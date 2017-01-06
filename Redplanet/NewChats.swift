@@ -68,13 +68,24 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 self.friends.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if object["frontFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["endFriend"] as! PFUser)
+//                    if object["frontFriend"] as! PFUser == PFUser.current()! {
+//                        self.friends.append(object["endFriend"] as! PFUser)
+//                    }
+//                    
+//                    if object["endFriend"] as! PFUser == PFUser.current()! {
+//                        self.friends.append(object["frontFriend"] as! PFUser)
+//                    }
+                    
+                    // Handle optional chaining to fetch user's object and compare with objectId to the current user's objectId
+                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! != PFUser.current()!.objectId! {
+                        // Append frontFriend
+                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
+                    } else {
+                        // Append endFriend
+                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
                     }
                     
-                    if object["endFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["frontFriend"] as! PFUser)
-                    }
+                    
                 }
             } else {
                 print(error?.localizedDescription as Any)

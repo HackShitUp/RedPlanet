@@ -110,28 +110,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
-        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+//        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
+//                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
         
-        // TEST 2
-//        Parse.setApplicationId("wfDQkAvUSEw8VtqfvP2roBgz9vsHNar1MWbChGES",
-//                               clientKey: "rTVN9oK8SPQ4c55dhaQVvoPf4qbo39RnxZXLqZNe")
-        
-        
-        
-//        let configuration = ParseClientConfiguration {
-//            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
-//            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
-//            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
-//        }
-//        Parse.initialize(with: configuration)
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
+            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
+            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+        }
+        Parse.initialize(with: configuration)
         
         
         // OneSignal for custom push notifications
         // 571bbb3a-3612-4496-b3b4-12623256782a
-    
-    
         OneSignal.initWithLaunchOptions(launchOptions,
                                         appId: "571bbb3a-3612-4496-b3b4-12623256782a",
                                         handleNotificationReceived: { (notification) in
@@ -231,8 +223,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         
-        // Call Login Function...
-        // Which also calls <queryRelationships()>
+        // Call Login Function
+        // Which also calls queryRelationships()
         login()
         
         return true
@@ -350,7 +342,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.includeKeys(["frontFriend", "endFriend"])
-//        friends.whereKey("isFriends", equalTo: true)
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -385,39 +376,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
                 }
                 
-                print("\n***\nFIRST RANGE OF MY FRIENDS:\n\(myFriends)\n***\n")
-                print("\n***\nFIRST RANGE OF MY RECEIVED FRIENDS:\n\(requestedToFriendMe)\n***\n")
-                print("\n***\nFIRST RANGE OF MY SENT FRIENDS:\n\(myRequestedFriends)\n***\n")
-                
-                
-//                // (1) Sent Friend Requests
-//                // (2) Received Friend Requests
-//                let eFriends = PFQuery(className: "FriendMe")
-//                eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-//                eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-//                
-//                let fFriends = PFQuery(className: "FriendMe")
-//                fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-//                fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-//                
-//                let notFriends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-//                notFriends.includeKeys(["endFriend", "frontFriend"])
-//                notFriends.whereKey("isFriends", equalTo: false)
-//                notFriends.findObjectsInBackground(block: {
-//                    (objects: [PFObject]?, error: Error?) in
-//                    if error == nil {
-//                        for object in objects! {
-//                            
-//                            
-//                            
-//                        }
-//                    } else {
-//                        print(error?.localizedDescription as Any)
-//                    }
-//                })
-                
-                
-                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -442,16 +400,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 for object in objects! {
                     
-                    // Is FOLLOWING
-                    if object["isFollowing"] as! Bool == true {
-                        myFollowing.append(object["following"] as! PFUser)
+                    // Append currently following accounts
+                    if object.value(forKey: "isFollowing") as! Bool == true {
+                        myFollowing.append(object.object(forKey: "following") as! PFUser)
                     } else {
-                        // Not FOLLOWING yet...
-                        myRequestedFollowing.append(object["following"] as! PFUser)
+                        // Append requested following accounts
+                        myRequestedFollowing.append(object.object(forKey: "following") as! PFUser)
                     }
                 }
-                
-                print("\n***\nMY FOLLOWING:\n\(myFollowing)\n***\n")
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -476,12 +432,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 myRequestedFollowers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // If FOLLOWERS
-                    if object["isFollowing"] as! Bool == true {
-                        myFollowers.append(object["follower"] as! PFUser)
+                    // Append current followers
+                    if object.value(forKey: "isFollowing") as! Bool == true {
+                        myFollowers.append(object.object(forKey: "follower") as! PFUser)
                     } else {
-                        // Not a follower yet...
-                        myRequestedFollowers.append(object["follower"] as! PFUser)
+                        // Append accounts requested to follow you
+                        myRequestedFollowers.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
                 

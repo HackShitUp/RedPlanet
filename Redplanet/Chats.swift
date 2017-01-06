@@ -71,9 +71,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.limit = self.page
+        chats.includeKeys(["receiver", "sender"])
         chats.order(byDescending: "createdAt")
-        chats.includeKey("receiver")
-        chats.includeKey("sender")
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -95,13 +94,23 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     */
                 
                     // Append user's objects
-                    if object["receiver"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["sender"] as! PFUser) {
+//                    if object["receiver"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["sender"] as! PFUser) {
+//                        self.chatObjects.append(object["sender"] as! PFUser)
+//                    }
+//                    
+//                    if object["sender"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["receiver"] as! PFUser) {
+//                        self.chatObjects.append(object["receiver"] as! PFUser)
+//                    }
+                    
+                    if (object.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "sender") as! PFUser).objectId!}) {
                         self.chatObjects.append(object["sender"] as! PFUser)
                     }
                     
-                    if object["sender"] as! PFUser == PFUser.current()! && !self.chatObjects.contains(object["receiver"] as! PFUser) {
+                    
+                    if (object.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "receiver") as! PFUser).objectId!}) {
                         self.chatObjects.append(object["receiver"] as! PFUser)
                     }
+                    
 
                 }// end for loop
 
@@ -426,8 +435,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
             
             let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-            chats.includeKey("sender")
-            chats.includeKey("receiver")
+            chats.includeKeys(["sender", "receiver"])
             chats.order(byDescending: "createdAt")
             chats.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
@@ -485,11 +493,18 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     }
                     
                     
+                    
+                    
+                    
                     // If PFUser.currentUser()! received last message
-                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.chatObjects[indexPath.row] {
+//                    if object!["receiver"] as! PFUser == PFUser.current()! && object!["sender"] as! PFUser == self.chatObjects[indexPath.row] {
+                    
+                    if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         // Handle optional chaining for OtherUser's Object
                         // SENDER
-                        if let theSender = object!["sender"] as? PFUser {
+//                        if let theSender = object!["sender"] as? PFUser {
+                        if let theSender = object!.object(forKey: "sender") as? PFUser {
+                            
                             // Set username
                             cell.rpUsername.text! = theSender["realNameOfUser"] as! String
                             
@@ -525,8 +540,12 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     
                     
                     // If PFUser.currentUser()! sent last message
-                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.chatObjects[indexPath.row] {
-                        if let theReceiver = object!["receiver"] as? PFUser {
+//                    if object!["sender"] as! PFUser == PFUser.current()! && object!["receiver"] as! PFUser  == self.chatObjects[indexPath.row] {
+                    if (object!.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "receiver") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
+                        
+//                        if let theReceiver = object!["receiver"] as? PFUser {
+                        if let theReceiver = object!.object(forKey: "receiver") as? PFUser {
+                            
                             // Set username
                             cell.rpUsername.text! = theReceiver["realNameOfUser"] as! String
                             

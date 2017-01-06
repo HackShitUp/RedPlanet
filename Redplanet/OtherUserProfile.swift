@@ -698,7 +698,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Friend Requested
-        if myRequestedFriends.contains(otherObject.last!) || requestedToFriendMe.contains(otherObject.last!) {
+        if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FRIEND REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Friend Requested", for: .normal)
@@ -706,7 +706,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Follower
-        if myFollowers.contains(otherObject.last!) && !myFollowing.contains(otherObject.last!) {
+        if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOWER
             header.relationType.isHidden = false
             header.relationType.setTitle("Follower", for: .normal)
@@ -715,7 +715,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Following
-        if myFollowing.contains(otherObject.last!) {
+        if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
@@ -723,7 +723,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Follow Requested
-        if myRequestedFollowing.contains(otherObject.last!) || myRequestedFollowers.contains(otherObject.last!) {
+            if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOW REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Follow Requested", for: .normal)
@@ -731,7 +731,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // Following
-        if myFollowers.contains(otherObject.last!) && myFollowing.contains(otherObject.last!) {
+            if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
             // FOLLOWER & FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
@@ -739,7 +739,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         // PFUser.currentUser()'s Profile
-        if otherObject.last! == PFUser.current()! {
+        if otherObject.last!.objectId! == PFUser.current()!.objectId! {
             header.friendButton.isHidden = true
             header.followButton.isHidden = true
             header.relationType.isHidden = true

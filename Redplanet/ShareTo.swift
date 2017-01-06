@@ -105,9 +105,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // Dismiss progress
                 SVProgressHUD.dismiss()
             }
-            
-//            // Reload data
-//            self.tableView!.reloadData()
+
         })
     }
     

@@ -603,15 +603,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
         
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.includeKey("sender")
-        chats.includeKey("receiver")
+        chats.includeKeys(["sender", "receiver"])
         chats.order(byDescending: "createdAt")
         chats.getFirstObjectInBackground(block: {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 
                 // Get user's first object
-                if object!["receiver"] as!  PFUser == PFUser.current()! {
+                // And set bool value for read receipt
+                if (object!.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     object!["read"] = true
                     object!.saveInBackground(block: {
                         (success: Bool, error: Error?) in
@@ -787,7 +787,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
             
             // (1) Set usernames depending on who sent what
-            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+            if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 cell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             } else {
@@ -802,8 +803,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
             //
-            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
-                
+//            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
+            
+            if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+            
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
                     proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
@@ -818,12 +821,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         }
                     })
                 }
-                
             }
             //
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
             //
-            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
+//            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
+            if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+                
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
                     proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
@@ -913,7 +917,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             
             // (1) Set usernames depending on who sent what
-            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+            if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             } else {
@@ -987,7 +992,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Fetch objects
             // (3) Set usernames depending on who sent what
-            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+//            if self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! {
+            if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
                 mCell.rpUsername.text! = PFUser.current()!.value(forKey: "realNameOfUser") as! String
             } else {
@@ -999,8 +1005,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
             //
-            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
-                
+//            if messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == chatUserObject.last! {
+            if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+            
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
                     proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
@@ -1020,7 +1027,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             //
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
             //
-            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
+//            if messageObjects[indexPath.row].value(forKey: "sender") as! PFUser == PFUser.current()! && messageObjects[indexPath.row].value(forKey: "receiver") as! PFUser == chatUserObject.last! {
+            if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
+                
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
                     proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
