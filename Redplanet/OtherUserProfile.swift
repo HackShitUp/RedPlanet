@@ -309,9 +309,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         toUser.whereKey("toUser", equalTo: otherObject.last!)
         // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
-        newsfeeds.includeKey("toUser")
-        newsfeeds.includeKey("byUser")
-        newsfeeds.includeKey("pointObject")
+        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
@@ -692,7 +690,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         
         
-        if myFriends.contains(otherObject.last!) {
+        if myFriends.contains(where: { $0.objectId! == otherObject.last!.objectId!} ) {
             // FRIENDS
             header.relationType.isHidden = false
             header.relationType.setTitle("Friends", for: .normal)
@@ -983,7 +981,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
-                // *************************************************************************************************************************
+                // ***********************************************************************************************************************
                 
                 
                 
@@ -1177,6 +1175,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             page = page + 10
             
             // Query content
+            // ISSUE:
+            // CAUSES BUGS
             queryContent()
             
         }

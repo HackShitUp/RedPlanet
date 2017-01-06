@@ -64,7 +64,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
         fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
         
-        
         let eFriends = PFQuery(className: "FriendMe")
         eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
         eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
@@ -83,76 +82,18 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 self.friends.append(PFUser.current()!)
                 
                 for object in objects! {
-                    
-                    
-                    // Below code works for...
-                    // com.redplanetmedia.redplanet
-                    // && 
-                    // com.redplanetapp.redplanet
-//                    if let frontFriend = object.value(forKey: "frontFriend") as? PFUser {
-//                        frontFriend.fetchIfNeededInBackground(block: {
-//                            (object: PFObject?, error: Error?) in
-//                            if error == nil {
-//                                print("Fetched and Found")
-//                                
-//                                if object as! PFUser != PFUser.current()! {
-//                                    self.friends.append(object as! PFUser)
-//                                }
-//                                
-//                            } else {
-//                                print(error?.localizedDescription as Any)
-//                            }
-//                        })
-//                    }
-//                    
-//                    
-//                    if let endFriend = object.value(forKey: "endFriend") as? PFUser {
-//                        endFriend.fetchIfNeededInBackground(block: {
-//                            (object: PFObject?, error: Error?) in
-//                            if error == nil {
-//                                print("Fetched and Found")
-//                                
-//                                if object as! PFUser != PFUser.current()! {
-//                                    self.friends.append(object as! PFUser)
-//                                }
-//                                
-//                            } else {
-//                                print(error?.localizedDescription as Any)
-//                            }
-//                        })
-//                    }
-                    
-                    // This doesn't work for com.redplanetapp.redplanet
-                    // But works for com.redplanetmedia.redplanet
-//                    if object.object(forKey: "endFriend") as! PFUser != PFUser.current()! {
-//                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-//                    } else {
-//                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-//                    }
-                    
-                    // Doesn't work for com.redplanetmedia.redplanet
-                    // BUT works for com.redplanetapp.redplanet
-                    if object["frontFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["endFriend"] as! PFUser)
+                    // Handle optional chaining to fetch user's object and compare with objectId to the current user's objectId
+                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! != PFUser.current()!.objectId! {
+                        // Append frontFriend
+                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
                     } else {
-                        print("Fired Here One")
-                    }
-                    
-                    if object["endFriend"] as! PFUser == PFUser.current()! {
-                        self.friends.append(object["frontFriend"] as! PFUser)
-                    } else {
-                        print("Fired Here Two")
+                        // Append endFriend
+                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
                     }
                 }
                 
-                //
-                // ISSUE: 
-                // CANNOT APPEND FRIENDS; PFUser PFObjects
-                // Which in turn, cannot fetch the correct posts in the news feeds for the following
-                // .whereKey("byUser", containedIn: self.friends) 
-                //
-                print("Friends Count: \(self.friends.count)")
-                print("\nFRIENDS DATA:\n\(self.friends)\n")
+                print("NF FRIENDS:\(self.friends)")
+                
                 
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")

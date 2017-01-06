@@ -110,13 +110,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
-//        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-//                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
+                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
         
         // TEST 2
-        Parse.setApplicationId("wfDQkAvUSEw8VtqfvP2roBgz9vsHNar1MWbChGES",
-                               clientKey: "rTVN9oK8SPQ4c55dhaQVvoPf4qbo39RnxZXLqZNe")
+//        Parse.setApplicationId("wfDQkAvUSEw8VtqfvP2roBgz9vsHNar1MWbChGES",
+//                               clientKey: "rTVN9oK8SPQ4c55dhaQVvoPf4qbo39RnxZXLqZNe")
         
         
         
@@ -337,15 +337,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     // (2) Query Relationships --- Checks all of the current user's friends, followers, and followings
-    func queryRelationships() -> ([PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject], [PFObject]) {
+    func queryRelationships() {
         
-        // TODO::
-        print("Fetching Relationships...")
         // Query Friends && Users you've requested to be friends WITH
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
         fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
         
         let eFriends = PFQuery(className: "FriendMe")
         eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
@@ -353,7 +350,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.includeKeys(["frontFriend", "endFriend"])
-        friends.whereKey("isFriends", equalTo: true)
+//        friends.whereKey("isFriends", equalTo: true)
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -364,92 +361,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 requestedToFriendMe.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Fetch object first???
-                    // WORKS for both
-//                    if let eFriend = object["endFriend"] as? PFUser {
-//                        eFriend.fetchIfNeededInBackground(block: {
-//                            (object: PFObject?, error: Error?) in
-//                            if error == nil {
-//                                if eFriend != PFUser.current()! {
-//                                    myFriends.append(eFriend)
-//                                }
-//                            } else {
-//                                print(error?.localizedDescription as Any)
-//                            }
-//                        })
-//                    } else if let fFriend = object["frontFriend"] as? PFUser {
-//                        fFriend.fetchIfNeededInBackground(block: {
-//                            (object: PFObject?, error: Error?) in
-//                            if error == nil {
-//                                if fFriend != PFUser.current()! {
-//                                    myFriends.append(fFriend)
-//                                }
-//                            } else {
-//                                print(error?.localizedDescription as Any)
-//                            }
-//                        })
-//                    }
-
                     
                     
-                    // The below code doesn't work for com.redplanetapp.redplanet
-                    // BUT WORKS for com.redplanetmedia.redplanet
-//                    if object.object(forKey: "endFriend") as! PFUser != PFUser.current()! {
-//                        myFriends.append(object.object(forKey: "frontFriend") as! PFUser)
-//                    } else {
-//                        myFriends.append(object.object(forKey: "endFriend") as! PFUser)
-//                    }
-                    
-                    // If FRIENDS
-                    // "isFriends" == true
-                    // The below code WORKS for com.redplanetapp.redplanet
-                    // BUT NOT for com.redplanetmedia.redplanet
-                    if object["endFriend"] as! PFUser == PFUser.current()! {
-                        myFriends.append(object["frontFriend"] as! PFUser)
-                    }
-                    
-                    if object["frontFriend"] as! PFUser == PFUser.current()! {
-                        myFriends.append(object["endFriend"] as! PFUser)
+                    if object.value(forKey: "isFriends") as! Bool == true {
+                        // (A) FRIENDS
+                        if (object.object(forKey: "frontFriend") as! PFUser).objectId! != PFUser.current()!.objectId! {
+                            // Append frontFriend
+                            myFriends.append(object.object(forKey: "frontFriend") as! PFUser)
+                        } else {
+                            // Append endFriend
+                            myFriends.append(object.object(forKey: "endFriend") as! PFUser)
+                        }
+                    } else {
+                        // NOT FRIENDS
+                        if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                            // Received Friend Requests
+                            requestedToFriendMe.append(object.object(forKey: "frontFriend") as! PFUser)
+                        } else {
+                            // Sent Friend Requests
+                            myRequestedFriends.append(object.object(forKey: "endFriend") as! PFUser)
+                        }
                     }
 
                 }
                 
+                print("\n***\nFIRST RANGE OF MY FRIENDS:\n\(myFriends)\n***\n")
+                print("\n***\nFIRST RANGE OF MY RECEIVED FRIENDS:\n\(requestedToFriendMe)\n***\n")
+                print("\n***\nFIRST RANGE OF MY SENT FRIENDS:\n\(myRequestedFriends)\n***\n")
                 
-                print("\n***\nMY FRIENDS:\n\(myFriends)\n***\n")
                 
-                
-                
-                
-                let eFriends = PFQuery(className: "FriendMe")
-                eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-                eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-                
-                let fFriends = PFQuery(className: "FriendMe")
-                fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-                fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-                
-                let notFriends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-                notFriends.includeKey("endFriend")
-                notFriends.includeKey("frontFriend")
-                notFriends.whereKey("isFriends", equalTo: false)
-                notFriends.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        for object in objects! {
-                            // PFUser.currentUser()! received a friend request
-                            if object["endFriend"] as! PFUser == PFUser.current()! {
-                                requestedToFriendMe.append(object["frontFriend"] as! PFUser)
-                            }
-                            
-                            // PFUser.currentUser()! sent a friend request
-                            if object["frontFriend"] as! PFUser == PFUser.current()! {
-                                myRequestedFriends.append(object["endFriend"] as! PFUser)
-                            }
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+//                // (1) Sent Friend Requests
+//                // (2) Received Friend Requests
+//                let eFriends = PFQuery(className: "FriendMe")
+//                eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
+//                eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
+//                
+//                let fFriends = PFQuery(className: "FriendMe")
+//                fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
+//                fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
+//                
+//                let notFriends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
+//                notFriends.includeKeys(["endFriend", "frontFriend"])
+//                notFriends.whereKey("isFriends", equalTo: false)
+//                notFriends.findObjectsInBackground(block: {
+//                    (objects: [PFObject]?, error: Error?) in
+//                    if error == nil {
+//                        for object in objects! {
+//                            
+//                            
+//                            
+//                        }
+//                    } else {
+//                        print(error?.localizedDescription as Any)
+//                    }
+//                })
                 
                 
                 
@@ -458,6 +423,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
+        
         
         
         
@@ -524,9 +490,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-    
-    
-        return (myFriends, requestedToFriendMe, myRequestedFriends, myFollowers, myRequestedFollowers, myFollowing, myRequestedFollowing)
     }
 
     
