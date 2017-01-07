@@ -1,4 +1,7 @@
 PODS:
+  - AWSCore (2.4.16)
+  - AWSS3 (2.4.16):
+    - AWSCore (= 2.4.16)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -20,6 +23,7 @@ PODS:
   - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
+  - AWSS3
   - Bolts
   - DZNEmptyDataSet
   - Heap
@@ -33,6 +37,8 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC CHECKSUMS:
+  AWSCore: 7c3c129991e6387bcbad7132bc3661e7135754db
+  AWSS3: fef6aa8f8f625df8f67f1b6574fe761f3a4ddc99
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: b95bc7a21f47ddd470e8ebccefa59c91f4fe1d68
@@ -45,6 +51,6 @@ SPEC CHECKSUMS:
   SimpleAlert: 383d1197df2e7b70b9bef5771f3632979c1aadae
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 9aa78156fbf99292a6ba54a800760c3fce0f2e8f
+PODFILE CHECKSUM: 06c5305c90b4a66bc857e3f124639ac44d33f3c7
 
 COCOAPODS: 1.1.1

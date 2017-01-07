@@ -109,19 +109,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
-        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+//        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
+//                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
         
         // RPTESTTWO
 //        Parse.setApplicationId("ruvKM6wYHJgFZOycJhHF9hkHvRHOFeISlJNeYJ2z", clientKey: "fTPwz4jPcct5UTWMlAn7F0hxvKr4CQk0padwX1HN")
         
-//        let configuration = ParseClientConfiguration {
-//            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
-//            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
-//            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
-//        }
-//        Parse.initialize(with: configuration)
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
+            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
+            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+        }
+        Parse.initialize(with: configuration)
         
         
         // OneSignal for custom push notifications
@@ -210,9 +210,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // Set launchedBefore to true
             UserDefaults.standard.set(true, forKey: "launchedBefore")
             
-            // Save UserDefaults for Post (1-5) == false
+            // Save UserDefaults for Post (1-6) == false
             UserDefaults.standard.set("false", forKey: "DidOpenPost")
-            // Save UserDefaults for Moment (6) == false
+            // Save UserDefaults for Moment (7) == false
             UserDefaults.standard.set("false", forKey: "DidOpenMoment")
             // Save UserDefaults for User's Profile
             UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
@@ -222,6 +222,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.synchronize()
             
         }
+        
+        // else statement for the above???
         
         
         
@@ -453,9 +455,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // (3) Check Birthday --- Checks whether today is the user's birthday or not
     func checkBirthday() {
-        print("Checking birthday...")
-        
-        
         
         if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
             
@@ -468,8 +467,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
             let finalBday = usersBirthday[r]
             
-            
-            print("\nFinal Birthday is:\n\(finalBday)\n\n")
             
             // (2) Change String to Date
             let dateFormatter = DateFormatter()
@@ -490,6 +487,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let today = todayFormat.date(from: todayString)
             
 
+            print("TODAY: \(today)")
+            print("BDAY: \(birthDate)")
+            
             if today == birthDate {
                 
                 // Save Bool for BirthdayHappened

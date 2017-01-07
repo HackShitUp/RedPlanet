@@ -8,6 +8,7 @@ target 'Redplanet' do
 	pod ‘Parse’
 	pod ‘ParseUI’
 	pod ‘Bolts’
+	pod ‘AWSS3’
 	pod ‘SimpleAlert’
 	pod ‘OneSignal’
 	pod 'KILabel', '1.0.0'

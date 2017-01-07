@@ -45,8 +45,6 @@
 		7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */; };
 		7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */; };
 		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
-		7E5DA34F1E061F6100DDEA49 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; };
-		7E5DA3501E061F6100DDEA49 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
@@ -54,6 +52,8 @@
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */; };
 		7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */; };
+		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; };
+		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; };
 		7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E78CB6F1DF3BA8C001E69D3 /* LikesAndShares.swift */; };
 		7E78CB721DF3BA9C001E69D3 /* LikesAndSharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E78CB711DF3BA9C001E69D3 /* LikesAndSharesCell.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
@@ -483,8 +483,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E5DA34F1E061F6100DDEA49 /* UserNotifications.framework in Frameworks */,
-				7E5DA3501E061F6100DDEA49 /* UserNotificationsUI.framework in Frameworks */,
+				7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */,
+				7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */,
 				7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2111,14 +2111,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3720A73759C6BE639FDFC816 /* Pods-Redplanet.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -2129,14 +2128,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetmedia.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;

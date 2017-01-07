@@ -134,9 +134,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                             self.tableView!.emptyDataSetSource = self
                             self.tableView!.emptyDataSetDelegate = self
                         }
-                        
-                        
-                        print("Friends feed count: \(self.friendsContent.count)")
+
                         
                     } else {
                         print(error?.localizedDescription as Any)

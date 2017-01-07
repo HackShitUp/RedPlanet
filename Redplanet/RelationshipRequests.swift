@@ -167,7 +167,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 }
                 
                 
-                
                 // Fetch Sent Follow Requests
                 let follow = PFQuery(className: "FollowMe")
                 follow.includeKeys(["following", "follower"])
