@@ -84,7 +84,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Load Camera
             DispatchQueue.main.async(execute: {
                 // Push VC
-                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+//                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+//                self.navigationController!.pushViewController(cameraVC, animated: true)
+                
+                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
                 self.navigationController!.pushViewController(cameraVC, animated: true)
             })
             
@@ -193,7 +196,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
         // Fetch your notifications
         let notifications = PFQuery(className: "Notifications")
-        notifications.includeKey("toUser")
+        notifications.includeKeys(["toUser", "fromUser"])
         notifications.whereKey("toUser", equalTo: PFUser.current()!)
         notifications.whereKey("fromUser", notEqualTo: PFUser.current()!)
         notifications.order(byDescending: "createdAt")
@@ -209,7 +212,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 // Append objects
                 for object in objects! {
                     self.myActivity.append(object)
-                    self.fromUsers.append(object["fromUser"] as! PFUser)
+                    self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
                 }
                 
                 

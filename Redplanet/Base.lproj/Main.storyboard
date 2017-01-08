@@ -4299,6 +4299,39 @@
             </objects>
             <point key="canvasLocation" x="4025.5" y="622.5"/>
         </scene>
+        <!--Camera-->
+        <scene sceneID="ge8-LM-Iyl">
+            <objects>
+                <viewController storyboardIdentifier="camera" id="uTy-8V-6Fg" customClass="RPCamera" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EZ9-4T-5Hn"/>
+                        <viewControllerLayoutGuide type="bottom" id="o0j-ms-wo5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6Vs-cd-kLD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9JP-Kn-FJN">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4Q-Hr-vWy" customClass="SwiftyCamButton" customModule="SwiftyCam">
+                                <rect key="frame" x="137" y="488" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Unchecked Circle-100"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="captureButton" destination="o4Q-Hr-vWy" id="kqf-EE-KwG"/>
+                        <outlet property="capturedMoment" destination="9JP-Kn-FJN" id="lCU-aD-CXk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="szv-if-FaN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4619" y="-1154"/>
+        </scene>
         <!--Home-->
         <scene sceneID="ZtE-5d-nzt">
             <objects>

@@ -116,7 +116,7 @@ class ActivityCell: UITableViewCell {
             
             // II
             // PHOTO
-            if self.activity.titleLabel!.text!.hasSuffix("photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("your photo") {
                 // Check "Photos_Videos"
                 let photos = PFQuery(className: "Newsfeeds")
                 photos.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -170,6 +170,9 @@ class ActivityCell: UITableViewCell {
                             
                             // Append necessary data for ProfilePhoto
                             proPicObject.append(object)
+                            // Append other object
+                            otherObject.append(PFUser.current()!)
+                            otherName.append(PFUser.current()!.username!)
                             
                             // Push ProfilePhoto view controller
                             let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
