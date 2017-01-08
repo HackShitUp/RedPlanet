@@ -303,7 +303,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.iconicPreview.layoutSubviews()
         cell.iconicPreview.setNeedsLayout()
 
-        // Set aspectFill by default
+        // Set iconicPreview default configs
+        cell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
+        cell.iconicPreview.layer.borderWidth = 0.00
         cell.iconicPreview.contentMode = .scaleAspectFill
         
 
@@ -428,28 +430,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
-
-                    // Add blur -- this doesn't work because cell issues
-//                    let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.dark)
-//                    let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//                    blurEffectView.frame = cell.iconicPreview.frame
-//                    blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//                    cell.iconicPreview.addSubview(blurEffectView)
                     
-                    
-                    
-                    // SHADOW?
-                    // :/
-//                    cell.iconicPreview.layer.shadowOffset = CGSize(width: cell.iconicPreview.frame.size.width, height: cell.iconicPreview.frame.size.height)
-//                    cell.iconicPreview.layer.shadowOpacity = 0.7
-//                    cell.iconicPreview.layer.shadowRadius = 2.00
-                    
-                    // None of the above methods work :(
-                    
-                    // Make iconicPreview cornerd Squared and blur image
-                    cell.iconicPreview.layer.cornerRadius = 0
-                    cell.iconicPreview.backgroundColor = UIColor.clear
-                    cell.iconicPreview.contentMode = .scaleAspectFit
+                    // Make iconicPreview circular with red border color
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                    cell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                    cell.iconicPreview.layer.borderWidth = 3.50
+                    cell.iconicPreview.contentMode = .scaleAspectFill
                     cell.iconicPreview.clipsToBounds = true
 
                     

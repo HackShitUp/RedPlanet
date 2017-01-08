@@ -260,7 +260,9 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
         cell.iconicPreview.layoutSubviews()
         cell.iconicPreview.setNeedsLayout()
         
-        // Set aspectFill by default
+        // Set iconicPreview default configs
+        cell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
+        cell.iconicPreview.layer.borderWidth = 0.00
         cell.iconicPreview.contentMode = .scaleAspectFill
         
         if indexPath.section == 0 {
@@ -370,9 +372,11 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     
                     // (2F) Moments
                     if object!["contentType"] as! String == "itm" {
-                        cell.iconicPreview.layer.cornerRadius = 0
-                        cell.iconicPreview.backgroundColor = UIColor.clear
-                        cell.iconicPreview.contentMode = .scaleAspectFit
+                        // Make iconicPreview circular with red border color
+                        cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                        cell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                        cell.iconicPreview.layer.borderWidth = 3.50
+                        cell.iconicPreview.contentMode = .scaleAspectFill
                         cell.iconicPreview.clipsToBounds = true
                         
                         
@@ -558,11 +562,12 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                     
                     // (2F) Moments
                     if object!["contentType"] as! String == "itm" {
-                        cell.iconicPreview.layer.cornerRadius = 0
-                        cell.iconicPreview.backgroundColor = UIColor.clear
-                        cell.iconicPreview.contentMode = .scaleAspectFit
+                        // Make iconicPreview circular with red border color
+                        cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                        cell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                        cell.iconicPreview.layer.borderWidth = 3.50
+                        cell.iconicPreview.contentMode = .scaleAspectFill
                         cell.iconicPreview.clipsToBounds = true
-                        
                         
                         // Fetch photo
                         if let itm = object!["photoAsset"] as? PFFile {

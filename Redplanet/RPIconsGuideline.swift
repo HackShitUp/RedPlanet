@@ -42,7 +42,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                          "This is a post that’s been shared by someone publicly.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
                          "Comets with a red gradient background indicate that someone wrote in someone else’s Space. Only friends can write in each other’s Space.",
-                         "Rectangular photos are what we call Moments. These are photos captured directly with the custom camera and shared on Redplanet.",
+                         "Circular previews with a red border around it are called Moments. These are photos or videos captured directly with the camera and shared on Redplanet.",
                          "Yellow circles with a triangle indicate that someone shared a video."
                          ]
 
@@ -131,6 +131,10 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         cell.iconName.text! = iconNames[indexPath.row]
         cell.iconDescription.text! = iconDescripts[indexPath.row]
         
+        // Set iconicPreview default configs
+        cell.icon.layer.borderColor = UIColor.clear.cgColor
+        cell.icon.layer.borderWidth = 0.00
+        cell.icon.contentMode = .scaleAspectFill
         
         if indexPath.row == 1 {
             cell.icon.layer.cornerRadius = 10.00
@@ -142,7 +146,12 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
             cell.icon.clipsToBounds = true
         } else if indexPath.row == 5 {
-            cell.icon.contentMode = .scaleAspectFit
+            cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
+            cell.icon.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+            cell.icon.layer.borderWidth = 3.50
+            cell.icon.contentMode = .scaleAspectFill
+            cell.icon.clipsToBounds = true
+            
         } else if indexPath.row == 6 {
             cell.icon.layer.cornerRadius = cell.icon.frame.size.width/2
             cell.icon.clipsToBounds = true

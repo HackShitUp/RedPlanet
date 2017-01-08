@@ -790,14 +790,9 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         cell.iconicPreview.layoutSubviews()
         cell.iconicPreview.setNeedsLayout()
         
-        // Set default contentMode
-        cell.iconicPreview.contentMode = .scaleAspectFill
-        // Make iconicPreview cornered square
-        cell.iconicPreview.layer.cornerRadius = 12.00
-        cell.iconicPreview.clipsToBounds = true
-        
-        
-        // Set default contentMode
+        // Set iconicPreview default configs
+        cell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
+        cell.iconicPreview.layer.borderWidth = 0.00
         cell.iconicPreview.contentMode = .scaleAspectFill
         
         // Set name's layout
@@ -921,12 +916,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
-                    
-                    
-                    
-                    // Make iconicPreview cornerd Squared and blur image
-                    cell.iconicPreview.backgroundColor = UIColor.clear
-                    cell.iconicPreview.contentMode = .scaleAspectFit
+                    // Make iconicPreview circular with red border color
+                    cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
+                    cell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                    cell.iconicPreview.layer.borderWidth = 3.50
+                    cell.iconicPreview.contentMode = .scaleAspectFill
                     cell.iconicPreview.clipsToBounds = true
                     
                     // Fetch photo
