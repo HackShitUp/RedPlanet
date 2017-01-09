@@ -4312,24 +4312,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4Q-Hr-vWy" customClass="SwiftyCamButton" customModule="SwiftyCam">
-                                <rect key="frame" x="137" y="488" width="100" height="100"/>
+                                <rect key="frame" x="150" y="530" width="75" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Unchecked Circle-100"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idk-dT-jjl">
-                                <rect key="frame" x="271" y="518" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Switch Camera-100"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJn-fd-qj5">
-                                <rect key="frame" x="319" y="518" width="40" height="40"/>
+                                <rect key="frame" x="309" y="28" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Lightning Bolt-96"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsB-Zl-vD9">
-                                <rect key="frame" x="16" y="518" width="40" height="40"/>
+                                <rect key="frame" x="16" y="28" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
+                            </button>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="fb5-iK-SQO">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </progressView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idk-dT-jjl">
+                                <rect key="frame" x="271" y="33" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Switch Camera-100"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93395959214501512" green="0.93395959214501512" blue="0.93395959214501512" alpha="1" colorSpace="calibratedRGB"/>
@@ -4337,18 +4342,19 @@
                     <connections>
                         <outlet property="captureButton" destination="o4Q-Hr-vWy" id="kqf-EE-KwG"/>
                         <outlet property="flashButton" destination="GJn-fd-qj5" id="PNx-lv-gZ3"/>
+                        <outlet property="leaveButton" destination="BsB-Zl-vD9" id="lHU-Ie-NyV"/>
+                        <outlet property="progressView" destination="fb5-iK-SQO" id="0hl-2U-PJ8"/>
                         <outlet property="swapCameraButton" destination="Idk-dT-jjl" id="ztr-Td-muD"/>
-                        <segue destination="oby-Mu-zdT" kind="push" id="7Jh-g8-tDE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="szv-if-FaN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4589" y="-369"/>
         </scene>
-        <!--View Controller-->
+        <!--Captured Video-->
         <scene sceneID="uP5-G4-C7q">
             <objects>
-                <viewController id="rGT-nh-oDq" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="capturedVideoVC" id="rGT-nh-oDq" customClass="CapturedVideo" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i8l-cd-HPb"/>
                         <viewControllerLayoutGuide type="bottom" id="fdQ-HG-srp"/>
@@ -5226,148 +5232,10 @@
             </objects>
             <point key="canvasLocation" x="3546.5" y="622.5"/>
         </scene>
-        <!--Custom Camera-->
-        <scene sceneID="KXw-jy-Crd">
-            <objects>
-                <viewController storyboardIdentifier="cameraVC" id="sCf-VT-dx7" customClass="CustomCamera" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="3IV-4b-sOP"/>
-                        <viewControllerLayoutGuide type="bottom" id="gnh-bj-U6d"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="qKJ-QQ-tsQ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tXT-SV-iSm">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="94n-cT-2DZ"/>
-                                    <constraint firstAttribute="height" constant="667" id="E0F-wk-eF8"/>
-                                </constraints>
-                            </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lra-Iu-6lE">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="667" id="bMe-9i-FzG"/>
-                                    <constraint firstAttribute="width" constant="375" id="dkF-jx-g64"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWF-MY-qPm">
-                                <rect key="frame" x="150" y="524" width="75" height="75"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="75" id="fnY-Is-jTu"/>
-                                    <constraint firstAttribute="width" constant="75" id="ti2-br-3xB"/>
-                                </constraints>
-                                <state key="normal" image="Unchecked Circle-100"/>
-                                <connections>
-                                    <action selector="didTakePhoto:" destination="sCf-VT-dx7" eventType="touchUpInside" id="sUk-3L-CKZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3W-3m-Ttp">
-                                <rect key="frame" x="16" y="20" width="25" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="At4-pQ-Yo0"/>
-                                    <constraint firstAttribute="width" constant="25" id="NEa-bb-Hq7"/>
-                                </constraints>
-                                <state key="normal" image="Left Filled-50"/>
-                                <connections>
-                                    <action selector="exit:" destination="sCf-VT-dx7" eventType="touchUpInside" id="qWz-EM-IqD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zOH-2c-VuO">
-                                <rect key="frame" x="273" y="544" width="35" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="f5S-2S-wbp"/>
-                                    <constraint firstAttribute="width" constant="35" id="hnS-5p-eFX"/>
-                                </constraints>
-                                <state key="normal" image="Switch Camera-100"/>
-                                <connections>
-                                    <action selector="switchCamera:" destination="sCf-VT-dx7" eventType="touchUpInside" id="iZB-cg-Ik6"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5qa-zN-NF2">
-                                <rect key="frame" x="67" y="544" width="35" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="5Fm-XK-XSs"/>
-                                    <constraint firstAttribute="width" constant="35" id="8dP-rQ-1rJ"/>
-                                </constraints>
-                                <state key="normal" image="Restart Filled-100">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="retake:" destination="sCf-VT-dx7" eventType="touchUpInside" id="8Pc-6y-xc0"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ONP-OM-NrW">
-                                <rect key="frame" x="16" y="544" width="35" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="GHP-x8-xoy"/>
-                                    <constraint firstAttribute="width" constant="35" id="i19-Bd-Zau"/>
-                                </constraints>
-                                <state key="normal" image="Download"/>
-                                <connections>
-                                    <action selector="saveButton:" destination="sCf-VT-dx7" eventType="touchUpInside" id="Pym-sa-Yzc"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qua-G8-7b8">
-                                <rect key="frame" x="324" y="544" width="35" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="35" id="Xrs-Dd-8zA"/>
-                                    <constraint firstAttribute="width" constant="35" id="YAL-mJ-rB0"/>
-                                </constraints>
-                                <state key="normal" image="Lightning Bolt-96"/>
-                                <connections>
-                                    <action selector="flash:" destination="sCf-VT-dx7" eventType="touchUpInside" id="6rD-Tg-Q2Z"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="tXT-SV-iSm" secondAttribute="trailing" id="0dF-W9-aTX"/>
-                            <constraint firstItem="Lra-Iu-6lE" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" id="4Zs-3f-xFJ"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="qua-G8-7b8" secondAttribute="bottom" constant="88" id="E9f-PH-JES"/>
-                            <constraint firstAttribute="trailing" secondItem="Lra-Iu-6lE" secondAttribute="trailing" id="J2x-6V-rEu"/>
-                            <constraint firstItem="5qa-zN-NF2" firstAttribute="leading" secondItem="ONP-OM-NrW" secondAttribute="trailing" constant="16" id="JVB-gZ-Ahl"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="zOH-2c-VuO" secondAttribute="bottom" constant="88" id="K34-c8-KxT"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="AWF-MY-qPm" secondAttribute="bottom" constant="68" id="MYW-Od-h5A"/>
-                            <constraint firstItem="tXT-SV-iSm" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" id="NZj-Hf-Ong"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="ONP-OM-NrW" secondAttribute="bottom" constant="88" id="Nw4-hX-4Iq"/>
-                            <constraint firstItem="a3W-3m-Ttp" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="R0W-c2-BhI"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="tXT-SV-iSm" secondAttribute="bottom" id="X5l-fU-1XT"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="Lra-Iu-6lE" secondAttribute="bottom" id="YNC-47-vyS"/>
-                            <constraint firstItem="Lra-Iu-6lE" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" id="aDj-QW-cTB"/>
-                            <constraint firstItem="a3W-3m-Ttp" firstAttribute="top" secondItem="3IV-4b-sOP" secondAttribute="bottom" constant="20" id="aDs-KI-UAX"/>
-                            <constraint firstItem="AWF-MY-qPm" firstAttribute="centerX" secondItem="qKJ-QQ-tsQ" secondAttribute="centerX" id="ajp-oj-ooi"/>
-                            <constraint firstItem="gnh-bj-U6d" firstAttribute="top" secondItem="5qa-zN-NF2" secondAttribute="bottom" constant="88" id="ghk-ZA-Qjr"/>
-                            <constraint firstAttribute="trailing" secondItem="qua-G8-7b8" secondAttribute="trailing" constant="16" id="hMU-lH-fts"/>
-                            <constraint firstItem="qua-G8-7b8" firstAttribute="leading" secondItem="zOH-2c-VuO" secondAttribute="trailing" constant="16" id="qA0-un-Gwh"/>
-                            <constraint firstItem="ONP-OM-NrW" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" constant="16" id="v54-fR-8rf"/>
-                            <constraint firstItem="tXT-SV-iSm" firstAttribute="leading" secondItem="qKJ-QQ-tsQ" secondAttribute="leading" id="vAQ-q7-34g"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="xeE-4q-Xg0"/>
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <nil key="simulatedTopBarMetrics"/>
-                    <nil key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="captureButton" destination="AWF-MY-qPm" id="5Qe-C2-faB"/>
-                        <outlet property="flashButton" destination="qua-G8-7b8" id="K9j-HB-bAA"/>
-                        <outlet property="imageTaken" destination="Lra-Iu-6lE" id="uig-XH-fh5"/>
-                        <outlet property="previewView" destination="tXT-SV-iSm" id="CJA-UP-gfd"/>
-                        <outlet property="retakeButton" destination="5qa-zN-NF2" id="Zgq-41-68Y"/>
-                        <outlet property="saveButton" destination="ONP-OM-NrW" id="bif-b4-wfr"/>
-                        <outlet property="switchCameraButton" destination="zOH-2c-VuO" id="Zt0-LS-aWF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1YD-Ak-7Lc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4589" y="-1154"/>
-        </scene>
-        <!--View Controller-->
+        <!--Captured Still-->
         <scene sceneID="Z1s-lw-AUq">
             <objects>
-                <viewController id="oby-Mu-zdT" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="stillVC" id="oby-Mu-zdT" customClass="CapturedStill" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="k0n-4m-K7z"/>
                         <viewControllerLayoutGuide type="bottom" id="cXV-3z-QD0"/>
@@ -5376,34 +5244,64 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IHD-kG-Qo1">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IHD-kG-Qo1">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="667" id="Bhu-IB-Y4u"/>
+                                    <constraint firstAttribute="width" secondItem="IHD-kG-Qo1" secondAttribute="height" multiplier="375:667" id="CMY-fF-Uv4"/>
+                                    <constraint firstAttribute="width" constant="375" id="V8A-lC-kWA"/>
+                                </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s65-ak-j9e">
-                                <rect key="frame" x="16" y="28" width="30" height="30"/>
+                                <rect key="frame" x="16" y="588" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
-                                <rect key="frame" x="16" y="537" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Download"/>
+                                <connections>
+                                    <action selector="dismissVC:" destination="oby-Mu-zdT" eventType="touchUpInside" id="djq-Fb-wdr"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KuK-8b-F8c">
-                                <rect key="frame" x="150" y="525" width="75" height="75"/>
+                                <rect key="frame" x="309" y="575" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="ShareOP"/>
+                                <state key="normal" image="Checked Filled-100"/>
+                                <connections>
+                                    <action selector="continueButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="jPn-2B-YGc"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YMn-tt-eEL">
-                                <rect key="frame" x="307" y="32" width="52" height="22"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
+                                <rect key="frame" x="329" y="28" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Edit"/>
+                                <state key="normal" image="Edit Filled-500"/>
+                                <connections>
+                                    <action selector="editButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="pgc-to-rq6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
+                                <rect key="frame" x="291" y="28" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Download"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IHD-kG-Qo1" firstAttribute="top" secondItem="JEK-5d-Z64" secondAttribute="top" id="9vL-BK-0oT"/>
+                            <constraint firstItem="IHD-kG-Qo1" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" id="CAN-jT-s30"/>
+                            <constraint firstAttribute="trailing" secondItem="IHD-kG-Qo1" secondAttribute="trailing" id="YwZ-Eo-d8h"/>
+                            <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="IHD-kG-Qo1" secondAttribute="bottom" id="nHY-SK-d0E"/>
+                            <constraint firstItem="IHD-kG-Qo1" firstAttribute="centerX" secondItem="JEK-5d-Z64" secondAttribute="centerX" id="vth-hG-KsD"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7nP-fP-79T"/>
+                    <connections>
+                        <outlet property="continueButton" destination="KuK-8b-F8c" id="dId-SI-bFO"/>
+                        <outlet property="editButton" destination="Ulw-zq-86o" id="LiH-CL-IRf"/>
+                        <outlet property="leaveButton" destination="s65-ak-j9e" id="hgn-oV-AsG"/>
+                        <outlet property="saveButton" destination="Fbn-Va-JDg" id="cMn-xU-pms"/>
+                        <outlet property="stillPhoto" destination="IHD-kG-Qo1" id="KO7-JQ-7zq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tBN-kT-UdW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -7379,13 +7277,14 @@
         <image name="Checked Filled-100" width="256" height="256"/>
         <image name="Circled Play Filled-50" width="25" height="25"/>
         <image name="Comment-100" width="50" height="50"/>
-        <image name="Download" width="50" height="50"/>
-        <image name="Exit" width="50" height="50"/>
+        <image name="Download" width="261" height="256"/>
+        <image name="Edit Filled-500" width="256" height="256"/>
+        <image name="Exit" width="102" height="102"/>
         <image name="Expand Arrow-50" width="25" height="25"/>
         <image name="Gender Neutral User-100" width="399" height="398"/>
         <image name="Left Filled-100" width="50" height="50"/>
         <image name="Left Filled-50" width="25" height="25"/>
-        <image name="Lightning Bolt-96" width="48" height="48"/>
+        <image name="Lightning Bolt-96" width="256" height="256"/>
         <image name="Like-100" width="50" height="50"/>
         <image name="More" width="25" height="25"/>
         <image name="More-100" width="50" height="50"/>
@@ -7394,16 +7293,15 @@
         <image name="Number Pad-48" width="24" height="24"/>
         <image name="Redo-100" width="50" height="50"/>
         <image name="RedplanetLogo" width="256" height="256"/>
-        <image name="Restart Filled-100" width="50" height="50"/>
         <image name="SLR Camera Filled-Gray" width="50" height="50"/>
         <image name="SaveBlack" width="50" height="50"/>
         <image name="Search-50" width="25" height="25"/>
         <image name="Settings-48" width="24" height="24"/>
         <image name="ShareOP" width="116" height="116"/>
         <image name="Stack of Photos-96" width="256" height="256"/>
-        <image name="Switch Camera-100" width="256" height="256"/>
+        <image name="Switch Camera-100" width="243" height="256"/>
         <image name="Trending" width="246" height="273"/>
-        <image name="Unchecked Circle-100" width="246" height="246"/>
+        <image name="Unchecked Circle-100" width="256" height="256"/>
         <image name="User-48" width="24" height="24"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="WhiteComment" width="50" height="50"/>

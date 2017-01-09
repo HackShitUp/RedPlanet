@@ -84,11 +84,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Load Camera
             DispatchQueue.main.async(execute: {
                 // Push VC
-                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
                 self.navigationController!.pushViewController(cameraVC, animated: true)
-                
-//                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-//                self.navigationController!.pushViewController(cameraVC, animated: true)
             })
             
             
@@ -98,7 +95,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     // User granted camera access
                     // Load Camera
                     DispatchQueue.main.async(execute: {
-                        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
+                        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
                         self.navigationController!.pushViewController(cameraVC, animated: true)
                     })
                     

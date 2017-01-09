@@ -468,8 +468,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatCamera = true
         
         // Push VC
-        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "cameraVC") as! CustomCamera
-        self.navigationController?.pushViewController(cameraVC, animated: true)
+        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
+        self.navigationController!.pushViewController(cameraVC, animated: true)
     }
     
     

@@ -9,25 +9,40 @@
 import UIKit
 import SwiftyCam
 
+// Bool to determine whether camera was accessed from Chats
+var chatCamera: Bool = false
+
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavigationControllerDelegate {
     
     // Bool to determine media type
     var camMedia = "photo"
     
-    @IBOutlet weak var captureButton: SwiftyCamButton!
+    var count = 10
+
     
+    @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
+    @IBOutlet weak var leaveButton: UIButton!
+    @IBOutlet weak var progressView: UIProgressView!
     
 
     func SwiftyCamDidTakePhoto(_ photo: UIImage) {
-        // Called when takePhoto() is called or if a SwiftyCamButton initiates a tap gesture
-        // Returns a UIImage captured from the current session
-        print(photo)
+        // Append photo
+        stillImage.append(photo)
+        // Perform segue
+        let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
+        self.navigationController?.pushViewController(stillVC, animated: false)
     }
     
     func SwiftyCamDidBeginRecordingVideo() {
         print("Did Begin Recording")
+        // Show progress and begin counting
+        DispatchQueue.main.async {
+            self.view.bringSubview(toFront: self.progressView)
+        }
+        // Call function
+        countDown()
     }
     
     func SwiftyCamDidFinishRecordingVideo() {
@@ -38,8 +53,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         print(url.path)
         
         // MARK: - Periscope Video View Controller
-        let videoViewController = VideoViewController(videoURL: url)
-        self.navigationController?.present(videoViewController, animated: false, completion: nil)
+//        let videoViewController = VideoViewController(videoURL: url)
+//        self.navigationController?.present(videoViewController, animated: false, completion: nil)
+        capturedURL.append(url)
+        // Push VC
+        let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
+        self.navigationController?.pushViewController(capturedVideoVC, animated: true)
+        
     }
     
     func SwiftyCamDidFocusAtPoint(focusPoint: CGPoint) {
@@ -51,7 +71,16 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func SwiftyCamDidSwitchCameras(camera: SwiftyCamViewController.CameraSelection) {
-        print(camera)
+        // Rotate icon
+        UIView.animate(withDuration: 0.5) { () -> Void in
+            
+            self.swapCameraButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+            
+            self.swapCameraButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+        }, completion: nil)
     }
     
     
@@ -72,12 +101,23 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
         }
     }
-
     
-    // Function to retake
-    func retake(sender: Any) {
-        
+    // Function to countdown for video
+    func countDown() {
+        if (count > 0) {
+            DispatchQueue.main.async {
+                self.count = 0
+                self.progressView.progress = Float(self.count/10)
+//                self.progressView.setProgress(Float(self.count/10), animated: true)
+//                print(self.count)
+                
+//                self.progressView.progress = Float(Int(self.count/15))
+//                self.count -= 1
+            }
+
+        }
     }
+    
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -106,6 +146,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.view.bringSubview(toFront: self.captureButton)
         self.view.bringSubview(toFront: self.flashButton)
         self.view.bringSubview(toFront: self.swapCameraButton)
+        self.view.bringSubview(toFront: self.leaveButton)
+        
+        var _ = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(countDown), userInfo: nil, repeats: false)
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
@@ -124,9 +167,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         doubleTap.numberOfTapsRequired = 2
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(doubleTap)
+        
         // Tap button to swap between cameras
         let swapTap = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
-        swapTap.numberOfTapsRequired = 2
+        swapTap.numberOfTapsRequired = 1
         self.swapCameraButton.isUserInteractionEnabled = true
         self.swapCameraButton.addGestureRecognizer(swapTap)
         
@@ -135,6 +179,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         flashTap.numberOfTapsRequired = 1
         self.flashButton.isUserInteractionEnabled = true
         self.flashButton.addGestureRecognizer(flashTap)
+        
+        // Tap to leave
+        let leaveTap = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
+        leaveTap.numberOfTapsRequired = 1
+        self.leaveButton.isUserInteractionEnabled = true
+        self.leaveButton.addGestureRecognizer(leaveTap)
     
         // Swipe left to leave
         let leaveSwipe = UISwipeGestureRecognizer(target: self, action: #selector(dismissVC))
@@ -147,6 +197,4 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
 }
