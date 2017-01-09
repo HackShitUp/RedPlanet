@@ -7,29 +7,48 @@
 //
 
 import UIKit
+import CoreData
 
-class CapturedVideo: UIViewController {
+// Video URL
+var capturedURL = [URL]()
+
+class CapturedVideo: UIViewController, PlayerDelegate {
+    
+    // Initializae Player
+    var player: Player!
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.player = Player()
+        self.player.delegate = self
+        self.player.view.frame = self.view.bounds
+        
+        self.addChildViewController(self.player)
+        self.view.addSubview(self.player.view)
+        self.player.didMove(toParentViewController: self)
+        
+        self.player.setUrl(capturedURL.last!)
+        self.player.playFromBeginning()
+        self.player.fillMode = "AVLayerVideoGravityResizeAspect"
+        
+        // Add tap method to pause and play again
+        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromBeginning))
+        pauseTap.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(pauseTap)
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
