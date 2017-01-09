@@ -15,9 +15,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     var camMedia = "photo"
     
     @IBOutlet weak var captureButton: SwiftyCamButton!
-    @IBOutlet weak var capturedMoment: UIImageView!
-    @IBOutlet weak var downloadButton: UIButton!
-    @IBOutlet weak var retakeButton: UIButton!
+    
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
     
@@ -25,13 +23,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     func SwiftyCamDidTakePhoto(_ photo: UIImage) {
         // Called when takePhoto() is called or if a SwiftyCamButton initiates a tap gesture
         // Returns a UIImage captured from the current session
-        
-        self.view.bringSubview(toFront: self.downloadButton)
-        self.view.bringSubview(toFront: self.retakeButton)
-        
-        self.capturedMoment.isHidden = false
-        self.view.bringSubview(toFront: self.capturedMoment)
-        self.capturedMoment.image = photo
+        print(photo)
     }
     
     func SwiftyCamDidBeginRecordingVideo() {
@@ -80,25 +72,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
         }
     }
-    
-    // Function to save media
-    func saveMedia(sender: Any) {
-        if camMedia == "photo" {
-            UIView.animate(withDuration: 0.5) { () -> Void in
-                
-                self.downloadButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-            }
-            
-            UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                
-                self.downloadButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-            }, completion: nil)
-            
-            UIImageWriteToSavedPhotosAlbum(self.capturedMoment.image!, self, nil, nil)
-        } else {
-            // Save video later
-        }
-    }
+
     
     // Function to retake
     func retake(sender: Any) {
@@ -132,11 +106,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.view.bringSubview(toFront: self.captureButton)
         self.view.bringSubview(toFront: self.flashButton)
         self.view.bringSubview(toFront: self.swapCameraButton)
-        self.view.bringSubview(toFront: self.downloadButton)
-        self.view.bringSubview(toFront: self.retakeButton)
-        
-        // Hide imageview
-        self.capturedMoment.isHidden = true
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
@@ -166,18 +135,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         flashTap.numberOfTapsRequired = 1
         self.flashButton.isUserInteractionEnabled = true
         self.flashButton.addGestureRecognizer(flashTap)
-        
-        // Tap to save photo
-        let saveTap = UITapGestureRecognizer(target: self, action: #selector(saveMedia))
-        saveTap.numberOfTapsRequired = 1
-        self.downloadButton.isUserInteractionEnabled = true
-        self.downloadButton.addGestureRecognizer(saveTap)
-        
-        // Retake button
-        let retakeTap = UITapGestureRecognizer(target: self, action: #selector(retake))
-        retakeTap.numberOfTapsRequired = 1
-        self.retakeButton.isUserInteractionEnabled = true
-        self.retakeButton.addGestureRecognizer(retakeTap)
     
         // Swipe left to leave
         let leaveSwipe = UISwipeGestureRecognizer(target: self, action: #selector(dismissVC))

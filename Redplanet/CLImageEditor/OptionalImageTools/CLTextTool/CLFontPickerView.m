@@ -41,7 +41,7 @@ const CGFloat kCLFontPickerViewConstantFontSize = 14;
 
 + (UIFont*)defaultFont
 {
-    return [UIFont fontWithName:@"AvenirNext-Medium"size:kCLFontPickerViewConstantFontSize];
+    return [UIFont fontWithName:@"AvenirNext-Demibold"size:kCLFontPickerViewConstantFontSize];
 }
 
 - (id)initWithFrame:(CGRect)frame

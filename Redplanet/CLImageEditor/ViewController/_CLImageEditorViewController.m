@@ -112,6 +112,8 @@
     }
     
     if(self.navigationController!=nil){
+        _navigationBar.topItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+        _navigationBar.topItem.leftBarButtonItem.tintColor = [UIColor blackColor];
         _navigationBar.frame  = self.navigationController.navigationBar.frame;
         _navigationBar.hidden = YES;
         [_navigationBar popNavigationItemAnimated:NO];
@@ -577,7 +579,9 @@
     if(self.currentTool){
         UINavigationItem *item  = [[UINavigationItem alloc] initWithTitle:self.currentTool.toolInfo.title];
         item.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[CLImageEditorTheme localizedString:@"CLImageEditor_OKBtnTitle" withDefault:@"OK"] style:UIBarButtonItemStyleDone target:self action:@selector(pushedDoneBtn:)];
+        item.rightBarButtonItem.tintColor = [UIColor blackColor];
         item.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:[CLImageEditorTheme localizedString:@"CLImageEditor_BackBtnTitle" withDefault:@"Back"] style:UIBarButtonItemStylePlain target:self action:@selector(pushedCancelBtn:)];
+        item.leftBarButtonItem.tintColor = [UIColor blackColor];
         
         [_navigationBar pushNavigationItem:item animated:(self.navigationController==nil)];
     }

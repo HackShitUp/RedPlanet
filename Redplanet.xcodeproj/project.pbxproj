@@ -193,6 +193,8 @@
 		7EE1C2301DBC78C100F75557 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EE1C22A1DBC78C100F75557 /* Info.plist */; };
 		7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */; };
 		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
+		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
+		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -470,6 +472,8 @@
 		7EE1C22A1DBC78C100F75557 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
+		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
+		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1082,15 +1086,17 @@
 			name = PhotosLibrary;
 			sourceTree = "<group>";
 		};
-		7EA45CD51DB6BD8100A466D9 /* NewCamera */ = {
+		7EA45CD51DB6BD8100A466D9 /* Camera_Share */ = {
 			isa = PBXGroup;
 			children = (
 				7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */,
+				7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */,
+				7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */,
 				7EC5D1B11DB35B6900437219 /* CustomCamera.swift */,
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */,
 			);
-			name = NewCamera;
+			name = Camera_Share;
 			sourceTree = "<group>";
 		};
 		7EA87D3B1DD6B39400B3471F /* SharedPost */ = {
@@ -1346,7 +1352,7 @@
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
-				7EA45CD51DB6BD8100A466D9 /* NewCamera */,
+				7EA45CD51DB6BD8100A466D9 /* Camera_Share */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,
 			);
 			name = CREATE_REDPLANET;
@@ -1830,6 +1836,7 @@
 				7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */,
 				7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
+				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
@@ -1894,6 +1901,7 @@
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7E5837F71DBC70A00049ED18 /* SwiftModalWebVC.swift in Sources */,
+				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
 				7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */,
 				7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */,
 				7EC5D1B21DB35B6900437219 /* CustomCamera.swift in Sources */,

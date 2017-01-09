@@ -6,13 +6,14 @@
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
-import UIKit
+
+import AVFoundation
+import AVKit
 import CoreData
 import MobileCoreServices
 import Photos
 import PhotosUI
-import AVFoundation
-import AVKit
+import UIKit
 
 import Parse
 import ParseUI
