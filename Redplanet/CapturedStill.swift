@@ -26,7 +26,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     @IBAction func dismissVC(_ sender: Any) {
         // Remove last
         stillImage.removeLast()
-        // Dismiss VC
+        // Pop VC
         _ = self.navigationController?.popViewController(animated: false)
     }
     
@@ -214,24 +214,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         // Set image
         self.stillPhoto.image = stillImage.last!
 
-        // Add shadow to...
-        /*
-        // (1) saveButton
-        self.saveButton.layer.shadowColor = UIColor.black.cgColor
-        self.saveButton.layer.shadowOpacity = 0.8
-        self.saveButton.layer.shadowRadius = 12
-        self.saveButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
-        // (2) retakeButton
-        self.leaveButton.layer.shadowColor = UIColor.black.cgColor
-        self.leaveButton.layer.shadowOpacity = 0.8
-        self.leaveButton.layer.shadowRadius = 12
-        self.leaveButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
-        // (3) editButton
-        self.editButton.layer.shadowColor = UIColor.black.cgColor
-        self.editButton.layer.shadowOpacity = 0.8
-        self.editButton.layer.shadowRadius = 12
-        self.editButton.layer.shadowOffset = CGSize(width: CGFloat(12.0), height: CGFloat(12.0))
-         */
     }
     
     override func viewWillAppear(_ animated: Bool) {

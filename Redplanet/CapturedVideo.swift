@@ -17,6 +17,14 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     // Initializae Player
     var player: Player!
     
+    @IBOutlet weak var exitButton: UIButton!
+    @IBAction func leave(_ sender: Any) {
+        // Pop VC
+        _ = self.navigationController?.popViewController(animated: false)
+    }
+    @IBOutlet weak var continueButton: UIButton!
+    @IBAction func continueAction(_ sender: Any) {
+    }
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -38,10 +46,13 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
         
         // Add tap method to pause and play again
-        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromBeginning))
-        pauseTap.numberOfTapsRequired = 1
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(pauseTap)
+//        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromBeginning))
+//        pauseTap.numberOfTapsRequired = 1
+//        self.view.isUserInteractionEnabled = true
+//        self.view.addGestureRecognizer(pauseTap)
+        
+        self.view.bringSubview(toFront: self.exitButton)
+        self.view.bringSubview(toFront: self.continueButton)
     }
     
     

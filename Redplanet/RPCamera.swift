@@ -13,13 +13,8 @@ import SwiftyCam
 var chatCamera: Bool = false
 
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavigationControllerDelegate {
-    
-    // Bool to determine media type
-    var camMedia = "photo"
-    
-    var count = 10
-
-    
+    var time: Float = 0.0
+    var timer: Timer?
     @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
@@ -36,25 +31,36 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func SwiftyCamDidBeginRecordingVideo() {
-        print("Did Begin Recording")
         // Show progress and begin counting
         DispatchQueue.main.async {
+            self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)
+//            self.timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
+//            UIView.animate(withDuration: 10, animations: { () -> Void in
+//                self.progressView.setProgress(1, animated: true)
+//            })
         }
-        // Call function
-        countDown()
     }
     
+//    func countDown() {
+//        DispatchQueue.main.async {
+//            self.time += 1.0
+//            self.progressView.setProgress(0, animated: false)
+//            self.progressView.setProgress(10/self.time, animated: true)
+//            if self.time > 10 {
+//                self.timer!.invalidate()
+//            }
+//        }
+//    }
+    
+    
     func SwiftyCamDidFinishRecordingVideo() {
-        print("Did finish Recording")
+        // Remove progress
+        self.progressView.isHidden = true
     }
     
     func SwiftyCamDidFinishProcessingVideoAt(_ url: URL) {
-        print(url.path)
-        
-        // MARK: - Periscope Video View Controller
-//        let videoViewController = VideoViewController(videoURL: url)
-//        self.navigationController?.present(videoViewController, animated: false, completion: nil)
+        // Append url
         capturedURL.append(url)
         // Push VC
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
@@ -102,23 +108,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         }
     }
     
-    // Function to countdown for video
-    func countDown() {
-        if (count > 0) {
-            DispatchQueue.main.async {
-                self.count = 0
-                self.progressView.progress = Float(self.count/10)
-//                self.progressView.setProgress(Float(self.count/10), animated: true)
-//                print(self.count)
-                
-//                self.progressView.progress = Float(Int(self.count/15))
-//                self.count -= 1
-            }
-
-        }
-    }
-    
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -147,8 +136,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.view.bringSubview(toFront: self.flashButton)
         self.view.bringSubview(toFront: self.swapCameraButton)
         self.view.bringSubview(toFront: self.leaveButton)
-        
-        var _ = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(countDown), userInfo: nil, repeats: false)
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
