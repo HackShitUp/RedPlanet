@@ -28,13 +28,13 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>To capture moments and share them on this platform.</string>
+	<string>To capture Moments and share them with your Friends or Followers!</string>
 	<key>NSContactsUsageDescription</key>
-	<string>To find your friends easily.</string>
+	<string>To help you find your friends easily.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>To record videos and share them on this platform.</string>
+	<string>To record Moments and share them with your Friends or Followers!</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To share and save photos on this platform.</string>
+	<string>To share or save photos with your Friends or Followers.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

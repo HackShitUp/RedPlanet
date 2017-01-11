@@ -538,6 +538,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                 self.sendScreenshot()
         }
         
+        
         // Set bool
         chatCamera = false
         

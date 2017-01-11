@@ -29,7 +29,6 @@ var shareImageAssets = [UIImage]()
 // URL to hold video data; when selected via UIImagePcikerController; URL
 var instanceVideoData: URL?
 
-
 // Media Type
 // Photo or Video
 var mediaType: String?

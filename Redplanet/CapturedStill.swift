@@ -99,10 +99,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         editor.dismiss(animated: false, completion: nil)
     }
     
-    
-    
-    
-    
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButton(_ sender: Any) {
         
@@ -120,6 +116,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                 (success: Bool, error: Error?) in
                 if success {
                     
+                    // Clear arrray
+                    stillImages.removeAll(keepingCapacity: false)
+                    
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
                     
@@ -135,6 +134,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    // Clear arrray
+                    stillImages.removeAll(keepingCapacity: false)
                     
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
@@ -158,7 +160,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
             chat["senderUsername"] = PFUser.current()!.username!
             chat["receiver"] = chatUserObject.last!
             chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.stillPhoto.image!, 0.5)!)
+            chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             chat["read"] = false
             chat.saveInBackground {
                 (success: Bool, error: Error?) in
@@ -173,7 +175,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                     // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        
                         // Handle optional chaining
                         if chatUserObject.last!.value(forKey: "apnsId") != nil {
                             // MARK: - OneSignal
@@ -185,8 +186,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                                 ]
                             )
                         }
-                        
-                        
                     }
                     
                     // Make false
@@ -221,12 +220,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
     }
 
-    
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -249,14 +245,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.stillPhoto.isUserInteractionEnabled = true
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print(super.didReceiveMemoryWarning())
     }
-    
-    
-    
     
     //MARK: Setup
     fileprivate func setupSlider() {
@@ -292,9 +284,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     fileprivate func updatePicture(_ newImage: UIImage) {
         createData(newImage)
         slider.reloadData()
-    }
-    
-    
+    }    
 }
 
 

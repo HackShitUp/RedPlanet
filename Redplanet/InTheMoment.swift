@@ -20,7 +20,6 @@ import SimpleAlert
 // Array to hold object
 var itmObject = [PFObject]()
 
-
 // Define Notification
 let itmNotification = Notification.Name("itmNotification")
 

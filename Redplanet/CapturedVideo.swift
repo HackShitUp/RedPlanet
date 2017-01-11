@@ -28,40 +28,73 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     }
     
     @IBOutlet weak var continueButton: UIButton!
-    @IBAction func continueAction(_ sender: Any) {
+    @IBAction func share(_ sender: Any) {
+        
+        // Disable button
+        self.continueButton.isUserInteractionEnabled = false
+        
+        print("CAPTURED URL: \(capturedURLS.last!)")
         
         // Traverse url to Data
         let tempImage = capturedURLS.last! as NSURL?
         _ = tempImage?.relativePath
         let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
         
-        // Save video to
+        // Save to Newsfeeds
         let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["byUser"] = PFUser.current()!
         newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["contentType"] = "itm"
+        newsfeeds["byUser"] = PFUser.current()!
         newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: videoData! as Data)
+        newsfeeds["contentType"] = "itm"
         newsfeeds.saveInBackground {
             (success: Bool, error: Error?) in
-            if success {
-                print("Successfully saved")
+            if error == nil {
                 
-                // Send Notification
-                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                print("FIRED")
                 
-                // Push Show MasterTab
-                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                UIApplication.shared.keyWindow?.rootViewController = masterTab
+                // Re-enable buttons
+                self.continueButton.isUserInteractionEnabled = true
+                
+                // Clear array
+                capturedURLS.removeAll(keepingCapacity: false)
+                
+                DispatchQueue.main.async {
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                }
                 
             } else {
                 print(error?.localizedDescription as Any)
                 
+                // Re-enable buttons
+                self.continueButton.isUserInteractionEnabled = true
+                
+                // Clear array
+                capturedURLS.removeAll(keepingCapacity: false)
+                
+                DispatchQueue.main.async {
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                }
                 
             }
         }
         
+        
+
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -70,7 +103,12 @@ class CapturedVideo: UIViewController, PlayerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Bring buttons to front
+        self.view.bringSubview(toFront: self.exitButton)
+        self.view.bringSubview(toFront: self.continueButton)
 
+        // MARK: Player
         self.player = Player()
         self.player.delegate = self
         self.player.view.frame = self.view.bounds
@@ -83,12 +121,13 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
         self.player.playFromBeginning()
         
-        // Add tap method to pause and play again
-        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(player.playFromBeginning))
-        pauseTap.numberOfTapsRequired = 1
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(pauseTap)
+        // Add tap method
+//        let controlTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromCurrentTime))
+//        controlTap.numberOfTapsRequired = 1
+//        self.view.isUserInteractionEnabled = true
+//        self.view.addGestureRecognizer(controlTap)
         
+        // Bring buttons to front
         self.view.bringSubview(toFront: self.exitButton)
         self.view.bringSubview(toFront: self.continueButton)
     }

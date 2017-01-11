@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -437,23 +439,41 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.iconicPreview.layer.borderWidth = 3.50
                     cell.iconicPreview.contentMode = .scaleAspectFill
                     cell.iconicPreview.clipsToBounds = true
-
                     
-                    // Fetch photo
-                    if let itm = object!["photoAsset"] as? PFFile {
-                        itm.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
+                    if object!["photoAsset"] != nil {
+                        
+                        // Fetch photo
+                        if let itm = object!["photoAsset"] as? PFFile {
+                            itm.getDataInBackground(block: {
+                                (data: Data?, error: Error?) in
+                                if error == nil {
+                                    
+                                    // Show iconicPreview
+                                    cell.iconicPreview.isHidden = false
+                                    // Set media
+                                    cell.iconicPreview.image = UIImage(data: data!)
+                                    
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                        }
+                        
+                    } else if object!["videoAsset"] != nil {
+                        // (2) Get video preview
+                        if let videoFile = object!["videoAsset"] as? PFFile {
+                            let videoUrl = NSURL(string: videoFile.url!)
+                            do {
+                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                                let imgGenerator = AVAssetImageGenerator(asset: asset)
+                                imgGenerator.appliesPreferredTrackTransform = true
+                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                                cell.iconicPreview.image = UIImage(cgImage: cgImage)
                                 
-                                // Show iconicPreview
-                                cell.iconicPreview.isHidden = false
-                                // Set media
-                                cell.iconicPreview.image = UIImage(data: data!)
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
+                            } catch let error {
+                                print("*** Error generating thumbnail: \(error.localizedDescription)")
                             }
-                        })
+                        }
                     }
                     
                 }
@@ -649,22 +669,20 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // ITM
                 if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                    // Determine whether it's a 
+                    // Append content object
+                    itmObject.append(self.friendsContent[indexPath.row])
+                    
                     // PHOTO
                     if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
-                        
-                        // Append content object
-                        itmObject.append(self.friendsContent[indexPath.row])
-                        
                         // Push VC
                         let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                         self.parentNavigator.pushViewController(itmVC, animated: true)
-                        
                     } else {
                     // VIDEO
-                        
+                        // Push VC
+                        let momentVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                        self.parentNavigator.pushViewController(momentVideoVC, animated: true)
                     }
-                    
                 }
                 
                 // VIDEO
