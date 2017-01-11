@@ -23,6 +23,9 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     // Initializae Player
     var player: Player!
     
+    // Compressed URL
+    var smallVideoData: NSData?
+    
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
         // Pop VC
@@ -35,96 +38,58 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         
-        print("CAPTURED URL: \(capturedURLS.last!)")
-        
-        // Traverse url to Data
-        let tempImage = capturedURLS.last! as NSURL?
-        _ = tempImage?.relativePath
-        let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
-
-        print("File size before compression: \(Double(videoData!.length/1048576)) mb")
-        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-        compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
-            guard let session = exportSession else {
-                return
-            }
-            
-            switch session.status {
-            case .unknown:
-                break
-            case .waiting:
-                break
-            case .exporting:
-                break
-            case .completed:
-                guard let compressedData = NSData(contentsOf: compressedURL) else {
-                    return
+        // Save to Newsfeeds
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+        newsfeeds["contentType"] = "itm"
+        newsfeeds.saveInBackground {
+            (success: Bool, error: Error?) in
+            if error == nil {
+                
+                print("FIRED")
+                
+                // Re-enable buttons
+                self.continueButton.isUserInteractionEnabled = true
+                
+                // Clear array
+                capturedURLS.removeAll(keepingCapacity: false)
+                
+                DispatchQueue.main.async {
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
                 }
                 
-                print("File size after compression: \(Double(compressedData.length / 1048576)) mb")
+            } else {
+                print(error?.localizedDescription as Any)
                 
-                 // Save to Newsfeeds
-                 let newsfeeds = PFObject(className: "Newsfeeds")
-                 newsfeeds["username"] = PFUser.current()!.username!
-                 newsfeeds["byUser"] = PFUser.current()!
-                 newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: compressedData as Data)
-                 newsfeeds["contentType"] = "itm"
-                 newsfeeds.saveInBackground {
-                    (success: Bool, error: Error?) in
-                        if error == nil {
-                 
-                            print("FIRED")
-                 
-                            // Re-enable buttons
-                            self.continueButton.isUserInteractionEnabled = true
-                 
-                            // Clear array
-                            capturedURLS.removeAll(keepingCapacity: false)
-                 
-                            DispatchQueue.main.async {
-                                // Send Notification
-                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                 
-                                // Push Show MasterTab
-                                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                                UIApplication.shared.keyWindow?.rootViewController = masterTab
-                            }
-                 
-                        } else {
-                            print(error?.localizedDescription as Any)
-                 
-                            // Re-enable buttons
-                            self.continueButton.isUserInteractionEnabled = true
-                 
-                            // Clear array
-                            capturedURLS.removeAll(keepingCapacity: false)
-                 
-                            DispatchQueue.main.async {
-                 
-                                // Send Notification
-                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                 
-                                // Push Show MasterTab
-                                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                                UIApplication.shared.keyWindow?.rootViewController = masterTab
-                            }
-                 
-                        }
-                 }
+                // Re-enable buttons
+                self.continueButton.isUserInteractionEnabled = true
                 
+                // Clear array
+                capturedURLS.removeAll(keepingCapacity: false)
                 
-            case .failed:
-                break
-            case .cancelled:
-                break
+                DispatchQueue.main.async {
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    
+                    // Push Show MasterTab
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                }
+                
             }
-            
         }
-
         
 
     }
@@ -150,9 +115,51 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+        compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
+            guard let session = exportSession else {
+                return
+            }
+            
+            switch session.status {
+            case .unknown:
+                break
+            case .waiting:
+                break
+            case .exporting:
+                break
+            case .completed:
+                
+                // Enable buttons
+                self.continueButton.isUserInteractionEnabled = true
+                
+                guard let compressedData = NSData(contentsOf: compressedURL) else {
+                    return
+                }
+
+                print("CP: \(compressedData.bytes)")
+                self.smallVideoData = compressedData                
+
+            case .failed:
+                break
+            case .cancelled:
+                break
+            }
+            
+        }
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Disable button
+        self.continueButton.isUserInteractionEnabled = false
         
         // Bring buttons to front
         self.view.bringSubview(toFront: self.exitButton)

@@ -806,7 +806,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
 //        self.itmMedia.addGestureRecognizer(holdTap)
         
         
-        
         // Hide moreButton if not user's content
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Show button

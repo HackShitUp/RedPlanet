@@ -8,6 +8,8 @@
 
 import UIKit
 import CoreData
+import AVFoundation
+import AVKit
 
 import Parse
 import ParseUI
@@ -916,6 +918,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // (E) In the moment
                 if object!["contentType"] as! String == "itm" {
+                    
                     // Make iconicPreview circular with red border color
                     cell.iconicPreview.layer.cornerRadius = cell.iconicPreview.frame.size.width/2
                     cell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
@@ -923,21 +926,40 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     cell.iconicPreview.contentMode = .scaleAspectFill
                     cell.iconicPreview.clipsToBounds = true
                     
-                    // Fetch photo
-                    if let itm = object!["photoAsset"] as? PFFile {
-                        itm.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
+                    if object!["photoAsset"] != nil {
+                        
+                        // Fetch photo
+                        if let itm = object!["photoAsset"] as? PFFile {
+                            itm.getDataInBackground(block: {
+                                (data: Data?, error: Error?) in
+                                if error == nil {
+                                    
+                                    // Show iconicPreview
+                                    cell.iconicPreview.isHidden = false
+                                    // Set media
+                                    cell.iconicPreview.image = UIImage(data: data!)
+                                    
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                        }
+                        
+                    } else if object!["videoAsset"] != nil {
+                        // (2) Get video preview
+                        if let videoFile = object!["videoAsset"] as? PFFile {
+                            let videoUrl = NSURL(string: videoFile.url!)
+                            do {
+                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                                let imgGenerator = AVAssetImageGenerator(asset: asset)
+                                imgGenerator.appliesPreferredTrackTransform = true
+                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                                cell.iconicPreview.image = UIImage(cgImage: cgImage)
                                 
-                                // Show iconicPreview
-                                cell.iconicPreview.isHidden = false
-                                // Set media
-                                cell.iconicPreview.image = UIImage(data: data!)
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
+                            } catch let error {
+                                print("*** Error generating thumbnail: \(error.localizedDescription)")
                             }
-                        })
+                        }
                     }
                     
                 }
@@ -1124,9 +1146,17 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     // Append content object
                     itmObject.append(self.contentObjects[indexPath.row])
                     
-                    // Push VC
-                    let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                    self.navigationController?.pushViewController(itmVC, animated: true)
+                    // PHOTO
+                    if self.contentObjects[indexPath.row].value(forKey: "photoAsset") != nil {
+                        // Push VC
+                        let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                        self.navigationController?.pushViewController(itmVC, animated: true)
+                    } else {
+                        // VIDEO
+                        // Push VC
+                        let momentVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                        self.navigationController?.pushViewController(momentVideoVC, animated: true)
+                    }
                 }
                 
                 
