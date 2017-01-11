@@ -26,6 +26,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         // Pop VC
         _ = self.navigationController?.popViewController(animated: false)
     }
+    
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueAction(_ sender: Any) {
         

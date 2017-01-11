@@ -669,7 +669,7 @@
 				7E4CFF9F1DB439720087454E /* ProfilePhoto */,
 				7EA87D3B1DD6B39400B3471F /* SharedPost */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
-				7EA09E131DD406F500BD2D51 /* InTheMoment */,
+				7EA09E131DD406F500BD2D51 /* Moment */,
 			);
 			name = SINGLE_CONTENT;
 			sourceTree = "<group>";
@@ -1111,12 +1111,12 @@
 			name = NewSpacePost;
 			sourceTree = "<group>";
 		};
-		7EA09E131DD406F500BD2D51 /* InTheMoment */ = {
+		7EA09E131DD406F500BD2D51 /* Moment */ = {
 			isa = PBXGroup;
 			children = (
 				7E9955661DC99A98003D9D73 /* InTheMoment.swift */,
 			);
-			name = InTheMoment;
+			name = Moment;
 			sourceTree = "<group>";
 		};
 		7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */ = {

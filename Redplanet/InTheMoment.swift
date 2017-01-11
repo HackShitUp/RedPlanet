@@ -187,6 +187,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     // (2) Set username
                     if let user = object["byUser"] as? PFUser {
                         self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
+                        self.rpUsername.layer.shadowColor = UIColor.black.cgColor
+                        self.rpUsername.layer.shadowOffset = CGSize(width: 5, height: 5)
+                        self.rpUsername.layer.shadowRadius = 5
+                        self.rpUsername.layer.shadowOpacity = 1.0
                     }
                     
                     // (3) Set time
@@ -194,6 +198,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     let now = Date()
                     let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
                     let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                    
+                    self.time.layer.shadowColor = UIColor.black.cgColor
+                    self.time.layer.shadowOffset = CGSize(width: 5, height: 5)
+                    self.time.layer.shadowRadius = 5
+                    self.time.layer.shadowOpacity = 1.0
                     
                     // logic what to show : Seconds, minutes, hours, days, or weeks
                     if difference.second! <= 0 {
@@ -794,6 +803,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
+        
         // (2) Add numberOfLikes tap
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
@@ -832,7 +842,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        
         // (9) Add share options
         let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         shareTap.numberOfTapsRequired = 1
@@ -850,6 +859,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             // Show button
             self.moreButton.isHidden = false
+            self.moreButton.layer.shadowColor = UIColor.black.cgColor
+            self.moreButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+            self.moreButton.layer.shadowRadius = 5
+            self.moreButton.layer.shadowOpacity = 1.0
+            
         } else {
             // Hide button
             self.moreButton.isHidden = true
