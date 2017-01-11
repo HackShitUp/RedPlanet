@@ -649,12 +649,22 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // ITM
                 if self.friendsContent[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                    // Append content object
-                    itmObject.append(self.friendsContent[indexPath.row])
+                    // Determine whether it's a 
+                    // PHOTO
+                    if self.friendsContent[indexPath.row].value(forKey: "photoAsset") != nil {
+                        
+                        // Append content object
+                        itmObject.append(self.friendsContent[indexPath.row])
+                        
+                        // Push VC
+                        let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                        self.parentNavigator.pushViewController(itmVC, animated: true)
+                        
+                    } else {
+                    // VIDEO
+                        
+                    }
                     
-                    // Push VC
-                    let itmVC = self.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                    self.parentNavigator.pushViewController(itmVC, animated: true)
                 }
                 
                 // VIDEO

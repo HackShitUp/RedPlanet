@@ -11,23 +11,26 @@ import SwiftyCam
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
+// Bool to determine camera side
+var isRearCam: Bool?
 
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavigationControllerDelegate {
+    
     var time: Float = 0.0
     var timer: Timer?
+    
     @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var leaveButton: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
-    
 
     func SwiftyCamDidTakePhoto(_ photo: UIImage) {
-        // Append photo
-        stillImage.append(photo)
-        // Perform segue
-        let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
-        self.navigationController?.pushViewController(stillVC, animated: false)
+        DispatchQueue.main.async {
+            stillImages.append(photo)
+            let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
+            self.navigationController?.pushViewController(stillVC, animated: false)
+        }
     }
     
     func SwiftyCamDidBeginRecordingVideo() {
@@ -35,23 +38,23 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         DispatchQueue.main.async {
             self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)
-//            self.timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
-//            UIView.animate(withDuration: 10, animations: { () -> Void in
-//                self.progressView.setProgress(1, animated: true)
-//            })
+            self.timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
+            UIView.animate(withDuration: 10, animations: { () -> Void in
+                self.progressView.setProgress(1, animated: true)
+            })
         }
     }
     
-//    func countDown() {
-//        DispatchQueue.main.async {
-//            self.time += 1.0
-//            self.progressView.setProgress(0, animated: false)
-//            self.progressView.setProgress(10/self.time, animated: true)
-//            if self.time > 10 {
-//                self.timer!.invalidate()
-//            }
-//        }
-//    }
+    func countDown() {
+        DispatchQueue.main.async {
+            self.time += 1.0
+            self.progressView.setProgress(0, animated: false)
+            self.progressView.setProgress(10/self.time, animated: true)
+            if self.time > 10 {
+                self.timer!.invalidate()
+            }
+        }
+    }
     
     
     func SwiftyCamDidFinishRecordingVideo() {
@@ -61,11 +64,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     func SwiftyCamDidFinishProcessingVideoAt(_ url: URL) {
         // Append url
-        capturedURL.append(url)
+        capturedURLS.append(url)
         // Push VC
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
         self.navigationController?.pushViewController(capturedVideoVC, animated: true)
-        
     }
     
     func SwiftyCamDidFocusAtPoint(focusPoint: CGPoint) {
@@ -77,16 +79,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func SwiftyCamDidSwitchCameras(camera: SwiftyCamViewController.CameraSelection) {
-        // Rotate icon
-        UIView.animate(withDuration: 0.5) { () -> Void in
-            
-            self.swapCameraButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+        if camera == .rear {
+            print("REAR")
+            isRearCam = true
+        } else if camera == .front {
+            print("FRONT")
+            isRearCam = false
         }
-        
-        UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-            
-            self.swapCameraButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-        }, completion: nil)
     }
     
     
@@ -123,6 +122,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set bool
+        isRearCam = true
 
         // Set delegate for camera view
         cameraDelegate = self
@@ -130,6 +132,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         captureButton.delegate = self
         // Set video duration and length
         kMaximumVideoDuration = 10.0
+        // Set tap to focus
+        tapToFocus = true
         
         // Bring buttons to front
         self.view.bringSubview(toFront: self.captureButton)

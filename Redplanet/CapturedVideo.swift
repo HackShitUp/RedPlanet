@@ -9,8 +9,12 @@
 import UIKit
 import CoreData
 
+import Parse
+import ParseUI
+import Bolts
+
 // Video URL
-var capturedURL = [URL]()
+var capturedURLS = [URL]()
 
 class CapturedVideo: UIViewController, PlayerDelegate {
     
@@ -24,6 +28,39 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     }
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueAction(_ sender: Any) {
+        
+        // Traverse url to Data
+        let tempImage = capturedURLS.last! as NSURL?
+        _ = tempImage?.relativePath
+        let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
+        
+        // Save video to
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["contentType"] = "itm"
+        newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: videoData! as Data)
+        newsfeeds.saveInBackground {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved")
+                
+                // Send Notification
+                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                
+                // Push Show MasterTab
+                let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                UIApplication.shared.keyWindow?.rootViewController = masterTab
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                
+                
+            }
+        }
+        
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -41,15 +78,15 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.view.addSubview(self.player.view)
         self.player.didMove(toParentViewController: self)
         
-        self.player.setUrl(capturedURL.last!)
-        self.player.playFromBeginning()
+        self.player.setUrl(capturedURLS.last!)
         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
+        self.player.playFromBeginning()
         
         // Add tap method to pause and play again
-//        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromBeginning))
-//        pauseTap.numberOfTapsRequired = 1
-//        self.view.isUserInteractionEnabled = true
-//        self.view.addGestureRecognizer(pauseTap)
+        let pauseTap = UITapGestureRecognizer(target: self, action: #selector(player.playFromBeginning))
+        pauseTap.numberOfTapsRequired = 1
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(pauseTap)
         
         self.view.bringSubview(toFront: self.exitButton)
         self.view.bringSubview(toFront: self.continueButton)

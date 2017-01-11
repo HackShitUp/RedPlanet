@@ -1777,7 +1777,7 @@
         <scene sceneID="Irh-Ha-wyN">
             <objects>
                 <collectionViewController storyboardIdentifier="otherUser" id="pAM-pw-2Gi" customClass="OtherUserProfile" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="5zo-QR-1NR">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="5zo-QR-1NR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4312,17 +4312,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4Q-Hr-vWy" customClass="SwiftyCamButton" customModule="SwiftyCam">
-                                <rect key="frame" x="150" y="530" width="75" height="75"/>
+                                <rect key="frame" x="150" y="547" width="75" height="75"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Unchecked Circle-100"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJn-fd-qj5">
-                                <rect key="frame" x="309" y="28" width="40" height="40"/>
+                                <rect key="frame" x="335" y="28" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Lightning Bolt-96"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsB-Zl-vD9">
-                                <rect key="frame" x="16" y="28" width="20" height="20"/>
+                                <rect key="frame" x="16" y="38" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
                             </button>
@@ -4332,7 +4332,7 @@
                                 <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idk-dT-jjl">
-                                <rect key="frame" x="271" y="33" width="30" height="30"/>
+                                <rect key="frame" x="302" y="36" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Switch Camera-100"/>
                             </button>
@@ -4382,7 +4382,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YF-FY-Ouh">
                                 <rect key="frame" x="251" y="610" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Exit"/>
+                                <state key="normal" image="Edit Filled-500"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -5280,7 +5280,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s65-ak-j9e">
-                                <rect key="frame" x="16" y="588" width="25" height="25"/>
+                                <rect key="frame" x="16" y="38" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
                                 <connections>
@@ -5288,27 +5288,27 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KuK-8b-F8c">
-                                <rect key="frame" x="309" y="575" width="50" height="50"/>
+                                <rect key="frame" x="309" y="597" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Checked Filled-100"/>
                                 <connections>
                                     <action selector="continueButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="jPn-2B-YGc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
-                                <rect key="frame" x="329" y="28" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Edit Filled-500"/>
-                                <connections>
-                                    <action selector="editButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="pgc-to-rq6"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
-                                <rect key="frame" x="291" y="28" width="30" height="30"/>
+                                <rect key="frame" x="16" y="607" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Download"/>
                                 <connections>
                                     <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
+                                <rect key="frame" x="54" y="607" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Edit Filled-500"/>
+                                <connections>
+                                    <action selector="editButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="pgc-to-rq6"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -5358,7 +5358,7 @@
         <scene sceneID="Lr6-tm-68h">
             <objects>
                 <collectionViewController id="2tP-pp-hZo" customClass="MyProfile" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dpe-ay-7Z5">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="dpe-ay-7Z5">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
