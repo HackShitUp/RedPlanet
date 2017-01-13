@@ -90,20 +90,29 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     // Custom function to initize JOT
     func initializeJot() {
-//        self.jotViewController = JotViewController()
-//        self.jotViewController.delegate = self
-//        self.addChildViewController(self.jotViewController)
-//        self.slider.addSubview(self.jotViewController.view)
-//        self.jotViewController.didMove(toParentViewController: self)
-//        self.jotViewController.view.frame = self.view.frame
+        
+        // Disable slider?
+
+        self.jotViewController = JotViewController()
+        self.jotViewController.delegate = self
+        self.addChildViewController(self.jotViewController)
+        self.stillPhoto.addSubview(self.jotViewController.view)
+        self.jotViewController.didMove(toParentViewController: self)
+        self.jotViewController.view.frame = self.view.frame
+
     }
     
     // Function to undo
     func undoJot() {
-        self.jotViewController.clearDrawing()
+        
     }
     
     func completeJot() {
+        print("TAPPED HERE")
+        // Set image
+        self.stillPhoto.image = SNUtils.screenShot(self.stillPhoto)!
+        // Remove jot
+        self.jotViewController.view.removeFromSuperview()
         
     }
     
@@ -261,6 +270,26 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
         // Set image
         self.stillPhoto.image = stillImages.last!
+
+        // Add tap method for configuration method
+//        tapGesture.addTarget(self, action: #selector(handleTap))
+        tapGesture.addTarget(self, action: #selector(initializeJot))
+        setupSlider()
+        setupTextField()
+        self.stillPhoto.isUserInteractionEnabled = true
+        
+        // Add tap methods for undo and complete
+        // Undo button
+        let undoTap = UITapGestureRecognizer(target: self, action: #selector(undoJot))
+        undoTap.numberOfTapsRequired = 1
+        self.undoButton.isUserInteractionEnabled = true
+        self.undoButton.addGestureRecognizer(undoTap)
+        // Done button
+        let doneTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
+        doneTap.numberOfTapsRequired = 1
+        self.completeButton.isUserInteractionEnabled = true
+        self.completeButton.addGestureRecognizer(doneTap)
+        
         
         // Add shadows for...
         // 1) Save button
@@ -278,36 +307,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.editButton.layer.shadowOffset = CGSize(width: 5, height: 5)
         self.editButton.layer.shadowRadius = 5
         self.editButton.layer.shadowOpacity = 1.0
-
-        // Add method
-//        tapGesture.addTarget(self, action: #selector(handleTap))
-        tapGesture.addTarget(self, action: #selector(initializeJot))
-        setupSlider()
-        setupTextField()
-        self.stillPhoto.isUserInteractionEnabled = true
         
-        self.jotViewController = JotViewController()
-        self.jotViewController.delegate = self
-//        self.addChildViewController(self.jotViewController)
-//        self.stillPhoto.addSubview(self.jotViewController.view)
-//        self.slider.addSubview(self.jotViewController.view)
-        self.slider.addSubview(self.jotViewController.view)
-        self.jotViewController.didMove(toParentViewController: self)
-        self.jotViewController.view.frame = self.view.frame
-        
-        
-        // Add tap methods for undo and complete
-        let undoTap = UITapGestureRecognizer(target: self, action: #selector(undoJot))
-        undoTap.numberOfTapsRequired = 1
-        self.undoButton.isUserInteractionEnabled = true
-        self.undoButton.addGestureRecognizer(undoTap)
-        
-        let doneTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
-        doneTap.numberOfTapsRequired = 1
-        self.completeButton.isUserInteractionEnabled = true
-        self.completeButton.addGestureRecognizer(undoTap)
-        
-//        UIApplication.shared.keyWindow?.rootViewController?.value(forKey: "_‌​printHierarchy")
+        // Bring buttons to front
+        self.view.bringSubview(toFront: self.completeButton)
+        self.view.bringSubview(toFront: self.leaveButton)
+        self.view.bringSubview(toFront: self.continueButton)
+        self.view.bringSubview(toFront: self.undoButton)
+        self.view.bringSubview(toFront: self.editButton)
+        self.view.bringSubview(toFront: self.textButton)
+        self.view.bringSubview(toFront: self.saveButton)
         
     }
 
