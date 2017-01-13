@@ -14,9 +14,7 @@ import ParseUI
 import Bolts
 
 
-import jot
 import OneSignal
-
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
@@ -72,6 +70,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     @IBOutlet weak var textButton: UIButton!
     @IBAction func text(_ sender: Any) {
         initializeJot()
+        switchToTextMode()
+        self.jotViewController.textColor = UIColor.white
     }
     
     
@@ -90,30 +90,43 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     // Custom function to initize JOT
     func initializeJot() {
-        
-        // Disable slider?
-
+        /*
         self.jotViewController = JotViewController()
         self.jotViewController.delegate = self
         self.addChildViewController(self.jotViewController)
         self.stillPhoto.addSubview(self.jotViewController.view)
         self.jotViewController.didMove(toParentViewController: self)
         self.jotViewController.view.frame = self.view.frame
-
+        // Bring to front
+        self.stillPhoto.bringSubview(toFront: self.jotViewController.view)
+        self.slider.isUserInteractionEnabled = false
+        */
     }
     
     // Function to undo
     func undoJot() {
-        
+        if self.jotViewController.state == .drawing {
+            self.jotViewController.clearDrawing()
+        }
     }
     
     func completeJot() {
-        print("TAPPED HERE")
+        print("\(self.stillPhoto.subviews.count)") // 3
+        print("\(self.slider.subviews.count)") // 12 (1)
+        print("\(self.jotViewController.view.subviews.count)") // (2)
         // Set image
-        self.stillPhoto.image = SNUtils.screenShot(self.stillPhoto)!
-        // Remove jot
-        self.jotViewController.view.removeFromSuperview()
-        
+//        self.stillPhoto.image = SNUtils.screenShot(self.jotViewController.view)!
+//        self.stillPhoto.image = SNUtils.screenShot(self.view)!
+        self.stillPhoto.image = SNUtils.screenShot(self.stillPhoto)
+        stillImages.append(self.stillPhoto.image!)
+        // Bring subview to front
+//        self.stillPhoto.bringSubview(toFront: self.slider)
+//        self.jotViewController.removeFromParentViewController()
+//        self.jotViewController.view.removeFromSuperview()
+        self.jotViewController.view.isUserInteractionEnabled = false
+        self.jotViewController.state = .default
+//        self.stillPhoto.bringSubview(toFront: self.slider)
+        self.slider.isUserInteractionEnabled = true
     }
     
     
@@ -268,15 +281,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set image
-        self.stillPhoto.image = stillImages.last!
-
         // Add tap method for configuration method
-//        tapGesture.addTarget(self, action: #selector(handleTap))
-        tapGesture.addTarget(self, action: #selector(initializeJot))
         setupSlider()
         setupTextField()
         self.stillPhoto.isUserInteractionEnabled = true
+        tapGesture.addTarget(self, action: #selector(handleTap))
         
         // Add tap methods for undo and complete
         // Undo button
@@ -326,13 +335,23 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     //MARK: Setup
     fileprivate func setupSlider() {
+        
+        self.jotViewController = JotViewController()
+        self.jotViewController.delegate = self
+        self.addChildViewController(self.jotViewController)
+        self.stillPhoto.addSubview(self.jotViewController.view)
+        self.jotViewController.didMove(toParentViewController: self)
+        self.jotViewController.view.frame = self.view.frame
+        
         // Setup slider
-        self.createData(stillImages.last!)
+        self.stillPhoto.image = stillImages.last!
+        self.createData(self.stillPhoto.image!)
         self.slider.dataSource = self
         self.slider.isUserInteractionEnabled = true
         self.slider.isMultipleTouchEnabled = true
         self.slider.isExclusiveTouch = false
-        self.stillPhoto.addSubview(slider)
+//        self.stillPhoto.addSubview(slider)
+        self.jotViewController.view.addSubview(slider)
         self.slider.reloadData()
     }
     
@@ -351,9 +370,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
         self.data = SNFilter.generateFilters(SNFilter(frame: self.slider.frame, withImage: image), filters: SNFilter.filterNameList)
-        self.data[1].addSticker(SNSticker(frame: CGRect(x: 195, y: 30, width: 90, height: 90), image: UIImage(named: "Checked Filled-100")!))
-        self.data[2].addSticker(SNSticker(frame: CGRect(x: 30, y: 100, width: 250, height: 250), image: UIImage(named: "Newsfeed(1)")!))
-        self.data[3].addSticker(SNSticker(frame: CGRect(x: 20, y: 00, width: 140, height: 140), image: UIImage(named: "Chat Filled-50")!))
+//        self.data[1].addSticker(SNSticker(frame: CGRect(x: 195, y: 30, width: 90, height: 90), image: UIImage(named: "Checked Filled-100")!))
+//        self.data[2].addSticker(SNSticker(frame: CGRect(x: 30, y: 100, width: 250, height: 250), image: UIImage(named: "Newsfeed(1)")!))
+//        self.data[3].addSticker(SNSticker(frame: CGRect(x: 20, y: 00, width: 140, height: 140), image: UIImage(named: "Chat Filled-50")!))
+        
     }
     
     fileprivate func updatePicture(_ newImage: UIImage) {

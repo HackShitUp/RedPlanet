@@ -19,11 +19,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Masonry.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Mixpanel-swift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -74,89 +69,8 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>jot.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>06E2463E18860775710BDED29E5FDFA2</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3A8B5AC7CFF87C058F3BF10F888EEC34</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>3F5415596BF949EE40522E035B96198D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>44CAD6CE523055ED339E87154473A254</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>492E4CE3DF5D2F13B8A78D540BF82F18</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>51CB0AF616C6306147B99C320EB6D3ED</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5EF9FA245104F1E4300F023C6E9A2F66</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>7D28B74514BA3C3C92EC5A47A2B5DC30</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A5D82373166B88054A7C35508BCD2838</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A760316124FD796EF09C09479E9F0021</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BE8C90589225FCC3A6672520B3A83618</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C2079E3EEFFF738C2A5FE978A07048D4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>D386C75EFD4F03725E4EFB866B600B9A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FE3AEE278354EB3C9EA9810C8C9B2A9D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>

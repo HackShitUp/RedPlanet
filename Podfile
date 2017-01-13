@@ -10,7 +10,6 @@ target 'Redplanet' do
 	pod ‘Bolts’
 	pod ‘SimpleAlert’
 	pod ‘SwiftyCam’
-	pod ‘jot’
 	pod ‘OneSignal’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'

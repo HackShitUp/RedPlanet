@@ -15,26 +15,6 @@ import Bolts
 
 
 
-// KEEP IN MIND
-
-
-/*
-    That when saving things to Notifications, the dataSet
- 
-            <"forObjectId"> is set as a STRING
-    
-    SO, the fastest way to is check for the prefix and suffix of the button,
-    // Then search for the objectId 
-    // liked
-    // commented
-    //
- 
- */
-
-
-
-
-
 class ActivityCell: UITableViewCell {
     
     

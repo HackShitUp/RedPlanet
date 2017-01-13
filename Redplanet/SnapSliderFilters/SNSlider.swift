@@ -15,6 +15,7 @@ open class SNSlider: UIView {
     fileprivate var startingIndex:Int
     fileprivate var data = [SNFilter]()
     
+    
     open weak var dataSource:SNSliderDataSource?
     
     public override init(frame: CGRect) {
