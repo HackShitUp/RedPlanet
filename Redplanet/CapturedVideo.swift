@@ -26,6 +26,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     // Compressed URL
     var smallVideoData: NSData?
     
+    @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
         // Pop VC
@@ -119,7 +120,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
+        // Compress Video berfore viewDidLoad()
         let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
         compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
             guard let session = exportSession else {
@@ -154,39 +155,79 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
         
     }
+    
+    
+    // Function to Play & Pause
+    func control() {
+        if self.player.playbackState == .paused {
+            self.player.playFromCurrentTime()
+        } else if self.player.playbackState == .playing {
+            self.player.pause()
+        }
+    }
+    
+    // Function to mute and turn volume on
+    func setMute() {
+        if self.player.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
+            // MUTE
+            self.player.muted = true
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
+            }
+            
+        } else if self.player.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
+            // VOLUME ON
+            self.player.muted = false
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
-        
-        // Bring buttons to front
-        self.view.bringSubview(toFront: self.exitButton)
-        self.view.bringSubview(toFront: self.continueButton)
 
         // MARK: Player
         self.player = Player()
         self.player.delegate = self
         self.player.view.frame = self.view.bounds
-        
         self.addChildViewController(self.player)
         self.view.addSubview(self.player.view)
         self.player.didMove(toParentViewController: self)
-        
         self.player.setUrl(capturedURLS.last!)
         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
         self.player.playFromBeginning()
+        self.player.playbackLoops = true
         
-        // Add tap method
-//        let controlTap = UITapGestureRecognizer(target: self, action: #selector(self.player.playFromCurrentTime))
-//        controlTap.numberOfTapsRequired = 1
-//        self.view.isUserInteractionEnabled = true
-//        self.view.addGestureRecognizer(controlTap)
+        // Add tap methods for..
+        // Pause and Play
+        let controlTap = UITapGestureRecognizer(target: self, action: #selector(control))
+        controlTap.numberOfTapsRequired = 1
+        self.player.view.isUserInteractionEnabled = true
+        self.player.view.addGestureRecognizer(controlTap)
+        // Mute and Volume-On
+        let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
+        muteTap.numberOfTapsRequired = 1
+        self.muteButton.isUserInteractionEnabled = true
+        self.muteButton.addGestureRecognizer(muteTap)
         
         // Bring buttons to front
         self.view.bringSubview(toFront: self.exitButton)
         self.view.bringSubview(toFront: self.continueButton)
+        self.view.bringSubview(toFront: self.muteButton)
+        // Add shadows
+        self.muteButton.layer.shadowColor = UIColor.black.cgColor
+        self.muteButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.muteButton.layer.shadowRadius = 5
+        self.muteButton.layer.shadowOpacity = 1.0
+        self.exitButton.layer.shadowColor = UIColor.black.cgColor
+        self.exitButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.exitButton.layer.shadowRadius = 5
+        self.exitButton.layer.shadowOpacity = 1.0
+
     }
     
     

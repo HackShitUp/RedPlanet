@@ -201,15 +201,6 @@
 		7EE1C2301DBC78C100F75557 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EE1C22A1DBC78C100F75557 /* Info.plist */; };
 		7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */; };
 		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
-		7EEC902B1E288CC3004F7244 /* jot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90221E288CC3004F7244 /* jot.swift */; };
-		7EEC902C1E288CC3004F7244 /* JotDrawingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90231E288CC3004F7244 /* JotDrawingContainer.swift */; };
-		7EEC902D1E288CC3004F7244 /* JotDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90241E288CC3004F7244 /* JotDrawView.swift */; };
-		7EEC902E1E288CC3004F7244 /* JotTextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90251E288CC3004F7244 /* JotTextEditView.swift */; };
-		7EEC902F1E288CC3004F7244 /* JotTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90261E288CC3004F7244 /* JotTextView.swift */; };
-		7EEC90301E288CC3004F7244 /* JotTouchBezier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90271E288CC3004F7244 /* JotTouchBezier.swift */; };
-		7EEC90311E288CC3004F7244 /* JotTouchPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90281E288CC3004F7244 /* JotTouchPoint.swift */; };
-		7EEC90321E288CC3004F7244 /* JotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC90291E288CC3004F7244 /* JotViewController.swift */; };
-		7EEC90331E288CC3004F7244 /* UIImage+Jot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EEC902A1E288CC3004F7244 /* UIImage+Jot.swift */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
 		7EF2B7C81E2332CB00D08FC2 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C71E2332CB00D08FC2 /* Licenses.swift */; };
@@ -499,15 +490,6 @@
 		7EE1C22A1DBC78C100F75557 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
-		7EEC90221E288CC3004F7244 /* jot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = jot.swift; sourceTree = "<group>"; };
-		7EEC90231E288CC3004F7244 /* JotDrawingContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotDrawingContainer.swift; sourceTree = "<group>"; };
-		7EEC90241E288CC3004F7244 /* JotDrawView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotDrawView.swift; sourceTree = "<group>"; };
-		7EEC90251E288CC3004F7244 /* JotTextEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotTextEditView.swift; sourceTree = "<group>"; };
-		7EEC90261E288CC3004F7244 /* JotTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotTextView.swift; sourceTree = "<group>"; };
-		7EEC90271E288CC3004F7244 /* JotTouchBezier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotTouchBezier.swift; sourceTree = "<group>"; };
-		7EEC90281E288CC3004F7244 /* JotTouchPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotTouchPoint.swift; sourceTree = "<group>"; };
-		7EEC90291E288CC3004F7244 /* JotViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JotViewController.swift; sourceTree = "<group>"; };
-		7EEC902A1E288CC3004F7244 /* UIImage+Jot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Jot.swift"; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
 		7EF2B7C71E2332CB00D08FC2 /* Licenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
@@ -654,8 +636,8 @@
 		7E43077F1DD021A100AA2413 /* VideoViewController */ = {
 			isa = PBXGroup;
 			children = (
-				7E4307801DD021A100AA2413 /* TimelineView.swift */,
 				7EF2B7E31E23873C00D08FC2 /* Player.swift */,
+				7E4307801DD021A100AA2413 /* TimelineView.swift */,
 				7E4307811DD021A100AA2413 /* VideoViewController.swift */,
 			);
 			path = VideoViewController;
@@ -1281,7 +1263,6 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
-				7EEC90211E288CC3004F7244 /* jot */,
 				7E2CA4001E25A78A0071B052 /* SnapSliderFilters */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
@@ -1515,23 +1496,6 @@
 				7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */,
 			);
 			name = EditContent;
-			sourceTree = "<group>";
-		};
-		7EEC90211E288CC3004F7244 /* jot */ = {
-			isa = PBXGroup;
-			children = (
-				7EEC90221E288CC3004F7244 /* jot.swift */,
-				7EEC90231E288CC3004F7244 /* JotDrawingContainer.swift */,
-				7EEC90241E288CC3004F7244 /* JotDrawView.swift */,
-				7EEC90251E288CC3004F7244 /* JotTextEditView.swift */,
-				7EEC90261E288CC3004F7244 /* JotTextView.swift */,
-				7EEC90271E288CC3004F7244 /* JotTouchBezier.swift */,
-				7EEC90281E288CC3004F7244 /* JotTouchPoint.swift */,
-				7EEC90291E288CC3004F7244 /* JotViewController.swift */,
-				7EEC902A1E288CC3004F7244 /* UIImage+Jot.swift */,
-			);
-			name = jot;
-			path = SnapSliderFilters/jot;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1907,7 +1871,6 @@
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
-				7EEC902C1E288CC3004F7244 /* JotDrawingContainer.swift in Sources */,
 				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */,
@@ -1937,7 +1900,6 @@
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
-				7EEC90331E288CC3004F7244 /* UIImage+Jot.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
 				7EC5D1A11DB3568A00437219 /* Explore.swift in Sources */,
@@ -1947,12 +1909,10 @@
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
-				7EEC902D1E288CC3004F7244 /* JotDrawView.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,
 				7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */,
 				7E26EC081E18661300EFB7BC /* EZSwipeController.swift in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
-				7EEC902E1E288CC3004F7244 /* JotTextEditView.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */,
@@ -1965,7 +1925,6 @@
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E7E38C11DD576D100DEC27B /* BestFriendsCell.swift in Sources */,
-				7EEC90311E288CC3004F7244 /* JotTouchPoint.swift in Sources */,
 				7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
 				7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */,
@@ -1978,7 +1937,6 @@
 				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
 				7E78CB721DF3BA9C001E69D3 /* LikesAndSharesCell.swift in Sources */,
-				7EEC90321E288CC3004F7244 /* JotViewController.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
@@ -1995,7 +1953,6 @@
 				7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */,
 				7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
-				7EEC902B1E288CC3004F7244 /* jot.swift in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
@@ -2032,7 +1989,6 @@
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
-				7EEC902F1E288CC3004F7244 /* JotTextView.swift in Sources */,
 				7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7EF2B7C81E2332CB00D08FC2 /* Licenses.swift in Sources */,
@@ -2042,7 +1998,6 @@
 				7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
-				7EEC90301E288CC3004F7244 /* JotTouchBezier.swift in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */,
 				7ED4A90E1DBEB4DE0016698F /* RFriends.swift in Sources */,

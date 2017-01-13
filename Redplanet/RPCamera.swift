@@ -37,6 +37,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     func SwiftyCamDidBeginRecordingVideo() {
         // Show progress and begin counting
         DispatchQueue.main.async {
+            self.progressView.setProgress(0, animated: false)
             self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)
             self.timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
@@ -70,15 +71,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         capturedURLS.append(url)
         // Push VC
         let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
-        self.navigationController?.pushViewController(capturedVideoVC, animated: true)
+        self.navigationController?.pushViewController(capturedVideoVC, animated: false)
     }
     
     func SwiftyCamDidFocusAtPoint(focusPoint: CGPoint) {
-        print(focusPoint)
+//        print(focusPoint)
     }
     
     func SwiftyCamDidChangeZoomLevel(zoomLevel: CGFloat) {
-        print(zoomLevel)
+//        print(zoomLevel)
     }
     
     func SwiftyCamDidSwitchCameras(camera: SwiftyCamViewController.CameraSelection) {
