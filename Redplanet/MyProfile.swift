@@ -102,22 +102,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 self.myContentObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Configure time
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
-                    
-                    // Append all objects except for Moments > 24hrs
-                    if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.day! < 1 {
-                            self.myContentObjects.append(object)
-                        }
-                    } else {
-                        self.myContentObjects.append(object)
-                    }
+                    self.myContentObjects.append(object)
                 }
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
             }

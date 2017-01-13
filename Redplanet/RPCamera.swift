@@ -118,6 +118,16 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // MARK: - SwiftyCam
+        // Set delegate for camera view
+        cameraDelegate = self
+        // Set delegate for camera button
+        captureButton.delegate = self
+        // Set video duration and length
+        kMaximumVideoDuration = 10.0
+        // Set tap to focus
+        tapToFocus = true
+        
         // Hide navigation bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
@@ -129,15 +139,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         
         // Set bool
         isRearCam = true
-
-        // Set delegate for camera view
-        cameraDelegate = self
-        // Set delegate for camera button
-        captureButton.delegate = self
-        // Set video duration and length
-        kMaximumVideoDuration = 10.0
-        // Set tap to focus
-        tapToFocus = true
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))

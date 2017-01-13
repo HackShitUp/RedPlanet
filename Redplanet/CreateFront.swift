@@ -61,6 +61,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.pushViewController(relationshipRequestsVC, animated: true)
     }
 
+    @IBOutlet weak var searchButton: UIBarButtonItem!
     @IBAction func search(_ sender: Any) {
         // Push VC
         let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
@@ -72,7 +73,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func takePhoto() {
         // Check Auhorization
         cameraAuthorization()
-        // and show camera depending on status...
     }
     
     
@@ -92,7 +92,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in
                 if granted == true {
                     // User granted camera access
-                    // Load Camera
                     DispatchQueue.main.async(execute: {
                         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
                         self.navigationController!.pushViewController(cameraVC, animated: true)
@@ -201,6 +200,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
+                
                 // Clear array
                 self.myActivity.removeAll(keepingCapacity: false)
                 self.fromUsers.removeAll(keepingCapacity: false)
@@ -220,6 +222,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
             } else {
                 print(error?.localizedDescription as Any)
+                
+                // Dismiss Progress
+                SVProgressHUD.dismiss()
             }
             
             // Reload Data
@@ -238,10 +243,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         SVProgressHUD.dismiss()
         
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
-            // Hide navigationbar
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
-            // Show tabBarController
-            self.navigationController?.tabBarController?.tabBar.isHidden = false
+            
+            // Change the font and size of nav bar text
+            newConfig()
+            
             // Show Grid Menu
             igcMenu.showGridMenu()
         }
@@ -252,22 +257,24 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func igcMenuSelected(_ selectedMenuName: String, at index: Int) {
         
         if index == 0 {
+            // PHOTO LIBRARY
             // Load photo library
             photosAuthorization()
 
         } else if index == 1 {
+            // CAMERA
             // Access Camera
             cameraAuthorization()
             
         } else if index == 2{
+            // NEW TEXT POST
             // Create new text post
             newTextPost()
             
         } else {
-            // Show navigationbar
-            self.navigationController?.setNavigationBarHidden(false, animated: true)
-            // Show tabBarController
-            self.navigationController?.tabBarController?.tabBar.isHidden = false
+            // X
+            // Configure view
+            configureView()
             
             // Hide menu
             igcMenu.hideGridMenu()
@@ -293,6 +300,40 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Notifications"
         }
+        
+        // Enable UIBarButtonItems, configure navigation bar, && show tabBar (last line)
+        self.searchButton.isEnabled = true
+        self.relationshipRequestsButton.isEnabled = true
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+    }
+    
+    
+    // Function to stylize and set title of navigation bar
+    func newConfig() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = "R e d p l a n e t"
+        }
+        
+        // Disable UIBarButtonItems, configure navigation bar, && hide tabBar
+        self.searchButton.isEnabled = false
+        self.relationshipRequestsButton.isEnabled = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -325,13 +366,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.tableView!.tableFooterView = UIView()
         
         // Set tabBarController's delegate to self
+        // to access menu via tabBar
         self.navigationController?.tabBarController?.delegate = self
-        
-        // Hide navigationbar
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Stylize title
         configureView()
@@ -372,12 +408,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Show tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
         // query Notifications
         queryNotifications()
 
@@ -387,12 +417,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Show tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         // Stylize title
         configureView()

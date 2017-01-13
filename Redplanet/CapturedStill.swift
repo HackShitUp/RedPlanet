@@ -337,8 +337,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.slider.isMultipleTouchEnabled = true
         self.slider.isExclusiveTouch = false
         self.stillPhoto.addSubview(slider)
-//        self.jotViewController.view.addSubview(slider)
-//        self.slider.reloadData()
+        self.slider.reloadData()
     }
     
     fileprivate func setupTextField() {

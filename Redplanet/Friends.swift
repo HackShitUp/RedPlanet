@@ -76,6 +76,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // Dismiss
+                SVProgressHUD.dismiss()
 
                 // Clear array
                 self.friends.removeAll(keepingCapacity: false)
@@ -113,21 +116,26 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         self.friendsContent.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-                            // Configure time
-                            let now = Date()
-                            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
-                            
-                            // Append all objects except for Moments > 24hrs
-                            if object.value(forKey: "contentType") as! String == "itm" {
-                                if difference.day! < 1 {
-                                    self.friendsContent.append(object)
-                                }
-                            } else {
-                                self.friendsContent.append(object)
-                            }
+//                            if object.createdAt!.timeIntervalSince(Date()) >= -86400 && object.value(forKey: "contentType") as! String == "itm" {
+//                                // If seconds don't exceed one day append object
+//                                // And post is Moment
+//                                self.friendsContent.append(object)
+//                            } else if object.value(forKey: "contentType") as! String != "itm" {
+//                                // If seconds exceed one day
+//                                // And post is NOT a Moment
+//                                self.friendsContent.append(object)
+//                            }
+                            /////
+                            // USE FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
+                            /////
+                            //                let dateFormatter = DateFormatter()
+                            //                dateFormatter.dateFormat = "EEEE"
+                            //                let timeFormatter = DateFormatter()
+                            //                timeFormatter.dateFormat = "h:mm a"
+                            //                let time = "\(dateFormatter.string(from: object!.createdAt!)) \(timeFormatter.string(from: object!.createdAt!))"
+                            //                cell.rpTime.text! = time
+                            self.friendsContent.append(object)
                         }
-                        
                         // Set DZN
                         if self.friendsContent.count == 0 {
                             self.tableView!.emptyDataSetSource = self
@@ -501,7 +509,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
-                // *************************************************************************************************************************
+                // *******************************************************************************************************************
                 
                 
                 

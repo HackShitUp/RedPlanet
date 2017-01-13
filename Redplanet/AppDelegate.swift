@@ -188,10 +188,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
-            Heap.setAppId("3455525110");
-            #if DEBUG
-                Heap.enableVisualizer();
-            #endif
+//            Heap.setAppId("3455525110");
+//            #if DEBUG
+//                Heap.enableVisualizer();
+//            #endif
             
             // Mixpanel initialization
 //            let mixpanel = Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769")

@@ -308,19 +308,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 self.contentObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Configure time
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
-                    
-                    // Append all objects except for Moments > 24hrs
-                    if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.day! < 1 {
-                            self.contentObjects.append(object)
-                        }
-                    } else {
-                        self.contentObjects.append(object)
-                    }
+                    self.contentObjects.append(object)
                 }
                 
                 
