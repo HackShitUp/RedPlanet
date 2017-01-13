@@ -143,6 +143,14 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Profile Photo"
         }
+        
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
 
@@ -204,12 +212,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -657,7 +659,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
 
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -85 {
+        if self.tableView!.contentOffset.y < -80 {
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
         }

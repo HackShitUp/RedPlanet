@@ -797,13 +797,22 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
-        
-        
-        // (10) Add Save
-//        let holdTap = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-//        holdTap.minimumPressDuration = 0.5
-//        self.itmMedia.isUserInteractionEnabled = true
-//        self.itmMedia.addGestureRecognizer(holdTap)
+
+        // Add shadows
+        let buttons = [self.likeButton,
+                       self.numberOfLikes,
+                       self.commentButton,
+                       self.numberOfComments,
+                       self.shareButton,
+                       self.numberOfShares,
+                       self.rpUsername,
+                       self.time] as [Any]
+        for b in buttons {
+            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 5, height: 5)
+            (b as AnyObject).layer.shadowRadius = 5
+            (b as AnyObject).layer.shadowOpacity = 1.0
+        }
         
         
         // Hide moreButton if not user's content

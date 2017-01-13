@@ -113,23 +113,20 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         self.friendsContent.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-                            /*
-                             // Fetch objects only within the past 24 hours
-                             let from = object.createdAt!
-                             let now = Date()
-                             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                             
-                             // If the difference of the day is less than one day (24 hours),
-                             // append the object
-                             if difference.hour! <= 24 && difference.day! == 1 {
-                             // Append Objects
-                             }
-                             */
+                            // Configure time
+                            let now = Date()
+                            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
                             
-                            self.friendsContent.append(object)
+                            // Append all objects except for Moments > 24hrs
+                            if object.value(forKey: "contentType") as! String == "itm" {
+                                if difference.day! < 1 {
+                                    self.friendsContent.append(object)
+                                }
+                            } else {
+                                self.friendsContent.append(object)
+                            }
                         }
-                        
                         
                         // Set DZN
                         if self.friendsContent.count == 0 {
@@ -137,14 +134,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                             self.tableView!.emptyDataSetDelegate = self
                         }
 
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                         
-                        
                         // Dismiss
                         SVProgressHUD.dismiss()
-                        
                     }
                     
                     // Reload data
@@ -159,14 +153,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 SVProgressHUD.dismiss()
             }
         })
-        
-        
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Show Progress
         SVProgressHUD.show()
@@ -174,7 +165,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
         // Query Friends
         self.queryFriends()
-    
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -346,7 +336,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 
                 
-                // ***********************************************************************************************************************
+                // *******************************************************************************************************************
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {

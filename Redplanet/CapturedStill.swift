@@ -66,6 +66,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 //        initializeJot()
 //        switchToDrawMode()
 //        self.jotViewController.drawingColor = UIColor.magenta
+        
     }
     
     @IBOutlet weak var textButton: UIButton!
@@ -73,6 +74,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 //        initializeJot()
 //        switchToTextMode()
 //        self.jotViewController.textColor = UIColor.white
+        self.handleTap()
+        
     }
     
     /*
@@ -300,33 +303,23 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 //        self.completeButton.isUserInteractionEnabled = true
 //        self.completeButton.addGestureRecognizer(doneTap)
         
-        
-        // Add shadows for...
-        // 1) Save button
-        self.saveButton.layer.shadowColor = UIColor.black.cgColor
-        self.saveButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.saveButton.layer.shadowRadius = 5
-        self.saveButton.layer.shadowOpacity = 1.0
-        // 2) Text button
-        self.textButton.layer.shadowColor = UIColor.black.cgColor
-        self.textButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.textButton.layer.shadowRadius = 5
-        self.textButton.layer.shadowOpacity = 1.0
-        // 3) Edit button
-        self.editButton.layer.shadowColor = UIColor.black.cgColor
-        self.editButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.editButton.layer.shadowRadius = 5
-        self.editButton.layer.shadowOpacity = 1.0
-        
         // Bring buttons to front
         self.view.bringSubview(toFront: self.completeButton)
-        self.view.bringSubview(toFront: self.leaveButton)
-        self.view.bringSubview(toFront: self.continueButton)
         self.view.bringSubview(toFront: self.undoButton)
-        self.view.bringSubview(toFront: self.editButton)
-        self.view.bringSubview(toFront: self.textButton)
-        self.view.bringSubview(toFront: self.saveButton)
         
+        // Add shadows for buttons && bring view to front (last line)
+        let buttons = [self.saveButton,
+                       self.textButton,
+                       self.editButton,
+                       self.leaveButton,
+                       self.completeButton] as [Any]
+        for b in buttons {
+            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 5, height: 5)
+            (b as AnyObject).layer.shadowRadius = 5
+            (b as AnyObject).layer.shadowOpacity = 1.0
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -336,14 +329,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     //MARK: Setup
     fileprivate func setupSlider() {
-        
-//        self.jotViewController = JotViewController()
-//        self.jotViewController.delegate = self
-//        self.addChildViewController(self.jotViewController)
-//        self.stillPhoto.addSubview(self.jotViewController.view)
-//        self.jotViewController.didMove(toParentViewController: self)
-//        self.jotViewController.view.frame = self.view.frame
-        
         // Setup slider
         self.stillPhoto.image = stillImages.last!
         self.createData(self.stillPhoto.image!)

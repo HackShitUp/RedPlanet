@@ -43,9 +43,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     var shares = [PFObject]()
     
     // Array to determine content types
-    let contentTypes = ["tp",
-                        "ph",
-                        "vi"]
+    let contentTypes = ["tp", "ph", "vi"]
     
     @IBAction func backButton(_ sender: Any) {
         // Pop VC

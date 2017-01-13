@@ -81,7 +81,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // MARK: - SimpleAlert
         let alert = AlertController(title: "Options",
                                       message: nil,
-                                      style: .actionSheet)
+                                      style: .alert)
         
         // Design content view
         alert.configContentView = { view in
@@ -141,20 +141,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                     self.navigationController?.pushViewController(bfVC, animated: true)
         })
         
-        // (3) Mutual
-        let mutual = AlertAction(title: "Mutual Relationships 🤗",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    
-                                    // Append object
-                                    forMutual.append(otherObject.last!)
-                                    
-                                    // Push VC
-                                    let mutualVC = self.storyboard?.instantiateViewController(withIdentifier: "mutualVC") as! MutualRelationships
-                                    self.navigationController?.pushViewController(mutualVC, animated: true)
-        })
         
-        // (5) Report or block
+        // (4) Report or block
         let reportOrBlock = AlertAction(title: "Report or Block",
                                    style: .destructive,
                                    handler: { (AlertAction) in
@@ -269,7 +257,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         })
         
         
-        // (6) Cancel
+        // (5) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
@@ -282,14 +270,12 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             alert.addAction(space)
             alert.addAction(chat)
 //            alert.addAction(bestFriends)
-            alert.addAction(mutual)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         } else {
             alert.addAction(chat)
-            alert.addAction(mutual)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
             alert.view.tintColor = UIColor.black
@@ -322,7 +308,19 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 self.contentObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.contentObjects.append(object)
+                    // Configure time
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
+                    
+                    // Append all objects except for Moments > 24hrs
+                    if object.value(forKey: "contentType") as! String == "itm" {
+                        if difference.day! < 1 {
+                            self.contentObjects.append(object)
+                        }
+                    } else {
+                        self.contentObjects.append(object)
+                    }
                 }
                 
                 
@@ -419,6 +417,14 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(otherName.last!.uppercased())"
         }
+
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     
@@ -456,13 +462,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
-
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-
-        // Show navigationController
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
         
         
         // Register to receive notification
@@ -541,12 +540,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // Stylize title again
         configureView()
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -554,12 +547,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         // Stylize title again
         configureView()
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Show tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

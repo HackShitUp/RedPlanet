@@ -40,7 +40,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     var contentTypes = ["ph",
                         "tp",
                         "sh",
-                        "vi"]
+                        "vi",
+                        "itm"]
     
     
     // Function to refresh data
@@ -73,7 +74,19 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 self.followingContent.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.followingContent.append(object)
+                    // Configure time
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
+                    
+                    // Append all objects except for Moments > 24hrs
+                    if object.value(forKey: "contentType") as! String == "itm" {
+                        if difference.day! < 1 {
+                            self.followingContent.append(object)
+                        }
+                    } else {
+                        self.followingContent.append(object)
+                    }
                 }
                 
                 
@@ -83,7 +96,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.tableFooterView = UIView()
                 }
-                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -118,7 +130,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: followingNewsfeed, object: nil)
-
     }
     
 

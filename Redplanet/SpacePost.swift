@@ -161,6 +161,14 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "\(otherName.last!.uppercased())'s Space"
         }
+        
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -244,16 +252,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.estimatedRowHeight = 505
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
-        // Show navBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: spaceNotification, object: nil)
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -857,7 +857,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -85 {
+        if self.tableView!.contentOffset.y < -80 {
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
         }

@@ -157,6 +157,14 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Video"
         }
+        
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
 
@@ -181,12 +189,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: videoNotification, object: nil)
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -675,7 +677,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -85 {
+        if self.tableView!.contentOffset.y < -80 {
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
         }

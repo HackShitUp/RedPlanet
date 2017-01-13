@@ -116,9 +116,6 @@
 		7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9351DB75057001B7329 /* UIImage+Utility.m */; };
 		7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9371DB75057001B7329 /* UIView+Frame.m */; };
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
-		7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955571DC960BA003D9D73 /* MutualRelationships.swift */; };
-		7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */; };
-		7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */; };
 		7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */; };
 		7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */; };
 		7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */; };
@@ -397,9 +394,6 @@
 		7E98E9371DB75057001B7329 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		7E98E9391DB75057001B7329 /* _CLImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CLImageEditorViewController.h; sourceTree = "<group>"; };
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
-		7E9955571DC960BA003D9D73 /* MutualRelationships.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationships.swift; sourceTree = "<group>"; };
-		7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsCell.swift; sourceTree = "<group>"; };
-		7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutualRelationshipsHeader.swift; sourceTree = "<group>"; };
 		7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsHeader.swift; sourceTree = "<group>"; };
 		7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsCell.swift; sourceTree = "<group>"; };
@@ -1086,16 +1080,6 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		7E99555B1DC960D8003D9D73 /* MutualRelationships */ = {
-			isa = PBXGroup;
-			children = (
-				7E9955571DC960BA003D9D73 /* MutualRelationships.swift */,
-				7E99555C1DC96201003D9D73 /* MutualRelationshipsHeader.swift */,
-				7E9955591DC960D4003D9D73 /* MutualRelationshipsCell.swift */,
-			);
-			name = MutualRelationships;
-			sourceTree = "<group>";
-		};
 		7E9DA1891E14DA900001E8C0 /* NSBadge */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,7 +1269,6 @@
 				7EC328D21DBF461A00344AFF /* Comments */,
 				7EBDC6651DC55E7300DFCC28 /* Shares */,
 				7ED4A91E1DBEBE080016698F /* ShareTo */,
-				7E99555B1DC960D8003D9D73 /* MutualRelationships */,
 				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
 				7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */,
 				7ED4A9131DBEB4F60016698F /* RFriends */,
@@ -1848,7 +1831,6 @@
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
-				7E99555A1DC960D4003D9D73 /* MutualRelationshipsCell.swift in Sources */,
 				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
@@ -1873,7 +1855,6 @@
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
-				7E99555D1DC96201003D9D73 /* MutualRelationshipsHeader.swift in Sources */,
 				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
 				7E4CFF991DB439540087454E /* PhotoAssetCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
@@ -1934,7 +1915,6 @@
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
-				7E9955581DC960BA003D9D73 /* MutualRelationships.swift in Sources */,
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
 				7E78CB721DF3BA9C001E69D3 /* LikesAndSharesCell.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,

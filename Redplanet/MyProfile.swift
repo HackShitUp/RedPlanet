@@ -102,7 +102,19 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 self.myContentObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.myContentObjects.append(object)
+                    // Configure time
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
+                    
+                    // Append all objects except for Moments > 24hrs
+                    if object.value(forKey: "contentType") as! String == "itm" {
+                        if difference.day! < 1 {
+                            self.myContentObjects.append(object)
+                        }
+                    } else {
+                        self.myContentObjects.append(object)
+                    }
                 }
                 
                 
@@ -126,6 +138,14 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.uppercased()
         }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     

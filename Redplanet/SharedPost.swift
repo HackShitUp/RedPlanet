@@ -149,6 +149,14 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Shared Post"
         }
+        
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -211,13 +219,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 470
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        // Show navBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: sharedPostNotification, object: nil)
@@ -912,7 +913,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -85 {
+        if self.tableView!.contentOffset.y < -80 {
             // Pop view controller
             _ = self.navigationController?.popViewController(animated: true)
         }
