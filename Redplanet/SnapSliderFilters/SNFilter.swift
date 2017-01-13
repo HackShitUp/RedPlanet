@@ -11,7 +11,7 @@ import UIKit
 open class SNFilter: UIImageView {
     
     // Full list of filters available here : https://developer.apple.com/library/tvos/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html
-    open static let filterNameList = ["No Filter" , "CIPhotoEffectFade", "CIPhotoEffectChrome", "CIPhotoEffectTransfer", "CIPhotoEffectInstant", "CIPhotoEffectMono", "CIPhotoEffectNoir", "CIPhotoEffectProcess", "CIPhotoEffectTonal"]
+    open static let filterNameList = ["No Filter" , "CIPhotoEffectChrome", "CIMaskToAlpha", "CIPhotoEffectFade", "CIPhotoEffectInstant", "CIPhotoEffectMono", "CIPhotoEffectProcess", "CIPhotoEffectTransfer", "CIVignette", "CISepiaTone", "CIColorCubeWithColorSpace", "CIColorCube",]
     open var name:String?
     var stickers = [SNSticker]()
     

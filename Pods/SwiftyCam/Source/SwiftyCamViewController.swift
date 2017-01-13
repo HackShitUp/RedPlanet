@@ -109,7 +109,7 @@ open class SwiftyCamViewController: UIViewController {
     
     public var pinchToZoom                       = true
     
-    /// Sets whether Tap to Focus is enabled for the capture session
+    /// Sets whether Tap to Focus and Tap to Adjust Exposure is enabled for the capture session
     
     public var tapToFocus                        = true
     
@@ -123,12 +123,20 @@ open class SwiftyCamViewController: UIViewController {
     
     public var promptToAppPrivacySettings        = true
     
+    /// Set whether SwiftyCam should allow background audio from other applications
+    
+    public var allowBackgroundAudio              = true
+    
+    /// Sets whether a double tap to switch cameras is supported
+    
+    public var doubleTapCameraSwitch            = true
+    
     
     // MARK: Public Get-only Variable Declarations
     
     /// Returns true if video is currently being recorded
     
-    private(set) public var isVideRecording      = false
+    private(set) public var isVideoRecording      = false
     
     /// Returns true if the capture session is currently running
     
@@ -208,8 +216,8 @@ open class SwiftyCamViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         previewLayer = PreviewView(frame: self.view.frame)
-        
-        // Add Pinch Gesture Recognizer for pinch to zoom
+
+        // Add Gesture Recognizers
         
         addGestureRecognizersTo(view: previewLayer)
         
@@ -250,6 +258,10 @@ open class SwiftyCamViewController: UIViewController {
     
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        // Set background audio preference
+        
+        setBackgroundAudioPreference()
         
         sessionQueue.async {
             switch self.setupResult {
@@ -386,8 +398,10 @@ open class SwiftyCamViewController: UIViewController {
                 let outputFileName = UUID().uuidString
                 let outputFilePath = (NSTemporaryDirectory() as NSString).appendingPathComponent((outputFileName as NSString).appendingPathExtension("mov")!)
                 movieFileOutput.startRecording(toOutputFileURL: URL(fileURLWithPath: outputFilePath), recordingDelegate: self)
-                self.isVideRecording = true
-                self.cameraDelegate?.SwiftyCamDidBeginRecordingVideo()
+                self.isVideoRecording = true
+                DispatchQueue.main.async {
+                    self.cameraDelegate?.SwiftyCamDidBeginRecordingVideo()
+                }
             }
             else {
                 movieFileOutput.stopRecording()
@@ -407,7 +421,7 @@ open class SwiftyCamViewController: UIViewController {
     
     public func endVideoRecording() {
         if self.movieFileOutput?.isRecording == true {
-            self.isVideRecording = false
+            self.isVideoRecording = false
             movieFileOutput!.stopRecording()
             disableFlash()
             
@@ -418,7 +432,9 @@ open class SwiftyCamViewController: UIViewController {
                     self.flashView?.removeFromSuperview()
                 })
             }
-            self.cameraDelegate?.SwiftyCamDidFinishRecordingVideo()
+            DispatchQueue.main.async {
+                self.cameraDelegate?.SwiftyCamDidFinishRecordingVideo()
+            }
         }
     }
     
@@ -432,7 +448,7 @@ open class SwiftyCamViewController: UIViewController {
     
     
     public func switchCamera() {
-        guard isVideRecording != true else {
+        guard isVideoRecording != true else {
             //TODO: Look into switching camera during video recording
             print("[SwiftyCam]: Switching between cameras while recording video is not supported")
             return
@@ -444,8 +460,8 @@ open class SwiftyCamViewController: UIViewController {
             currentCamera = .front
         }
         
-        self.session.stopRunning()
-
+        session.stopRunning()
+        
         sessionQueue.async { [unowned self] in
             
             // remove and re-add inputs and outputs
@@ -453,51 +469,17 @@ open class SwiftyCamViewController: UIViewController {
             for input in self.session.inputs {
                 self.session.removeInput(input as! AVCaptureInput)
             }
-            for output in self.session.outputs {
-                self.session.removeOutput(output as! AVCaptureOutput)
+            
+            self.addInputs()
+            DispatchQueue.main.async {
+                self.cameraDelegate?.SwiftyCamDidSwitchCameras(camera: self.currentCamera)
             }
             
-            self.configureSession()
-            self.cameraDelegate?.SwiftyCamDidSwitchCameras(camera: self.currentCamera)
             self.session.startRunning()
         }
         
         // If flash is enabled, disable it as the torch is needed for front facing camera
         disableFlash()
-    }
- 
-    
-    /// Override Touches Began for Tap to Focus
-    
-    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard tapToFocus == true && currentCamera ==  .rear  else {
-            // Ignore taps
-            return
-        }
-        
-        let screenSize = previewLayer!.bounds.size
-        if let touchPoint = touches.first {
-            let x = touchPoint.location(in: previewLayer!).y / screenSize.height
-            let y = 1.0 - touchPoint.location(in: previewLayer!).x / screenSize.width
-            let focusPoint = CGPoint(x: x, y: y)
-            
-            if let device = videoDevice {
-                do {
-                    try device.lockForConfiguration()
-                    
-                    device.focusPointOfInterest = focusPoint
-                    device.focusMode = .autoFocus
-                    device.exposurePointOfInterest = focusPoint
-                    device.exposureMode = AVCaptureExposureMode.continuousAutoExposure
-                    device.unlockForConfiguration()
-                    //Call delegate function and pass in the location of the touch
-                    self.cameraDelegate?.SwiftyCamDidFocusAtPoint(focusPoint: touchPoint.location(in: previewLayer))
-                }
-                catch {
-                // just ignore
-                }
-            }
-        }
     }
     
     // MARK: Private Functions
@@ -517,6 +499,17 @@ open class SwiftyCamViewController: UIViewController {
         
         session.commitConfiguration()
     }
+    
+    /// Add inputs after changing camera() 
+    
+    fileprivate func addInputs() {
+        session.beginConfiguration()
+        configureVideoPreset()
+        addVideoInput()
+        addAudioInput()
+        session.commitConfiguration()
+    }
+
     
     // Front facing camera will always be set to VideoQuality.high
     // If set video quality is not supported, videoQuality variable will be set to VideoQuality.high
@@ -546,7 +539,7 @@ open class SwiftyCamViewController: UIViewController {
         }
         
         if let device = videoDevice {
-            do {
+           do {
                 try device.lockForConfiguration()
                 if device.isFocusModeSupported(.continuousAutoFocus) {
                     device.focusMode = .continuousAutoFocus
@@ -675,7 +668,9 @@ open class SwiftyCamViewController: UIViewController {
                     let image = self.processPhoto(imageData!)
                     
                     // Call delegate and return new image
-                    self.cameraDelegate?.SwiftyCamDidTakePhoto(image)
+                    DispatchQueue.main.async {
+                        self.cameraDelegate?.SwiftyCamDidTakePhoto(image)
+                    }
                     completionHandler(true)
                 } else {
                     completionHandler(false)
@@ -685,52 +680,17 @@ open class SwiftyCamViewController: UIViewController {
             completionHandler(false)
         }
     }
-    
-    /// Handle pinch gesture
-    
-    @objc fileprivate func zoomGesture(pinch: UIPinchGestureRecognizer) {
-        guard pinchToZoom == true && self.currentCamera == .rear else {
-            //ignore pinch if pinchToZoom is set to false
-            return
-        }
-            do {
-                let captureDevice = AVCaptureDevice.devices().first as? AVCaptureDevice
-                try captureDevice?.lockForConfiguration()
-            
-                zoomScale = max(1.0, min(beginZoomScale * pinch.scale,  captureDevice!.activeFormat.videoMaxZoomFactor))
-            
-                captureDevice?.videoZoomFactor = zoomScale
-                
-                // Call Delegate function with current zoom scale
-                self.cameraDelegate?.SwiftyCamDidChangeZoomLevel(zoomLevel: zoomScale)
-            
-                captureDevice?.unlockForConfiguration()
-            
-            } catch {
-                print("[SwiftyCam]: Error locking configuration")
-        }
-    }
-    
-    /**
-     Add pinch gesture recognizer to currentView
-     
-     - Parameter view: View to add gesture recognzier
-     
-     */
-    
-    fileprivate func addGestureRecognizersTo(view: UIView) {
-        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomGesture(pinch:)))
-        pinchGesture.delegate = self
-        view.addGestureRecognizer(pinchGesture)
-    }
-    
+        
     /// Handle Denied App Privacy Settings
     
     fileprivate func promptToAppSettings() {
         guard promptToAppPrivacySettings == true else {
             // Do not prompt user
-            // Ca// delegate function SwiftyCamDidFailCameraPermissionSettings()
-            self.cameraDelegate?.SwiftyCamDidFailCameraPermissionSettings()
+            // Call delegate function SwiftyCamDidFailCameraPermissionSettings()
+            
+            DispatchQueue.main.async {
+                self.cameraDelegate?.SwiftyCamDidFailCameraPermissionSettings()
+            }
             return
         }
         
@@ -850,6 +810,25 @@ open class SwiftyCamViewController: UIViewController {
             }
         }
     }
+    
+    /// Sets whether SwiftyCam should enable background audio from other applications or sources 
+    
+    fileprivate func setBackgroundAudioPreference() {
+        guard allowBackgroundAudio == true else {
+            return
+        }
+        
+        do{
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+                                                            with: [.duckOthers, .defaultToSpeaker])
+
+            session.automaticallyConfiguresApplicationAudioSession = false
+        }
+        catch {
+            print("[SwiftyCam]: Failed to set background audio preference")
+            
+        }
+    }
 }
 
 extension SwiftyCamViewController : SwiftyCamButtonDelegate {
@@ -904,10 +883,114 @@ extension SwiftyCamViewController : AVCaptureFileOutputRecordingDelegate {
             print("[SwiftyCam]: Movie file finishing error: \(error)")
         } else {
             //Call delegate function with the URL of the outputfile
-            self.cameraDelegate?.SwiftyCamDidFinishProcessingVideoAt(outputFileURL)
+            DispatchQueue.main.async {
+                self.cameraDelegate?.SwiftyCamDidFinishProcessingVideoAt(outputFileURL)
+            }
         }
     }
 }
+
+// Mark: UIGestureRecognizer Declarations
+
+extension SwiftyCamViewController {
+    
+    /// Handle pinch gesture
+    
+    @objc fileprivate func zoomGesture(pinch: UIPinchGestureRecognizer) {
+        guard pinchToZoom == true && self.currentCamera == .rear else {
+            //ignore pinch if pinchToZoom is set to false
+            return
+        }
+        do {
+            let captureDevice = AVCaptureDevice.devices().first as? AVCaptureDevice
+            try captureDevice?.lockForConfiguration()
+            
+            zoomScale = max(1.0, min(beginZoomScale * pinch.scale,  captureDevice!.activeFormat.videoMaxZoomFactor))
+            
+            captureDevice?.videoZoomFactor = zoomScale
+            
+            // Call Delegate function with current zoom scale
+            DispatchQueue.main.async {
+                self.cameraDelegate?.SwiftyCamDidChangeZoomLevel(zoomLevel: self.zoomScale)
+            }
+            
+            captureDevice?.unlockForConfiguration()
+            
+        } catch {
+            print("[SwiftyCam]: Error locking configuration")
+        }
+    }
+    
+    /// Handle single tap gesture
+    
+    @objc fileprivate func singleTapGesture(tap: UITapGestureRecognizer) {
+        guard tapToFocus == true else {
+            // Ignore taps
+            return
+        }
+        
+        let screenSize = previewLayer!.bounds.size
+        let tapPoint = tap.location(in: previewLayer!)
+        let x = tapPoint.y / screenSize.height
+        let y = 1.0 - tapPoint.x / screenSize.width
+        let focusPoint = CGPoint(x: x, y: y)
+        
+        if let device = videoDevice {
+            do {
+                try device.lockForConfiguration()
+                
+                if device.isFocusPointOfInterestSupported == true {
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                }
+                device.exposurePointOfInterest = focusPoint
+                device.exposureMode = AVCaptureExposureMode.continuousAutoExposure
+                device.unlockForConfiguration()
+                //Call delegate function and pass in the location of the touch
+                
+                DispatchQueue.main.async {
+                    self.cameraDelegate?.SwiftyCamDidFocusAtPoint(focusPoint: tapPoint)
+                }
+            }
+            catch {
+                // just ignore
+            }
+        }
+    }
+    
+    /// Handle double tap gesture
+    
+    @objc fileprivate func doubleTapGesture(tap: UITapGestureRecognizer) {
+        guard doubleTapCameraSwitch == true else {
+            return
+        }
+        switchCamera()
+    }
+    
+    /**
+     Add pinch gesture recognizer and double tap gesture recognizer to currentView
+     
+     - Parameter view: View to add gesture recognzier
+     
+     */
+    
+    fileprivate func addGestureRecognizersTo(view: UIView) {
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoomGesture(pinch:)))
+        pinchGesture.delegate = self
+        view.addGestureRecognizer(pinchGesture)
+        
+        let singleTapGesture = UITapGestureRecognizer(target: self, action: #selector(singleTapGesture(tap:)))
+        singleTapGesture.numberOfTapsRequired = 1
+        singleTapGesture.delegate = self
+        view.addGestureRecognizer(singleTapGesture)
+        
+        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(doubleTapGesture(tap:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        doubleTapGesture.delegate = self
+        view.addGestureRecognizer(doubleTapGesture)
+    }
+}
+
 
 // MARK: UIGestureRecognizerDelegate
 

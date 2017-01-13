@@ -4428,18 +4428,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4Q-Hr-vWy" customClass="SwiftyCamButton" customModule="SwiftyCam">
-                                <rect key="frame" x="150" y="547" width="75" height="75"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Unchecked Circle-100"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GJn-fd-qj5">
-                                <rect key="frame" x="335" y="28" width="40" height="40"/>
+                                <rect key="frame" x="335" y="8" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Lightning Bolt-96"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BsB-Zl-vD9">
-                                <rect key="frame" x="16" y="38" width="20" height="20"/>
+                                <rect key="frame" x="16" y="16" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
                             </button>
@@ -4449,13 +4444,19 @@
                                 <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </progressView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idk-dT-jjl">
-                                <rect key="frame" x="302" y="36" width="25" height="25"/>
+                                <rect key="frame" x="302" y="15" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Switch Camera-100"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4Q-Hr-vWy" customClass="SwiftyCamButton" customModule="SwiftyCam">
+                                <rect key="frame" x="147" y="543" width="80" height="80"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Unchecked Circle-100"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93395959214501512" green="0.93395959214501512" blue="0.93395959214501512" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="captureButton" destination="o4Q-Hr-vWy" id="kqf-EE-KwG"/>
                         <outlet property="flashButton" destination="GJn-fd-qj5" id="PNx-lv-gZ3"/>
@@ -4481,7 +4482,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZE-qk-dfS">
-                                <rect key="frame" x="16" y="28" width="25" height="25"/>
+                                <rect key="frame" x="16" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
                                 <connections>
@@ -4499,11 +4500,12 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YF-FY-Ouh">
                                 <rect key="frame" x="251" y="610" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Edit Filled-500"/>
+                                <state key="normal" image="Marker Pen Filled"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="continueButton" destination="cc6-B2-Jaa" id="mV1-aW-UWd"/>
                         <outlet property="exitButton" destination="aZE-qk-dfS" id="eAI-hc-Lou"/>
@@ -4698,12 +4700,6 @@
                         <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="exploreHeader" id="5rr-5D-wvn" customClass="ExploreHeader" customModule="Redplanet" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="116"/>
                             <autoresizingMask key="autoresizingMask"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Trending" translatesAutoresizingMaskIntoConstraints="NO" id="xIk-2D-Sah">
-                                    <rect key="frame" x="8" y="8" width="100" height="100"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </imageView>
-                            </subviews>
                         </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="GrF-aX-oeE" id="oWx-rG-c1y"/>
@@ -4716,7 +4712,7 @@
             </objects>
             <point key="canvasLocation" x="1934.5" y="-1331.5"/>
         </scene>
-        <!--Notifications-->
+        <!--Create Front-->
         <scene sceneID="fpp-Uo-z9S">
             <objects>
                 <viewController id="aSj-NK-ud8" customClass="CreateFront" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
@@ -4827,7 +4823,7 @@
                             <constraint firstAttribute="trailing" secondItem="Jb0-Aj-AQB" secondAttribute="trailing" id="sm5-xO-8Y8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Notifications" id="Cgs-Ze-POb">
+                    <navigationItem key="navigationItem" id="Cgs-Ze-POb">
                         <barButtonItem key="leftBarButtonItem" systemItem="search" id="cag-bz-sDk">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -5397,7 +5393,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s65-ak-j9e">
-                                <rect key="frame" x="16" y="38" width="20" height="20"/>
+                                <rect key="frame" x="16" y="20" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Exit"/>
                                 <connections>
@@ -5413,7 +5409,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
-                                <rect key="frame" x="16" y="607" width="30" height="30"/>
+                                <rect key="frame" x="253" y="15" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="Download"/>
                                 <connections>
@@ -5421,12 +5417,36 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
-                                <rect key="frame" x="54" y="607" width="30" height="30"/>
+                                <rect key="frame" x="329" y="15" width="30" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="Edit Filled-500"/>
+                                <state key="normal" image="Marker Pen Filled"/>
                                 <connections>
                                     <action selector="editButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="pgc-to-rq6"/>
                                 </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kxd-Dj-dc7">
+                                <rect key="frame" x="291" y="15" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="NewText"/>
+                                <connections>
+                                    <action selector="text:" destination="oby-Mu-zdT" eventType="touchUpInside" id="IUw-7d-0q8"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fui-fV-1S5">
+                                <rect key="frame" x="199" y="15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YwU-Wf-DIY">
+                                <rect key="frame" x="145" y="15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
+                                <state key="normal" title="Undo">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5439,12 +5459,16 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="7nP-fP-79T"/>
+                    <nil key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="completeButton" destination="fui-fV-1S5" id="8R4-Pl-4aB"/>
                         <outlet property="continueButton" destination="KuK-8b-F8c" id="dId-SI-bFO"/>
                         <outlet property="editButton" destination="Ulw-zq-86o" id="LiH-CL-IRf"/>
                         <outlet property="leaveButton" destination="s65-ak-j9e" id="hgn-oV-AsG"/>
                         <outlet property="saveButton" destination="Fbn-Va-JDg" id="cMn-xU-pms"/>
                         <outlet property="stillPhoto" destination="IHD-kG-Qo1" id="KO7-JQ-7zq"/>
+                        <outlet property="textButton" destination="kxd-Dj-dc7" id="vpX-Wp-Vx3"/>
+                        <outlet property="undoButton" destination="YwU-Wf-DIY" id="F0s-uC-0hK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tBN-kT-UdW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -7422,17 +7446,18 @@
         <image name="Circled Play Filled-50" width="25" height="25"/>
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="261" height="256"/>
-        <image name="Edit Filled-500" width="256" height="256"/>
-        <image name="Exit" width="102" height="102"/>
+        <image name="Exit" width="24" height="24"/>
         <image name="Expand Arrow-50" width="25" height="25"/>
         <image name="Gender Neutral User-100" width="399" height="398"/>
         <image name="Left Filled-100" width="50" height="50"/>
         <image name="Left Filled-50" width="25" height="25"/>
         <image name="Lightning Bolt-96" width="256" height="256"/>
         <image name="Like-100" width="50" height="50"/>
+        <image name="Marker Pen Filled" width="265" height="256"/>
         <image name="More" width="25" height="25"/>
         <image name="More-100" width="50" height="50"/>
         <image name="NewChat" width="25" height="25"/>
+        <image name="NewText" width="275" height="275"/>
         <image name="Newsfeed(1)" width="24" height="24"/>
         <image name="Number Pad-48" width="24" height="24"/>
         <image name="Redo-100" width="50" height="50"/>
@@ -7444,7 +7469,6 @@
         <image name="ShareOP" width="116" height="116"/>
         <image name="Stack of Photos-96" width="256" height="256"/>
         <image name="Switch Camera-100" width="243" height="256"/>
-        <image name="Trending" width="246" height="273"/>
         <image name="Unchecked Circle-100" width="256" height="256"/>
         <image name="User-48" width="24" height="24"/>
         <image name="UserAction" width="25" height="25"/>

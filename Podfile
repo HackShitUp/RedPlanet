@@ -8,9 +8,9 @@ target 'Redplanet' do
 	pod ‘Parse’
 	pod ‘ParseUI’
 	pod ‘Bolts’
-	pod ‘AWSS3’
 	pod ‘SimpleAlert’
 	pod ‘SwiftyCam’
+	pod ‘jot’
 	pod ‘OneSignal’
 	pod 'KILabel', '1.0.0'
 	pod 'SVProgressHUD'

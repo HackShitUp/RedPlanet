@@ -13,22 +13,29 @@ import Parse
 import ParseUI
 import Bolts
 
+
+import jot
 import OneSignal
+
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
+class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate, JotViewControllerDelegate {
     
     
     // MARK: SnapSliderFilters
-    // Initialize variables and constants
     fileprivate let slider = SNSlider(frame: CGRect(origin: CGPoint.zero, size: SNUtils.screenSize))
     fileprivate let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
     fileprivate let tapGesture = UITapGestureRecognizer()
     fileprivate var data:[SNFilter] = []
     
+    // MARK: - jot
+    var jotViewController: JotViewController!
     
+    
+    @IBOutlet weak var undoButton: UIButton!
+    @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var stillPhoto: PFImageView!
     @IBOutlet weak var leaveButton: UIButton!
     @IBAction func dismissVC(_ sender: Any) {
@@ -56,33 +63,50 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     @IBOutlet weak var editButton: UIButton!
     @IBAction func editButton(_ sender: Any) {
-        // If it's a Moment...
-        // Disable rotate, crop, and resizing options
-        if chatCamera == false {
-            // Moment
-            // Present CLImageEditor
-            let editor = CLImageEditor(image: self.stillPhoto.image!)
-            // Disable tools: rotate, clip, and resize
-            let rotateTool = editor?.toolInfo.subToolInfo(withToolName: "CLRotateTool", recursive: false)
-            let cropTool = editor?.toolInfo.subToolInfo(withToolName: "CLClippingTool", recursive: false)
-            let resizeTool = editor?.toolInfo.subToolInfo(withToolName: "CLResizeTool", recursive: false)
-            rotateTool?.available = false
-            cropTool?.available = false
-            resizeTool?.available = false
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            self.navigationController?.navigationBar.tintColor = UIColor.black
-            self.navigationController?.pushViewController(editor!, animated: false)
-        } else {
-            // CHAT
-            // Present CLImageEditor
-            let editor = CLImageEditor(image: self.stillPhoto.image!)
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            self.navigationController?.navigationBar.tintColor = UIColor.black
-            self.navigationController?.pushViewController(editor!, animated: false)
-        }
+        // DRAWING
+        initializeJot()
+        switchToDrawMode()
+        self.jotViewController.drawingColor = UIColor.magenta
     }
+    
+    @IBOutlet weak var textButton: UIButton!
+    @IBAction func text(_ sender: Any) {
+        initializeJot()
+    }
+    
+    
+    // MARK: - jot
+    func switchToDrawMode() {
+        self.jotViewController.state = .drawing
+    }
+    
+    func switchToTextMode() {
+        self.jotViewController.state = .text
+    }
+    
+    func switchToTextEditMode() {
+        self.jotViewController.state = .editingText
+    }
+    
+    // Custom function to initize JOT
+    func initializeJot() {
+//        self.jotViewController = JotViewController()
+//        self.jotViewController.delegate = self
+//        self.addChildViewController(self.jotViewController)
+//        self.slider.addSubview(self.jotViewController.view)
+//        self.jotViewController.didMove(toParentViewController: self)
+//        self.jotViewController.view.frame = self.view.frame
+    }
+    
+    // Function to undo
+    func undoJot() {
+        self.jotViewController.clearDrawing()
+    }
+    
+    func completeJot() {
+        
+    }
+    
     
     // MARK: - CLImageEditorDelegate
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
@@ -237,12 +261,54 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
         // Set image
         self.stillPhoto.image = stillImages.last!
+        
+        // Add shadows for...
+        // 1) Save button
+        self.saveButton.layer.shadowColor = UIColor.black.cgColor
+        self.saveButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.saveButton.layer.shadowRadius = 5
+        self.saveButton.layer.shadowOpacity = 1.0
+        // 2) Text button
+        self.textButton.layer.shadowColor = UIColor.black.cgColor
+        self.textButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.textButton.layer.shadowRadius = 5
+        self.textButton.layer.shadowOpacity = 1.0
+        // 3) Edit button
+        self.editButton.layer.shadowColor = UIColor.black.cgColor
+        self.editButton.layer.shadowOffset = CGSize(width: 5, height: 5)
+        self.editButton.layer.shadowRadius = 5
+        self.editButton.layer.shadowOpacity = 1.0
 
         // Add method
-        tapGesture.addTarget(self, action: #selector(handleTap))
+//        tapGesture.addTarget(self, action: #selector(handleTap))
+        tapGesture.addTarget(self, action: #selector(initializeJot))
         setupSlider()
         setupTextField()
         self.stillPhoto.isUserInteractionEnabled = true
+        
+        self.jotViewController = JotViewController()
+        self.jotViewController.delegate = self
+//        self.addChildViewController(self.jotViewController)
+//        self.stillPhoto.addSubview(self.jotViewController.view)
+//        self.slider.addSubview(self.jotViewController.view)
+        self.slider.addSubview(self.jotViewController.view)
+        self.jotViewController.didMove(toParentViewController: self)
+        self.jotViewController.view.frame = self.view.frame
+        
+        
+        // Add tap methods for undo and complete
+        let undoTap = UITapGestureRecognizer(target: self, action: #selector(undoJot))
+        undoTap.numberOfTapsRequired = 1
+        self.undoButton.isUserInteractionEnabled = true
+        self.undoButton.addGestureRecognizer(undoTap)
+        
+        let doneTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
+        doneTap.numberOfTapsRequired = 1
+        self.completeButton.isUserInteractionEnabled = true
+        self.completeButton.addGestureRecognizer(undoTap)
+        
+//        UIApplication.shared.keyWindow?.rootViewController?.value(forKey: "_‌​printHierarchy")
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -252,6 +318,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     //MARK: Setup
     fileprivate func setupSlider() {
+        // Setup slider
         self.createData(stillImages.last!)
         self.slider.dataSource = self
         self.slider.isUserInteractionEnabled = true

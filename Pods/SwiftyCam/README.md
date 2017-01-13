@@ -28,6 +28,7 @@ Configuring a Camera View Controller in AVFoundation can be tedious and time con
 :mag_right: | Supports manual zoom
 :lock: | Supports manual focus
 :last_quarter_moon_with_face: | Low light setting
+:speaker: | Background audio support
 
 
 ## Requirements
@@ -208,6 +209,12 @@ switchCamera()
 
 Tap-to-focus, pinch-to-zoom and camera flash are not supported when the front facing camera is selected. *Switching video while video is being recorded is not currently supported*
 
+SwiftyCam also enables switching between cameras with a double tap gesture. To disable this feature, use the `doubleTapCameraSwitch` property:
+
+```swift
+doubleTapCameraSwitch = false
+```
+
 ##Configuration
 
 SwiftyCam has several options for configurating the functionality of the capture:
@@ -254,13 +261,21 @@ By default, **pinchToZoom** is enabled.
 
 ## Camera Focus
 
-SwiftyCam, by default, support tap to focus on the video preview. SwiftyCam will set the focus and exposure levels of the session to the tapped point. Autofocus and autoexposure will be resumed once SwiftyCam detects significant movement from the tapped point. To disable this feature, change the `tapToFocus` property:
+SwiftyCam, by default, support tap to focus on the video preview. SwiftyCam will set the focus and exposure levels of the session to the tapped point. While tap to set exposure is supported on both cameras, tap to focus is only supported on rear facing cameras. Autofocus and autoexposure will be resumed once SwiftyCam detects significant movement from the tapped point. To disable this feature, change the `tapToFocus` property:
 
 ```swift
 tapToFocus = false
 ```
 
 By default, `tapToFocus` is enabled. If you wish to show a on screen animation when a tap to focus is initiated, you can use the `SwiftyCamDidFocusAtPoint(focusPoint:)` to get the coordinates of tap and provide your own tap animation
+
+## Background Audio
+
+SwiftyCam has the ability to allow background audio to continue playing within the session, and to be captured by the video recording. By default, this is enabled. If you wish to disable this feature, change the `allowBackgroundAudio` property:
+
+```swift
+allowBackgroundAudio = false
+```
 
 ## Low Light Boost
 

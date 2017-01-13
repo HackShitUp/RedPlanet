@@ -14,6 +14,7 @@
 		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
 		7E26EC081E18661300EFB7BC /* EZSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26EC071E18661300EFB7BC /* EZSwipeController.swift */; };
 		7E26EC101E188D7D00EFB7BC /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */; };
+		7E2B5D0F1E277A4100E23CA1 /* CapturedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2B5D0E1E277A4100E23CA1 /* CapturedPhoto.swift */; };
 		7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4021E25A78A0071B052 /* SNButton.swift */; };
 		7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4031E25A78A0071B052 /* SNFilter.swift */; };
 		7E2CA40D1E25A78A0071B052 /* SNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4041E25A78A0071B052 /* SNSlider.swift */; };
@@ -234,6 +235,7 @@
 		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
 		7E26EC071E18661300EFB7BC /* EZSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EZSwipeController.swift; sourceTree = "<group>"; };
 		7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		7E2B5D0E1E277A4100E23CA1 /* CapturedPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedPhoto.swift; sourceTree = "<group>"; };
 		7E2CA4021E25A78A0071B052 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
 		7E2CA4031E25A78A0071B052 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
 		7E2CA4041E25A78A0071B052 /* SNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSlider.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */,
 				7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */,
+				7E2B5D0E1E277A4100E23CA1 /* CapturedPhoto.swift */,
 				7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */,
 			);
 			name = Camera;
@@ -1868,6 +1871,7 @@
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
+				7E2B5D0F1E277A4100E23CA1 /* CapturedPhoto.swift in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
