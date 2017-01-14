@@ -26,7 +26,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     @IBOutlet weak var leaveButton: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
 
-    func SwiftyCamDidTakePhoto(_ photo: UIImage) {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         DispatchQueue.main.async {
             stillImages.append(photo)
             let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
@@ -34,7 +34,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         }
     }
     
-    func SwiftyCamDidBeginRecordingVideo() {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // Show progress and begin counting
         DispatchQueue.main.async {
             self.progressView.setProgress(0, animated: false)
@@ -61,12 +61,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     
-    func SwiftyCamDidFinishRecordingVideo() {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         // Remove progress
         self.progressView.isHidden = true
     }
     
-    func SwiftyCamDidFinishProcessingVideoAt(_ url: URL) {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
         // Append url
         capturedURLS.append(url)
         // Push VC
@@ -74,15 +74,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.navigationController?.pushViewController(capturedVideoVC, animated: false)
     }
     
-    func SwiftyCamDidFocusAtPoint(focusPoint: CGPoint) {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
 //        print(focusPoint)
     }
     
-    func SwiftyCamDidChangeZoomLevel(zoomLevel: CGFloat) {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didChangeZoomLevel zoom: CGFloat) {
 //        print(zoomLevel)
     }
     
-    func SwiftyCamDidSwitchCameras(camera: SwiftyCamViewController.CameraSelection) {
+    func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
         if camera == .rear {
             print("REAR")
             isRearCam = true
@@ -124,7 +124,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         // Set delegate for camera button
         captureButton.delegate = self
         // Set video duration and length
-        kMaximumVideoDuration = 10.0
+        maximumVideoDuration = 10.0
         // Set tap to focus
         tapToFocus = true
         // Double tap to switch camera
