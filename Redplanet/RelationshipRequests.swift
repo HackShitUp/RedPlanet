@@ -251,6 +251,10 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Relationship Requests"
         }
+        
+        // Show nav bar && show tabBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     

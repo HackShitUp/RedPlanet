@@ -7152,7 +7152,7 @@
         <scene sceneID="CfS-Ef-186">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cU2-FF-485" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Redplanet" image="Circled Play Filled-50" id="X76-jS-IPb"/>
+                    <tabBarItem key="tabBarItem" title="Redplanet" image="SCRP" id="X76-jS-IPb"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BDr-aw-Ghe">
@@ -7446,7 +7446,6 @@
         <image name="Address Book Filled-50" width="25" height="25"/>
         <image name="Chat Filled-50" width="27" height="23"/>
         <image name="Checked Filled-100" width="256" height="256"/>
-        <image name="Circled Play Filled-50" width="25" height="25"/>
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="261" height="256"/>
         <image name="Exit" width="24" height="24"/>
@@ -7465,6 +7464,7 @@
         <image name="Number Pad-48" width="24" height="24"/>
         <image name="Redo-100" width="50" height="50"/>
         <image name="RedplanetLogo" width="256" height="256"/>
+        <image name="SCRP" width="26" height="26"/>
         <image name="SLR Camera Filled-Gray" width="50" height="50"/>
         <image name="SaveBlack" width="50" height="50"/>
         <image name="Search-50" width="25" height="25"/>
