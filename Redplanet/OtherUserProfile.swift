@@ -58,6 +58,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     // Page size
     var page: Int = 50
+    // Handle skipped objects for Pipeline
+    var skipped = [PFObject]()
     
     
     
@@ -306,9 +308,22 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                 
                 // clear array
                 self.contentObjects.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.contentObjects.append(object)
+                    // Set time configs
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    
+                    if object.value(forKey: "contentType") as! String == "itm" {
+                        if difference.hour! <= 24 {
+                            self.contentObjects.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
+                    } else {
+                        self.contentObjects.append(object)
+                    }
                 }
                 
                 
@@ -1168,7 +1183,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.contentObjects.count {
+        if page <= self.contentObjects.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50

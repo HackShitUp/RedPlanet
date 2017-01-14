@@ -32,6 +32,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     // Set pipeline method
     var page: Int = 50
+    // Handle skipped objects for Pipeline
+    var skipped = [PFObject]()
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -100,9 +102,22 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 
                 // Clear array
                 self.myContentObjects.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.myContentObjects.append(object)
+                    // Set time configs
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    
+                    if object.value(forKey: "contentType") as! String == "itm" {
+                        if difference.hour! <= 24 {
+                            self.myContentObjects.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
+                    } else {
+                        self.myContentObjects.append(object)
+                    }
                 }
             } else {
                 print(error?.localizedDescription as Any)
@@ -751,7 +766,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.myContentObjects.count {
+        if page <= self.myContentObjects.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50

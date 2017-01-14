@@ -150,9 +150,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                    style: .cancel,
                                    handler: nil)
         
-        options.addAction(delete)
         options.addAction(views)
         options.addAction(share)
+        options.addAction(delete)
         options.addAction(cancel)
         options.view.tintColor = UIColor.black
         self.present(options, animated: true, completion: nil)
@@ -186,66 +186,14 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     // (2) Set username
                     if let user = object["byUser"] as? PFUser {
                         self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
-                        self.rpUsername.layer.shadowColor = UIColor.black.cgColor
-                        self.rpUsername.layer.shadowOffset = CGSize(width: 5, height: 5)
-                        self.rpUsername.layer.shadowRadius = 5
-                        self.rpUsername.layer.shadowOpacity = 1.0
                     }
                     
                     // (3) Set time
-                    let from = object.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    
-                    self.time.layer.shadowColor = UIColor.black.cgColor
-                    self.time.layer.shadowOffset = CGSize(width: 5, height: 5)
-                    self.time.layer.shadowRadius = 5
-                    self.time.layer.shadowOpacity = 1.0
-                    
-                    // logic what to show : Seconds, minutes, hours, days, or weeks
-                    if difference.second! <= 0 {
-                        self.time.text = "right now"
-                    }
-                    
-                    if difference.second! > 0 && difference.minute! == 0 {
-                        if difference.second! == 1 {
-                            self.time.text = "1 second ago"
-                        } else {
-                            self.time.text = "\(difference.second!) seconds ago"
-                        }
-                    }
-                    
-                    if difference.minute! > 0 && difference.hour! == 0 {
-                        if difference.minute! == 1 {
-                            self.time.text = "1 minute ago"
-                        } else {
-                            self.time.text = "\(difference.minute!) minutes ago"
-                        }
-                    }
-                    
-                    if difference.hour! > 0 && difference.day! == 0 {
-                        if difference.hour! == 1 {
-                            self.time.text = "1 hour ago"
-                        } else {
-                            self.time.text = "\(difference.hour!) hours ago"
-                        }
-                    }
-                    
-                    if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        if difference.day! == 1 {
-                            self.time.text = "1 day ago"
-                        } else {
-                            self.time.text = "\(difference.day!) days ago"
-                        }
-                    }
-                    
-                    if difference.weekOfMonth! > 0 {
-                        let createdDate = DateFormatter()
-                        createdDate.dateFormat = "MMM d, yyyy"
-                        self.time.text = createdDate.string(from: object.createdAt!)
-                    }
-                    
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "E"
+                    let timeFormatter = DateFormatter()
+                    timeFormatter.dateFormat = "h:mm a"
+                    self.time.text = "\(dateFormatter.string(from: object.createdAt!)), \(timeFormatter.string(from: object.createdAt!))"
                     
                     
                     // (4) Fetch likes

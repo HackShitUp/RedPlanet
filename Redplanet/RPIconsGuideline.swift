@@ -42,7 +42,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                          "This is a post that’s been shared by someone publicly.",
                          "Circular photo thumbnails indicate that someone has a new Profile Photo.",
                          "Comets with a red gradient background indicate that someone wrote in someone else’s Space. Only friends can write in each other’s Space.",
-                         "Circular previews with a red border around it are called Moments. These are photos or videos captured directly with the camera and shared on Redplanet.",
+                         "Circular previews with a red border around it are called Moments. These are photos or videos captured directly with the camera and last for 24 hours on Redplanet.",
                          "Yellow circles with a triangle indicate that someone shared a video."
                          ]
 

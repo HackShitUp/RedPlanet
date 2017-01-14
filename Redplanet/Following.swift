@@ -33,6 +33,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     // Page size
     var page: Int = 50
     
+    // Handle objects skipped
+    var skipped = [PFObject]()
+    
     // Refresher
     var refresher: UIRefreshControl!
     
@@ -72,16 +75,17 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 
                 // Clear array
                 self.followingContent.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Configure time
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: now, options: [])
+                    // Set time configs
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     
-                    // Append all objects except for Moments > 24hrs
                     if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.day! < 1 {
+                        if difference.hour! <= 24 {
+                            self.followingContent.append(object)
+                        } else {
                             self.followingContent.append(object)
                         }
                     } else {
@@ -476,7 +480,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= followingContent.count {
+        if page <= followingContent.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50

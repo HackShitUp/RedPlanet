@@ -379,8 +379,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
 
-                }
-                
+                }                
                 
             } else {
                 print(error?.localizedDescription as Any)

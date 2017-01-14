@@ -35,7 +35,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // Array to hold friends
     var friends = [PFObject]()
-    
+
     // Array to hold friends' content
     var friendsContent = [PFObject]()
     
@@ -44,6 +44,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // Page size
     var page: Int = 50
+    
+    // Array to hold skipped items for page
+    var skipped = [PFObject]()
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -62,14 +65,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Query Current User's Friends
     func queryFriends() {
         
+        
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
         fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
         let eFriends = PFQuery(className: "FriendMe")
         eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
         eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
         let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
         friends.includeKeys(["frontFriend", "endFriend"])
         friends.whereKey("isFriends", equalTo: true)
@@ -79,7 +81,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 // Dismiss
                 SVProgressHUD.dismiss()
-
+                
                 // Clear array
                 self.friends.removeAll(keepingCapacity: false)
                 
@@ -97,7 +99,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     }
                 }
                 
-                
                 // Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser","pointObject","toUser"])
@@ -114,34 +115,30 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         
                         // Clear array
                         self.friendsContent.removeAll(keepingCapacity: false)
+                        self.skipped.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-//                            if object.createdAt!.timeIntervalSince(Date()) >= -86400 && object.value(forKey: "contentType") as! String == "itm" {
-//                                // If seconds don't exceed one day append object
-//                                // And post is Moment
-//                                self.friendsContent.append(object)
-//                            } else if object.value(forKey: "contentType") as! String != "itm" {
-//                                // If seconds exceed one day
-//                                // And post is NOT a Moment
-//                                self.friendsContent.append(object)
-//                            }
-                            /////
-                            // USE FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
-                            /////
-                            //                let dateFormatter = DateFormatter()
-                            //                dateFormatter.dateFormat = "EEEE"
-                            //                let timeFormatter = DateFormatter()
-                            //                timeFormatter.dateFormat = "h:mm a"
-                            //                let time = "\(dateFormatter.string(from: object!.createdAt!)) \(timeFormatter.string(from: object!.createdAt!))"
-                            //                cell.rpTime.text! = time
-                            self.friendsContent.append(object)
+                            // Set time configs
+                            let components : NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            
+                            if object.value(forKey: "contentType") as! String == "itm" {
+                                if difference.hour! <= 24 {
+                                    self.friendsContent.append(object)
+                                } else {
+                                    self.skipped.append(object)
+                                }
+                            } else {
+                                self.friendsContent.append(object)
+                            }
                         }
+                        
                         // Set DZN
                         if self.friendsContent.count == 0 {
                             self.tableView!.emptyDataSetSource = self
                             self.tableView!.emptyDataSetDelegate = self
                         }
-
+                        
                     } else {
                         print(error?.localizedDescription as Any)
                         
@@ -198,8 +195,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
     
     // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if friendsContent.count == 0 {
             return true
@@ -207,9 +202,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             return false
         }
     }
-    
-    
-    // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "💩\nYour Friends' News Feed is empty."
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
@@ -232,8 +224,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-    
-    // Button title
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Find My Friends"
@@ -245,8 +235,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-    
-    // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         // If iOS 9
         if #available(iOS 9, *) {
@@ -344,7 +332,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
                 
                 
-                // *******************************************************************************************************************
+                // **********************************************************************************************************
                 // (2) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
@@ -564,19 +552,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
                 
                 
-                
-                /////
-                // USE FOR LATER WHEN CONTENT IS DELETED EVERY 24 HOURS
-                /////
-                //                let dateFormatter = DateFormatter()
-                //                dateFormatter.dateFormat = "EEEE"
-                //                let timeFormatter = DateFormatter()
-                //                timeFormatter.dateFormat = "h:mm a"
-                //                let time = "\(dateFormatter.string(from: object!.createdAt!)) \(timeFormatter.string(from: object!.createdAt!))"
-                //                cell.rpTime.text! = time
-                
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -722,7 +697,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= friendsContent.count {
+        if page <= friendsContent.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50
@@ -732,4 +707,4 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         }
     }
 
-} // End class
+}
