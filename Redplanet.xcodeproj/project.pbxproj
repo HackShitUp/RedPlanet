@@ -44,13 +44,6 @@
 		7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF9C1DB439680087454E /* SpacePostCell.swift */; };
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
 		7E55DEB51DFDD38B0002210B /* BestFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E55DEB41DFDD38B0002210B /* BestFriends.swift */; };
-		7E5837F61DBC70A00049ED18 /* SwiftWebVC.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7E5837E11DBC70A00049ED18 /* SwiftWebVC.strings */; };
-		7E5837F71DBC70A00049ED18 /* SwiftModalWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837EA1DBC70A00049ED18 /* SwiftModalWebVC.swift */; };
-		7E5837F81DBC70A00049ED18 /* SwiftWebVC.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E5837EB1DBC70A00049ED18 /* SwiftWebVC.bundle */; };
-		7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837EC1DBC70A00049ED18 /* SwiftWebVC.swift */; };
-		7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837EF1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift */; };
-		7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */; };
-		7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */; };
 		7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E5A98031DDCFFFA006DA985 /* FullName.swift */; };
 		7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6113D41DD157C2001CE98C /* EditContent.swift */; };
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
@@ -255,7 +248,6 @@
 		7E43833D1DD9138F00337007 /* HashTagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HashTagsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E44F8AC1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		7E44F8AD1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
-		7E44F8AE1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		7E4CFF8F1DB439060087454E /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhoto.swift; sourceTree = "<group>"; };
@@ -266,23 +258,6 @@
 		7E4CFF9C1DB439680087454E /* SpacePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SpacePostCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
 		7E55DEB41DFDD38B0002210B /* BestFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BestFriends.swift; sourceTree = "<group>"; };
-		7E5837E21DBC70A00049ED18 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E31DBC70A00049ED18 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E41DBC70A00049ED18 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E51DBC70A00049ED18 /* es-ES */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-ES"; path = "es-ES.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
-		7E5837E61DBC70A00049ED18 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E71DBC70A00049ED18 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E81DBC70A00049ED18 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837E91DBC70A00049ED18 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837EA1DBC70A00049ED18 /* SwiftModalWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftModalWebVC.swift; sourceTree = "<group>"; };
-		7E5837EB1DBC70A00049ED18 /* SwiftWebVC.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SwiftWebVC.bundle; sourceTree = "<group>"; };
-		7E5837EC1DBC70A00049ED18 /* SwiftWebVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVC.swift; sourceTree = "<group>"; };
-		7E5837EF1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVCActivityChrome.swift; sourceTree = "<group>"; };
-		7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVCActivitySafari.swift; sourceTree = "<group>"; };
-		7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftWebVCActivity.swift; sourceTree = "<group>"; };
-		7E5837F31DBC70A00049ED18 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/SwiftWebVC.strings; sourceTree = "<group>"; };
-		7E5837F41DBC70A00049ED18 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
-		7E5837F51DBC70A00049ED18 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/SwiftWebVC.strings"; sourceTree = "<group>"; };
 		7E5A98031DDCFFFA006DA985 /* FullName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullName.swift; sourceTree = "<group>"; };
 		7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -704,44 +679,6 @@
 				7E4CFF961DB4394A0087454E /* TextPostCell.swift */,
 			);
 			name = TextPost;
-			sourceTree = "<group>";
-		};
-		7E5837E01DBC709F0049ED18 /* SwiftWebVC */ = {
-			isa = PBXGroup;
-			children = (
-				7E5837E11DBC70A00049ED18 /* SwiftWebVC.strings */,
-				7E5837EA1DBC70A00049ED18 /* SwiftModalWebVC.swift */,
-				7E5837EB1DBC70A00049ED18 /* SwiftWebVC.bundle */,
-				7E5837EC1DBC70A00049ED18 /* SwiftWebVC.swift */,
-				7E5837ED1DBC70A00049ED18 /* UIActivities */,
-			);
-			path = SwiftWebVC;
-			sourceTree = "<group>";
-		};
-		7E5837ED1DBC70A00049ED18 /* UIActivities */ = {
-			isa = PBXGroup;
-			children = (
-				7E5837EE1DBC70A00049ED18 /* Chrome */,
-				7E5837F01DBC70A00049ED18 /* Safari */,
-				7E5837F21DBC70A00049ED18 /* SwiftWebVCActivity.swift */,
-			);
-			path = UIActivities;
-			sourceTree = "<group>";
-		};
-		7E5837EE1DBC70A00049ED18 /* Chrome */ = {
-			isa = PBXGroup;
-			children = (
-				7E5837EF1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift */,
-			);
-			path = Chrome;
-			sourceTree = "<group>";
-		};
-		7E5837F01DBC70A00049ED18 /* Safari */ = {
-			isa = PBXGroup;
-			children = (
-				7E5837F11DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift */,
-			);
-			path = Safari;
 			sourceTree = "<group>";
 		};
 		7E5A98051DDD2CFA006DA985 /* Settings */ = {
@@ -1251,7 +1188,6 @@
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
-				7E5837E01DBC709F0049ED18 /* SwiftWebVC */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E3626EC1DB7367A00AB14F4 /* IGCMenu */,
 				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
@@ -1638,8 +1574,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7E5837F61DBC70A00049ED18 /* SwiftWebVC.strings in Resources */,
-				7E5837F81DBC70A00049ED18 /* SwiftWebVC.bundle in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
@@ -1814,7 +1748,6 @@
 				7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */,
-				7E5837FC1DBC70A00049ED18 /* SwiftWebVCActivity.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
@@ -1900,7 +1833,6 @@
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
-				7E5837FB1DBC70A00049ED18 /* SwiftWebVCActivitySafari.swift in Sources */,
 				7E2CA40F1E25A78A0071B052 /* SNSticker.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
@@ -1942,7 +1874,6 @@
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
-				7E5837F71DBC70A00049ED18 /* SwiftModalWebVC.swift in Sources */,
 				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
 				7EF2B7E41E23873C00D08FC2 /* Player.swift in Sources */,
 				7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */,
@@ -1964,7 +1895,6 @@
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
-				7E5837F91DBC70A00049ED18 /* SwiftWebVC.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
@@ -1972,7 +1902,6 @@
 				7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7EF2B7C81E2332CB00D08FC2 /* Licenses.swift in Sources */,
-				7E5837FA1DBC70A00049ED18 /* SwiftWebVCActivityChrome.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */,
 				7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */,
@@ -2024,25 +1953,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		7E5837E11DBC70A00049ED18 /* SwiftWebVC.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				7E5837E21DBC70A00049ED18 /* da */,
-				7E5837E31DBC70A00049ED18 /* de */,
-				7E5837E41DBC70A00049ED18 /* en */,
-				7E5837E51DBC70A00049ED18 /* es-ES */,
-				7E5837E61DBC70A00049ED18 /* es */,
-				7E5837E71DBC70A00049ED18 /* fr */,
-				7E5837E81DBC70A00049ED18 /* ja */,
-				7E5837E91DBC70A00049ED18 /* pt */,
-				7E5837F31DBC70A00049ED18 /* vi */,
-				7E5837F41DBC70A00049ED18 /* zh-Hans */,
-				7E5837F51DBC70A00049ED18 /* zh-Hant */,
-				7E44F8AE1E0D177C0018B1E7 /* ko */,
-			);
-			name = SwiftWebVC.strings;
-			sourceTree = "<group>";
-		};
 		7EC5D1361DB2FE4F00437219 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -496,8 +496,8 @@ class TextPostCell: UITableViewCell {
         textPost.urlLinkTapHandler = { label, handle, range in
             
             // Open url
-            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
-            self.delegate?.present(modalWeb, animated: true, completion: nil)
+//            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
+//            self.delegate?.present(modalWeb, animated: true, completion: nil)
         }
         
     }
