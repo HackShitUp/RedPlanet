@@ -127,6 +127,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         kMaximumVideoDuration = 10.0
         // Set tap to focus
         tapToFocus = true
+        // Double tap to switch camera
+        doubleTapCameraSwitch = true
+        // Allow background music
+        allowBackgroundAudio = true
+        // Add boost
+        lowLightBoost = true
+
         
         // Hide navigation bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -151,12 +158,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         holdRecord.minimumPressDuration = 10.00
         self.captureButton.isUserInteractionEnabled = true
         self.captureButton.addGestureRecognizer(holdRecord)
-        
-        // Swap between cameras
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
-        doubleTap.numberOfTapsRequired = 2
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(doubleTap)
         
         // Tap button to swap between cameras
         let swapTap = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
