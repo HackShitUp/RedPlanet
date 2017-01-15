@@ -469,9 +469,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
-        
-        
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
         
         // (1) Delete Photo
         let delete = UITableViewRowAction(style: .normal,

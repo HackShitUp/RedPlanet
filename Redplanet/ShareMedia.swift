@@ -43,8 +43,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Array to hold user's objects for @
     var userObjects = [PFObject]()
-    // Array to hold user's usernames
-    var usernames = [String]()
     
     
     @IBOutlet weak var mediaAsset: PFImageView!
@@ -976,11 +974,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                     if error == nil {
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        self.usernames.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
                             self.userObjects.append(object)
-                            self.usernames.append(object["username"] as! String)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -1002,7 +998,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usernames.count
+        return self.userObjects.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -1074,14 +1070,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Replace text
-                // NSString.CompareOptions.literal
-                self.mediaCaption.text! = self.mediaCaption.text!.replacingOccurrences(of: "\(word)", with: self.usernames[indexPath.row], options: String.CompareOptions.literal, range: nil)
+                self.mediaCaption.text! = self.mediaCaption.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
             }
         }
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
-        self.usernames.removeAll(keepingCapacity: false)
         
         // Hide UITableView
         self.tableView!.isHidden = true

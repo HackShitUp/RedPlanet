@@ -113,6 +113,14 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Likers"
         }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -214,7 +222,6 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         // Stylize title
         configureView()
         
-        
         // Add searchbar to header
         self.searchBar.delegate = self
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
@@ -222,14 +229,9 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
         
-        
         // Set blank
         self.tableView!.tableFooterView = UIView()
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        
+
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -240,12 +242,8 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Stylize title again
         configureView()
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     

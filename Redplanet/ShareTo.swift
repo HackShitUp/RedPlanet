@@ -232,13 +232,17 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Friends"
         }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
-    
-    
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -264,11 +268,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        
+
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -282,9 +282,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Stylize title again
         configureView()
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
     override func didReceiveMemoryWarning() {

@@ -291,8 +291,16 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "Comments"
+            self.title = "Comments"
         }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -397,12 +405,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Make tableview free-lined
         self.tableView!.tableFooterView = UIView()
         
-        // Hide navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -424,16 +426,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        // Stylize navigation bar
-        configureView()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         // Stylize navigation bar
         configureView()
     }

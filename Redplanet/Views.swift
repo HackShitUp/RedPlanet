@@ -106,6 +106,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                             self.title = "\(self.viewers.count) Views"
                         }
                     }
+                    
+                    
+                    // Configure nav bar && show tab bar (last line)
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                    self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+                    self.navigationController?.navigationBar.shadowImage = nil
+                    self.navigationController?.navigationBar.isTranslucent = false
+                    self.navigationController?.view?.backgroundColor = UIColor.white
+                    self.navigationController?.tabBarController?.tabBar.isHidden = false
+                    
                 } else {
                     if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
@@ -115,6 +125,14 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
                         self.title = "Views"
                     }
+                    
+                    // Configure nav bar && show tab bar (last line)
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                    self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+                    self.navigationController?.navigationBar.shadowImage = nil
+                    self.navigationController?.navigationBar.isTranslucent = false
+                    self.navigationController?.view?.backgroundColor = UIColor.white
+                    self.navigationController?.tabBarController?.tabBar.isHidden = true
                 }
                 
                 

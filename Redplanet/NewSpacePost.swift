@@ -25,9 +25,8 @@ import OneSignal
 
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
-    // Array to hold user objects and usernames
+    // Array to hold user objects
     var userObjects = [PFObject]()
-    var usernames = [String]()
     
     // Initialize UIImagePickerController
     var imagePicker: UIImagePickerController!
@@ -455,11 +454,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        self.usernames.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
                             self.userObjects.append(object)
-                            self.usernames.append(object["username"] as! String)
                         }
                         
                         
@@ -486,7 +483,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usernames.count
+        return self.userObjects.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -559,13 +556,12 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Replace text
-                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.usernames[indexPath.row], options: String.CompareOptions.literal, range: nil)
+                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
             }
         }
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
-        self.usernames.removeAll(keepingCapacity: false)
         
         // Hide UITableView
         self.tableView!.isHidden = true

@@ -91,6 +91,14 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Shares"
         }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -136,10 +144,6 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         // Set footer
         self.tableView!.tableFooterView = UIView()
         
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -149,12 +153,8 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Stylize title
         configureView()
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     override func didReceiveMemoryWarning() {

@@ -59,19 +59,35 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     @IBOutlet weak var editButton: UIButton!
     @IBAction func editButton(_ sender: Any) {
-//        // DRAWING
-//        initializeJot()
-//        switchToDrawMode()
-//        self.jotViewController.drawingColor = UIColor.magenta
+        if chatCamera == false {
+            // Moment
+            // Present CLImageEditor
+            let editor = CLImageEditor(image: SNUtils.screenShot(self.stillPhoto)!)
+            // Disable tools: rotate, clip, and resize
+            let rotateTool = editor?.toolInfo.subToolInfo(withToolName: "CLRotateTool", recursive: false)
+            let cropTool = editor?.toolInfo.subToolInfo(withToolName: "CLClippingTool", recursive: false)
+            let resizeTool = editor?.toolInfo.subToolInfo(withToolName: "CLResizeTool", recursive: false)
+            rotateTool?.available = false
+            cropTool?.available = false
+            resizeTool?.available = false
+            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+            editor?.delegate = self
+            self.navigationController?.navigationBar.tintColor = UIColor.black
+            self.navigationController?.pushViewController(editor!, animated: false)
+        } else {
+            // CHAT
+            // Present CLImageEditor
+            let editor = CLImageEditor(image: SNUtils.screenShot(self.stillPhoto)!)
+            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+            editor?.delegate = self
+            self.navigationController?.navigationBar.tintColor = UIColor.black
+            self.navigationController?.pushViewController(editor!, animated: false)
+        }
     }
     
     @IBOutlet weak var textButton: UIButton!
     @IBAction func text(_ sender: Any) {
-//        initializeJot()
-//        switchToTextMode()
-//        self.jotViewController.textColor = UIColor.white
         self.handleTap()
-        
     }
     
     /*
@@ -132,10 +148,14 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     // MARK: - CLImageEditorDelegate
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        // Set image
-        self.stillPhoto.image = image
+        // Append image
+        stillImages.append(image)
+        // MARK: - SnapSliderFilters
+        setupSlider()
+        setupTextField()
+        tapGesture.addTarget(self, action: #selector(handleTap))
         
-        // Dismiss VC
+        // Pop VC
         _ = editor.navigationController?.popViewController(animated: false)
     }
     
@@ -287,21 +307,13 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.stillPhoto.isUserInteractionEnabled = true
         tapGesture.addTarget(self, action: #selector(handleTap))
         
-        // Add tap methods for undo and complete
-        // Undo button
-//        let undoTap = UITapGestureRecognizer(target: self, action: #selector(undoJot))
-//        undoTap.numberOfTapsRequired = 1
-//        self.undoButton.isUserInteractionEnabled = true
-//        self.undoButton.addGestureRecognizer(undoTap)
-        // Done button
-//        let doneTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
-//        doneTap.numberOfTapsRequired = 1
-//        self.completeButton.isUserInteractionEnabled = true
-//        self.completeButton.addGestureRecognizer(doneTap)
-        
         // Bring buttons to front
         self.view.bringSubview(toFront: self.completeButton)
         self.view.bringSubview(toFront: self.leaveButton)
+        // Hide buttons
+        self.editButton.isHidden = true
+        self.undoButton.isHidden = true
+        self.completeButton.isHidden = true
         
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,

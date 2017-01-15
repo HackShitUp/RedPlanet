@@ -35,26 +35,22 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-        // Show progress and begin counting
+        
+        print("FIRED: \(isVideoRecording)")
         DispatchQueue.main.async {
             self.progressView.setProgress(0, animated: false)
             self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)
-            self.timer = Timer.scheduledTimer(timeInterval: 0.50, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
-            // Edit
-            UIView.animate(withDuration: 10, animations: { () -> Void in
-                self.progressView.setProgress(1, animated: true)
-            })
+            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
         }
     }
     
     func countDown() {
         // Edit
         DispatchQueue.main.async {
-            self.time += 1.0
-            self.progressView.setProgress(0, animated: false)
+            self.time += 1
             self.progressView.setProgress(10/self.time, animated: true)
-            if self.time > 10 {
+            if self.time >= 10 {
                 self.timer!.invalidate()
             }
         }
@@ -84,10 +80,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
         if camera == .rear {
-            print("REAR")
             isRearCam = true
         } else if camera == .front {
-            print("FRONT")
             isRearCam = false
         }
     }
@@ -98,7 +92,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     func dismissVC() {
         // Pop VC
         DispatchQueue.main.async {
-            _ = self.navigationController?.popViewController(animated: true)
+            _ = self.navigationController?.popViewController(animated: false)
         }
     }
     
@@ -120,7 +114,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Hide navigation bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Hide tabBarController
@@ -130,15 +123,16 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Disable View
         self.view.isUserInteractionEnabled = false
         
         // MARK: - SwiftyCam
         // Set delegate for camera view
         cameraDelegate = self
-        // Set delegate for camera button
+        // Set delegate to record video
         captureButton.delegate = self
         // Set video duration and length
-        maximumVideoDuration = 10.0
+        maximumVideoDuration = 10.00
         // Set tap to focus
         tapToFocus = true
         // Double tap to switch camera
@@ -150,8 +144,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         
         // Set bool
         isRearCam = true
-        
-        print("IS: \(isSessionRunning)")
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
@@ -182,12 +174,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         leaveTap.numberOfTapsRequired = 1
         self.leaveButton.isUserInteractionEnabled = true
         self.leaveButton.addGestureRecognizer(leaveTap)
-    
-        // Swipe left to leave
-        let leaveSwipe = UISwipeGestureRecognizer(target: self, action: #selector(dismissVC))
-        leaveSwipe.direction = .right
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(leaveSwipe)
         
         // Bring buttons to front
         let buttons = [self.captureButton,
@@ -198,6 +184,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
         
+        // Enable view
         self.view.isUserInteractionEnabled = true
     }
 

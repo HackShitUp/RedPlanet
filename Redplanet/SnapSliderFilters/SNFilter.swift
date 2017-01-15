@@ -59,12 +59,11 @@ open class SNFilter: UIImageView {
         if (SNFilter.filterNameList.contains(name) == false) {
             print("Filter not existing")
             return filter
-        }
-        else if name == "No Filter" {
+        } else if name == "No Filter" {
+            // Figure out how to replicate the code 
+            // in the next statement
             return filter
-        }
-        else
-        {
+        } else {
             // Create and apply filter
             // 1 - create source image
             let sourceImage = CIImage(image: filter.image!)
@@ -83,10 +82,11 @@ open class SNFilter: UIImageView {
             let outputCGImage = context.createCGImage(myFilter!.outputImage!, from: myFilter!.outputImage!.extent)
             
             // 6 - convert filtered CGImage to UIImage
+            print("updated")
             var filteredImage: UIImage?
-            if isRearCam == true {
+            if isRearCam! == true {
                 filteredImage = UIImage(cgImage: outputCGImage!, scale: 1.0, orientation: UIImageOrientation.right)
-            } else if isRearCam == false {
+            } else if isRearCam! == false {
                 filteredImage = UIImage(cgImage: outputCGImage!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
             }
             
@@ -104,8 +104,9 @@ open class SNFilter: UIImageView {
         
         var finalFilters = [SNFilter]()
         
-        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high)
-        let syncQueue = DispatchQueue(label: "com.snapsliderfilters.app", attributes: .concurrent)
+//        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high)
+//        let syncQueue = DispatchQueue(label: "com.snapsliderfilters.app", attributes: .concurrent)
+        let syncQueue = DispatchQueue(label: "com.redplanetapp.redplanet", attributes: .concurrent)
         
         // Each filter can be generated on a different thread
         DispatchQueue.concurrentPerform(iterations: filters.count) { iteration in

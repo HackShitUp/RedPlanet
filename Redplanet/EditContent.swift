@@ -24,10 +24,8 @@ var editObjects = [PFObject]()
 
 class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, UINavigationControllerDelegate {
     
-    // Array to hold user's objects and usernames
+    // Array to hold user's objects
     var userObjects = [PFObject]()
-    var usernames = [String]()
-
     
     @IBOutlet weak var textPost: UITextView!
     @IBOutlet weak var mediaAsset: PFImageView!
@@ -351,11 +349,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                         
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        self.usernames.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
                             self.userObjects.append(object)
-                            self.usernames.append(object["username"] as! String)
                         }
                         
                         
@@ -379,7 +375,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     // MARK: - UITableView DataSource Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.usernames.count
+        return self.userObjects.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -388,7 +384,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "editContentCell", for: indexPath) as! EditContentCell
-        
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
@@ -452,13 +447,13 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
                 
                 // Replace text
-                self.textPost.text! = self.textPost.text!.replacingOccurrences(of: "\(word)", with: self.usernames[indexPath.row], options: String.CompareOptions.literal, range: nil)
+                self.textPost.text! = self.textPost.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
+                
             }
         }
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
-        self.usernames.removeAll(keepingCapacity: false)
         
         // Hide UITableView
         self.tableView!.isHidden = true

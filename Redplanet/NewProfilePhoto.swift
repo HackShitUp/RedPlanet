@@ -100,7 +100,6 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     
     
     func textViewDidChange(_ textView: UITextView) -> Bool {
-        
         // Set bool for caption
         didChangeCaption = true
         
