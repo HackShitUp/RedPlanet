@@ -1106,7 +1106,7 @@
                                     <constraint firstAttribute="height" constant="15" id="8c4-ec-DwS"/>
                                     <constraint firstAttribute="width" constant="305" id="cu9-3c-9LC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="13"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -1783,7 +1783,7 @@
                                     <constraint firstAttribute="height" constant="15" id="3Xb-J7-kHp"/>
                                     <constraint firstAttribute="width" constant="305" id="Yhf-6u-rgH"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="13"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -4662,7 +4662,7 @@
                                                 <constraint firstAttribute="width" constant="40" id="WqD-if-dEu"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JoO-81-zka">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7:30 PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JoO-81-zka">
                                             <rect key="frame" x="56" y="4" width="311" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="311" id="09t-9c-lqh"/>

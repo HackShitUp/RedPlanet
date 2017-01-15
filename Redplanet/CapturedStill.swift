@@ -19,9 +19,8 @@ import OneSignal
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
-//    JotViewControllerDelegate
-    
+
+class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {//    JotViewControllerDelegate
     
     // MARK: SnapSliderFilters
     fileprivate let slider = SNSlider(frame: CGRect(origin: CGPoint.zero, size: SNUtils.screenSize))
@@ -31,8 +30,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     // MARK: - jot
 //    var jotViewController: JotViewController!
-    
-    
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var stillPhoto: PFImageView!
@@ -66,7 +63,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 //        initializeJot()
 //        switchToDrawMode()
 //        self.jotViewController.drawingColor = UIColor.magenta
-        
     }
     
     @IBOutlet weak var textButton: UIButton!
@@ -305,7 +301,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
         // Bring buttons to front
         self.view.bringSubview(toFront: self.completeButton)
-        self.view.bringSubview(toFront: self.undoButton)
+        self.view.bringSubview(toFront: self.leaveButton)
         
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
@@ -315,9 +311,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                        self.completeButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 5, height: 5)
-            (b as AnyObject).layer.shadowRadius = 5
-            (b as AnyObject).layer.shadowOpacity = 1.0
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+            (b as AnyObject).layer.shadowRadius = 3
+            (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
@@ -352,13 +348,32 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     }
     
     
+    
+
+    
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
-        self.data = SNFilter.generateFilters(SNFilter(frame: self.slider.frame, withImage: image), filters: SNFilter.filterNameList)
-//        self.data[1].addSticker(SNSticker(frame: CGRect(x: 195, y: 30, width: 90, height: 90), image: UIImage(named: "Checked Filled-100")!))
-//        self.data[2].addSticker(SNSticker(frame: CGRect(x: 30, y: 100, width: 250, height: 250), image: UIImage(named: "Newsfeed(1)")!))
-//        self.data[3].addSticker(SNSticker(frame: CGRect(x: 20, y: 00, width: 140, height: 140), image: UIImage(named: "Chat Filled-50")!))
+
+        // Configure time
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        time.font = UIFont(name: "AvenirNext-Demibold", size: 70)
+        time.textColor = UIColor.white
+        time.layer.shadowColor = UIColor.black.cgColor
+        time.layer.shadowOffset = CGSize(width: 1, height: 1)
+        time.layer.shadowRadius = 3
+        time.layer.shadowOpacity = 0.5
+        time.text = "\(timeFormatter.string(from: NSDate() as Date))"
+        time.textAlignment = .center
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        time.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
         
+        // Add filter
+        self.data = SNFilter.generateFilters(SNFilter(frame: self.slider.frame, withImage: image), filters: SNFilter.filterNameList)
+        self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: img!, atZPosition: 2))
     }
     
     fileprivate func updatePicture(_ newImage: UIImage) {
@@ -368,9 +383,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 }
 
 
-
 //MARK: - Extension SNSlider DataSource
-
 extension CapturedStill: SNSliderDataSource {
     
     func numberOfSlides(_ slider: SNSlider) -> Int {
@@ -387,7 +400,6 @@ extension CapturedStill: SNSliderDataSource {
 }
 
 //MARK: - Extension Gesture Recognizer Delegate and touch Handler for TextField
-
 extension CapturedStill: UIGestureRecognizerDelegate {
     
     func handleTap() {

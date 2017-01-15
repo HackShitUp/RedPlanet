@@ -112,7 +112,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
     }
     
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -156,7 +155,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         
     }
     
-    
     // Function to Play & Pause
     func control() {
         if self.player.playbackState == .paused {
@@ -174,7 +172,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
             }
-            
         } else if self.player.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
             // VOLUME ON
             self.player.muted = false
@@ -218,16 +215,20 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.view.bringSubview(toFront: self.exitButton)
         self.view.bringSubview(toFront: self.continueButton)
         self.view.bringSubview(toFront: self.muteButton)
-        // Add shadows
-        self.muteButton.layer.shadowColor = UIColor.black.cgColor
-        self.muteButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.muteButton.layer.shadowRadius = 5
-        self.muteButton.layer.shadowOpacity = 1.0
-        self.exitButton.layer.shadowColor = UIColor.black.cgColor
-        self.exitButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-        self.exitButton.layer.shadowRadius = 5
-        self.exitButton.layer.shadowOpacity = 1.0
-
+        
+        // Add shadows to buttons
+        let buttons = [self.muteButton,
+                       self.exitButton,
+                       self.continueButton] as [Any]
+        for b in buttons {
+            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+            (b as AnyObject).layer.shadowRadius = 3
+            (b as AnyObject).layer.shadowOpacity = 0.5
+        }
+        
+        
+        
     }
     
     

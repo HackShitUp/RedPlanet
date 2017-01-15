@@ -758,9 +758,9 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                        self.time] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 5, height: 5)
-            (b as AnyObject).layer.shadowRadius = 5
-            (b as AnyObject).layer.shadowOpacity = 1.0
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+            (b as AnyObject).layer.shadowRadius = 3
+            (b as AnyObject).layer.shadowOpacity = 0.5
         }
         
         
@@ -769,9 +769,9 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             // Show button
             self.moreButton.isHidden = false
             self.moreButton.layer.shadowColor = UIColor.black.cgColor
-            self.moreButton.layer.shadowOffset = CGSize(width: 5, height: 5)
-            self.moreButton.layer.shadowRadius = 5
-            self.moreButton.layer.shadowOpacity = 1.0
+            self.moreButton.layer.shadowOffset = CGSize(width: 1, height: 1)
+            self.moreButton.layer.shadowRadius = 3
+            self.moreButton.layer.shadowOpacity = 0.5
         } else {
             // Hide button
             self.moreButton.isHidden = true

@@ -184,10 +184,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.view.addGestureRecognizer(leaveSwipe)
         
         // Bring buttons to front
-        self.view.bringSubview(toFront: self.captureButton)
-        self.view.bringSubview(toFront: self.flashButton)
-        self.view.bringSubview(toFront: self.swapCameraButton)
-        self.view.bringSubview(toFront: self.leaveButton)
+        let buttons = [self.captureButton,
+                       self.flashButton,
+                       self.swapCameraButton,
+                       self.leaveButton] as [Any]
+        for b in buttons {
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+        }
     }
 
     override func didReceiveMemoryWarning() {

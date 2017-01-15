@@ -30,7 +30,6 @@ open class SNSticker: UIImageView {
 }
 
 // MARK : - NSCopying protocol 
-
 extension SNSticker: NSCopying {
     
     public func copy(with zone: NSZone?) -> Any {

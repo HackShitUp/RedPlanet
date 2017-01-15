@@ -19,7 +19,6 @@ open class SNSlider: UIView {
     open weak var dataSource:SNSliderDataSource?
     
     public override init(frame: CGRect) {
-        
         numberOfPages = 3
         startingIndex = 0
         slider = UIScrollView(frame: frame)
