@@ -49,7 +49,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         itmObject.removeLast()
         
         // Pop VC
-        _ = self.navigationController?.popViewController(animated: true)
+        DispatchQueue.main.async {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     

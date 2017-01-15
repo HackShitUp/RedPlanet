@@ -96,7 +96,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     // leave vc
     func dismissVC() {
-        _ = self.navigationController?.popViewController(animated: true)
+        // Pop VC
+        DispatchQueue.main.async {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     
@@ -118,6 +121,17 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Hide navigation bar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.view.isUserInteractionEnabled = false
+        
         // MARK: - SwiftyCam
         // Set delegate for camera view
         cameraDelegate = self
@@ -133,19 +147,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         allowBackgroundAudio = true
         // Add boost
         lowLightBoost = true
-
-        
-        // Hide navigation bar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
         
         // Set bool
         isRearCam = true
+        
+        print("IS: \(isSessionRunning)")
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
@@ -191,6 +197,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         for b in buttons {
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
+        
+        self.view.isUserInteractionEnabled = true
     }
 
     override func didReceiveMemoryWarning() {

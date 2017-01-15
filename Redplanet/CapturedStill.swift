@@ -358,7 +358,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mm a"
         let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        time.font = UIFont(name: "AvenirNext-Demibold", size: 70)
+        time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
         time.textColor = UIColor.white
         time.layer.shadowColor = UIColor.black.cgColor
         time.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -373,7 +373,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
         // Add filter
         self.data = SNFilter.generateFilters(SNFilter(frame: self.slider.frame, withImage: image), filters: SNFilter.filterNameList)
-        self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: img!, atZPosition: 2))
+        self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: img!, atZPosition: 0))
+        self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "HardLight")!, atZPosition: 2))
+        self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "Cotton")!, atZPosition: 2))
     }
     
     fileprivate func updatePicture(_ newImage: UIImage) {

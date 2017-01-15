@@ -84,7 +84,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             DispatchQueue.main.async(execute: {
                 // Push VC
                 let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-                self.navigationController!.pushViewController(cameraVC, animated: true)
+                self.navigationController!.pushViewController(cameraVC, animated: false)
             })
             
             
@@ -94,7 +94,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     // User granted camera access
                     DispatchQueue.main.async(execute: {
                         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-                        self.navigationController!.pushViewController(cameraVC, animated: true)
+                        self.navigationController!.pushViewController(cameraVC, animated: false)
                     })
                     
                 } else {
