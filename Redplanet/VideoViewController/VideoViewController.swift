@@ -152,6 +152,10 @@ open class VideoViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+
+        
         if autoplays {
             play()
         }
@@ -172,7 +176,6 @@ open class VideoViewController: UIViewController {
     }
 
     // MARK: - Methods
-    
     /// Resumes playback
     open func play() {
         player.play()

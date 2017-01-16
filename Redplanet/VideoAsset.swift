@@ -171,6 +171,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -319,7 +321,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         cell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
         cell.videoPreview.layer.borderWidth = 3.50
         cell.videoPreview.clipsToBounds = true
-        
         
         // Layout caption views
         cell.caption.layoutIfNeeded()
