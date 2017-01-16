@@ -551,7 +551,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     dateFormatter.dateFormat = "E"
                     let timeFormatter = DateFormatter()
                     timeFormatter.dateFormat = "h:mm a"
-                    self.time.text = "\(dateFormatter.string(from: object.createdAt!)), \(timeFormatter.string(from: object.createdAt!))"
+                    self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
                     
                     
                     // (4) Fetch likes
@@ -664,13 +664,15 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     }
     
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        // Hide status bar
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+        // Hide navigationBar and tab bar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Show the user what to do!
         let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
@@ -712,12 +714,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         
         // Fetch data
         fetchContent()
-        
-        // Hide navigationBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: momentVideoNotification, object: nil)
@@ -777,6 +773,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             self.moreButton.isHidden = true
         }
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {

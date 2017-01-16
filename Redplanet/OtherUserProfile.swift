@@ -316,7 +316,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     
                     if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.hour! <= 24 {
+                        if difference.hour! < 24 {
                             self.contentObjects.append(object)
                         } else {
                             self.skipped.append(object)

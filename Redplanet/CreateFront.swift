@@ -263,17 +263,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         if index == 0 {
             // PHOTO LIBRARY
-            // Load photo library
             photosAuthorization()
 
         } else if index == 1 {
             // CAMERA
-            // Access Camera
             cameraAuthorization()
             
         } else {
             // NEW TEXT POST
-            // Create new text post
             newTextPost()
         }
     }
@@ -313,9 +310,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Function to stylize and set title of navigation bar
     func newConfig() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+//                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -389,23 +387,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
-        
         // Give tableView rounded corners
         self.tableView!.layer.cornerRadius = 10.00
         self.tableView!.layer.borderColor = UIColor.white.cgColor
         self.tableView!.layer.borderWidth = 0.75
         self.tableView!.clipsToBounds = true
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // query Notifications
-        queryNotifications()
-
-        // Stylize title
-        configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -417,8 +403,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Query notifications
         queryNotifications()
     }
-    
-    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -426,10 +410,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     
-    
     // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if myActivity.count == 0 {
             return true

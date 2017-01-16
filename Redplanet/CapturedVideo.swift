@@ -112,12 +112,13 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Hide statusBar
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
         
         // Compress Video berfore viewDidLoad()
         let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
@@ -154,6 +155,14 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
         
     }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     
     // Function to Play & Pause
     func control() {

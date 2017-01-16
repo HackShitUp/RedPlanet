@@ -23,10 +23,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
-    @IBOutlet weak var leaveButton: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var libraryButton: UIButton!
-    @IBOutlet weak var newTextPostButton: UIButton!
+    @IBOutlet weak var newTextButton: UIButton!
     @IBOutlet weak var homeButton: UIButton!
 
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
@@ -38,9 +37,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-        
-        print("FIRED: \(isVideoRecording)")
+
         DispatchQueue.main.async {
+            self.libraryButton.isHidden = true
+            self.homeButton.isHidden = true
+            self.newTextButton.isHidden = true
             self.progressView.setProgress(0, animated: false)
             self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)
@@ -61,7 +62,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-        // Remove progress
+        self.libraryButton.isHidden = false
+        self.homeButton.isHidden = false
+        self.newTextButton.isHidden = false
         self.progressView.isHidden = true
     }
     
@@ -89,17 +92,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         }
     }
     
-    
-    
-    // leave vc
-    func dismissVC() {
-        // Pop VC
-        DispatchQueue.main.async {
-            _ = self.navigationController?.popViewController(animated: false)
-        }
-    }
-    
-    
     // Function to toggle flash
     func toggleFlash(sender: Any) {
         flashEnabled = !flashEnabled
@@ -111,23 +103,53 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         }
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
+    // Leave VC
+    func dismissVC() {
+        DispatchQueue.main.async {
+            let shareTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
+            shareTab.selectedIndex = 2
+            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            UIApplication.shared.keyWindow?.rootViewController = shareTab
+        }
     }
     
+    // Push to Library
+    func showLibrary() {
+        // Push to library
+        let library = self.storyboard?.instantiateViewController(withIdentifier: "photoLibraryVC") as! Library
+        self.navigationController!.pushViewController(library, animated: true)
+    }
+    
+    // Push to New Text Post
+    func newTP() {
+        // Load New TextPost
+        let newTP = self.storyboard?.instantiateViewController(withIdentifier: "newTextPost") as! NewTextPost
+        self.navigationController?.pushViewController(newTP, animated: true)
+    }
+    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide navigation bar
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Disable View
+        // Disable View and buttons
         self.view.isUserInteractionEnabled = false
+        self.libraryButton.isEnabled = false
+        self.homeButton.isEnabled = false
+        self.newTextButton.isEnabled = false
         
         // MARK: - SwiftyCam
         // Set delegate for camera view
@@ -175,17 +197,28 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         // Tap to leave
         let leaveTap = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
         leaveTap.numberOfTapsRequired = 1
-        self.leaveButton.isUserInteractionEnabled = true
-        self.leaveButton.addGestureRecognizer(leaveTap)
+        self.homeButton.isUserInteractionEnabled = true
+        self.homeButton.addGestureRecognizer(leaveTap)
+        
+        // Tap to go to library
+        let libTap = UITapGestureRecognizer(target: self, action: #selector(showLibrary))
+        libTap.numberOfTapsRequired = 1
+        self.libraryButton.isUserInteractionEnabled = true
+        self.libraryButton.addGestureRecognizer(libTap)
+        
+        // Tap to crete new text post
+        let tpTap = UITapGestureRecognizer(target: self, action: #selector(newTP))
+        tpTap.numberOfTapsRequired = 1
+        self.newTextButton.isUserInteractionEnabled = true
+        self.newTextButton.addGestureRecognizer(tpTap)
         
         // Bring buttons to front
         let buttons = [self.captureButton,
                        self.flashButton,
                        self.swapCameraButton,
-                       self.leaveButton,
                        self.libraryButton,
-                       self.newTextPostButton,
-                       self.homeButton]as [Any]
+                       self.homeButton,
+                       self.newTextButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -196,6 +229,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         
         // Enable view
         self.view.isUserInteractionEnabled = true
+        self.homeButton.isEnabled = true
+        self.libraryButton.isEnabled = true
+        self.homeButton.isEnabled = true
+        self.newTextButton.isEnabled = true
     }
 
     override func didReceiveMemoryWarning() {

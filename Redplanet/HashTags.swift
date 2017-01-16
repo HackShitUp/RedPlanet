@@ -446,7 +446,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
             // Make Vide Preview Circular
             cell.photoAsset.layer.cornerRadius = cell.photoAsset.frame.size.width/2
-            cell.photoAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+            cell.photoAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
             cell.photoAsset.layer.borderWidth = 3.50
             cell.photoAsset.clipsToBounds = true
             

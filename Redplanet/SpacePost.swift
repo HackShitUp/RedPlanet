@@ -443,7 +443,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             // (A) Configure video preview
             cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-            cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+            cell.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
             cell.mediaAsset.layer.borderWidth = 3.50
             cell.mediaAsset.clipsToBounds = true
             

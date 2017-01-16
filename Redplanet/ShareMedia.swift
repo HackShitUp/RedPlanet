@@ -203,29 +203,22 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             }
             
         }
+        
+        
+        // * Show navigation bar and tab bar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // * Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
         
         // Hide tableView on load
         self.tableView!.isHidden = true
         self.tableView!.allowsSelection = true
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-        
         
         // Set placeholder depending on media type
         if mediaType == "photo" {
@@ -332,7 +325,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        configureView()
     }
     
     
@@ -340,32 +333,15 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         super.viewWillDisappear(animated)
         
         // Post notification
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+//        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Hide tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-//        // Hide save button
-//        if mediaType == "photo" {
-//            self.saveButton.isHidden = false
-//        } else {
-//            self.saveButton.isHidden = true
-//        }
-    }
-    
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
+
     
     
     // Function to save photo

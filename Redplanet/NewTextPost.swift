@@ -23,8 +23,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     var userObjects = [PFObject]()
     
     @IBAction func backButton(_ sender: AnyObject) {
-        // Pop VC
-        _ = self.navigationController?.popViewController(animated: true)
+        // Push to camera
+        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
+        self.navigationController?.pushViewController(cameraVC, animated: false)
     }
     
     @IBAction func moreButton(_ sender: Any) {
@@ -229,6 +230,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "New Text Post"
         }
+        
+        // Show tab bar
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     
@@ -421,9 +425,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Stylize title
         configureView()
         
-        // Set textView to first responder
-        self.textView!.becomeFirstResponder()
-        
         // Hide tableView
         self.tableView!.isHidden = true
         // Set Tableview properties
@@ -457,12 +458,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         privateShare.numberOfTapsRequired = 1
 //        self.directButton.isUserInteractionEnabled = true
 //        self.directButton.addGestureRecognizer(privateShare)
-        
-        // Back swipe implementation
-        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
-        backSwipe.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
 

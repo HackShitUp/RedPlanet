@@ -137,8 +137,5 @@ extension Timeline: EZSwipeControllerDataSource {
         
         return self.navigationController!.navigationBar
     }
-
-    
-    
     
 }

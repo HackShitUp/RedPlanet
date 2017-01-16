@@ -28,8 +28,9 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
     var imagePicker: UIImagePickerController!
     
     @IBAction func backButton(_ sender: Any) {
-        // Pop VC
-        _ = self.navigationController?.popViewController(animated: true)
+        // Push to camera
+        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
+        self.navigationController?.pushViewController(cameraVC, animated: false)
     }
     
     
@@ -109,19 +110,21 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Library"
+            self.title = "Photos & Videos"
         }
+        
+        // Show tab bar and navigation bar and configure nav bar
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Hide TabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
 
         // Stylize title
         configureView()
@@ -149,16 +152,15 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
             .menuHeight(self.navigationController!.navigationBar.frame.size.height),
-            .selectionIndicatorColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)),
+            .selectionIndicatorColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
-            .selectedMenuItemLabelColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)),
+            .selectedMenuItemLabelColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)),
             .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.00)!),
             .unselectedMenuItemLabelColor(UIColor.black)
         ]
         
         // Initialize page menu with controller array, frame, and optional parameters
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: 0.00, width: self.view.frame.width, height: self.view.frame.height), pageMenuOptions: parameters)
-        
         
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired
@@ -168,15 +170,7 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Stylize title
         configureView()
-        
-        // Hide TabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Show navigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
 

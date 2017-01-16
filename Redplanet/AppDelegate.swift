@@ -37,21 +37,22 @@
 
 
 /*
- C O L O R S
  
 YELLOW:
 UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
  
 RED:
-UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+• UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+• #FF0050
 
-#FF0050
- 
-GRAY:
-UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
- 
+PURPLE
+• UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+• #BD0FE1
+
 BLUE:
-UIColor(red:0.00, green:0.76, blue:1.00, alpha:1.0)
+• UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+• #00A1FF
+ 
 
  
  F R A M E W O R K S    T O     L O O K     A T

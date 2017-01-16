@@ -309,7 +309,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
         // LayoutViews
         cell.videoPreview.layoutIfNeeded()
         cell.videoPreview.layoutSubviews()
@@ -317,7 +316,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Make Vide Preview Circular
         cell.videoPreview.layer.cornerRadius = cell.videoPreview.frame.size.width/2
-        cell.videoPreview.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+        cell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
         cell.videoPreview.layer.borderWidth = 3.50
         cell.videoPreview.clipsToBounds = true
         

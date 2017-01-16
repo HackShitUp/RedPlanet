@@ -195,7 +195,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     dateFormatter.dateFormat = "E"
                     let timeFormatter = DateFormatter()
                     timeFormatter.dateFormat = "h:mm a"
-                    self.time.text = "\(dateFormatter.string(from: object.createdAt!)), \(timeFormatter.string(from: object.createdAt!))"
+                    self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
                     
                     
                     // (4) Fetch likes
@@ -678,11 +678,17 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.present(activityVC, animated: true, completion: nil)
     }
     
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     
+        // Hide statusBar
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+        
+        // Hide navigationBar and tab bar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Show the user what to do!
         let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
@@ -724,12 +730,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
 
         // Fetch data
         fetchContent()
-        
-        // Hide navigationBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
@@ -838,6 +838,12 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
     }
 
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

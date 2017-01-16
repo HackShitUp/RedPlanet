@@ -542,7 +542,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             if content["contentType"] as! String == "vi" {
                 // (A) Stylize video preview
                 cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-                cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                cell.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                 cell.mediaAsset.layer.borderWidth = 3.50
                 cell.mediaAsset.contentMode = .scaleAspectFill
                 cell.mediaAsset.isHidden = false
@@ -615,7 +615,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     
                     // (A) Stylize video preview
                     cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
-                    cell.mediaAsset.layer.borderColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0).cgColor
+                    cell.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                     cell.mediaAsset.layer.borderWidth = 3.50
                     cell.mediaAsset.contentMode = .scaleAspectFill
                     cell.mediaAsset.isHidden = false
