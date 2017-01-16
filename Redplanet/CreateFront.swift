@@ -33,10 +33,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Array to hold fromUser Objects
     var fromUsers = [PFObject]()
     
-    
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-    
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -46,11 +44,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Initialize IGCMenu and UIButton
     let igcMenu = IGCMenu()
     let menuButton = UIButton()
+    // Toggle 
+    private var igcOn: Bool? = true
     
-    
-    // Page size
+    // Page size for pipeline method
     var page: Int = 25
-    
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -244,12 +242,19 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
             
-            // Change the font and size of nav bar text
-            newConfig()
-            
-            // Show Grid Menu
-            igcMenu.showGridMenu()
+            if igcOn == true {
+                igcOn = false
+                configureView()
+                igcMenu.hideCircularMenu()
+            } else {
+                igcOn = true
+                newConfig()
+                igcMenu.showCircularMenu()
+            }
         }
+        
+        
+        
     }
 
     
@@ -266,18 +271,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // Access Camera
             cameraAuthorization()
             
-        } else if index == 2{
+        } else {
             // NEW TEXT POST
             // Create new text post
             newTextPost()
-            
-        } else {
-            // X
-            // Configure view
-            configureView()
-            
-            // Hide menu
-            igcMenu.hideGridMenu()
         }
     }
     
@@ -333,7 +330,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     
@@ -374,22 +371,18 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // MARK: - IGCMenuDataSource and Delegates
         menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
-        menuButton.backgroundColor = UIColor.white
-        menuButton.layer.cornerRadius = self.menuButton.frame.size.width/2
         menuButton.clipsToBounds = true
         igcMenu.menuButton = self.menuButton
         igcMenu.menuSuperView = self.view!
-        self.view!.bringSubview(toFront: menuButton)
+        self.view!.bringSubview(toFront: self.menuButton)
         igcMenu.disableBackground = true
-        igcMenu.numberOfMenuItem = 4
+        igcMenu.numberOfMenuItem = 3
         igcMenu.delegate = self
-        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText", "igcExit"]
-        igcMenu.showGridMenu()
-
+        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText"]
+        igcMenu.showCircularMenu()
         
         // Set initial query
         self.queryNotifications()
-        
 
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -485,7 +478,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         // Show Grid Menu
-        igcMenu.showGridMenu()
+        igcMenu.showCircularMenu()
     }
     
     

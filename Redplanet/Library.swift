@@ -149,10 +149,8 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
             .menuHeight(self.navigationController!.navigationBar.frame.size.height),
-//            .selectionIndicatorColor(UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)),
             .selectionIndicatorColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
-//            .selectedMenuItemLabelColor(UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)),
             .selectedMenuItemLabelColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)),
             .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.00)!),
             .unselectedMenuItemLabelColor(UIColor.black)

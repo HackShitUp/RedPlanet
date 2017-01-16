@@ -5,14 +5,7 @@
 //  Created by Goktug Yilmaz on 24/10/15.
 //  Copyright © 2015 Goktug Yilmaz. All rights reserved.
 //
-
-
 import UIKit
-import CoreData
-
-import Parse
-import ParseUI
-import Bolts
 
 @objc public protocol EZSwipeControllerDataSource {
     func viewControllerData() -> [UIViewController]
@@ -168,7 +161,7 @@ open class EZSwipeController: UIViewController {
     }
 
     private func setupPageViewController() {
-        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+        pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageViewController.dataSource = self
         pageViewController.delegate = self
         pageViewController.setViewControllers([stackPageVC[stackStartLocation]], direction: .forward, animated: true, completion: nil)
@@ -279,23 +272,6 @@ extension EZSwipeController: UIPageViewControllerDataSource {
         if viewController == stackPageVC.first {
             return nil
         }
-        
-        
-        
-        print("\n***\nBefore Timeline Objects:\n\(timelineObjects[stackPageVC.index(of: viewController)! - 1])\n***\n")
-        otherObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1].value(forKey: "byUser") as! PFUser)
-        otherName.append(timelineObjects[stackPageVC.index(of: viewController)! - 1].value(forKey: "username") as! String)
-        textPostObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        photoAssetObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        proPicObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        sharedObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        spaceObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        itmObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        videoObject.append(timelineObjects[stackPageVC.index(of: viewController)! - 1])
-        
-        print("***\nBEFORE STACK PAGE VC:\n\(stackPageVC[stackPageVC.index(of: viewController)! - 1])\n***\n")
-        
-        
         return stackPageVC[stackPageVC.index(of: viewController)! - 1]
     }
 
@@ -303,33 +279,8 @@ extension EZSwipeController: UIPageViewControllerDataSource {
         if viewController == stackPageVC.last {
             return nil
         }
-        
-        print("\n***After Timeline Objects:\n\(timelineObjects[stackPageVC.index(of: viewController)! + 1])\n***\n")
-        otherObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1].value(forKey: "byUser") as! PFUser)
-        otherName.append(timelineObjects[stackPageVC.index(of: viewController)! + 1].value(forKey: "username") as! String)
-        textPostObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        photoAssetObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        proPicObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        sharedObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        spaceObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        itmObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        videoObject.append(timelineObjects[stackPageVC.index(of: viewController)! + 1])
-        
-        print("***\nAFTER STACK PAGE VC:\n\(stackPageVC[stackPageVC.index(of: viewController)! + 1])\n***\n")
-
-        
         return stackPageVC[stackPageVC.index(of: viewController)! + 1]
     }
-    
-    
-    public func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return stackPageVC.count
-    }
-    
-    
-//    public func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-//        return 0
-//    }
 }
 
 extension EZSwipeController: UIPageViewControllerDelegate {

@@ -12,7 +12,6 @@
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
 		7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E31DB981E3003011FA /* FriendsCell.swift */; };
 		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
-		7E26EC081E18661300EFB7BC /* EZSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26EC071E18661300EFB7BC /* EZSwipeController.swift */; };
 		7E26EC101E188D7D00EFB7BC /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */; };
 		7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4021E25A78A0071B052 /* SNButton.swift */; };
 		7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4031E25A78A0071B052 /* SNFilter.swift */; };
@@ -124,6 +123,7 @@
 		7EA913221E25CD510046F940 /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA913211E25CD510046F940 /* MomentVideo.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EAF3C111E2C479B0094A5CC /* EZSwipeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAF3C101E2C479B0094A5CC /* EZSwipeController.swift */; };
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
 		7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
@@ -222,7 +222,6 @@
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E2235E31DB981E3003011FA /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
-		7E26EC071E18661300EFB7BC /* EZSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EZSwipeController.swift; sourceTree = "<group>"; };
 		7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		7E2CA4021E25A78A0071B052 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
 		7E2CA4031E25A78A0071B052 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
@@ -384,6 +383,7 @@
 		7EA913211E25CD510046F940 /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EAF3C101E2C479B0094A5CC /* EZSwipeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EZSwipeController.swift; sourceTree = "<group>"; };
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
 		7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharesCell.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
@@ -1114,7 +1114,7 @@
 			children = (
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
-				7E26EC071E18661300EFB7BC /* EZSwipeController.swift */,
+				7EAF3C101E2C479B0094A5CC /* EZSwipeController.swift */,
 				7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
@@ -1783,6 +1783,7 @@
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
+				7EAF3C111E2C479B0094A5CC /* EZSwipeController.swift in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
@@ -1825,7 +1826,6 @@
 				7EC5D1AD1DB359C500437219 /* OtherUserHeader.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,
 				7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */,
-				7E26EC081E18661300EFB7BC /* EZSwipeController.swift in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
@@ -2075,12 +2075,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
@@ -2092,12 +2094,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Redplanet-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};

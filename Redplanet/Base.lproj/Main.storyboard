@@ -1950,7 +1950,7 @@
         <scene sceneID="Irh-Ha-wyN">
             <objects>
                 <collectionViewController storyboardIdentifier="otherUser" id="pAM-pw-2Gi" customClass="OtherUserProfile" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="5zo-QR-1NR">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="5zo-QR-1NR">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4524,6 +4524,21 @@
                                 </constraints>
                                 <state key="normal" image="Exit"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MQm-L7-0tx">
+                                <rect key="frame" x="16" y="617" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="igcPhotos"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ED-Xk-6kr">
+                                <rect key="frame" x="329" y="617" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="igcText"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nia-WD-2bb">
+                                <rect key="frame" x="172" y="617" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="SCRP"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -4545,14 +4560,17 @@
                     <connections>
                         <outlet property="captureButton" destination="o4Q-Hr-vWy" id="kqf-EE-KwG"/>
                         <outlet property="flashButton" destination="GJn-fd-qj5" id="PNx-lv-gZ3"/>
+                        <outlet property="homeButton" destination="Nia-WD-2bb" id="Kxi-U9-1BP"/>
                         <outlet property="leaveButton" destination="BsB-Zl-vD9" id="lHU-Ie-NyV"/>
+                        <outlet property="libraryButton" destination="MQm-L7-0tx" id="gDv-YP-Bn9"/>
+                        <outlet property="newTextPostButton" destination="1ED-Xk-6kr" id="zYn-Um-37U"/>
                         <outlet property="progressView" destination="fb5-iK-SQO" id="0hl-2U-PJ8"/>
                         <outlet property="swapCameraButton" destination="Idk-dT-jjl" id="ztr-Td-muD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="szv-if-FaN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4589" y="-369"/>
+            <point key="canvasLocation" x="6070" y="-1155"/>
         </scene>
         <!--Captured Video-->
         <scene sceneID="uP5-G4-C7q">
@@ -5623,7 +5641,7 @@
         <scene sceneID="Lr6-tm-68h">
             <objects>
                 <collectionViewController id="2tP-pp-hZo" customClass="MyProfile" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="dpe-ay-7Z5">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dpe-ay-7Z5">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -7490,6 +7508,8 @@
         <image name="WhiteLike" width="50" height="50"/>
         <image name="WhiteRedo" width="50" height="50"/>
         <image name="iOS Photos-Grey" width="25" height="25"/>
+        <image name="igcPhotos" width="256" height="256"/>
+        <image name="igcText" width="256" height="256"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

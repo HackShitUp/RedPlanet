@@ -25,6 +25,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var leaveButton: UIButton!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var libraryButton: UIButton!
+    @IBOutlet weak var newTextPostButton: UIButton!
+    @IBOutlet weak var homeButton: UIButton!
 
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         DispatchQueue.main.async {
@@ -179,8 +182,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         let buttons = [self.captureButton,
                        self.flashButton,
                        self.swapCameraButton,
-                       self.leaveButton] as [Any]
+                       self.leaveButton,
+                       self.libraryButton,
+                       self.newTextPostButton,
+                       self.homeButton]as [Any]
         for b in buttons {
+            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+            (b as AnyObject).layer.shadowRadius = 3
+            (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
         

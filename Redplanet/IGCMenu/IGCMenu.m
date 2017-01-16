@@ -103,8 +103,14 @@
         [self.menuSuperView insertSubview:pMenuButtonSuperView belowSubview:self.menuButton];
     if (self.disableBackground) {
         pMenuButtonSuperView.userInteractionEnabled = YES;
-//        pMenuButtonSuperView.layer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.95].CGColor;
+        // Add tap method to dismiss buttons
+        UITapGestureRecognizer *dismissTap =
+        [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                action:@selector(hideCircularMenu)];
+        [self.menuSuperView addGestureRecognizer: dismissTap];
+//        pMenuButtonSuperView.layer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent: 0.95].CGColor;
         pMenuButtonSuperView.layer.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent: 0.90].CGColor;
+        
     } else{
         pMenuButtonSuperView.userInteractionEnabled = NO;
         pMenuButtonSuperView.layer.backgroundColor = [UIColor clearColor].CGColor;
@@ -122,7 +128,7 @@
     
     for (int  i = 1; i < menuButtonArray.count * 2; i=i+2) {
         
-        CGFloat angle = M_PI / (menuButtonArray.count * 2);
+        CGFloat angle = M_PI/(menuButtonArray.count * 2);
         [UIView animateWithDuration:ANIMATION_DURATION delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             pMenuButtonSuperView.layer.opacity = 1.0;
             UIButton * menuButton = (UIButton *)[menuButtonArray objectAtIndex:i/2];
@@ -131,7 +137,7 @@
             if (menuNameLabelArray.count > (i/2)) {
                 UILabel *menuNameLabel = (UILabel *)[menuNameLabelArray objectAtIndex:i/2];
                 menuNameLabel.layer.opacity = 1.0;
-                menuNameLabel.center = CGPointMake(menuButton.center.x, menuButton.frame.origin.y + menuButton.frame.size.height  + (menuNameLabel.frame.size.height / 2) + 5);
+                menuNameLabel.center = CGPointMake(menuButton.center.x, menuButton.frame.origin.y + menuButton.frame.size.height  + (menuNameLabel.frame.size.height/2) + 5);
             }
         }completion:nil];
     }
