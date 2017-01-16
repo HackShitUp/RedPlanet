@@ -18,7 +18,7 @@ PODS:
     - Parse (~> 1.9)
   - SimpleAlert (2.0.1)
   - SVProgressHUD (2.1.2)
-  - SwiftyCam (2.0.0)
+  - SwiftyCam (2.1.0)
 
 DEPENDENCIES:
   - Bolts
@@ -46,7 +46,7 @@ SPEC CHECKSUMS:
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SimpleAlert: 383d1197df2e7b70b9bef5771f3632979c1aadae
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftyCam: a09c761fa1e7e204fd2790d38396264192123f90
+  SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
 
 PODFILE CHECKSUM: a5fbaccb5f3b884c55cd1937045d59100da6f5ca
 

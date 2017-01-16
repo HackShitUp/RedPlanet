@@ -146,6 +146,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let share = AlertAction(title: "Share Via",
                                   style: .default,
                                   handler: { (AlertAction) in
+                                    let imageToShare = [self.itmMedia.image!]
+                                    let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+                                    activityViewController.popoverPresentationController?.sourceView = self.view
+                                    self.present(activityViewController, animated: true, completion: nil)
+
         })
         
         let cancel = AlertAction(title: "Cancel",
@@ -659,15 +664,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         options.view.tintColor = UIColor.black
         self.present(options, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    
     
     // Save or share the photo
     func saveShare(sender: UILongPressGestureRecognizer) {

@@ -66,6 +66,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.homeButton.isHidden = false
         self.newTextButton.isHidden = false
         self.progressView.isHidden = true
+        timer?.invalidate()
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
@@ -106,10 +107,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     // Leave VC
     func dismissVC() {
         DispatchQueue.main.async {
-            let shareTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            shareTab.selectedIndex = 2
-            UIApplication.shared.keyWindow?.makeKeyAndVisible()
-            UIApplication.shared.keyWindow?.rootViewController = shareTab
+            if chatCamera == true {
+                _ = self.navigationController?.popViewController(animated: true)
+            } else {
+                let shareTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
+                shareTab.selectedIndex = 2
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                UIApplication.shared.keyWindow?.rootViewController = shareTab
+            }
         }
     }
     
@@ -178,7 +183,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         
         // Hold button to take record video
         let holdRecord = UILongPressGestureRecognizer(target: self, action: #selector(startVideoRecording))
-        holdRecord.minimumPressDuration = 10.00
+        holdRecord.minimumPressDuration = 1.50
         self.captureButton.isUserInteractionEnabled = true
         self.captureButton.addGestureRecognizer(holdRecord)
         

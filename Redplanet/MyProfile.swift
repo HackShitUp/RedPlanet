@@ -109,15 +109,16 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     
-                    if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.hour! <= 24 {
-                            self.myContentObjects.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
-                        self.myContentObjects.append(object)
-                    }
+//                    if object.value(forKey: "contentType") as! String == "itm" {
+//                        if difference.hour! <= 24 {
+//                            self.myContentObjects.append(object)
+//                        } else {
+//                            self.skipped.append(object)
+//                        }
+//                    } else {
+//                        self.myContentObjects.append(object)
+//                    }
+                    self.myContentObjects.append(object)
                 }
             } else {
                 print(error?.localizedDescription as Any)

@@ -290,13 +290,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         return true
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Hide enavigation bar
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

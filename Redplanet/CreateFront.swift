@@ -41,11 +41,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     
     // MARK: - IGCMenu
-    // Initialize IGCMenu and UIButton
+    // Initialize IGCMenu, menuButton, and toggle
     let igcMenu = IGCMenu()
     let menuButton = UIButton()
-    // Toggle 
-    private var igcOn: Bool? = true
+    var igcOn: Bool? = true
     
     // Page size for pipeline method
     var page: Int = 25

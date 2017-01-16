@@ -231,7 +231,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             self.title = "New Text Post"
         }
         
-        // Show tab bar
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     

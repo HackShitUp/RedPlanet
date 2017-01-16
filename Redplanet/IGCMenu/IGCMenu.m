@@ -103,6 +103,7 @@
         [self.menuSuperView insertSubview:pMenuButtonSuperView belowSubview:self.menuButton];
     if (self.disableBackground) {
         pMenuButtonSuperView.userInteractionEnabled = YES;
+        // Modified:
         // Add tap method to dismiss buttons
         UITapGestureRecognizer *dismissTap =
         [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -110,7 +111,6 @@
         [self.menuSuperView addGestureRecognizer: dismissTap];
 //        pMenuButtonSuperView.layer.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent: 0.95].CGColor;
         pMenuButtonSuperView.layer.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent: 0.90].CGColor;
-        
     } else{
         pMenuButtonSuperView.userInteractionEnabled = NO;
         pMenuButtonSuperView.layer.backgroundColor = [UIColor clearColor].CGColor;
@@ -127,7 +127,6 @@
     //menuButton.center = CGPointMake(homeButtonCenter.x - radius * cos(angle * i), homeButtonCenter.y - radius * sin(angle * i));
     
     for (int  i = 1; i < menuButtonArray.count * 2; i=i+2) {
-        
         CGFloat angle = M_PI/(menuButtonArray.count * 2);
         [UIView animateWithDuration:ANIMATION_DURATION delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             pMenuButtonSuperView.layer.opacity = 1.0;

@@ -10,10 +10,13 @@ import UIKit
 import CoreData
 import AVFoundation
 import AVKit
+import Photos
 
 import Parse
 import ParseUI
 import Bolts
+
+import OneSignal
 
 // Video URL
 var capturedURLS = [URL]()
@@ -33,70 +36,158 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         _ = self.navigationController?.popViewController(animated: false)
     }
     
+    @IBOutlet weak var saveButton: UIButton!
+    @IBAction func saveVideo(_ sender: Any) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: capturedURLS.last!)
+        }) { (saved: Bool, error: Error?) in
+            if saved {
+                
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 0.5) { () -> Void in
+                        
+                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+                    }
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+                        
+                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                    }, completion: nil)
+                }
+                
+            } else {
+                
+            }
+        }
+    }
+    
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func share(_ sender: Any) {
         
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         
-        // Save to Newsfeeds
-        let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["byUser"] = PFUser.current()!
-        newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
-        newsfeeds["contentType"] = "itm"
-        newsfeeds.saveInBackground {
-            (success: Bool, error: Error?) in
-            if error == nil {
-                
-                print("FIRED")
-                
-                // Re-enable buttons
-                self.continueButton.isUserInteractionEnabled = true
-                
-                // Clear array
-                capturedURLS.removeAll(keepingCapacity: false)
-                
-                DispatchQueue.main.async {
-                    // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        // Check if it's for Chats
+        if chatCamera == false {
+            // Save to Newsfeeds
+            let newsfeeds = PFObject(className: "Newsfeeds")
+            newsfeeds["username"] = PFUser.current()!.username!
+            newsfeeds["byUser"] = PFUser.current()!
+            newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+            newsfeeds["contentType"] = "itm"
+            newsfeeds.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
                     
-                    // Push Show MasterTab
-                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                    UIApplication.shared.keyWindow?.rootViewController = masterTab
+                    print("FIRED")
+                    
+                    // Re-enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    // Clear array
+                    capturedURLS.removeAll(keepingCapacity: false)
+                    
+                    DispatchQueue.main.async {
+                        // Send Notification
+                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                        
+                        // Push Show MasterTab
+                        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                        UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                        UIApplication.shared.keyWindow?.rootViewController = masterTab
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Re-enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    // Clear array
+                    capturedURLS.removeAll(keepingCapacity: false)
+                    
+                    DispatchQueue.main.async {
+                        
+                        // Send Notification
+                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                        
+                        // Push Show MasterTab
+                        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                        let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+                        UIApplication.shared.keyWindow?.makeKeyAndVisible()
+                        UIApplication.shared.keyWindow?.rootViewController = masterTab
+                    }
+                    
                 }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-                
-                // Re-enable buttons
-                self.continueButton.isUserInteractionEnabled = true
-                
-                // Clear array
-                capturedURLS.removeAll(keepingCapacity: false)
-                
-                DispatchQueue.main.async {
-                    
-                    // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                    
-                    // Push Show MasterTab
-                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-                    let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                    UIApplication.shared.keyWindow?.rootViewController = masterTab
-                }
-                
             }
-        }
-        
+            
+        } else {
+            // Send Chats
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["read"] = false
+            chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+            chats.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    // Re-enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+                    
+                    // Send Push Notification to user
+                    // Handle optional chaining
+                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                        // Handle optional chaining
+                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                            // MARK: - OneSignal
+                            // Send push notification
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                                ]
+                            )
+                        }
+                    }
+                    
+                    // Make false
+                    chatCamera = false
+                    
+                    // Reload chats
+                    NotificationCenter.default.post(name: rpChat, object: nil)
+                    
+                    // Pop 2 view controllers
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
 
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // Re-enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    // Re-enable buttons
+                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
+                    
+                    // Reload chats
+                    NotificationCenter.default.post(name: rpChat, object: nil)
+                    
+                    // Pop 2 view controllers
+                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+                }
+            })
+        }
     }
 
+    // Compress video
     func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
-        
         let urlAsset = AVURLAsset(url: inputURL, options: nil)
         guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
             handler(nil)
@@ -192,9 +283,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Disable button
-        self.continueButton.isUserInteractionEnabled = false
 
         // MARK: Player
         self.player = Player()
@@ -220,20 +308,17 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.muteButton.isUserInteractionEnabled = true
         self.muteButton.addGestureRecognizer(muteTap)
         
-        // Bring buttons to front
-        self.view.bringSubview(toFront: self.exitButton)
-        self.view.bringSubview(toFront: self.continueButton)
-        self.view.bringSubview(toFront: self.muteButton)
-        
-        // Add shadows to buttons
+        // Add shadows to buttons and bring to front of view
         let buttons = [self.muteButton,
                        self.exitButton,
+                       self.saveButton,
                        self.continueButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
         
         
