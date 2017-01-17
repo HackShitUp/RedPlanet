@@ -144,6 +144,7 @@
 }
 
 - (void)hideCircularMenu{
+    [UIView setAnimationsEnabled:YES];
     [UIView animateWithDuration:ANIMATION_DURATION delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         for (int i = 0; i < menuButtonArray.count; i++) {
             UIButton *menuButton = (UIButton *)[menuButtonArray objectAtIndex:i];
@@ -173,6 +174,7 @@
 }
 
 -(void)showGridMenu{
+    [UIView setAnimationsEnabled:YES];
     [self menuSuperViewBackground];
     if (menuButtonArray.count <= 0) {
         [self createMenuButtons];

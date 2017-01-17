@@ -298,7 +298,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // MARK: - SnapSliderFilters
-        setupSlider()
+//        setupSlider()
     }
     
     
@@ -306,6 +306,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         super.viewDidLoad()
         
         // MARK: - SnapSliderFilters
+        setupSlider()
         setupTextField()
         tapGesture.addTarget(self, action: #selector(handleTap))
         
