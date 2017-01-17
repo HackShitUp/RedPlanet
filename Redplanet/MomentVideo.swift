@@ -9,6 +9,7 @@
 import UIKit
 import UIKit
 import CoreData
+import Photos
 
 import Parse
 import ParseUI
@@ -131,10 +132,29 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let share = AlertAction(title: "Share Via",
-                                style: .default,
-                                handler: { (AlertAction) in
+        let save = AlertAction(title: "Save",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                
+                                if let videoFile = itmObject.last!.value(forKey: "videoAsset") as? PFFile {
+                                    // Traverse video url
+                                    let videoUrl = NSURL(string: videoFile.url!)
+                                    PHPhotoLibrary.shared().performChanges({
+                                        PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: videoUrl as! URL)
+                                    }) { (saved: Bool, error: Error?) in
+                                        if saved {
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    }
+                                }
+                                
         })
+        
+//        let share = AlertAction(title: "Share Via",
+//                                style: .default,
+//                                handler: { (AlertAction) in
+//        })
         
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
@@ -142,7 +162,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         
         
         options.addAction(views)
-        options.addAction(share)
+        options.addAction(save)
+//        options.addAction(share)
         options.addAction(delete)
         options.addAction(cancel)
         options.view.tintColor = UIColor.black

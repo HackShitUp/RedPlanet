@@ -143,22 +143,28 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let share = AlertAction(title: "Share Via",
-                                  style: .default,
-                                  handler: { (AlertAction) in
-                                    let imageToShare = [self.itmMedia.image!]
-                                    let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-                                    activityViewController.popoverPresentationController?.sourceView = self.view
-                                    self.present(activityViewController, animated: true, completion: nil)
-
+        let save = AlertAction(title: "Save",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.view)!, self, nil, nil)
         })
+        
+//        let share = AlertAction(title: "Share Via",
+//                                  style: .default,
+//                                  handler: { (AlertAction) in
+//                                    let imageToShare = [self.itmMedia.image!]
+//                                    let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+//                                    activityViewController.popoverPresentationController?.sourceView = self.view
+//                                    self.present(activityViewController, animated: true, completion: nil)
+//        })
         
         let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         
         options.addAction(views)
-        options.addAction(share)
+        options.addAction(save)
+//        options.addAction(share)
         options.addAction(delete)
         options.addAction(cancel)
         options.view.tintColor = UIColor.black

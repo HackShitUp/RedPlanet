@@ -43,18 +43,21 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     
     @IBOutlet weak var saveButton: UIButton!
     @IBAction func saveButton(_ sender: Any) {
-        // Save photo
-        UIView.animate(withDuration: 0.5) { () -> Void in
+        DispatchQueue.main.async {
             
-            self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            // Save photo
+            UIView.animate(withDuration: 0.5) { () -> Void in
+                
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+            }
+            
+            UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+                
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+            }, completion: nil)
+            
+            UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
         }
-        
-        UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-            
-            self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-        }, completion: nil)
-        
-        UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
     }
     
     @IBOutlet weak var editButton: UIButton!
@@ -294,13 +297,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // MARK: - SnapSliderFilters
-//        setupSlider()
-    }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

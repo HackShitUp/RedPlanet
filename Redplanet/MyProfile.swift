@@ -418,7 +418,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                 
                 
                 
-                // *************************************************************************************************************************
+                // ************************************************************************************************************
                 // (3) Determine Content Type
                 // (A) Photo
                 if object!["contentType"] as! String == "ph" {
@@ -584,7 +584,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                     cell.iconicPreview.image = UIImage(named: "VideoIcon")
                 }
                 
-                // *************************************************************************************************************************
+                // ***********************************************************************************************************
                 
                 
                 // (E) In the moment
