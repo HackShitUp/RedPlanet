@@ -328,13 +328,15 @@ open class SwiftyCamViewController: UIViewController {
             flashView?.backgroundColor = UIColor.white
             previewLayer.addSubview(flashView!)
 
-            UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
+            UIView.animate(withDuration: 0.20, delay: 0.0, options: .curveEaseInOut, animations: {
+                UIScreen.main.brightness = CGFloat(1.0)
                 self.flashView?.alpha = 1.0
                 
             }, completion: { (_) in
                 self.capturePhotoAsyncronously(completionHandler: { (success) in
                     UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
                         self.flashView?.alpha = 0.0
+                        UIScreen.main.brightness = CGFloat(0.5)
                     }, completion: { (_) in
                         self.flashView?.removeFromSuperview()
                     })
@@ -366,6 +368,7 @@ open class SwiftyCamViewController: UIViewController {
         }
         
         if currentCamera == .front && flashEnabled == true {
+            UIScreen.main.brightness = CGFloat(1)
             flashView = UIView(frame: view.frame)
             flashView?.backgroundColor = UIColor.white
             flashView?.alpha = 0.85
@@ -424,6 +427,7 @@ open class SwiftyCamViewController: UIViewController {
             if currentCamera == .front && flashEnabled == true && flashView != nil {
                 UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
                     self.flashView?.alpha = 0.0
+                    UIScreen.main.brightness = CGFloat(0.5)
                 }, completion: { (_) in
                     self.flashView?.removeFromSuperview()
                 })
