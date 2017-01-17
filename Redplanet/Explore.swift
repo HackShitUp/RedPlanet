@@ -69,10 +69,9 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
                 print("Explore objects: \(self.exploreObjects.count)")
                 
             } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss progress
-                SVProgressHUD.dismiss()
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    SVProgressHUD.dismiss()
+                }
             }
             
             // Reload data
@@ -84,20 +83,16 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
-        
         // Query Public accounts
         // $$$ MONETIZE ON THIS
         queryExplore()
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
         
         // Set collectionView's backgroundColor
         self.collectionView!.backgroundColor = UIColor.white

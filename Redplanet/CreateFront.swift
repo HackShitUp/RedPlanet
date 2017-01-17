@@ -218,10 +218,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 }
                 
             } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    SVProgressHUD.dismiss()
+                }
             }
             
             // Reload Data

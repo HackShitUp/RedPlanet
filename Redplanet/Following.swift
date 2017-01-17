@@ -102,10 +102,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                 }
                 
             } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    SVProgressHUD.dismiss()
+                }
             }
             
             // Reload data

@@ -140,10 +140,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         }
                         
                     } else {
-                        print(error?.localizedDescription as Any)
-                        
-                        // Dismiss
-                        SVProgressHUD.dismiss()
+                        if (error?.localizedDescription.hasSuffix("offline."))! {
+                            SVProgressHUD.dismiss()
+                        }
                     }
                     
                     // Reload data
@@ -152,10 +151,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 
                 
             } else {
-                print(error?.localizedDescription as Any)
-                
-                // Dismiss
-                SVProgressHUD.dismiss()
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    SVProgressHUD.dismiss()
+                }
             }
         })
     }
@@ -188,10 +186,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
-    
-    
 
     
     // MARK: DZNEmptyDataSet Framework
