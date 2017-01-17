@@ -66,11 +66,11 @@ class AboutUsCell: UITableViewCell {
         }
         
         // Handle http: tap
+        // Handle http: tap
         aboutText.urlLinkTapHandler = { label, handle, range in
             // Open url
-//            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
-//            self.delegate?.present(modalWeb, animated: true, completion: nil)
-//            UIApplication.shared.open(handle)
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
         }
 
     }

@@ -286,10 +286,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
     }
 
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -299,19 +295,24 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // MARK: - SnapSliderFilters
+        setupSlider()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add tap method for configuration method
-        setupSlider()
+        // MARK: - SnapSliderFilters
         setupTextField()
-        self.stillPhoto.isUserInteractionEnabled = true
         tapGesture.addTarget(self, action: #selector(handleTap))
         
-        // Bring buttons to front
-        self.view.bringSubview(toFront: self.completeButton)
-        self.view.bringSubview(toFront: self.leaveButton)
+        // Enable UIImageView for SnapSliderFilters
+        self.stillPhoto.isUserInteractionEnabled = true
+        
+        
         // Hide buttons
         self.editButton.isHidden = true
         self.undoButton.isHidden = true
@@ -331,6 +332,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(textField)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

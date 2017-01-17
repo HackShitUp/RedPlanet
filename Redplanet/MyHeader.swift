@@ -238,8 +238,8 @@ class MyHeader: UICollectionReusableView {
         // Handle http: tap
         userBio.urlLinkTapHandler = { label, handle, range in
             // Open url
-//            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
-//            self.delegate?.present(modalWeb, animated: true, completion: nil)
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
         }
         
     }// end awakeFromNib

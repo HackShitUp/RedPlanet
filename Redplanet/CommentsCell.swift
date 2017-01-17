@@ -284,8 +284,8 @@ class CommentsCell: UITableViewCell {
         // Handle http: tap
         comment.urlLinkTapHandler = { label, handle, range in
             // Open url
-//            let modalWeb = SwiftModalWebVC(urlString: handle, theme: .lightBlack)
-//            self.delegate?.present(modalWeb, animated: true, completion: nil)
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
         }
     }
 
