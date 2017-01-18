@@ -122,7 +122,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                             let components : NSCalendar.Unit = .hour
                             let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                             
-                            if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "itm" {
+                            if object.value(forKey: "contentType") as! String == "itm" {
                                 if difference.hour! < 24 {
                                     self.friendsContent.append(object)
                                 } else {
