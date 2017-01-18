@@ -448,7 +448,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     OneSignal.postNotification(
                                         ["contents":
                                             ["en": "\(PFUser.current()!.username!.uppercased()) liked your Moment"],
-                                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"]
+                                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
                                         ]
                                     )
                                 }
@@ -610,7 +612,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) shared your Moment"],
-                                                                         "include_player_ids": ["\(user["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(user["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }

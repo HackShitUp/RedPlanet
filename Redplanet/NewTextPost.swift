@@ -166,7 +166,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                                                     OneSignal.postNotification(
                                                         ["contents":
                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
-                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                         "ios_badgeType": "Increase",
+                                                         "ios_badgeCount": 1
                                                         ]
                                                     )
                                                 }

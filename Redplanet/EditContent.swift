@@ -198,7 +198,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }
@@ -207,7 +209,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }
@@ -216,7 +220,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Profile Photo."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }
@@ -225,7 +231,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                     
@@ -235,7 +243,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Space Post."],
-                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"]
+                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                     

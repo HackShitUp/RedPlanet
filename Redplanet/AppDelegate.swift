@@ -516,7 +516,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 OneSignal.postNotification(
                                                     ["contents":
                                                         ["en": "Write in \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Space to say Happy Birthday!"],
-                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"]
+                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"],
+                                                     "ios_badgeType": "Increase",
+                                                     "ios_badgeCount": 1
                                                     ]
                                                 )
                                                 

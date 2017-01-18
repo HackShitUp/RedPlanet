@@ -161,7 +161,9 @@ class ProfilePhotoCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -311,7 +313,9 @@ class ProfilePhotoCell: UITableViewCell {
                                                                 OneSignal.postNotification(
                                                                     ["contents":
                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) shared your Text Post"],
-                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
                                                                     ]
                                                                 )
                                                             }

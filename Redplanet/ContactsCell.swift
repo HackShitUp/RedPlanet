@@ -81,7 +81,9 @@ class ContactsCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) sent you a friend request"],
-                                     "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -390,7 +392,9 @@ class ContactsCell: UITableViewCell {
                                                                                                     OneSignal.postNotification(
                                                                                                         ["contents":
                                                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
-                                                                                                         "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"]
+                                                                                                         "include_player_ids": ["\(self.friend!.value(forKey: "apnsId") as! String)"],
+                                                                                                         "ios_badgeType": "Increase",
+                                                                                                         "ios_badgeCount": 1
                                                                                                         ]
                                                                                                     )
                                                                                                 }

@@ -183,7 +183,9 @@ class OtherUserHeader: UICollectionReusableView {
                             OneSignal.postNotification(
                                 ["contents":
                                     ["en": "\(PFUser.current()!.username!.uppercased()) asked to be friends"],
-                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                 "ios_badgeType": "Increase",
+                                 "ios_badgeCount": 1
                                 ]
                             )
                         }
@@ -268,7 +270,9 @@ class OtherUserHeader: UICollectionReusableView {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -330,7 +334,9 @@ class OtherUserHeader: UICollectionReusableView {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -695,7 +701,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                             OneSignal.postNotification(
                                                                                                                 ["contents":
                                                                                                                     ["en": "\(PFUser.current()!.username!.uppercased()) sent you a friend request"],
-                                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                                                                 "ios_badgeType": "Increase",
+                                                                                                                 "ios_badgeCount": 1
                                                                                                                 ]
                                                                                                             )
                                                                                                         }
@@ -793,7 +801,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                             OneSignal.postNotification(
                                                                                                 ["contents":
                                                                                                     ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
-                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                                                 "ios_badgeType": "Increase",
+                                                                                                 "ios_badgeCount": 1
                                                                                                 ]
                                                                                             )
                                                                                         }
@@ -852,7 +862,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                             OneSignal.postNotification(
                                                                                                 ["contents":
                                                                                                     ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                                                 "ios_badgeType": "Increase",
+                                                                                                 "ios_badgeCount": 1
                                                                                                 ]
                                                                                             )
                                                                                         }
@@ -1050,7 +1062,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                                                 OneSignal.postNotification(
                                                                                                     ["contents":
                                                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
-                                                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                                                     "ios_badgeType": "Increase",
+                                                                                                     "ios_badgeCount": 1
                                                                                                     ]
                                                                                                 )
                                                                                             }
@@ -1314,7 +1328,9 @@ class OtherUserHeader: UICollectionReusableView {
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
-                                                                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"]
+                                                                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }

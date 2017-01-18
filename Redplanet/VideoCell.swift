@@ -210,7 +210,9 @@ class VideoCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -304,7 +306,9 @@ class VideoCell: UITableViewCell {
                                                                 OneSignal.postNotification(
                                                                     ["contents":
                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) shared your Video"],
-                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
                                                                     ]
                                                                 )
                                                             }

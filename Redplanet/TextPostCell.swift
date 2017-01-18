@@ -126,7 +126,9 @@ class TextPostCell: UITableViewCell {
                                                                 OneSignal.postNotification(
                                                                     ["contents":
                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) shared your Text Post"],
-                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
                                                                     ]
                                                                 )
                                                             }
@@ -335,7 +337,9 @@ class TextPostCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Text Post"],
-                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }

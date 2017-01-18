@@ -201,7 +201,9 @@ class SpacePostCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Space Post"],
-                                     "include_player_ids": ["\(self.toUserObject!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(self.toUserObject!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -325,7 +327,9 @@ class SpacePostCell: UITableViewCell {
                                                                 OneSignal.postNotification(
                                                                     ["contents":
                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) shared your Space Post"],
-                                                                     "include_player_ids": ["\(self.toUserObject!.value(forKey: "apnsId") as! String)"]
+                                                                     "include_player_ids": ["\(self.toUserObject!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
                                                                     ]
                                                                 )
                                                             }

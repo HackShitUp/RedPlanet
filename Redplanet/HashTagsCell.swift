@@ -122,7 +122,9 @@ class HashTagsCell: UITableViewCell {
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) shared your Photo"],
-                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
@@ -132,7 +134,9 @@ class HashTagsCell: UITableViewCell {
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) shared your Video"],
-                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                     
@@ -142,7 +146,9 @@ class HashTagsCell: UITableViewCell {
                                                                     OneSignal.postNotification(
                                                                         ["contents":
                                                                             ["en": "\(PFUser.current()!.username!.uppercased()) shared your Text Post"],
-                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                         "ios_badgeType": "Increase",
+                                                                         "ios_badgeCount": 1
                                                                         ]
                                                                     )
                                                                 }
@@ -352,21 +358,27 @@ class HashTagsCell: UITableViewCell {
                                     OneSignal.postNotification(
                                         ["contents":
                                             ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
                                         ]
                                     )
                                 } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
                                     OneSignal.postNotification(
                                         ["contents":
                                             ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
                                         ]
                                     )
                                 } else {
                                     OneSignal.postNotification(
                                         ["contents":
                                             ["en": "\(PFUser.current()!.username!.uppercased()) liked your Text Post"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"]
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
                                         ]
                                     )
                                 }

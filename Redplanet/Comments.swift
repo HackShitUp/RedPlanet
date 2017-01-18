@@ -222,7 +222,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                             OneSignal.postNotification(
                                                                 ["contents":
                                                                     ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a comment"],
-                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"]
+                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
+                                                                 "ios_badgeType": "Increase",
+                                                                 "ios_badgeCount": 1
                                                                 ]
                                                             )
                                                         }
@@ -251,7 +253,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                     OneSignal.postNotification(
                                         ["contents":
                                             ["en": "\(PFUser.current()!.username!.uppercased()) commented on your post"],
-                                         "include_player_ids": ["\(user["apnsId"] as! String)"]
+                                         "include_player_ids": ["\(user["apnsId"] as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
                                         ]
                                     )
                                     

@@ -298,7 +298,9 @@ class SharedPostCell: UITableViewCell {
                                 OneSignal.postNotification(
                                     ["contents":
                                         ["en": "\(PFUser.current()!.username!.uppercased()) liked your Shared Post"],
-                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"]
+                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
                                     ]
                                 )
                             }
@@ -431,7 +433,9 @@ class SharedPostCell: UITableViewCell {
                                                                 OneSignal.postNotification(
                                                                     ["contents":
                                                                         ["en": "\(PFUser.current()!.username!.uppercased()) re-shared your Shared Post"],
-                                                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"]
+                                                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
                                                                     ]
                                                                 )
                                                             }

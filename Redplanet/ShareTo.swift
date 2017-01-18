@@ -465,7 +465,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                                         OneSignal.postNotification(
                                                                             ["contents":
                                                                                 ["en": "\(PFUser.current()!.username!.uppercased()) shared a photo with you"],
-                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"]
+                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
+                                                                             "ios_badgeType": "Increase",
+                                                                             "ios_badgeCount": 1
                                                                             ]
                                                                         )
                                                                         
@@ -514,7 +516,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                                         OneSignal.postNotification(
                                                                             ["contents":
                                                                                 ["en": "\(PFUser.current()!.username!.uppercased()) shared a video with you"],
-                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"]
+                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
+                                                                             "ios_badgeType": "Increase",
+                                                                             "ios_badgeCount": 1
                                                                             ]
                                                                         )
                                                                         
@@ -561,7 +565,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                                             OneSignal.postNotification(
                                                                                 ["contents":
                                                                                     ["en": "\(PFUser.current()!.username!.uppercased()) shared a text post with you"],
-                                                                                 "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"]
+                                                                                 "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
+                                                                                 "ios_badgeType": "Increase",
+                                                                                 "ios_badgeCount": 1
                                                                                 ]
                                                                             )
                                                                             

@@ -150,7 +150,9 @@ class CapturedVideo: UIViewController, PlayerDelegate {
                             OneSignal.postNotification(
                                 ["contents":
                                     ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"]
+                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                                 "ios_badgeType": "Increase",
+                                 "ios_badgeCount": 1
                                 ]
                             )
                         }
