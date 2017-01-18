@@ -358,8 +358,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     }
     
     fileprivate func setupTextField() {
-        // Add it to the photo
-        self.stillPhoto.addSubview(textField)
+        self.slider.addSubview(textField)
         self.tapGesture.delegate = self
         self.slider.addGestureRecognizer(tapGesture)
         

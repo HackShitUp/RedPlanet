@@ -114,8 +114,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
 //        let configuration = ParseClientConfiguration {
-//            $0.applicationId = "133syOHeVeEz4L9jUv0jHvlV99LVTkSObDzhFkgA"
-//            $0.clientKey = "078qDdoaf8iPugFqcIQQrJPASKXD2wL92JgjtZMT"
+//            $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
+//            $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
 //            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
 //        }
 //        Parse.initialize(with: configuration)

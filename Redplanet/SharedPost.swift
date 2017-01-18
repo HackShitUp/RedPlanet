@@ -164,7 +164,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-    
+        // Stylize navigation bar
+        configureView()
+        
+        // Fetch interactions
+        fetchInteractions()
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -202,14 +206,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
-
-        // Fetch interactions
-        fetchInteractions()
-        
-        // Stylize navigation bar
-        configureView()
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()

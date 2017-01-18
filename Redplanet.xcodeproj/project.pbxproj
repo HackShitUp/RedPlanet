@@ -630,7 +630,7 @@
 			name = Password;
 			sourceTree = "<group>";
 		};
-		7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */ = {
+		7E4CFF951DB4393A0087454E /* SinglePosts */ = {
 			isa = PBXGroup;
 			children = (
 				7EE5609E1DD2D3B200DA2849 /* EditContent */,
@@ -642,7 +642,7 @@
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
 				7EA09E131DD406F500BD2D51 /* Moment */,
 			);
-			name = SINGLE_CONTENT;
+			name = SinglePosts;
 			sourceTree = "<group>";
 		};
 		7E4CFF9E1DB4396D0087454E /* SpacePost */ = {
@@ -1206,7 +1206,7 @@
 				7EBDC6651DC55E7300DFCC28 /* Shares */,
 				7ED4A91E1DBEBE080016698F /* ShareTo */,
 				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
-				7E4CFF951DB4393A0087454E /* SINGLE_CONTENT */,
+				7E4CFF951DB4393A0087454E /* SinglePosts */,
 				7ED4A9131DBEB4F60016698F /* RFriends */,
 				7ED4A9151DBEB50B0016698F /* RFollowers */,
 				7ED4A9141DBEB5020016698F /* RFollowing */,

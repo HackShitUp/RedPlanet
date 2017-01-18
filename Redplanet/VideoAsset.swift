@@ -170,9 +170,16 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Stylize title
+        configureView()
     
+        // Show Status bar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        // Fetch Likes and Comments
+        fetchInteractions()
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -180,15 +187,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 495
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        
-        // Fetch Likes and Comments
-        fetchInteractions()
-        
-        // Stylize title
-        configureView()
-        
-        
+
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: videoNotification, object: nil)
         

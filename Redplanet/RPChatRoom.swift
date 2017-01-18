@@ -202,7 +202,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                     ["en": "from \(PFUser.current()!.username!.uppercased())"],
                                  "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
                                  "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
+                                 "ios_badgeCount": 1,
                                 ]
                             )
                         }
@@ -523,6 +523,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     
@@ -642,15 +647,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Stylize title
         configureView()
-        
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     

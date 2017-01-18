@@ -157,7 +157,11 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-    
+        // Stylize title
+        configureView()
+        
+        // Fetch interactions
+        fetchInteractions()
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -203,12 +207,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 540
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        // Stylize title
-        configureView()
-        
-        // Fetch interactions
-        fetchInteractions()
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: profileNotification, object: nil)

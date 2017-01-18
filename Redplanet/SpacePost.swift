@@ -193,6 +193,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        // Stylize navigation bar
+        configureView()
+        
+        // Fetch interactions
+        fetchInteractions()
     
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -228,13 +233,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
-        // Fetch interactions
-        fetchInteractions()
-        
-        // Stylize navigation bar
-        configureView()
         
         // Add method tap
         let goUserTap = UITapGestureRecognizer(target: self, action: #selector(goToUser))

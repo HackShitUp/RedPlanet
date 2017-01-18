@@ -165,7 +165,12 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-    
+        
+        // Stylize title
+        configureView()
+        
+        // Fetch interactions
+        fetchInteractions()
         
         // Show the user what to do!
         let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
@@ -202,20 +207,12 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
 
         // Set estimated row height
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 570
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-        
-        // Fetch interactions
-        fetchInteractions()
-        
-        // Stylize title
-        configureView()
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -467,9 +464,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
         
         // (1) Delete Photo
         let delete = UITableViewRowAction(style: .normal,

@@ -170,6 +170,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        // Stylize title
+        configureView()
 
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -178,13 +180,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.estimatedRowHeight = 250
         self.tableView!.rowHeight = UITableViewAutomaticDimension
 
-        
         // Fetch Likes and Comments
         fetchInteractions()
-        
-        // Stylize title
-        configureView()
-        
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: textPostNotification, object: nil)
