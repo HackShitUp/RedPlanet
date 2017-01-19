@@ -682,9 +682,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
+
         // Define keyboard frame size
-        self.keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
-        
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        print("KEYBOARD HEIGHT: \(self.keyboard.size.height)")
         
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
@@ -692,27 +693,25 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
                 
-                // Scroll to the bottom
-                if self.messageObjects.count > 0 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
-                }
-                
                 // Move tableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                 
                 // Move chatbox up
                 self.frontView.frame.origin.y -= self.keyboard.height
                 
+                // Scroll to the bottom
+                if self.messageObjects.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
             }
-            
         }
         
     }
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
-        self.keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
         if self.tableView!.frame.origin.y != 0 {
             // Move table view up

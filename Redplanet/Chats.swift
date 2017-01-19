@@ -29,7 +29,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     // Page size
     var page: Int = 100
     
-    
     // Search
     var searchNames = [String]()
     var searchObjects = [PFObject]()
@@ -81,29 +80,14 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 self.chatObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    
-                    // Run for loop to append new non-duplicated array
-                    // (3) Set time
-                    /*
-                    let from = object.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    if difference.day! < 1 {
-                    }
-                    */
-                
-                    // Append user's objects
+                    // Append Sender
                     if (object.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "sender") as! PFUser).objectId!}) {
                         self.chatObjects.append(object["sender"] as! PFUser)
                     }
-                    
-                    
+                    // Append Receiver
                     if (object.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "receiver") as! PFUser).objectId!}) {
                         self.chatObjects.append(object["receiver"] as! PFUser)
                     }
-                    
-
                 }// end for loop
 
 
@@ -492,7 +476,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                     if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         // Handle optional chaining for OtherUser's Object
                         // SENDER
-//                        if let theSender = object!["sender"] as? PFUser {
                         if let theSender = object!.object(forKey: "sender") as? PFUser {
                             
                             // Set username

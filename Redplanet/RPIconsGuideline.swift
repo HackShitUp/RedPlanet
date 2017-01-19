@@ -83,15 +83,12 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
         
         // show nav bsr
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-
-        
-        // Set lightcontent
-        UIApplication.shared.statusBarStyle = .lightContent
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
 

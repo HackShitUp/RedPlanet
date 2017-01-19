@@ -45,6 +45,10 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Settings"
         }
+        
+        // Show statusBar
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     
@@ -160,7 +164,6 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         
         // Stylize title
         configureView()
-        
     }
 
     override func didReceiveMemoryWarning() {
