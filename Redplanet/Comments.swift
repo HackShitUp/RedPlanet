@@ -118,7 +118,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 // Clear array
                 self.comments.removeAll(keepingCapacity: false)
                 
-                
                 for object in objects! {
                     self.comments.append(object)
                 }
@@ -151,7 +150,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             // Resign first responder
             self.newComment.resignFirstResponder()
         } else {
-            
             // Clear text to prevent sending again and set constant before sending for better UX
             let commentText = self.newComment.text!
             // Clear chat
@@ -312,7 +310,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     func keyboardWillShow(notification: NSNotification) {
 
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
         
         // Move UI up
@@ -321,17 +319,17 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
                 
-                // Scroll to the bottom
-                if self.comments.count > 0 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
-                }
-                
                 // Move tableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
                 
                 // Move chatbox up
                 self.frontView.frame.origin.y -= self.keyboard.height
+                
+                // Scroll to the bottom
+                if self.comments.count > 0 {
+                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                    self.tableView.setContentOffset(bot, animated: false)
+                }
                 
             }
             
@@ -341,7 +339,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
-        keyboard = ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue)!
+        keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         
         if self.tableView!.frame.origin.y != 0 {
             // Move table view up

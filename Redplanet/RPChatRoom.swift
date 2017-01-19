@@ -682,29 +682,26 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
-
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        print("KEYBOARD HEIGHT: \(self.keyboard.size.height)")
         
+        self.frontView.setNeedsLayout()
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
-                
                 // Move tableView up
                 self.tableView!.frame.origin.y -= self.keyboard.height
-                
-                // Move chatbox up
+                 // Move chatbox up
                 self.frontView.frame.origin.y -= self.keyboard.height
-                
                 // Scroll to the bottom
                 if self.messageObjects.count > 0 {
                     let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
                     self.tableView.setContentOffset(bot, animated: false)
                 }
             }
+            
         }
         
     }
