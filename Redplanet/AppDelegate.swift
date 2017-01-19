@@ -110,15 +110,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Initialize Pare
         // APP NAME: "R E D P L A N E T"
-        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
+//        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
+//                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
         
-//        let configuration = ParseClientConfiguration {
-//            $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
-//            $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
-//            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
-//        }
-//        Parse.initialize(with: configuration)
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
+            $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
+            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+        }
+        Parse.initialize(with: configuration)
         
         
         // OneSignal for custom push notifications

@@ -76,6 +76,8 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
+                SVProgressHUD.dismiss()
+                
                 // Clear array
                 self.chatObjects.removeAll(keepingCapacity: false)
                 
@@ -102,7 +104,9 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                 
                 
             } else {
-                print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    SVProgressHUD.dismiss()
+                }
 
             }
             
@@ -604,6 +608,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                         
                                         // Show Progress
                                         SVProgressHUD.show()
+                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                         SVProgressHUD.setBackgroundColor(UIColor.white)
                                         
                                         
@@ -639,15 +644,12 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                     })
                                                 }
                                                 
-                                                // Query Chats again
-                                                self.queryChats()
-                                                
                                             } else {
                                                 print(error?.localizedDescription as Any)
-                                                
-                                                // Query Chats again
-                                                self.queryChats()
                                             }
+                                            
+                                            // Query Chats again
+                                            self.queryChats()
                                         })
     
             })

@@ -58,20 +58,19 @@ class RPChatRoomCell: UITableViewCell {
         options.view.tintColor = UIColor.black
         self.delegate?.present(options, animated: true, completion: nil)
     }
+    
+    
+    // Function to go to other user's profile
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
-        
+
         // add text tap
         let chatHold = UILongPressGestureRecognizer(target: self, action: #selector(chatOptions))
         chatHold.minimumPressDuration = 0.50
         self.message.isUserInteractionEnabled = true
         self.message.addGestureRecognizer(chatHold)
-        
-        
-        
         
         // Handle @username tap
         message.userHandleLinkTapHandler = { label, handle, range in

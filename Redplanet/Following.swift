@@ -118,6 +118,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
+        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
 
         // Query Following
         self.queryFollowing()
