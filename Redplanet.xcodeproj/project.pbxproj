@@ -13,6 +13,8 @@
 		7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E31DB981E3003011FA /* FriendsCell.swift */; };
 		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
 		7E26EC101E188D7D00EFB7BC /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */; };
+		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
+		7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB91E31A822006B2D8B /* StickersCell.swift */; };
 		7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4021E25A78A0071B052 /* SNButton.swift */; };
 		7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4031E25A78A0071B052 /* SNFilter.swift */; };
 		7E2CA40D1E25A78A0071B052 /* SNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4041E25A78A0071B052 /* SNSlider.swift */; };
@@ -224,6 +226,8 @@
 		7E2235E31DB981E3003011FA /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
 		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
 		7E26EC0F1E188D7D00EFB7BC /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
+		7E274EB91E31A822006B2D8B /* StickersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCell.swift; sourceTree = "<group>"; };
 		7E2CA4021E25A78A0071B052 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
 		7E2CA4031E25A78A0071B052 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
 		7E2CA4041E25A78A0071B052 /* SNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSlider.swift; sourceTree = "<group>"; };
@@ -522,6 +526,15 @@
 				7E78CB711DF3BA9C001E69D3 /* LikesAndSharesCell.swift */,
 			);
 			name = Likes_Shares;
+			sourceTree = "<group>";
+		};
+		7E274EBB1E31A828006B2D8B /* Stickers */ = {
+			isa = PBXGroup;
+			children = (
+				7E274EB71E31A80B006B2D8B /* Stickers.swift */,
+				7E274EB91E31A822006B2D8B /* StickersCell.swift */,
+			);
+			name = Stickers;
 			sourceTree = "<group>";
 		};
 		7E2CA3FE1E259F390071B052 /* Camera */ = {
@@ -1214,6 +1227,7 @@
 				7ED4A9151DBEB50B0016698F /* RFollowers */,
 				7ED4A9141DBEB5020016698F /* RFollowing */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
+				7E274EBB1E31A828006B2D8B /* Stickers */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
@@ -1760,6 +1774,7 @@
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
+				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
 				7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
@@ -1868,6 +1883,7 @@
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
 				7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */,
 				7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */,
+				7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,

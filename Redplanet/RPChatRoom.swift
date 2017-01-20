@@ -470,12 +470,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Function to push camera
     func goCamera(sender: UIButton) {
-        // Set bool
         chatCamera = true
-        
-        // Push VC
         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-        self.navigationController!.pushViewController(cameraVC, animated: true)
+        self.navigationController!.pushViewController(cameraVC, animated: false)
     }
     
     
@@ -561,14 +558,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 60
         
-        // Add notifications to hide chatBoxx
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
-        // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
-        
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
@@ -648,6 +637,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
     }
     
     
@@ -744,9 +736,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Resign chat
         self.newChat.resignFirstResponder()
     }
-    
-    
-    
 
     // MARK: - UITableViewDataSource and Delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -803,9 +792,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Fetch Objects
             // (2) Get and set user's profile photos
-            //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
-            //
             if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
             
                 // Get and set profile photo
@@ -823,9 +810,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     })
                 }
             }
-            //
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
-            //
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
                 
                 // Get and set Profile Photo
@@ -892,11 +877,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
         } else {
             
-            //////////////////////////////
+            
             /////////////////////////////
             /// Return Media Cell //////
             ///////////////////////////
-            //////////////////////////
             
             // Set mCell's content object
             mCell.mediaObject = self.messageObjects[indexPath.row]
