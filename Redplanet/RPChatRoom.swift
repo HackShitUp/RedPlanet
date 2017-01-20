@@ -682,12 +682,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
+        
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        
-        self.frontView.setNeedsLayout()
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
+            
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+//            self.view.layoutSubviews()
             
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
