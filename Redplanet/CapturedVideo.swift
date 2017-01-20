@@ -193,7 +193,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         let urlAsset = AVURLAsset(url: inputURL, options: nil)
         guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
             handler(nil)
-            
             return
         }
         
@@ -235,8 +234,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
                 guard let compressedData = NSData(contentsOf: compressedURL) else {
                     return
                 }
-
-                print("CP: \(compressedData.bytes)")
                 self.smallVideoData = compressedData                
 
             case .failed:
@@ -246,7 +243,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             }
             
         }
-        
     }
     
     

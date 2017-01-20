@@ -131,20 +131,8 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                     
         })
         
-        // (3) Best Friends
-        let bestFriends = AlertAction(title: "Best Friends 🔥",
-                                 style: .default,
-                                 handler: { (AlertAction) in
-                                    // Append object
-                                    forBFObject.append(otherObject.last!)
-                                    
-                                    // Push VC
-                                    let bfVC = self.storyboard?.instantiateViewController(withIdentifier: "bfVC") as! BestFriends
-                                    self.navigationController?.pushViewController(bfVC, animated: true)
-        })
         
-        
-        // (4) Report or block
+        // (3) Report or block
         let reportOrBlock = AlertAction(title: "Report or Block",
                                    style: .destructive,
                                    handler: { (AlertAction) in
@@ -271,7 +259,6 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         if myFriends.contains(otherObject.last!) {
             alert.addAction(space)
             alert.addAction(chat)
-//            alert.addAction(bestFriends)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
             alert.view.tintColor = UIColor.black

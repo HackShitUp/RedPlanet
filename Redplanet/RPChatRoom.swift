@@ -22,14 +22,9 @@ import Bolts
 import OneSignal
 import SVProgressHUD
 
-// TODO::
-// NOTE: That when you're sending an image, make sure you just send the image ONLY, so the database can distinguish it
 
-
-// Global variable to hold user's object
+// Global variable to hold user's object and username for chats
 var chatUserObject = [PFObject]()
-
-// Global variabel to hold username
 var chatUsername = [String]()
 
 
@@ -40,10 +35,8 @@ let rpChat = Notification.Name("rpChat")
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
     
-    
     // Variable to hold messageObjects
     var messageObjects = [PFObject]()
-    
     
     // Keyboard frame
     var keyboard = CGRect()
@@ -65,6 +58,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     @IBOutlet weak var photosButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
+    @IBOutlet weak var stickersButton: UIButton!
     
     
     @IBAction func backButton(_ sender: AnyObject) {
@@ -310,7 +304,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let tempImage = video as NSURL?
             _ = tempImage?.relativePath
             let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
-            let parseFile = PFFile(name: "video.mp4", data: videoData! as Data)
             
             // Send Video
             let chats = PFObject(className: "Chats")
@@ -319,7 +312,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             chats["receiver"] = chatUserObject.last!
             chats["receiverUsername"] = chatUsername.last!
             chats["read"] = false
-            chats["videoAsset"] = parseFile
+            chats["videoAsset"] = PFFile(name: "video.mp4", data: videoData! as Data)
             chats.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
@@ -385,20 +378,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Disable done button
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
-        
-        // Convert UIImage to NSData
-        let imageData = UIImageJPEGRepresentation(image, 0.5)
-        // Change UIImage to PFFile
-        let parseFile = PFFile(data: imageData!)
-        
-        
+    
         // Send to Chats
         let chat = PFObject(className: "Chats")
         chat["sender"] = PFUser.current()!
         chat["senderUsername"] = PFUser.current()!.username!
         chat["receiver"] = chatUserObject.last!
         chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["photoAsset"] = parseFile
+        chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
         chat["read"] = false
         chat.saveInBackground {
             (success: Bool, error: Error?) in
@@ -429,8 +416,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     )
                 }
 
-                
-                
                 // Reload data
                 self.queryChats()
                 
@@ -454,7 +439,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
         
         
-        
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
@@ -473,6 +457,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatCamera = true
         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
         self.navigationController!.pushViewController(cameraVC, animated: false)
+    }
+    
+    
+    // Function to go to stickers
+    func goStickers(sender: UIButton) {
+        let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
+        self.navigationController!.pushViewController(stickersVC, animated: false)
     }
     
     
@@ -587,12 +578,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         photosTap.numberOfTapsRequired = 1
         self.photosButton.isUserInteractionEnabled = true
         self.photosButton.addGestureRecognizer(photosTap)
-        
         // Add camera tap
         let cameraTap = UITapGestureRecognizer(target: self, action: #selector(goCamera))
         cameraTap.numberOfTapsRequired = 1
         self.cameraButton.isUserInteractionEnabled = true
         self.cameraButton.addGestureRecognizer(cameraTap)
+        // Add stickers tap
+        let stickersTap = UITapGestureRecognizer(target: self, action: #selector(goStickers))
+        stickersTap.numberOfTapsRequired = 1
+        self.stickersButton.isUserInteractionEnabled = true
+        self.stickersButton.addGestureRecognizer(stickersTap)
         
         
         // Add Function Method to add user's read recipets
@@ -682,7 +677,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
-//            self.view.layoutSubviews()
             
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {

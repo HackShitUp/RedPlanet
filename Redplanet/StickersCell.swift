@@ -7,7 +7,13 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
 
 class StickersCell: UICollectionViewCell {
+    @IBOutlet weak var stickerImage: PFImageView!
     
 }

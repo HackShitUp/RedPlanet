@@ -7,21 +7,127 @@
 //
 
 import UIKit
+import CoreData
 
-private let reuseIdentifier = "Cell"
+import Parse
+import ParseUI
+import Bolts
+
+import SimpleAlert
+import OneSignal
+
+
 
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
+    
+    @IBAction func dismiss(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: false)
+    }
+
+    let stickers = ["9.png",
+                        "10.png",
+                        "11.png",
+                        "12.png",
+                        "13.png",
+                        "14.png",
+                        "15.png",
+                        "16.png",
+                        "17.png",
+                        "18.png",
+                        "19.png",
+                        "20.png",
+                        "30.png",
+                        "31.png",
+                        "32.png",
+                        "691505.png",
+                        "691504.png",
+                        "691502.png",
+                        "691501.png",
+                        "691499.png",
+                        "691498.png",
+                        "691497.png",
+                        "691496.png",
+                        "691495.png",
+                        "691494.png",
+                        "691493.png",
+                        "691491.png",
+                        "691490.png",
+                        "3018651.png",
+                        "3018646.png",
+                        "3018638.png",
+                        "3018637.png",
+                        "2318568.png",
+                        "2318559.png",
+                        "2318556.png",
+                        "2318551.png",
+                        "2318546.png",
+                        "2318540.png",
+                        "2318537.png",
+                        "Watermelon.png",
+                        "Sun.png",
+                        "strawberry.png",
+                        "Shake.png",
+                        "Pineapple.png",
+                        "milk.png",
+                        "IceCreamCone.png",
+                        "ice-cream.png",
+                        "corn.png",
+                        "cookie.png",
+                        "coffee-cup.png",
+                        "chocolate.png",
+                        "chili-pepper.png",
+                        "cherry.png",
+                        "cheese.png",
+                        "carrot.png",
+                        "broccoli.png",
+                        "bananas.png",
+                        "apple.png",
+                        ]
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Stickers"
+        }
+        
+        // Show tab bar and navigation bar and configure nav bar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.view.layer.cornerRadius = 12.00
+        self.navigationController?.view.clipsToBounds = true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureView()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        self.view.backgroundColor = UIColor.blue
+        // Do any additional setup after loading the view, typically from a nib.
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: 93.00, height: 93.00)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionView!.collectionViewLayout = layout
+        self.collectionView!.reloadData()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.view.layer.cornerRadius = 00.00
+        self.navigationController?.view.clipsToBounds = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,66 +135,119 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 0
+        print("NUMBER Of STICKERS:\(stickers.count)\n")
+        return stickers.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
-    
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "stickersCell", for: indexPath) as! StickersCell
+        //set contentView frame and autoresizingMask
+        cell.contentView.frame = cell.bounds
+        
+        // LayoutViews
+        cell.stickerImage.layoutIfNeeded()
+        cell.stickerImage.layoutSubviews()
+        cell.stickerImage.setNeedsLayout()
+        cell.stickerImage.image = UIImage(named: self.stickers[indexPath.row])
+        
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // MARK: - SimpleAlert
+        let alert = AlertController(title: "Options",
+                                    message: nil,
+                                    style: .alert)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        // (4) Report or block
+        let next = AlertAction(title: "Continue",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                
+                                // Send to Chats
+                                let chat = PFObject(className: "Chats")
+                                chat["sender"] = PFUser.current()!
+                                chat["senderUsername"] = PFUser.current()!.username!
+                                chat["receiver"] = chatUserObject.last!
+                                chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+                                chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(UIImage(named: self.stickers[indexPath.row])!, 0.5)!)
+                                chat["read"] = false
+                                chat.saveInBackground {
+                                    (success: Bool, error: Error?) in
+                                    if error == nil {
+                                        
+                                        // Handle optional chaining
+                                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                                            // MARK: - OneSignal
+                                            // Send Push Notification to user
+                                            OneSignal.postNotification(
+                                                ["contents":
+                                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                                                 "ios_badgeType": "Increase",
+                                                 "ios_badgeCount": 1
+                                                ]
+                                            )
+                                        }
+                                        
+                                        // Reload data for Chats
+                                        NotificationCenter.default.post(name: rpChat, object: nil)
+                                        
+                                        _ = self.navigationController?.popViewController(animated: false)
+                                        
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        
+                                        // Reload data for Chats
+                                        NotificationCenter.default.post(name: rpChat, object: nil)
+                                        
+                                        _ = self.navigationController?.popViewController(animated: false)
+                                    }
+                                }
+        })
+        
+        let cancel = AlertAction(title: "Cancel",
+                               style: .cancel,
+                               handler: { (AlertAction) in
+        })
+        
+        
+        alert.addAction(cancel)
+        alert.addAction(next)
+        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+        
+        
+        
     }
-    */
+
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.collectionView!.contentOffset.y < -80 {
+            // Pop view controller
+            _ = self.navigationController?.popViewController(animated: false)
+        }
+    }
+    
+    
 
 }
