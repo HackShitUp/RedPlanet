@@ -90,8 +90,7 @@ class Timeline: UIViewController, StackViewDataSource {
         print("CURRENT INDEX: \(currentIndex!)")
         print("VCS: \(timelineVCS.count)")
         
-        stackPageView.currentContainer.viewController = timelineVCS[0]
-        
+        stackPageView.currentContainer.viewController = timelineVCS[currentIndex!]
     }
     
     override func didReceiveMemoryWarning() {
@@ -100,15 +99,21 @@ class Timeline: UIViewController, StackViewDataSource {
     }
     
     func stackViewNext(_ currentViewController: UIViewController?) -> UIViewController? {
-        currentIndex = currentIndex! - 1
         
-        return timelineVCS[1]
+        
+        if currentIndex! != 0 {
+            currentIndex = currentIndex! + 1
+        }
+        
+        return timelineVCS[currentIndex!]
     }
     
     func stackViewPrev(_ currentViewController: UIViewController?) -> UIViewController? {
-        currentIndex = currentIndex! + 1
+        if currentIndex! != timelineVCS.count + 1 {
+            currentIndex = currentIndex! - 1
+        }
         
-        return timelineVCS[0]
+        return timelineVCS[currentIndex!]
     }
 }
 

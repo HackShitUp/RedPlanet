@@ -54,10 +54,17 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
         self.collectionView!.reloadData()
         
     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Fetch videos
+        fetchVideos()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -65,7 +72,6 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
-        
         // Fetch videos
         fetchVideos()
     }

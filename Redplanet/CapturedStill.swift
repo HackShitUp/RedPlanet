@@ -19,7 +19,6 @@ import OneSignal
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-
 class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {//    JotViewControllerDelegate
     
     // MARK: SnapSliderFilters
@@ -300,7 +299,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         setupSlider()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -332,13 +331,18 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(textField)
+        UIView.setAnimationsEnabled(true)
     }
     
-
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        UIView.setAnimationsEnabled(true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print(super.didReceiveMemoryWarning())

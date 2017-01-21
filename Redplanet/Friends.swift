@@ -557,7 +557,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
 
     // MARK: - Table view delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+    
         // Save to Views
         let view = PFObject(className: "Views")
         view["byUser"] = PFUser.current()!

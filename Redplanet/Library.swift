@@ -38,7 +38,6 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         // Instnatiate UIImagePickerController
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        //        imagePicker.sourceType = .camera
         imagePicker.sourceType = .photoLibrary
         imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
