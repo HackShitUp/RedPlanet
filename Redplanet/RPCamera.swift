@@ -16,7 +16,6 @@ var isRearCam: Bool?
 
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavigationControllerDelegate {
     
-    
     var time: Float = 0.0
     var timer: Timer?
     
@@ -106,15 +105,13 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     // Leave VC
     func dismissVC() {
-        DispatchQueue.main.async {
-            if chatCamera == true {
-                _ = self.navigationController?.popViewController(animated: true)
-            } else {
-                let shareTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-                shareTab.selectedIndex = 2
-                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                UIApplication.shared.keyWindow?.rootViewController = shareTab
-            }
+        if chatCamera == true {
+            _ = self.navigationController?.popViewController(animated: false)
+        } else {
+            let shareTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
+            shareTab.selectedIndex = 2
+            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            UIApplication.shared.keyWindow?.rootViewController = shareTab
         }
     }
     
@@ -139,12 +136,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.view.backgroundColor = UIColor.black
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
+        chatCamera = false
     }
 
     override func viewDidLoad() {

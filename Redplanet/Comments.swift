@@ -316,6 +316,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
             
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
                 
@@ -344,7 +347,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         if self.tableView!.frame.origin.y != 0 {
             // Move table view up
             self.tableView!.frame.origin.y += self.keyboard.height
-            
             // Move chatbox up
             self.frontView.frame.origin.y += self.keyboard.height
         }
@@ -431,6 +433,13 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Stylize navigation bar
         configureView()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Remove observers
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -463,7 +472,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.newComment.text! != "Write a comment!" {
+        if self.newComment.text! != "Share your comment!" {
             self.newComment.text! = self.newComment.text
         } else {
             self.newComment.text! = ""
@@ -697,7 +706,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         let reply = UITableViewRowAction(style: .normal,
                                          title: "Reply") { (UITableViewRowAction, indexPath) in
                                             
-                                            
+                                            // Clear comment box
+                                            if self.newComment.text == "Share your comment!" {
+                                                self.newComment.text! = ""
+                                            }
                                             
                                             // Set username in newComment
                                             self.newComment.text = "\(self.newComment.text!)" + "@" + "\(self.comments[indexPath.row].value(forKey: "byUsername") as! String)" + " "

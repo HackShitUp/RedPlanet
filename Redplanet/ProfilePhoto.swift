@@ -260,7 +260,16 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // Declare parent VC
         cell.delegate = self
         
-
+        // Configure size
+        cell.contentView.frame = cell.contentView.frame
+        cell.smallProPic.layoutIfNeeded()
+        cell.smallProPic.layoutSubviews()
+        cell.smallProPic.setNeedsLayout()
+        cell.smallProPic.layer.cornerRadius = cell.smallProPic.frame.size.width/2
+        cell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.smallProPic.layer.borderWidth = 0.5
+        cell.smallProPic.clipsToBounds = true
+        
         // (A) Get profile photo
         if let proPic = proPicObject.last!.value(forKey: "photoAsset") as? PFFile {
             proPic.getDataInBackground(block: {
@@ -268,10 +277,12 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                 if error == nil {
                     // Set profile photo
                     cell.rpUserProPic.image = UIImage(data: data!)
+                    cell.smallProPic.image = UIImage(data: data!)
                 } else {
                     print(error?.localizedDescription as Any)
                     // Set default
                     cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                    cell.smallProPic.image = UIImage(named: "Gender Neutral User-100")
                 }
             })
         } else {

@@ -199,26 +199,12 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Show tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
         // Stylize title
         configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Show tabbarcontroller
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
         // Stylize title
         configureView()
     }

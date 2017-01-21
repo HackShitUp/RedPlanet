@@ -28,6 +28,7 @@ class ProfilePhotoCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var smallProPic: PFImageView!
     @IBOutlet weak var caption: KILabel!
     @IBOutlet weak var numberOfLikes: UIButton!
     @IBOutlet weak var likeButton: UIButton!
@@ -476,7 +477,13 @@ class ProfilePhotoCell: UITableViewCell {
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
         
-        // (8) Hold the photo to save it
+        // (8) Go to user's profile
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        proPicTap.numberOfTapsRequired = 1
+        self.smallProPic.isUserInteractionEnabled = true
+        self.smallProPic.addGestureRecognizer(proPicTap)
+        
+        // (9) Hold the photo to save it
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
         hold.minimumPressDuration = 0.50
         self.rpUserProPic.isUserInteractionEnabled = true
