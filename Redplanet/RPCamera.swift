@@ -143,7 +143,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         super.viewWillDisappear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
-        chatCamera = false
     }
 
     override func viewDidLoad() {
