@@ -2,8 +2,8 @@
 //  Timeline.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 12/31/16.
-//  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
+//  Created by Joshua Choi on 1/21/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
@@ -14,57 +14,20 @@ import ParseUI
 import Bolts
 
 
-// Array to hold objects
 var timelineObjects = [PFObject]()
-// Array to hold view controllers
 var timelineVCS = [UIViewController]()
+var currentIndex: Int?
 
-// Variable to return selected index
-var returnIndex: Int? = 0
+class Timeline: UIViewController, StackViewDataSource {
 
-class Timeline: EZSwipeController, UINavigationControllerDelegate  {
-
-    override func setupView() {
-        datasource = self
-        navigationBarShouldNotExist = false
-        navigationBarShouldBeOnBottom = false
-    }
-    
+    @IBOutlet weak var stackPageView: StackPageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.view.frame.origin.y = UIApplication.shared.statusBarFrame.height
+        stackPageView.dataSource = self
+        stackPageView.parentViewController = self
         
-        // Set background color
-        self.view.backgroundColor = UIColor.white
-    }
-
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-
-}
-
-
-
-extension Timeline: EZSwipeControllerDataSource {
-    
-    func indexOfStartingPage() -> Int {
-        print("\nINDEX: \(returnIndex!)\n")
-        return returnIndex!
-    }
-    
-    
-    func viewControllerData() -> [UIViewController] {
-
-        // Remove the first object
-        timelineObjects.remove(at: 0)
-        
-        // Loop through objects to determine which view controller to show
         for postObject in timelineObjects {
             if postObject.value(forKey: "contentType") as! String == "tp" {
                 // I) TEXT POST
@@ -120,22 +83,47 @@ extension Timeline: EZSwipeControllerDataSource {
                 timelineVCS.append(videoVC)
                 
             }
-
         }
         
-
-        print("\nCOUNTING VCS: \(timelineVCS.count)\n")
-        print("\nCOUNTING OBJECTS: \(timelineObjects.count)\n")
-        return timelineVCS
-    }
-    
-    
-    
-    
-    // UINavigationBar DataSource
-    func navigationBarDataForPageIndex(_ index: Int) -> UINavigationBar {
         
-        return self.navigationController!.navigationBar
+        
+        print("CURRENT INDEX: \(currentIndex!)")
+        print("VCS: \(timelineVCS.count)")
+        
+        stackPageView.currentContainer.viewController = timelineVCS[0]
+        
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func stackViewNext(_ currentViewController: UIViewController?) -> UIViewController? {
+        currentIndex = currentIndex! - 1
+        
+        return timelineVCS[1]
+    }
+    
+    func stackViewPrev(_ currentViewController: UIViewController?) -> UIViewController? {
+        currentIndex = currentIndex! + 1
+        
+        return timelineVCS[0]
+    }
 }
+
+//class DummyViewController: UIViewController {
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        
+//        view.backgroundColor = getRandomColor()
+//    }
+//    
+//    func getRandomColor() -> UIColor{
+//        let randomRed:CGFloat = CGFloat(drand48())
+//        let randomGreen:CGFloat = CGFloat(drand48())
+//        let randomBlue:CGFloat = CGFloat(drand48())
+//        return UIColor(red: randomRed, green: randomGreen, blue: randomBlue, alpha: 1.0)
+//    }
+//}

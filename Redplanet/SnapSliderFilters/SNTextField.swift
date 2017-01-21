@@ -25,7 +25,7 @@ open class SNTextField: UITextField {
         self.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.textColor = UIColor.white
         self.placeholder = ""
-        self.font = UIFont(name: "AvenirNext-Medium", size: 18)
+        self.font = UIFont(name: "AvenirNext-Medium", size: 17)
         self.borderStyle = UITextBorderStyle.none
         self.autocorrectionType = UITextAutocorrectionType.no
         self.keyboardType = UIKeyboardType.default
@@ -88,7 +88,7 @@ extension SNTextField: UITextFieldDelegate {
     // Limit the text size to the screen width
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         let text:NSString = (self.text! as NSString).replacingCharacters(in: range, with: string) as NSString
-        let contentWidth = text.size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18)]).width
+        let contentWidth = text.size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 17)]).width
         return contentWidth <= (self.frame.width - 20)
     }
     

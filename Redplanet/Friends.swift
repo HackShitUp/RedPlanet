@@ -666,14 +666,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 print(error?.localizedDescription as Any)
             }
         })
- 
- 
 
-        // Append the correct VC along with the correct object
+ 
+//        timelineVCS.removeAll(keepingCapacity: false)
 //        timelineObjects.removeAll(keepingCapacity: false)
-//        returnIndex = indexPath.row
 //        timelineObjects.append(self.friendsContent[indexPath.row])
 //        timelineObjects.append(contentsOf: self.friendsContent)
+//        currentIndex = indexPath.row
 //        let timelineVC = self.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
 //        self.parentNavigator.pushViewController(timelineVC, animated: true)
 
