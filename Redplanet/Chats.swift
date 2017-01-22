@@ -67,7 +67,7 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", notEqualTo: PFUser.current()!)
-        
+
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.limit = self.page
         chats.includeKeys(["receiver", "sender"])
@@ -611,19 +611,15 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                         SVProgressHUD.setBackgroundColor(UIColor.white)
                                         
-                                        
-                                        // Delete Chats
-                                        
-                                        // (A) Sender
+                                        // Delete chats
                                         let sender = PFQuery(className: "Chats")
                                         sender.whereKey("sender", equalTo: PFUser.current()!)
                                         sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-                                        // (B) Receiver
+                                        
                                         let receiver = PFQuery(className: "Chats")
                                         receiver.whereKey("receiver", equalTo: PFUser.current()!)
                                         receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
                                         
-                                        // (1) Chats subqueries
                                         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
                                         chats.findObjectsInBackground(block: {
                                             (objects: [PFObject]?, error: Error?) in
@@ -632,26 +628,28 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                 // Dismiss progress
                                                 SVProgressHUD.dismiss()
                                                 
-                                                for object in objects! {
-                                                    // Delete
-                                                    object.deleteInBackground(block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            print("Successfully deleted chat: \(object)")
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                        }
-                                                    })
-                                                }
+                                                // Delete all objects
+                                                PFObject.deleteAll(inBackground: objects, block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        // Query Chats
+                                                        self.queryChats()
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // Query Chats
+                                                        self.queryChats()
+                                                    }
+                                                })
                                                 
                                             } else {
-                                                print(error?.localizedDescription as Any)
+                                                if (error?.localizedDescription.hasSuffix("offline."))! {
+                                                    SVProgressHUD.dismiss()
+                                                }
                                             }
                                             
                                             // Query Chats again
                                             self.queryChats()
                                         })
-    
             })
             
             let no = AlertAction(title: "no",

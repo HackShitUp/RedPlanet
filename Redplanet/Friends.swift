@@ -667,15 +667,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
         })
 
- 
-//        timelineVCS.removeAll(keepingCapacity: false)
-//        timelineObjects.removeAll(keepingCapacity: false)
-//        timelineObjects.append(self.friendsContent[indexPath.row])
-//        timelineObjects.append(contentsOf: self.friendsContent)
-//        currentIndex = indexPath.row
-//        let timelineVC = self.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
-//        self.parentNavigator.pushViewController(timelineVC, animated: true)
-
     } // end didSelectRowAt
     
     

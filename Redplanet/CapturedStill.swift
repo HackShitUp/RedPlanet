@@ -297,14 +297,13 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        setupSlider()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // MARK: - SnapSliderFilters
-//        setupSlider()
+        setupSlider()
         setupTextField()
         tapGesture.addTarget(self, action: #selector(handleTap))
         
