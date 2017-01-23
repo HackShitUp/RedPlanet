@@ -13,10 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
-import SimpleAlert
 import OneSignal
-
-
 
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     
@@ -157,86 +154,46 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // MARK: - SimpleAlert
-        let alert = AlertController(title: "Options",
-                                    message: nil,
-                                    style: .alert)
-        
-        // Design content view
-        alert.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+        // Send to Chats
+        let chat = PFObject(className: "Chats")
+        chat["sender"] = PFUser.current()!
+        chat["senderUsername"] = PFUser.current()!.username!
+        chat["receiver"] = chatUserObject.last!
+        chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+        chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(UIImage(named: self.stickers[indexPath.row])!, 0.5)!)
+        chat["read"] = false
+        chat.saveInBackground {
+            (success: Bool, error: Error?) in
+            if error == nil {
+                
+                // Handle optional chaining
+                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    // MARK: - OneSignal
+                    // Send Push Notification to user
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                         "ios_badgeType": "Increase",
+                         "ios_badgeCount": 1
+                        ]
+                    )
+                }
+                
+                // Reload data for Chats
+                NotificationCenter.default.post(name: rpChat, object: nil)
+                
+                _ = self.navigationController?.popViewController(animated: false)
+                
+            } else {
+                print(error?.localizedDescription as Any)
+                
+                // Reload data for Chats
+                NotificationCenter.default.post(name: rpChat, object: nil)
+                
+                _ = self.navigationController?.popViewController(animated: false)
             }
         }
-        
-        // Design corner radius
-        alert.configContainerCornerRadius = {
-            return 14.00
-        }
-        
-        // (4) Report or block
-        let next = AlertAction(title: "Continue",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                
-                                // Send to Chats
-                                let chat = PFObject(className: "Chats")
-                                chat["sender"] = PFUser.current()!
-                                chat["senderUsername"] = PFUser.current()!.username!
-                                chat["receiver"] = chatUserObject.last!
-                                chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-                                chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(UIImage(named: self.stickers[indexPath.row])!, 0.5)!)
-                                chat["read"] = false
-                                chat.saveInBackground {
-                                    (success: Bool, error: Error?) in
-                                    if error == nil {
-                                        
-                                        // Handle optional chaining
-                                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                                            // MARK: - OneSignal
-                                            // Send Push Notification to user
-                                            OneSignal.postNotification(
-                                                ["contents":
-                                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                                                 "ios_badgeType": "Increase",
-                                                 "ios_badgeCount": 1
-                                                ]
-                                            )
-                                        }
-                                        
-                                        // Reload data for Chats
-                                        NotificationCenter.default.post(name: rpChat, object: nil)
-                                        
-                                        _ = self.navigationController?.popViewController(animated: false)
-                                        
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                        
-                                        // Reload data for Chats
-                                        NotificationCenter.default.post(name: rpChat, object: nil)
-                                        
-                                        _ = self.navigationController?.popViewController(animated: false)
-                                    }
-                                }
-        })
-        
-        let cancel = AlertAction(title: "Cancel",
-                               style: .cancel,
-                               handler: { (AlertAction) in
-        })
-        
-        
-        alert.addAction(cancel)
-        alert.addAction(next)
-        alert.view.tintColor = UIColor.black
-        self.present(alert, animated: true, completion: nil)
-        
-        
-        
     }
 
     

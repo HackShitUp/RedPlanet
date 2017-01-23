@@ -632,23 +632,23 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
                                                 PFObject.deleteAll(inBackground: objects, block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
-                                                        // Query Chats
-                                                        self.queryChats()
+                                                        print("Deleted all objects: \(objects)")
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // Query Chats
-                                                        self.queryChats()
                                                     }
                                                 })
+                                                
+                                                // Query Chats again
+                                                self.queryChats()
                                                 
                                             } else {
                                                 if (error?.localizedDescription.hasSuffix("offline."))! {
                                                     SVProgressHUD.dismiss()
                                                 }
+                                                
+                                                // Query Chats again
+                                                self.queryChats()
                                             }
-                                            
-                                            // Query Chats again
-                                            self.queryChats()
                                         })
             })
             

@@ -1208,7 +1208,6 @@
 				7ED4A9151DBEB50B0016698F /* RFollowers */,
 				7ED4A9141DBEB5020016698F /* RFollowing */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
-				7E274EBB1E31A828006B2D8B /* Stickers */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
@@ -1257,6 +1256,7 @@
 				7EC5D1971DB353F300437219 /* ChatsCell.swift */,
 				7E7037C81DBD5FF100F03E0C /* NewChats */,
 				7EAB4EB01DB4608300059DB1 /* RPChatRoom */,
+				7E274EBB1E31A828006B2D8B /* Stickers */,
 			);
 			name = CHATS;
 			sourceTree = "<group>";

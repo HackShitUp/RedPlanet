@@ -77,8 +77,6 @@ import OneSignal
 // Current Username
 var username = [String]()
 
-
-
 // User's relationships: friends, followers, and following
 var myFriends = [PFObject]()
 var myFollowers = [PFObject]()
@@ -92,8 +90,6 @@ var myRequestedFollowers = [PFObject]()
 var myRequestedFollowing = [PFObject]()
 
 
-
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -105,7 +101,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Power your app with local datastore
         Parse.enableLocalDatastore()
         
-
         // Configure Parse Hosted Server on MLAB
         // Hosted by AWS' S3 Bucket
         let configuration = ParseClientConfiguration {
