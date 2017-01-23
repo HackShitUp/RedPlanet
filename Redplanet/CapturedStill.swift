@@ -345,6 +345,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print(super.didReceiveMemoryWarning())
+        print("MEMORY ISSUE")
+        URLCache.shared.removeAllCachedResponses()
     }
     
     //MARK: Setup

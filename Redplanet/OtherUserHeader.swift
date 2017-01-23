@@ -15,7 +15,6 @@ import Bolts
 
 import KILabel
 import OneSignal
-import Mixpanel
 import SimpleAlert
 
 // Array to hold other user's relationships
@@ -49,7 +48,6 @@ class OtherUserHeader: UICollectionReusableView {
     func showFriends() {
         // Append to forFriends
         forFriends.append(otherObject.last!)
-        
         // Push VC
         let friendsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFriendsVC") as! RFriends
         self.delegate?.navigationController?.pushViewController(friendsVC, animated: true)
@@ -126,12 +124,6 @@ class OtherUserHeader: UICollectionReusableView {
     
     // FRIEND ACTION
     @IBAction func friendUser(_ sender: Any) {
-        
-        // Friend
-        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                      properties: ["Relationship Type" : "Friend"]
-        )
-        
         
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
@@ -213,11 +205,6 @@ class OtherUserHeader: UICollectionReusableView {
     
     // FOLLOW ACTION
     @IBAction func followUser(_ sender: Any) {
-        // MARK: - Mixpanel Analytics
-        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                      properties: ["Relationship Type" : "Follow"]
-        )
-        
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -410,13 +397,6 @@ class OtherUserHeader: UICollectionReusableView {
             let yes = AlertAction(title: "yes",
                                     style: .default,
                                     handler: { (AlertAction) in
-                                        
-                                        
-                                        // UnFriend
-                                        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                                                      properties: ["Relationship Type" : "UnFriend"]
-                                        )
-
                                         // Delete Friend
                                         let eFriend = PFQuery(className: "FriendMe")
                                         eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
@@ -534,12 +514,7 @@ class OtherUserHeader: UICollectionReusableView {
             let yes = AlertAction(title: "yes",
                                     style: .default,
                                     handler: { (AlertAction) in
-                                        
-                                        // UnFollow
-                                        Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                                                      properties: ["Relationship Type" : "UnFollow"]
-                                        )
-                                        
+
                                         // Unfollow user
                                         let unfollow = PFQuery(className: "FollowMe")
                                         unfollow.whereKey("follower", equalTo: PFUser.current()!)
@@ -639,12 +614,7 @@ class OtherUserHeader: UICollectionReusableView {
                                         let yes = UIAlertAction(title: "yes",
                                                                 style: .default,
                                                                 handler: { (alertAction: UIAlertAction!) in
-                                                                    
-                                                                    // Friend
-                                                                    Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                                                                                  properties: ["Relationship Type" : "Friend"]
-                                                                    )
-                                                                    
+
                                                                     // Delete relationship in Parse: "FollowMe"
                                                                     let follow = PFQuery(className: "FollowMe")
                                                                     follow.whereKey("follower", equalTo: otherObject.last!)
@@ -752,11 +722,6 @@ class OtherUserHeader: UICollectionReusableView {
                                         let yes = UIAlertAction(title: "yes",
                                                                 style: .default,
                                                                 handler: {(UIAlertAction) -> Void in
-                                                                    
-                                                                    // Follow
-                                                                    Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                                                                                  properties: ["Relationship Type" : "Follow"]
-                                                                    )
                                                                     
                                                                     if otherObject.last!.value(forKey: "private") as! Bool == true {
                                                                         // Private account
@@ -1012,12 +977,6 @@ class OtherUserHeader: UICollectionReusableView {
                                                             (success: Bool, error: Error?) in
                                                             if success {
                                                                 print("Successfully confirmed friend request: \(object)")
-                                                                
-                                                                // Friend
-                                                                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Connected",
-                                                                                              properties: ["Relationship Type" : "Friend"]
-                                                                )
-                                                                
                                                                 // Delete from "Notifications"
                                                                 let dnotifications = PFQuery(className: "Notifications")
                                                                 dnotifications.whereKey("toUser", equalTo: PFUser.current()!)

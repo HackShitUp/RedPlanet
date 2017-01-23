@@ -44,7 +44,6 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     @IBAction func backButton(_ sender: AnyObject) {
         // Remove last value in the array
         forFriends.removeLast()
-        
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -443,15 +442,12 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if searchActive == true && self.searchBar.text! != "" {
-            // Append to otherObject
             otherObject.append(searchObjects[indexPath.row])
-            // Append otherName
             otherName.append(searchObjects[indexPath.row].value(forKey: "username") as! String)
         } else {
-            // Append to otherObject
-            otherObject.append(friends[indexPath.row])
-            // Append otherName
-            otherName.append(friends[indexPath.row].value(forKey: "username") as! String)
+            let abcFriends = self.friends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            otherObject.append(abcFriends[indexPath.row])
+            otherName.append(abcFriends[indexPath.row].value(forKey: "username") as! String)
         }
         
         // Push VC

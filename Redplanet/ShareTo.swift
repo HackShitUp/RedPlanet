@@ -286,7 +286,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        print("MEMORY WARNING")
+        print(super.didReceiveMemoryWarning())
+        URLCache.shared.removeAllCachedResponses()
     }
 
     // MARK: - Table view data source

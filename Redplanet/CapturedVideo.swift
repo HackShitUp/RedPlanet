@@ -43,17 +43,15 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }) { (saved: Bool, error: Error?) in
             if saved {
                 
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.5) { () -> Void in
-                        
-                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-                    }
+                UIView.animate(withDuration: 0.5) { () -> Void in
                     
-                    UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                        
-                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-                    }, completion: nil)
+                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
                 }
+                
+                UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
+                    
+                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                }, completion: nil)
                 
             } else {
                 

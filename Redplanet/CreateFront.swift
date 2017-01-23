@@ -20,8 +20,6 @@ import Bolts
 
 import SVProgressHUD
 import DZNEmptyDataSet
-import Mixpanel
-
 
 
 class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {

@@ -73,8 +73,6 @@ import ParseUI
 import Bolts
 
 import OneSignal
-import Mixpanel
-
 
 // Current Username
 var username = [String]()
@@ -108,17 +106,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Parse.enableLocalDatastore()
         
 
-        // Initialize Pare
-        // APP NAME: "R E D P L A N E T"
-        Parse.setApplicationId("mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk",
-                               clientKey: "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS")
-        
-//        let configuration = ParseClientConfiguration {
-//            $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
-//            $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
-//            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
-//        }
-//        Parse.initialize(with: configuration)
+        // Configure Parse Hosted Server on MLAB
+        // Hosted by AWS' S3 Bucket
+        let configuration = ParseClientConfiguration {
+            $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
+            $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
+            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+        }
+        Parse.initialize(with: configuration)
         
         
         // OneSignal for custom push notifications
@@ -189,12 +184,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #if DEBUG
                 Heap.enableVisualizer();
             #endif
-            
-            // Mixpanel initialization
-            let mixpanel = Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769")
-            mixpanel.track(event: "Opened App",
-                           properties:["Username": "\(PFUser.current()!.username!)"
-                ])
         }
         
         
@@ -545,57 +534,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     }
     
-    
-    
-    
-    
 
-    // MARK: - Core Data stack
-    /*
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-        */
-        let container = NSPersistentContainer(name: "Redplanet")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                 
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    */
-
-    // MARK: - Core Data Saving support
-    /*
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-     */
 
 }
 

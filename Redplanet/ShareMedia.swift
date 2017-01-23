@@ -18,7 +18,6 @@ import Parse
 import ParseUI
 import Bolts
 import OneSignal
-import Mixpanel
 
 // Array to hold photo or video from library; PHAsset
 var shareMediaAsset = [PHAsset]()
@@ -433,22 +432,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 
                 // Share Photo
                 self.sharePhotoData()
-                
-                // MARK: - Mixpanel
-                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Photo",
-                                              properties: ["Username":"\(PFUser.current()!.username!)"]
-                )
-                
+
             } else {
                 
                 // Share Video
                 self.shareVideoData()
-                
-                // MARK: - Mixpanel
-                Mixpanel.initialize(token: "947d5f290bf33c49ce88353930208769").track(event: "Shared Video",
-                                              properties: ["Username":"\(PFUser.current()!.username!)"]
-                )
-                
+
             } // end contentType Determination
             
             // Clear arrays
