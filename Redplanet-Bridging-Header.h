@@ -13,6 +13,4 @@
 #import "CLImageEditor.h"
 #import "Heap.h"
 
-//#import "Mixpanel/Mixpanel.h"
-
 #endif /* Redplanet_Bridging_Header_h */
