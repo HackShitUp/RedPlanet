@@ -8,7 +8,6 @@ PODS:
   - DZNEmptyDataSet (1.8.1)
   - Heap (3.0.0)
   - KILabel (1.0.0)
-  - Mixpanel-swift (2.1.2)
   - Onboard (2.3.1)
   - OneSignal (2.3.5)
   - Parse (1.14.2):
@@ -25,7 +24,6 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - Heap
   - KILabel (= 1.0.0)
-  - Mixpanel-swift
   - Onboard
   - OneSignal
   - Parse
@@ -39,7 +37,6 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: b95bc7a21f47ddd470e8ebccefa59c91f4fe1d68
   KILabel: 84049969642d4ac1061ebe38ad4c0da37fed108b
-  Mixpanel-swift: e6234affa94d14f76c856f301693dc43cae5dcb0
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 4cb42948ebc141bd5deb54d3fda25105db94f6d4
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
@@ -48,6 +45,6 @@ SPEC CHECKSUMS:
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
 
-PODFILE CHECKSUM: a5fbaccb5f3b884c55cd1937045d59100da6f5ca
+PODFILE CHECKSUM: 4995f0125f06aa440dc01ea95ec1bf6e161c3401
 
 COCOAPODS: 1.1.1

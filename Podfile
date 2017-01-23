@@ -16,7 +16,6 @@ target 'Redplanet' do
 	pod 'DZNEmptyDataSet'
 	pod 'Onboard'
 	pod ‘Heap’
-	pod ‘Mixpanel-swift’
 
   target 'RedplanetTests' do
     inherit! :search_paths
