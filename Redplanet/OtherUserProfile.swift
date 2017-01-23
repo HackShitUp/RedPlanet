@@ -325,7 +325,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                             self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
-                            self.collectionView!.isUserInteractionEnabled = true
+                            self.collectionView!.isScrollEnabled = true
                         }
                         
                     } else if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
@@ -334,7 +334,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = false
+                        self.collectionView!.isScrollEnabled = false
                         
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
 
@@ -342,14 +342,14 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = false
+                        self.collectionView!.isScrollEnabled = false
                         
                     } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // CONFIRM FOLLOW REQUEST
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = false
+                        self.collectionView!.isScrollEnabled = false
                         
                     } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // FOLLOWING
@@ -358,7 +358,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                             self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
-                            self.collectionView!.isUserInteractionEnabled = true
+                            self.collectionView!.isScrollEnabled = true
                         }
                         
                     } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
@@ -366,7 +366,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = false
+                        self.collectionView!.isScrollEnabled = false
                         
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // FOLLOWER & FOLLOWING
@@ -375,7 +375,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                             self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
-                            self.collectionView!.isUserInteractionEnabled = true
+                            self.collectionView!.isScrollEnabled = true
                         }
                         
                     } else {
@@ -383,7 +383,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = false
+                        self.collectionView!.isScrollEnabled = false
                     }
                     
                 } else {
@@ -392,10 +392,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
-                        self.collectionView!.isUserInteractionEnabled = true
+                        self.collectionView!.isScrollEnabled = true
                     }
                     
-                    self.collectionView!.isUserInteractionEnabled = true
+                    self.collectionView!.isScrollEnabled = true
                 }
                 
             } else {
