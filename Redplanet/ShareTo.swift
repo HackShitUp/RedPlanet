@@ -159,7 +159,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.friends.contains(object) || myFollowing.contains(object) {
+                    if self.friends.contains(where: {$0.objectId! == object.objectId!}) || myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }
@@ -195,7 +195,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.friends.contains(object) || myFollowing.contains(object) {
+                    if self.friends.contains(where: {$0.objectId! == object.objectId!}) || myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }

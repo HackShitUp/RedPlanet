@@ -223,7 +223,7 @@ class ContactsCell: UITableViewCell {
             // ========================================================================================================================
             // SENT FRIEND REQUEST ====================================================================================================
             // ========================================================================================================================
-            if myRequestedFriends.contains(self.friend!) {
+            if myRequestedFriends.contains(where: {$0.objectId! == self.friend!.objectId!}) {
                 let alert = UIAlertController(title: nil,
                                               message: nil,
                                               preferredStyle: .alert)
@@ -311,7 +311,7 @@ class ContactsCell: UITableViewCell {
             // ========================================================================================================================
             // RECEIVED FRIEND REQUEST ================================================================================================
             // ========================================================================================================================
-            if requestedToFriendMe.contains(self.friend!) {
+            if requestedToFriendMe.contains(where: {$0.objectId! == self.friend!.objectId!}) {
                 
                 // Disable buttons to prevent duplicate data entry
                 self.friendButton.isUserInteractionEnabled = false

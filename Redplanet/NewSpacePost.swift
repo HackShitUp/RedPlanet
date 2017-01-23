@@ -119,8 +119,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 // Set textPost
                 space["textPost"] = self.textView.text!
             }
-            
-            
             space["toUser"] = otherObject.last!
             space["toUsername"] = otherName.last!
             space.saveInBackground {

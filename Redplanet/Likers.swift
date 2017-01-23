@@ -185,7 +185,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.likers.contains(object) {
+                    if self.likers.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }

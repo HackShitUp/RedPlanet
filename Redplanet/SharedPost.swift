@@ -703,8 +703,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Manipulate likes, comments, and shares
         
         // Set Like Button
-//        if self.likes.contains(PFUser.current()!) {
-        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
+        if self.likes.contains(where: {$0.objectId == PFUser.current()!.objectId! }) {
             cell.likeButton.setTitle("liked", for: .normal)
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
         } else {

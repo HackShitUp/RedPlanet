@@ -296,7 +296,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.friends.contains(object) {
+                    if self.friends.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }

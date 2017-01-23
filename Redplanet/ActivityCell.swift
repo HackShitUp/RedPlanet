@@ -156,7 +156,7 @@ class ActivityCell: UITableViewCell {
                             
                             // Push ProfilePhoto view controller
                             let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                            self.delegate!.navigationController!.pushViewController(proPicVC, animated: false)
+                            self.delegate!.navigationController!.pushViewController(proPicVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -173,7 +173,7 @@ class ActivityCell: UITableViewCell {
             // SHARE
             if self.activity.titleLabel!.text!.hasSuffix("shared post") {
                 let share = PFQuery(className: "Newsfeeds")
-                share.includeKey("byUser")
+                share.includeKeys(["byUser", "pointObject"])
                 share.whereKey("contentType", equalTo: "sh")
                 share.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 share.findObjectsInBackground(block: {
@@ -257,9 +257,17 @@ class ActivityCell: UITableViewCell {
                             // Append object
                             itmObject.append(object)
                             
-                            // Push VC
-                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            // PHOTO
+                            if object.value(forKey: "photoAsset") != nil {
+                                // Push to VC
+                                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            } else {
+                                // VIDEO
+                                // Push VC
+                                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                                self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+                            }
                         }
                         
                     } else {
@@ -743,9 +751,17 @@ class ActivityCell: UITableViewCell {
                             // Append object
                             itmObject.append(object)
                             
-                            // Push to VC
-                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            // PHOTO
+                            if object.value(forKey: "photoAsset") != nil {
+                                // Push to VC
+                                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            } else {
+                                // VIDEO
+                                // Push VC
+                                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                                self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+                            }
                         }
                         
                     } else {

@@ -1196,7 +1196,7 @@ class OtherUserHeader: UICollectionReusableView {
             
             
             // Set friend requests
-            if myRequestedFriends.contains(otherObject.last!) {
+            if myRequestedFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 // "Rescind Friend Request"
                 options.addAction(cancel)
                 options.addAction(unfriend)
@@ -1204,7 +1204,7 @@ class OtherUserHeader: UICollectionReusableView {
                 self.delegate!.present(options, animated: true, completion: nil)
             }
             
-            if requestedToFriendMe.contains(otherObject.last!) {
+            if requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
 
                 options.addAction(ignore)
                 options.addAction(confirm)
@@ -1444,9 +1444,9 @@ class OtherUserHeader: UICollectionReusableView {
                                      style: .cancel,
                                      handler: nil)
             
+
             
-            
-            if myRequestedFollowers.contains(otherObject.last!) {
+            if myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 options.addAction(confirm)
                 options.addAction(ignore)
                 options.addAction(cancel)
@@ -1454,7 +1454,7 @@ class OtherUserHeader: UICollectionReusableView {
                 self.delegate?.present(options, animated: true, completion: nil)
             }
             
-            if myRequestedFollowing.contains(otherObject.last!) {
+            if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 options.addAction(cancel)
                 options.addAction(rescind)
                 options.view.tintColor = UIColor.black
@@ -1633,7 +1633,7 @@ class OtherUserHeader: UICollectionReusableView {
         
         // (6) Add tap method to show profile photo
         // Show Profile photo if friends
-        if myFriends.contains(otherObject.last!) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
+        if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
             let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))
             proPicTap.numberOfTapsRequired = 1
             self.rpUserProPic.isUserInteractionEnabled = true

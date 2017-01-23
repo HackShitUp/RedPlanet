@@ -47,6 +47,9 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func doneButton(_ sender: Any) {
+        // Send push notification to Me...
+        
+        
         // :)
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
@@ -235,7 +238,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
             
             
             // Set title
-            if myRequestedFriends.contains(self.friendObjects[indexPath.row]) {
+            if myRequestedFriends.contains(where: {$0.objectId! == self.friendObjects[indexPath.row].objectId!}) {
                 // FOLLOWING
                 // Set button's title and design
                 cell.followButton.setTitle("Friend Requested", for: .normal)
@@ -295,7 +298,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
             
             
             // Set title
-            if myFollowing.contains(self.followObjects[indexPath.row]) {
+            if myFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
                 // FOLLOWING
                 // Set button's title and design
                 cell.followButton.setTitle("Following", for: .normal)

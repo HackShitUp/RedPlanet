@@ -31,6 +31,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Array to hold fromUser Objects
     var fromUsers = [PFObject]()
     
+    // Skipped objects for Moments
+    var skipped = [PFObject]()
+    
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -201,11 +204,26 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 // Clear array
                 self.myActivity.removeAll(keepingCapacity: false)
                 self.fromUsers.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
                 
                 // Append objects
                 for object in objects! {
-                    self.myActivity.append(object)
-                    self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                    
+                    // Set time configs
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    
+                    if object.value(forKey: "type") as! String == "like itm" || object.value(forKey: "type") as! String == "share itm" {
+                        if difference.hour! < 24 {
+                            self.myActivity.append(object)
+                            self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                        } else {
+                            self.skipped.append(object)
+                        }
+                    } else {
+                        self.myActivity.append(object)
+                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
                 }
                 
                 
@@ -308,7 +326,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-//                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
@@ -797,18 +814,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= myActivity.count {
+        if page <= myActivity.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 25
 
-            
             // Fetch Notifications
             queryNotifications()
-
-
         }
     }
-    
 
 }

@@ -544,7 +544,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         
         // (6) Determine whether the current user has liked this object or not
-        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
+        if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image

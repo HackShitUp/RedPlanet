@@ -597,7 +597,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                             
                             
                             // (B) Manipulate likes
-                            if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
+                            if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
                                 // liked
                                 self.likeButton.setTitle("liked", for: .normal)
                                 self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)

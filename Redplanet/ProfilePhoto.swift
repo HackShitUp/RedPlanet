@@ -364,8 +364,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         }
         
         // (FA) Manipulate likes
-//        if self.likes.contains(PFUser.current()!) {
-        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
+        if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
             // liked
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
             cell.likeButton.setTitle("liked", for: .normal)

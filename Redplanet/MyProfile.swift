@@ -15,13 +15,11 @@ import Parse
 import ParseUI
 import Bolts
 
-import MessageUI
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
-
-class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate {
+class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
     
     // Variable to hold my content
     var myContentObjects = [PFObject]()
@@ -39,25 +37,6 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
     var refresher: UIRefreshControl!
     
     @IBAction func findFriends(_ sender: Any) {
-        /*
-         if MFMailComposeViewController.canSendMail() {
-         let mail = MFMailComposeViewController()
-         mail.mailComposeDelegate = self
-         mail.setToRecipients(["redplanethub@gmail.com"])
-         mail.setSubject("My Opinion About Redplanet")
-         present(mail, animated: true)
-         } else {
-         let alert = UIAlertController(title: "Something Went Wrong",
-         message: "Configure your email to this device to send us feedback!",
-         preferredStyle: .alert)
-         let ok = UIAlertAction(title: "ok",
-         style: .default,
-         handler: nil)
-         alert.addAction(ok)
-         alert.view.tintColor = UIColor.black
-         self.present(alert, animated: true, completion: nil)
-         }
- */
         
         // If iOS 9
         if #available(iOS 9, *) {
@@ -73,15 +52,7 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
         }
         
     }
-    
-    
-    
-    // Dismiss
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true)
-    }
-    
-    
+
     
     // Function to fetch my content
     func fetchMine() {
@@ -108,8 +79,8 @@ class MyProfile: UICollectionViewController, MFMailComposeViewControllerDelegate
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])                    
-                    if object.value(forKey: "contentType") as! String == "itm" {
-                        if difference.hour! <= 24 {
+                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
+                        if difference.hour! < 24 {
                             self.myContentObjects.append(object)
                         } else {
                             self.skipped.append(object)

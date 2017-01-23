@@ -606,7 +606,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     
                     
                     // Check whether user has liked it or not
-                    if self.likers.contains(where: { $0.objectId == PFUser.current()!.objectId!}) {
+                    if self.likers.contains(where: {$0.objectId == PFUser.current()!.objectId!}) {
                         // unlike
                         cell.likeButton.setTitle("liked", for: .normal)
                         cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)

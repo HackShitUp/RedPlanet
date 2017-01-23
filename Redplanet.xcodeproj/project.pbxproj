@@ -193,7 +193,6 @@
 		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
-		7EF2B7C81E2332CB00D08FC2 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C71E2332CB00D08FC2 /* Licenses.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -460,7 +459,6 @@
 		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
-		7EF2B7C71E2332CB00D08FC2 /* Licenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -692,7 +690,6 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7EF2B7C71E2332CB00D08FC2 /* Licenses.swift */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
 				7EDFB63A1DDBDC71004AE090 /* FAQ */,
@@ -1897,7 +1894,6 @@
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
-				7EF2B7C81E2332CB00D08FC2 /* Licenses.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */,
 				7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */,

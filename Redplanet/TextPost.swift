@@ -399,15 +399,12 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         
         // (4) Determine whether the current user has liked this object or not
-//        if self.likes.contains(PFUser.current()!) {
-        if self.likes.contains(where: { $0.objectId == "\(PFUser.current()!.objectId!)" }) {
-            print("TRUE")
+        if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId!}) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
             cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
         } else {
-            print("FALSE")
             // Set button title
             cell.likeButton.setTitle("notLiked", for: .normal)
             // Set button image

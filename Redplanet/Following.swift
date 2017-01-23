@@ -82,7 +82,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     
-                    if object.value(forKey: "contentType") as! String == "itm" {
+                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
                         if difference.hour! < 24 {
                             self.followingContent.append(object)
                         } else {
@@ -425,7 +425,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                     // Present VC
                     let textPostVC = self.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                     self.parentNavigator.pushViewController(textPostVC, animated: true)
-                    
                 }
                 
                 

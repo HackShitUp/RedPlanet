@@ -13,8 +13,10 @@ import Parse
 import ParseUI
 import Bolts
 
+import SimpleAlert
+import MessageUI
 
-class UserSettings: UITableViewController, UINavigationControllerDelegate {
+class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
@@ -39,7 +41,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
+                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -58,9 +60,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
     
     // Function to set privacy
     func setPrivacy(sender: UISwitch) {
-        
-        print("Touched")
-        
+
         if sender.isOn {
             // Private account
             // (1) Friends request must be confirmed
@@ -177,18 +177,31 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 7
+        } else if section == 1 {
+            return 2
         } else {
-            return 7
+            return 6
         }
     }
     
-
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UIView()
+        let title = UILabel()
+        title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
+        title.font = UIFont(name: "AvenirNext-Heavy", size: 12)
+        title.textColor = UIColor.black
+        title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
+        title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
+        title.textAlignment = .natural
+        view.addSubview(title)
+        return view
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
@@ -275,17 +288,72 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 })
             }
             
-        } else {
-            
+        
+        } else if indexPath.section == 1 {
             
             if indexPath.row == 0 {
-                // Confetti
-                // TODO::
-                // ????
-                // NOTHING HERE
+                PFQuery.clearAllCachedResults()
+                URLCache.shared.removeAllCachedResponses()
+                
+                // MARK: - SimpleAlert
+                let alert = AlertController(title: "Cleared Cache",
+                                            message: "Redplanet's network cache policy and storage was successfully reset.",
+                                            style: .alert)
+                
+                // Design content view
+                alert.configContentView = { view in
+                    if let view = view as? AlertContentView {
+                        view.backgroundColor = UIColor.white
+                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                        view.textBackgroundView.layer.cornerRadius = 3.00
+                        view.textBackgroundView.clipsToBounds = true
+                    }
+                }
+                
+                // Design corner radius
+                alert.configContainerCornerRadius = {
+                    return 14.00
+                }
+                
+                // (1) Write in space
+                let ok = AlertAction(title: "ok",
+                                        style: .default,
+                                        handler: { (AlertAction) in
+                                            PFQuery.clearAllCachedResults()
+                                            URLCache.shared.removeAllCachedResponses()
+                })
+                
+                
+                alert.addAction(ok)
+                alert.view.tintColor = UIColor.black
+                self.present(alert, animated: true, completion: nil)
+                
             }
             
             if indexPath.row == 1 {
+                if MFMailComposeViewController.canSendMail() {
+                    let mail = MFMailComposeViewController()
+                    mail.mailComposeDelegate = self
+                    mail.setToRecipients(["redplanethub@gmail.com", "redplanetmediahub@gmail.com"])
+                    mail.setSubject("What I REALLY Think About Redplanet")
+                    mail.setMessageBody("🚀🦄🚀\nBe Brutally Honest\n\n3 Things I Like About Redplanet\n1.)\n2.)\n3.)\n\n3 Things I Don't Like About Redplanet\n1.)\n2.)\n3.)\n", isHTML: false)
+                    present(mail, animated: true)
+                } else {
+                    let alert = UIAlertController(title: "Something Went Wrong",
+                                                  message: "Configure your email to this device to send us feedback!",
+                                                  preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
+        
+        } else {
+            
+            if indexPath.row == 0 {
                 // Icons Guideline
                 
                 // Push VC
@@ -293,7 +361,7 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 self.navigationController!.pushViewController(iconsVC, animated: false)
             }
             
-            if indexPath.row == 2 {
+            if indexPath.row == 1 {
                 
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
@@ -305,38 +373,39 @@ class UserSettings: UITableViewController, UINavigationControllerDelegate {
                 
             }
             
-            if indexPath.row == 3 {                
+            if indexPath.row == 2 {
                 // Push to AboutUs
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
                 self.navigationController?.pushViewController(aboutVC, animated: true)
 
             }
             
-            if indexPath.row == 4 {
+            if indexPath.row == 3 {
                 // FAQ
                 let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
                 self.navigationController?.pushViewController(faqVC, animated: true)
             }
             
-            if indexPath.row == 5 {
+            if indexPath.row == 4 {
                 // TOS
                 let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
                 self.navigationController?.pushViewController(tosVC, animated: true)
             }
             
-            if indexPath.row == 6 {
+            if indexPath.row == 5 {
                 // Privacy Policy
                 let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
                 self.navigationController?.pushViewController(privacyVC, animated: true)
             }
             
         } // end indexPath
-        
-        
-        
-        
-    }
+    }// end didSelectRowAt
     
+    
+    // MARK: MessagesUI Delegate
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
     
 
 }

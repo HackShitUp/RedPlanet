@@ -155,7 +155,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 self.notFriends.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if myFriends.contains(object) {
+                    if myFriends.contains(where: {$0.objectId! == object.objectId!}) {
                         self.friends.append(object)
                     } else {
                         self.notFriends.append(object)
@@ -403,7 +403,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             cell.rpUsername.text! = notFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // Set button
-            if myRequestedFriends.contains(notFriends[indexPath.row]) || requestedToFriendMe.contains(notFriends[indexPath.row]) {
+            if myRequestedFriends.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) || requestedToFriendMe.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) {
                 
                 // Change button's title and design
                 cell.friendButton.setTitle("Friend Requested", for: .normal)

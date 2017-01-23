@@ -256,7 +256,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
 
 
         // Show options
-        if myFriends.contains(otherObject.last!) {
+        if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             alert.addAction(space)
             alert.addAction(chat)
             alert.addAction(reportOrBlock)
@@ -301,7 +301,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if object.value(forKey: "contentType") as! String == "itm" {
+                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
                         if difference.hour! < 24 {
                             self.contentObjects.append(object)
                         } else {
@@ -318,55 +318,64 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                     // PRIVATE ACCOUNT
                     // Any logic that contains a print statement DOES NOT place a cover
                     
-                    if myFriends.contains(otherObject.last!) {
+                    if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // FRIENDS
                         print("Don't hide because FRIENDS")
                         if self.contentObjects.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
+                            self.collectionView!.isUserInteractionEnabled = true
                         }
                         
-                    } else if myRequestedFriends.contains(otherObject.last!) || requestedToFriendMe.contains(otherObject.last!) {
+                    } else if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+
                         // FRIEND REQUESTED
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = false
                         
-                    } else if myFollowers.contains(otherObject.last!) && !myFollowing.contains(otherObject.last!) {
+                    } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+
                         // FOLLOWER ONLY
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = false
                         
-                    } else if myRequestedFollowers.contains(otherObject.last!) {
+                    } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // CONFIRM FOLLOW REQUEST
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = false
                         
-                    } else if myFollowing.contains(otherObject.last!) {
+                    } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.contentObjects.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
+                            self.collectionView!.isUserInteractionEnabled = true
                         }
                         
-                    } else if myRequestedFollowing.contains(otherObject.last!) {
+                    } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                         // FOLLOW REQUESTED
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = false
                         
-                    } else if myFollowers.contains(otherObject.last!) && myFollowing.contains(otherObject.last!) {
+                    } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                         // FOLLOWER & FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.contentObjects.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                             self.collectionView!.addSubview(self.cover)
                             self.collectionView!.allowsSelection = false
+                            self.collectionView!.isUserInteractionEnabled = true
                         }
                         
                     } else {
@@ -374,15 +383,19 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                         self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = false
                     }
                     
                 } else {
                     // PUBLIC ACCOUNT
                     if self.contentObjects.count == 0 {
-                        self.cover.setTitle("🤔\nNo Posts Yet\n", for: .normal)
+                        self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
                         self.collectionView!.addSubview(self.cover)
                         self.collectionView!.allowsSelection = false
+                        self.collectionView!.isUserInteractionEnabled = true
                     }
+                    
+                    self.collectionView!.isUserInteractionEnabled = true
                 }
                 
             } else {
@@ -664,8 +677,7 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         
         header.followButton.isHidden = false
         header.followButton.isEnabled = true
-        
-        
+
         
         
         if myFriends.contains(where: { $0.objectId! == otherObject.last!.objectId!} ) {
@@ -673,17 +685,13 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             header.relationType.isHidden = false
             header.relationType.setTitle("Friends", for: .normal)
         }
-        
-        
-        // Friend Requested
+
         if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FRIEND REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Friend Requested", for: .normal)
         }
         
-        
-        // Follower
         if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOWER
             header.relationType.isHidden = false
@@ -691,30 +699,23 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             
         }
         
-        
-        // Following
         if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
         }
         
-        
-        // Follow Requested
-            if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             // FOLLOW REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Follow Requested", for: .normal)
         }
         
-        
-        // Following
-            if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+        if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
             // FOLLOWER & FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
         }
-        
         
         // PFUser.currentUser()'s Profile
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
