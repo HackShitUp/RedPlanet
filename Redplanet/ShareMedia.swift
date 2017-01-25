@@ -447,11 +447,19 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Send Notification
             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
             
-            // Push Show MasterTab
-            let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
+            doShow = true
+            let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
+            let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
+            let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
+            masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            let newTPNav = self.storyboard?.instantiateViewController(withIdentifier:"right") as! UINavigationController
+            let snapContainer = SnapContainerViewController.containerViewWith(libNav,
+                                                                              middleVC: camNav,
+                                                                              rightVC: newTPNav,
+                                                                              topVC: nil,
+                                                                              bottomVC: masterTab)
+            UIApplication.shared.keyWindow?.rootViewController = snapContainer
             UIApplication.shared.keyWindow?.makeKeyAndVisible()
-            UIApplication.shared.keyWindow?.rootViewController = masterTab
         }) // end running in main thread
     }
     

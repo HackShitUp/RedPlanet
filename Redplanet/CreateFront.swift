@@ -254,6 +254,17 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Dismiss Progress
         SVProgressHUD.dismiss()
         
+        // MARK: - IGCMenuDataSource and Delegates
+        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
+        menuButton.clipsToBounds = true
+        igcMenu.menuButton = self.menuButton
+        igcMenu.menuSuperView = self.view!
+        self.view!.bringSubview(toFront: self.menuButton)
+        igcMenu.disableBackground = true
+        igcMenu.numberOfMenuItem = 3
+        igcMenu.delegate = self
+        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText"]
+        
         if self.navigationController?.tabBarController?.selectedIndex == 2 {
             
             if igcOn == true {
@@ -378,19 +389,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.tabBarController?.delegate = self
         
         // Stylize title
-        newConfig()
-        
-        // MARK: - IGCMenuDataSource and Delegates
-        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
-        menuButton.clipsToBounds = true
-        igcMenu.menuButton = self.menuButton
-        igcMenu.menuSuperView = self.view!
-        self.view!.bringSubview(toFront: self.menuButton)
-        igcMenu.disableBackground = true
-        igcMenu.numberOfMenuItem = 3
-        igcMenu.delegate = self
-        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText"]
-        igcMenu.showCircularMenu()
+        configureView()
         
         // Set initial query
         self.queryNotifications()

@@ -16,7 +16,6 @@ import Bolts
 import SVProgressHUD
 import SimpleAlert
 
-
 // Global variable to hold object
 var textPostObject = [PFObject]()
 
@@ -204,7 +203,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             
             
             let alert = AlertController(title: "🎉\nCongrats, you viewed your first Text Post!",
-                                          message: "•Swipe down to leave\n•Swipe left for Views 🙈",
+                                          message: "Tap the three dots to show more options.",
                                           style: .alert)
             // Design content view
             alert.configContentView = { view in
@@ -251,12 +250,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-//        NSURLCache.sharedURLCache().removeAllCachedResponses()
+        URLCache.shared.removeAllCachedResponses()
     }
-    
-    
-    
-
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -453,209 +448,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
 
     } // End cellForRowAt
-    
-    
-    // MARK: - UITableViewDelegate Method
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    } // end edit boolean
-    
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        // (1) Delete Text Post
-        let delete = UITableViewRowAction(style: .normal,
-                                              title: "X\nDelete") { (UITableViewRowAction, indexPath) in
-                                                
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.show(withStatus: "Deleting")
-                                            
-                                            // Delete content
-                                            let content = PFQuery(className: "Newsfeeds")
-                                            content.whereKey("byUser", equalTo: PFUser.current()!)
-                                            content.whereKey("objectId", equalTo: textPostObject.last!.objectId!)
-                                            
-                                            let shares = PFQuery(className: "Newsfeeds")
-                                            shares.whereKey("pointObject", equalTo: textPostObject.last!)
-                                                
-                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        // Delete object
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                
-                                                                // Reload newsfeed
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                
-                                                                // Reload myProfile
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.navigationController?.popViewController(animated: true)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-
-        }
-        
-        // (2) Edit
-        let edit = UITableViewRowAction(style: .normal,
-                                         title: "🔩\nEdit") { (UITableViewRowAction, indexPath) in
-                                            
-                                            
-                                            // Append object
-                                            editObjects.append(textPostObject.last!)                                            
-                                            
-                                            // Push VC
-                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                            self.navigationController?.pushViewController(editVC, animated: true)
-                                            
-                                            
-                                            // Close cell
-                                            self.tableView!.setEditing(false, animated: true)
-                                            
-        }
-        
-        
-        // (3) Views
-        let views = UITableViewRowAction(style: .normal,
-                                        title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
-                                            // Append object
-                                            viewsObject.append(textPostObject.last!)
-                                            
-                                            // Push VC
-                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                            self.navigationController?.pushViewController(viewsVC, animated: true)
-                                            
-        }
-        
-        
-        // (4) Report Content
-        let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
-                                            
-                                            let alert = UIAlertController(title: "Report",
-                                                                          message: "Please provide your reason for reporting \(textPostObject.last!.value(forKey: "username") as! String)'s Text Post",
-                                                preferredStyle: .alert)
-                                            
-                                            let report = UIAlertAction(title: "Report", style: .destructive) {
-                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                
-                                                let answer = alert.textFields![0]
-                                                
-                                                // Save to <Block_Reported>
-                                                let report = PFObject(className: "Block_Reported")
-                                                report["from"] = PFUser.current()!.username!
-                                                report["fromUser"] = PFUser.current()!
-                                                report["to"] = textPostObject.last!.value(forKey: "username") as! String
-                                                report["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
-                                                report["forObjectId"] = textPostObject.last!.objectId!
-                                                report["type"] = answer.text!
-                                                report.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully saved report: \(report)")
-                                                        
-                                                        // Dismiss
-                                                        let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(textPostObject.last!.value(forKey: "username") as! String)'s Text Post",
-                                                            preferredStyle: .alert)
-                                                        
-                                                        let ok = UIAlertAction(title: "ok",
-                                                                               style: .default,
-                                                                               handler: nil)
-                                                        
-                                                        alert.addAction(ok)
-                                                        alert.view.tintColor = UIColor.black
-                                                        self.present(alert, animated: true, completion: nil)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
-                                            
-                                            
-                                            let cancel = UIAlertAction(title: "Cancel",
-                                                                       style: .cancel,
-                                                                       handler: nil)
-                                            
-                                            
-                                            alert.addTextField(configurationHandler: nil)
-                                            alert.addAction(report)
-                                            alert.addAction(cancel)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-        }
-        
-        
-        
-        
-        
-        // Set background colors
-        /*
-        // Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        // Grey
-        edit.backgroundColor = UIColor(red:0.85, green:0.85, blue:0.85, alpha:1.0)
-        // Yellow
-        views.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-        // Blue
-        report.backgroundColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
-        */
-        
-        
-        // Super Dark Gray
-        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
-        // Dark Gray
-        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
-        // Red
-        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-        
-        
-        
-        if (textPostObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete, edit, views]
-        } else {
-            return [report]
-        }
-
-        
-        
-    } // End edit action
-    
-    
-    
-    
-    
-    // ScrollView -- Pull To Pop
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -80 {
-            // Pop view controller
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
 
 
 } // End
