@@ -14,6 +14,13 @@ import ParseUI
 import Bolts
 
 class MasterTab: UITabBarController {
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.view.layer.cornerRadius = 14.00
+        self.view.clipsToBounds = true
+    }
 
     
     override func viewDidLoad() {
@@ -23,8 +30,6 @@ class MasterTab: UITabBarController {
         if PFUser.current() != nil {
             // Set title to user's username
             self.tabBar.items?[4].title = PFUser.current()!.username!.uppercased()
-            // Load middle tab
-//            self.selectedIndex = 2
         }
         
         // Set font

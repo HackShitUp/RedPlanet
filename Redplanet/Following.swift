@@ -29,7 +29,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     // Initialize Parent navigationController
     var parentNavigator: UINavigationController!
     
-    
     // Page size
     var page: Int = 50
     

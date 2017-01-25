@@ -106,7 +106,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let configuration = ParseClientConfiguration {
             $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
             $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
-            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse"
+            $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse/"
         }
         Parse.initialize(with: configuration)
         
@@ -290,7 +290,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if PFUser.current() != nil {
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! UITabBarController
-            
             masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             masterTab.tabBar.backgroundColor = UIColor.white
             window?.rootViewController = masterTab

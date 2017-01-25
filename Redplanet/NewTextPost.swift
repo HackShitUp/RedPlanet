@@ -23,8 +23,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Push to camera
-        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-        self.navigationController?.pushViewController(cameraVC, animated: false)
+//        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
+//        self.navigationController?.pushViewController(cameraVC, animated: false)
     }
     
     @IBAction func moreButton(_ sender: Any) {
@@ -233,6 +233,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     
@@ -417,7 +419,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     }
     
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -456,8 +462,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Tap to share privately
         let privateShare = UITapGestureRecognizer(target: self, action: #selector(sharePrivate))
         privateShare.numberOfTapsRequired = 1
-//        self.directButton.isUserInteractionEnabled = true
-//        self.directButton.addGestureRecognizer(privateShare)
     }
     
 

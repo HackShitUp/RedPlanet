@@ -16,6 +16,11 @@ var pageMenu : CAPSPageMenu?
 
 
 class Home: UIViewController, UINavigationControllerDelegate {
+    
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

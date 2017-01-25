@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,23 +22,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOr-qa-p2m">
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="243" id="flo-xx-VJA"/>
-                                    <constraint firstAttribute="width" constant="375" id="io8-LV-qij"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-BoldItalic" family="Avenir Next" pointSize="30"/>
+                                <rect key="frame" x="0.0" y="192" width="375" height="263"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-HeavyItalic" family="Avenir Next" pointSize="30"/>
                                 <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="FOr-qa-p2m" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="AHK-L2-02a"/>
-                            <constraint firstItem="FOr-qa-p2m" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="192" id="L1e-vi-mny"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="FOr-qa-p2m" secondAttribute="bottom" constant="212" id="O1j-aU-TuS"/>
-                            <constraint firstAttribute="trailing" secondItem="FOr-qa-p2m" secondAttribute="trailing" id="t9a-mz-uen"/>
+                            <constraint firstItem="FOr-qa-p2m" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="TAT-nw-c5a"/>
+                            <constraint firstItem="FOr-qa-p2m" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="192" id="aZd-3j-aJV"/>
+                            <constraint firstAttribute="trailing" secondItem="FOr-qa-p2m" secondAttribute="trailing" id="hDd-El-VTx"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="FOr-qa-p2m" secondAttribute="bottom" constant="212" id="oB7-So-3Rs"/>
                         </constraints>
                     </view>
+                    <nil key="simulatedStatusBarMetrics"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

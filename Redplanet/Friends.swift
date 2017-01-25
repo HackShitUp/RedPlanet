@@ -164,7 +164,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // Show Progress
         SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
 
         // Query Friends
