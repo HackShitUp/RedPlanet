@@ -531,6 +531,15 @@
 			name = Stickers;
 			sourceTree = "<group>";
 		};
+		7E2953861E3899E400C8C055 /* SwipeView */ = {
+			isa = PBXGroup;
+			children = (
+				7E2953821E387DC000C8C055 /* SnapContainerViewController.swift */,
+				7E2953831E387DC000C8C055 /* VerticalScrollViewController.swift */,
+			);
+			name = SwipeView;
+			sourceTree = "<group>";
+		};
 		7E2CA3FE1E259F390071B052 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -1210,9 +1219,8 @@
 				7ED4A9141DBEB5020016698F /* RFollowing */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
-				7E2953821E387DC000C8C055 /* SnapContainerViewController.swift */,
-				7E2953831E387DC000C8C055 /* VerticalScrollViewController.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
+				7E2953861E3899E400C8C055 /* SwipeView */,
 				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1991DB3541000437219 /* CHATS */,

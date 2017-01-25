@@ -7242,11 +7242,11 @@
             </objects>
             <point key="canvasLocation" x="2581.5" y="-2701.5"/>
         </scene>
-        <!--Redplanet-->
+        <!--Notifications-->
         <scene sceneID="CfS-Ef-186">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cU2-FF-485" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Redplanet" image="SCRP" id="X76-jS-IPb"/>
+                    <tabBarItem key="tabBarItem" title="Notifications" image="SCRP" id="X76-jS-IPb"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BDr-aw-Ghe">

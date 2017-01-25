@@ -568,6 +568,10 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
  
     
     // Mark: UITableviewDelegate methods
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
         let chatName = self.chatObjects[indexPath.row].value(forKey: "username") as! String

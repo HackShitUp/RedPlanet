@@ -58,6 +58,16 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         setupHorizontalScrollView()
     }
     
+    
+    func showLeft() {
+        self.scrollView.setContentOffset(CGPoint(x: UIScreen.main.bounds.size.width, y: CGFloat(0.0)), animated: true)
+    }
+    
+    func showRight() {
+        self.scrollView.setContentOffset(CGPoint(x: UIScreen.main.bounds.size.width, y: CGFloat(0.0)), animated: true)
+    }
+    
+    
     func setupVerticalScrollView() {
         middleVertScrollVc = VerticalScrollViewController.verticalScrollVcWith(middleVc: middleVc,
                                                                                topVc: topVc,
@@ -134,6 +144,9 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         self.setNeedsStatusBarAppearanceUpdate()
         
         self.initialContentOffset = scrollView.contentOffset
+        print("CO: \(scrollView.contentOffset)\n\n\n")
+        print("COY: \(scrollView.contentOffset.y)\n\n\n")
+        print("COX: \(scrollView.contentOffset.x)\n\n\n")
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

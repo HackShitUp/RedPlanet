@@ -40,6 +40,11 @@ class VerticalScrollViewController: UIViewController, UIScrollViewDelegate, Snap
         }
     }
     
+    
+    func showBot() {
+        self.scrollView.setContentOffset(CGPoint(x: CGFloat(0.0), y: UIScreen.main.bounds.size.height), animated: true)
+    }
+    
     func setupScrollView() {
         scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
