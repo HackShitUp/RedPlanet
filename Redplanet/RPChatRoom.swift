@@ -455,6 +455,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // Function to push camera
     func goCamera(sender: UIButton) {
         chatCamera = true
+        doShow = false
         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
         self.navigationController!.pushViewController(cameraVC, animated: false)
     }

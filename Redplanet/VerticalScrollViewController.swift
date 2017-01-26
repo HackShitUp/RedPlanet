@@ -36,11 +36,10 @@ class VerticalScrollViewController: UIViewController, UIScrollViewDelegate, Snap
         self.scrollView.delegate = self
         
         if doShow == true {
-            self.scrollView.setContentOffset(CGPoint(x: CGFloat(0.0), y: UIScreen.main.bounds.size.height), animated: true)
+            showBot()
         }
     }
-    
-    
+
     func showBot() {
         self.scrollView.setContentOffset(CGPoint(x: CGFloat(0.0), y: UIScreen.main.bounds.size.height), animated: true)
     }

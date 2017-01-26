@@ -108,7 +108,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         if chatCamera == true && doShow == false {
             _ = self.navigationController?.popViewController(animated: false)
         } else if chatCamera == false && doShow == false {
-            doShow = false
+            doShow = true
             let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
             let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
             let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
