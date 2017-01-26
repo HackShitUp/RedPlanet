@@ -33,9 +33,6 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
     // Handle skipped objects for Pipeline
     var skipped = [PFObject]()
     
-    // Refresher
-    var refresher: UIRefreshControl!
-    
     @IBAction func findFriends(_ sender: Any) {
         
         // If iOS 9
@@ -44,7 +41,6 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
             let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
             self.navigationController?.pushViewController(contactsVC, animated: true)
         } else {
-            
             // Fallback on earlier versions
             // Show search
             let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
@@ -125,9 +121,6 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
         // fetch data
         fetchMine()
         
-        // End refresher
-        self.refresher.endRefreshing()
-        
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -135,8 +128,7 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+     
         // Set background color
         self.collectionView!.backgroundColor = UIColor.white
         
@@ -145,7 +137,6 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
         
         // Fetch current user's content
         fetchMine()
-        
         
         // Set collectionview's cell size
         let layout = UICollectionViewFlowLayout()
@@ -161,22 +152,16 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Pull to refresh
-        refresher = UIRefreshControl()
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.collectionView!.addSubview(refresher)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Stylize title
         configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Stylize title
         configureView()
     }
 

@@ -234,7 +234,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         // Declare parent vc
         cell.delegate = self
         
-        
         // Declare user's object
         cell.userObject = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
         
@@ -287,7 +286,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         }
         
         
-        // (2)
+        // (2) Fetch Photo
         if let media = photoAssetObject.last!["photoAsset"] as? PFFile {
             media.getDataInBackground(block: {
                 (data: Data?, error: Error?) in
@@ -405,10 +404,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
         }
 
-        
-        
-        
-        
         // Grow height
         cell.layoutIfNeeded()
 

@@ -187,25 +187,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         // If first launch...
         if launchedBefore == false {
-            
             // Set launchedBefore to true
             UserDefaults.standard.set(true, forKey: "launchedBefore")
-            
-            // Save UserDefaults for Post (1-6) == false
-            UserDefaults.standard.set("false", forKey: "DidOpenPost")
-            // Save UserDefaults for Moment (7) == false
-            UserDefaults.standard.set("false", forKey: "DidOpenMoment")
             // Save UserDefaults for User's Profile
             UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
             // Save Default for Birthday
             UserDefaults.standard.set("false", forKey: "BirthdayHappened")
             // Synchronize
             UserDefaults.standard.synchronize()
-            
         }
-        
-        // else statement for the above???
-        
         
         
         // Call Login Function
