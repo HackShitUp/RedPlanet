@@ -318,8 +318,9 @@ class VideoCell: UITableViewCell {
                                                             
                                                             
                                                             
-                                                            // Send notification
+                                                            // Reload data
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
@@ -485,10 +486,8 @@ class VideoCell: UITableViewCell {
                                                         SVProgressHUD.dismiss()
                                                         
                                                         
-                                                        // Reload newsfeed
+                                                        // Reload data
                                                         NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                        
-                                                        // Reload myProfile
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop view controller

@@ -141,8 +141,9 @@ class PhotoAssetCell: UITableViewCell {
                                                             }
                                                             
                                                             
-                                                            // Send notification
+                                                            // Reload data
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
@@ -455,16 +456,12 @@ class PhotoAssetCell: UITableViewCell {
                                                 object.deleteInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
-                                                        print("Successfully deleted object: \(object)")
-                                                        
+
                                                         // Dismiss
                                                         SVProgressHUD.dismiss()
                                                         
-                                                        
-                                                        // Reload newsfeed
+                                                        // Reload data
                                                         NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                        
-                                                        // Reload myProfile
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop view controller

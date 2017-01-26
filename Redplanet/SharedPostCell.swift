@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import SVProgressHUD
 import SimpleAlert
 
 class SharedPostCell: UITableViewCell {
@@ -37,6 +38,7 @@ class SharedPostCell: UITableViewCell {
     @IBOutlet weak var fromRpUserProPic: PFImageView!
     @IBOutlet weak var sharedTime: UILabel!
     @IBOutlet weak var fromRpUsername: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
     
     // IBOutlets - Shared content
     @IBOutlet weak var container: UIView!
@@ -423,8 +425,6 @@ class SharedPostCell: UITableViewCell {
                                                     notifications.saveInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            print("Sent notification: \(notifications)")
-                                                            
                                                             
                                                             // Handle optional chaining
                                                             if self.byUserObject!.value(forKey: "apnsId") != nil {
@@ -440,11 +440,10 @@ class SharedPostCell: UITableViewCell {
                                                                 )
                                                             }
                                                             
-                                                            
-                                                            
-                                                            
-                                                            // Send notification
+
+                                                            // Reload data
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
@@ -501,6 +500,172 @@ class SharedPostCell: UITableViewCell {
     }
     
     
+    
+    // Function to do more
+    func doMore(sender: UIButton) {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Views
+        let views = AlertAction(title: "🙈 Views",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    // Append object
+                                    viewsObject.append(sharedObject.last!)
+                                    
+                                    // Push VC
+                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
+        })
+        
+
+        // (2) Delete Shared Post
+        let delete = AlertAction(title: "X Delete",
+                                style: .destructive,
+                                handler: { (AlertAction) in
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.show(withStatus: "Deleting")
+                                            
+                                            // Delete content
+                                            let newsfeeds = PFQuery(className: "Newsfeeds")
+                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
+                                            newsfeeds.whereKey("objectId", equalTo: sharedObject.last!.objectId!)
+                                            newsfeeds.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        // Delete object
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted object: \(object)")
+                                                                
+                                                                // Dismiss
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                
+                                                                // Reload data
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+        })
+        
+        
+        
+        // (3) Delete Shared Post
+        let report = AlertAction(title: "Report",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    
+                                    let alert = UIAlertController(title: "Report",
+                                                                  message: "Please provide your reason for reporting \(sharedObject.last!.value(forKey: "username") as! String)'s Share",
+                                        preferredStyle: .alert)
+                                    
+                                    let report = UIAlertAction(title: "Report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        // Save to <Block_Reported>
+                                        let report = PFObject(className: "Block_Reported")
+                                        report["from"] = PFUser.current()!.username!
+                                        report["fromUser"] = PFUser.current()!
+                                        report["to"] = sharedObject.last!.value(forKey: "username") as! String
+                                        report["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
+                                        report["forObjectId"] = sharedObject.last!.objectId!
+                                        report["type"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                // Dismiss
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(sharedObject.last!.value(forKey: "username") as! String)'s Share",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                self.delegate?.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                    }
+                                    
+                                    
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
+                                    alert.view.tintColor = UIColor.black
+                                    self.delegate?.present(alert, animated: true, completion: nil)
+
+        })
+        
+        // (4) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: { (AlertAction) in
+        })
+        
+        
+
+        
+        if (sharedObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(views)
+            options.addAction(delete)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        } else {
+            options.addAction(report)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        }
+        
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -571,13 +736,15 @@ class SharedPostCell: UITableViewCell {
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        
+        // (12) More tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

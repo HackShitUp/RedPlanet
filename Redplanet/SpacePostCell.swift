@@ -319,8 +319,6 @@ class SpacePostCell: UITableViewCell {
                                                     notifications.saveInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            print("Sent notification: \(notifications)")
-                                                            
                                                             
                                                             // Handle optional chaining
                                                             if self.toUserObject!.value(forKey: "apnsId") != nil {
@@ -336,11 +334,11 @@ class SpacePostCell: UITableViewCell {
                                                                 )
                                                             }
                                                             
-                                                            
-                                                            
-                                                            
-                                                            // Send notification
+                                                            // Reload data
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",

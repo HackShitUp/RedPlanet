@@ -211,6 +211,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     // Function to calculate how many new lines UILabel should create before laying out the text
     func createText() -> String? {
         
+        print("SCREEN HEIGHT: \(UIScreen.main.nativeBounds.height)")
+        
         if let content = sharedObject.last!.value(forKey: "pointObject") as? PFObject {
             // Check for textPost & handle optional chaining
             if content.value(forKey: "textPost") != nil && content.value(forKey: "contentType") as! String != "itm" {
@@ -221,13 +223,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     self.layoutText = "\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
                 } else if UIScreen.main.nativeBounds.height == 1136 {
                     // iPhone 5 √
-                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
                 } else if UIScreen.main.nativeBounds.height == 1334 {
                     // iPhone 6 √
                     self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
                 } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
                     // iPhone 6+ √
-                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\(content["textPost"] as! String)"
                 }
                 
             } else {
@@ -238,13 +240,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     self.layoutText = "\n\n\n\n\n\n\n\n"
                 } else if UIScreen.main.nativeBounds.height == 1136 {
                     // iPhone 5
-                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n"
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
                 } else if UIScreen.main.nativeBounds.height == 1334 {
                     // iPhone 6
                     self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
                 } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
                     // iPhone 6+
-                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+                    self.layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n"
                 }
             }
             
@@ -709,171 +711,4 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
     } // end cellForRowAt
     
-    
-    
-    
-    // MARK: - UITableViewDelegate Method
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    } // end edit boolean
-    
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        // (1) Delete Shared Post
-        let delete = UITableViewRowAction(style: .normal,
-                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
-                                            
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.show(withStatus: "Deleting")
-                                            
-                                            // Delete content
-                                            let newsfeeds = PFQuery(className: "Newsfeeds")
-                                            newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                            newsfeeds.whereKey("objectId", equalTo: sharedObject.last!.objectId!)
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        // Delete object
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                
-                                                                // Reload newsfeed
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                
-                                                                // Reload myProfile
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.navigationController?.popViewController(animated: true)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
-        }
-        
-
-        
-        // (2) Views
-        let views = UITableViewRowAction(style: .normal,
-                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
-                                            // Append object
-                                            viewsObject.append(sharedObject.last!)
-                                            
-                                            // Push VC
-                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                            self.navigationController?.pushViewController(viewsVC, animated: true)
-                                            
-        }
-        
-        
-        // (4) Report Content
-        let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
-                                            
-                                            let alert = UIAlertController(title: "Report",
-                                                                          message: "Please provide your reason for reporting \(sharedObject.last!.value(forKey: "username") as! String)'s Share",
-                                                preferredStyle: .alert)
-                                            
-                                            let report = UIAlertAction(title: "Report", style: .destructive) {
-                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                
-                                                let answer = alert.textFields![0]
-                                                
-                                                // Save to <Block_Reported>
-                                                let report = PFObject(className: "Block_Reported")
-                                                report["from"] = PFUser.current()!.username!
-                                                report["fromUser"] = PFUser.current()!
-                                                report["to"] = sharedObject.last!.value(forKey: "username") as! String
-                                                report["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
-                                                report["forObjectId"] = sharedObject.last!.objectId!
-                                                report["type"] = answer.text!
-                                                report.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully saved report: \(report)")
-                                                        
-                                                        // Dismiss
-                                                        let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(sharedObject.last!.value(forKey: "username") as! String)'s Share",
-                                                            preferredStyle: .alert)
-                                                        
-                                                        let ok = UIAlertAction(title: "ok",
-                                                                               style: .default,
-                                                                               handler: nil)
-                                                        
-                                                        alert.addAction(ok)
-                                                        self.present(alert, animated: true, completion: nil)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
-                                            
-                                            
-                                            let cancel = UIAlertAction(title: "Cancel",
-                                                                       style: .cancel,
-                                                                       handler: nil)
-                                            
-                                            
-                                            alert.addTextField(configurationHandler: nil)
-                                            alert.addAction(report)
-                                            alert.addAction(cancel)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-        }
-        
-        
-        
-        
-        
-        // Set background colors
-        
-        // Super Dark Gray
-        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
-        // Red
-        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-        
-        
-        if (sharedObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete, views]
-        } else {
-            return [report]
-        }
-        
-        
-        
-        
-    } // End edit action
-    
-    
-    
-    // ScrollView -- Pull To Pop
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y < -80 {
-            // Pop view controller
-            _ = self.navigationController?.popViewController(animated: true)
-        }
-    }
-    
-
 }

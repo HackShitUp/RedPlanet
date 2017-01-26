@@ -300,12 +300,6 @@ class ProfilePhotoCell: UITableViewCell {
                                                     notifications.saveInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            print("Sent notification: \(notifications)")
-                                                            
-                                                            
-                                                            
-                                                            
-                                                            
                                                             
                                                             // Handle optional chaining
                                                             if otherObject.last!.value(forKey: "apnsId") != nil {
@@ -321,8 +315,9 @@ class ProfilePhotoCell: UITableViewCell {
                                                                 )
                                                             }
                                                             
-                                                            // Send notification
+                                                            // Reload data
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
@@ -536,10 +531,8 @@ class ProfilePhotoCell: UITableViewCell {
                                                                 // Dismiss Progress
                                                                 SVProgressHUD.dismiss()
                                                                 
-                                                                // Reload newsfeed
+                                                                // Reload data
                                                                 NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                
-                                                                // Reload myProfile
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 
                                                                 // Pop view controller
@@ -582,10 +575,8 @@ class ProfilePhotoCell: UITableViewCell {
                                                                     PFUser.current()!["proPicExists"] = true
                                                                     PFUser.current()!.saveEventually()
                                                                     
-                                                                    // Reload newsfeed
+                                                                    // Reload data
                                                                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                    
-                                                                    // Reload myProfile
                                                                     NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                     
                                                                     // Pop view controller
