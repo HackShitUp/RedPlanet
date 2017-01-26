@@ -9,7 +9,6 @@
 #ifndef Redplanet_Bridging_Header_h
 #define Redplanet_Bridging_Header_h
 
-#import "IGCMenu.h"
 #import "CLImageEditor.h"
 #import "Heap.h"
 

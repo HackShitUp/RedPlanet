@@ -22,7 +22,7 @@ import SVProgressHUD
 import DZNEmptyDataSet
 
 
-class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, IGCMenuDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // NOTIFICATIONs
     // Array to hold my notifications
@@ -39,14 +39,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Refresher
     var refresher: UIRefreshControl!
-    
-    
-    // MARK: - IGCMenu
-    // Initialize IGCMenu, menuButton, and toggle
-    let igcMenu = IGCMenu()
-    let menuButton = UIButton()
-    var igcOn: Bool? = true
-    
+
     // Page size for pipeline method
     var page: Int = 25
     
@@ -243,71 +236,18 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             self.tableView!.reloadData()
         })
     }
-    
-    
-    
-    
-    // Show Grid menu on tap
+
     // MARK: - UITabBarControllerDelegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        
-        // Dismiss Progress
-        SVProgressHUD.dismiss()
-        
-        // MARK: - IGCMenuDataSource and Delegates
-        menuButton.frame = CGRect(x: UIScreen.main.bounds.size.width/2 - 30, y: UIScreen.main.bounds.size.height-150, width: 60, height: 60)
-        menuButton.clipsToBounds = true
-        igcMenu.menuButton = self.menuButton
-        igcMenu.menuSuperView = self.view!
-        self.view!.bringSubview(toFront: self.menuButton)
-        igcMenu.disableBackground = true
-        igcMenu.numberOfMenuItem = 3
-        igcMenu.delegate = self
-        igcMenu.menuImagesNameArray = ["igcPhotos", "igcCamera", "igcText"]
-        
-        if self.navigationController?.tabBarController?.selectedIndex == 2 {
-            
-            if igcOn == true {
-                igcOn = false
-                configureView()
-                igcMenu.hideCircularMenu()
-            } else {
-                igcOn = true
-                newConfig()
-                igcMenu.showCircularMenu()
-            }
-        }
-        
-        
-        
+        // Scroll to top
+        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
     }
-
-    
-    // MARK: - IGCMenuDelegate Method
-    func igcMenuSelected(_ selectedMenuName: String, at index: Int) {
-        
-        if index == 0 {
-            // PHOTO LIBRARY
-            photosAuthorization()
-
-        } else if index == 1 {
-            // CAMERA
-            cameraAuthorization()
-            
-        } else {
-            // NEW TEXT POST
-            newTextPost()
-        }
-    }
-    
     
     // Status bar
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
-    
-    
-    
+
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
@@ -470,8 +410,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // Show Grid Menu
-        igcMenu.showCircularMenu()
+        // TODO
+        // TODO
+        // TODO
     }
     
     

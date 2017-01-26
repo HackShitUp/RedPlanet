@@ -24,7 +24,6 @@
 		7E2CA4101E25A78A0071B052 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4071E25A78A0071B052 /* SNTextField.swift */; };
 		7E2CA4111E25A78A0071B052 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4081E25A78A0071B052 /* SNUtils.swift */; };
 		7E2CA4121E25A78A0071B052 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4091E25A78A0071B052 /* UIImageExtension.swift */; };
-		7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
@@ -234,8 +233,6 @@
 		7E2CA4071E25A78A0071B052 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E2CA4081E25A78A0071B052 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E2CA4091E25A78A0071B052 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		7E3626ED1DB7367A00AB14F4 /* IGCMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGCMenu.h; sourceTree = "<group>"; };
-		7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IGCMenu.m; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
@@ -572,15 +569,6 @@
 				7E2CA4091E25A78A0071B052 /* UIImageExtension.swift */,
 			);
 			path = SnapSliderFilters;
-			sourceTree = "<group>";
-		};
-		7E3626EC1DB7367A00AB14F4 /* IGCMenu */ = {
-			isa = PBXGroup;
-			children = (
-				7E3626ED1DB7367A00AB14F4 /* IGCMenu.h */,
-				7E3626EE1DB7367A00AB14F4 /* IGCMenu.m */,
-			);
-			path = IGCMenu;
 			sourceTree = "<group>";
 		};
 		7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */ = {
@@ -1196,7 +1184,6 @@
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
 				7EE1C2241DBC78C100F75557 /* Agrume */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
-				7E3626EC1DB7367A00AB14F4 /* IGCMenu */,
 				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
 				7EC5D1361DB2FE4F00437219 /* Main.storyboard */,
@@ -1756,7 +1743,6 @@
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
 				7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
-				7E3626EF1DB7367A00AB14F4 /* IGCMenu.m in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
