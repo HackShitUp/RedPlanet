@@ -2081,6 +2081,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3720A73759C6BE639FDFC816 /* Pods-Redplanet.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -2101,6 +2102,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Redplanet/Redplanet.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

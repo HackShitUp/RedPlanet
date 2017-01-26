@@ -17,7 +17,7 @@ import SVProgressHUD
 import DZNEmptyDataSet
 import SimpleAlert
 
-class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
 
     // Boolean to determine what to show in UITableView
@@ -194,6 +194,11 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Chats"
         }
+        
+        // Show tab bar controller and show navigation bar
+        self.navigationController!.tabBarController!.tabBar.isHidden = false
+        self.navigationController!.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.tabBarController?.delegate = self
     }
     
     
@@ -238,8 +243,10 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
     
     
     
-    
-    
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -285,11 +292,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         // Query chats
         queryChats()
         
-        // Hide tab bar controller
-        self.navigationController!.tabBarController!.tabBar.isHidden = false
-        
-        // Show navigation bar
-        self.navigationController!.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -300,9 +302,6 @@ class Chats: UITableViewController, UISearchBarDelegate, DZNEmptyDataSetSource, 
         
         // Query CHATS
         queryChats()
-        
-        // Show navigation bar
-        self.navigationController!.setNavigationBarHidden(false, animated: true)
     }
     
     override func didReceiveMemoryWarning() {

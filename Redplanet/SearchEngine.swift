@@ -82,82 +82,13 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     }
     
     
-    
-    // MARK: - UISearchBar Delegates
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        // Change tableView background
-        self.tableView!.backgroundView = UIView()
-        
-        if searchBar.text!.hasPrefix("#") {
-            // Looking for hashtags...
-            let hashtags = PFQuery(className: "Hashtags")
-            hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
-            hashtags.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    
-                    // Clear array
-                    self.searchHashes.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        // Hashtag
-                        if self.searchHashes.contains(object["userHash"] as! String) {
-                            // Skip appending object
-                        } else {
-                            self.searchHashes.append(object["userHash"] as! String)
-                        }
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-                
-                // Reload data
-                self.tableView!.reloadData()
-            })
-        } else {
-            // Looking for humans...
-            // Search for user
-            let theUsername = PFUser.query()!
-            theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-            
-            let realName = PFUser.query()!
-            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-            
-            let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-            search.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    
-                    // USERNAME: Clear arrays
-                    self.users.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.users.append(object)
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-                
-                // Reload data
-                self.tableView!.reloadData()
-            })
-        }
-        
-        return true
-        
-    }
-    
-    
     // Cancel
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    
+    // Search bar...
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Change tableView background
         self.tableView!.backgroundView = UIView()

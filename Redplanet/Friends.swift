@@ -64,8 +64,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     // Query Current User's Friends
     func queryFriends() {
-        
-        
         let fFriends = PFQuery(className: "FriendMe")
         fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
         fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)

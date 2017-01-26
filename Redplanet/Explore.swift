@@ -15,7 +15,7 @@ import Bolts
 
 import SVProgressHUD
 
-class Explore: UICollectionViewController, UISearchBarDelegate {
+class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
     
     
     // Variable to hold objects to explore
@@ -79,6 +79,11 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         })
     }
     
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -91,8 +96,11 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // $$$ MONETIZE ON THIS
         queryExplore()
         
-        // Show navigation bar
+        // Configure nav bar and tabBar
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.delegate = self
         
         // Set collectionView's backgroundColor
         self.collectionView!.backgroundColor = UIColor.white
@@ -110,7 +118,6 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
         
-        
         // SearchbarDelegates
         searchBar.delegate = self
         searchBar.showsCancelButton = true
@@ -118,7 +125,6 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         searchBar.frame.size.width = UIScreen.main.bounds.width - 75
         let searchItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = searchItem
-        
         
         // Set navigationbar's backgroundColor
         self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
@@ -134,14 +140,11 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // Resign frist responder
         self.searchBar.resignFirstResponder()
         
-        // Show navigation bar
+        // Configure nav bar and tabBar
+        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // Show tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
-        // Make navigationBar's color clear
-        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+        self.navigationController?.tabBarController?.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -162,8 +165,6 @@ class Explore: UICollectionViewController, UISearchBarDelegate {
         // Resign first responder
         self.searchBar.resignFirstResponder()
     }
-    
-    
     
 
     // MARK: UICollectionViewDataSource

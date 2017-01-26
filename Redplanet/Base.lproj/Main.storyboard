@@ -952,7 +952,7 @@
                                             </constraints>
                                             <state key="normal" image="MoreBlack"/>
                                         </button>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kTs-WF-hZb" customClass="KILabel">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kTs-WF-hZb" customClass="KILabel">
                                             <rect key="frame" x="8" y="56" width="359" height="115"/>
                                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
@@ -1232,7 +1232,7 @@
                                                 <constraint firstAttribute="width" constant="278" id="Z1O-ix-9QO"/>
                                                 <constraint firstAttribute="height" constant="15" id="svm-eU-KGp"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1263,7 +1263,7 @@
                                                         <constraint firstAttribute="height" constant="17" id="BLi-0Y-Cpa"/>
                                                         <constraint firstAttribute="width" constant="210" id="iBZ-P6-eVw"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1493,7 +1493,7 @@
                                                 <constraint firstAttribute="height" constant="15" id="NWw-i7-BGx"/>
                                                 <constraint firstAttribute="width" constant="311" id="xnH-4Q-KqQ"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -3837,7 +3837,7 @@
                                                 <constraint firstAttribute="width" constant="278" id="3pA-Uv-Xfb"/>
                                                 <constraint firstAttribute="height" constant="22" id="gsW-mH-gA2"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -4056,7 +4056,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="4yu-fB-7sd"/>
                                                 <constraint firstAttribute="width" constant="278" id="oEC-X4-C76"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -4066,7 +4066,7 @@
                                                 <constraint firstAttribute="width" constant="311" id="6Os-de-Lwa"/>
                                                 <constraint firstAttribute="height" constant="15" id="lbC-yp-W5Z"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>

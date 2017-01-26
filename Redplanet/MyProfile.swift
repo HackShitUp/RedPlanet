@@ -19,7 +19,7 @@ import Bolts
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
-class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
+class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
     
     // Variable to hold my content
     var myContentObjects = [PFObject]()
@@ -113,8 +113,8 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.delegate = self
     }
-    
     
     // Refresh function
     func refresh() {
@@ -125,7 +125,11 @@ class MyProfile: UICollectionViewController, UINavigationControllerDelegate {
         self.collectionView!.reloadData()
     }
     
-
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
      
