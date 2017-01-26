@@ -18,6 +18,7 @@ import Parse
 import ParseUI
 import Bolts
 import OneSignal
+import SwipeNavigationController
 
 // Array to hold photo or video from library; PHAsset
 var shareMediaAsset = [PHAsset]()
@@ -443,23 +444,11 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Clear arrays
             shareMediaAsset.removeAll(keepingCapacity: false)
             shareImageAssets.removeAll(keepingCapacity: false)
-            
             // Send Notification
             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-            
-            doShow = true
-            let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
-            let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
-            let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            let newTPNav = self.storyboard?.instantiateViewController(withIdentifier:"right") as! UINavigationController
-            let snapContainer = SnapContainerViewController.containerViewWith(libNav,
-                                                                              middleVC: camNav,
-                                                                              rightVC: newTPNav,
-                                                                              topVC: nil,
-                                                                              bottomVC: masterTab)
-            UIApplication.shared.keyWindow?.rootViewController = snapContainer
-            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            // Show news feed
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+
         }) // end running in main thread
     }
     

@@ -187,6 +187,13 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 495
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
 
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: videoNotification, object: nil)

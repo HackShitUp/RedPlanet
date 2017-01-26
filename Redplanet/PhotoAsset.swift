@@ -35,7 +35,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
     // Refresher
     var refresher: UIRefreshControl!
     
-    
     @IBAction func backButton(_ sender: AnyObject) {
         // Remove last
         photoAssetObject.removeLast()
@@ -180,6 +179,14 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
+        
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: photoNotification, object: nil)

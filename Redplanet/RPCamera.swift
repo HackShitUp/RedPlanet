@@ -7,7 +7,9 @@
 //
 
 import UIKit
+import SVProgressHUD
 import SwiftyCam
+import SwipeNavigationController
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
@@ -77,11 +79,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
-//        print(focusPoint)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didChangeZoomLevel zoom: CGFloat) {
-//        print(zoomLevel)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
@@ -105,39 +105,22 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     // Leave VC
     func dismissVC() {
-        if chatCamera == true && doShow == false {
+        if chatCamera == true {
             _ = self.navigationController?.popViewController(animated: false)
-        } else if chatCamera == false && doShow == false {
-            doShow = true
-            let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
-            let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
-            let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            let newTPNav = self.storyboard?.instantiateViewController(withIdentifier:"right") as! UINavigationController
-            let snapContainer = SnapContainerViewController.containerViewWith(libNav,
-                                                                              middleVC: camNav,
-                                                                              rightVC: newTPNav,
-                                                                              topVC: nil,
-                                                                              bottomVC: masterTab)
-            UIApplication.shared.keyWindow?.rootViewController = snapContainer
-            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+        } else {
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
     }
     
     // Push to Library
     func showLibrary() {
-        // Push to library
-        let library = self.storyboard?.instantiateViewController(withIdentifier: "photoLibraryVC") as! Library
-        self.navigationController!.pushViewController(library, animated: true)
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
     }
     
     // Push to New Text Post
     func newTP() {
-        // Load New TextPost
-        let newTP = self.storyboard?.instantiateViewController(withIdentifier: "newTextPost") as! NewTextPost
-        self.navigationController?.pushViewController(newTP, animated: true)
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -148,6 +131,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.view.backgroundColor = UIColor.black
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
@@ -156,6 +147,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
         
         // Disable View and buttons
         self.view.isUserInteractionEnabled = false

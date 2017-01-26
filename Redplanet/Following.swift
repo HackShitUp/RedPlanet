@@ -127,6 +127,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         
         // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         

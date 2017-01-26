@@ -455,7 +455,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // Function to push camera
     func goCamera(sender: UIButton) {
         chatCamera = true
-        doShow = false
         let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
         self.navigationController!.pushViewController(cameraVC, animated: false)
     }
@@ -558,9 +557,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        tableView!.addSubview(refresher)
-        
+        self.tableView!.addSubview(refresher)
         
         // Open photo library
         imagePicker = UIImagePickerController()

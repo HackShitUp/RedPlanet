@@ -16,6 +16,7 @@ import Bolts
 import SVProgressHUD
 import DZNEmptyDataSet
 import SimpleAlert
+import SwipeNavigationController
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -264,6 +265,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
+        self.tableView.allowsMultipleSelection = false
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
@@ -271,9 +273,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView!.addSubview(refresher)
-
         
         // Tap to dismiss keyboard
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(scrollViewWillBeginDragging))
@@ -742,5 +745,24 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             self.queryChats()
         }
     }
+    
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        if self.tableView!.contentOffset.y <= -150.00 {
+            // TODO::
+            // TODO
+            // TODO
+            // Do something different here!!!
+            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            refresher.tintColor = UIColor.white
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
+            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            refresher.tintColor = UIColor.white
+        }
+    }
+    
 
 }

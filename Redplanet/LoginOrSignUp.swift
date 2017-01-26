@@ -28,7 +28,6 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     
     // Function to login
     func loginToRP() {
-        print("Logging in...")
         
         // Superseed to lowercaseString
         let theUsername = rpUsername.text!.lowercased()
@@ -43,12 +42,10 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                         
                                         // Resign keyboard
                                         self.rpPassword.resignFirstResponder()
-
                                         
                                         // Call login function from AppDelegeate
                                         let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
                                         appDelegate.login()
-                                        
                                         
                                         // Save installation data
                                         let installation = PFInstallation.current()

@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
+import SwipeNavigationController
 
 class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
     
@@ -113,8 +114,10 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
         
-        // Pull to refresh
+        // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
         
@@ -276,6 +279,14 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
             
             // Query friends
             queryExplore()
+        }
+    }
+    
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.collectionView!.contentOffset.y < -70 {
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         }
     }
 

@@ -18,6 +18,7 @@ PODS:
   - SimpleAlert (2.0.1)
   - SVProgressHUD (2.1.2)
   - SwiftyCam (2.1.0)
+  - SwipeNavigationController (2.0.2)
 
 DEPENDENCIES:
   - Bolts
@@ -31,6 +32,7 @@ DEPENDENCIES:
   - SimpleAlert
   - SVProgressHUD
   - SwiftyCam
+  - SwipeNavigationController (~> 2.0.2)
 
 SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
@@ -44,7 +46,8 @@ SPEC CHECKSUMS:
   SimpleAlert: 383d1197df2e7b70b9bef5771f3632979c1aadae
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
+  SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: 4995f0125f06aa440dc01ea95ec1bf6e161c3401
+PODFILE CHECKSUM: 5ea33a748985852fe08244e199fdac107f3c4664
 
 COCOAPODS: 1.1.1

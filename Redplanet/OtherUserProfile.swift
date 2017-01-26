@@ -477,8 +477,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
         
         
-        // Pull to refresh
+        // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
         

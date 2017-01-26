@@ -64,10 +64,25 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwipeNavigationController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3EE84CB1AB345B0F6331F6D3A539F2D0</key>
+		<key>053EC915DB5B4D2B27701B9AF6C621ED</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>0E5B83FBEB4B1D8ECA37456CD0DD50F4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>331B078C5F001DCA35CE2FF6810B055F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -77,22 +92,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>519E8B83F4CC3783866237130E63EAB0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>51CB0AF616C6306147B99C320EB6D3ED</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5B542EAD7114F222B91B2375A4C90512</key>
+		<key>5515BFF73499DB47368FAD2759A144BD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>90BE20266830381782F26E37553BA101</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -103,11 +118,6 @@
 			<true/>
 		</dict>
 		<key>A760316124FD796EF09C09479E9F0021</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BDB93B157DFD17A0927311A277EE44B0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

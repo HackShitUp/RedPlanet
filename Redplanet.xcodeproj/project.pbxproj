@@ -14,8 +14,6 @@
 		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB91E31A822006B2D8B /* StickersCell.swift */; };
-		7E2953841E387DC000C8C055 /* SnapContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2953821E387DC000C8C055 /* SnapContainerViewController.swift */; };
-		7E2953851E387DC000C8C055 /* VerticalScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2953831E387DC000C8C055 /* VerticalScrollViewController.swift */; };
 		7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4021E25A78A0071B052 /* SNButton.swift */; };
 		7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4031E25A78A0071B052 /* SNFilter.swift */; };
 		7E2CA40D1E25A78A0071B052 /* SNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4041E25A78A0071B052 /* SNSlider.swift */; };
@@ -35,6 +33,7 @@
 		7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307811DD021A100AA2413 /* VideoViewController.swift */; };
 		7E43833C1DD9138000337007 /* HashTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833B1DD9138000337007 /* HashTags.swift */; };
 		7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833D1DD9138F00337007 /* HashTagsCell.swift */; };
+		7E4B59BD1E39E257003A3F3C /* Controlla.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4B59BC1E39E257003A3F3C /* Controlla.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
 		7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8F1DB439060087454E /* PhotoAsset.swift */; };
 		7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */; };
@@ -223,8 +222,6 @@
 		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
 		7E274EB91E31A822006B2D8B /* StickersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCell.swift; sourceTree = "<group>"; };
-		7E2953821E387DC000C8C055 /* SnapContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapContainerViewController.swift; sourceTree = "<group>"; };
-		7E2953831E387DC000C8C055 /* VerticalScrollViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalScrollViewController.swift; sourceTree = "<group>"; };
 		7E2CA4021E25A78A0071B052 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
 		7E2CA4031E25A78A0071B052 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
 		7E2CA4041E25A78A0071B052 /* SNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSlider.swift; sourceTree = "<group>"; };
@@ -247,6 +244,7 @@
 		7E43833D1DD9138F00337007 /* HashTagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HashTagsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E44F8AC1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		7E44F8AD1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		7E4B59BC1E39E257003A3F3C /* Controlla.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Controlla.swift; sourceTree = "<group>"; };
 		7E4CFF8D1DB438FD0087454E /* TextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextPost.swift; sourceTree = "<group>"; };
 		7E4CFF8F1DB439060087454E /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhoto.swift; sourceTree = "<group>"; };
@@ -528,15 +526,6 @@
 			name = Stickers;
 			sourceTree = "<group>";
 		};
-		7E2953861E3899E400C8C055 /* SwipeView */ = {
-			isa = PBXGroup;
-			children = (
-				7E2953821E387DC000C8C055 /* SnapContainerViewController.swift */,
-				7E2953831E387DC000C8C055 /* VerticalScrollViewController.swift */,
-			);
-			name = SwipeView;
-			sourceTree = "<group>";
-		};
 		7E2CA3FE1E259F390071B052 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,6 +623,24 @@
 				7E989A251DE4F17E000215A1 /* NewPassword.swift */,
 			);
 			name = Password;
+			sourceTree = "<group>";
+		};
+		7E4B59BE1E39EBC0003A3F3C /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */,
+				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
+		7E4B59BF1E39EBC4003A3F3C /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
+				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
+			);
+			name = Videos;
 			sourceTree = "<group>";
 		};
 		7E4CFF951DB4393A0087454E /* SINGLEPOSTS */ = {
@@ -1052,21 +1059,19 @@
 			isa = PBXGroup;
 			children = (
 				7EDDF4361E07C0A5005C68C9 /* Library.swift */,
-				7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */,
-				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
-				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
-				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
+				7E4B59BE1E39EBC0003A3F3C /* Photos */,
+				7E4B59BF1E39EBC4003A3F3C /* Videos */,
+				7E2CA3FF1E259F400071B052 /* Share */,
 			);
 			name = PhotosLibrary;
 			sourceTree = "<group>";
 		};
-		7EA45CD51DB6BD8100A466D9 /* Camera_Share */ = {
+		7EA45CD51DB6BD8100A466D9 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
 				7E2CA3FE1E259F390071B052 /* Camera */,
-				7E2CA3FF1E259F400071B052 /* Share */,
 			);
-			name = Camera_Share;
+			name = Camera;
 			sourceTree = "<group>";
 		};
 		7EA87D3B1DD6B39400B3471F /* SharedPost */ = {
@@ -1109,6 +1114,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
+				7E4B59BC1E39E257003A3F3C /* Controlla.swift */,
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
 				7EC05B121DB5EE7E0039B357 /* Friends */,
 				7EC05B131DB5EE830039B357 /* Following */,
@@ -1210,7 +1216,7 @@
 				7E3F0EDF1DC0630E006BF522 /* RelationshipRequests */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1991DB3541000437219 /* CHATS */,
-				7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */,
+				7EC5D1B41DB36EB800437219 /* REDPLANET */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
 				7EC5D19F1DB3566D00437219 /* MYPROFILE */,
 				7E5A98051DDD2CFA006DA985 /* Settings */,
@@ -1313,17 +1319,16 @@
 			name = OtherUserProfile;
 			sourceTree = "<group>";
 		};
-		7EC5D1B41DB36EB800437219 /* CREATE_REDPLANET */ = {
+		7EC5D1B41DB36EB800437219 /* REDPLANET */ = {
 			isa = PBXGroup;
 			children = (
-				7E2953861E3899E400C8C055 /* SwipeView */,
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
-				7EA45CD51DB6BD8100A466D9 /* Camera_Share */,
+				7EA45CD51DB6BD8100A466D9 /* Camera */,
 				7EA45CD41DB6BD7B00A466D9 /* PhotosLibrary */,
 			);
-			name = CREATE_REDPLANET;
+			name = REDPLANET;
 			sourceTree = "<group>";
 		};
 		7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */ = {
@@ -1745,6 +1750,7 @@
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
+				7E4B59BD1E39E257003A3F3C /* Controlla.swift in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
@@ -1793,7 +1799,6 @@
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
-				7E2953841E387DC000C8C055 /* SnapContainerViewController.swift in Sources */,
 				7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7EA913221E25CD510046F940 /* MomentVideo.swift in Sources */,
@@ -1809,7 +1814,6 @@
 				7E2CA4121E25A78A0071B052 /* UIImageExtension.swift in Sources */,
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
-				7E2953851E387DC000C8C055 /* VerticalScrollViewController.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,

@@ -411,9 +411,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Pull to refresh action
         refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView!.addSubview(refresher)
-        
         
         // Catch notification if the keyboard is shown or hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)

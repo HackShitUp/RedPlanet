@@ -13,28 +13,26 @@ import Social
 import Parse
 import ParseUI
 import Bolts
-import OneSignal
 
-class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
+import OneSignal
+import SwipeNavigationController
+
+class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, SwipeNavigationControllerDelegate {
     
     
     // Array to hold user objects
     var userObjects = [PFObject]()
     
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        
+    }
+    
     @IBAction func backButton(_ sender: AnyObject) {
-        doShow = false
-        let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
-        let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
-        let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-        masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        let newTPNav = self.storyboard?.instantiateViewController(withIdentifier:"right") as! UINavigationController
-        let snapContainer = SnapContainerViewController.containerViewWith(libNav,
-                                                                          middleVC: camNav,
-                                                                          rightVC: newTPNav,
-                                                                          topVC: nil,
-                                                                          bottomVC: masterTab)
-        UIApplication.shared.keyWindow?.rootViewController = snapContainer
-        UIApplication.shared.keyWindow?.makeKeyAndVisible()
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
     @IBAction func moreButton(_ sender: Any) {
@@ -196,24 +194,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     }
                     
                     
+                    // Resign keyboard
+                    self.textView.resignFirstResponder()
                     
                     // Send notification
                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                    
-                    doShow = true
-                    let libNav = self.storyboard?.instantiateViewController(withIdentifier:"left") as! UINavigationController
-                    let camNav = self.storyboard?.instantiateViewController(withIdentifier:"mid") as! UINavigationController
-                    let masterTab = self.storyboard?.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-                    masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                    let newTPNav = self.storyboard?.instantiateViewController(withIdentifier:"right") as! UINavigationController
-                    let snapContainer = SnapContainerViewController.containerViewWith(libNav,
-                                                                                      middleVC: camNav,
-                                                                                      rightVC: newTPNav,
-                                                                                      topVC: nil,
-                                                                                      bottomVC: masterTab)
-                    UIApplication.shared.keyWindow?.rootViewController = snapContainer
-                    UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                    
+
+                    // Show bottom
+                    self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -222,7 +210,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
         }
     }
-    
+
     
     // Functino to share privately
     func sharePrivate() {

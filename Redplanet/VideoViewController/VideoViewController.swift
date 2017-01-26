@@ -225,7 +225,7 @@ open class VideoViewController: UIViewController {
     override open func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        self.view.layer.cornerRadius = 14.00
+        self.view.layer.cornerRadius = 10.00
         self.view.clipsToBounds = true
         playerLayer.frame = view.bounds
         rewindDimView.frame = view.bounds

@@ -33,6 +33,9 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
     // Handle skipped objects for Pipeline
     var skipped = [PFObject]()
     
+    // Refresher
+    var refresher: UIRefreshControl!
+    
     @IBAction func findFriends(_ sender: Any) {
         
         // If iOS 9
@@ -150,6 +153,12 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
         
+        // Add refresher
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.collectionView!.addSubview(refresher)
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: myProfileNotification, object: nil)
@@ -718,6 +727,24 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
             
             // Query content
             fetchMine()
+        }
+    }
+    
+    
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        
+        if self.collectionView!.contentOffset.y <= -150.00 {
+            // TODO::
+            // TODO
+            // TODO
+            // Do something different here!!!
+            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            refresher.tintColor = UIColor.white
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
+            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            refresher.tintColor = UIColor.white
         }
     }
 

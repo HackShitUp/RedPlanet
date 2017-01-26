@@ -56,7 +56,6 @@ BLUE:
 
  
  F R A M E W O R K S    T O     L O O K     A T
- • ALERTS: https://github.com/Orderella/PopupDialog
  • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
  • CIRCULAR CROP: https://github.com/ruslanskorb/RSKImageCropper
  
@@ -73,6 +72,7 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import SwipeNavigationController
 
 // Current Username
 var username = [String]()
@@ -197,7 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.synchronize()
         }
         
-        
+        application.setStatusBarHidden(false, with: .none)
         // Call Login Function
         // Which also calls queryRelationships()
         login()
@@ -279,18 +279,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // By setting their username
         if PFUser.current() != nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let libNav = storyboard.instantiateViewController(withIdentifier:"left") as! UINavigationController
-            let camNav = storyboard.instantiateViewController(withIdentifier:"mid") as! UINavigationController
-            let masterTab = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            masterTab.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            let newTPNav = storyboard.instantiateViewController(withIdentifier:"right") as! UINavigationController
-            let snapContainer = SnapContainerViewController.containerViewWith(libNav,
-                                                                              middleVC: camNav,
-                                                                              rightVC: newTPNav,
-                                                                              topVC: nil,
-                                                                              bottomVC: masterTab)
-            self.window?.rootViewController = snapContainer
+            let cameraVC = storyboard.instantiateViewController(withIdentifier: "mid") as! UINavigationController
+            let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
+            swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
+            swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
+            swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
+            UIApplication.shared.setStatusBarHidden(true, with: .none)
+            self.window = UIWindow(frame: UIScreen.main.bounds)
+            self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
+            
             
             // Call relationships function
             _ = queryRelationships()
