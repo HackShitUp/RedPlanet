@@ -26,6 +26,8 @@ class MasterTab: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.tabBarController?.tabBar.tintColor = UIColor.black
+        
         // If current user is not nil
         if PFUser.current() != nil {
             // Set title to user's username

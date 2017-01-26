@@ -193,48 +193,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        
-        
-        // Show the user what to do!
-        let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && (textPostObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Save
-            UserDefaults.standard.set(true, forKey: "DidOpenPost")
-            
-            
-            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Text Post!",
-                                          message: "Tap the three dots to show more options.",
-                                          style: .alert)
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                    view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
-            }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            
-            let ok = AlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-        
-        
-        
+
     }
 
     override func viewDidAppear(_ animated: Bool) {

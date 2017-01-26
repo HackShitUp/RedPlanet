@@ -198,41 +198,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // Fetch interactions
         fetchInteractions()
-    
-        // Show the user what to do!
-        let openedPost = UserDefaults.standard.bool(forKey: "DidOpenPost")
-        if openedPost == false && (spaceObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Save
-            UserDefaults.standard.set(true, forKey: "DidOpenPost")
-            
-            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Space Post!",
-                                          message: "•Swipe down to leave\n•Swipe left for Views 🙈",
-                                          style: .alert)
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                    view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
-            }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            let ok = AlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-        }
         
         // Add method tap
         let goUserTap = UITapGestureRecognizer(target: self, action: #selector(goToUser))

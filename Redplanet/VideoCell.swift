@@ -13,8 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 import KILabel
-import OneSignal
 
+import OneSignal
+import SVProgressHUD
 import SimpleAlert
 
 class VideoCell: UITableViewCell {
@@ -33,6 +34,7 @@ class VideoCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var videoPreview: PFImageView!
     @IBOutlet weak var caption: KILabel!
     @IBOutlet weak var numberOfLikes: UIButton!
@@ -402,6 +404,191 @@ class VideoCell: UITableViewCell {
     }
     
     
+    // Function for moreButton
+    func doMore(sender: UIButton) {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Views
+        let views = AlertAction(title: "🙈 Views",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    // Append object
+                                    viewsObject.append(videoObject.last!)
+                                    
+                                    // Push VC
+                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
+
+        })
+        
+        // (2) Edit
+        let edit = AlertAction(title: "🔩 Edit",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                    
+                                    // Append object
+                                    editObjects.append(videoObject.last!)
+                                    
+                                    // Push VC
+                                    let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                    self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        // (3) Delete
+        let delete = AlertAction(title: "X Delete",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    
+                                    // Show Progress
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
+                                    // Delete content
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("byUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: videoObject.last!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: videoObject.last!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                    newsfeeds.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                // Delete object
+                                                object.deleteInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully deleted object: \(object)")
+                                                        
+                                                        // Dismiss
+                                                        SVProgressHUD.dismiss()
+                                                        
+                                                        
+                                                        // Reload newsfeed
+                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        
+                                                        // Reload myProfile
+                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        
+                                                        // Pop view controller
+                                                        _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
+        })
+        
+        // (4) Report
+        let report = AlertAction(title: "Report",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    
+                                    let alert = UIAlertController(title: "Report",
+                                                                  message: "Please provide your reason for reporting \(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                        preferredStyle: .alert)
+                                    
+                                    let report = UIAlertAction(title: "Report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        // Save to <Block_Reported>
+                                        let report = PFObject(className: "Block_Reported")
+                                        report["from"] = PFUser.current()!.username!
+                                        report["fromUser"] = PFUser.current()!
+                                        report["to"] = videoObject.last!.value(forKey: "username") as! String
+                                        report["toUser"] = videoObject.last!.value(forKey: "byUser") as! PFUser
+                                        report["forObjectId"] = videoObject.last!.objectId!
+                                        report["type"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                // Dismiss
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
+                                                self.delegate?.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                    }
+                                    
+                                    
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
+                                    alert.view.tintColor = UIColor.black
+                                    self.delegate?.present(alert, animated: true, completion: nil)
+        })
+        
+        // (5) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: { (AlertAction) in
+        })
+        
+
+        
+        if (videoObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(views)
+            options.addAction(edit)
+            options.addAction(delete)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        } else {
+            options.addAction(report)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        }
+        
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Add tap for playing video
@@ -421,6 +608,12 @@ class VideoCell: UITableViewCell {
         usernameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(usernameTap)
+        
+        // More tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
         
         // Handle @username tap
         caption.userHandleLinkTapHandler = { label, handle, range in

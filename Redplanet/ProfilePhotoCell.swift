@@ -15,6 +15,7 @@ import Bolts
 
 import KILabel
 import OneSignal
+import SVProgressHUD
 import SimpleAlert
 
 class ProfilePhotoCell: UITableViewCell {
@@ -22,7 +23,6 @@ class ProfilePhotoCell: UITableViewCell {
     
     // Initialize parent vc
     var delegate: UIViewController?
-    
     
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -430,6 +430,273 @@ class ProfilePhotoCell: UITableViewCell {
     }
     
     
+    // Function for moreButton
+    func doMore(sender: UIButton) {
+        
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Views
+        let views = AlertAction(title: "🙈 Views",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    // Append object
+                                    viewsObject.append(proPicObject.last!)
+                                    
+                                    // Push VC
+                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
+        })
+        
+        
+        // (2)
+        let edit = AlertAction(title: "🔩 Edit",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    
+                                    // Append object
+                                    editObjects.append(proPicObject.last!)
+                                    
+                                    // Push VC
+                                    let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                    self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        
+        // (3) Delete
+        let delete = AlertAction(title: "X Delete",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    /*
+                                     (1) If currentUser is trying to delete his/her's most RECENT Profile Photo...
+                                     • Change 'proPicExists' == false
+                                     • Save new profile photo
+                                     • Delete object from <Newsfeeds>
+                                     
+                                     (2) OTHERWISE
+                                     • Keep 'proPicExists' == true
+                                     • Delete object from <Newsfeeds>
+                                     
+                                     */
+                                    
+                                    
+                                    // Show Progress
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
+                                    // (1) Check if object is most recent by querying getFirstObject
+                                    let recentProPic = PFQuery(className: "Newsfeeds")
+                                    recentProPic.whereKey("byUser", equalTo: PFUser.current()!)
+                                    recentProPic.whereKey("contentType", equalTo: "pp")
+                                    recentProPic.order(byDescending: "createdAt")
+                                    recentProPic.getFirstObjectInBackground(block: {
+                                        (object: PFObject?, error: Error?) in
+                                        if error == nil {
+                                            
+                                            if object! == proPicObject.last! {
+                                                
+                                                // Most recent Profile Photo
+                                                // Delete object
+                                                object?.deleteInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Most Recent Profile Photo has been deleted: \(object)")
+                                                        
+                                                        // Set new profile photo
+                                                        let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
+                                                        let parseFile = PFFile(data: proPicData!)
+                                                        
+                                                        // User's Profile Photo DOES NOT exist
+                                                        PFUser.current()!["proPicExists"] = false
+                                                        PFUser.current()!["userProfilePicture"] = parseFile
+                                                        PFUser.current()!.saveInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                
+                                                                print("Deleted current profile photo and saved a new one.")
+                                                                
+                                                                // Dismiss Progress
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                // Reload newsfeed
+                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                
+                                                                // Reload myProfile
+                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                
+                                                                // Pop view controller
+                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                        
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            } else {
+                                                
+                                                // Delete content
+                                                let content = PFQuery(className: "Newsfeeds")
+                                                content.whereKey("byUser", equalTo: PFUser.current()!)
+                                                content.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+                                                
+                                                let shares = PFQuery(className: "Newsfeeds")
+                                                shares.whereKey("pointObject", equalTo: proPicObject.last!)
+                                                
+                                                let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                                newsfeeds.findObjectsInBackground(block: {
+                                                    (objects: [PFObject]?, error: Error?) in
+                                                    if error == nil {
+                                                        for object in objects! {
+                                                            // Delete object
+                                                            object.deleteInBackground(block: {
+                                                                (success: Bool, error: Error?) in
+                                                                if success {
+                                                                    print("Successfully deleted profile photo: \(object)")
+                                                                    
+                                                                    // Dismiss
+                                                                    SVProgressHUD.dismiss()
+                                                                    
+                                                                    // Current User's Profile Photo DOES EXIST
+                                                                    PFUser.current()!["proPicExists"] = true
+                                                                    PFUser.current()!.saveEventually()
+                                                                    
+                                                                    // Reload newsfeed
+                                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                    
+                                                                    // Reload myProfile
+                                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                    
+                                                                    // Pop view controller
+                                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                                    
+                                                                    
+                                                                } else {
+                                                                    print(error?.localizedDescription as Any)
+                                                                }
+                                                            })
+                                                        }
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                            }
+                                            
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            
+                                        }
+                                    })
+
+        })
+        
+        
+        // (4) Report Content
+        let reportBlock = AlertAction(title: "Report",
+                                      style: .destructive,
+                                      handler: { (AlertAction) in
+                                        
+                                        let alert = UIAlertController(title: "Report",
+                                                                      message: "Please provide your reason for reporting \(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo",
+                                            preferredStyle: .alert)
+                                        
+                                        let report = UIAlertAction(title: "Report", style: .destructive) {
+                                            [unowned self, alert] (action: UIAlertAction!) in
+                                            
+                                            let answer = alert.textFields![0]
+                                            
+                                            let report = PFObject(className: "Block_Reported")
+                                            report["from"] = PFUser.current()!.username!
+                                            report["fromUser"] = PFUser.current()!
+                                            report["to"] = proPicObject.last!.value(forKey: "username") as! String
+                                            report["toUser"] = proPicObject.last!.value(forKey: "byUser") as! PFUser
+                                            report["forObjectId"] = proPicObject.last!.objectId!
+                                            report["type"] = answer.text!
+                                            report.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully saved report: \(report)")
+                                                    
+                                                    // Dismiss
+                                                    let alert = UIAlertController(title: "Successfully Reported",
+                                                                                  message: "\(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: nil)
+                                                    
+                                                    alert.addAction(ok)
+                                                    alert.view.tintColor = UIColor.black
+                                                    self.delegate?.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                        
+                                        
+                                        let cancel = UIAlertAction(title: "Cancel",
+                                                                   style: .cancel,
+                                                                   handler: nil)
+                                        
+                                        
+                                        alert.addTextField(configurationHandler: nil)
+                                        alert.addAction(report)
+                                        alert.addAction(cancel)
+                                        alert.view.tintColor = UIColor.black
+                                        self.delegate?.present(alert, animated: true, completion: nil)
+
+        })
+        
+
+        // (5) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: { (AlertAction) in
+        })
+
+        
+        if (proPicObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(views)
+            options.addAction(edit)
+            options.addAction(delete)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        } else {
+            options.addAction(reportBlock)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+        }
+        
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -489,7 +756,11 @@ class ProfilePhotoCell: UITableViewCell {
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(hold)
         
-        
+        // (10) More tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
         
         // Handle @username tap
         caption.userHandleLinkTapHandler = { label, handle, range in

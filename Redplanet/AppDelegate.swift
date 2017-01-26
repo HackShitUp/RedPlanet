@@ -288,7 +288,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Remember user's login
         // By setting their username
         if PFUser.current() != nil {
-
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let libNav = storyboard.instantiateViewController(withIdentifier:"left") as! UINavigationController
             let camNav = storyboard.instantiateViewController(withIdentifier:"mid") as! UINavigationController
@@ -310,7 +309,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             checkBirthday()
             
         } else {
-            
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let login = storyboard.instantiateViewController(withIdentifier:"initialVC") as! UINavigationController

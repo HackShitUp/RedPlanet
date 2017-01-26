@@ -149,26 +149,22 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.view)!, self, nil, nil)
         })
         
-//        let share = AlertAction(title: "Share Via",
-//                                  style: .default,
-//                                  handler: { (AlertAction) in
-//                                    let imageToShare = [self.itmMedia.image!]
-//                                    let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-//                                    activityViewController.popoverPresentationController?.sourceView = self.view
-//                                    self.present(activityViewController, animated: true, completion: nil)
-//        })
         
         let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         
-        options.addAction(views)
-        options.addAction(save)
-//        options.addAction(share)
-        options.addAction(delete)
-        options.addAction(cancel)
-        options.view.tintColor = UIColor.black
-        self.present(options, animated: true, completion: nil)
+        
+        if moreButton.image(for: .normal) == UIImage(named: "More") {
+            options.addAction(views)
+            options.addAction(save)
+            options.addAction(delete)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+            self.present(options, animated: true, completion: nil)
+        } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     
@@ -208,7 +204,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     timeFormatter.dateFormat = "h:mm a"
                     self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
                     
-                    
                     // (4) Fetch likes
                     let likes = PFQuery(className: "Likes")
                     likes.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
@@ -224,7 +219,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                             for object in objects! {
                                 self.likes.append(object["fromUser"] as! PFUser)
                             }
-                            
                             
                             // (B) Manipulate likes
                             if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
@@ -696,61 +690,27 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
-        // Show the user what to do!
-        let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
-        if openedMoment == false {
-            // Save
-            UserDefaults.standard.set(true, forKey: "DidOpenMoment")
-            
-
-            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Moment!",
-                                          message: "•Swipe right or tap once to leave",
-                                          style: .alert)
-            
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                    view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
-            }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            let ok = AlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
+        // Hide moreButton if not user's content
+        if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // Show button
+            self.moreButton.isHidden = false
+            self.moreButton.setImage(UIImage(named: "More"), for: .normal)
+        } else {
+            self.moreButton.isHidden = false
+            self.moreButton.setImage(UIImage(named: "Exit"), for: .normal)
         }
-        
 
         // Fetch data
         fetchContent()
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
-
-        // Back swipe implementation
-        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(goBack))
-        backSwipe.direction = .right
-        self.view.addGestureRecognizer(backSwipe)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
         
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
         tapOut.numberOfTapsRequired = 1
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(tapOut)
+        self.itmMedia.isUserInteractionEnabled = true
+        self.itmMedia.addGestureRecognizer(tapOut)
         
         // (1) Add more tap method
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
@@ -818,33 +778,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                        self.shareButton,
                        self.numberOfShares,
                        self.rpUsername,
-                       self.time] as [Any]
+                       self.time,
+                       self.moreButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
-        
-        
-        
-        // Hide moreButton if not user's content
-        if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Show button
-            self.moreButton.isHidden = false
-            self.moreButton.layer.shadowColor = UIColor.black.cgColor
-            self.moreButton.layer.shadowOffset = CGSize(width: 1, height: 1)
-            self.moreButton.layer.shadowRadius = 3
-            self.moreButton.layer.shadowOpacity = 0.5
-            
-        } else {
-            // Hide button
-            self.moreButton.isHidden = true
-        }
-        
+
     }
 
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)

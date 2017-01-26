@@ -144,9 +144,9 @@ class SnapContainerViewController: UIViewController, UIScrollViewDelegate {
         self.setNeedsStatusBarAppearanceUpdate()
         
         self.initialContentOffset = scrollView.contentOffset
-        print("CO: \(scrollView.contentOffset)\n\n\n")
-        print("COY: \(scrollView.contentOffset.y)\n\n\n")
-        print("COX: \(scrollView.contentOffset.x)\n\n\n")
+//        print("CO: \(scrollView.contentOffset)\n\n\n")
+//        print("COY: \(scrollView.contentOffset.y)\n\n\n")
+//        print("COX: \(scrollView.contentOffset.x)\n\n\n")
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

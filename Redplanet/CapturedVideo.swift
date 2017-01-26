@@ -332,9 +332,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
-        
-        
-        
     }
     
     

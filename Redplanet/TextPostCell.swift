@@ -257,7 +257,6 @@ class TextPostCell: UITableViewCell {
         }
         
         self.delegate?.present(options, animated: true, completion: nil)
-
     }
     
     // Function to share
@@ -649,8 +648,7 @@ class TextPostCell: UITableViewCell {
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
-        
-        
+
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page
@@ -698,10 +696,7 @@ class TextPostCell: UITableViewCell {
             let url = URL(string: handle)
             UIApplication.shared.openURL(url!)
         }
-        
-        
-        
-        
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

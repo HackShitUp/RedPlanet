@@ -442,6 +442,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.textView.resignFirstResponder()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

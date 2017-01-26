@@ -151,25 +151,24 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                 
         })
         
-//        let share = AlertAction(title: "Share Via",
-//                                style: .default,
-//                                handler: { (AlertAction) in
-//        })
         
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
         
         
-        options.addAction(views)
-        options.addAction(save)
-//        options.addAction(share)
-        options.addAction(delete)
-        options.addAction(cancel)
-        options.view.tintColor = UIColor.black
-        self.present(options, animated: true, completion: nil)
+        
+        if moreButton.image(for: .normal) == UIImage(named: "More") {
+            options.addAction(views)
+            options.addAction(save)
+            options.addAction(delete)
+            options.addAction(cancel)
+            options.view.tintColor = UIColor.black
+            self.present(options, animated: true, completion: nil)
+        } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
-    
     
     @IBAction func likers(_ sender: Any) {
         // Append object
@@ -700,43 +699,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
-        // Show the user what to do!
-        let openedMoment = UserDefaults.standard.bool(forKey: "DidOpenMoment")
-        if openedMoment == false {
-            // Save
-            UserDefaults.standard.set(true, forKey: "DidOpenMoment")
-            
-            
-            let alert = AlertController(title: "🎉\nCongrats, you viewed your first Moment!",
-                                        message: "•Swipe right or tap once to leave",
-                                        style: .alert)
-            
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                    view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
-            }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            let ok = AlertAction(title: "ok",
-                                 style: .default,
-                                 handler: nil)
-            
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
+        // Hide moreButton if not user's content
+        if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            self.moreButton.setImage(UIImage(named: "More"), for: .normal)
+        } else {
+            self.moreButton.setImage(UIImage(named: "Exit"), for: .normal)
         }
-        
         
         // Fetch data
         fetchContent()
@@ -777,12 +745,14 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                        self.shareButton,
                        self.numberOfShares,
                        self.rpUsername,
-                       self.time] as [Any]
+                       self.time,
+                       self.moreButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
         
         

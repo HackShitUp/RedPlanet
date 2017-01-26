@@ -54,7 +54,8 @@ open class Banner: UIView {
     /// The preferred style of the status bar during display of the banner. Defaults to `.LightContent`.
     ///
     /// If the banner's `adjustsStatusBarStyle` is false, this property does nothing.
-    open var preferredStatusBarStyle = UIStatusBarStyle.lightContent
+//    open var preferredStatusBarStyle = UIStatusBarStyle.lightContent
+    open var preferredStatusBarStyle = UIStatusBarStyle.default
     
     /// Whether or not this banner should adjust the status bar style during its presentation. Defaults to `false`.
     open var adjustsStatusBarStyle = false
