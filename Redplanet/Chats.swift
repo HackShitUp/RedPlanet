@@ -208,6 +208,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.navigationController!.tabBarController!.tabBar.isHidden = false
         self.navigationController!.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.delegate = self
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     
@@ -232,7 +235,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
         ]
-        
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }

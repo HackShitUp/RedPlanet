@@ -206,7 +206,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             
-            
             if indexPath.row == 0 {
                 // Edit Profile
                 let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit

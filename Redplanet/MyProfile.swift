@@ -126,9 +126,6 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
         
         // End refresher
         self.refresher.endRefreshing()
-        
-        // Reload data
-        self.collectionView!.reloadData()
     }
     
     // MARK: - UITabBarController Delegate Method
@@ -738,7 +735,7 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
         if self.collectionView!.contentOffset.y <= -140.00 {
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-            refresh()
+            self.refresher.endRefreshing()
         }
     }
 

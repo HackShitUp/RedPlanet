@@ -550,6 +550,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -565,6 +566,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Query Chats
         queryChats()
+        // Stylize title
+        configureView()
 
         // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
