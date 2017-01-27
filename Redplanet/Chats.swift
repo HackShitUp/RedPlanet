@@ -18,8 +18,10 @@ import DZNEmptyDataSet
 import SimpleAlert
 import SwipeNavigationController
 
+
+let mainChat = Notification.Name("chats")
+
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
 
     // Boolean to determine what to show in UITableView
     var searchActive: Bool = false
@@ -41,6 +43,14 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var searchBar = UISearchBar()
 
 
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBAction func editAction(_ sender: Any) {
+        if self.tableView?.isEditing == true {
+            self.tableView?.isEditing = false
+        } else {
+            self.tableView?.isEditing = true
+        }
+    }
     @IBAction func newChat(_ sender: AnyObject) {
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
@@ -259,17 +269,16 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Get chats
         queryChats()
         
+        // Add Notification observer
+        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: mainChat, object: nil)
+        
         // Add searchbar to header
         self.searchBar.delegate = self
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
-        self.tableView.allowsMultipleSelection = false
-        
-        // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-        
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -324,6 +333,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             
         } else {
             
+            if self.chatObjects.count > 0 {
+                self.editButton.isEnabled = true
+            } else {
+                self.editButton.isEnabled = false
+            }
+            
             // Return friends
             return chatObjects.count
         }
@@ -333,15 +348,15 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "chatsCell", for: indexPath as IndexPath) as! ChatsCell
         
-        
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
+        
+        cell.delegate = self
         
         // Set layout
         cell.rpUserProPic.layoutIfNeeded()
@@ -501,6 +516,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             } else {
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
+                            
+                            cell.userObject = theSender
                         }
                         
                         
@@ -540,6 +557,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             } else {
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
+                            
+                            cell.userObject = theReceiver
                         }
                         
                         // Set frame depending on whether the message was read or not
@@ -573,102 +592,57 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        let chatName = self.chatObjects[indexPath.row].value(forKey: "username") as! String
         
         // Swipe to Delete Messages
         let delete = UITableViewRowAction(style: .normal, title: "Delete") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-
             
-            // MARK: - SimpleAlert
-            // Present alert
-            let alert = AlertController(title: "Delete Conversation Forever?",
-                                        message: "Both you and \(chatName.uppercased()) cannot restore this conversation once it's deleted.",
-                style: .alert)
+            // Show Progress
+            SVProgressHUD.show()
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setBackgroundColor(UIColor.white)
             
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                    view.titleLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.messageLabel.textColor = UIColor.black
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
+            // Delete chats
+            let sender = PFQuery(className: "Chats")
+            sender.whereKey("sender", equalTo: PFUser.current()!)
+            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
+            
+            let receiver = PFQuery(className: "Chats")
+            receiver.whereKey("receiver", equalTo: PFUser.current()!)
+            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+            
+            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+            chats.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
                     
+                    // Dismiss progress
+                    SVProgressHUD.dismiss()
+                    
+                    // Delete all objects
+                    PFObject.deleteAll(inBackground: objects, block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Deleted all objects: \(objects)")
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                    // Query Chats again
+                    self.queryChats()
+                    
+                } else {
+                    if (error?.localizedDescription.hasSuffix("offline."))! {
+                        SVProgressHUD.dismiss()
+                    }
+                    
+                    // Query Chats again
+                    self.queryChats()
                 }
-            }
-            
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            let yes = AlertAction(title: "yes",
-                                    style: .destructive,
-                                    handler: { (AlertAction) in
-                                        
-                                        // Show Progress
-                                        SVProgressHUD.show()
-                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        
-                                        // Delete chats
-                                        let sender = PFQuery(className: "Chats")
-                                        sender.whereKey("sender", equalTo: PFUser.current()!)
-                                        sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-                                        
-                                        let receiver = PFQuery(className: "Chats")
-                                        receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                                        receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
-                                        
-                                        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-                                        chats.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                
-                                                // Dismiss progress
-                                                SVProgressHUD.dismiss()
-                                                
-                                                // Delete all objects
-                                                PFObject.deleteAll(inBackground: objects, block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Deleted all objects: \(objects)")
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                                
-                                                // Query Chats again
-                                                self.queryChats()
-                                                
-                                            } else {
-                                                if (error?.localizedDescription.hasSuffix("offline."))! {
-                                                    SVProgressHUD.dismiss()
-                                                }
-                                                
-                                                // Query Chats again
-                                                self.queryChats()
-                                            }
-                                        })
             })
-            
-            let no = AlertAction(title: "no",
-                                   style: .cancel,
-                                   handler: nil)
-            
-            
-            alert.addAction(no)
-            alert.addAction(yes)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-
-            
         }
         
         // Set background color

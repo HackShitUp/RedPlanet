@@ -21,6 +21,7 @@ import Bolts
 
 import OneSignal
 import SVProgressHUD
+import SimpleAlert
 
 
 // Global variable to hold user's object and username for chats
@@ -30,7 +31,6 @@ var chatUsername = [String]()
 
 // Add Notification to reload data
 let rpChat = Notification.Name("rpChat")
-
 
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
@@ -343,7 +343,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Reload data
                     self.queryChats()
                     
-                    
                     // Dismiss
                     self.imagePicker.dismiss(animated: true, completion: nil)
                     
@@ -538,7 +537,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                 // Send screenshot
                                                 self.sendScreenshot()
         }
+        // Add observer to reload chats
+        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
         
+        
+        // Add long press method in tableView
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(options))
+        hold.minimumPressDuration = 0.30
+        self.tableView.isUserInteractionEnabled = true
+        self.tableView.addGestureRecognizer(hold)
         
         // Set bool
         chatCamera = false
@@ -731,6 +738,35 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Resign chat
         self.newChat.resignFirstResponder()
     }
+    
+    
+    
+    // Function for options
+    func options(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                
+                
+                
+                
+                
+                
+                
+                // Return specific actions depending on user's object
+                if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+//                    return [delete]
+                } else {
+//                    return [report]
+                }
+                
+                
+                
+            }
+        }
+    }
+    
+    
 
     // MARK: - UITableViewDataSource and Delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -1068,19 +1104,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     } // end cellForRowAt
     
     
-    
-    
-    
     // MARK: - UITableViewDelegate Method
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     } // end edit boolean
-    
-    
-    func textViewDidChange(_ textView: UITextView) {
 
-
-    }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
 

@@ -16,15 +16,14 @@ import Bolts
 import SVProgressHUD
 import DZNEmptyDataSet
 import OneSignal
+import SimpleAlert
 
 
 // Array to hold comments
 var commentsObject = [PFObject]()
 
-
 // Define identifier
 let commentNotification = Notification.Name("comment")
-
 
 class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -398,6 +397,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: commentNotification, object: nil)
         
+        // tapRecognizer, placed in viewDidLoad
+        let optionsHold = UILongPressGestureRecognizer(target: self, action: #selector(options))
+        optionsHold.minimumPressDuration = 0.30
+        self.tableView.isUserInteractionEnabled = true
+        self.tableView.addGestureRecognizer(optionsHold)
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -411,8 +415,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView!.addSubview(refresher)
         
@@ -480,10 +484,194 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
     }
     
+    // Function to show more options
+    func options(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
 
-    // Raise text view in the future...
-    func textViewDidChange(_ textView: UITextView) {
-        
+            
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                
+                // MARK: - SimpleAlert
+                // Present alert
+                let options = AlertController(title: "Options",
+                                              message: nil,
+                                              style: .alert)
+                
+                // Design content view
+                options.configContentView = { view in
+                    if let view = view as? AlertContentView {
+                        view.backgroundColor = UIColor.white
+                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                        view.titleLabel.textColor = UIColor.black
+                        view.textBackgroundView.layer.cornerRadius = 3.00
+                        view.textBackgroundView.clipsToBounds = true
+                        
+                    }
+                }
+                
+                // Design corner radius
+                options.configContainerCornerRadius = {
+                    return 14.00
+                }
+                
+                let delete = AlertAction(title: "Delete",
+                                         style: .destructive,
+                                         handler: { (AlertAction) in
+                                            
+                                            // Delete Comment
+                                            let comment = PFQuery(className: "Comments")
+                                            comment.whereKey("byUser", equalTo: self.comments[indexPath.row].value(forKey: "byUser") as! PFUser)
+                                            comment.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
+                                            comment.whereKey("commentOfContent", equalTo: self.comments[indexPath.row].value(forKey: "commentOfContent") as! String)
+                                            comment.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if success {
+                                                                print("Successfully deleted comment: \(object)")
+                                                                
+                                                                // Delete from Parse: "Notifications"
+                                                                let notifications = PFQuery(className: "Notifications")
+                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                                                notifications.whereKey("type", equalTo: "comment")
+                                                                notifications.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
+                                                                notifications.findObjectsInBackground(block: {
+                                                                    (objects: [PFObject]?, error: Error?) in
+                                                                    if error == nil {
+                                                                        for object in objects! {
+                                                                            object.deleteInBackground(block: {
+                                                                                (success: Bool, error: Error?) in
+                                                                                if success {
+                                                                                    print("Successfully deleted from notifications: \(object)")
+                                                                                } else {
+                                                                                    print(error?.localizedDescription as Any)
+                                                                                }
+                                                                            })
+                                                                        }
+                                                                    } else {
+                                                                        print(error?.localizedDescription as Any)
+                                                                    }
+                                                                })
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+                                            
+                                            // (1B) Delete comment from table view
+                                            self.comments.remove(at: indexPath.row)
+                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                            
+                })
+                
+                
+                
+                let reply = AlertAction(title: "Reply",
+                                        style: .default,
+                                        handler: { (AlertAction) in
+                                            // Clear comment box
+                                            if self.newComment.text == "Share your comment!" {
+                                                self.newComment.text! = ""
+                                            }
+                                            
+                                            // Set username in newComment
+                                            self.newComment.text = "\(self.newComment.text!)" + "@" + "\(self.comments[indexPath.row].value(forKey: "byUsername") as! String)" + " "
+                })
+                
+                
+                let report = AlertAction(title: "Report",
+                                         style: .default,
+                                         handler: { (AlertAction) in
+                                            let alert = UIAlertController(title: "Report?",
+                                                                          message: "Are you sure you'd like to report this comment and the user?",
+                                                                          preferredStyle: .alert)
+                                            
+                                            let yes = UIAlertAction(title: "yes",
+                                                                    style: .destructive,
+                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
+                                                                        // I have to manually delete all "blocked objects..." -__-
+                                                                        let block = PFObject(className: "Block_Reported")
+                                                                        block["from"] = PFUser.current()!.username!
+                                                                        block["fromUser"] = PFUser.current()!
+                                                                        block["to"] = self.comments[indexPath.row].value(forKey: "byUsername") as! String
+                                                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
+                                                                        block.saveInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully reported \(block)")
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
+                                            })
+                                            
+                                            let no = UIAlertAction(title: "no",
+                                                                   style: .cancel,
+                                                                   handler: nil)
+                                            
+                                            alert.addAction(no)
+                                            alert.addAction(yes)
+                                            alert.view.tintColor = UIColor.black
+                                            
+                                            self.present(alert, animated: true, completion: nil)
+                                            
+                })
+                
+                let cancel = AlertAction(title: "Cancel",
+                                         style: .cancel,
+                                         handler: {(AlertAction) in })
+                
+                
+                
+                
+                if (self.comments[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    options.addAction(cancel)
+                    options.addAction(delete)
+                    
+                } else if (commentsObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    options.addAction(delete)
+                    options.addAction(reply)
+                    options.addAction(report)
+                    options.addAction(cancel)
+                    
+                } else {
+                    options.addAction(reply)
+                    options.addAction(report)
+                    options.addAction(cancel)
+                    
+                }
+                
+                
+                for b in options.actions {
+                    b.button.frame.size.height = 50
+                }
+                delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 19.0)
+                delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                
+                reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+                
+                report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+                
+                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 19.0)
+                cancel.button.setTitleColor(UIColor.black, for: .normal)
+                
+                // Show Alert
+                self.present(options, animated: true, completion: nil)
+            }
+            
+        }
     }
     
     
@@ -632,165 +820,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         return cell
     }
-    
-    
-    
-    // MARK: - UITableViewDelegate Methods
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let cell = self.tableView!.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
-        
-        
-        // (1) Delete comment
-        let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
-                                            
-                                            let comment = PFQuery(className: "Comments")
-                                            comment.whereKey("byUser", equalTo: self.comments[indexPath.row].value(forKey: "byUser") as! PFUser)
-                                            comment.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                            comment.whereKey("commentOfContent", equalTo: self.comments[indexPath.row].value(forKey: "commentOfContent") as! String)
-                                            comment.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted comment: \(object)")
-                                                                
-                                                                // Delete from Parse: "Notifications"
-                                                                let notifications = PFQuery(className: "Notifications")
-                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                                notifications.whereKey("type", equalTo: "comment")
-                                                                notifications.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                                                notifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted from notifications: \(object)")
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print("ERROR1")
-                                                                        print(error?.localizedDescription as Any)
-                                                                    }
-                                                                })
-                                                                
-                                                            } else {
-                                                                print("ERROR2")
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print("ERROR3")
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
-                                            // (1B) Delete comment from table view
-                                            // use array
-                                            self.comments.remove(at: indexPath.row)
-                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
-        }
-        
-        // (2) Quick Replhy
-        let reply = UITableViewRowAction(style: .normal,
-                                         title: "Reply") { (UITableViewRowAction, indexPath) in
-                                            
-                                            // Clear comment box
-                                            if self.newComment.text == "Share your comment!" {
-                                                self.newComment.text! = ""
-                                            }
-                                            
-                                            // Set username in newComment
-                                            self.newComment.text = "\(self.newComment.text!)" + "@" + "\(self.comments[indexPath.row].value(forKey: "byUsername") as! String)" + " "
-                                            
-                                            // Close cell
-                                            self.tableView!.setEditing(false, animated: true)
-        
-        
-        }
-        
-        
-        
-        // (3) Block user
-        let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
-            
-            let alert = UIAlertController(title: "Report?",
-                                          message: "Are you sure you'd like to report this comment and the user?",
-                                          preferredStyle: .alert)
-            
-            let yes = UIAlertAction(title: "yes",
-                                    style: .destructive,
-                                    handler: { (alertAction: UIAlertAction!) -> Void in
-                                        // I have to manually delete all "blocked objects..." -__-
-                                        let block = PFObject(className: "Block_Reported")
-                                        block["from"] = PFUser.current()!.username!
-                                        block["fromUser"] = PFUser.current()!
-                                        block["to"] = cell.rpUsername.titleLabel!.text!
-                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
-                                        block.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully reported \(block)")
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
-                                        // Close cell
-                                        tableView.setEditing(false, animated: true)
-            })
-            
-            let no = UIAlertAction(title: "no",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(yes)
-            alert.addAction(no)
-            
-            self.present(alert, animated: true, completion: nil)
-            
-        }
-        
-        
-        
-        
-        
-        // Set background colors
-        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        reply.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
-        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-
-        
-        
-
-        if (self.comments[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete]
-        } else if (commentsObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete, reply, report]
-        } else {
-            return [reply, report]
-        }
-    
-
-
-    } // end edit action
-        
-    
-    
-    
     
     
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
