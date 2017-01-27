@@ -117,8 +117,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refresher.tintColor = UIColor.clear
         self.collectionView!.addSubview(refresher)
         
         // SearchbarDelegates
@@ -285,7 +284,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.collectionView!.contentOffset.y < -70 {
+        if self.collectionView!.contentOffset.y <= -140.00 {
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         }
     }

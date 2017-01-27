@@ -197,7 +197,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.synchronize()
         }
         
-        application.setStatusBarHidden(false, with: .none)
         // Call Login Function
         // Which also calls queryRelationships()
         login()
@@ -213,7 +212,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get user's playerId
         // this is also the user's "apnsId" in the Parse-Server
         OneSignal.idsAvailable({ (userId, pushToken) in
-            print("UserId:%@", userId)
+            print("UserId:%@", userId as Any)
             
             if PFUser.current() != nil {
                 PFUser.current()!["apnsId"] = userId
@@ -285,10 +284,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
             UIApplication.shared.setStatusBarHidden(true, with: .none)
+            swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
-            
             
             // Call relationships function
             _ = queryRelationships()

@@ -352,7 +352,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                         // Set background color for iconicPreview
                         cell.iconicPreview.backgroundColor = UIColor.clear
                         // and set icon for indication
-                        cell.iconicPreview.image = UIImage(named: "SpacePost")
+                        cell.iconicPreview.image = UIImage(named: "CSpacePost")
                     }
                     
                     // (2E) Shared Posts
@@ -557,7 +557,7 @@ class LikesAndShares: UITableViewController, UINavigationControllerDelegate, DZN
                         // Set background color for iconicPreview
                         cell.iconicPreview.backgroundColor = UIColor.clear
                         // and set icon for indication
-                        cell.iconicPreview.image = UIImage(named: "SpacePost")
+                        cell.iconicPreview.image = UIImage(named: "CSpacePost")
                     }
                     
                     // (2F) Moments

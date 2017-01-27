@@ -20,14 +20,21 @@ class MasterTab: UITabBarController {
         super.viewWillAppear(animated)
         self.view.layer.cornerRadius = 8.00
         self.view.clipsToBounds = true
+        // Change status bar
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBarController?.tabBar.tintColor = UIColor.black
-        
+        // Change status bar
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+
         // If current user is not nil
         if PFUser.current() != nil {
             // Set title to user's username

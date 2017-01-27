@@ -36,7 +36,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     @IBOutlet weak var leaveButton: UIButton!
     @IBAction func dismissVC(_ sender: Any) {
         // Remove last
-        stillImages.removeLast()
+        if !stillImages.isEmpty {
+            stillImages.removeLast()
+        }
         // Pop VC
         _ = self.navigationController?.popViewController(animated: false)
     }
@@ -194,7 +196,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                     // Send Notification
                     NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                     
-                    // Show news feed
+                    // Show bottom
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                     
                 } else {

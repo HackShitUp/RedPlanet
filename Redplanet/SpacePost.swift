@@ -57,6 +57,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func refresh(_ sender: Any) {
         // Fetch interactions
         fetchInteractions()
+        
+        // End refresher
+        self.refresher.endRefreshing()
 
         // Reload data
         self.tableView!.reloadData()
@@ -217,8 +220,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         

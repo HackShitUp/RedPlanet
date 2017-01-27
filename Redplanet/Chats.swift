@@ -19,8 +19,6 @@ import SimpleAlert
 import SwipeNavigationController
 
 
-let mainChat = Notification.Name("chats")
-
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // Boolean to determine what to show in UITableView
@@ -252,13 +250,118 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
-    
-    
-    // MARK: - UITabBarController Delegate Method
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+    // Function to delete chats
+    func deleteChat(sender: UILongPressGestureRecognizer) {
+        
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                
+                
+                let fullName = self.chatObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+                
+                // MARK: - SimpleAlert
+                // Present alert
+                let alert = AlertController(title: "\(fullName)",
+                    message: "Delete Chat?\nIt can't be restored once it's forever deleted.",
+                    style: .alert)
+                
+                // Design content view
+                alert.configContentView = { view in
+                    if let view = view as? AlertContentView {
+                        view.backgroundColor = UIColor.white
+                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                        let textRange = NSMakeRange(0, fullName.characters.count)
+                        let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                        attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                        view.titleLabel.attributedText = attributedText
+                        view.titleLabel.textColor = UIColor.black
+                        view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
+                        view.messageLabel.textColor = UIColor.black
+                        view.textBackgroundView.layer.cornerRadius = 3.00
+                        view.textBackgroundView.clipsToBounds = true
+                    }
+                }
+                
+                // Design corner radius
+                alert.configContainerCornerRadius = {
+                    return 14.00
+                }
+                
+                let delete = AlertAction(title: "Delete",
+                                      style: .destructive,
+                                      handler: { (AlertAction) in
+                                        
+                                        // Show Progress
+                                        SVProgressHUD.show()
+                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                        SVProgressHUD.setBackgroundColor(UIColor.white)
+                                        
+                                        // Delete chats
+                                        let sender = PFQuery(className: "Chats")
+                                        sender.whereKey("sender", equalTo: PFUser.current()!)
+                                        sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
+                                        
+                                        let receiver = PFQuery(className: "Chats")
+                                        receiver.whereKey("receiver", equalTo: PFUser.current()!)
+                                        receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+                                        
+                                        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+                                        chats.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                
+                                                // Dismiss progress
+                                                SVProgressHUD.dismiss()
+                                                
+                                                // Delete chat from tableview
+                                                self.chatObjects.remove(at: indexPath.row)
+                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                
+                                                // Delete all objects
+                                                PFObject.deleteAll(inBackground: objects, block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Deleted all objects: \(objects)")
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                                // Reload data
+                                                self.queryChats()
+                                                
+                                            } else {
+                                                if (error?.localizedDescription.hasSuffix("offline."))! {
+                                                    SVProgressHUD.dismiss()
+                                                }
+                                                
+                                                // Reload data
+                                                self.queryChats()
+                                            }
+                                        })
+                })
+                
+                let cancel = AlertAction(title: "Cancel",
+                                     style: .cancel,
+                                     handler: nil)
+                
+                // Configure options
+                alert.addAction(cancel)
+                alert.addAction(delete)
+                alert.view.tintColor = UIColor.black
+                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                cancel.button.setTitleColor(UIColor.black, for: .normal)
+                delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
     }
     
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -269,9 +372,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Get chats
         queryChats()
         
-        // Add Notification observer
-        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: mainChat, object: nil)
-        
         // Add searchbar to header
         self.searchBar.delegate = self
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
@@ -280,11 +380,16 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.tableView.tableHeaderView = self.searchBar
         self.tableView!.tableFooterView = UIView()
         
+        // Add long press method in tableView
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(deleteChat))
+        hold.minimumPressDuration = 0.40
+        self.tableView.isUserInteractionEnabled = true
+        self.tableView.addGestureRecognizer(hold)
+        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView!.addSubview(refresher)
         
         // Tap to dismiss keyboard
@@ -322,6 +427,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
     
     
+    
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+    }
     
     
     // MARK: - UITableViewDataSource Methods
@@ -700,7 +810,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     } // end didSelectRowAt method
  
 
-    
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
@@ -723,18 +832,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-        if self.tableView!.contentOffset.y <= -150.00 {
-            // TODO::
-            // TODO
-            // TODO
-            // Do something different here!!!
-            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            refresher.tintColor = UIColor.white
+        if self.tableView!.contentOffset.y <= -140.00 {
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            refresher.tintColor = UIColor.white
+            refresh()
         }
     }
     

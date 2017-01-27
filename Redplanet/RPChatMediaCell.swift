@@ -50,33 +50,7 @@ class RPChatMediaCell: UITableViewCell {
             self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }
-    
-    
-//    // Save
-//    func savePhoto(sender: UILongPressGestureRecognizer) {
-//        
-//        let options = UIAlertController(title: nil,
-//                                        message: nil,
-//                                        preferredStyle: .actionSheet)
-//        
-//        let save = UIAlertAction(title: "Save",
-//                                 style: .default,
-//                                 handler: {(alertAction: UIAlertAction!) in
-//                                    
-//                                    UIImageWriteToSavedPhotosAlbum(self.rpMediaAsset.image!, nil, nil, nil)
-//                                    
-//        })
-//        
-//        let cancel = UIAlertAction(title: "Cancel",
-//                                   style: .cancel,
-//                                   handler: nil)
-//        options.addAction(save)
-//        options.addAction(cancel)
-//        self.delegate?.present(options, animated: true, completion: nil)
-//        
-//    }
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         

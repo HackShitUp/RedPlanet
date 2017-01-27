@@ -240,6 +240,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
@@ -427,8 +428,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
+        configureView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

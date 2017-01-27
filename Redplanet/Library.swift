@@ -120,6 +120,7 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
     

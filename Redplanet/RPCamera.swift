@@ -121,19 +121,24 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     func newTP() {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+//        self.view.backgroundColor = UIColor.black
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.view.backgroundColor = UIColor.black
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .lightContent
+        self.setNeedsStatusBarAppearanceUpdate()
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -173,7 +178,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         // Add boost
         lowLightBoost = true
         
-        // Set bool
+        // MARK: - SnapSliderFilters
+        // Set bool so images aren't flipped and reloaded
         isRearCam = true
         
         // Tap button to take photo

@@ -124,6 +124,9 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
         // fetch data
         fetchMine()
         
+        // End refresher
+        self.refresher.endRefreshing()
+        
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -157,7 +160,6 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor.white
         refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
         
         // Register to receive notification
@@ -518,7 +520,7 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
                     // Set background color for iconicPreview
                     cell.iconicPreview.backgroundColor = UIColor.clear
                     // and set icon for indication
-                    cell.iconicPreview.image = UIImage(named: "SpacePost")
+                    cell.iconicPreview.image = UIImage(named: "CSpacePost")
                 }
                 
                 
@@ -733,18 +735,10 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-        if self.collectionView!.contentOffset.y <= -150.00 {
-            // TODO::
-            // TODO
-            // TODO
-            // Do something different here!!!
-            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            refresher.tintColor = UIColor.white
+        if self.collectionView!.contentOffset.y <= -140.00 {
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-            refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            refresher.tintColor = UIColor.white
+            refresh()
         }
     }
 

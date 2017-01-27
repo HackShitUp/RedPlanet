@@ -58,125 +58,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
-    
-    
-    // Function to access camera
-    func takePhoto() {
-        // Check Auhorization
-        cameraAuthorization()
-    }
-    
-    
-    // Function to check authorization
-    func cameraAuthorization() {
-        if AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) ==  AVAuthorizationStatus.authorized {
-            // Already Authorized
-            // Load Camera
-            DispatchQueue.main.async(execute: {
-                // Push VC
-                let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-                self.navigationController!.pushViewController(cameraVC, animated: false)
-            })
-            
-            
-        } else {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { (granted :Bool) -> Void in
-                if granted == true {
-                    // User granted camera access
-                    DispatchQueue.main.async(execute: {
-                        let cameraVC = self.storyboard?.instantiateViewController(withIdentifier: "camera") as! RPCamera
-                        self.navigationController!.pushViewController(cameraVC, animated: false)
-                    })
-                    
-                } else {
-                    // User denied camera access
-                    let alert = UIAlertController(title: "Camera Access Denied",
-                                                  message: "Please allow Redplanet to use your camera.",
-                                                  preferredStyle: .alert)
-                    
-                    let settings = UIAlertAction(title: "Settings",
-                                                 style: .default,
-                                                 handler: {(alertAction: UIAlertAction!) in
-                                                    
-                                                    let url = URL(string: UIApplicationOpenSettingsURLString)
-                                                    UIApplication.shared.openURL(url!)
-                    })
-                    
-                    let deny = UIAlertAction(title: "Later",
-                                             style: .destructive,
-                                             handler: nil)
-                    
-                    alert.addAction(settings)
-                    alert.addAction(deny)
-                    self.present(alert, animated: true, completion: nil)
-                }
-            })
-        }
-    }
-    
-    
-    
-    // Function to create new text post
-    func newTextPost() {
-        // Load New TextPost
-        let newTP = self.storyboard?.instantiateViewController(withIdentifier: "newTextPost") as! NewTextPost
-        self.navigationController?.pushViewController(newTP, animated: true)
-    }
-    
-    // Function to load user's photos
-    func loadLibrary() {
-        // Request access to Photos
-        photosAuthorization()
-        // and load view controllers depending on status
-    }
-    
-    
-    // Function to ask for permission to the PhotoLibrary
-    func photosAuthorization() {
-        PHPhotoLibrary.requestAuthorization({(status:PHAuthorizationStatus) in
-            switch status{
-            case .authorized:
-                // Load Photo Library
-                DispatchQueue.main.async(execute: { 
-                    // Push to library
-                    let library = self.storyboard?.instantiateViewController(withIdentifier: "photoLibraryVC") as! Library
-                    self.navigationController!.pushViewController(library, animated: true)
 
-                })
-                
-
-                break
-            case .denied:
-                let alert = UIAlertController(title: "Photos Access Denied",
-                                              message: "Please allow Redplanet access your Photos.",
-                                              preferredStyle: .alert)
-                
-                let settings = UIAlertAction(title: "Settings",
-                                             style: .default,
-                                             handler: {(alertAction: UIAlertAction!) in
-                                                
-                                                let url = URL(string: UIApplicationOpenSettingsURLString)
-                                                UIApplication.shared.openURL(url!)
-                })
-                
-                let deny = UIAlertAction(title: "Later",
-                                         style: .destructive,
-                                         handler: nil)
-                
-                alert.addAction(settings)
-                alert.addAction(deny)
-                self.present(alert, animated: true, completion: nil)
-
-                break
-            default:
-
-                break
-            }
-        })
-    }
-
-    
-    
     // Query Notifications
     func queryNotifications() {
 
@@ -338,14 +220,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView!.addSubview(refresher)
-        
-        // Give tableView rounded corners
-        self.tableView!.layer.cornerRadius = 10.00
-        self.tableView!.layer.borderColor = UIColor.white.cgColor
-        self.tableView!.layer.borderWidth = 0.75
-        self.tableView!.clipsToBounds = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -743,10 +618,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         return cell
     }
 
-    
-    
-    
-    
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
@@ -763,6 +634,15 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
             // Fetch Notifications
             queryNotifications()
+        }
+    }
+    
+    // ScrollView -- Pull To Pop
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y <= -140.00 {
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
+            refresh()
         }
     }
 

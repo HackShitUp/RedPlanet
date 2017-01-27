@@ -66,11 +66,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.textColor = UIColor.black
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
             }
         }
         // Design corner radius
@@ -78,7 +78,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             return 14.00
         }
         
-        let delete = AlertAction(title: "X Delete",
+        let delete = AlertAction(title: "Delete",
                                    style: .destructive,
                                    handler: { (AlertAction) in
                                     
@@ -160,7 +160,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
-            options.view.tintColor = UIColor.black
+            
+            for b in options.actions {
+                b.button.frame.size.height = 50
+            }
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.setTitleColor(UIColor.black, for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(options, animated: true, completion: nil)
         } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
             _ = self.navigationController?.popViewController(animated: true)
@@ -535,18 +546,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     func shareOptions(sender: UIButton) {
         
         // MARK: - SimpleAlert
-        let options = AlertController(title: "Share To",
+        let options = AlertController(title: "Share With",
                                       message: nil,
                                       style: .alert)
         
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.textColor = UIColor.black
                 view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
             }
         }
         // Design corner radius
@@ -665,7 +676,12 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
-        options.view.tintColor = UIColor.black
+        publicShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+        publicShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        privateShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+        privateShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.present(options, animated: true, completion: nil)
     }
     

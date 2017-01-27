@@ -92,6 +92,42 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                   style: .destructive,
                                   handler: {(alertAction: UIAlertAction!) in
                                     
+                                    
+                                    let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
+                                        message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
+                                        preferredStyle: .alert)
+                                    
+                                    let yes = UIAlertAction(title: "yes",
+                                                            style: .destructive,
+                                                            handler: { (alertAction: UIAlertAction!) -> Void in
+                                                                // I have to manually delete all "blocked objects..." -__-
+                                                                let block = PFObject(className: "Block_Reported")
+                                                                block["from"] = PFUser.current()!.username!
+                                                                block["fromUser"] = PFUser.current()!
+                                                                block["to"] = chatUsername.last!
+                                                                block["forObjectId"] = chatUserObject.last!.objectId!
+                                                                block.saveInBackground(block: {
+                                                                    (success: Bool, error: Error?) in
+                                                                    if success {
+                                                                        print("Successfully reported \(block)")
+                                                                        
+                                                                    } else {
+                                                                        print(error?.localizedDescription as Any)
+                                                                    }
+                                                                })
+                                                                // Close cell
+                                                                self.tableView.setEditing(false, animated: true)
+                                    })
+                                    
+                                    let no = UIAlertAction(title: "no",
+                                                           style: .cancel,
+                                                           handler: nil)
+                                    
+                                    alert.addAction(no)
+                                    alert.addAction(yes)
+                                    alert.view.tintColor = UIColor.black
+                                    self.present(alert, animated: true, completion: nil)
+                                    
         })
         
         let cancel = UIAlertAction(title: "Cancel",
@@ -540,7 +576,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Add observer to reload chats
         NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
         
-        
         // Add long press method in tableView
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(options))
         hold.minimumPressDuration = 0.30
@@ -564,8 +599,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
@@ -748,19 +783,140 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
                 
                 
+                // MARK: - SimpleAlert
+                let options = AlertController(title: "Options",
+                                              message: nil,
+                                              style: .alert)
+                
+                // Design content view
+                options.configContentView = { view in
+                    if let view = view as? AlertContentView {
+                        view.backgroundColor = UIColor.white
+                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                        view.titleLabel.textColor = UIColor.black
+                        view.textBackgroundView.layer.cornerRadius = 3.00
+                        view.textBackgroundView.clipsToBounds = true
+                        
+                    }
+                }
+                
+                // Design corner radius
+                options.configContainerCornerRadius = {
+                    return 14.00
+                }
                 
                 
+                let delete = AlertAction(title: "Delete",
+                                         style: .destructive,
+                                         handler: { (AlertAction) in
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.show()
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            
+                                            // delete chat
+                                            let chats = PFQuery(className: "Chats")
+                                            chats.whereKey("sender", equalTo: PFUser.current()!)
+                                            chats.whereKey("receiver", equalTo: chatUserObject.last!)
+                                            chats.whereKey("objectId", equalTo: self.messageObjects[indexPath.row].objectId!)
+                                            chats.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    for object in objects! {
+                                                        object.deleteInBackground(block: {
+                                                            (success: Bool, error: Error?) in
+                                                            if error == nil {
+                                                                print("Successfully deleted message: \(object)")
+                                                                
+                                                                // Dismiss progress
+                                                                SVProgressHUD.dismiss()
+                                                                
+                                                                // Query chats
+                                                                self.queryChats()
+                                                                
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                            }
+                                                        })
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // Dismiss progress
+                                                    SVProgressHUD.dismiss()
+                                                }
+                                            })
+                })
                 
+                let report = AlertAction(title: "Report",
+                                         style: .default,
+                                         handler: { (AlertAction) in
+                                            
+                                            let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
+                                                message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
+                                                preferredStyle: .alert)
+                                            
+                                            let yes = UIAlertAction(title: "yes",
+                                                                    style: .destructive,
+                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
+                                                                        // I have to manually delete all "blocked objects..." -__-
+                                                                        let block = PFObject(className: "Block_Reported")
+                                                                        block["from"] = PFUser.current()!.username!
+                                                                        block["fromUser"] = PFUser.current()!
+                                                                        block["to"] = chatUsername.last!
+                                                                        block["forObjectId"] = self.messageObjects[indexPath.row].objectId!
+                                                                        block.saveInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully reported \(block)")
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
+                                                                        // Close cell
+                                                                        self.tableView.setEditing(false, animated: true)
+                                            })
+                                            
+                                            let no = UIAlertAction(title: "no",
+                                                                   style: .cancel,
+                                                                   handler: nil)
+                                            
+                                            alert.addAction(no)
+                                            alert.addAction(yes)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+                                            
+                })
+                
+
+                let cancel = AlertAction(title: "Cancel",
+                                         style: .cancel,
+                                         handler: nil)
                 
                 
                 // Return specific actions depending on user's object
                 if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
-//                    return [delete]
+                    options.addAction(cancel)
+                    options.addAction(delete)
+                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                 } else {
-//                    return [report]
+                    options.addAction(cancel)
+                    options.addAction(report)
+                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
                 }
                 
+                for b in options.actions {
+                    b.button.frame.size.height = 50
+                }
                 
+                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                cancel.button.setTitleColor(UIColor.black, for: .normal)
+                
+                // Show Alert
+                self.present(options, animated: true, completion: nil)
                 
             }
         }
@@ -1102,142 +1258,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
 
     } // end cellForRowAt
-    
-    
-    // MARK: - UITableViewDelegate Method
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    } // end edit boolean
-
-    
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-
-        
-        // (1) Delete Chat
-        let delete = UITableViewRowAction(style: .normal,
-                                          title: "Delete") { (UITableViewRowAction, indexPath) in
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.show()
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            
-                                            // delete chat
-                                            let chats = PFQuery(className: "Chats")
-                                            chats.whereKey("sender", equalTo: PFUser.current()!)
-                                            chats.whereKey("receiver", equalTo: chatUserObject.last!)
-                                            chats.whereKey("objectId", equalTo: self.messageObjects[indexPath.row].objectId!)
-                                            chats.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if error == nil {
-                                                                print("Successfully deleted message: \(object)")
-                                                                
-                                                                // Dismiss progress 
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                // Query chats
-                                                                self.queryChats()
-                                                                
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                    // Error
-                                                }
-                                            })
-
-                                            
-        }
-        
-        // (2) Like?
-        let like = UITableViewRowAction(style: .normal,
-                                        title: " Like ") { (UITableViewRowAction, indexPath) in
-                                            
-                                            
-                                            
-                                            // TODO::
-                                            // Edit Content
-                                            
-                                            // Close cell
-                                            self.tableView!.setEditing(false, animated: true)
-                                            
-        }
-
-        
-        // (3) Block user
-        let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
-                                            
-                                            let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
-                                                                          message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
-                                                preferredStyle: .alert)
-                                            
-                                            let yes = UIAlertAction(title: "yes",
-                                                                    style: .destructive,
-                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // I have to manually delete all "blocked objects..." -__-
-                                                                        let block = PFObject(className: "Block_Reported")
-                                                                        block["from"] = PFUser.current()!.username!
-                                                                        block["fromUser"] = PFUser.current()!
-                                                                        block["to"] = chatUsername.last!
-                                                                        block["forObjectId"] = self.messageObjects[indexPath.row].objectId!
-                                                                        block.saveInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully reported \(block)")
-                                                                                
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
-                                                                        // Close cell
-                                                                        tableView.setEditing(false, animated: true)
-                                            })
-                                            
-                                            let no = UIAlertAction(title: "no",
-                                                                   style: .default,
-                                                                   handler: nil)
-                                            
-                                            alert.addAction(yes)
-                                            alert.addAction(no)
-                                            self.present(alert, animated: true, completion: nil)
-                                            
-        }
-        
-        
-        
-        
-        
-        // Set background images
-        // Red
-        delete.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        // Baby blue
-        like.backgroundColor = UIColor(red:0.04, green:0.60, blue:1.00, alpha:1.0)
-        // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.84, blue:0.00, alpha:1.0)
-        
-        
-        
-        // Return specific actions depending on user's object
-        if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete]
-        } else {
-            return [report]
-        }
-        
-
-        
-    } // End edit action
-    
-
     
     
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!

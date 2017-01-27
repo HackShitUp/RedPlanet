@@ -215,6 +215,7 @@ open class SwiftyCamViewController: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor.black
         previewLayer = PreviewView(frame: self.view.frame)
 
         // Add Gesture Recognizers
@@ -249,6 +250,8 @@ open class SwiftyCamViewController: UIViewController {
             sessionQueue.async { [unowned self] in
                 self.configureSession()
         }
+        
+        self.view.backgroundColor = UIColor.clear
     }
     
     // MARK: ViewDidAppear
@@ -294,8 +297,8 @@ open class SwiftyCamViewController: UIViewController {
         
         // If session is running, stop the session
         if self.isSessionRunning == true {
-            self.session.stopRunning()
-            self.isSessionRunning = false
+//            self.session.stopRunning()
+//            self.isSessionRunning = false
         }
         
         //Disble flash if it is currently enabled

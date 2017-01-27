@@ -42,15 +42,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // SourceType
     var sourceType: Int = 0
     
-    
-    
     // Refresher
     var refresher: UIRefreshControl!
-    
-    
-    
-    
-    
+
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
@@ -68,6 +62,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             // Following
             fetchSent()
         }
+        
+        // End refresher
+        self.refresher.endRefreshing()
         
         // Reload data
         self.collectionView!.reloadData()
@@ -102,7 +99,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 print(error?.localizedDescription as Any)
             }
             
-            // REload data
+            // Reload data
             self.collectionView!.reloadData()
         }
     }
@@ -162,7 +159,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 self.friendVSFollow.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.sentTo.append(object["endFriend"] as! PFUser)
+                    self.sentTo.append(object.object(forKey: "endFriend") as! PFUser)
                     self.friendVSFollow.append("friend")
                 }
                 
@@ -176,12 +173,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         for object in objects! {
-                            self.sentTo.append(object["following"] as! PFUser)
+                            self.sentTo.append(object.object(forKey: "following") as! PFUser)
                             self.friendVSFollow.append("follow")
                         }
-                        
-                        
-                        print("OBJECTS: \(self.sentTo)")
                         
                         // Set DZNEmptyDataSet
                         if self.sentTo.count == 0 {
@@ -286,9 +280,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             str = "🦄\nYou haven't requested to Friend or Follow people yet."
         }
         
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.darkGray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         
@@ -348,7 +342,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
         
         // Back swipe implementation
@@ -366,11 +359,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
 
     
     // MARK: - UICollectionReusableView Data source method
-    // MARK: UICollectionViewHeaderSection datasource
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-        // ofSize should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 35)
+        return CGSize(width: self.view.frame.size.width, height: 30)
     }
     
     
@@ -396,10 +387,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         return 1
     }
     
-    
-    
-
-
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if self.sourceType == 0 {
@@ -591,7 +578,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 cell.relationState.isHidden = false
                 cell.relationState.setTitle("Rescind Follow Request", for: .normal)
             }
-            
             
             
         }

@@ -22,7 +22,7 @@ class RPIconsGuideline: UITableViewController, UINavigationControllerDelegate {
                       UIImage(named: "PhotoGuide"),                 // Photo
                       UIImage(named: "SharedPostIcon"),                 // Shared
                       UIImage(named: "Gender Neutral User-100"),    // Profile Photo
-                      UIImage(named: "SpacePost"),                  // Space Post
+                      UIImage(named: "CSpacePost"),                  // Space Post
                       UIImage(named: "ITM"),                        // ITM
         UIImage(named: "VideoIcon")     // Video
     ]

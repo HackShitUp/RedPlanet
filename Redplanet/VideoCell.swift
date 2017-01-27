@@ -247,17 +247,17 @@ class VideoCell: UITableViewCell {
     @IBAction func share(_ sender: Any) {
         
         // MARK: - SimpleAlert
-        let options = AlertController(title: "Share To",
+        let options = AlertController(title: "Share With",
                                         message: nil,
                                         style: .alert)
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.textColor = UIColor.black
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
             }
         }
         // Design corner radius
@@ -373,7 +373,12 @@ class VideoCell: UITableViewCell {
         options.addAction(publicShare)
         options.addAction(privateShare)
         options.addAction(cancel)
-        options.view.tintColor = UIColor.black
+        publicShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        publicShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        privateShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        privateShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.delegate?.present(options, animated: true, completion: nil)
     }
     
@@ -415,10 +420,11 @@ class VideoCell: UITableViewCell {
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
                 view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
             }
         }
         
@@ -455,7 +461,7 @@ class VideoCell: UITableViewCell {
         })
         
         // (3) Delete
-        let delete = AlertAction(title: "X Delete",
+        let delete = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
                                     
@@ -567,8 +573,7 @@ class VideoCell: UITableViewCell {
         // (5) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
-                                 handler: { (AlertAction) in
-        })
+                                 handler: nil)
         
 
         
@@ -577,11 +582,21 @@ class VideoCell: UITableViewCell {
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
-            options.view.tintColor = UIColor.black
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.setTitleColor(UIColor.black, for: .normal)
+            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else {
-            options.addAction(report)
             options.addAction(cancel)
-            options.view.tintColor = UIColor.black
+            options.addAction(report)
+            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
         }
         
         self.delegate?.present(options, animated: true, completion: nil)

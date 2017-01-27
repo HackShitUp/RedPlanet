@@ -32,6 +32,9 @@ class CapturedVideo: UIViewController, PlayerDelegate {
     @IBOutlet weak var muteButton: UIButton!
     @IBOutlet weak var exitButton: UIButton!
     @IBAction func leave(_ sender: Any) {
+        if !capturedURLS.isEmpty {
+            capturedURLS.removeLast()
+        }
         // Pop VC
         _ = self.navigationController?.popViewController(animated: false)
     }
@@ -66,7 +69,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         self.continueButton.isUserInteractionEnabled = false
         
         // Check if it's for Chats
-        if chatCamera == false {
+        if chatCamera == false && smallVideoData != nil {
             // Save to Newsfeeds
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["username"] = PFUser.current()!.username!
@@ -196,54 +199,54 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
     }
     
-
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide statusBar
         UIApplication.shared.setStatusBarHidden(true, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
         
-        // Compress Video berfore viewDidLoad()
-        let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-        compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
-            guard let session = exportSession else {
-                return
-            }
-            
-            switch session.status {
-            case .unknown:
-                break
-            case .waiting:
-                break
-            case .exporting:
-                break
-            case .completed:
-                
-                // Enable buttons
-                self.continueButton.isUserInteractionEnabled = true
-                
-                guard let compressedData = NSData(contentsOf: compressedURL) else {
+        // Execute if array isn't empty
+        if !capturedURLS.isEmpty {
+            // Compress Video berfore viewDidLoad()
+            let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+            compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
+                guard let session = exportSession else {
                     return
                 }
-                self.smallVideoData = compressedData                
-
-            case .failed:
-                break
-            case .cancelled:
-                break
+                
+                switch session.status {
+                case .unknown:
+                    break
+                case .waiting:
+                    break
+                case .exporting:
+                    break
+                case .completed:
+                    
+                    // Enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    
+                    guard let compressedData = NSData(contentsOf: compressedURL) else {
+                        return
+                    }
+                    self.smallVideoData = compressedData
+                    
+                case .failed:
+                    break
+                case .cancelled:
+                    break
+                }
+                
             }
-            
         }
+
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
     
     // Function to Play & Pause
     func control() {
@@ -273,42 +276,45 @@ class CapturedVideo: UIViewController, PlayerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // MARK: Player
-        self.player = Player()
-        self.player.delegate = self
-        self.player.view.frame = self.view.bounds
-        self.addChildViewController(self.player)
-        self.view.addSubview(self.player.view)
-        self.player.didMove(toParentViewController: self)
-        self.player.setUrl(capturedURLS.last!)
-        self.player.fillMode = "AVLayerVideoGravityResizeAspect"
-        self.player.playFromBeginning()
-        self.player.playbackLoops = true
-        
-        // Add tap methods for..
-        // Pause and Play
-        let controlTap = UITapGestureRecognizer(target: self, action: #selector(control))
-        controlTap.numberOfTapsRequired = 1
-        self.player.view.isUserInteractionEnabled = true
-        self.player.view.addGestureRecognizer(controlTap)
-        // Mute and Volume-On
-        let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
-        muteTap.numberOfTapsRequired = 1
-        self.muteButton.isUserInteractionEnabled = true
-        self.muteButton.addGestureRecognizer(muteTap)
-        
-        // Add shadows to buttons and bring to front of view
-        let buttons = [self.muteButton,
-                       self.exitButton,
-                       self.saveButton,
-                       self.continueButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+        // Execute code if url array is NOT empty
+        if !capturedURLS.isEmpty {
+            // MARK: Player
+            self.player = Player()
+            self.player.delegate = self
+            self.player.view.frame = self.view.bounds
+            self.addChildViewController(self.player)
+            self.view.addSubview(self.player.view)
+            self.player.didMove(toParentViewController: self)
+            self.player.setUrl(capturedURLS.last!)
+            self.player.fillMode = "AVLayerVideoGravityResizeAspect"
+            self.player.playFromBeginning()
+            self.player.playbackLoops = true
+            
+            // Add tap methods for..
+            // Pause and Play
+            let controlTap = UITapGestureRecognizer(target: self, action: #selector(control))
+            controlTap.numberOfTapsRequired = 1
+            self.player.view.isUserInteractionEnabled = true
+            self.player.view.addGestureRecognizer(controlTap)
+            // Mute and Volume-On
+            let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
+            muteTap.numberOfTapsRequired = 1
+            self.muteButton.isUserInteractionEnabled = true
+            self.muteButton.addGestureRecognizer(muteTap)
+            
+            // Add shadows to buttons and bring to front of view
+            let buttons = [self.muteButton,
+                           self.exitButton,
+                           self.saveButton,
+                           self.continueButton] as [Any]
+            for b in buttons {
+                (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+                (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+                (b as AnyObject).layer.shadowRadius = 3
+                (b as AnyObject).layer.shadowOpacity = 0.5
+                self.player.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+                self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+            }
         }
     }
     

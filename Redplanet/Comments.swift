@@ -430,7 +430,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -629,7 +628,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 
                 let cancel = AlertAction(title: "Cancel",
                                          style: .cancel,
-                                         handler: {(AlertAction) in })
+                                         handler: nil)
                 
                 
                 
@@ -637,6 +636,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 if (self.comments[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     options.addAction(cancel)
                     options.addAction(delete)
+                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                     
                 } else if (commentsObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     options.addAction(delete)
@@ -644,27 +645,30 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     options.addAction(report)
                     options.addAction(cancel)
                     
+                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+                    
                 } else {
                     options.addAction(reply)
                     options.addAction(report)
                     options.addAction(cancel)
                     
+                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
                 }
                 
                 
                 for b in options.actions {
                     b.button.frame.size.height = 50
                 }
-                delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 19.0)
-                delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                 
-                reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-                
-                report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-                
-                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 19.0)
+                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
                 cancel.button.setTitleColor(UIColor.black, for: .normal)
                 
                 // Show Alert
