@@ -1,9 +1,9 @@
 //
-//  RFollowersCell.swift
+//  UserCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/24/16.
-//  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
+//  Created by Joshua Choi on 1/28/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
@@ -13,12 +13,11 @@ import Parse
 import ParseUI
 import Bolts
 
-class RFollowersCell: UITableViewCell {
+
+class UserCell: UITableViewCell {
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -29,5 +28,5 @@ class RFollowersCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }

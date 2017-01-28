@@ -265,7 +265,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "friendsCell", for: indexPath) as! FriendsCell
+        let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
         // Set cell's parent VC
         cell.delegate = self

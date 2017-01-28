@@ -9,14 +9,11 @@
 import UIKit
 import CoreData
 
-
-
-// Global Initialization
-var pageMenu : CAPSPageMenu?
-
-
 class Home: UIViewController, UINavigationControllerDelegate {
     
+    // MARK: - CAPSPageMenu
+    // pageMenu Initialization
+    var pageMenu : CAPSPageMenu?
     
     override var prefersStatusBarHidden: Bool {
         return false
@@ -31,16 +28,14 @@ class Home: UIViewController, UINavigationControllerDelegate {
         // Array to keep track of controllers in page menu
         var controllerArray : [UIViewController] = []
         
-        // Create variables for all view controllers you want to put in the
-        // page menu, initialize them, and add each to the controller array.
-        // (Can be any UIViewController subclass)
-        // Make sure the title property of all view controllers is set
-
+        // FRIENDS
         let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
+//        let friends = self.storyboard!.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
         friends.parentNavigator = self.navigationController
         friends.title = "Friends"
         controllerArray.append(friends)
         
+        // FOLLOWING
         let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
         following.parentNavigator = self.navigationController
         following.title = "Following"
@@ -51,7 +46,8 @@ class Home: UIViewController, UINavigationControllerDelegate {
         let parameters: [CAPSPageMenuOption] = [
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
-            .menuHeight(self.navigationController!.navigationBar.frame.size.height),
+//            .menuHeight(self.navigationController!.navigationBar.frame.size.height),
+            .menuHeight(35.00),
             .selectionIndicatorColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
             .selectedMenuItemLabelColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
@@ -61,7 +57,6 @@ class Home: UIViewController, UINavigationControllerDelegate {
         
         // Initialize page menu with controller array, frame, and optional parameters
         pageMenu = CAPSPageMenu(viewControllers: controllerArray, frame: CGRect(x: 0.0, y: 20.00, width: self.view.frame.width, height: self.view.frame.height-self.navigationController!.tabBarController!.tabBar.frame.height-20), pageMenuOptions: parameters)
-        
         
         // Lastly add page menu as subview of base view controller view
         // or use pageMenu controller in you view hierachy as desired

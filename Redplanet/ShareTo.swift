@@ -46,13 +46,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     @IBAction func refresh(_ sender: Any) {
         // Reset Bool
-        searchActive = true
+        searchActive = false
         
         // query friends
         queryFriends()
-        
-        // Reload data
-        self.tableView!.reloadData()
     }
     
     
@@ -313,7 +310,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "shareToCell", for: indexPath) as! ShareToCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()

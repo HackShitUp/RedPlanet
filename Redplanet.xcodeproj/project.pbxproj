@@ -10,8 +10,6 @@
 		090B69CFA86151527653FBDE /* Pods_RedplanetUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */; };
 		28FCAF4B5E65BA65AB5D8BF4 /* Pods_RedplanetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */; };
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
-		7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2235E31DB981E3003011FA /* FriendsCell.swift */; };
-		7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB91E31A822006B2D8B /* StickersCell.swift */; };
 		7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4021E25A78A0071B052 /* SNButton.swift */; };
@@ -123,13 +121,11 @@
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
-		7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
 		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
 		7EC05B061DB5E37C0039B357 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B051DB5E37C0039B357 /* Home.swift */; };
 		7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B091DB5EC6D0039B357 /* Friends.swift */; };
 		7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B0B1DB5ECAE0039B357 /* Following.swift */; };
-		7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B101DB5EE730039B357 /* FollowingCell.swift */; };
 		7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B141DB5FAA70039B357 /* MyHeader.swift */; };
 		7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B161DB5FAB70039B357 /* MyContentCell.swift */; };
 		7EC328CF1DBF460700344AFF /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC328CE1DBF460700344AFF /* Comments.swift */; };
@@ -165,16 +161,11 @@
 		7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
-		7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */; };
-		7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */; };
-		7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */; };
 		7ED4A90E1DBEB4DE0016698F /* RFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90D1DBEB4DE0016698F /* RFriends.swift */; };
 		7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90F1DBEB4E70016698F /* RFollowers.swift */; };
 		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
 		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
-		7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91A1DBEBDF90016698F /* LikersCell.swift */; };
-		7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A91C1DBEBE020016698F /* ShareToCell.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
 		7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4361E07C0A5005C68C9 /* Library.swift */; };
 		7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */; };
@@ -190,6 +181,21 @@
 		7EE1C2301DBC78C100F75557 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EE1C22A1DBC78C100F75557 /* Info.plist */; };
 		7EE1C2311DBC78C100F75557 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */; };
 		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
+		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
+		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
+		7EECEE5D1E3C3D0C003FA134 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */; };
+		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
+		7EECEE611E3C42EA003FA134 /* TimeTextPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */; };
+		7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */; };
+		7EECEE651E3C42F7003FA134 /* TimeMediaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */; };
+		7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE661E3C7B6D003FA134 /* UserCell.swift */; };
+		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
+		7EECEE711E3C8296003FA134 /* ProEphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE6F1E3C8296003FA134 /* ProEphemeralCell.swift */; };
+		7EECEE721E3C8296003FA134 /* ProEphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE701E3C8296003FA134 /* ProEphemeralCell.xib */; };
+		7EECEE761E3C82BD003FA134 /* ProMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE741E3C82BD003FA134 /* ProMediaCell.swift */; };
+		7EECEE771E3C82BD003FA134 /* ProMediaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE751E3C82BD003FA134 /* ProMediaCell.xib */; };
+		7EECEE7A1E3C82CB003FA134 /* ProTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE781E3C82CB003FA134 /* ProTextPostCell.swift */; };
+		7EECEE7B1E3C82CB003FA134 /* ProTextPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE791E3C82CB003FA134 /* ProTextPostCell.xib */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
@@ -217,8 +223,6 @@
 		636456C61CF2B3F8852F3B93 /* Pods-RedplanetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.debug.xcconfig"; sourceTree = "<group>"; };
 		671F731F63BF43A12743B080 /* Pods-RedplanetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.release.xcconfig"; sourceTree = "<group>"; };
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7E2235E31DB981E3003011FA /* FriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsCell.swift; sourceTree = "<group>"; };
-		7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsCell.swift; sourceTree = "<group>"; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
 		7E274EB91E31A822006B2D8B /* StickersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCell.swift; sourceTree = "<group>"; };
 		7E2CA4021E25A78A0071B052 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
@@ -379,13 +383,11 @@
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
-		7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharesCell.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
 		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		7EC05B051DB5E37C0039B357 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		7EC05B091DB5EC6D0039B357 /* Friends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
 		7EC05B0B1DB5ECAE0039B357 /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
-		7EC05B101DB5EE730039B357 /* FollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingCell.swift; sourceTree = "<group>"; };
 		7EC05B141DB5FAA70039B357 /* MyHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyHeader.swift; sourceTree = "<group>"; };
 		7EC05B161DB5FAB70039B357 /* MyContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyContentCell.swift; sourceTree = "<group>"; };
 		7EC328CE1DBF460700344AFF /* Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
@@ -428,16 +430,11 @@
 		7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsCell.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
-		7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriendsCell.swift; sourceTree = "<group>"; };
-		7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowersCell.swift; sourceTree = "<group>"; };
-		7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowingCell.swift; sourceTree = "<group>"; };
 		7ED4A90D1DBEB4DE0016698F /* RFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriends.swift; sourceTree = "<group>"; };
 		7ED4A90F1DBEB4E70016698F /* RFollowers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowers.swift; sourceTree = "<group>"; };
 		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
 		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
-		7ED4A91A1DBEBDF90016698F /* LikersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikersCell.swift; sourceTree = "<group>"; };
-		7ED4A91C1DBEBE020016698F /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EDDF4361E07C0A5005C68C9 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotosCell.swift; sourceTree = "<group>"; };
@@ -454,6 +451,21 @@
 		7EE1C22A1DBC78C100F75557 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EE1C22B1DBC78C100F75557 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
+		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
+		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
+		7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
+		7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeTextPostCell.xib; sourceTree = "<group>"; };
+		7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeMediaCell.swift; sourceTree = "<group>"; };
+		7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeMediaCell.xib; sourceTree = "<group>"; };
+		7EECEE661E3C7B6D003FA134 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
+		7EECEE6F1E3C8296003FA134 /* ProEphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProEphemeralCell.swift; sourceTree = "<group>"; };
+		7EECEE701E3C8296003FA134 /* ProEphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProEphemeralCell.xib; sourceTree = "<group>"; };
+		7EECEE741E3C82BD003FA134 /* ProMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProMediaCell.swift; sourceTree = "<group>"; };
+		7EECEE751E3C82BD003FA134 /* ProMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProMediaCell.xib; sourceTree = "<group>"; };
+		7EECEE781E3C82CB003FA134 /* ProTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProTextPostCell.swift; sourceTree = "<group>"; };
+		7EECEE791E3C82CB003FA134 /* ProTextPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProTextPostCell.xib; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -721,15 +733,6 @@
 				7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */,
 			);
 			name = NewChats;
-			sourceTree = "<group>";
-		};
-		7E7037D11DBD7FAA00F03E0C /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
-				7E22650B1DCC0D9200AFF99C /* ViewsCell.swift */,
-			);
-			name = Views;
 			sourceTree = "<group>";
 		};
 		7E70E0A21DD9934100A35C87 /* PrivacyPolicy */ = {
@@ -1101,15 +1104,6 @@
 			name = RPChatRoom;
 			sourceTree = "<group>";
 		};
-		7EBDC6651DC55E7300DFCC28 /* Shares */ = {
-			isa = PBXGroup;
-			children = (
-				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
-				7EBDC6631DC55E6D00DFCC28 /* SharesCell.swift */,
-			);
-			name = Shares;
-			sourceTree = "<group>";
-		};
 		7EC05AE51DB5B7B00039B357 /* BRYXBanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -1123,28 +1117,10 @@
 			children = (
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
-				7EC05B121DB5EE7E0039B357 /* Friends */,
-				7EC05B131DB5EE830039B357 /* Following */,
+				7EC05B091DB5EC6D0039B357 /* Friends.swift */,
+				7EC05B0B1DB5ECAE0039B357 /* Following.swift */,
 			);
 			name = NEWS_FEEDS;
-			sourceTree = "<group>";
-		};
-		7EC05B121DB5EE7E0039B357 /* Friends */ = {
-			isa = PBXGroup;
-			children = (
-				7EC05B091DB5EC6D0039B357 /* Friends.swift */,
-				7E2235E31DB981E3003011FA /* FriendsCell.swift */,
-			);
-			name = Friends;
-			sourceTree = "<group>";
-		};
-		7EC05B131DB5EE830039B357 /* Following */ = {
-			isa = PBXGroup;
-			children = (
-				7EC05B0B1DB5ECAE0039B357 /* Following.swift */,
-				7EC05B101DB5EE730039B357 /* FollowingCell.swift */,
-			);
-			name = Following;
 			sourceTree = "<group>";
 		};
 		7EC05B181DB5FABF0039B357 /* MyProfile */ = {
@@ -1207,20 +1183,18 @@
 				7EC5D16E1DB32F3800437219 /* TabBar&Navigation */,
 				7EC5D19A1DB3541900437219 /* LoginOrSignUp */,
 				7E43833F1DD9139300337007 /* Hashtags */,
-				7E7037D11DBD7FAA00F03E0C /* Views */,
-				7ED4A91F1DBEBE130016698F /* Likers */,
+				7ED4A9131DBEB4F60016698F /* FriendsFollowersFollowing */,
+				7ED4A91F1DBEBE130016698F /* Interactions */,
 				7EC328D21DBF461A00344AFF /* Comments */,
-				7EBDC6651DC55E7300DFCC28 /* Shares */,
-				7ED4A91E1DBEBE080016698F /* ShareTo */,
 				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
 				7E4CFF951DB4393A0087454E /* SINGLEPOSTS */,
-				7ED4A9131DBEB4F60016698F /* RFriends */,
-				7ED4A9151DBEB50B0016698F /* RFollowers */,
-				7ED4A9141DBEB5020016698F /* RFollowing */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
+				7EECEE731E3C829E003FA134 /* NIB:ProfilePosts */,
+				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7EA730D61E3B293500CF4D12 /* REDPLANET */,
+				7EECEE5B1E3C3CE3003FA134 /* Timeline */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1991DB3541000437219 /* CHATS */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
@@ -1345,49 +1319,25 @@
 			name = RPIconsGuideline;
 			sourceTree = "<group>";
 		};
-		7ED4A9131DBEB4F60016698F /* RFriends */ = {
+		7ED4A9131DBEB4F60016698F /* FriendsFollowersFollowing */ = {
 			isa = PBXGroup;
 			children = (
 				7ED4A90D1DBEB4DE0016698F /* RFriends.swift */,
-				7ED4A9061DBEB4BC0016698F /* RFriendsCell.swift */,
-			);
-			name = RFriends;
-			sourceTree = "<group>";
-		};
-		7ED4A9141DBEB5020016698F /* RFollowing */ = {
-			isa = PBXGroup;
-			children = (
-				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
-				7ED4A90A1DBEB4CB0016698F /* RFollowingCell.swift */,
-			);
-			name = RFollowing;
-			sourceTree = "<group>";
-		};
-		7ED4A9151DBEB50B0016698F /* RFollowers */ = {
-			isa = PBXGroup;
-			children = (
 				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
-				7ED4A9081DBEB4C40016698F /* RFollowersCell.swift */,
+				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
 			);
-			name = RFollowers;
+			name = FriendsFollowersFollowing;
 			sourceTree = "<group>";
 		};
-		7ED4A91E1DBEBE080016698F /* ShareTo */ = {
+		7ED4A91F1DBEBE130016698F /* Interactions */ = {
 			isa = PBXGroup;
 			children = (
-				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
-				7ED4A91C1DBEBE020016698F /* ShareToCell.swift */,
-			);
-			name = ShareTo;
-			sourceTree = "<group>";
-		};
-		7ED4A91F1DBEBE130016698F /* Likers */ = {
-			isa = PBXGroup;
-			children = (
+				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 				7ED4A9161DBEBDDD0016698F /* Likers.swift */,
-				7ED4A91A1DBEBDF90016698F /* LikersCell.swift */,
+				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
+				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
 			);
-			name = Likers;
+			name = Interactions;
 			sourceTree = "<group>";
 		};
 		7EDFB63A1DDBDC71004AE090 /* FAQ */ = {
@@ -1420,6 +1370,42 @@
 				7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */,
 			);
 			name = EditContent;
+			sourceTree = "<group>";
+		};
+		7EECEE5B1E3C3CE3003FA134 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */,
+				7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */,
+				7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */,
+				7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */,
+				7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */,
+				7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */,
+				7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */,
+			);
+			name = Timeline;
+			sourceTree = "<group>";
+		};
+		7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */ = {
+			isa = PBXGroup;
+			children = (
+				7EECEE661E3C7B6D003FA134 /* UserCell.swift */,
+				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
+			);
+			name = "NIB:UserCell";
+			sourceTree = "<group>";
+		};
+		7EECEE731E3C829E003FA134 /* NIB:ProfilePosts */ = {
+			isa = PBXGroup;
+			children = (
+				7EECEE6F1E3C8296003FA134 /* ProEphemeralCell.swift */,
+				7EECEE701E3C8296003FA134 /* ProEphemeralCell.xib */,
+				7EECEE741E3C82BD003FA134 /* ProMediaCell.swift */,
+				7EECEE751E3C82BD003FA134 /* ProMediaCell.xib */,
+				7EECEE781E3C82CB003FA134 /* ProTextPostCell.swift */,
+				7EECEE791E3C82CB003FA134 /* ProTextPostCell.xib */,
+			);
+			name = "NIB:ProfilePosts";
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1579,12 +1565,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */,
+				7EECEE721E3C8296003FA134 /* ProEphemeralCell.xib in Resources */,
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
+				7EECEE7B1E3C82CB003FA134 /* ProTextPostCell.xib in Resources */,
+				7EECEE651E3C42F7003FA134 /* TimeMediaCell.xib in Resources */,
+				7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */,
+				7EECEE771E3C82BD003FA134 /* ProMediaCell.xib in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EE1C2301DBC78C100F75557 /* Info.plist in Resources */,
+				7EECEE611E3C42EA003FA134 /* TimeTextPostCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1748,13 +1741,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E4CFF941DB439170087454E /* SpacePost.swift in Sources */,
+				7EECEE711E3C8296003FA134 /* ProEphemeralCell.swift in Sources */,
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
-				7EBDC6641DC55E6D00DFCC28 /* SharesCell.swift in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
 				7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
+				7EECEE5D1E3C3D0C003FA134 /* Timeline.swift in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
@@ -1770,11 +1764,11 @@
 				7EC05B0C1DB5ECAE0039B357 /* Following.swift in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
+				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7EC5D1AB1DB359B900437219 /* OtherUserProfile.swift in Sources */,
 				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
-				7ED4A90B1DBEB4CB0016698F /* RFollowingCell.swift in Sources */,
 				7EC05B151DB5FAA70039B357 /* MyHeader.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
@@ -1784,7 +1778,6 @@
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E2CA40D1E25A78A0071B052 /* SNSlider.swift in Sources */,
-				7E22650C1DCC0D9200AFF99C /* ViewsCell.swift in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
@@ -1797,7 +1790,6 @@
 				7E4CFF991DB439540087454E /* PhotoAssetCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
-				7ED4A91D1DBEBE020016698F /* ShareToCell.swift in Sources */,
 				7E2CA40E1E25A78A0071B052 /* SNSliderDataSource.swift in Sources */,
 				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
@@ -1858,34 +1850,34 @@
 				7EC05B0A1DB5EC6D0039B357 /* Friends.swift in Sources */,
 				7E2CA40B1E25A78A0071B052 /* SNButton.swift in Sources */,
 				7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */,
+				7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */,
 				7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
-				7EC05B111DB5EE730039B357 /* FollowingCell.swift in Sources */,
 				7EC5D1AF1DB359EE00437219 /* OtherContentCell.swift in Sources */,
 				7E98E9451DB75057001B7329 /* CLHighlightShadowEffect.m in Sources */,
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,
 				7EC05B171DB5FAB70039B357 /* MyContentCell.swift in Sources */,
-				7ED4A9071DBEB4BC0016698F /* RFriendsCell.swift in Sources */,
 				7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */,
 				7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */,
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
+				7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
+				7EECEE7A1E3C82CB003FA134 /* ProTextPostCell.swift in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7EA09E111DD3EF9200BD2D51 /* NewSpacePostCell.swift in Sources */,
 				7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */,
+				7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */,
 				7E2CA4111E25A78A0071B052 /* SNUtils.swift in Sources */,
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
-				7ED4A91B1DBEBDF90016698F /* LikersCell.swift in Sources */,
 				7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */,
 				7E98E9411DB75057001B7329 /* CLClippingTool.m in Sources */,
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,
 				7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */,
 				7E4CFF971DB4394A0087454E /* TextPostCell.swift in Sources */,
-				7ED4A9091DBEB4C40016698F /* RFollowersCell.swift in Sources */,
 				7E98E95A1DB75057001B7329 /* CLSplashTool.m in Sources */,
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,
 				7EE1C22E1DBC78C100F75557 /* AgrumeServiceLocator.swift in Sources */,
@@ -1905,9 +1897,9 @@
 				7E78CB701DF3BA8C001E69D3 /* LikesAndShares.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
-				7E2235E41DB981E3003011FA /* FriendsCell.swift in Sources */,
 				7EE1C22D1DBC78C100F75557 /* AgrumeCell.swift in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
+				7EECEE761E3C82BD003FA134 /* ProMediaCell.swift in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E2CA40C1E25A78A0071B052 /* SNFilter.swift in Sources */,

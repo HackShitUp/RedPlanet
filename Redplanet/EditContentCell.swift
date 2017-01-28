@@ -19,7 +19,6 @@ class EditContentCell: UITableViewCell {
     @IBOutlet weak var rpFullName: UILabel!
     @IBOutlet weak var rpUsername: UILabel!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

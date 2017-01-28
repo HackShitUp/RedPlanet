@@ -168,8 +168,6 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
         
-        
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
@@ -181,18 +179,12 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Query Followers
-        queryFollowers()
-        
         // Stylize title
         configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Query Followers
-        queryFollowers()
         
         // Stylize title
         configureView()
@@ -221,7 +213,7 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "rFollowersCell", for: indexPath) as! RFollowersCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()

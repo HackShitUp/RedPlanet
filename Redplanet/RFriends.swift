@@ -196,11 +196,9 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         // Show SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
-        
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -209,17 +207,14 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
 
-        
         // Query friends
         queryFriends()
-        
         
         // Stylize title
         configureView()
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -231,18 +226,12 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Query Friends
-        queryFriends()
-        
         // Stylize title
         configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Query Friends
-        queryFriends()
         
         // Stylize title
         configureView()
@@ -270,15 +259,11 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     }
     
     
-    
-    
     // MARK: - UISearchBarDelegate methods
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Set boolean
         searchActive = true
-        
     }
-    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
@@ -350,7 +335,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "rFriendsCell", for: indexPath) as! RFriendsCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()

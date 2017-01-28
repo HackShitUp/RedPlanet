@@ -215,7 +215,6 @@ open class SwiftyCamViewController: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.black
         previewLayer = PreviewView(frame: self.view.frame)
 
         // Add Gesture Recognizers
@@ -250,9 +249,42 @@ open class SwiftyCamViewController: UIViewController {
             sessionQueue.async { [unowned self] in
                 self.configureSession()
         }
-        
-        self.view.backgroundColor = UIColor.clear
     }
+    
+    
+    // MARK: ViewWillAppear
+    
+    /// ViewWillAppear(_ animated:) Implementation
+    
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Set background audio preference
+        
+        setBackgroundAudioPreference()
+        
+        sessionQueue.async {
+            switch self.setupResult {
+            case .success:
+                // Begin Session
+                self.session.startRunning()
+                self.isSessionRunning = self.session.isRunning
+            case .notAuthorized:
+                // Prompt to App Settings
+                self.promptToAppSettings()
+            case .configurationFailed:
+                // Unknown Error
+                DispatchQueue.main.async(execute: { [unowned self] in
+                    let message = NSLocalizedString("Unable to capture media", comment: "Alert message when something goes wrong during capture session configuration")
+                    let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                })
+            }
+        }
+    }
+
+    
     
     // MARK: ViewDidAppear
     
@@ -297,8 +329,8 @@ open class SwiftyCamViewController: UIViewController {
         
         // If session is running, stop the session
         if self.isSessionRunning == true {
-//            self.session.stopRunning()
-//            self.isSessionRunning = false
+            self.session.stopRunning()
+            self.isSessionRunning = false
         }
         
         //Disble flash if it is currently enabled

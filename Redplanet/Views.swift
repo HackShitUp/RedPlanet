@@ -203,8 +203,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Query views and configure title
-        queryViews()
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    override func viewDidAppear(_  animated: Bool) {
+        super.viewDidAppear(animated)
         
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -234,7 +238,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "viewsCell", for: indexPath) as! ViewsCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         
         // Layout views

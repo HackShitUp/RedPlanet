@@ -185,19 +185,13 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Query Following
-        queryFollowing()
-        
+
         // Stylize title
         configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        // Query Following
-        queryFollowing()
         
         // Stylize title
         configureView()
@@ -226,7 +220,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "rFollowingCell", for: indexPath) as! RFollowingCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
 
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()

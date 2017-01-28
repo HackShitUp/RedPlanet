@@ -367,13 +367,12 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "🤔\nNo Comments"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        
-        
+
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
 
@@ -500,11 +499,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 // Design content view
                 options.configContentView = { view in
                     if let view = view as? AlertContentView {
-                        view.backgroundColor = UIColor.white
-                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                        view.titleLabel.textColor = UIColor.black
-                        view.textBackgroundView.layer.cornerRadius = 3.00
-                        view.textBackgroundView.clipsToBounds = true
+                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                        let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                        let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                        attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                        view.titleLabel.attributedText = attributedText
                         
                     }
                 }
@@ -646,10 +645,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     options.addAction(cancel)
                     
                     delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha: 1.0), for: .normal)
+                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
                     report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
                     
                 } else {
@@ -657,10 +656,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     options.addAction(report)
                     options.addAction(cancel)
                     
-                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha: 1.0), for: .normal)
+                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
                 }
                 
                 

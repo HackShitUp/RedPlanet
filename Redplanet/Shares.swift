@@ -38,9 +38,6 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     @IBAction func refresh(_ sender: Any) {
         // Query shares
         queryShares()
-        
-        // Reload data
-        self.tableView!.reloadData()
     }
     
     
@@ -180,12 +177,8 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sharesCell", for: indexPath) as! SharesCell
-        
-        // Declare parent vc
-        cell.delegate = self
-        
-        
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()

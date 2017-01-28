@@ -51,8 +51,6 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     @IBAction func refresh(_ sender: AnyObject) {
         // Fetch likes
         queryLikes()
-        // Reload data
-        self.tableView!.reloadData()
     }
     
     
@@ -279,7 +277,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "likersCell", for: indexPath) as! LikersCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
 
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()
@@ -291,8 +289,6 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
-        
-        
         
         // If Searched
         if searchActive == true && searchBar.text != "" {

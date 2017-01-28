@@ -14,7 +14,8 @@ class CustomTabBar: UITabBar {
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         
         var sizeThatFits = super.sizeThatFits(size)
-        sizeThatFits.height = 50.00
+//        sizeThatFits.height = 50.00
+        sizeThatFits.height = 45.00
         // Height is originally 50; change to 40 to shorten it
         
         return sizeThatFits

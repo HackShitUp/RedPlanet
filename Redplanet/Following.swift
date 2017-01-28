@@ -215,8 +215,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "followingCell", for: indexPath) as! FollowingCell
-        
+        let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
         // Initiliaze and set parent VC
         cell.delegate = self
