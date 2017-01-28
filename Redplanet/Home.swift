@@ -46,13 +46,13 @@ class Home: UIViewController, UINavigationControllerDelegate {
         let parameters: [CAPSPageMenuOption] = [
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
-//            .menuHeight(self.navigationController!.navigationBar.frame.size.height),
             .menuHeight(35.00),
             .selectionIndicatorColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),
             .selectedMenuItemLabelColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .menuItemFont(UIFont(name: "AvenirNext-Medium", size: 17.00)!),
-            .unselectedMenuItemLabelColor(UIColor.black)
+            .unselectedMenuItemLabelColor(UIColor.black),
+            .bottomMenuHairlineColor(UIColor.clear)
         ]
         
         // Initialize page menu with controller array, frame, and optional parameters

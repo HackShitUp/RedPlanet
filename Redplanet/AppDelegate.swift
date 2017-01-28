@@ -12,12 +12,11 @@
 /*
  F U T U R E    P R O D U C T   F E A T U R E S
  
- • Video - Record and share videos via the CustomCamera. Play with PeriscopeVideoViewController
  • Likes & Shares - Because Redplanet hides all your content, we're going to have to let people go back to the things they liked or shared.
  • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
  • Best Friends - Let people choose their top 3 best friends.
  
- */
+*/
 
 
 
