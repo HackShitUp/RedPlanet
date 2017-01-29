@@ -23,6 +23,7 @@ import SVProgressHUD
 
 // TODO:
 // Define notification to reload data
+let timelineNotification = Notification.Name("tFriends")
 
 class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
@@ -155,12 +156,17 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         super.viewDidLoad()
         // Fetch friends
         fetchFriends()
+        
         // Configure table view
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.tableFooterView = UIView()
+        
         // Set tabBarController delegate
         self.parentNavigator.tabBarController?.delegate = self
+        
+        // Add notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: timelineNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -195,8 +201,9 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
         
         // Declare delegates
-        tpCell.delegate = self
-        mCell.delegate = self
+        eCell.delegate = self.parentNavigator
+        tpCell.delegate = self.parentNavigator
+        mCell.delegate = self.parentNavigator
         
         // Initialize all level configurations: rpUserProPic && rpUsername
         let proPics = [eCell.rpUserProPic, tpCell.rpUserProPic, mCell.rpUserProPic]
@@ -240,6 +247,11 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                             })
                         }
                     }
+                    
+                    // SET user's objects
+                    eCell.userObject = user
+                    tpCell.userObject = user
+                    mCell.userObject = user
                 } // end fetching PFUser object
             } else {
                 print(error?.localizedDescription as Any)
@@ -305,7 +317,10 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             eCell.iconicPreview.contentMode = .scaleAspectFill
             eCell.iconicPreview.clipsToBounds = true
             
-            // (1) Configure time
+            // (1) Set contentObject and user's object
+            eCell.contentObject = self.posts[indexPath.row]
+            
+            // (2) Configure time
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "E"
             let timeFormatter = DateFormatter()
@@ -313,8 +328,8 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
 
             
-            // (2) Layout content
-            // (2A) MOMENT
+            // (3) Layout content
+            // (3A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
                 // Make iconicPreview circular with red border color
@@ -347,12 +362,12 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 }
                 
                 
-            // (2B) SPACE POST
+            // (3B) SPACE POST
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "CSpacePost")
                 
-            // (2C) SHARED POSTS
+            // (3C) SHARED POSTS
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")

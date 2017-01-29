@@ -15,7 +15,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="575"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="574"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="574.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q2f-Db-ngT">
@@ -24,7 +24,7 @@
                             <constraint firstAttribute="width" constant="278" id="dZd-pr-QPC"/>
                             <constraint firstAttribute="height" constant="22" id="j4M-y2-ptj"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -59,6 +59,7 @@
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4cC-yy-CBj">
                         <rect key="frame" x="8" y="8" width="40" height="40"/>
+                        <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="aim-hq-Jhx"/>
                             <constraint firstAttribute="height" constant="40" id="crc-At-m8y"/>
@@ -190,6 +191,6 @@
         <image name="Comment-100" width="50" height="50"/>
         <image name="Like-100" width="50" height="50"/>
         <image name="MoreBlack" width="50" height="50"/>
-        <image name="Redo-100" width="50" height="50"/>
+        <image name="Redo-100" width="256" height="256"/>
     </resources>
 </document>

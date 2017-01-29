@@ -18,8 +18,9 @@ class MasterTab: UITabBarController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.view.layer.cornerRadius = 8.00
-        self.view.clipsToBounds = true
+//        self.view.layer.cornerRadius = 8.00
+//        self.view.clipsToBounds = true
+        
         // Change status bar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default

@@ -287,7 +287,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         if self.collectionView!.contentOffset.y <= -140.00 {
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         }
     }
 

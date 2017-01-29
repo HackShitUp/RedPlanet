@@ -268,7 +268,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
         // Set cell's parent VC
-        cell.delegate = self
+        cell.delegate = self.parentNavigator
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
@@ -290,7 +290,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         cell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
         cell.iconicPreview.layer.borderWidth = 0.00
         cell.iconicPreview.contentMode = .scaleAspectFill
-        
 
         // Fetch objects
         friendsContent[indexPath.row].fetchIfNeededInBackground {

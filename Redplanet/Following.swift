@@ -218,7 +218,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
         // Initiliaze and set parent VC
-        cell.delegate = self
+        cell.delegate = self.parentNavigator
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

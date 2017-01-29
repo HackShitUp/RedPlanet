@@ -23,15 +23,13 @@ import SVProgressHUD
 class TimeMediaCell: UITableViewCell {
     
     // Initialize delegate
-    var delegate: UIViewController?
+    var delegate: UINavigationController?
     
     // Initialize posts' object: PFObject
     var postObject: PFObject?
     
-    // Likes, Comments, and Shares
-    var likes = [PFObject]()
-    var comments = [PFObject]()
-    var shares = [PFObject]()
+    // Initialize user's object: PFObject
+    var userObject: PFObject?
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
@@ -47,105 +45,209 @@ class TimeMediaCell: UITableViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     
+    // Function to go to user's profile
+    func goUser(sender: Any) {
+        otherObject.append(self.userObject!)
+        otherName.append(self.userObject!.value(forKey: "username") as! String)
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        self.delegate?.pushViewController(otherVC, animated: true)
+    }
     
-    // Function to fetch likes, comments and shares
-    func fetchInteractions() {
-        // (III) Fetch likes, comments, and shares
-        let likes = PFQuery(className: "Likes")
-        likes.includeKey("fromUser")
-        likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-        likes.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.likes.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    self.likes.append(object.object(forKey: "fromUser") as! PFUser)
-                }
-                
-                // Comments
-                let comments = PFQuery(className: "Comments")
-                comments.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-                comments.findObjectsInBackground {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        // Clear array
-                        self.comments.removeAll(keepingCapacity: false)
-                        
-                        for object in objects! {
-                            self.comments.append(object)
-                        }
-                        
-                        // Shares
-                        let shares = PFQuery(className: "Newsfeeds")
-                        shares.includeKeys(["pointObject", "byUser"])
-                        shares.whereKey("contentType", equalTo: "sh")
-                        shares.whereKey("pointObject", equalTo: self.postObject!)
-                        shares.findObjectsInBackground(block: {
-                            (objects: [PFObject]?, error: Error?) in
-                            if error == nil {
-                                // Clear array
-                                self.shares.removeAll(keepingCapacity: false)
-                                for object in objects! {
-                                    self.shares.append(object.object(forKey: "byUser") as! PFUser)
+    // Function to like Photo, Profile Photo, or Video
+    func like(sender: Any) {
+        
+        
+        // Re-enable buttons
+        self.likeButton.isUserInteractionEnabled = false
+        self.likeButton.isEnabled = false
+        
+        if self.likeButton.image(for: .normal) == UIImage(named: "Like-100") {
+            
+            // Likes
+            let likes = PFObject(className: "Likes")
+            likes["fromUser"] = PFUser.current()!
+            likes["from"] = PFUser.current()!
+            likes["forObjectId"] = self.postObject?.objectId!
+            likes["toUser"] = self.userObject!
+            likes["to"] = self.rpUsername.text!
+            likes.saveInBackground {
+                (success: Bool, error: Error?) in
+                if success {
+                    // Re-enable buttons
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.likeButton.isEnabled = true
+                    
+                    // Change button image
+                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    
+                    // Send Notification
+                    NotificationCenter.default.post(name: timelineNotification, object: nil)
+                    
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: {
+                                    self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                    },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5){
+                                        self.likeButton.transform = CGAffineTransform.identity
+                                    }
+                    })
+                    
+                    
+                    
+                    // Save to notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["to"] = self.rpUsername.text!
+                    notifications["toUser"] = self.userObject!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = self.postObject!.objectId!
+                    notifications["type"] = "like \(self.postObject!.value(forKey: "contentType") as! String)"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            print("Successfully saved notificaiton: \(notifications)")
+                            
+                            // MARK: - OneSignal
+                            // Send push notification
+                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                
+                                if self.postObject!.value(forKey: "contentType") as! String == "ph" {
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
+                                        ]
+                                    )
+                                } else if self.postObject!.value(forKey: "contentType") as! String == "pp" {
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
+                                        ]
+                                    )
+                                
+                                } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
+                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
+                                        ]
+                                    )
                                 }
+                            }
+                            
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            }
+        } else {
+            // UNLIKE
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+            likes.whereKey("fromUser", equalTo: PFUser.current()!)
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                print("Successfully deleted like: \(object)")
+                                
+                                // Re-enable buttons
+                                self.likeButton.isUserInteractionEnabled = true
+                                self.likeButton.isEnabled = true
+                                
+                                // Change button image
+                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                
+                                // Send Notification
+                                NotificationCenter.default.post(name: timelineNotification, object: nil)
+                                
+                                // Animate like button
+                                UIView.animate(withDuration: 0.6 ,
+                                               animations: {
+                                                self.likeButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+                                },
+                                               completion: { finish in
+                                                UIView.animate(withDuration: 0.5){
+                                                    self.likeButton.transform = CGAffineTransform.identity
+                                                }
+                                })
+                                
+                                // Delete "Notifications"
+                                let notifications = PFQuery(className: "Notifications")
+                                notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                notifications.findObjectsInBackground(block: {
+                                    (objects: [PFObject]?, error: Error?) in
+                                    if error == nil {
+                                        for object in objects! {
+                                            object.deleteInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully deleted notification: \(object)")
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                                
+                                
+                                
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
                         })
-                        
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
                     }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
                 }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+            })
+
         }
     }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Set likes, comments, and shares
-        // Number of likes
-        if self.likes.count == 0 {
-            self.numberOfLikes.setTitle("likes", for: .normal)
-        } else if self.likes.count == 1 {
-            self.numberOfLikes.setTitle("1 like", for: .normal)
-        } else {
-            self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
-        }
-        if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-            self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
-        } else {
-            self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
-        }
-        // Number of comments
-        if self.comments.count == 0 {
-            self.numberOfComments.setTitle("comments", for: .normal)
-        } else if self.comments.count == 1 {
-            self.numberOfComments.setTitle("1 comment", for: .normal)
-        } else {
-            self.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
-        }
-        // Number of shares
-        if self.shares.count == 0 {
-            self.numberOfShares.setTitle("shares", for: .normal)
-        } else if self.shares.count == 1 {
-            self.numberOfShares.setTitle("1 share", for: .normal)
-        } else {
-            self.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
-        }
+        // Tap for rpUserProPic and rpUsername
+        let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        nameTap.numberOfTapsRequired = 1
+        self.rpUsername.isUserInteractionEnabled = true
+        self.rpUsername.addGestureRecognizer(nameTap)
+        // Tap for rpUsername
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
+        proPicTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(proPicTap)
         
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
 }
