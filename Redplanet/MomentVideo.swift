@@ -510,7 +510,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
         cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.present(options, animated: true, completion: nil)
-
     }
     
     // Functiont to go back
@@ -563,18 +562,27 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                         self.player.setUrl(videoUrl! as URL)
                         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
                         self.player.playFromBeginning()
+                        self.player.playbackLoops = true
                         
-                        // Bring buttons forward
-                        self.view.bringSubview(toFront: self.rpUsername)
-                        self.view.bringSubview(toFront: self.time)
-                        self.view.bringSubview(toFront: self.moreButton)
-                        self.view.bringSubview(toFront: self.numberOfLikes)
-                        self.view.bringSubview(toFront: self.likeButton)
-                        self.view.bringSubview(toFront: self.numberOfComments)
-                        self.view.bringSubview(toFront: self.commentButton)
-                        self.view.bringSubview(toFront: self.numberOfShares)
-                        self.view.bringSubview(toFront: self.shareButton)
-                        
+                        // Store buttons in an array
+                        let buttons = [self.likeButton,
+                                       self.numberOfLikes,
+                                       self.commentButton,
+                                       self.numberOfComments,
+                                       self.shareButton,
+                                       self.numberOfShares,
+                                       self.rpUsername,
+                                       self.time,
+                                       self.moreButton] as [Any]
+                        // Add shadows and bring view to front
+                        for b in buttons {
+                            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+                            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+                            (b as AnyObject).layer.shadowRadius = 3
+                            (b as AnyObject).layer.shadowOpacity = 0.5
+                            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+                            self.player.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+                        }
                     }
                     
                     // (2) Set username
@@ -699,7 +707,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         }
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -724,12 +731,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: momentVideoNotification, object: nil)
         
-        // Back swipe implementation
-        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(goBack))
-        backSwipe.direction = .right
-        self.view.addGestureRecognizer(backSwipe)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
         tapOut.numberOfTapsRequired = 1
@@ -748,25 +749,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
-
-        // Add shadows
-        let buttons = [self.likeButton,
-                       self.numberOfLikes,
-                       self.commentButton,
-                       self.numberOfComments,
-                       self.shareButton,
-                       self.numberOfShares,
-                       self.rpUsername,
-                       self.time,
-                       self.moreButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
-        
         
         // Hide moreButton if not user's content
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -782,6 +764,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         }
         
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

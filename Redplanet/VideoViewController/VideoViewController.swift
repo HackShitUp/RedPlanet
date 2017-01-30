@@ -87,7 +87,7 @@ open class VideoViewController: UIViewController {
         super.loadView()
         
         view.backgroundColor = .black
-        view.layer.cornerRadius = 20.00
+        view.layer.cornerRadius = 18.00
         view.layer.addSublayer(playerLayer)
         
         longPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(VideoViewController.longPressed(_:)))
