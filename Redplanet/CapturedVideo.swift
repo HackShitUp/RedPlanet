@@ -17,11 +17,12 @@ import ParseUI
 import Bolts
 
 import OneSignal
+import SwipeNavigationController
 
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, PlayerDelegate {
+class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationControllerDelegate {
     
     // Initializae Player
     var player: Player!
@@ -273,6 +274,17 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             }
         }
     }
+    
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        stillImages.removeAll(keepingCapacity: false)
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -289,6 +301,9 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             self.player.fillMode = "AVLayerVideoGravityResizeAspect"
             self.player.playFromBeginning()
             self.player.playbackLoops = true
+            
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.delegate = self
             
             // Add tap methods for..
             // Pause and Play
@@ -317,7 +332,6 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             }
         }
     }
-    
     
 
     override func didReceiveMemoryWarning() {

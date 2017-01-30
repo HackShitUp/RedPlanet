@@ -11,11 +11,8 @@
 
 /*
  F U T U R E    P R O D U C T   F E A T U R E S
- 
- • Likes & Shares - Because Redplanet hides all your content, we're going to have to let people go back to the things they liked or shared.
- • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
+  • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
  • Best Friends - Let people choose their top 3 best friends.
- 
 */
 
 
@@ -38,7 +35,7 @@
 /*
  
 YELLOW:
-UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+• UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
  
 RED:
 • UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)

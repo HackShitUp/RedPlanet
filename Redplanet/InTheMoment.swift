@@ -429,8 +429,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             likes.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully saved like \(likes)")
-                    
                     
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
@@ -460,23 +458,15 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     )
                                 }
                             }
-
-                            
                             
                         } else {
                             print(error?.localizedDescription as Any)
                         }
                     })
                     
-                    
-                    
-                    
-                    
-                    
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
-                    
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
@@ -586,7 +576,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                 if error == nil {
                                                     print("Successfully shared moment: \(newsfeeds)")
                                                     
-                                                    
                                                     // Send Notification
                                                     let notifications = PFObject(className: "Notifications")
                                                     notifications["fromUser"] = PFUser.current()!
@@ -599,15 +588,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                         (success: Bool, error: Error?) in
                                                         if success {
                                                             print("Sent notification: \(notifications)")
-                                                            
-                                                            
-                                                            
-                                                            
+      
                                                             // Send notification
                                                             NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                            
-                                                            
-                                                            
+
                                                             // Send Push notificaiton
                                                             if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
                                                                 // Handle optional chaining
@@ -626,7 +610,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                                 
                                                             }
                                                             
-                                                            
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",
                                                                                           message: "Successfully shared \(self.rpUsername.titleLabel!.text!)'s Moment",
@@ -642,7 +625,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                             alert.addAction(ok)
                                                             alert.view.tintColor = UIColor.black
                                                             self.present(alert, animated: true, completion: nil)
-                                                            
                                                             
                                                         } else {
                                                             print(error?.localizedDescription as Any)

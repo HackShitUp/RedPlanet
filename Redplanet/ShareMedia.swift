@@ -204,7 +204,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             
         }
         
-        
         // * Show navigation bar and tab bar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationController?.navigationBar.barTintColor = UIColor.white
@@ -335,10 +334,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Post notification
-//        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        
+        self.mediaCaption.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

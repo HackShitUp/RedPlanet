@@ -733,6 +733,7 @@ class MyProfile: UICollectionViewController, UITabBarControllerDelegate, UINavig
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.collectionView!.contentOffset.y <= -140.00 {
+            refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
             self.refresher.endRefreshing()

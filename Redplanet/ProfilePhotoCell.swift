@@ -455,17 +455,17 @@ class ProfilePhotoCell: UITableViewCell {
         }
         
         
-        // (1) Views
-        let views = AlertAction(title: "🙈 Views",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    // Append object
-                                    viewsObject.append(proPicObject.last!)
-                                    
-                                    // Push VC
-                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-        })
+//        // (1) Views
+//        let views = AlertAction(title: "🙈 Views",
+//                                style: .default,
+//                                handler: { (AlertAction) in
+//                                    // Append object
+//                                    viewsObject.append(proPicObject.last!)
+//                                    
+//                                    // Push VC
+//                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+//                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
+//        })
         
         
         // (2)
@@ -678,12 +678,12 @@ class ProfilePhotoCell: UITableViewCell {
 
         
         if (proPicObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            options.addAction(views)
+//            options.addAction(views)
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            views.button.setTitleColor(UIColor.black, for: .normal)
+//            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+//            views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

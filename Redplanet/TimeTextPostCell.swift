@@ -75,22 +75,8 @@ class TimeTextPostCell: UITableViewCell {
             return 14.00
         }
         
-        
-        // (1) Views
-        let views = AlertAction(title: "🙈 Views",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    // Append object
-                                    viewsObject.append(self.postObject!)
-                                    
-                                    // Push VC
-                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-                                    
-        })
-        
-        // (2) Edit
-        let edit = AlertAction(title: "🔩 Edit",
+        // (1) Edit
+        let edit = AlertAction(title: "🔩 Edit 🔩",
                                style: .default,
                                handler: { (AlertAction) in
                                 
@@ -99,17 +85,18 @@ class TimeTextPostCell: UITableViewCell {
                                 
                                 // Push VC
                                 let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+                                self.delegate?.pushViewController(editVC, animated: true)
                                 
         })
         
-        // (3) Delete
+        // (2) Delete
         let delete = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
-                                    // Show Progress
+                                    // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.show()
                                     
                                     // Delete content
                                     let content = PFQuery(className: "Newsfeeds")
@@ -128,39 +115,37 @@ class TimeTextPostCell: UITableViewCell {
                                                 object.deleteInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
-                                                        
-                                                        // Dismiss
-                                                        SVProgressHUD.dismiss()
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                         
                                                         // Reload data
-                                                        NotificationCenter.default.post(name: timelineNotification, object: nil)
+                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        
-                                                        // Pop view controller
-                                                        _ = self.delegate?.navigationController?.popViewController(animated: true)
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
                                                     }
                                                 })
                                             }
                                         } else {
                                             print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
                                     
                                     
         })
         
-        
-        
-        // (4) Report Content
+        // (3) Report Content
         let reportBlock = AlertAction(title: "Report",
                                       style: .destructive,
                                       handler: { (AlertAction) in
                                         
                                         let alert = UIAlertController(title: "Report",
-                                                                      message: "Please provide your reason for reporting \(self.postObject!.value(forKey: "username") as! String)'s Text Post",
+                                                                      message: "Please provide your reason for reporting \(self.rpUsername.text!)'s Text Post",
                                             preferredStyle: .alert)
                                         
                                         let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -205,7 +190,6 @@ class TimeTextPostCell: UITableViewCell {
                                                                    style: .cancel,
                                                                    handler: nil)
                                         
-                                        
                                         alert.addTextField(configurationHandler: nil)
                                         alert.addAction(report)
                                         alert.addAction(cancel)
@@ -215,7 +199,7 @@ class TimeTextPostCell: UITableViewCell {
         
         
         
-        // (5) Cancel
+        // (4) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
@@ -224,12 +208,12 @@ class TimeTextPostCell: UITableViewCell {
         
         
         if (self.postObject!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            options.addAction(views)
+//            options.addAction(views)
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            views.button.setTitleColor(UIColor.black, for: .normal)
+//            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+//            views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
@@ -280,7 +264,7 @@ class TimeTextPostCell: UITableViewCell {
                                         newsfeeds["byUser"] = PFUser.current()!
                                         newsfeeds["username"] = PFUser.current()!.username!
                                         newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
-                                        newsfeeds["pointObject"] = textPostObject.last!
+                                        newsfeeds["pointObject"] = self.postObject!
                                         newsfeeds["contentType"] = "sh"
                                         newsfeeds.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
@@ -292,10 +276,10 @@ class TimeTextPostCell: UITableViewCell {
                                                 let notifications = PFObject(className: "Notifications")
                                                 notifications["fromUser"] = PFUser.current()!
                                                 notifications["from"] = PFUser.current()!.username!
-                                                notifications["toUser"] = textPostObject.last!.value(forKey: "byUser") as! PFUser
+                                                notifications["toUser"] = self.userObject!
                                                 notifications["to"] = self.rpUsername.text!
                                                 notifications["type"] = "share tp"
-                                                notifications["forObjectId"] = textPostObject.last!.objectId!
+                                                notifications["forObjectId"] = self.postObject!.objectId!
                                                 notifications.saveInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
@@ -316,10 +300,6 @@ class TimeTextPostCell: UITableViewCell {
                                                             )
                                                         }
                                                         
-                                                        // Reload data
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        
                                                         // Show alert
                                                         let alert = UIAlertController(title: "Shared With Friends",
                                                                                       message: "Successfully shared \(self.rpUsername.text!)'s Text Post.",
@@ -328,8 +308,10 @@ class TimeTextPostCell: UITableViewCell {
                                                         let ok = UIAlertAction(title: "ok",
                                                                                style: .default,
                                                                                handler: {(alertAction: UIAlertAction!) in
-                                                                                // Pop view controller
-                                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                                                
+                                                                                // Reload data
+                                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         })
                                                         
                                                         alert.addAction(ok)
@@ -355,12 +337,12 @@ class TimeTextPostCell: UITableViewCell {
                                        style: .default,
                                        handler: { (AlertAction) in
                                         
-                                        // Append to contentObject
+                                        // Append post's object: PFObject
                                         shareObject.append(self.postObject!)
                                         
                                         // Share to chats
                                         let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
-                                        self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+                                        self.delegate?.pushViewController(shareToVC, animated: true)
         })
         
         let cancel = AlertAction(title: "Cancel",
@@ -390,8 +372,9 @@ class TimeTextPostCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = false
         self.likeButton.isEnabled = false
         
-        if self.likeButton.title(for: .normal) == "liked" {
-            
+        // If Heart is Filled --> UIImage ==> Like Filled-100
+        if self.likeButton.image(for: .normal) == UIImage(named: "Like Filled-100") {
+        
             // UNLIKE
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
@@ -413,7 +396,7 @@ class TimeTextPostCell: UITableViewCell {
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
                                 // Send Notification
-                                NotificationCenter.default.post(name: timelineNotification, object: nil)
+                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -425,8 +408,6 @@ class TimeTextPostCell: UITableViewCell {
                                                     self.likeButton.transform = CGAffineTransform.identity
                                                 }
                                 })
-                                
-                                
                                 
                                 // Delete "Notifications"
                                 let notifications = PFQuery(className: "Notifications")
@@ -450,9 +431,6 @@ class TimeTextPostCell: UITableViewCell {
                                         print(error?.localizedDescription as Any)
                                     }
                                 })
-                                
-                                
-                                
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -487,7 +465,7 @@ class TimeTextPostCell: UITableViewCell {
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
                     // Send Notification
-                    NotificationCenter.default.post(name: timelineNotification, object: nil)
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -527,8 +505,6 @@ class TimeTextPostCell: UITableViewCell {
                                 )
                             }
                             
-                            
-                            
                         } else {
                             print(error?.localizedDescription as Any)
                         }
@@ -554,7 +530,6 @@ class TimeTextPostCell: UITableViewCell {
         self.delegate?.pushViewController(likesVC, animated: true)
     }
     
-    
     // Function to view comments
     @IBAction func comments(_ sender: Any) {
         // Append object
@@ -575,8 +550,6 @@ class TimeTextPostCell: UITableViewCell {
         self.delegate?.pushViewController(sharesVC, animated: true)
     }
     
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // (1) Tap for rpUserProPic and rpUsername
@@ -584,6 +557,7 @@ class TimeTextPostCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
+        
         // (2) Tap for rpUsername
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
@@ -596,25 +570,25 @@ class TimeTextPostCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // (4) Add numberOfLikes tap
+        // (4) numberOfLikes tap
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (5) Add comment tap
+        // (5) Comment tap
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // (6) Add Share tap
+        // (6) Share tap
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (7) Add numberOfShares tap
+        // (7) numberOfShares tap
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
@@ -625,6 +599,55 @@ class TimeTextPostCell: UITableViewCell {
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
+        
+        
+        // Handle @username tap
+        textPost.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        
+        // Handle #object tap
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.pushViewController(hashTags, animated: true)
+        }
+        
+        // Handle http: tap
+        textPost.urlLinkTapHandler = { label, handle, range in
+            
+            // Open url
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

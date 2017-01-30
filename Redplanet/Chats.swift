@@ -764,8 +764,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
     
     
-    
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // If user is searching...
@@ -835,6 +833,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y <= -140.00 {
+            refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
             refresh()

@@ -20,7 +20,7 @@ import DZNEmptyDataSet
 
 
 // Define identifier
-let friendsNewsfeed = Notification.Name("friendsNewsfeed")
+//let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CAPSPageMenuDelegate {
@@ -267,8 +267,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
-        // Set cell's parent VC
+        // Set cell's parent VC: UINavigationController
         cell.delegate = self.parentNavigator
+        // Set content's object: PFObject
+        cell.postObject = self.friendsContent[indexPath.row]
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()

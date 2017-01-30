@@ -21,9 +21,8 @@ import SimpleAlert
 import SVProgressHUD
 
 
-// TODO:
 // Define notification to reload data
-let timelineNotification = Notification.Name("tFriends")
+let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
 class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
@@ -49,13 +48,12 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
     var shares = [PFObject]()
     
     
-    // TODO::
+
     // Function to refresh data
     func refresh() {
-        
+        fetchPosts()
     }
     
-    // TODO::
     // Function to fetch friends
     func fetchFriends() {
         let fFriends = PFQuery(className: "FriendMe")
@@ -86,16 +84,11 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     }
                 }
                 
-                print(self.friends.count)
-                // Fire function to fetch news feed
+                // Fetch Posts
                 self.fetchPosts()
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
-            // Reload data
-            // self.tableView!.reloadData()
             
         })
         
@@ -145,8 +138,10 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
     
     // MARK: - TabBarControllerDelegate method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        print("\n\n\nFIRED\n\n\n\n")
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
             // Scroll to top
+            print("FIRED?")
             self.tableView?.setContentOffset(CGPoint.zero, animated: true)
         }
     }
@@ -166,7 +161,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         self.parentNavigator.tabBarController?.delegate = self
         
         // Add notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: timelineNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -212,7 +207,6 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         // Initialize text for time
         var rpTime: String?
         
-        
         // (I) Fetch user's data and unload them
         self.posts[indexPath.row].fetchIfNeededInBackground {
             (object: PFObject?, error: Error?) in
@@ -234,7 +228,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                         p?.layer.borderColor = UIColor.lightGray.cgColor
                         p?.layer.borderWidth = 0.5
                         p?.clipsToBounds = true
-                        
+                        // Fetch profile photo
                         if let proPic = user["userProfilePicture"] as? PFFile {
                             proPic.getDataInBackground(block: {
                                 (data: Data?, error: Error?) in
@@ -296,10 +290,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             createdDate.dateFormat = "MMM d, yyyy"
             rpTime = createdDate.string(from: self.posts[indexPath.row].createdAt!)
         }
-        
-        
-        
-        
+
         // (II) Layout content
         if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
         // ****************************************************************************************************************
@@ -318,7 +309,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             eCell.iconicPreview.clipsToBounds = true
             
             // (1) Set contentObject and user's object
-            eCell.contentObject = self.posts[indexPath.row]
+            eCell.postObject = self.posts[indexPath.row]
             
             // (2) Configure time
             let dateFormatter = DateFormatter()
@@ -327,7 +318,6 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             timeFormatter.dateFormat = "h:mm a"
             eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
 
-            
             // (3) Layout content
             // (3A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
@@ -361,7 +351,6 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     }
                 }
                 
-                
             // (3B) SPACE POST
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
@@ -373,24 +362,104 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
             }
 
-            
-            
-            return eCell
-            
-            
-            
+            return eCell // return EphemeralCell.swift
+
         } else if posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
         // ****************************************************************************************************************
         // TEXT POST ******************************************************************************************************
         // ****************************************************************************************************************
-            // Set Text Post
+            // (1) Set Text Post
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
-            // Set time
+            
+            // (2) Set time
             tpCell.time.text! = rpTime!
-            // Set post object
+            
+            // (3) Set post object
             tpCell.postObject = self.posts[indexPath.row]
             
-            return tpCell
+            // (4) Fetch likes, comments, and shares
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.includeKey("fromUser")
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.likes.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
+                    
+                    if self.likes.count == 0 {
+                        tpCell.numberOfLikes.setTitle("likes", for: .normal)
+                    } else if self.likes.count == 1 {
+                        tpCell.numberOfLikes.setTitle("1 like", for: .normal)
+                    } else {
+                        tpCell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                    }
+                    
+                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                        tpCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    } else {
+                        tpCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let comments = PFQuery(className: "Comments")
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear array
+                    self.comments.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.comments.append(object)
+                    }
+                    
+                    if self.comments.count == 0 {
+                        tpCell.numberOfComments.setTitle("comments", for: .normal)
+                    } else if self.comments.count == 1 {
+                        tpCell.numberOfComments.setTitle("1 comment", for: .normal)
+                    } else {
+                        tpCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let shares = PFQuery(className: "Newsfeeds")
+            shares.whereKey("contentType", equalTo: "sh")
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear array
+                    self.shares.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.shares.append(object)
+                    }
+                    
+                    if self.shares.count == 0 {
+                        tpCell.numberOfShares.setTitle("shares", for: .normal)
+                    } else if self.shares.count == 1 {
+                        tpCell.numberOfShares.setTitle("1 share", for: .normal)
+                    } else {
+                        tpCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            return tpCell   // return TimeTextPostCell.swift
 
         } else {
         // ****************************************************************************************************************
@@ -444,23 +513,117 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 mCell.textPost.text! = caption
             } else {
                 mCell.textPost.isHidden = true
-                mCell.textPost.removeFromSuperview()
             }
             
             // (3) Set time
             mCell.time.text! = rpTime!
             
+            // (4) Fetch likes, comments, and shares
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.includeKey("fromUser")
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.likes.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
+                    
+                    if self.likes.count == 0 {
+                        mCell.numberOfLikes.setTitle("likes", for: .normal)
+                    } else if self.likes.count == 1 {
+                        mCell.numberOfLikes.setTitle("1 like", for: .normal)
+                    } else {
+                        mCell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                    }
+                    
+                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                        mCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    } else {
+                        mCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
             
+            let comments = PFQuery(className: "Comments")
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear array
+                    self.comments.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.comments.append(object)
+                    }
+                    
+                    if self.comments.count == 0 {
+                        mCell.numberOfComments.setTitle("comments", for: .normal)
+                    } else if self.comments.count == 1 {
+                        mCell.numberOfComments.setTitle("1 comment", for: .normal)
+                    } else {
+                        mCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
             
-            return mCell
-
+            let shares = PFQuery(className: "Newsfeeds")
+            shares.whereKey("contentType", equalTo: "sh")
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear array
+                    self.shares.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.shares.append(object)
+                    }
+                    
+                    if self.shares.count == 0 {
+                        mCell.numberOfShares.setTitle("shares", for: .normal)
+                    } else if self.shares.count == 1 {
+                        mCell.numberOfShares.setTitle("1 share", for: .normal)
+                    } else {
+                        mCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
             
+            // (5) Add tap methods
+            mCell.layoutTap()
             
+            return mCell // return TimeMediaCell
         }
-
-        
+    } // end cellForRowAt
+    
+    
+    // MARK: RP's very own Pipeline Method
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
     }
- 
-
-
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.posts.count + self.skipped.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            fetchPosts()
+        }
+    }
 }

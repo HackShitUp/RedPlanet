@@ -285,9 +285,11 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.collectionView!.contentOffset.y <= -140.00 {
+            refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
-//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+            // Reload data
+            queryExplore()
         }
     }
 

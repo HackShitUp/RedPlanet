@@ -29,20 +29,20 @@ class Home: UIViewController, UINavigationControllerDelegate {
         var controllerArray : [UIViewController] = []
         
         // FRIENDS
-        let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
-//        let friends = self.storyboard!.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
+//        let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
+        let friends = self.storyboard!.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
         friends.parentNavigator = self.navigationController
         friends.title = "Friends"
         controllerArray.append(friends)
         
         // FOLLOWING
-        let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
+//        let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
+        let following = self.storyboard?.instantiateViewController(withIdentifier: "tFollowing") as! TFollowing
         following.parentNavigator = self.navigationController
         following.title = "Following"
         controllerArray.append(following)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
-        // Example:
         let parameters: [CAPSPageMenuOption] = [
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),

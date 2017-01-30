@@ -19,7 +19,7 @@ import OneSignal
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
+class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate, SwipeNavigationControllerDelegate {
     //    JotViewControllerDelegate
     
     // MARK: SnapSliderFilters
@@ -285,6 +285,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
     }
 
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        stillImages.removeAll(keepingCapacity: false)
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -305,6 +314,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         // Enable UIImageView for SnapSliderFilters
         self.stillPhoto.isUserInteractionEnabled = true
         
+        // MARK:- SwipeNavigationController
+        // Set delegate
+        self.containerSwipeNavigationController?.delegate = self
         
         // Hide buttons
         self.editButton.isHidden = true
@@ -323,6 +335,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+            self.stillPhoto.bringSubview(toFront: (b as AnyObject) as! UIView)
+            self.slider.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
 
@@ -366,10 +380,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardTypeChanged(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
     }
-    
-    
-    
-
     
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {

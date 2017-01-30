@@ -88,10 +88,11 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
         // Design content view
         alert.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
                 view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
             }
         }
         
@@ -246,14 +247,10 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
                                     self.present(alert, animated: true, completion: nil)
         })
         
-        
         // (5) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
-        
-        
-
 
         // Show options
         if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
@@ -261,13 +258,25 @@ class OtherUserProfile: UICollectionViewController, UINavigationControllerDelega
             alert.addAction(chat)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
-            alert.view.tintColor = UIColor.black
+            space.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            space.button.setTitleColor(UIColor.black, for: .normal)
+            chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            reportOrBlock.button.setTitleColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
         } else {
             alert.addAction(chat)
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
-            alert.view.tintColor = UIColor.black
+            chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            reportOrBlock.button.setTitleColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
         }
         

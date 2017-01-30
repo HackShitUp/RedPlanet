@@ -18,7 +18,7 @@ import DZNEmptyDataSet
 
 
 // Define Notification
-let followingNewsfeed = Notification.Name("followingNewsfeed")
+//let followingNewsfeed = Notification.Name("followingNewsfeed")
 
 
 class Following: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
@@ -45,7 +45,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
                         "vi",
                         "itm"]
     
-    
     // Function to refresh data
     func refresh() {
         // Query following
@@ -54,11 +53,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         refresher.endRefreshing()
     }
     
-    
-    
     // Query Following
     func queryFollowing() {
-        
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.includeKeys(["byUser", "toUser"])
         newsfeeds.whereKey("byUser", containedIn: myFollowing)
@@ -217,8 +213,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, DZNEmpty
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         
-        // Initiliaze and set parent VC
+        // Initiliaze and set parent VC: UINavigationController
         cell.delegate = self.parentNavigator
+        // Set content object: PFObject
+        cell.postObject = self.followingContent[indexPath.row]
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

@@ -53,9 +53,46 @@ class TimeMediaCell: UITableViewCell {
         self.delegate?.pushViewController(otherVC, animated: true)
     }
     
+    // Function to send push notification
+    func sendPush() {
+        // MARK: - OneSignal
+        // Send push notification
+        if self.userObject!.value(forKey: "apnsId") != nil {
+            
+            if self.postObject!.value(forKey: "contentType") as! String == "ph" {
+                OneSignal.postNotification(
+                    ["contents":
+                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
+                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                     "ios_badgeType": "Increase",
+                     "ios_badgeCount": 1
+                    ]
+                )
+            } else if self.postObject!.value(forKey: "contentType") as! String == "pp" {
+                OneSignal.postNotification(
+                    ["contents":
+                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
+                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                     "ios_badgeType": "Increase",
+                     "ios_badgeCount": 1
+                    ]
+                )
+                
+            } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
+                OneSignal.postNotification(
+                    ["contents":
+                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
+                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                     "ios_badgeType": "Increase",
+                     "ios_badgeCount": 1
+                    ]
+                )
+            }
+        }
+    }
+    
     // Function to like Photo, Profile Photo, or Video
     func like(sender: Any) {
-        
         
         // Re-enable buttons
         self.likeButton.isUserInteractionEnabled = false
@@ -63,7 +100,7 @@ class TimeMediaCell: UITableViewCell {
         
         if self.likeButton.image(for: .normal) == UIImage(named: "Like-100") {
             
-            // Likes
+            // LIKE
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!
@@ -81,7 +118,7 @@ class TimeMediaCell: UITableViewCell {
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
                     // Send Notification
-                    NotificationCenter.default.post(name: timelineNotification, object: nil)
+                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -93,8 +130,6 @@ class TimeMediaCell: UITableViewCell {
                                         self.likeButton.transform = CGAffineTransform.identity
                                     }
                     })
-                    
-                    
                     
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
@@ -109,42 +144,8 @@ class TimeMediaCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
                             // Send push notification
-                            if self.userObject!.value(forKey: "apnsId") != nil {
-                                
-                                if self.postObject!.value(forKey: "contentType") as! String == "ph" {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                } else if self.postObject!.value(forKey: "contentType") as! String == "pp" {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                
-                                } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                }
-                            }
-                            
-                            
+                            self.sendPush()
                             
                         } else {
                             print(error?.localizedDescription as Any)
@@ -177,7 +178,7 @@ class TimeMediaCell: UITableViewCell {
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
                                 // Send Notification
-                                NotificationCenter.default.post(name: timelineNotification, object: nil)
+                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -213,9 +214,6 @@ class TimeMediaCell: UITableViewCell {
                                     }
                                 })
                                 
-                                
-                                
-                                
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -230,20 +228,483 @@ class TimeMediaCell: UITableViewCell {
         }
     }
     
+    
+    // Function to show number of likes
+    func showLikes() {
+        // Append object
+        likeObject.append(self.postObject!)
+        
+        // Push VC
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+        self.delegate?.pushViewController(likesVC, animated: true)
+    }
+    
+    @IBAction func comments(_ sender: Any) {
+        // Append object
+        commentsObject.append(self.postObject!)
+        
+        // Push VC
+        let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
+        self.delegate?.pushViewController(commentsVC, animated: true)
+    }
+    
+    // Function to show number of shares
+    func showShares() {
+        // Append object
+        shareObject.append(self.postObject!)
+        
+        // Push VC
+        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
+        self.delegate?.pushViewController(sharesVC, animated: true)
+    }
+    
+    
+    // Function to share
+    func shareOptions() {
+        
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Share With",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        let publicShare = AlertAction(title: "All Friends",
+                                      style: .default,
+                                      handler: { (AlertAction) in
+                                        
+                                        // Share to public ***FRIENDS ONLY***
+                                        let newsfeeds = PFObject(className: "Newsfeeds")
+                                        newsfeeds["byUser"] = PFUser.current()!
+                                        newsfeeds["username"] = PFUser.current()!.username!
+                                        newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Photo: \(self.textPost.text!)"
+                                        newsfeeds["photoAsset"] = self.postObject!.value(forKey: "photoAsset") as! PFFile
+                                        newsfeeds["pointObject"] = self.postObject!
+                                        newsfeeds["contentType"] = "sh"
+                                        newsfeeds.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                print("Successfully shared photo: \(newsfeeds)")
+                                                
+                                                
+                                                // Send Notification
+                                                let notifications = PFObject(className: "Notifications")
+                                                notifications["fromUser"] = PFUser.current()!
+                                                notifications["from"] = PFUser.current()!.username!
+                                                notifications["toUser"] = self.userObject!
+                                                notifications["to"] = self.rpUsername.text!
+                                                notifications["type"] = "share ph"
+                                                notifications["forObjectId"] = self.postObject!.objectId!
+                                                notifications.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Sent notification: \(notifications)")
+                                                        
+                                                        
+                                                        // Handle optional chaining
+                                                        if self.userObject!.value(forKey: "apnsId") != nil {
+                                                            // MARK: - OneSignal
+                                                            // Send push notification
+                                                            OneSignal.postNotification(
+                                                                ["contents":
+                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared your Photo"],
+                                                                 "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                                 "ios_badgeType": "Increase",
+                                                                 "ios_badgeCount": 1
+                                                                ]
+                                                            )
+                                                        }
+                                                        
+                                                        
+                                                        // Reload data
+                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        
+                                                        // Show alert
+                                                        let alert = UIAlertController(title: "Shared With Friends",
+                                                                                      message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: {(alertAction: UIAlertAction!) in
+                                                                                // Pop view controller
+                                                                                _ = self.delegate!.navigationController?.popViewController(animated: true)
+                                                        })
+                                                        
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.delegate?.present(alert, animated: true, completion: nil)
+                                                        
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+        })
+        
+        let privateShare = AlertAction(title: "One Friend",
+                                       style: .default,
+                                       handler: { (AlertAction) in
+                                        
+                                        // Append to contentObject
+                                        shareObject.append(self.postObject!)
+                                        
+                                        // Share to chats
+                                        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                        self.delegate?.pushViewController(shareToVC, animated: true)
+        })
+        
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .destructive,
+                                 handler: nil)
+        
+        options.addAction(publicShare)
+        options.addAction(privateShare)
+        options.addAction(cancel)
+        publicShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+        publicShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        privateShare.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
+        privateShare.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
+    
+    // Function for moreButton
+    func doMore(sender: UIButton) {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Edit
+        let edit = AlertAction(title: "🔩 Edit 🔩",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                
+                                // Append object
+                                editObjects.append(self.postObject!)
+                                
+                                // Push VC
+                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                self.delegate?.pushViewController(editVC, animated: true)
+        })
+        
+        
+        
+        // (2) Delete Photo
+        let delete = AlertAction(title: "Delete",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.show()
+                                    
+                                    // Delete all shared posts and the original post
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("byUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: self.postObject!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: self.postObject!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                    newsfeeds.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            // Delete objects
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                    
+                                                    // Reload data
+                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
+                                    
+        })
+        
+        
+        // (3) Report Content
+        let reportBlock = AlertAction(title: "Report",
+                                      style: .destructive,
+                                      handler: { (AlertAction) in
+                                        let alert = UIAlertController(title: "Report",
+                                                                      message: "Please provide your reason for reporting \(self.userObject!.value(forKey: "username") as! String)'s Photo",
+                                            preferredStyle: .alert)
+                                        
+                                        let report = UIAlertAction(title: "Report", style: .destructive) {
+                                            [unowned self, alert] (action: UIAlertAction!) in
+                                            
+                                            let answer = alert.textFields![0]
+                                            
+                                            
+                                            // Save to <Block_Reported>
+                                            let report = PFObject(className: "Block_Reported")
+                                            report["from"] = PFUser.current()!.username!
+                                            report["fromUser"] = PFUser.current()!
+                                            report["to"] = self.userObject!.value(forKey: "username") as! String
+                                            report["toUser"] = self.userObject!
+                                            report["forObjectId"] = self.postObject!.objectId!
+                                            report["type"] = answer.text!
+                                            report.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully saved report: \(report)")
+                                                    
+                                                    // Dismiss
+                                                    let alert = UIAlertController(title: "Successfully Reported",
+                                                                                  message: "\(self.userObject!.value(forKey: "username") as! String)'s Photo",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: nil)
+                                                    
+                                                    alert.addAction(ok)
+                                                    alert.view.tintColor = UIColor.black
+                                                    self.delegate?.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        }
+                                        
+                                        
+                                        let cancel = UIAlertAction(title: "Cancel",
+                                                                   style: .cancel,
+                                                                   handler: nil)
+                                        
+                                        
+                                        alert.addTextField(configurationHandler: nil)
+                                        alert.addAction(report)
+                                        alert.addAction(cancel)
+                                        alert.view.tintColor = UIColor.black
+                                        self.delegate?.present(alert, animated: true, completion: nil)
+        })
+        
+        
+        // (4) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
+        
+        
+        if self.userObject!.objectId! == PFUser.current()!.objectId! {
+            options.addAction(edit)
+            options.addAction(delete)
+            options.addAction(cancel)
+            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            options.addAction(cancel)
+            options.addAction(reportBlock)
+            reportBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            reportBlock.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
+        }
+        
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
+    // Function to layoutTap
+    func layoutTap() {
+        if self.postObject!.value(forKey: "contentType") as! String == "ph" {
+            // Zoom
+            let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+            zoomTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(zoomTap)
+            
+        } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
+            // Play Video
+            let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
+            playTap.numberOfTapsRequired = 1
+            self.mediaAsset.isUserInteractionEnabled = true
+            self.mediaAsset.addGestureRecognizer(playTap)
+        }
+    }
+
+    // Function to zoom
+    func zoom(sender: AnyObject) {
+        // Mark: - Agrume
+        let agrume = Agrume(image: self.mediaAsset.image!)
+        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        //        agrume.showFrom(self.delegate!.self)
+        let vc = UIViewController()
+        vc.view.backgroundColor = UIColor.black
+        UIApplication.shared.statusBarStyle = .lightContent
+        self.delegate!.setNeedsStatusBarAppearanceUpdate()
+        agrume.showFrom(self.delegate!.self, backgroundSnapshotVC: vc)
+    }
+    
+    
+    // Function to present video
+    func playVideo() {
+        // Fetch video data
+        if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
+            // Traverse video url
+            let videoUrl = NSURL(string: video.url!)
+            // MARK: - Periscope Video View Controller
+            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            self.delegate?.present(videoViewController, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Tap for rpUserProPic and rpUsername
+        // (1) Username tap
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-        // Tap for rpUsername
+        
+        // (2) Profile Photo tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
         
+        // (3) numberOfLikes tap
+        let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
+        numLikesTap.numberOfTapsRequired = 1
+        self.numberOfLikes.isUserInteractionEnabled = true
+        self.numberOfLikes.addGestureRecognizer(numLikesTap)
+        
+        // (4) Comment tap
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
+        commentTap.numberOfTapsRequired = 1
+        self.numberOfComments.isUserInteractionEnabled = true
+        self.numberOfComments.addGestureRecognizer(commentTap)
+        
+        // (5) Share tap
+        let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
+        dmTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(dmTap)
+        
+        // (6) numberOfShares tap
+        let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
+        numSharesTap.numberOfTapsRequired = 1
+        self.numberOfShares.isUserInteractionEnabled = true
+        self.numberOfShares.addGestureRecognizer(numSharesTap)
+
+        // (7) More button
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
+        
+        // Handle @username tap
+        textPost.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        self.delegate?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        
+        // Handle #object tap
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.pushViewController(hashTags, animated: true)
+        }
+        
+        // Handle http: tap
+        textPost.urlLinkTapHandler = { label, handle, range in
+            
+            // Open url
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
