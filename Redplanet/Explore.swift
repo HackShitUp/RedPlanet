@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
@@ -236,6 +237,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                         }
                     })
+                    
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
                 }
                 
             } else {

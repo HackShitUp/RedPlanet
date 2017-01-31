@@ -198,6 +198,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     
     // FOLLOW ACTION
     @IBAction func followUser(_ sender: Any) {
+        
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false

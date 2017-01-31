@@ -53,6 +53,7 @@ class TimeTextPostCell: UITableViewCell {
     // Function to reload data
     func reloadData() {
         // Send Notification
+        NotificationCenter.default.post(name: textPostNotification, object: nil)
         NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
         NotificationCenter.default.post(name: followingNewsfeed, object: nil)
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
@@ -553,7 +554,7 @@ class TimeTextPostCell: UITableViewCell {
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.pushViewController(sharesVC, animated: true)
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // (1) Tap for rpUserProPic and rpUsername

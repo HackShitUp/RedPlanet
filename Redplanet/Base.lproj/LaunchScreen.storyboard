@@ -23,11 +23,11 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Imagine" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FOr-qa-p2m">
                                 <rect key="frame" x="0.0" y="192" width="375" height="263"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-HeavyItalic" family="Avenir Next" pointSize="30"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-HeavyItalic" family="Avenir Next" pointSize="60"/>
                                 <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
-                                <size key="shadowOffset" width="0.0" height="0.0"/>
+                                <size key="shadowOffset" width="-1" height="-1"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>

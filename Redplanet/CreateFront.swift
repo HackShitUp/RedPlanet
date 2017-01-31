@@ -20,7 +20,7 @@ import Bolts
 
 import SVProgressHUD
 import DZNEmptyDataSet
-
+import SwipeNavigationController
 
 class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -287,14 +287,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // TODO
-        // TODO
-        // TODO
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
-    
-    
-    
-    
+
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -305,7 +300,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "activityCell", for: indexPath) as! ActivityCell

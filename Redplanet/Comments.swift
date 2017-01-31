@@ -13,10 +13,12 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
 import DZNEmptyDataSet
-import OneSignal
+import SDWebImage
+import SVProgressHUD
 import SimpleAlert
+import OneSignal
+
 
 
 // Array to hold comments
@@ -80,7 +82,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             NotificationCenter.default.post(name: videoNotification, object: nil)
         }
         
-        
+        // Reload news feed
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
         
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
@@ -446,21 +450,18 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
-    
-    
-    
-    
-    
-    
+
     // Dismiss keyboard when uitable view is scrolled
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign first responder
         self.newComment.resignFirstResponder()
     }
-    
-    
     
     // MARK: - UITextViewDelegate Method
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

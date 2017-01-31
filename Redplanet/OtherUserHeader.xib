@@ -67,6 +67,9 @@
                     <state key="normal" title="friend">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="friendUser:" destination="iN0-l3-epB" eventType="touchUpInside" id="D9A-DW-6Sa"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VT-qx-8fx">
                     <rect key="frame" x="192" y="304" width="175" height="44"/>
@@ -78,6 +81,9 @@
                     <state key="normal" title="follow">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="followUser:" destination="iN0-l3-epB" eventType="touchUpInside" id="UPU-gK-QSK"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
                     <rect key="frame" x="8" y="304" width="359" height="44"/>
@@ -90,6 +96,9 @@
                     <state key="normal" title="friends">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <connections>
+                        <action selector="relationAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="5xr-jf-pVS"/>
+                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMT-KU-90F" customClass="KILabel">
                     <rect key="frame" x="9" y="356" width="359" height="49"/>

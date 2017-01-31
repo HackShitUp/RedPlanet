@@ -297,7 +297,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
             self.addChildViewController(self.player)
             self.view.addSubview(self.player.view)
             self.player.didMove(toParentViewController: self)
-            self.player.setUrl(capturedURLS.last!)
+            self.player.url = capturedURLS.last!
             self.player.fillMode = "AVLayerVideoGravityResizeAspect"
             self.player.playFromBeginning()
             self.player.playbackLoops = true

@@ -16,6 +16,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import OneSignal
 import SimpleAlert
 import SVProgressHUD
@@ -25,7 +26,7 @@ import SDWebImage
 // Define notification to reload data
 let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
-class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold friends, posts, and skipped objects
     var friends = [PFObject]()
@@ -45,10 +46,6 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
     let ephemeralTypes = ["itm", "sp", "sh"]
     
     var likes = [PFObject]()
-    var comments = [PFObject]()
-    var shares = [PFObject]()
-    
-    
 
     // Function to refresh data
     func refresh() {
@@ -72,6 +69,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         friends.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
                 // Clear array
                 self.friends.removeAll(keepingCapacity: false)
                 self.friends.append(PFUser.current()!)
@@ -88,8 +86,12 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 
                 // Fetch Posts
                 self.fetchPosts()
+                
             } else {
-                print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
             }
             
         })
@@ -108,6 +110,10 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         newsfeeds.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                
                 // Clear array
                 self.posts.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
@@ -127,10 +133,18 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     }
                 }
                 
-                print(self.posts.count)
+                
+                // Set DZN
+                if self.posts.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
                 
             } else {
-                print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
             }
             // Reload data
             self.tableView!.reloadData()
@@ -140,6 +154,12 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SVProgressHUD
+        SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
+        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+        
         // Fetch friends
         fetchFriends()
         
@@ -484,55 +504,42 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     print(error?.localizedDescription as Any)
                 }
             })
-            
+
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        tpCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        tpCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
-            
+
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        tpCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        tpCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
+
             
             return tpCell   // return TimeTextPostCell.swift
 
@@ -636,22 +643,15 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         mCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        mCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        mCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -661,22 +661,15 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         mCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        mCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        mCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)

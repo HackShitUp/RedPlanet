@@ -548,9 +548,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     // (1) Load moment
                     if let momentVideo = object["videoAsset"] as? PFFile {
                         
-                        // Traverse video url
-                        let videoUrl = NSURL(string: momentVideo.url!)
-                        
                         // MARK: Player
                         self.player = Player()
                         self.player.delegate = self
@@ -559,7 +556,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                         self.addChildViewController(self.player)
                         self.view.addSubview(self.player.view)
                         self.player.didMove(toParentViewController: self)
-                        self.player.setUrl(videoUrl! as URL)
+                        self.player.url = URL(string: momentVideo.url!)
                         self.player.fillMode = "AVLayerVideoGravityResizeAspect"
                         self.player.playFromBeginning()
                         self.player.playbackLoops = true
@@ -596,7 +593,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     let timeFormatter = DateFormatter()
                     timeFormatter.dateFormat = "h:mm a"
                     self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
-                    
                     
                     // (4) Fetch likes
                     let likes = PFQuery(className: "Likes")
@@ -720,8 +716,11 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         
         // Hide moreButton if not user's content
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // Show button
+            self.moreButton.isHidden = false
             self.moreButton.setImage(UIImage(named: "More"), for: .normal)
         } else {
+            self.moreButton.isHidden = false
             self.moreButton.setImage(UIImage(named: "Exit"), for: .normal)
         }
         
@@ -748,21 +747,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
-        
-        
-        // Hide moreButton if not user's content
-        if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Show button
-            self.moreButton.isHidden = false
-            self.moreButton.layer.shadowColor = UIColor.black.cgColor
-            self.moreButton.layer.shadowOffset = CGSize(width: 1, height: 1)
-            self.moreButton.layer.shadowRadius = 3
-            self.moreButton.layer.shadowOpacity = 0.5
-        } else {
-            // Hide button
-            self.moreButton.isHidden = true
-        }
-        
+
     }
     
     

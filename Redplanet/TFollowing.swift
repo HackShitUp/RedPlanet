@@ -16,6 +16,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import OneSignal
 import SimpleAlert
 import SVProgressHUD
@@ -24,7 +25,7 @@ import SDWebImage
 // Define Notification
 let followingNewsfeed = Notification.Name("followingNewsfeed")
 
-class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold friends, posts, and skipped objects
     var following = [PFObject]()
@@ -52,8 +53,6 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
     
     // Likes, comments, and shares
     var likes = [PFObject]()
-    var comments = [PFObject]()
-    var shares = [PFObject]()
 
     // Function to refresh data
     func refresh() {
@@ -71,6 +70,10 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
+                // MARK: - SVProgresHUD
+                SVProgressHUD.dismiss()
+                
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 
@@ -81,7 +84,10 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                 // Fetch posts
                 self.fetchPosts()
             } else {
-                print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
             }
         }
     }
@@ -122,9 +128,17 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                     }
                 }
                 
-                print("POSTS: \(self.posts.count)")
+                // Set DZN
+                if self.posts.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
+                
             } else {
-                print(error?.localizedDescription as Any)
+                if (error?.localizedDescription.hasSuffix("offline."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
             }
             
             // Reload data
@@ -135,7 +149,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show Progress
+        // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
@@ -273,7 +287,8 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                 if let user = object!["byUser"] as? PFUser {
                     // (A) User's Full Name
                     for u in usernames {
-                        u?.text! = user["realNameOfUser"] as! String
+                        u?.text! = user["username"] as! String
+                        u?.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
                     }
                     
                     // (B) Profile Photo
@@ -477,22 +492,15 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        tpCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        tpCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -502,22 +510,15 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        tpCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        tpCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -626,22 +627,15 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         mCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        mCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        mCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -651,22 +645,15 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         mCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        mCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        mCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)

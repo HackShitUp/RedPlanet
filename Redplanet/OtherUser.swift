@@ -55,9 +55,8 @@ class OtherUser: UITableViewController {
     // Handle skipped objects for Pipeline
     var skipped = [PFObject]()
     
+    // Likes, comments, and shares
     var likes = [PFObject]()
-    var comments = [PFObject]()
-    var shares = [PFObject]()
     
     // View to cover tableView when hidden swift
     let cover = UIButton()
@@ -459,6 +458,7 @@ class OtherUser: UITableViewController {
         queryContent()
         
         // Configure table view
+        self.tableView?.backgroundColor = UIColor.white
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.tableFooterView = UIView()
@@ -702,6 +702,19 @@ class OtherUser: UITableViewController {
         }
         
         label.sizeToFit()
+        
+        
+        // Add cover
+        self.cover.frame = CGRect(x: 0, y: CGFloat(425 + label.frame.size.height), width: self.tableView!.frame.size.width, height: self.tableView!.frame.size.height+425+label.frame.size.height)
+        self.cover.isUserInteractionEnabled = false
+        self.cover.isEnabled = false
+        self.cover.titleLabel!.lineBreakMode = .byWordWrapping
+        self.cover.contentVerticalAlignment = .top
+        self.cover.contentHorizontalAlignment = .center
+        self.cover.titleLabel!.textAlignment = .center
+        self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        self.cover.setTitleColor(UIColor.darkGray, for: .normal)
+        self.cover.backgroundColor = UIColor.white
         
         return CGFloat(425 + label.frame.size.height)
     }
@@ -959,22 +972,15 @@ class OtherUser: UITableViewController {
             
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.contentObjects[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        tpCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        tpCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -984,22 +990,15 @@ class OtherUser: UITableViewController {
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.contentObjects[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         tpCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         tpCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        tpCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        tpCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -1108,22 +1107,15 @@ class OtherUser: UITableViewController {
             
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.contentObjects[indexPath.row].objectId!)
-            comments.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.comments.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.comments.append(object)
-                    }
-                    
-                    if self.comments.count == 0 {
+                    if count == 0 {
                         mCell.numberOfComments.setTitle("comments", for: .normal)
-                    } else if self.comments.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfComments.setTitle("1 comment", for: .normal)
                     } else {
-                        mCell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                        mCell.numberOfComments.setTitle("\(count) comments", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -1133,22 +1125,15 @@ class OtherUser: UITableViewController {
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
             shares.whereKey("pointObject", equalTo: self.contentObjects[indexPath.row])
-            shares.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
                 if error == nil {
-                    // Clear array
-                    self.shares.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        self.shares.append(object)
-                    }
-                    
-                    if self.shares.count == 0 {
+                    if count == 0 {
                         mCell.numberOfShares.setTitle("shares", for: .normal)
-                    } else if self.shares.count == 1 {
+                    } else if count == 1 {
                         mCell.numberOfShares.setTitle("1 share", for: .normal)
                     } else {
-                        mCell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                        mCell.numberOfShares.setTitle("\(count) shares", for: .normal)
                     }
                 } else {
                     print(error?.localizedDescription as Any)

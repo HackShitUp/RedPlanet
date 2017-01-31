@@ -618,6 +618,12 @@ class TimeMediaCell: UITableViewCell {
         }
     }
     
+    
+    // Function to fetch interactions
+    func fetchInteractions() {
+        
+    }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
