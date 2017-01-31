@@ -45,7 +45,7 @@ class AboutUsCell: UITableViewCell {
                         otherObject.append(object)
                         
                         // Push VC
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {

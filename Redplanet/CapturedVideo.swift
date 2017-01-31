@@ -278,7 +278,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
     
     // MARK: - SwipeNavigationController
     func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        stillImages.removeAll(keepingCapacity: false)
+        capturedURLS.removeAll(keepingCapacity: false)
         _ = self.navigationController?.popViewController(animated: true)
     }
     

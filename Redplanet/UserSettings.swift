@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import SimpleAlert
+import SDWebImage
 import MessageUI
 
 class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
@@ -182,7 +183,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return 7
+            return 6
         } else if section == 1 {
             return 2
         } else {
@@ -247,24 +248,18 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     self.navigationController!.present(alert, animated: true, completion: nil)
                 }
             }
-            
+
             if indexPath.row == 3 {
-                // Likes & Shares
-                let likedSharedVC = self.storyboard?.instantiateViewController(withIdentifier: "likedSharedVC") as! LikesAndShares
-                self.navigationController?.pushViewController(likedSharedVC, animated: true)
-            }
-            
-            if indexPath.row == 4 {
                 // Reset Password
                 let passwordVC = self.storyboard?.instantiateViewController(withIdentifier: "passwordVC") as! ResetPassword
                 self.navigationController?.pushViewController(passwordVC, animated: true)
             }
             
-            if indexPath.row == 5 {
+            if indexPath.row == 4 {
                 // Privacy
             }
             
-            if indexPath.row == 6 {
+            if indexPath.row == 5 {
                 // LOGOUT
                 // Remove logged in user from app memory
                 PFUser.logOutInBackground(block: {
@@ -292,7 +287,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             
             if indexPath.row == 0 {
                 PFQuery.clearAllCachedResults()
+                PFFile.clearAllCachedDataInBackground()
                 URLCache.shared.removeAllCachedResponses()
+                SDImageCache.shared().clearMemory()
+                SDImageCache.shared().clearDisk()
                 
                 // MARK: - SimpleAlert
                 let alert = AlertController(title: "Cleared Cache",
@@ -319,7 +317,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                                         style: .default,
                                         handler: { (AlertAction) in
                                             PFQuery.clearAllCachedResults()
+                                            PFFile.clearAllCachedDataInBackground()
                                             URLCache.shared.removeAllCachedResponses()
+                                            SDImageCache.shared().clearMemory()
+                                            SDImageCache.shared().clearDisk()
                 })
                 
                 

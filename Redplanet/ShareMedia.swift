@@ -33,7 +33,7 @@ var instanceVideoData: URL?
 // Photo or Video
 var mediaType: String?
 
-class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate {
+class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate, SwipeNavigationControllerDelegate {
 
     
     // Variable to hold parseFile
@@ -179,11 +179,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     
     
-    
+    // MARK: - UIModalPresentationControllerDelegate
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
-    
     
     
     
@@ -212,6 +211,26 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        // Resign keyboard
+        self.mediaCaption.resignFirstResponder()
+        // Release data
+        shareMediaAsset.removeAll(keepingCapacity: false)
+        shareImageAssets.removeAll(keepingCapacity: false)
+        mediaType = nil
+        instanceVideoData = nil
+        // Reload data
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        // Pop view controller
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
 
     
     override func viewDidLoad() {
@@ -233,6 +252,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Disable edit button
             editBarButton.isEnabled = false
         }
+        
+        // MARK:- SwipeNavigationController
+        // Set delegate
+        self.containerSwipeNavigationController?.delegate = self
         
         
         // (1) Make shareButton circular
@@ -328,7 +351,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        configureView()
+        self.mediaCaption.resignFirstResponder()
     }
     
     
@@ -424,7 +447,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     // Function to share photo
     func shareMedia() {
         
-        
         // Run in main thread
         DispatchQueue.main.async(execute: {
             
@@ -441,11 +463,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
 
             } // end contentType Determination
             
-            // Clear arrays
-            shareMediaAsset.removeAll(keepingCapacity: false)
-            shareImageAssets.removeAll(keepingCapacity: false)
-            // Send Notification
-            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+            
             // Show news feed
             self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
 

@@ -256,7 +256,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         otherName.append(self.exploreObjects[indexPath.row].value(forKey: "username") as! String)
         
         // Push to VC
-        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
     

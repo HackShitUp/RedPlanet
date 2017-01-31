@@ -2,8 +2,8 @@
 //  OtherUserHeader.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/16/16.
-//  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
+//  Created by Joshua Choi on 1/31/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
@@ -17,24 +17,16 @@ import KILabel
 import OneSignal
 import SimpleAlert
 
-// Array to hold other user's relationships
-var oFriends = [PFObject]()
 
-var oFollowers = [PFObject]()
+class OtherUserHeader: UITableViewHeaderFooterView {
 
-var oFollowing = [PFObject]()
-
-class OtherUserHeader: UICollectionReusableView {
-    
     
     // Initialize AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
-    
-    
     // Initialize parent VC
     var delegate: UIViewController?
-    
+
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var numberOfFriends: UIButton!
     @IBOutlet weak var numberOfFollowers: UIButton!
@@ -43,6 +35,7 @@ class OtherUserHeader: UICollectionReusableView {
     @IBOutlet weak var friendButton: UIButton!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var userBio: KILabel!
+    
     
     // Function to show friends
     func showFriends() {
@@ -198,9 +191,9 @@ class OtherUserHeader: UICollectionReusableView {
         
         // Reload relationships
         appDelegate.queryRelationships()
-    
+        
     } // end: Friend Action
-
+    
     
     
     // FOLLOW ACTION
@@ -344,7 +337,7 @@ class OtherUserHeader: UICollectionReusableView {
         
         // Reload relationships
         appDelegate.queryRelationships()
-
+        
     } // end Follow Action
     
     
@@ -355,11 +348,11 @@ class OtherUserHeader: UICollectionReusableView {
     // (2) Following
     // (3) Follower
     // (4) Friend Requested
-        // (2A) Sent Friend Request
-        // (2B) Received Friend Request
+    // (2A) Sent Friend Request
+    // (2B) Received Friend Request
     // (5) Follow Requested
-        // (5A) Sent Follow Request
-        // (5B) Received Follow Request
+    // (5A) Sent Follow Request
+    // (5B) Received Follow Request
     @IBAction func relationAction(_ sender: Any) {
         
         // (1)
@@ -368,14 +361,14 @@ class OtherUserHeader: UICollectionReusableView {
         // ======================================= F R I E N D S ======================================================================
         // ============================================================================================================================
         // ============================================================================================================================
-
+        
         if self.relationType.titleLabel!.text == "Friends" {
             
             // Unfriend user
             
             // MARK: - SimpleAlert
             let alert = AlertController(title: "Unfriend?",
-                                          message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
+                                        message: "Are you sure you would like to unfriend \(otherName.last!.uppercased())?",
                 style: .alert)
             // Design content view
             alert.configContentView = { view in
@@ -400,78 +393,78 @@ class OtherUserHeader: UICollectionReusableView {
             }
             
             let yes = AlertAction(title: "yes",
-                                    style: .default,
-                                    handler: { (AlertAction) in
-                                        // Delete Friend
-                                        let eFriend = PFQuery(className: "FriendMe")
-                                        eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
-                                        eFriend.whereKey("endFriend", equalTo: otherObject.last!)
-                                        
-                                        let fFriend = PFQuery(className: "FriendMe")
-                                        fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
-                                        fFriend.whereKey("frontFriend", equalTo: otherObject.last!)
-                                        
-                                        let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
-                                        friend.whereKey("isFriends", equalTo: true)
-                                        friend.includeKeys(["endFriend", "frontFriend"])
-                                        friend.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                for object in objects! {
-                                                    // If frontFriend
-                                                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "endFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
-                                                        
-                                                        // Delete
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted friend: \(object)")
-                                                                
-                                                                // Hide and show buttons
-                                                                self.relationType.isHidden = true
-                                                                self.friendButton.isHidden = false
-                                                                self.followButton.isHidden = false
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                        
-                                                    }
+                                  style: .default,
+                                  handler: { (AlertAction) in
+                                    // Delete Friend
+                                    let eFriend = PFQuery(className: "FriendMe")
+                                    eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
+                                    eFriend.whereKey("endFriend", equalTo: otherObject.last!)
+                                    
+                                    let fFriend = PFQuery(className: "FriendMe")
+                                    fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
+                                    fFriend.whereKey("frontFriend", equalTo: otherObject.last!)
+                                    
+                                    let friend = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
+                                    friend.whereKey("isFriends", equalTo: true)
+                                    friend.includeKeys(["endFriend", "frontFriend"])
+                                    friend.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                // If frontFriend
+                                                if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "endFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
                                                     
-                                                    // If endFriend
-                                                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "frontFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
-                                                        
-                                                        // Delete
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted friend: \(object)")
-                                                                
-                                                                // Hide and show buttons
-                                                                self.relationType.isHidden = true
-                                                                self.friendButton.isHidden = false
-                                                                self.followButton.isHidden = false
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
+                                                    // Delete
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully deleted friend: \(object)")
+                                                            
+                                                            // Hide and show buttons
+                                                            self.relationType.isHidden = true
+                                                            self.friendButton.isHidden = false
+                                                            self.followButton.isHidden = false
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                     
                                                 }
-                                            } else {
-                                                print(error?.localizedDescription as Any)
+                                                
+                                                // If endFriend
+                                                if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! && (object.object(forKey: "frontFriend") as! PFUser).objectId! == otherObject.last!.objectId! {
+                                                    
+                                                    // Delete
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully deleted friend: \(object)")
+                                                            
+                                                            // Hide and show buttons
+                                                            self.relationType.isHidden = true
+                                                            self.friendButton.isHidden = false
+                                                            self.followButton.isHidden = false
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+                                                }
+                                                
                                             }
-                                        })
-                                        
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
             })
             
             let no = AlertAction(title: "no",
-                                   style: .cancel,
-                                   handler: nil)
+                                 style: .cancel,
+                                 handler: nil)
             
-
+            
             alert.addAction(no)
             alert.addAction(yes)
             no.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
@@ -488,14 +481,14 @@ class OtherUserHeader: UICollectionReusableView {
         // ======================================= F O L L O W I N G ==================================================================
         // ============================================================================================================================
         // ============================================================================================================================
-
+        
         if self.relationType.titleLabel!.text == "Following" {
             
             // UNFOLLOW
             
             // MARK: - SimpleAlert
             let alert = AlertController(title: "Unfollow?",
-                                          message: "Are you sure you would like to unfollow \(otherName.last!.uppercased())?",
+                                        message: "Are you sure you would like to unfollow \(otherName.last!.uppercased())?",
                 style: .alert)
             
             // Design content view
@@ -513,7 +506,7 @@ class OtherUserHeader: UICollectionReusableView {
                     view.messageLabel.textColor = UIColor.black
                     view.textBackgroundView.layer.cornerRadius = 3.00
                     view.textBackgroundView.clipsToBounds = true
-
+                    
                 }
             }
             
@@ -521,54 +514,54 @@ class OtherUserHeader: UICollectionReusableView {
             alert.configContainerCornerRadius = {
                 return 14.00
             }
-
+            
             
             
             let yes = AlertAction(title: "yes",
-                                    style: .default,
-                                    handler: { (AlertAction) in
-
-                                        // Unfollow user
-                                        let unfollow = PFQuery(className: "FollowMe")
-                                        unfollow.whereKey("follower", equalTo: PFUser.current()!)
-                                        unfollow.whereKey("following", equalTo: otherObject.last!)
-                                        unfollow.whereKey("isFollowing", equalTo: true)
-                                        unfollow.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                for object in objects! {
-                                                    object.deleteInBackground(block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            print("Successfully deleted following: \(object)")
-                                                            
-                                                            // Send to Notification Center
-                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                            
-                                                            // Hide and show buttons
-                                                            self.relationType.isHidden = true
-                                                            self.friendButton.isHidden = false
-                                                            self.followButton.isHidden = false
-                                                            
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                        }
-                                                    })
-                                                }
-                                                
-                                                
-                                                // Post Notification
-                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
+                                  style: .default,
+                                  handler: { (AlertAction) in
+                                    
+                                    // Unfollow user
+                                    let unfollow = PFQuery(className: "FollowMe")
+                                    unfollow.whereKey("follower", equalTo: PFUser.current()!)
+                                    unfollow.whereKey("following", equalTo: otherObject.last!)
+                                    unfollow.whereKey("isFollowing", equalTo: true)
+                                    unfollow.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                object.deleteInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully deleted following: \(object)")
+                                                        
+                                                        // Send to Notification Center
+                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                        
+                                                        // Hide and show buttons
+                                                        self.relationType.isHidden = true
+                                                        self.friendButton.isHidden = false
+                                                        self.followButton.isHidden = false
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
                                             }
-                                        })
+                                            
+                                            
+                                            // Post Notification
+                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
             })
             
             let no = AlertAction(title: "no",
-                                       style: .cancel,
-                                       handler: nil)
+                                 style: .cancel,
+                                 handler: nil)
             
             alert.addAction(no)
             alert.addAction(yes)
@@ -595,7 +588,7 @@ class OtherUserHeader: UICollectionReusableView {
             // MARK: - SimpleAlert
             let options = AlertController(title: "Options",
                                           message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                            style: .alert)
+                style: .alert)
             
             // Design content view
             options.configContentView = { view in
@@ -620,11 +613,11 @@ class OtherUserHeader: UICollectionReusableView {
             options.configContainerCornerRadius = {
                 return 14.00
             }
-
+            
             // (1) Follow
             let follow = AlertAction(title: "Follow Back",
-                                       style: .default,
-                                       handler: { (AlertAction) in
+                                     style: .default,
+                                     handler: { (AlertAction) in
                                         if otherObject.last!.value(forKey: "private") as! Bool == true {
                                             // Private account
                                             let follow = PFObject(className: "FollowMe")
@@ -745,7 +738,7 @@ class OtherUserHeader: UICollectionReusableView {
                                             })
                                             
                                         }
-
+                                        
             })
             
             // (2) Remove Follower
@@ -875,8 +868,8 @@ class OtherUserHeader: UICollectionReusableView {
             
             // (4) Cancel
             let cancel = AlertAction(title: "Cancel",
-                                       style: .cancel,
-                                       handler: nil)
+                                     style: .cancel,
+                                     handler: nil)
             
             options.addAction(follow)
             options.addAction(removeFollower)
@@ -906,7 +899,7 @@ class OtherUserHeader: UICollectionReusableView {
             // MARK: - SimpleAlert
             let options = AlertController(title: "Friend Requested",
                                           message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                          style: .alert)
+                style: .alert)
             
             // Design content view
             options.configContentView = { view in
@@ -931,101 +924,101 @@ class OtherUserHeader: UICollectionReusableView {
             }
             
             let confirm = AlertAction(title: "Confirm Friend Request",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            // Confirm friend request
-                                            let friends = PFQuery(className: "FriendMe")
-                                            friends.whereKey("endFriend", equalTo: PFUser.current()!)
-                                            friends.whereKey("frontFriend", equalTo: otherObject.last!)
-                                            friends.whereKey("isFriends", equalTo: false)
-                                            friends.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object["isFriends"] = true
-                                                        object.saveInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully confirmed friend request: \(object)")
-                                                                // Delete from "Notifications"
-                                                                let dnotifications = PFQuery(className: "Notifications")
-                                                                dnotifications.whereKey("toUser", equalTo: PFUser.current()!)
-                                                                dnotifications.whereKey("fromUser", equalTo: otherObject.last!)
-                                                                dnotifications.whereKey("type", equalTo: "friend requested")
-                                                                dnotifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted notification: \(object)")
-                                                                                    
-                                                                                    // Send to Parse <Notifications>
-                                                                                    let notifications = PFObject(className: "Notifications")
-                                                                                    notifications["from"] = PFUser.current()!.username!
-                                                                                    notifications["fromUser"] = PFUser.current()!
-                                                                                    notifications["forObjectId"] = otherObject.last!.objectId!
-                                                                                    notifications["to"] = otherName.last!
-                                                                                    notifications["toUser"] = otherObject.last!
-                                                                                    notifications["type"] = "friended"
-                                                                                    notifications.saveInBackground(block: {
-                                                                                        (success: Bool, error: Error?) in
-                                                                                        if error == nil {
-                                                                                            print("Successfully sent notification: \(notifications)")
-                                                                                            
-                                                                                            // Set title to "Friends"
-                                                                                            self.friendButton.isHidden = true
-                                                                                            self.followButton.isHidden = true
-                                                                                            
-                                                                                            // Show relationState button
-                                                                                            self.relationType.isHidden = false
-                                                                                            self.relationType.setTitle("Friends", for: .normal)
-                                                                                            
-                                                                                            
-                                                                                            // Send Push Notification
-                                                                                            // Handle optional chaining for user's apnsId
-                                                                                            if otherObject.last!.value(forKey: "apnsId") != nil {
-                                                                                                // MARK: - OneSignal
-                                                                                                // Send push notificaiton
-                                                                                                OneSignal.postNotification(
-                                                                                                    ["contents":
-                                                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
-                                                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                                                                                     "ios_badgeType": "Increase",
-                                                                                                     "ios_badgeCount": 1
-                                                                                                    ]
-                                                                                                )
-                                                                                            }
-                                                                                            
-                                                                                            
-                                                                                            
-                                                                                        } else {
-                                                                                            print(error?.localizedDescription as Any)
+                                      style: .default,
+                                      handler: { (AlertAction) in
+                                        // Confirm friend request
+                                        let friends = PFQuery(className: "FriendMe")
+                                        friends.whereKey("endFriend", equalTo: PFUser.current()!)
+                                        friends.whereKey("frontFriend", equalTo: otherObject.last!)
+                                        friends.whereKey("isFriends", equalTo: false)
+                                        friends.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object["isFriends"] = true
+                                                    object.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully confirmed friend request: \(object)")
+                                                            // Delete from "Notifications"
+                                                            let dnotifications = PFQuery(className: "Notifications")
+                                                            dnotifications.whereKey("toUser", equalTo: PFUser.current()!)
+                                                            dnotifications.whereKey("fromUser", equalTo: otherObject.last!)
+                                                            dnotifications.whereKey("type", equalTo: "friend requested")
+                                                            dnotifications.findObjectsInBackground(block: {
+                                                                (objects: [PFObject]?, error: Error?) in
+                                                                if error == nil {
+                                                                    for object in objects! {
+                                                                        object.deleteInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully deleted notification: \(object)")
+                                                                                
+                                                                                // Send to Parse <Notifications>
+                                                                                let notifications = PFObject(className: "Notifications")
+                                                                                notifications["from"] = PFUser.current()!.username!
+                                                                                notifications["fromUser"] = PFUser.current()!
+                                                                                notifications["forObjectId"] = otherObject.last!.objectId!
+                                                                                notifications["to"] = otherName.last!
+                                                                                notifications["toUser"] = otherObject.last!
+                                                                                notifications["type"] = "friended"
+                                                                                notifications.saveInBackground(block: {
+                                                                                    (success: Bool, error: Error?) in
+                                                                                    if error == nil {
+                                                                                        print("Successfully sent notification: \(notifications)")
+                                                                                        
+                                                                                        // Set title to "Friends"
+                                                                                        self.friendButton.isHidden = true
+                                                                                        self.followButton.isHidden = true
+                                                                                        
+                                                                                        // Show relationState button
+                                                                                        self.relationType.isHidden = false
+                                                                                        self.relationType.setTitle("Friends", for: .normal)
+                                                                                        
+                                                                                        
+                                                                                        // Send Push Notification
+                                                                                        // Handle optional chaining for user's apnsId
+                                                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                                            // MARK: - OneSignal
+                                                                                            // Send push notificaiton
+                                                                                            OneSignal.postNotification(
+                                                                                                ["contents":
+                                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) accepted your friend request"],
+                                                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                                                 "ios_badgeType": "Increase",
+                                                                                                 "ios_badgeCount": 1
+                                                                                                ]
+                                                                                            )
                                                                                         }
-                                                                                    })
-                                                                                    
-                                                                                    
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
+                                                                                        
+                                                                                        
+                                                                                        
+                                                                                    } else {
+                                                                                        print(error?.localizedDescription as Any)
+                                                                                    }
+                                                                                })
+                                                                                
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
                                                                     }
-                                                                })
-                                                                
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
+                                                                } else {
+                                                                    print(error?.localizedDescription as Any)
+                                                                }
+                                                            })
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                 }
-                                            })
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
             })
             
             
@@ -1099,68 +1092,68 @@ class OtherUserHeader: UICollectionReusableView {
             let unfriend = AlertAction(title: "Rescind",
                                        style: .destructive,
                                        handler: { (AlertAction) in
-                                            // Rescind friend request
-                                            let friends = PFQuery(className: "FriendMe")
-                                            friends.whereKey("frontFriend", equalTo: PFUser.current()!)
-                                            friends.whereKey("endFriend", equalTo: otherObject.last!)
-                                            friends.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted friend: \(object)")
-                                                                
-                                                                // Delete notifications
-                                                                let notifications = PFQuery(className: "Notifications")
-                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                                notifications.whereKey("toUser", equalTo: otherObject.last!)
-                                                                notifications.whereKey("type", equalTo: "friend requested")
-                                                                notifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted friend notification: \(object)")
-                                                                                    
-                                                                                    // Hide and show buttons
-                                                                                    self.relationType.isHidden = true
-                                                                                    self.friendButton.isHidden = false
-                                                                                    self.followButton.isHidden = false
-                                                                                    
-                                                                                    
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
+                                        // Rescind friend request
+                                        let friends = PFQuery(className: "FriendMe")
+                                        friends.whereKey("frontFriend", equalTo: PFUser.current()!)
+                                        friends.whereKey("endFriend", equalTo: otherObject.last!)
+                                        friends.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully deleted friend: \(object)")
+                                                            
+                                                            // Delete notifications
+                                                            let notifications = PFQuery(className: "Notifications")
+                                                            notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                                            notifications.whereKey("toUser", equalTo: otherObject.last!)
+                                                            notifications.whereKey("type", equalTo: "friend requested")
+                                                            notifications.findObjectsInBackground(block: {
+                                                                (objects: [PFObject]?, error: Error?) in
+                                                                if error == nil {
+                                                                    for object in objects! {
+                                                                        object.deleteInBackground(block: {
+                                                                            (success: Bool, error: Error?) in
+                                                                            if success {
+                                                                                print("Successfully deleted friend notification: \(object)")
+                                                                                
+                                                                                // Hide and show buttons
+                                                                                self.relationType.isHidden = true
+                                                                                self.friendButton.isHidden = false
+                                                                                self.followButton.isHidden = false
+                                                                                
+                                                                                
+                                                                            } else {
+                                                                                print(error?.localizedDescription as Any)
+                                                                            }
+                                                                        })
                                                                     }
-                                                                })
-                                                                
-                                                                // Post Notification
-                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
+                                                                } else {
+                                                                    print(error?.localizedDescription as Any)
+                                                                }
+                                                            })
+                                                            
+                                                            // Post Notification
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                 }
-                                            })
-                                            
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                        
             })
             
             
             let cancel = AlertAction(title: "Cancel",
-                                       style: .cancel,
-                                       handler: nil)
+                                     style: .cancel,
+                                     handler: nil)
             
             
             
@@ -1210,7 +1203,7 @@ class OtherUserHeader: UICollectionReusableView {
             
             let options = AlertController(title: "Follow Requested",
                                           message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                          style: .alert)
+                style: .alert)
             
             // Design content view
             options.configContentView = { view in
@@ -1236,57 +1229,57 @@ class OtherUserHeader: UICollectionReusableView {
             
             // Confirm
             let confirm = AlertAction(title: "Confirm Follow Request",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            
-                                            // Accept Follower's Follow Request
-                                            let follow = PFQuery(className: "FollowMe")
-                                            follow.whereKey("follower", equalTo: otherObject.last!)
-                                            follow.whereKey("following", equalTo: PFUser.current()!)
-                                            follow.whereKey("isFollowing", equalTo: false)
-                                            follow.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object["isFollowing"] = true
-                                                        object.saveInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully accepted follower: \(object)")
-                                                                
-                                                                // Change button title
-                                                                self.relationType.isHidden = false
-                                                                self.relationType.setTitle("Follower", for: .normal)
-                                                                
-                                                                // Post Notification
-                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                
-                                                                // Send push notification
-                                                                // Handle optional chaining for user's apnsId
-                                                                if otherObject.last!.value(forKey: "apnsId") != nil {
-                                                                    // MARK: - OneSignal
-                                                                    // Send push notificaiton
-                                                                    OneSignal.postNotification(
-                                                                        ["contents":
-                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
-                                                                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                                                         "ios_badgeType": "Increase",
-                                                                         "ios_badgeCount": 1
-                                                                        ]
-                                                                    )
-                                                                }
-                                                                
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
+                                      style: .default,
+                                      handler: { (AlertAction) in
+                                        
+                                        // Accept Follower's Follow Request
+                                        let follow = PFQuery(className: "FollowMe")
+                                        follow.whereKey("follower", equalTo: otherObject.last!)
+                                        follow.whereKey("following", equalTo: PFUser.current()!)
+                                        follow.whereKey("isFollowing", equalTo: false)
+                                        follow.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object["isFollowing"] = true
+                                                    object.saveInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully accepted follower: \(object)")
+                                                            
+                                                            // Change button title
+                                                            self.relationType.isHidden = false
+                                                            self.relationType.setTitle("Follower", for: .normal)
+                                                            
+                                                            // Post Notification
+                                                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                            
+                                                            // Send push notification
+                                                            // Handle optional chaining for user's apnsId
+                                                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                                // MARK: - OneSignal
+                                                                // Send push notificaiton
+                                                                OneSignal.postNotification(
+                                                                    ["contents":
+                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
+                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                     "ios_badgeType": "Increase",
+                                                                     "ios_badgeCount": 1
+                                                                    ]
+                                                                )
                                                             }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
+                                                            
+                                                            
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                 }
-                                            })
-                                            
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                        
             })
             
             
@@ -1417,7 +1410,7 @@ class OtherUserHeader: UICollectionReusableView {
                                                 print(error?.localizedDescription as Any)
                                             }
                                         })
-
+                                        
                                         
             })
             
@@ -1426,7 +1419,7 @@ class OtherUserHeader: UICollectionReusableView {
                                      style: .cancel,
                                      handler: nil)
             
-
+            
             
             if myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 options.addAction(confirm)
@@ -1456,9 +1449,9 @@ class OtherUserHeader: UICollectionReusableView {
         
         // Reload relationships
         _ = appDelegate.queryRelationships()
-
+        
     } // end Relation Action
-
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -1468,6 +1461,8 @@ class OtherUserHeader: UICollectionReusableView {
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
         
+        // Make background color white
+        self.contentView.backgroundColor = UIColor.white
         
         // (2) Count relationships
         // COUNT FRIENDS
@@ -1557,7 +1552,7 @@ class OtherUserHeader: UICollectionReusableView {
                         otherObject.append(object)
                         
                         
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {
@@ -1576,7 +1571,7 @@ class OtherUserHeader: UICollectionReusableView {
                     self.delegate?.present(alert, animated: true)
                 }
             })
-
+            
         }
         
         
@@ -1637,7 +1632,7 @@ class OtherUserHeader: UICollectionReusableView {
         }
         
         
-
-    }
         
+    }
+
 }

@@ -221,8 +221,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     // Function to calculate how many new lines UILabel should create before laying out the text
     func createText() -> String? {
         
-        print("SCREEN HEIGHT: \(UIScreen.main.nativeBounds.height)")
-        
         if let content = sharedObject.last!.value(forKey: "pointObject") as? PFObject {
             // Check for textPost & handle optional chaining
             if content.value(forKey: "textPost") != nil && content.value(forKey: "contentType") as! String != "itm" {

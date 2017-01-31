@@ -44,7 +44,7 @@ class SearchCell: UITableViewCell {
             otherName.append(self.userObject!.value(forKey: "username") as! String)
             
             // Push VC
-            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
             self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
         }
     }

@@ -1,9 +1,9 @@
 //
-//  MyHeader.swift
+//  CurrentUserHeader.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/18/16.
-//  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
+//  Created by Joshua Choi on 1/30/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
@@ -15,25 +15,19 @@ import Bolts
 
 import KILabel
 
-class MyHeader: UICollectionReusableView {
-    
+class CurrentUserHeader: UITableViewHeaderFooterView {
+
     // Initialize parent VC
     var delegate: UIViewController?
     
     // Initiliaze AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
-    
 
     @IBOutlet weak var myProPic: PFImageView!
     @IBOutlet weak var numberOfFriends: UIButton!
     @IBOutlet weak var numberOfFollowers: UIButton!
     @IBOutlet weak var numberOfFollowing: UIButton!
-    @IBOutlet weak var friendButton: UIButton!
-    @IBOutlet weak var followButton: UIButton!
-    @IBOutlet weak var relationState: UIButton!
     @IBOutlet weak var userBio: KILabel!
-    
-    
     
     // Function to show friends
     func showFriends() {
@@ -114,11 +108,13 @@ class MyHeader: UICollectionReusableView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        
         // Center text
         numberOfFriends.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
+        
+        self.contentView.backgroundColor = UIColor.white
         
         // (1) Add tap methods to show friends, followers, and following
         // (a) Friends
@@ -145,7 +141,6 @@ class MyHeader: UICollectionReusableView {
         proPicTap.numberOfTapsRequired = 1
         self.myProPic.isUserInteractionEnabled = true
         self.myProPic.addGestureRecognizer(proPicTap)
-        
         
         
         // (2) Count relationships
@@ -201,7 +196,7 @@ class MyHeader: UICollectionReusableView {
                         otherObject.append(object)
                         
                         
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {
@@ -243,4 +238,5 @@ class MyHeader: UICollectionReusableView {
         }
         
     }// end awakeFromNib
+
 }

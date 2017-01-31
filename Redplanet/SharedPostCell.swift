@@ -65,7 +65,7 @@ class SharedPostCell: UITableViewCell {
         otherName.append(self.fromRpUsername.text!)
         
         // Push VC
-        let fromUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let fromUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(fromUserVC, animated: true)
     }
     
@@ -78,7 +78,7 @@ class SharedPostCell: UITableViewCell {
         otherName.append(self.rpUsername.text!)
         
         // Push VC
-        let fromUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let fromUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(fromUserVC, animated: true)
     }
     

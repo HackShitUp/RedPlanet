@@ -38,6 +38,13 @@ class EphemeralCell: UITableViewCell {
     
     // Function to view post
     func viewPost() {
+        // Save post
+        let views = PFObject(className: "Views")
+        views["byUser"] = PFUser.current()!
+        views["username"] = PFUser.current()!.username!
+        views["forObjectId"] = self.postObject!.objectId!
+        views.saveEventually()
+        
         if self.postObject!.value(forKey: "contentType") as! String == "itm" {
         // MOMENT
             // Append content object

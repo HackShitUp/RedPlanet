@@ -244,21 +244,20 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Content
-        let cell = tableView.dequeueReusableCell(withIdentifier: "textPostCell", for: indexPath) as! TextPostCell
+        let cell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
         
         
         // Instantiate parent vc
-        cell.delegate = self
+        cell.delegate = self.navigationController
         
         // Declare user's object
         cell.userObject = textPostObject.last!.value(forKey: "byUser") as! PFUser
         
         // Declare content's object
-        cell.contentObject = textPostObject.last!
-        
+        cell.postObject = textPostObject.last!
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

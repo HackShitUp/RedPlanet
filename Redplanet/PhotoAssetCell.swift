@@ -55,7 +55,7 @@ class PhotoAssetCell: UITableViewCell {
         otherName.append(self.rpUsername.text!.lowercased())
         
         // Push VC
-        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
     
@@ -715,7 +715,7 @@ class PhotoAssetCell: UITableViewCell {
                         otherObject.append(object)
                         
                         // Push VC
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {

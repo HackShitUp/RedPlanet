@@ -617,7 +617,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
         otherName.append(self.rpUsername.text!)
         
         // Push VC
-        let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
     

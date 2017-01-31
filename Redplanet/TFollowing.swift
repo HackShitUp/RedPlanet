@@ -19,6 +19,7 @@ import Bolts
 import OneSignal
 import SimpleAlert
 import SVProgressHUD
+import SDWebImage
 
 // Define Notification
 let followingNewsfeed = Notification.Name("followingNewsfeed")
@@ -58,6 +59,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
     func refresh() {
         // Reload news feed
         fetchPosts()
+        self.refresher.endRefreshing()
     }
     
     // Function to fetch following
@@ -146,6 +148,13 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.tableFooterView = UIView()
         
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
+        
         // Set tabBarController delegate
         self.parentNavigator.tabBarController?.delegate = self
         
@@ -155,7 +164,67 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
+    }
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.posts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "💩\nYour Following's News Feed is empty."
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "Redplanet is more fun when you're following the things you love."
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.gray,
+            NSFontAttributeName: font!
+        ]
+        
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Find Things to Follow"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Show search
+        let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.parentNavigator.pushViewController(search, animated: true)
     }
     
     
@@ -163,7 +232,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
             // Scroll to top
-            self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
         }
     }
     
@@ -180,10 +249,11 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Intialize UITableViewCells
         let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
         let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
-
+        
         // Declare delegates
         eCell.delegate = self.parentNavigator
         tpCell.delegate = self.parentNavigator
@@ -203,8 +273,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                 if let user = object!["byUser"] as? PFUser {
                     // (A) User's Full Name
                     for u in usernames {
-                        u?.text! = (user.value(forKey: "username") as! String).lowercased()
-                        u?.font = UIFont(name: "AvenirNext-Demibold", size: 17.00)
+                        u?.text! = user["realNameOfUser"] as! String
                     }
                     
                     // (B) Profile Photo
@@ -218,7 +287,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                         p?.layer.borderColor = UIColor.lightGray.cgColor
                         p?.layer.borderWidth = 0.5
                         p?.clipsToBounds = true
-                        
+                        // Fetch profile photo
                         if let proPic = user["userProfilePicture"] as? PFFile {
                             proPic.getDataInBackground(block: {
                                 (data: Data?, error: Error?) in
@@ -229,6 +298,9 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                                     p?.image = UIImage(named: "Gender Neutral User-100")
                                 }
                             })
+                            
+                            // MARK: - SDWebImage
+                            p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: p?.image)
                         }
                     }
                     
@@ -281,8 +353,8 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             rpTime = createdDate.string(from: self.posts[indexPath.row].createdAt!)
         }
         
-        // (III) Layout content
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKey: "contentType") as! String) {
+        // (II) Layout content
+        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
             // ****************************************************************************************************************
             // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
             // ****************************************************************************************************************
@@ -336,6 +408,9 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                         let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                         eCell.iconicPreview.image = UIImage(cgImage: cgImage)
                         
+                        // MARK: - SDWebImage
+                        eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                        
                     } catch let error {
                         print("*** Error generating thumbnail: \(error.localizedDescription)")
                     }
@@ -353,8 +428,8 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             return eCell // return EphemeralCell.swift
-
-        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+            
+        } else if posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
             // TEXT POST ******************************************************************************************************
             // ****************************************************************************************************************
@@ -450,8 +525,6 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             })
             
             return tpCell   // return TimeTextPostCell.swift
-
-            
             
         } else {
             // ****************************************************************************************************************
@@ -462,6 +535,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             
             // (2) Fetch Photo or Video
             // PHOTO
+            
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 photo.getDataInBackground(block: {
                     (data: Data?, error: Error?) in
@@ -472,6 +546,10 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                         print(error?.localizedDescription as Any)
                     }
                 })
+                // MARK: - SDWebImage
+                let fileURL = URL(string: photo.url!)
+                mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
+                
             } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // VIDEO
                 
@@ -494,6 +572,9 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                     let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                     mCell.mediaAsset.contentMode = .scaleAspectFill
                     mCell.mediaAsset.image = UIImage(cgImage: cgImage)
+                    
+                    // MARK: - SDWebImage
+                    mCell.mediaAsset.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
                     
                 } catch let error {
                     print("*** Error generating thumbnail: \(error.localizedDescription)")
@@ -591,6 +672,9 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            // (5) Add tap methods
+            mCell.layoutTap()
             
             return mCell // return TimeMediaCell
         }

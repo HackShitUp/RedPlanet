@@ -49,8 +49,17 @@ class TimeMediaCell: UITableViewCell {
     func goUser(sender: Any) {
         otherObject.append(self.userObject!)
         otherName.append(self.userObject!.value(forKey: "username") as! String)
-        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.pushViewController(otherVC, animated: true)
+    }
+    
+    // Function to reload data
+    func reloadData() {
+        // Send Notification
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+        NotificationCenter.default.post(name: otherNotification, object: nil)
     }
     
     // Function to send push notification
@@ -103,7 +112,7 @@ class TimeMediaCell: UITableViewCell {
             // LIKE
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
-            likes["from"] = PFUser.current()!
+            likes["from"] = PFUser.current()!.username!
             likes["forObjectId"] = self.postObject?.objectId!
             likes["toUser"] = self.userObject!
             likes["to"] = self.rpUsername.text!
@@ -117,8 +126,8 @@ class TimeMediaCell: UITableViewCell {
                     // Change button image
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
-                    // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    // Reload data
+                    self.reloadData()
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -136,7 +145,7 @@ class TimeMediaCell: UITableViewCell {
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
                     notifications["to"] = self.rpUsername.text!
-                    notifications["toUser"] = self.userObject!.value(forKey: "byUser") as! PFUser
+                    notifications["toUser"] = self.userObject!
                     notifications["forObjectId"] = self.postObject!.objectId!
                     notifications["type"] = "like \(self.postObject!.value(forKey: "contentType") as! String)"
                     notifications.saveInBackground(block: {
@@ -177,8 +186,8 @@ class TimeMediaCell: UITableViewCell {
                                 // Change button image
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
-                                // Send Notification
-                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                // Reload data
+                                self.reloadData()
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -331,8 +340,7 @@ class TimeMediaCell: UITableViewCell {
                                                         
                                                         
                                                         // Reload data
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        self.reloadData()
                                                         
                                                         // Show alert
                                                         let alert = UIAlertController(title: "Shared With Friends",
@@ -459,8 +467,7 @@ class TimeMediaCell: UITableViewCell {
                                                     SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                     
                                                     // Reload data
-                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    self.reloadData()
                                                     
                                                 } else {
                                                     print(error?.localizedDescription as Any)
@@ -611,8 +618,6 @@ class TimeMediaCell: UITableViewCell {
         }
     }
     
-    
-    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -634,25 +639,31 @@ class TimeMediaCell: UITableViewCell {
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (4) Comment tap
+        // (4) like tap
+        let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
+        likeTap.numberOfTapsRequired = 1
+        self.likeButton.isUserInteractionEnabled = true
+        self.likeButton.addGestureRecognizer(likeTap)
+        
+        // (5) Comment tap
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // (5) Share tap
+        // (6) Share tap
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (6) numberOfShares tap
+        // (7) numberOfShares tap
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
 
-        // (7) More button
+        // (8) More button
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
@@ -678,7 +689,7 @@ class TimeMediaCell: UITableViewCell {
                         otherObject.append(object)
                         
                         // Push VC
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.pushViewController(otherUser, animated: true)
                     }
                 } else {

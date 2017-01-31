@@ -1,14 +1,13 @@
 //
-//  Timeline.swift
+//  CurrentUser.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 1/27/17.
+//  Created by Joshua Choi on 1/30/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
 import CoreData
-
 import AVFoundation
 import AVKit
 
@@ -16,30 +15,16 @@ import Parse
 import ParseUI
 import Bolts
 
-import OneSignal
-import SimpleAlert
-import SVProgressHUD
 import SDWebImage
+import SimpleAlert
 
+// Define identifier
+let myProfileNotification = Notification.Name("myProfile")
 
-// Define notification to reload data
-let friendsNewsfeed = Notification.Name("friendsNewsfeed")
-
-class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
     
-    // Array to hold friends, posts, and skipped objects
-    var friends = [PFObject]()
-    var posts = [PFObject]()
-    var skipped = [PFObject]()
-    
-    // Pipeline method
-    var page: Int = 50
-    
-    // Parent Navigator
-    var parentNavigator: UINavigationController!
-    
-    // Refresher
-    var refresher: UIRefreshControl!
+    // Variable to hold my content
+    var myContentObjects = [PFObject]()
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
@@ -48,120 +33,152 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
     var comments = [PFObject]()
     var shares = [PFObject]()
     
+    // AppDelegate
+    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    // Set pipeline method
+    var page: Int = 50
+    // Handle skipped objects for Pipeline
+    var skipped = [PFObject]()
+    
+    // Refresher
+    var refresher: UIRefreshControl!
 
-    // Function to refresh data
-    func refresh() {
-        fetchPosts()
-        self.refresher.endRefreshing()
+    @IBAction func findFriends(_ sender: Any) {
+        // If iOS 9
+        if #available(iOS 9, *) {
+            // Push VC
+            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+            self.navigationController?.pushViewController(contactsVC, animated: true)
+        } else {
+            // Fallback on earlier versions
+            // Show search
+            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+            self.navigationController!.pushViewController(search, animated: true)
+        }
     }
     
-    // Function to fetch friends
-    func fetchFriends() {
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [fFriends, eFriends])
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.friends.removeAll(keepingCapacity: false)
-                self.friends.append(PFUser.current()!)
-                
-                for object in objects! {
-                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        // Append end friend
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    } else {
-                        // Append front friend
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    }
-                }
-                
-                // Fetch Posts
-                self.fetchPosts()
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-            
-        })
-        
-    }
-    
-    
-    
-    func fetchPosts() {
-        // Get News Feed content
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", containedIn: self.friends)
-        newsfeeds.includeKeys(["byUser", "pointObject", "toUser"])
+    // Function to fetch my content
+    func fetchMine() {
+        // User's Posts
+        let byUser = PFQuery(className: "Newsfeeds")
+        byUser.whereKey("byUser", equalTo: PFUser.current()!)
+        // User's Space Posts
+        let toUser = PFQuery(className:  "Newsfeeds")
+        toUser.whereKey("toUser", equalTo: PFUser.current()!)
+        // Both
+        let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
+        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
-        newsfeeds.findObjectsInBackground(block: {
+        newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                
                 // Clear array
-                self.posts.removeAll(keepingCapacity: false)
+                self.myContentObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Ephemeral content
+                    // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" || object.value(forKey: "contentType") as! String == "sp" {
+                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
                         if difference.hour! < 24 {
-                            self.posts.append(object)
+                            self.myContentObjects.append(object)
                         } else {
                             self.skipped.append(object)
                         }
                     } else {
-                        self.posts.append(object)
+                        self.myContentObjects.append(object)
                     }
                 }
-                
-                print(self.posts.count)
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
+            
             // Reload data
-            self.tableView!.reloadData()
-        })
+            self.tableView?.reloadData()
+        }
     }
     
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.uppercased()
+        }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.delegate = self
+    }
+    
+    // Refresh function
+    func refresh() {
+        // fetch data
+        fetchMine()
+        
+        // End refresher
+        self.refresher.endRefreshing()
+    }
+    
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Fetch friends
-        fetchFriends()
+        
+        // Stylize and set title
+        configureView()
+        
+        // Fetch current user's content
+        fetchMine()
         
         // Configure table view
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.tableFooterView = UIView()
         
-        // Set tabBarController delegate
-        self.parentNavigator.tabBarController?.delegate = self
-        
-        // Pull to refresh action
+        // Add refresher
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
+        refresher.backgroundColor = UIColor.white
+        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.tableView?.addSubview(refresher)
         
-        // Add notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
+        // Register to receive notification
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: myProfileNotification, object: nil)
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        let nib = UINib(nibName: "CurrentUserHeader", bundle: nil)
+        tableView?.register(nib, forHeaderFooterViewReuseIdentifier: "CurrentUserHeader")
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
@@ -170,88 +187,130 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-    
-    
-    
-    // MARK: DZNEmptyDataSet Framework
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.posts.count == 0 {
-            return true
+
+    // MARK: - UITableViewHeader Section View
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        // created a constant that stores a registered header
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CurrentUserHeader") as! CurrentUserHeader
+
+        // Declare delegate
+        header.delegate = self
+        
+        //set contentView frame and autoresizingMask
+        header.frame = header.frame
+        
+        // Query relationships
+        appDelegate.queryRelationships()
+        
+        // Layout subviews
+        header.myProPic.layoutSubviews()
+        header.myProPic.layoutIfNeeded()
+        header.myProPic.setNeedsLayout()
+        
+        // Make profile photo circular
+        header.myProPic.layer.cornerRadius = header.myProPic.frame.size.width/2.0
+        header.myProPic.layer.borderColor = UIColor.lightGray.cgColor
+        header.myProPic.layer.borderWidth = 0.5
+        header.myProPic.clipsToBounds = true
+        
+        // (1) Get User's Object
+        if let myProfilePhoto = PFUser.current()!["userProfilePicture"] as? PFFile {
+            myProfilePhoto.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    // (A) Set profile photo
+                    header.myProPic.image = UIImage(data: data!)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    
+                    // (B) Set default
+                    header.myProPic.image = UIImage(named: "Gender Neutral User-100")
+                }
+            })
+        }
+        
+        
+        // (2) Set user's bio and information
+        if PFUser.current()!.value(forKey: "userBiography") != nil {
+            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!["userBiography"] as! String)"
         } else {
-            return false
+            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
         }
-    }
-    
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Friends' News Feed is empty."
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
-            NSFontAttributeName: font!
-        ]
         
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Redplanet is more fun with your friends."
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
-            NSFontAttributeName: font!
-        ]
-        
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
-        // Title for button
-        let str = "Find My Friends"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // If iOS 9
-        if #available(iOS 9, *) {
-            // Push VC
-            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.parentNavigator.pushViewController(contactsVC, animated: true)
+        // (3) Set count for friends, followers, and following
+        if myFriends.count == 0 {
+            header.numberOfFriends.setTitle("\nfriends", for: .normal)
+        } else if myFriends.count == 1 {
+            header.numberOfFriends.setTitle("1\nfriend", for: .normal)
         } else {
-            // Fallback on earlier versions
-            // Show search
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.parentNavigator.pushViewController(search, animated: true)
+            header.numberOfFriends.setTitle("\(myFriends.count)\nfriends", for: .normal)
         }
+        
+        
+        if myFollowers.count == 0 {
+            header.numberOfFollowers.setTitle("\nfollowers", for: .normal)
+        } else if myFollowers.count == 0 {
+            header.numberOfFollowers.setTitle("1\nfollower", for: .normal)
+        } else {
+            header.numberOfFollowers.setTitle("\(myFollowers.count)\nfollowers", for: .normal)
+        }
+        
+        
+        if myFollowing.count == 0 {
+            header.numberOfFollowing.setTitle("\nfollowing", for: .normal)
+        } else if myFollowing.count == 1 {
+            header.numberOfFollowing.setTitle("1\nfollowing", for: .normal)
+        } else {
+            header.numberOfFollowing.setTitle("\(myFollowing.count)\nfollowing", for: .normal)
+        }
+        
+        
+        return header
+        
     }
     
-    // MARK: - TabBarControllerDelegate method
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if self.parentNavigator.tabBarController?.selectedIndex == 0 {
-            // Scroll to top
-            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+    
+    // header height
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 304, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
+        // Get user's info and bio
+        if PFUser.current()!.value(forKey: "userBiography") != nil {
+            // Set fullname
+            let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as! String
+            
+            label.text = "\(fullName.uppercased())\n\(PFUser.current()!.value(forKey: "userBiography") as! String)"
+        } else {
+            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
         }
+        
+        label.sizeToFit()
+        
+        return CGFloat(375 + label.frame.size.height)
     }
+    
+    
     
 
     // MARK: - Table view data source
+
     override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.posts.count
+        return self.myContentObjects.count
     }
 
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
+        if self.ephemeralTypes.contains(self.myContentObjects[indexPath.row].value(forKeyPath: "contentType") as! String) {
             return 65
         } else {
             return UITableViewAutomaticDimension
@@ -265,9 +324,9 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
         
         // Declare delegates
-        eCell.delegate = self.parentNavigator
-        tpCell.delegate = self.parentNavigator
-        mCell.delegate = self.parentNavigator
+        eCell.delegate = self.navigationController
+        tpCell.delegate = self.navigationController
+        mCell.delegate = self.navigationController
         
         // Initialize all level configurations: rpUserProPic && rpUsername
         let proPics = [eCell.rpUserProPic, tpCell.rpUserProPic, mCell.rpUserProPic]
@@ -277,7 +336,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         var rpTime: String?
         
         // (I) Fetch user's data and unload them
-        self.posts[indexPath.row].fetchIfNeededInBackground {
+        self.myContentObjects[indexPath.row].fetchIfNeededInBackground {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 if let user = object!["byUser"] as? PFUser {
@@ -325,7 +384,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         }
         
         // (II) Configure time for Photos, Profile Photos, Text Posts, and Videos
-        let from = self.posts[indexPath.row].createdAt!
+        let from = self.myContentObjects[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
@@ -360,14 +419,14 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
         } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
-            rpTime = createdDate.string(from: self.posts[indexPath.row].createdAt!)
+            rpTime = createdDate.string(from: self.myContentObjects[indexPath.row].createdAt!)
         }
-
+        
         // (II) Layout content
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
-        // ****************************************************************************************************************
-        // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
-        // ****************************************************************************************************************
+        if self.ephemeralTypes.contains(self.myContentObjects[indexPath.row].value(forKeyPath: "contentType") as! String) {
+            // ****************************************************************************************************************
+            // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
+            // ****************************************************************************************************************
             
             // High level configurations
             // Configure IconicPreview by laying out views
@@ -381,24 +440,24 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             eCell.iconicPreview.clipsToBounds = true
             
             // (1) Set contentObject and user's object
-            eCell.postObject = self.posts[indexPath.row]
+            eCell.postObject = self.myContentObjects[indexPath.row]
             
             // (2) Configure time
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "E"
             let timeFormatter = DateFormatter()
             timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
-
+            eCell.time.text! = "\(timeFormatter.string(from: self.myContentObjects[indexPath.row].createdAt!))"
+            
             // (3) Layout content
             // (3A) MOMENT
-            if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+            if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
                 // Make iconicPreview circular with red border color
                 eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                 eCell.iconicPreview.layer.borderWidth = 3.50
                 
-                if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                if let still = self.myContentObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO
                     still.getDataInBackground(block: {
                         (data: Data?, error: Error?) in
@@ -408,7 +467,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                             print(error?.localizedDescription as Any)
                         }
                     })
-                } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                } else if let videoFile = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                     // VIDEO
                     let videoUrl = NSURL(string: videoFile.url!)
                     do {
@@ -426,35 +485,35 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     }
                 }
                 
-            // (3B) SPACE POST
-            } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+                // (3B) SPACE POST
+            } else if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "CSpacePost")
                 
-            // (3C) SHARED POSTS
-            } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+                // (3C) SHARED POSTS
+            } else if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
             }
-
+            
             return eCell // return EphemeralCell.swift
-
-        } else if posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-        // ****************************************************************************************************************
-        // TEXT POST ******************************************************************************************************
-        // ****************************************************************************************************************
+            
+        } else if myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+            // ****************************************************************************************************************
+            // TEXT POST ******************************************************************************************************
+            // ****************************************************************************************************************
             // (1) Set Text Post
-            tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
+            tpCell.textPost.text! = self.myContentObjects[indexPath.row].value(forKey: "textPost") as! String
             
             // (2) Set time
             tpCell.time.text! = rpTime!
             
             // (3) Set post object
-            tpCell.postObject = self.posts[indexPath.row]
+            tpCell.postObject = self.myContentObjects[indexPath.row]
             
             // (4) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
             likes.includeKey("fromUser")
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -486,7 +545,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             })
             
             let comments = PFQuery(className: "Comments")
-            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
             comments.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -511,7 +570,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
-            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.whereKey("pointObject", equalTo: self.myContentObjects[indexPath.row])
             shares.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -535,18 +594,18 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             })
             
             return tpCell   // return TimeTextPostCell.swift
-
+            
         } else {
-        // ****************************************************************************************************************
-        // PHOTOS, PROFILE PHOTOS, VIDEOS *********************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // PHOTOS, PROFILE PHOTOS, VIDEOS *********************************************************************************
+            // ****************************************************************************************************************
             // (1) Set post object
-            mCell.postObject = self.posts[indexPath.row]
+            mCell.postObject = self.myContentObjects[indexPath.row]
             
             // (2) Fetch Photo or Video
             // PHOTO
-
-            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            
+            if let photo = self.myContentObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 photo.getDataInBackground(block: {
                     (data: Data?, error: Error?) in
                     if error == nil {
@@ -558,10 +617,10 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 })
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
-                mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
-
-            } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-            // VIDEO
+                mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: nil)
+                
+            } else if let videoFile = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // VIDEO
                 
                 // LayoutViews
                 mCell.mediaAsset.layoutIfNeeded()
@@ -592,7 +651,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             }
             
             // (2) Handle caption (text post) if it exists
-            if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
+            if let caption = self.myContentObjects[indexPath.row].value(forKey: "textPost") as? String {
                 mCell.textPost.text! = caption
             } else {
                 mCell.textPost.isHidden = true
@@ -603,7 +662,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             
             // (4) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
             likes.includeKey("fromUser")
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -635,7 +694,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             })
             
             let comments = PFQuery(className: "Comments")
-            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
             comments.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -660,7 +719,7 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
             
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
-            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.whereKey("pointObject", equalTo: self.myContentObjects[indexPath.row])
             shares.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -691,25 +750,36 @@ class Timeline: UITableViewController, UINavigationControllerDelegate, UITabBarC
     } // end cellForRowAt
     
     
-    // MARK: RP's very own Pipeline Method
+    // MARK: - UIScrollViewDelegate method
+    // MARK: - RP Pipeline method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
     }
     
+    
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.posts.count + self.skipped.count {
+        if page <= self.myContentObjects.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50
             
-            // Query friends
-            fetchPosts()
+            // Query content
+            fetchMine()
         }
     }
     
     
+    // ScrollView -- Pull To Pop
+    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y <= -140.00 {
+            refresher.endRefreshing()
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
+            self.refresher.endRefreshing()
+        }
+    }
     
 }

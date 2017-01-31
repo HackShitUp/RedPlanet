@@ -507,7 +507,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         otherName.append(self.rpUsername.titleLabel!.text!)
         
         // Push VC
-        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
     

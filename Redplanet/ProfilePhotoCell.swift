@@ -399,7 +399,7 @@ class ProfilePhotoCell: UITableViewCell {
     func goUser() {
         // *** otherObject and otherName's data already appended ***
         // Push VC
-        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
     
@@ -788,7 +788,7 @@ class ProfilePhotoCell: UITableViewCell {
                         otherObject.append(object)
                         
                         // Push VC
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
                 } else {

@@ -45,10 +45,19 @@ class TimeTextPostCell: UITableViewCell {
     func goUser(sender: Any) {
         otherObject.append(self.userObject!)
         otherName.append(self.userObject!.value(forKey: "username") as! String)
-        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.pushViewController(otherVC, animated: true)
     }
     
+    
+    // Function to reload data
+    func reloadData() {
+        // Send Notification
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+        NotificationCenter.default.post(name: otherNotification, object: nil)
+    }
     
     
     // More button
@@ -119,8 +128,7 @@ class TimeTextPostCell: UITableViewCell {
                                                         SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                         
                                                         // Reload data
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        self.reloadData()
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
@@ -208,12 +216,9 @@ class TimeTextPostCell: UITableViewCell {
         
         
         if (self.postObject!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-//            options.addAction(views)
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
-//            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-//            views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
@@ -310,8 +315,7 @@ class TimeTextPostCell: UITableViewCell {
                                                                                handler: {(alertAction: UIAlertAction!) in
                                                                                 
                                                                                 // Reload data
-                                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                                self.reloadData()
                                                         })
                                                         
                                                         alert.addAction(ok)
@@ -395,8 +399,8 @@ class TimeTextPostCell: UITableViewCell {
                                 // Change button image
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
-                                // Send Notification
-                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                // Reload data
+                                self.reloadData()
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -464,8 +468,8 @@ class TimeTextPostCell: UITableViewCell {
                     // Change button title and image
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
-                    // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    // Reload data
+                    self.reloadData()
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -621,7 +625,7 @@ class TimeTextPostCell: UITableViewCell {
                         otherObject.append(object)
                         
                         // Push VC
-                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.pushViewController(otherUser, animated: true)
                     }
                 } else {

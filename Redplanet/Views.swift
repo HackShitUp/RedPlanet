@@ -297,7 +297,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         otherName.append(self.viewers[indexPath.row].value(forKey: "username") as! String)
         
         // Push VC
-        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
 

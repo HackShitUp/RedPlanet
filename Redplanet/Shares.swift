@@ -230,7 +230,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         otherObject.append(sharers[indexPath.row])
         
         // Push VC
-        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUserProfile
+        let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
     
