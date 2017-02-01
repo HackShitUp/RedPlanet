@@ -148,7 +148,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     image: UIImage(named: "RedplanetLogo"),
                                                     backgroundColor: UIColor.white
                                                 )
-                                                banner.adjustsStatusBarStyle = true
+                                                banner.adjustsStatusBarStyle = false
                                                 banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
                                                 banner.titleLabel.textColor = UIColor.black
                                                 banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
@@ -279,7 +279,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            UIApplication.shared.setStatusBarHidden(true, with: .none)
+            UIApplication.shared.setStatusBarHidden(false, with: .none)
+            UIApplication.shared.statusBarStyle = .lightContent
             swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController

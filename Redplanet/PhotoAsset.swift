@@ -15,11 +15,10 @@ import Bolts
 
 import SVProgressHUD
 import SimpleAlert
-
+import SDWebImage
 
 // Global array to hold the object
 var photoAssetObject = [PFObject]()
-
 
 // Define identifier
 let photoNotification = Notification.Name("photoAsset")
@@ -285,6 +284,8 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
                         })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
                     }
 
                     
@@ -308,6 +309,9 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                     print(error?.localizedDescription as Any)
                 }
             })
+            
+            // MARK: - SDWebImage
+            cell.rpMedia.sd_setImage(with: URL(string: media.url!), placeholderImage: cell.rpMedia.image)
         }
         
         // Set caption

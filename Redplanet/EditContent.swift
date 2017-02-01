@@ -34,6 +34,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     
     @IBAction func backButton(_ sender: Any) {
+        // Reload Data
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
         // Remove last
         editObjects.removeLast()
         // Pop view controller

@@ -21,6 +21,11 @@
 		7E2CA4101E25A78A0071B052 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4071E25A78A0071B052 /* SNTextField.swift */; };
 		7E2CA4111E25A78A0071B052 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4081E25A78A0071B052 /* SNUtils.swift */; };
 		7E2CA4121E25A78A0071B052 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2CA4091E25A78A0071B052 /* UIImageExtension.swift */; };
+		7E35A3AE1E4151110007EB99 /* TimeVideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E35A3AC1E4151110007EB99 /* TimeVideoCell.swift */; };
+		7E35A3AF1E4151110007EB99 /* TimeVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E35A3AD1E4151110007EB99 /* TimeVideoCell.xib */; };
+		7E35A3B31E4167610007EB99 /* ProPicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E35A3B11E4167610007EB99 /* ProPicCell.swift */; };
+		7E35A3B41E4167610007EB99 /* ProPicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E35A3B21E4167610007EB99 /* ProPicCell.xib */; };
+		7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E35A3B61E416BD70007EB99 /* Friends.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
 		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
@@ -180,7 +185,6 @@
 		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
-		7EECEE5D1E3C3D0C003FA134 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
 		7EECEE611E3C42EA003FA134 /* TimeTextPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */; };
 		7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */; };
@@ -225,6 +229,11 @@
 		7E2CA4071E25A78A0071B052 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E2CA4081E25A78A0071B052 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E2CA4091E25A78A0071B052 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		7E35A3AC1E4151110007EB99 /* TimeVideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeVideoCell.swift; sourceTree = "<group>"; };
+		7E35A3AD1E4151110007EB99 /* TimeVideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeVideoCell.xib; sourceTree = "<group>"; };
+		7E35A3B11E4167610007EB99 /* ProPicCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProPicCell.swift; sourceTree = "<group>"; };
+		7E35A3B21E4167610007EB99 /* ProPicCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProPicCell.xib; sourceTree = "<group>"; };
+		7E35A3B61E416BD70007EB99 /* Friends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friends.swift; sourceTree = "<group>"; };
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
@@ -441,7 +450,6 @@
 		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
-		7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
 		7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeTextPostCell.xib; sourceTree = "<group>"; };
 		7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeMediaCell.swift; sourceTree = "<group>"; };
@@ -533,6 +541,24 @@
 			path = SnapSliderFilters;
 			sourceTree = "<group>";
 		};
+		7E35A3B01E4154CE0007EB99 /* VideoCell */ = {
+			isa = PBXGroup;
+			children = (
+				7E35A3AC1E4151110007EB99 /* TimeVideoCell.swift */,
+				7E35A3AD1E4151110007EB99 /* TimeVideoCell.xib */,
+			);
+			name = VideoCell;
+			sourceTree = "<group>";
+		};
+		7E35A3B51E4167670007EB99 /* ProPicCell */ = {
+			isa = PBXGroup;
+			children = (
+				7E35A3B11E4167610007EB99 /* ProPicCell.swift */,
+				7E35A3B21E4167610007EB99 /* ProPicCell.xib */,
+			);
+			name = ProPicCell;
+			sourceTree = "<group>";
+		};
 		7E3E4FBF1DC2E7F800A7B5FC /* EditProfile */ = {
 			isa = PBXGroup;
 			children = (
@@ -567,6 +593,8 @@
 				7E7E92DE1E3DAE4200E3C8EA /* EphemeralCell */,
 				7E7E92DF1E3DAE4A00E3C8EA /* TextPostCell */,
 				7E7E92E01E3DAE5600E3C8EA /* MediaCell */,
+				7E35A3B51E4167670007EB99 /* ProPicCell */,
+				7E35A3B01E4154CE0007EB99 /* VideoCell */,
 			);
 			name = "NIB: POSTS";
 			sourceTree = "<group>";
@@ -1119,7 +1147,7 @@
 				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
 				7E41C7AE1E40481E0025129B /* Following.swift */,
 				7EC05B051DB5E37C0039B357 /* Home.swift */,
-				7EECEE5C1E3C3D0C003FA134 /* Timeline.swift */,
+				7E35A3B61E416BD70007EB99 /* Friends.swift */,
 				7E7E92DC1E3D08C100E3C8EA /* TFollowing.swift */,
 			);
 			name = NEWS_FEEDS;
@@ -1185,11 +1213,11 @@
 				7EC5D16E1DB32F3800437219 /* TabBar&Navigation */,
 				7EC5D19A1DB3541900437219 /* LoginOrSignUp */,
 				7E43833F1DD9139300337007 /* Hashtags */,
-				7ED4A9131DBEB4F60016698F /* FriendsFollowersFollowing */,
+				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
+				7ED4A9131DBEB4F60016698F /* RelationPerPerson */,
 				7ED4A91F1DBEBE130016698F /* Interactions */,
 				7EC328D21DBF461A00344AFF /* Comments */,
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
-				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
 				7E4CFF951DB4393A0087454E /* SINGLEPOSTS */,
 				7E41C7A91E4035190025129B /* NIB: POSTS */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
@@ -1319,14 +1347,14 @@
 			name = RPIconsGuideline;
 			sourceTree = "<group>";
 		};
-		7ED4A9131DBEB4F60016698F /* FriendsFollowersFollowing */ = {
+		7ED4A9131DBEB4F60016698F /* RelationPerPerson */ = {
 			isa = PBXGroup;
 			children = (
 				7ED4A90D1DBEB4DE0016698F /* RFriends.swift */,
 				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
 				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
 			);
-			name = FriendsFollowersFollowing;
+			name = RelationPerPerson;
 			sourceTree = "<group>";
 		};
 		7ED4A91F1DBEBE130016698F /* Interactions */ = {
@@ -1542,10 +1570,12 @@
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
 				7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
+				7E35A3B41E4167610007EB99 /* ProPicCell.xib in Resources */,
 				7EECEE651E3C42F7003FA134 /* TimeMediaCell.xib in Resources */,
 				7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7E41C7A51E4006380025129B /* CurrentUserHeader.xib in Resources */,
+				7E35A3AF1E4151110007EB99 /* TimeVideoCell.xib in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EE1C2301DBC78C100F75557 /* Info.plist in Resources */,
@@ -1719,7 +1749,6 @@
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
-				7EECEE5D1E3C3D0C003FA134 /* Timeline.swift in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
@@ -1734,6 +1763,7 @@
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
+				7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */,
 				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
@@ -1753,6 +1783,7 @@
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
+				7E35A3AE1E4151110007EB99 /* TimeVideoCell.swift in Sources */,
 				7E41C7B01E40481E0025129B /* Following.swift in Sources */,
 				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
 				7E4CFF991DB439540087454E /* PhotoAssetCell.swift in Sources */,
@@ -1783,6 +1814,7 @@
 				7E1CBD6F1E409C3200F68A4B /* Player.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
+				7E35A3B31E4167610007EB99 /* ProPicCell.swift in Sources */,
 				7EC5D1A11DB3568A00437219 /* Explore.swift in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,

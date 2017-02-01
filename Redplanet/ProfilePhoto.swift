@@ -15,7 +15,7 @@ import Bolts
 
 import SVProgressHUD
 import SimpleAlert
-
+import SDWebImage
 
 // ProfilePhoto's Object Id
 var proPicObject = [PFObject]()
@@ -237,8 +237,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         cell.smallProPic.layoutSubviews()
         cell.smallProPic.setNeedsLayout()
         cell.smallProPic.layer.cornerRadius = cell.smallProPic.frame.size.width/2
-        cell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.smallProPic.layer.borderWidth = 0.5
+        cell.smallProPic.layer.borderColor = UIColor.darkGray.cgColor
+        cell.smallProPic.layer.borderWidth = 1.50
         cell.smallProPic.clipsToBounds = true
         
         // (A) Get profile photo
@@ -256,6 +256,9 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
                     cell.smallProPic.image = UIImage(named: "Gender Neutral User-100")
                 }
             })
+            // MARK: - SDWebImage
+            cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.smallProPic.image)
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
         } else {
             // Set default
             cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")

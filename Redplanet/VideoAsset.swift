@@ -17,6 +17,7 @@ import Bolts
 
 import SVProgressHUD
 import SimpleAlert
+import SDWebImage
 
 // Global array to hold video asset object
 var videoObject = [PFObject]()
@@ -316,6 +317,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                                 cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                             }
                         })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -332,7 +335,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                 imgGenerator.appliesPreferredTrackTransform = true
                 let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                 cell.videoPreview.image = UIImage(cgImage: cgImage)
-                
+                // MARK: - SDWebImage
+                cell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: cell.videoPreview.image)
             } catch let error {
                 print("*** Error generating thumbnail: \(error.localizedDescription)")
             }

@@ -28,9 +28,7 @@ class VideoCell: UITableViewCell {
     
     // Initialize content object
     var contentObject: PFObject?
-    
-    
-    
+
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
@@ -38,6 +36,12 @@ class VideoCell: UITableViewCell {
     @IBOutlet weak var videoPreview: PFImageView!
     @IBOutlet weak var caption: KILabel!
     @IBOutlet weak var numberOfLikes: UIButton!
+    
+    
+    // Function to reload data
+    func reloadData() {
+        
+    }
     
     @IBAction func showLikes(_ sender: Any) {
         // Append object
@@ -284,8 +288,6 @@ class VideoCell: UITableViewCell {
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {
-                                                    print("Successfully shared text post: \(newsfeeds)")
-                                                    
                                                     
                                                     // Send Notification
                                                     let notifications = PFObject(className: "Notifications")
@@ -517,7 +519,7 @@ class VideoCell: UITableViewCell {
                                  handler: { (AlertAction) in
                                     
                                     let alert = UIAlertController(title: "Report",
-                                                                  message: "Please provide your reason for reporting \(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                                                  message: "Please provide your reason for reporting \(videoObject.last!.value(forKey: "username") as! String)'s Video",
                                         preferredStyle: .alert)
                                     
                                     let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -540,7 +542,7 @@ class VideoCell: UITableViewCell {
                                                 
                                                 // Dismiss
                                                 let alert = UIAlertController(title: "Successfully Reported",
-                                                                              message: "\(videoObject.last!.value(forKey: "username") as! String)'s Text Post",
+                                                                              message: "\(videoObject.last!.value(forKey: "username") as! String)'s Video",
                                                     preferredStyle: .alert)
                                                 
                                                 let ok = UIAlertAction(title: "ok",
@@ -582,8 +584,6 @@ class VideoCell: UITableViewCell {
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
-//            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-//            views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

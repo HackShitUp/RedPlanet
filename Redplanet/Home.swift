@@ -29,7 +29,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
         var controllerArray : [UIViewController] = []
         
         // FRIENDS
-        let friends = self.storyboard!.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
+        let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
         friends.parentNavigator = self.navigationController
         friends.title = "Friends"
         controllerArray.append(friends)

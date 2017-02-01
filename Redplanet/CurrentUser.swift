@@ -24,10 +24,11 @@ let myProfileNotification = Notification.Name("myProfile")
 class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
     
     // Variable to hold my content
-    var myContentObjects = [PFObject]()
+    var posts = [PFObject]()
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
+    let photos = ["ph", "pp"]
     
     // Fetch likes, count comments and shares
     var likes = [PFObject]()
@@ -75,7 +76,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             if error == nil {
                 
                 // Clear array
-                self.myContentObjects.removeAll(keepingCapacity: false)
+                self.posts.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
@@ -84,12 +85,12 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
                         if difference.hour! < 24 {
-                            self.myContentObjects.append(object)
+                            self.posts.append(object)
                         } else {
                             self.skipped.append(object)
                         }
                     } else {
-                        self.myContentObjects.append(object)
+                        self.posts.append(object)
                     }
                 }
             } else {
@@ -305,12 +306,12 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.myContentObjects.count
+        return self.posts.count
     }
 
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.ephemeralTypes.contains(self.myContentObjects[indexPath.row].value(forKeyPath: "contentType") as! String) {
+        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
             return 65
         } else {
             return UITableViewAutomaticDimension
@@ -322,30 +323,29 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
         let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
         let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
-        
-        // Declare delegates
-        eCell.delegate = self.navigationController
-        tpCell.delegate = self.navigationController
-        mCell.delegate = self.navigationController
+        let ppCell = Bundle.main.loadNibNamed("ProPicCell", owner: self, options: nil)?.first as! ProPicCell
+        let vCell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
         
         // Initialize all level configurations: rpUserProPic && rpUsername
-        let proPics = [eCell.rpUserProPic, tpCell.rpUserProPic, mCell.rpUserProPic]
-        let usernames = [eCell.rpUsername, tpCell.rpUsername, mCell.rpUsername]
+        let proPics = [eCell.rpUserProPic, tpCell.rpUserProPic, mCell.rpUserProPic, ppCell.smallProPic, vCell.rpUserProPic]
+        let usernames = [eCell.rpUsername, tpCell.rpUsername, mCell.rpUsername, ppCell.rpUsername, vCell.rpUsername]
+        
+        // Set parent vc's UINavigationController: delegate
+        eCell.delegate = self.navigationController
+        tpCell.delegate = self.navigationController
+        ppCell.delegate = self.navigationController
+        mCell.delegate = self.navigationController
+        vCell.delegate = self.navigationController
         
         // Initialize text for time
         var rpTime: String?
         
-        // (I) Fetch user's data and unload them
-        self.myContentObjects[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                if let user = object!["byUser"] as? PFUser {
-                    // (A) User's Full Name
-                    for u in usernames {
-                        u?.text! = user["realNameOfUser"] as! String
-                    }
-                    
-                    // (B) Profile Photo
+        // I) FETCH USER'S PFObject: userProfilePicture, username/realNameOfUser, user's PFObject
+        if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            user.fetchIfNeededInBackground(block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    // (A) userProfilePicture
                     for p in proPics {
                         // LayoutViews for rpUserProPic
                         p?.layoutIfNeeded()
@@ -356,8 +356,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                         p?.layer.borderColor = UIColor.lightGray.cgColor
                         p?.layer.borderWidth = 0.5
                         p?.clipsToBounds = true
-                        // Fetch profile photo
-                        if let proPic = user["userProfilePicture"] as? PFFile {
+                        if let proPic = object!["userProfilePicture"] as? PFFile {
                             proPic.getDataInBackground(block: {
                                 (data: Data?, error: Error?) in
                                 if error == nil {
@@ -367,24 +366,31 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                                     p?.image = UIImage(named: "Gender Neutral User-100")
                                 }
                             })
-                            
                             // MARK: - SDWebImage
                             p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: p?.image)
                         }
                     }
                     
-                    // SET user's objects
+                    // (B) realNameOfUser for FRIENDS && username for FOLLOWING
+                    for u in usernames {
+                        u?.text! = user["realNameOfUser"] as! String
+                    }
+                    
+                    // (C) User's Object
                     eCell.userObject = user
                     tpCell.userObject = user
                     mCell.userObject = user
-                } // end fetching PFUser object
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+                    ppCell.userObject = user
+                    vCell.userObject = user
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
         }
         
-        // (II) Configure time for Photos, Profile Photos, Text Posts, and Videos
-        let from = self.myContentObjects[indexPath.row].createdAt!
+        // II) CONFIGURE TIME FOR PHOTOS, PROFILE PHOTOS, VIDEOS, and TEXT POSTS
+        let from = self.posts[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
@@ -419,101 +425,28 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
-            rpTime = createdDate.string(from: self.myContentObjects[indexPath.row].createdAt!)
+            rpTime = createdDate.string(from: self.posts[indexPath.row].createdAt!)
         }
         
-        // (II) Layout content
-        if self.ephemeralTypes.contains(self.myContentObjects[indexPath.row].value(forKeyPath: "contentType") as! String) {
-            // ****************************************************************************************************************
-            // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
-            // ****************************************************************************************************************
-            
-            // High level configurations
-            // Configure IconicPreview by laying out views
-            eCell.iconicPreview.layoutIfNeeded()
-            eCell.iconicPreview.layoutSubviews()
-            eCell.iconicPreview.setNeedsLayout()
-            eCell.iconicPreview.layer.cornerRadius = eCell.iconicPreview.frame.size.width/2
-            eCell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
-            eCell.iconicPreview.layer.borderWidth = 0.00
-            eCell.iconicPreview.contentMode = .scaleAspectFill
-            eCell.iconicPreview.clipsToBounds = true
-            
-            // (1) Set contentObject and user's object
-            eCell.postObject = self.myContentObjects[indexPath.row]
-            
-            // (2) Configure time
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.myContentObjects[indexPath.row].createdAt!))"
-            
-            // (3) Layout content
-            // (3A) MOMENT
-            if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                
-                // Make iconicPreview circular with red border color
-                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                eCell.iconicPreview.layer.borderWidth = 3.50
-                
-                if let still = self.myContentObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                    // STILL PHOTO
-                    still.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            eCell.iconicPreview.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                } else if let videoFile = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                    // VIDEO
-                    let videoUrl = NSURL(string: videoFile.url!)
-                    do {
-                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                        let imgGenerator = AVAssetImageGenerator(asset: asset)
-                        imgGenerator.appliesPreferredTrackTransform = true
-                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        eCell.iconicPreview.image = UIImage(cgImage: cgImage)
-                        
-                        // MARK: - SDWebImage
-                        eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                        
-                    } catch let error {
-                        print("*** Error generating thumbnail: \(error.localizedDescription)")
-                    }
-                }
-                
-                // (3B) SPACE POST
-            } else if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
-                eCell.iconicPreview.backgroundColor = UIColor.clear
-                eCell.iconicPreview.image = UIImage(named: "CSpacePost")
-                
-                // (3C) SHARED POSTS
-            } else if self.myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-                eCell.iconicPreview.backgroundColor = UIColor.clear
-                eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
-            }
-            
-            return eCell // return EphemeralCell.swift
-            
-        } else if myContentObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+        
+        // III) LAYOUT CONTENT
+        if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
             // TEXT POST ******************************************************************************************************
             // ****************************************************************************************************************
+            
             // (1) Set Text Post
-            tpCell.textPost.text! = self.myContentObjects[indexPath.row].value(forKey: "textPost") as! String
+            tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (2) Set time
             tpCell.time.text! = rpTime!
             
             // (3) Set post object
-            tpCell.postObject = self.myContentObjects[indexPath.row]
+            tpCell.postObject = self.posts[indexPath.row]
             
             // (4) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -545,7 +478,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             })
             
             let comments = PFQuery(className: "Comments")
-            comments.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {
                 (count: Int32, error: Error?) in
                 if error == nil {
@@ -563,7 +496,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
-            shares.whereKey("pointObject", equalTo: self.myContentObjects[indexPath.row])
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
             shares.countObjectsInBackground(block: {
                 (count: Int32, error: Error?) in
                 if error == nil {
@@ -579,19 +512,99 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 }
             })
             
+            
             return tpCell   // return TimeTextPostCell.swift
             
-        } else {
+            
+        } else if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
             // ****************************************************************************************************************
-            // PHOTOS, PROFILE PHOTOS, VIDEOS *********************************************************************************
+            // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
+            // ****************************************************************************************************************
+            
+            // High level configurations
+            // Configure IconicPreview by laying out views
+            eCell.iconicPreview.layoutIfNeeded()
+            eCell.iconicPreview.layoutSubviews()
+            eCell.iconicPreview.setNeedsLayout()
+            eCell.iconicPreview.layer.cornerRadius = eCell.iconicPreview.frame.size.width/2
+            eCell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
+            eCell.iconicPreview.layer.borderWidth = 0.00
+            eCell.iconicPreview.contentMode = .scaleAspectFill
+            eCell.iconicPreview.clipsToBounds = true
+            
+            // (1) Set contentObject and user's object
+            eCell.postObject = self.posts[indexPath.row]
+            
+            // (2) Configure time
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E"
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
+            
+            // (3) Layout content
+            // (3A) MOMENT
+            if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
+                
+                // Make iconicPreview circular with red border color
+                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                eCell.iconicPreview.layer.borderWidth = 3.50
+                
+                if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                    // STILL PHOTO
+                    still.getDataInBackground(block: {
+                        (data: Data?, error: Error?) in
+                        if error == nil {
+                            eCell.iconicPreview.image = UIImage(data: data!)
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                    // MARK: - SDWebImage
+                    let fileURL = URL(string: still.url!)
+                    eCell.iconicPreview.sd_setImage(with: fileURL, placeholderImage: eCell.iconicPreview.image)
+                    
+                } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                    // VIDEO
+                    let videoUrl = NSURL(string: videoFile.url!)
+                    do {
+                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                        let imgGenerator = AVAssetImageGenerator(asset: asset)
+                        imgGenerator.appliesPreferredTrackTransform = true
+                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                        eCell.iconicPreview.image = UIImage(cgImage: cgImage)
+                        
+                        // MARK: - SDWebImage
+                        eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                        
+                    } catch let error {
+                        print("*** Error generating thumbnail: \(error.localizedDescription)")
+                    }
+                }
+                
+                // (3B) SPACE POST
+            } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+                eCell.iconicPreview.backgroundColor = UIColor.clear
+                eCell.iconicPreview.image = UIImage(named: "CSpacePost")
+                
+                // (3C) SHARED POSTS
+            } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+                eCell.iconicPreview.backgroundColor = UIColor.clear
+                eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
+            }
+            
+            return eCell // return EphemeralCell.swift
+            
+        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+            // ****************************************************************************************************************
+            // PHOTOS *********************************************************************************************************
             // ****************************************************************************************************************
             // (1) Set post object
-            mCell.postObject = self.myContentObjects[indexPath.row]
+            mCell.postObject = self.posts[indexPath.row]
             
-            // (2) Fetch Photo or Video
-            // PHOTO
-            
-            if let photo = self.myContentObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            // (2) Fetch photo
+            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 photo.getDataInBackground(block: {
                     (data: Data?, error: Error?) in
                     if error == nil {
@@ -603,41 +616,11 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 })
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
-                mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: nil)
-                
-            } else if let videoFile = self.myContentObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // VIDEO
-                
-                // LayoutViews
-                mCell.mediaAsset.layoutIfNeeded()
-                mCell.mediaAsset.layoutSubviews()
-                mCell.mediaAsset.setNeedsLayout()
-                
-                // Make Vide Preview Circular
-                mCell.mediaAsset.layer.cornerRadius = mCell.mediaAsset.frame.size.width/2
-                mCell.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                mCell.mediaAsset.layer.borderWidth = 3.50
-                mCell.mediaAsset.clipsToBounds = true
-                
-                let videoUrl = NSURL(string: videoFile.url!)
-                do {
-                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    mCell.mediaAsset.contentMode = .scaleAspectFill
-                    mCell.mediaAsset.image = UIImage(cgImage: cgImage)
-                    
-                    // MARK: - SDWebImage
-                    mCell.mediaAsset.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+                mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
             }
             
             // (2) Handle caption (text post) if it exists
-            if let caption = self.myContentObjects[indexPath.row].value(forKey: "textPost") as? String {
+            if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
                 mCell.textPost.text! = caption
             } else {
                 mCell.textPost.isHidden = true
@@ -648,7 +631,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             
             // (4) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -680,7 +663,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             })
             
             let comments = PFQuery(className: "Comments")
-            comments.whereKey("forObjectId", equalTo: self.myContentObjects[indexPath.row].objectId!)
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {
                 (count: Int32, error: Error?) in
                 if error == nil {
@@ -698,7 +681,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             
             let shares = PFQuery(className: "Newsfeeds")
             shares.whereKey("contentType", equalTo: "sh")
-            shares.whereKey("pointObject", equalTo: self.myContentObjects[indexPath.row])
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
             shares.countObjectsInBackground(block: {
                 (count: Int32, error: Error?) in
                 if error == nil {
@@ -714,10 +697,243 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 }
             })
             
-            // (5) Add tap methods
-            mCell.layoutTap()
             
-            return mCell // return TimeMediaCell
+            return mCell // return TimeMediaCell.swift
+            
+            
+        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "pp" {
+            // ****************************************************************************************************************
+            // PROFILE PHOTO **************************************************************************************************
+            // ****************************************************************************************************************
+            // (1) Set post object
+            ppCell.postObject = self.posts[indexPath.row]
+            
+            // (2) Fetch Profile Photo
+            // LayoutViews
+            ppCell.rpUserProPic.layoutIfNeeded()
+            ppCell.rpUserProPic.layoutSubviews()
+            ppCell.rpUserProPic.setNeedsLayout()
+            
+            // Make Vide Preview Circular
+            ppCell.rpUserProPic.layer.cornerRadius = ppCell.rpUserProPic.frame.size.width/2
+            ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
+            ppCell.rpUserProPic.layer.borderWidth = 1.50
+            ppCell.rpUserProPic.clipsToBounds = true
+            
+            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                photo.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        ppCell.rpUserProPic.contentMode = .scaleAspectFit
+                        ppCell.rpUserProPic.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+                // MARK: - SDWebImage
+                let fileURL = URL(string: photo.url!)
+                ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
+                
+            }
+            
+            // (2) Handle caption (text post) if it exists
+            if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
+                ppCell.textPost.text! = caption
+            } else {
+                ppCell.textPost.isHidden = true
+            }
+            
+            // (3) Set time
+            ppCell.time.text! = "updated their Profile Photo \(rpTime!)"
+            
+            // (4) Fetch likes, comments, and shares
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.includeKey("fromUser")
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.likes.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
+                    
+                    if self.likes.count == 0 {
+                        ppCell.numberOfLikes.setTitle("likes", for: .normal)
+                    } else if self.likes.count == 1 {
+                        ppCell.numberOfLikes.setTitle("1 like", for: .normal)
+                    } else {
+                        ppCell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                    }
+                    
+                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                        ppCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    } else {
+                        ppCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let comments = PFQuery(className: "Comments")
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
+                if error == nil {
+                    if count == 0 {
+                        ppCell.numberOfComments.setTitle("comments", for: .normal)
+                    } else if count == 1 {
+                        ppCell.numberOfComments.setTitle("1 comment", for: .normal)
+                    } else {
+                        ppCell.numberOfComments.setTitle("\(count) comments", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let shares = PFQuery(className: "Newsfeeds")
+            shares.whereKey("contentType", equalTo: "sh")
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
+                if error == nil {
+                    if count == 0 {
+                        ppCell.numberOfShares.setTitle("shares", for: .normal)
+                    } else if count == 1 {
+                        ppCell.numberOfShares.setTitle("1 share", for: .normal)
+                    } else {
+                        ppCell.numberOfShares.setTitle("\(count) shares", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            return ppCell // return ProPicCell.swift
+            
+        } else {
+            // ****************************************************************************************************************
+            // VIDEOS *********************************************************************************************************
+            // ****************************************************************************************************************
+            // (1) Set video's postObject: PFObject?
+            vCell.postObject = self.posts[indexPath.row]
+            
+            // (2) Fetch Video Thumbnail
+            if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // VIDEO
+                
+                // LayoutViews
+                vCell.videoPreview.layoutIfNeeded()
+                vCell.videoPreview.layoutSubviews()
+                vCell.videoPreview.setNeedsLayout()
+                
+                // Make Vide Preview Circular
+                vCell.videoPreview.layer.cornerRadius = vCell.videoPreview.frame.size.width/2
+                vCell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                vCell.videoPreview.layer.borderWidth = 3.50
+                vCell.videoPreview.clipsToBounds = true
+                
+                let videoUrl = NSURL(string: videoFile.url!)
+                do {
+                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                    let imgGenerator = AVAssetImageGenerator(asset: asset)
+                    imgGenerator.appliesPreferredTrackTransform = true
+                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
+                    vCell.videoPreview.contentMode = .scaleAspectFill
+                    vCell.videoPreview.image = UIImage(cgImage: cgImage)
+                    
+                    // MARK: - SDWebImage
+                    vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                    
+                } catch let error {
+                    print("*** Error generating thumbnail: \(error.localizedDescription)")
+                }
+            }
+            
+            // (3) Handle caption (text post) if it exists
+            if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
+                vCell.textPost.text! = caption
+            } else {
+                vCell.textPost.isHidden = true
+            }
+            
+            // (4) Set time
+            vCell.time.text! = rpTime!
+            
+            // (5) Fetch likes, comments, and shares
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            likes.includeKey("fromUser")
+            likes.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear arrays
+                    self.likes.removeAll(keepingCapacity: false)
+                    
+                    for object in objects! {
+                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
+                    
+                    if self.likes.count == 0 {
+                        vCell.numberOfLikes.setTitle("likes", for: .normal)
+                    } else if self.likes.count == 1 {
+                        vCell.numberOfLikes.setTitle("1 like", for: .normal)
+                    } else {
+                        vCell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                    }
+                    
+                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                        vCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    } else {
+                        vCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let comments = PFQuery(className: "Comments")
+            comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
+            comments.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
+                if error == nil {
+                    if count == 0 {
+                        vCell.numberOfComments.setTitle("comments", for: .normal)
+                    } else if count == 1 {
+                        vCell.numberOfComments.setTitle("1 comment", for: .normal)
+                    } else {
+                        vCell.numberOfComments.setTitle("\(count) comments", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            let shares = PFQuery(className: "Newsfeeds")
+            shares.whereKey("contentType", equalTo: "sh")
+            shares.whereKey("pointObject", equalTo: self.posts[indexPath.row])
+            shares.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
+                if error == nil {
+                    if count == 0 {
+                        vCell.numberOfShares.setTitle("shares", for: .normal)
+                    } else if count == 1 {
+                        vCell.numberOfShares.setTitle("1 share", for: .normal)
+                    } else {
+                        vCell.numberOfShares.setTitle("\(count) shares", for: .normal)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+            
+            return vCell // return TimeVideoCell.swift
         }
     } // end cellForRowAt
     
@@ -733,7 +949,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.myContentObjects.count + self.skipped.count {
+        if page <= self.posts.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 50

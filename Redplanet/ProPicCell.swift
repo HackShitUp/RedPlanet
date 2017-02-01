@@ -1,9 +1,9 @@
 //
-//  ProfilePhotoCell.swift
+//  ProPicCell.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 10/16/16.
-//  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
+//  Created by Joshua Choi on 1/31/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
@@ -18,18 +18,23 @@ import OneSignal
 import SVProgressHUD
 import SimpleAlert
 
-class ProfilePhotoCell: UITableViewCell {
+class ProPicCell: UITableViewCell {
     
+    // Initialzie parent vc
+    var delegate: UINavigationController?
     
-    // Initialize parent vc
-    var delegate: UIViewController?
+    // Initialize user's object
+    var userObject: PFObject?
     
+    // Intiialize post's object: PFObject
+    var postObject: PFObject?
+    
+    @IBOutlet weak var smallProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var rpUserProPic: PFImageView!
-    @IBOutlet weak var smallProPic: PFImageView!
-    @IBOutlet weak var caption: KILabel!
+    @IBOutlet weak var textPost: KILabel!
     @IBOutlet weak var numberOfLikes: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var numberOfComments: UIButton!
@@ -37,6 +42,17 @@ class ProfilePhotoCell: UITableViewCell {
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
 
+    
+    // Function to reload data
+    func reloadData() {
+        // Send notification
+        NotificationCenter.default.post(name: profileNotification, object: nil)
+        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+        NotificationCenter.default.post(name: otherNotification, object: nil)
+    }
+    
     // Function to zoom
     func zoom(sender: AnyObject) {
         
@@ -54,13 +70,12 @@ class ProfilePhotoCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = false
         self.likeButton.isEnabled = false
         
-        
         // Like or unlike depending on state
-        if self.likeButton.title(for: .normal) == "liked" {
+        if self.likeButton.image(for: .normal) == UIImage(named: "Like Filled-100") {
             // Unlike Profile Photo
             let likes = PFQuery(className: "Likes")
             likes.whereKey("fromUser", equalTo: PFUser.current()!)
-            likes.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+            likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -72,7 +87,7 @@ class ProfilePhotoCell: UITableViewCell {
                                 
                                 // Delete "Notifications"
                                 let notifications = PFQuery(className: "Notifications")
-                                notifications.whereKey("forObjectId", equalTo: proPicObject.last!.objectId!)
+                                notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
                                 notifications.whereKey("fromUser", equalTo: PFUser.current()!)
                                 notifications.findObjectsInBackground(block: {
                                     (objects: [PFObject]?, error: Error?) in
@@ -98,12 +113,11 @@ class ProfilePhotoCell: UITableViewCell {
                                 self.likeButton.isUserInteractionEnabled = true
                                 self.likeButton.isEnabled = true
                                 
-                                // Change button title and image
-                                self.likeButton.setTitle("notLiked", for: .normal)
+                                // Change button image
                                 self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
                                 
-                                // Send notification
-                                NotificationCenter.default.post(name: profileNotification, object: nil)
+                                // Reload data
+                                self.reloadData()
                                 
                                 // Animate like button
                                 UIView.animate(withDuration: 0.6 ,
@@ -136,19 +150,19 @@ class ProfilePhotoCell: UITableViewCell {
             likes["from"] = PFUser.current()!.username!
             likes["toUser"] = otherObject.last!
             likes["to"] = otherName.last!
-            likes["forObjectId"] = proPicObject.last!.objectId!
+            likes["forObjectId"] = self.postObject!.objectId!
             likes.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved like: \(likes)")
-
+                    
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
                     notifications["to"] = self.rpUsername.text!
                     notifications["toUser"] = otherObject.last!
-                    notifications["forObjectId"] = proPicObject.last!.objectId!
+                    notifications["forObjectId"] = self.postObject!.objectId!
                     notifications["type"] = "like pp"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
@@ -174,18 +188,17 @@ class ProfilePhotoCell: UITableViewCell {
                             print(error?.localizedDescription as Any)
                         }
                     })
-
+                    
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
                     
                     
-                    // Change button title and image
-                    self.likeButton.setTitle("liked", for: .normal)
+                    // Change button image
                     self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
                     
-                    // Send Notification
-                    NotificationCenter.default.post(name: profileNotification, object: nil)
+                    // Reload data
+                    self.reloadData()
                     
                     // Animate like button
                     UIView.animate(withDuration: 0.6 ,
@@ -197,10 +210,6 @@ class ProfilePhotoCell: UITableViewCell {
                                         self.likeButton.transform = CGAffineTransform.identity
                                     }
                     })
-
-                    
-                    
-                    
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -210,43 +219,46 @@ class ProfilePhotoCell: UITableViewCell {
     }
     
     
-    // Function to load comments
-    func comment() {
+    // Function to show number of likes
+    func showLikes() {
         // Append object
-        commentsObject.append(proPicObject.last!)
+        likeObject.append(self.postObject!)
         
         // Push VC
-        let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
-        self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
+        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+        self.delegate?.pushViewController(likesVC, animated: true)
     }
     
-    @IBAction func commentButton(_ sender: Any) {
+    
+    @IBAction func showComments(_ sender: Any) {
         // Append object
-        commentsObject.append(proPicObject.last!)
+        commentsObject.append(self.postObject!)
         
         // Push VC
         let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
-        self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
+        self.delegate?.pushViewController(commentsVC, animated: true)
     }
+    
+    
     
     // Function to show sharers
     func sharers() {
         // Append object
-        shareObject.append(proPicObject.last!)
+        shareObject.append(self.postObject!)
         
         // Push VC
         let shareVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
-        self.delegate?.navigationController?.pushViewController(shareVC, animated: true)
+        self.delegate?.pushViewController(shareVC, animated: true)
     }
     
-
-    // Function to share 
+    
+    // Function to share
     func shareContent() {
         
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share With",
-                                        message: nil,
-                                        style: .alert)
+                                      message: nil,
+                                      style: .alert)
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
@@ -261,115 +273,114 @@ class ProfilePhotoCell: UITableViewCell {
         options.configContainerCornerRadius = {
             return 14.00
         }
-
+        
         
         
         let publicShare = AlertAction(title: "All Friends",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            
-                                            // Share to public ***FRIENDS ONLY***
-                                            
-                                            
-                                            // Convert UIImage to NSData
-                                            let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
-                                            // Change UIImage to PFFile
-                                            let parseFile = PFFile(data: imageData!)
-                                            
-                                            let newsfeeds = PFObject(className: "Newsfeeds")
-                                            newsfeeds["byUser"] = PFUser.current()!
-                                            newsfeeds["username"] = PFUser.current()!.username!
-                                            newsfeeds["textPost"] = "shared @\(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo: \(self.caption.text!)"
-                                            newsfeeds["photoAsset"] = parseFile
-                                            newsfeeds["pointObject"] = proPicObject.last!
-                                            newsfeeds["contentType"] = "sh"
-                                            newsfeeds.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if error == nil {
-                                                    print("Successfully shared photo: \(newsfeeds)")
-                                                    
-                                                    
-                                                    // Send Notification
-                                                    let notifications = PFObject(className: "Notifications")
-                                                    notifications["fromUser"] = PFUser.current()!
-                                                    notifications["from"] = PFUser.current()!.username!
-                                                    notifications["toUser"] = proPicObject.last!.value(forKey: "byUser") as! PFUser
-                                                    notifications["to"] = self.rpUsername.text!
-                                                    notifications["type"] = "share pp"
-                                                    notifications["forObjectId"] = proPicObject.last!.objectId!
-                                                    notifications.saveInBackground(block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            
-                                                            // Handle optional chaining
-                                                            if otherObject.last!.value(forKey: "apnsId") != nil {
-                                                                // MARK: - OneSignal
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared your Text Post"],
-                                                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                                                     "ios_badgeType": "Increase",
-                                                                     "ios_badgeCount": 1
-                                                                    ]
-                                                                )
-                                                            }
-                                                            
-                                                            // Reload data
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                            
-                                                            // Show alert
-                                                            let alert = UIAlertController(title: "Shared With Friends",
-                                                                                          message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
-                                                                preferredStyle: .alert)
-                                                            
-                                                            let ok = UIAlertAction(title: "ok",
-                                                                                   style: .default,
-                                                                                   handler: {(alertAction: UIAlertAction!) in
-                                                                                    // Pop view controller
-                                                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                                            })
-                                                            
-                                                            alert.addAction(ok)
-                                                            alert.view.tintColor = UIColor.black
-                                                            self.delegate?.present(alert, animated: true, completion: nil)
-                                                            
-                                                            
-                                                            
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
+                                      style: .default,
+                                      handler: { (AlertAction) in
+                                        
+                                        // Share to public ***FRIENDS ONLY***
+                                        
+                                        
+                                        // Convert UIImage to NSData
+                                        let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
+                                        // Change UIImage to PFFile
+                                        let parseFile = PFFile(data: imageData!)
+                                        
+                                        let newsfeeds = PFObject(className: "Newsfeeds")
+                                        newsfeeds["byUser"] = PFUser.current()!
+                                        newsfeeds["username"] = PFUser.current()!.username!
+                                        newsfeeds["textPost"] = "shared @\(self.userObject!.value(forKey: "username") as! String)'s Profile Photo: \(self.textPost.text!)"
+                                        newsfeeds["photoAsset"] = parseFile
+                                        newsfeeds["pointObject"] = self.postObject!
+                                        newsfeeds["contentType"] = "sh"
+                                        newsfeeds.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                print("Successfully shared photo: \(newsfeeds)")
+                                                
+                                                
+                                                // Send Notification
+                                                let notifications = PFObject(className: "Notifications")
+                                                notifications["fromUser"] = PFUser.current()!
+                                                notifications["from"] = PFUser.current()!.username!
+                                                notifications["toUser"] = self.userObject!
+                                                notifications["to"] = self.rpUsername.text!
+                                                notifications["type"] = "share pp"
+                                                notifications["forObjectId"] = self.postObject!.objectId!
+                                                notifications.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        
+                                                        // Handle optional chaining
+                                                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                                                            // MARK: - OneSignal
+                                                            // Send push notification
+                                                            OneSignal.postNotification(
+                                                                ["contents":
+                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared your Text Post"],
+                                                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                                                 "ios_badgeType": "Increase",
+                                                                 "ios_badgeCount": 1
+                                                                ]
+                                                            )
                                                         }
-                                                    })
-
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
+                                                        
+                                                        // Reload data
+                                                        self.reloadData()
+                                                        
+                                                        // Show alert
+                                                        let alert = UIAlertController(title: "Shared With Friends",
+                                                                                      message: "Successfully shared \(self.rpUsername.text!)'s Photo.",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: {(alertAction: UIAlertAction!) in
+                                                                                // Pop view controller
+                                                                                _ = self.delegate?.popViewController(animated: true)
+                                                        })
+                                                        
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.delegate?.present(alert, animated: true, completion: nil)
+                                                        
+                                                        
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
         })
         
         
-
+        
         let privateShare = AlertAction(title: "One Friend",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            
-                                            // Share privately only
-                                            // Append to contentObject
-                                            shareObject.append(proPicObject.last!)
-                                            
-                                            // Share to chats
-                                            let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
-                                            self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
-                                            
+                                       style: .default,
+                                       handler: { (AlertAction) in
+                                        
+                                        // Share privately only
+                                        // Append to contentObject
+                                        shareObject.append(self.postObject!)
+                                        
+                                        // Share to chats
+                                        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+                                        self.delegate?.pushViewController(shareToVC, animated: true)
+                                        
         })
-
+        
         
         
         let cancel = AlertAction(title: "Cancel",
-                                   style: .destructive,
-                                   handler: nil)
+                                 style: .destructive,
+                                 handler: nil)
         
         options.addAction(publicShare)
         options.addAction(privateShare)
@@ -382,53 +393,7 @@ class ProfilePhotoCell: UITableViewCell {
         cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.delegate?.present(options, animated: true, completion: nil)
     }
-    
-    
-    // Function to show number of likes
-    func showLikes() {
-        // Append object
-        likeObject.append(proPicObject.last!)
-        
-        // Push VC
-        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
-        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
-    }
-    
-    
-    // Function to go to user's profile
-    func goUser() {
-        // *** otherObject and otherName's data already appended ***
-        // Push VC
-        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-        self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
-    }
-    
-    
-    
-    // Function to save do more with the photo
-    func saveShare(sender: UILongPressGestureRecognizer) {
-        // set up activity view controller
-        let image = self.rpUserProPic.image!
-        let imageToShare = [image]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
-        
-        // present the view controller
-        self.delegate?.present(activityViewController, animated: true, completion: nil)
-    }
-    
-    
-    
-    // Function to show number of shares
-    func showShares() {
-        // Append object
-        shareObject.append(proPicObject.last!)
-        
-        // Push VC
-        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
-        self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
-    }
-    
+
     
     // Function for moreButton
     func doMore(sender: UIButton) {
@@ -455,30 +420,30 @@ class ProfilePhotoCell: UITableViewCell {
         }
         
         
-//        // (1) Views
-//        let views = AlertAction(title: "🙈 Views",
-//                                style: .default,
-//                                handler: { (AlertAction) in
-//                                    // Append object
-//                                    viewsObject.append(proPicObject.last!)
-//                                    
-//                                    // Push VC
-//                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-//                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-//        })
+        //        // (1) Views
+        //        let views = AlertAction(title: "🙈 Views",
+        //                                style: .default,
+        //                                handler: { (AlertAction) in
+        //                                    // Append object
+        //                                    viewsObject.append(proPicObject.last!)
+        //
+        //                                    // Push VC
+        //                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+        //                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
+        //        })
         
         
         // (2)
         let edit = AlertAction(title: "🔩 Edit",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    
-                                    // Append object
-                                    editObjects.append(proPicObject.last!)
-                                    
-                                    // Push VC
-                                    let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                    self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+                               style: .default,
+                               handler: { (AlertAction) in
+                                
+                                // Append object
+                                editObjects.append(self.postObject!)
+                                
+                                // Push VC
+                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                self.delegate?.pushViewController(editVC, animated: true)
         })
         
         
@@ -498,7 +463,6 @@ class ProfilePhotoCell: UITableViewCell {
                                      
                                      */
                                     
-                                    
                                     // Show Progress
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
                                     SVProgressHUD.show(withStatus: "Deleting")
@@ -512,7 +476,7 @@ class ProfilePhotoCell: UITableViewCell {
                                         (object: PFObject?, error: Error?) in
                                         if error == nil {
                                             
-                                            if object! == proPicObject.last! {
+                                            if object! == self.postObject! {
                                                 
                                                 // Most recent Profile Photo
                                                 // Delete object
@@ -538,11 +502,10 @@ class ProfilePhotoCell: UITableViewCell {
                                                                 SVProgressHUD.dismiss()
                                                                 
                                                                 // Reload data
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                self.reloadData()
                                                                 
                                                                 // Pop view controller
-                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                                _ = self.delegate?.popViewController(animated: true)
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
                                                             }
@@ -558,10 +521,10 @@ class ProfilePhotoCell: UITableViewCell {
                                                 // Delete content
                                                 let content = PFQuery(className: "Newsfeeds")
                                                 content.whereKey("byUser", equalTo: PFUser.current()!)
-                                                content.whereKey("objectId", equalTo: proPicObject.last!.objectId!)
+                                                content.whereKey("objectId", equalTo: self.postObject!.objectId!)
                                                 
                                                 let shares = PFQuery(className: "Newsfeeds")
-                                                shares.whereKey("pointObject", equalTo: proPicObject.last!)
+                                                shares.whereKey("pointObject", equalTo: self.postObject!)
                                                 
                                                 let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                                 newsfeeds.findObjectsInBackground(block: {
@@ -582,11 +545,10 @@ class ProfilePhotoCell: UITableViewCell {
                                                                     PFUser.current()!.saveEventually()
                                                                     
                                                                     // Reload data
-                                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-                                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                                    self.reloadData()
                                                                     
                                                                     // Pop view controller
-                                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                                    _ = self.delegate?.popViewController(animated: true)
                                                                     
                                                                     
                                                                 } else {
@@ -607,7 +569,7 @@ class ProfilePhotoCell: UITableViewCell {
                                             
                                         }
                                     })
-
+                                    
         })
         
         
@@ -617,7 +579,7 @@ class ProfilePhotoCell: UITableViewCell {
                                       handler: { (AlertAction) in
                                         
                                         let alert = UIAlertController(title: "Report",
-                                                                      message: "Please provide your reason for reporting \(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo",
+                                                                      message: "Please provide your reason for reporting \(self.rpUsername.text!)'s Profile Photo",
                                             preferredStyle: .alert)
                                         
                                         let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -628,9 +590,9 @@ class ProfilePhotoCell: UITableViewCell {
                                             let report = PFObject(className: "Block_Reported")
                                             report["from"] = PFUser.current()!.username!
                                             report["fromUser"] = PFUser.current()!
-                                            report["to"] = proPicObject.last!.value(forKey: "username") as! String
-                                            report["toUser"] = proPicObject.last!.value(forKey: "byUser") as! PFUser
-                                            report["forObjectId"] = proPicObject.last!.objectId!
+                                            report["to"] = self.rpUsername.text!
+                                            report["toUser"] = self.userObject!
+                                            report["forObjectId"] = self.postObject!.objectId!
                                             report["type"] = answer.text!
                                             report.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
@@ -639,7 +601,7 @@ class ProfilePhotoCell: UITableViewCell {
                                                     
                                                     // Dismiss
                                                     let alert = UIAlertController(title: "Successfully Reported",
-                                                                                  message: "\(proPicObject.last!.value(forKey: "username") as! String)'s Profile Photo",
+                                                                                  message: "\(self.rpUsername.text!)'s Profile Photo",
                                                         preferredStyle: .alert)
                                                     
                                                     let ok = UIAlertAction(title: "ok",
@@ -667,18 +629,18 @@ class ProfilePhotoCell: UITableViewCell {
                                         alert.addAction(cancel)
                                         alert.view.tintColor = UIColor.black
                                         self.delegate?.present(alert, animated: true, completion: nil)
-
+                                        
         })
         
-
+        
         // (5) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
-
         
-        if (proPicObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-//            options.addAction(views)
+        
+        if self.postObject!.objectId! == PFUser.current()!.objectId! {
+            //            options.addAction(views)
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
@@ -701,10 +663,18 @@ class ProfilePhotoCell: UITableViewCell {
     }
     
     
-    
+    // Function to go to user's profile
+    func goUser() {
+        // *** otherObject and otherName's data already appended ***
+        otherObject.append(self.userObject!)
+        otherName.append(self.rpUsername.text!)
+        // Push VC
+        let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        self.delegate?.pushViewController(otherVC, animated: true)
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
-
         // (1) Add tap gesture to zoom in
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
@@ -718,7 +688,7 @@ class ProfilePhotoCell: UITableViewCell {
         self.likeButton.addGestureRecognizer(likeTap)
         
         // (3) Comment button tap
-        let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
@@ -736,7 +706,7 @@ class ProfilePhotoCell: UITableViewCell {
         self.shareButton.addGestureRecognizer(dmTap)
         
         // (6) Number of shares
-        let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
+        let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(sharers))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
@@ -753,12 +723,6 @@ class ProfilePhotoCell: UITableViewCell {
         self.smallProPic.isUserInteractionEnabled = true
         self.smallProPic.addGestureRecognizer(proPicTap)
         
-        // (9) Hold the photo to save it
-        let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-        hold.minimumPressDuration = 0.50
-        self.rpUserProPic.isUserInteractionEnabled = true
-        self.rpUserProPic.addGestureRecognizer(hold)
-        
         // (10) More tap
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
@@ -766,7 +730,7 @@ class ProfilePhotoCell: UITableViewCell {
         self.moreButton.addGestureRecognizer(moreTap)
         
         // Handle @username tap
-        caption.userHandleLinkTapHandler = { label, handle, range in
+        textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page
             var mention = handle
             mention = String(mention.characters.dropFirst())
@@ -786,15 +750,13 @@ class ProfilePhotoCell: UITableViewCell {
                         
                         // Push VC
                         let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-                        self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
+                        self.delegate?.pushViewController(otherUser, animated: true)
                     }
                 } else {
                     print(error?.localizedDescription as Any)
                 }
             })
         }
-        
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -802,5 +764,5 @@ class ProfilePhotoCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-
+    
 }
