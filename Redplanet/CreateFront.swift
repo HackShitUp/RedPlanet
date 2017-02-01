@@ -133,7 +133,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -151,6 +151,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     

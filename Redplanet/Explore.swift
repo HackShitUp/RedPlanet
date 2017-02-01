@@ -98,7 +98,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         // $$$ MONETIZE ON THIS
         queryExplore()
         
-        // Configure nav bar and tabBar
+        // Configure navigationBar and tabBar
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
@@ -143,11 +143,14 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         // Resign frist responder
         self.searchBar.resignFirstResponder()
         
-        // Configure nav bar and tabBar
+        // Configure navigationBar, tabBar, and statusBar
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.delegate = self
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {

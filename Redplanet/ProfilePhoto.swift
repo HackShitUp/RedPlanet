@@ -237,9 +237,17 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         cell.smallProPic.layoutSubviews()
         cell.smallProPic.setNeedsLayout()
         cell.smallProPic.layer.cornerRadius = cell.smallProPic.frame.size.width/2
-        cell.smallProPic.layer.borderColor = UIColor.darkGray.cgColor
-        cell.smallProPic.layer.borderWidth = 1.50
+        cell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.smallProPic.layer.borderWidth = 0.50
         cell.smallProPic.clipsToBounds = true
+        
+        cell.rpUserProPic.layoutIfNeeded()
+        cell.rpUserProPic.layoutSubviews()
+        cell.rpUserProPic.setNeedsLayout()
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
+        cell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
+        cell.rpUserProPic.layer.borderWidth = 1.50
+        cell.rpUserProPic.clipsToBounds = true
         
         // (A) Get profile photo
         if let proPic = proPicObject.last!.value(forKey: "photoAsset") as? PFFile {

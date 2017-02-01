@@ -43,12 +43,11 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
-    let photos = ["ph", "pp"]
     
     // Array to hold contenTypes
     var contentTypes = ["ph",
                         "tp",
-//                        "sh",
+                        "sh",
                         "vi",
                         "itm"]
     
@@ -118,7 +117,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     
-                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
                         if difference.hour! < 24 {
                             self.posts.append(object)
                         } else {
@@ -161,6 +160,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
         // Configure table view
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         
         // Pull to refresh action
@@ -880,7 +880,7 @@ class TFollowing: UITableViewController, UINavigationControllerDelegate, UITabBa
             
             return vCell // return TimeVideoCell.swift
         }
-    }
+    }// end cellForRowAt
  
 
     // MARK: RP's very own Pipeline Method

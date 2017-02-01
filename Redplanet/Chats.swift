@@ -195,7 +195,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
@@ -380,6 +380,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
         // Add long press method in tableView

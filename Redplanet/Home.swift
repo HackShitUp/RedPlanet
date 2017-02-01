@@ -74,6 +74,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
         super.viewWillAppear(animated)
         // Show statusBar, hide navigation bar, show tab bar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = false

@@ -28,7 +28,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
-    let photos = ["ph", "pp"]
     
     // Fetch likes, count comments and shares
     var likes = [PFObject]()
@@ -83,7 +82,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
                         if difference.hour! < 24 {
                             self.posts.append(object)
                         } else {
@@ -105,7 +104,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -114,7 +113,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.uppercased()
         }
         
-        // Configure nav bar && show tab bar (last line)
+        // Configure nav bar, show tab bar, and set statusBar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
@@ -122,6 +121,9 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.delegate = self
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     // Refresh function
@@ -152,6 +154,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         self.tableView?.backgroundColor = UIColor.white
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         
         // Add refresher

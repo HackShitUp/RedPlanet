@@ -46,7 +46,6 @@ class OtherUser: UITableViewController {
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
-    let photos = ["ph", "pp"]
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -301,7 +300,7 @@ class OtherUser: UITableViewController {
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if object.value(forKey: "contentType") as! String == "itm" || object.value(forKey: "contentType") as! String == "sh" {
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
                         if difference.hour! < 24 {
                             self.posts.append(object)
                         } else {
@@ -462,6 +461,7 @@ class OtherUser: UITableViewController {
         self.tableView?.backgroundColor = UIColor.white
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         
         // Register to receive notification
