@@ -23,8 +23,6 @@ import SVProgressHUD
 import SDWebImage
 
 
-// Define notification to reload data
-let friendsNewsfeed = Notification.Name("friendsNewsfeed")
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -178,8 +176,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
-        // Add notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
+        // Define Notification to reload data
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -405,6 +403,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             tpCell.postObject = self.posts[indexPath.row]
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            tpCell.numberOfLikes.setTitle("likes", for: .normal)
+            tpCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            tpCell.numberOfComments.setTitle("comments", for: .normal)
+            tpCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -590,6 +593,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             mCell.time.text! = rpTime!
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            mCell.numberOfLikes.setTitle("likes", for: .normal)
+            mCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            mCell.numberOfComments.setTitle("comments", for: .normal)
+            mCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -707,6 +715,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             ppCell.time.text! = "updated their Profile Photo \(rpTime!)"
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            ppCell.numberOfLikes.setTitle("likes", for: .normal)
+            ppCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            ppCell.numberOfComments.setTitle("comments", for: .normal)
+            ppCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -826,6 +839,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             vCell.time.text! = rpTime!
             
             // (5) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            vCell.numberOfLikes.setTitle("likes", for: .normal)
+            vCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            vCell.numberOfComments.setTitle("comments", for: .normal)
+            vCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -895,7 +913,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             return vCell // return TimeVideoCell.swift
         }
-        
     }//end cellForRowAt
     
     

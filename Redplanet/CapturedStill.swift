@@ -194,7 +194,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                     self.continueButton.isUserInteractionEnabled = true
                     
                     // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                     
                     // Show bottom
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
@@ -209,7 +209,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
                     self.continueButton.isUserInteractionEnabled = true
                     
                     // Send Notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                     
                     
                 }

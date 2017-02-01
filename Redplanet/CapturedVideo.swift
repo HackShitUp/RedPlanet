@@ -91,7 +91,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
                     
                     DispatchQueue.main.async {
                         // Send Notification
-                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                         
                         // Show news feed
                         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
@@ -109,7 +109,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
                     DispatchQueue.main.async {
                         
                         // Send Notification
-                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                         
                         // Show news feed
                         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)

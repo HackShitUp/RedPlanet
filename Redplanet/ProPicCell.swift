@@ -47,8 +47,8 @@ class ProPicCell: UITableViewCell {
     func reloadData() {
         // Send notification
         NotificationCenter.default.post(name: profileNotification, object: nil)
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "followingNewsfeed"), object: nil)
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
         NotificationCenter.default.post(name: otherNotification, object: nil)
     }
@@ -639,8 +639,7 @@ class ProPicCell: UITableViewCell {
                                  handler: nil)
         
         
-        if self.postObject!.objectId! == PFUser.current()!.objectId! {
-            //            options.addAction(views)
+        if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)

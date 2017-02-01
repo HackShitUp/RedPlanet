@@ -142,7 +142,7 @@ class PhotoAssetCell: UITableViewCell {
                                                             
                                                             
                                                             // Reload data
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
                                                             // Show alert
@@ -467,7 +467,7 @@ class PhotoAssetCell: UITableViewCell {
                                                         SVProgressHUD.dismiss()
                                                         
                                                         // Reload data
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                         
                                                         // Pop view controller

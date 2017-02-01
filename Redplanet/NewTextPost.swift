@@ -198,7 +198,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     self.textView.resignFirstResponder()
                     
                     // Send notification
-                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
 
                     // Show bottom
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)

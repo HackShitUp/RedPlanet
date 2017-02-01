@@ -183,7 +183,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                         
                                                         
                                                         // Send Notification to friendsNewsfeed
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                         
                                                         // Send Notification to myProfile
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
@@ -247,7 +247,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                                                 self.backButton.isEnabled = true
                                                                 
                                                                 // Send Notification to friendsNewsfeed
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                                 
                                                                 // Send Notification to myProfile
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
@@ -291,7 +291,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                             
                                             
                                             // Send Notification to friendsNewsfeed
-                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                             
                                             // Send Notification to myProfile
                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)

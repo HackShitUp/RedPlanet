@@ -110,7 +110,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                         print("Successfully deleted object: \(newsfeeds)")
                                                         
                                                         // Send FriendsNewsfeeds Notification
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                         
                                                         // Send MyProfile Notification
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
@@ -590,7 +590,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                                             print("Sent notification: \(notifications)")
       
                                                             // Send notification
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
 
                                                             // Send Push notificaiton
                                                             if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {

@@ -175,7 +175,7 @@ class EphemeralCell: UITableViewCell {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {
                                                     // Send FriendsNewsfeeds Notification
-                                                    NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                     // Send MyProfile Notification
                                                     NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                 } else {

@@ -335,7 +335,7 @@ class SpacePostCell: UITableViewCell {
                                                             }
                                                             
                                                             // Reload data
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             NotificationCenter.default.post(name: otherNotification, object: nil)
 
@@ -560,7 +560,7 @@ class SpacePostCell: UITableViewCell {
                                                                 
                                                                 
                                                                 // Reload data
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 
@@ -616,7 +616,7 @@ class SpacePostCell: UITableViewCell {
                                                                 SVProgressHUD.dismiss()
                                                                 
                                                                 // Reload data
-                                                                NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                                 NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                                 NotificationCenter.default.post(name: otherNotification, object: nil)
                                                                 

@@ -57,8 +57,8 @@ class TimeMediaCell: UITableViewCell {
     func reloadData() {
         // Send Notification
         NotificationCenter.default.post(name: photoNotification, object: nil)
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "followingNewsfeed"), object: nil)
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
         NotificationCenter.default.post(name: otherNotification, object: nil)
     }

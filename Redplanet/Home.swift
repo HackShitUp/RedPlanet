@@ -35,7 +35,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
         controllerArray.append(friends)
         
         // FOLLOWING
-        let following = self.storyboard?.instantiateViewController(withIdentifier: "tFollowing") as! TFollowing
+        let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
         following.parentNavigator = self.navigationController
         following.title = "Following"
         controllerArray.append(following)

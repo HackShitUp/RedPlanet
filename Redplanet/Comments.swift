@@ -83,8 +83,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
         
         // Reload news feed
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        NotificationCenter.default.post(name: followingNewsfeed, object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "followingNewsfeed"), object: nil)
         
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)

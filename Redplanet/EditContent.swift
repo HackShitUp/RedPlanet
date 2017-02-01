@@ -15,7 +15,7 @@ import Parse
 import ParseUI
 import Bolts
 
-
+import SDWebImage
 import SVProgressHUD
 import OneSignal
 
@@ -34,9 +34,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     
     @IBAction func backButton(_ sender: Any) {
-        // Reload Data
-        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
-        NotificationCenter.default.post(name: myProfileNotification, object: nil)
         // Remove last
         editObjects.removeLast()
         // Pop view controller
@@ -44,7 +41,11 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     }
     
     
-    
+    // Function to reload data
+    func reloadData() {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+    }
     
     // Stylize title
     func configureView() {
@@ -305,7 +306,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 }
             })
 
-        
+
+            // Reload data
+            self.reloadData()
             // Check for hashtags and mentions
             checkNotifications()
             // Clear array and pop vc
@@ -588,10 +591,20 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         }
 
     }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Reload data
+        self.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
 

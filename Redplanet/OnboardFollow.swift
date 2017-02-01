@@ -12,11 +12,8 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
 import SwipeNavigationController
 
-// Define Notification
-let onBoardNotification = Notification.Name("onboard")
 
 class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
@@ -122,7 +119,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         self.title = "Friend Or Follow"
         
         // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: friendsNewsfeed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "onboard"), object: nil)
         
         // Get rid of back button
         self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"", style: .plain, target: nil, action: nil)

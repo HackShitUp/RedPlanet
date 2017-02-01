@@ -99,7 +99,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                                         print("Successfully deleted object: \(newsfeeds)")
                                                         
                                                         // Send FriendsNewsfeeds Notification
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                         
                                                         // Send MyProfile Notification
                                                         NotificationCenter.default.post(name: myProfileNotification, object: nil)
@@ -431,7 +431,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                                         
                                                         
                                                         // Send notification
-                                                        NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                         
                                                         
                                                         

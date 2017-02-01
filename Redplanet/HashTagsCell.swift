@@ -158,7 +158,7 @@ class HashTagsCell: UITableViewCell {
                                                             
                                                             
                                                             // Send notification
-                                                            NotificationCenter.default.post(name: friendsNewsfeed, object: nil)
+                                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                                                             
                                                             // Show alert
                                                             let alert = UIAlertController(title: "Shared With Friends",

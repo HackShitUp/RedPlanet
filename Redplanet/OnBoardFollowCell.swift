@@ -63,7 +63,7 @@ class OnBoardFollowCell: UITableViewCell {
                     _ = self.appDelegate.queryRelationships()
                     
                     // Reload data
-                    NotificationCenter.default.post(name: onBoardNotification, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -107,7 +107,7 @@ class OnBoardFollowCell: UITableViewCell {
                                 self.appDelegate.queryRelationships()
                                 
                                 // Reload data
-                                NotificationCenter.default.post(name: onBoardNotification, object: nil)
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
                                 
                                 
                             } else {
@@ -155,7 +155,7 @@ class OnBoardFollowCell: UITableViewCell {
                     self.appDelegate.queryRelationships()
                     
                     // Reload data
-                    NotificationCenter.default.post(name: onBoardNotification, object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
 
                 } else {
                     print(error?.localizedDescription as Any)
@@ -196,7 +196,7 @@ class OnBoardFollowCell: UITableViewCell {
                                 self.appDelegate.queryRelationships()
                                 
                                 // Reload data
-                                NotificationCenter.default.post(name: onBoardNotification, object: nil)
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
                             } else {
                                 print(error?.localizedDescription as Any)
                             }

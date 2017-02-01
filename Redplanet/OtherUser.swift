@@ -871,6 +871,11 @@ class OtherUser: UITableViewController {
             tpCell.postObject = self.posts[indexPath.row]
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            tpCell.numberOfLikes.setTitle("likes", for: .normal)
+            tpCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            tpCell.numberOfComments.setTitle("comments", for: .normal)
+            tpCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -1056,6 +1061,11 @@ class OtherUser: UITableViewController {
             mCell.time.text! = rpTime!
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            mCell.numberOfLikes.setTitle("likes", for: .normal)
+            mCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            mCell.numberOfComments.setTitle("comments", for: .normal)
+            mCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -1173,6 +1183,11 @@ class OtherUser: UITableViewController {
             ppCell.time.text! = "updated their Profile Photo \(rpTime!)"
             
             // (4) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            ppCell.numberOfLikes.setTitle("likes", for: .normal)
+            ppCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            ppCell.numberOfComments.setTitle("comments", for: .normal)
+            ppCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -1292,6 +1307,11 @@ class OtherUser: UITableViewController {
             vCell.time.text! = rpTime!
             
             // (5) Fetch likes, comments, and shares
+            // SET DEFAULTS:
+            vCell.numberOfLikes.setTitle("likes", for: .normal)
+            vCell.commentButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            vCell.numberOfComments.setTitle("comments", for: .normal)
+            vCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
