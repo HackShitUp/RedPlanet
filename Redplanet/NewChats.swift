@@ -109,7 +109,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
 
         // Query friends
         queryFriends()
-
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -118,7 +117,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         self.searchBar.barTintColor = UIColor.white
         self.tableView.tableHeaderView = self.searchBar
         
-        // Clear tableView
+        // Design table view
+        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
         // Set title
@@ -129,9 +129,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         swipe.direction = .down
         self.tableView!.isUserInteractionEnabled = true
         self.tableView!.addGestureRecognizer(swipe)
-        
-        
-        
+
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right

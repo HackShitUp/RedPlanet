@@ -163,7 +163,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         // Configure table view
         self.tableView?.estimatedRowHeight = 658
         self.tableView?.rowHeight = UITableViewAutomaticDimension
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         
         // Set tabBarController delegate

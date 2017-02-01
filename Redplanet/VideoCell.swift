@@ -467,8 +467,9 @@ class VideoCell: UITableViewCell {
                                  style: .destructive,
                                  handler: { (AlertAction) in
                                     
-                                    // Show Progress
+                                    // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                     SVProgressHUD.show(withStatus: "Deleting")
                                     
                                     // Delete content
@@ -483,34 +484,31 @@ class VideoCell: UITableViewCell {
                                     newsfeeds.findObjectsInBackground(block: {
                                         (objects: [PFObject]?, error: Error?) in
                                         if error == nil {
-                                            for object in objects! {
-                                                // Delete object
-                                                object.deleteInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully deleted object: \(object)")
-                                                        
-                                                        // Dismiss
-                                                        SVProgressHUD.dismiss()
-                                                        
-                                                        
-                                                        // Reload data
-                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        
-                                                        // Pop view controller
-                                                        _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
+                                            // Delete all objects
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                    
+                                                    // Reload data
+                                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    
+                                                    // Pop view controller
+                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
                                         } else {
                                             print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
-                                    
         })
         
         // (4) Report

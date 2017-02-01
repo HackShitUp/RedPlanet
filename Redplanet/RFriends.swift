@@ -214,7 +214,8 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
         // Stylize title
         configureView()
         
-        // Remove lines on load
+        // Design table view
+        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
         // Back swipe implementation

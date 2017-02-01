@@ -141,8 +141,10 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
         
         mediaType = "video"
         
+
+        
         // Append PHAsset
-        shareMediaAsset.append(videoAssets[indexPath.item])
+        shareMediaAsset.append(self.videoAssets[indexPath.item])
         
         // Push VC
         let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia

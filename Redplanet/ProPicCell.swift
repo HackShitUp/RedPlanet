@@ -463,8 +463,9 @@ class ProPicCell: UITableViewCell {
                                      
                                      */
                                     
-                                    // Show Progress
+                                    // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                     SVProgressHUD.show(withStatus: "Deleting")
                                     
                                     // (1) Check if object is most recent by querying getFirstObject
@@ -475,15 +476,13 @@ class ProPicCell: UITableViewCell {
                                     recentProPic.getFirstObjectInBackground(block: {
                                         (object: PFObject?, error: Error?) in
                                         if error == nil {
-                                            
-                                            if object! == self.postObject! {
-                                                
+
+                                            if object!.objectId! == self.postObject!.objectId! {
                                                 // Most recent Profile Photo
                                                 // Delete object
                                                 object?.deleteInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
-                                                        print("Most Recent Profile Photo has been deleted: \(object)")
                                                         
                                                         // Set new profile photo
                                                         let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
@@ -495,11 +494,10 @@ class ProPicCell: UITableViewCell {
                                                         PFUser.current()!.saveInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
-                                                                
                                                                 print("Deleted current profile photo and saved a new one.")
                                                                 
-                                                                // Dismiss Progress
-                                                                SVProgressHUD.dismiss()
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                                 
                                                                 // Reload data
                                                                 self.reloadData()
@@ -508,12 +506,14 @@ class ProPicCell: UITableViewCell {
                                                                 _ = self.delegate?.popViewController(animated: true)
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showError(withStatus: "Error")
                                                             }
                                                         })
-                                                        
-                                                        
                                                     } else {
                                                         print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
                                                     }
                                                 })
                                             } else {
@@ -537,8 +537,8 @@ class ProPicCell: UITableViewCell {
                                                                 if success {
                                                                     print("Successfully deleted profile photo: \(object)")
                                                                     
-                                                                    // Dismiss
-                                                                    SVProgressHUD.dismiss()
+                                                                    // MARK: - SVProgressHUD
+                                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                                     
                                                                     // Current User's Profile Photo DOES EXIST
                                                                     PFUser.current()!["proPicExists"] = true
@@ -550,23 +550,24 @@ class ProPicCell: UITableViewCell {
                                                                     // Pop view controller
                                                                     _ = self.delegate?.popViewController(animated: true)
                                                                     
-                                                                    
                                                                 } else {
                                                                     print(error?.localizedDescription as Any)
+                                                                    // MARK: - SVProgressHUD
+                                                                    SVProgressHUD.showError(withStatus: "Error")
                                                                 }
                                                             })
                                                         }
                                                     } else {
                                                         print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
                                                     }
                                                 })
-                                                
                                             }
-                                            
-                                            
                                         } else {
                                             print(error?.localizedDescription as Any)
-                                            
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
                                     

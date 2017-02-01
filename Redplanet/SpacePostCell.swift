@@ -532,51 +532,51 @@ class SpacePostCell: UITableViewCell {
                                  style: .destructive,
                                  handler: { (AlertAction) in
                                             
-                                            // Show Progress
-                                            SVProgressHUD.show(withStatus: "Deleting")
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
+                                        // Set content
+                                        let content = PFQuery(className: "Newsfeeds")
+                                        content.whereKey("byUser", equalTo: PFUser.current()!)
+                                        content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
                                             
-                                            // Set content
-                                            let content = PFQuery(className: "Newsfeeds")
-                                            content.whereKey("byUser", equalTo: PFUser.current()!)
-                                            content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
+                                        let shares = PFQuery(className: "Newsfeeds")
+                                        shares.whereKey("pointObject", equalTo: spaceObject.last!)
                                             
-                                            let shares = PFQuery(className: "Newsfeeds")
-                                            shares.whereKey("pointObject", equalTo: spaceObject.last!)
-                                            
-                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        // Delete object
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                
-                                                                // Reload data
-                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
+                                        let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                        newsfeeds.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                // Delete all objects
+                                                PFObject.deleteAll(inBackground: objects, block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                        
+                                                        // Reload data
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"),object: nil)
+                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                        
+                                                        // Pop view controller
+                                                        _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
                                                     }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
+                                                })
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
         })
         
         

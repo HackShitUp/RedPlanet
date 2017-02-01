@@ -24,7 +24,7 @@ var capturedURLS = [URL]()
 
 class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationControllerDelegate {
     
-    // Initializae Player
+    // MARK: - Player
     var player: Player!
     
     // Compressed URL
@@ -80,8 +80,6 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    
-                    print("FIRED")
                     
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
@@ -237,7 +235,6 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
                 case .cancelled:
                     break
                 }
-                
             }
         }
 

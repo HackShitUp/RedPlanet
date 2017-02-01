@@ -548,10 +548,11 @@ class SharedPostCell: UITableViewCell {
                                 style: .destructive,
                                 handler: { (AlertAction) in
                                             
-                                            // Show Progress
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.show(withStatus: "Deleting")
-                                            
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
                                             // Delete content
                                             let newsfeeds = PFQuery(className: "Newsfeeds")
                                             newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
@@ -564,11 +565,9 @@ class SharedPostCell: UITableViewCell {
                                                         object.deleteInBackground(block: {
                                                             (success: Bool, error: Error?) in
                                                             if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
+
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                                 
                                                                 // Reload data
                                                                 NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
@@ -579,14 +578,17 @@ class SharedPostCell: UITableViewCell {
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showError(withStatus: "Error")
                                                             }
                                                         })
                                                     }
                                                 } else {
                                                     print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
                                                 }
                                             })
-                                            
         })
         
         

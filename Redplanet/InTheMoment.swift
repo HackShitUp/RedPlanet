@@ -82,8 +82,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                    style: .destructive,
                                    handler: { (AlertAction) in
                                     
-                                    // Show Progress
+                                    // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                     SVProgressHUD.show(withStatus: "Deleting")
                                 
                                     // Shared and og content
@@ -98,35 +99,33 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     newsfeeds.findObjectsInBackground(block: {
                                         (objects: [PFObject]?, error: Error?) in
                                         if error == nil {
-                                            
-                                            // Dismiss progress
-                                            SVProgressHUD.dismiss()
-                                            
-                                            for object in objects! {
-                                                object.deleteInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        
-                                                        print("Successfully deleted object: \(newsfeeds)")
-                                                        
-                                                        // Send FriendsNewsfeeds Notification
-                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                        
-                                                        // Send MyProfile Notification
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        
-                                                        // Pop VC
-                                                        _ = self.navigationController?.popViewController(animated: true)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
+                                            // Delete all objects
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                    
+                                                    // Send FriendsNewsfeeds Notification
+                                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                                    
+                                                    // Send MyProfile Notification
+                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    
+                                                    // Pop VC
+                                                    _ = self.navigationController?.popViewController(animated: true)
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
                                             
                                             
                                         } else {
                                             print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
         })
