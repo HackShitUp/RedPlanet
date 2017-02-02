@@ -112,15 +112,14 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Set time configs
+                    // Ephemeral content
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    
                     if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
                         if difference.hour! < 24 {
                             self.posts.append(object)
                         } else {
-                            self.posts.append(object)
+                            self.skipped.append(object)
                         }
                     } else {
                         self.posts.append(object)

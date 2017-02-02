@@ -176,8 +176,6 @@ class TimeVideoCell: UITableViewCell {
                                     }
                     })
                     
-                    
-                    
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!

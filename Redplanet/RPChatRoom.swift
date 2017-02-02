@@ -514,9 +514,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView!.reloadData()
     }
     
-
-    
-    
     // Function to send screenshot
     func sendScreenshot() {
         // Send push notification
@@ -532,8 +529,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
         }
     }
-    
-    
     
     // Stylize title
     func configureView() {
@@ -553,8 +548,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    
     
 
     override func viewDidLoad() {

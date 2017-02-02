@@ -253,20 +253,19 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "videoCell", for: indexPath) as! VideoCell
-        
+        let cell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.contentView.frame
 
         // Set parent VC
-        cell.delegate = self
+        cell.delegate = self.navigationController
         
         // Declare user's object
         cell.userObject = videoObject.last!.value(forKey: "byUser") as! PFUser
         
         // Declare content's object
-        cell.contentObject = videoObject.last!
+        cell.postObject = videoObject.last!
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
@@ -291,9 +290,9 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         cell.videoPreview.clipsToBounds = true
         
         // Layout caption views
-        cell.caption.layoutIfNeeded()
-        cell.caption.layoutSubviews()
-        cell.caption.setNeedsLayout()
+        cell.textPost.layoutIfNeeded()
+        cell.textPost.layoutSubviews()
+        cell.textPost.setNeedsLayout()
         
         // Get video object
         // (1) Point to User's Object
@@ -345,7 +344,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         
         // (3) Set Text Post
-        cell.caption.text! = videoObject.last!["textPost"] as! String
+        cell.textPost.text! = videoObject.last!["textPost"] as! String
         
         // (4) Set time
         let from = videoObject.last!.createdAt!

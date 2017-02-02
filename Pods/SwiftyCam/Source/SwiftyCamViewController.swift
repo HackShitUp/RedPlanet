@@ -851,9 +851,9 @@ open class SwiftyCamViewController: UIViewController {
         }
         
         do{
-
+            // Player.swift works for this
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: .mixWithOthers)
+                                                            with: [.mixWithOthers, .defaultToSpeaker])
 
             session.automaticallyConfiguresApplicationAudioSession = false
         }

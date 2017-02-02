@@ -238,16 +238,16 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "photoAssetCell", for: indexPath) as! PhotoAssetCell
+        let cell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
         
         // Declare parent vc
-        cell.delegate = self
+        cell.delegate = self.navigationController
         
         // Declare user's object
         cell.userObject = photoAssetObject.last!.value(forKey: "byUser") as! PFUser
         
         // Declare content's object
-        cell.contentObject = photoAssetObject.last!
+        cell.postObject = photoAssetObject.last!
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
@@ -303,7 +303,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                 (data: Data?, error: Error?) in
                 if error == nil {
                     // set media asset
-                    cell.rpMedia.image = UIImage(data: data!)
+                    cell.mediaAsset.image = UIImage(data: data!)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -311,14 +311,14 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
             })
             
             // MARK: - SDWebImage
-            cell.rpMedia.sd_setImage(with: URL(string: media.url!), placeholderImage: cell.rpMedia.image)
+            cell.mediaAsset.sd_setImage(with: URL(string: media.url!), placeholderImage: cell.mediaAsset.image)
         }
         
         // Set caption
         if photoAssetObject.last!["textPost"] != nil {
-            cell.caption.text! = photoAssetObject.last!["textPost"] as! String
+            cell.textPost.text! = photoAssetObject.last!["textPost"] as! String
         } else {
-            cell.caption.isHidden = true
+            cell.textPost.isHidden = true
         }
         
         // (3) Set time

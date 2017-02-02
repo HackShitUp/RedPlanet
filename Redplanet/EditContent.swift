@@ -239,8 +239,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         } else {
             
             // Show Progress
-            SVProgressHUD.show()
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
             SVProgressHUD.setBackgroundColor(UIColor.white)
+            SVProgressHUD.show()
             
             // Fetch object
             let newsfeeds = PFQuery(className: "Newsfeeds")
@@ -252,8 +253,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                     object!.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            
-                            SVProgressHUD.dismiss()
                             
                             // Refresh data if successfull
                             if object!.value(forKey: "contentType") as! String == "tp" {
@@ -290,19 +289,20 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             // Clear array and append object
                             editObjects.removeAll(keepingCapacity: false)
                             editObjects.append(object!)
-
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showSuccess(withStatus: "Saved")
                         } else {
                             print(error?.localizedDescription as Any)
-                            
-                            // Dismiss Progress
-                            SVProgressHUD.dismiss()
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showError(withStatus: "Error")
                         }
                         
                     })
 
                 } else {
                     print(error?.localizedDescription as Any)
-                    SVProgressHUD.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
                 }
             })
 

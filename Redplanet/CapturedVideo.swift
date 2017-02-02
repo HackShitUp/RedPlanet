@@ -287,7 +287,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
         super.viewDidLoad()
         // Execute code if url array is NOT empty
         if !capturedURLS.isEmpty {
-            // MARK: Player
+            // MARK: - Player
             self.player = Player()
             self.player.delegate = self
             self.player.view.frame = self.view.bounds

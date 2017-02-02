@@ -38,7 +38,6 @@
 		7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E41C7B91E4056C90025129B /* OtherUserHeader.xib */; };
 		7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7BB1E4057000025129B /* OtherUserHeader.swift */; };
 		7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077A1DD01F6800AA2413 /* VideoAsset.swift */; };
-		7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077C1DD01F8900AA2413 /* VideoCell.swift */; };
 		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
 		7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307811DD021A100AA2413 /* VideoViewController.swift */; };
 		7E43833C1DD9138000337007 /* HashTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833B1DD9138000337007 /* HashTags.swift */; };
@@ -47,7 +46,6 @@
 		7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8F1DB439060087454E /* PhotoAsset.swift */; };
 		7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */; };
 		7E4CFF941DB439170087454E /* SpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF931DB439170087454E /* SpacePost.swift */; };
-		7E4CFF991DB439540087454E /* PhotoAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF981DB439540087454E /* PhotoAssetCell.swift */; };
 		7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF9A1DB4395D0087454E /* ProfilePhotoCell.swift */; };
 		7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF9C1DB439680087454E /* SpacePostCell.swift */; };
 		7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */; };
@@ -246,7 +244,6 @@
 		7E41C7B91E4056C90025129B /* OtherUserHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherUserHeader.xib; sourceTree = "<group>"; };
 		7E41C7BB1E4057000025129B /* OtherUserHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserHeader.swift; sourceTree = "<group>"; };
 		7E43077A1DD01F6800AA2413 /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
-		7E43077C1DD01F8900AA2413 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = VideoCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		7E4307811DD021A100AA2413 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		7E43833B1DD9138000337007 /* HashTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTags.swift; sourceTree = "<group>"; };
@@ -257,7 +254,6 @@
 		7E4CFF8F1DB439060087454E /* PhotoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAsset.swift; sourceTree = "<group>"; };
 		7E4CFF911DB4390E0087454E /* ProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhoto.swift; sourceTree = "<group>"; };
 		7E4CFF931DB439170087454E /* SpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacePost.swift; sourceTree = "<group>"; };
-		7E4CFF981DB439540087454E /* PhotoAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PhotoAssetCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4CFF9A1DB4395D0087454E /* ProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotoCell.swift; sourceTree = "<group>"; };
 		7E4CFF9C1DB439680087454E /* SpacePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SpacePostCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
@@ -601,7 +597,6 @@
 			isa = PBXGroup;
 			children = (
 				7E43077A1DD01F6800AA2413 /* VideoAsset.swift */,
-				7E43077C1DD01F8900AA2413 /* VideoCell.swift */,
 			);
 			name = VideoAsset;
 			sourceTree = "<group>";
@@ -689,7 +684,6 @@
 			isa = PBXGroup;
 			children = (
 				7E4CFF8F1DB439060087454E /* PhotoAsset.swift */,
-				7E4CFF981DB439540087454E /* PhotoAssetCell.swift */,
 			);
 			name = PhotoAsset;
 			sourceTree = "<group>";
@@ -1761,7 +1755,6 @@
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */,
-				7E43077D1DD01F8900AA2413 /* VideoCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
@@ -1782,7 +1775,6 @@
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E35A3AE1E4151110007EB99 /* TimeVideoCell.swift in Sources */,
 				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
-				7E4CFF991DB439540087454E /* PhotoAssetCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7E2CA40E1E25A78A0071B052 /* SNSliderDataSource.swift in Sources */,

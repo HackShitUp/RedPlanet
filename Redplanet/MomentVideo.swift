@@ -18,12 +18,12 @@ import Bolts
 import SVProgressHUD
 import OneSignal
 import SimpleAlert
-
+import SwipeNavigationController
 
 // Define Notification
 let momentVideoNotification = Notification.Name("momentVideo")
 
-class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDelegate {
+class MomentVideo: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate, PlayerDelegate {
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -700,7 +700,19 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                 print(error?.localizedDescription as Any)
             }
         }
+    }// end fetchContent
+    
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        itmObject.removeLast()
     }
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -747,6 +759,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
 
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.delegate = self
     }
     
     
