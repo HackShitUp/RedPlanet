@@ -651,8 +651,7 @@ class TimeVideoCell: UITableViewCell {
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
         // Share options
-        
-        
+        // done in IBOutlet
     }
 
     
