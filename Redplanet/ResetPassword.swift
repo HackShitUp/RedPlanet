@@ -36,40 +36,53 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                     // Show textfield for email reset
                                     let email = alert.textFields![0]
                                     
-                                    // Request new password via email
-                                    PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: {
-                                        (success: Bool, error: Error?) in
-                                        if success {
-                                            let alert = UIAlertController(title: "Reset Password Requested",
-                                                                          message: "We've sent you an email to reset your password.",
-                                                                          preferredStyle: .alert)
+                                    if PFUser.current()!.email == email.text! {
+                                        // Request new password via email
+                                        PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                let alert = UIAlertController(title: "Reset Password Requested",
+                                                                              message: "We've sent you an email to reset your password.",
+                                                                              preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: {(alertAction: UIAlertAction!) in
+                                                                        // Pop back view controller
+                                                                        _ = self.navigationController?.popViewController(animated: true)
+                                                })
+                                                alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
+                                                self.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                let alert = UIAlertController(title: "Invalid Email",
+                                                                              message: "This email doesn't exist in our database.",
+                                                                              preferredStyle: .alert)
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: {(alertAction: UIAlertAction!) in
+                                                                        self.dismiss(animated: true, completion: nil)
+                                                })
+                                                alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
+                                                self.present(alert, animated: true, completion: nil)
+                                            }
                                             
-                                            let ok = UIAlertAction(title: "ok",
-                                                                   style: .default,
-                                                                   handler: {(alertAction: UIAlertAction!) in
-                                                                    // Pop back view controller
-                                                                    _ = self.navigationController?.popViewController(animated: true)
-                                            })
-                                            alert.addAction(ok)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-                                            
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                            let alert = UIAlertController(title: "Invalid Email",
-                                                                          message: "This email doesn't exist in our database.",
-                                                                          preferredStyle: .alert)
-                                            let ok = UIAlertAction(title: "ok",
-                                                                   style: .default,
-                                                                   handler: {(alertAction: UIAlertAction!) in
-                                                                    self.dismiss(animated: true, completion: nil)
-                                            })
-                                            alert.addAction(ok)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-                                        }
+                                        })
+                                    } else {
+                                        let alert = UIAlertController(title: "Incorrect Email",
+                                                                      message: "This isn't the right email associated with your account!",
+                                                                      preferredStyle: .alert)
                                         
-                                    })
+                                        let ok = UIAlertAction(title: "ok",
+                                                               style: .default,
+                                                               handler: nil)
+                                        alert.addAction(ok)
+                                        alert.view.tintColor = UIColor.black
+                                        self.present(alert, animated: true, completion: nil)
+                                    }
 
         })
         

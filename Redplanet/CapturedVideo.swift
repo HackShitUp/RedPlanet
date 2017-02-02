@@ -70,7 +70,7 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
         self.continueButton.isUserInteractionEnabled = false
         
         // Check if it's for Chats
-        if chatCamera == false && smallVideoData != nil {
+        if chatCamera == false {
             // Save to Newsfeeds
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["username"] = PFUser.current()!.username!
