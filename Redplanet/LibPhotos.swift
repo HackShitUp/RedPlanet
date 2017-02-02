@@ -49,8 +49,6 @@ class LibPhotos: UICollectionViewController, UINavigationControllerDelegate {
             self.photoAssets.append(photo)
         })
         
-        print("There are: \(self.photoAssets.count) photos")
-        
         // Reload data
         self.collectionView!.reloadData()
         

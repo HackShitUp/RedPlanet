@@ -106,16 +106,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             dateFormatter.dateFormat = "MMM d yyyy"
             let stringDate = dateFormatter.string(from: self.userBirthday.date)
             
-            
             // (B) Current User's Profile Photo
             let proPicData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
             let proPicFile = PFFile(data: proPicData!)
             
-            
-            
             // I) Save changes to Parse className: "_User"
             let me = PFUser.current()!
-            me.email = rpEmail.text!
+            me.email = rpEmail.text!.lowercased()
             me["realNameOfUser"] = self.rpName.text!
             me["userBiography"] = rpUserBio.text!
             me.username = self.rpUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
@@ -126,8 +123,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 if success {
                     print("Successfully saved objects: \(me)")
                     
-                    // Dismiss Progress
-                    SVProgressHUD.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showSuccess(withStatus: "Saved")
+                    // Enable back button
+                    self.backButton.isEnabled = true
 
                     
                     // II) New Profile Photo
@@ -148,8 +147,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                             if success {
                                 print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
 
-                                // Dismiss Progress
-                                SVProgressHUD.dismiss()
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showSuccess(withStatus: "Saved")
+                                // Enable back button
+                                self.backButton.isEnabled = true
                                 
                                 // Present alert
                                 let alert = AlertController(title: "Successfully Saved Changes",
@@ -200,6 +201,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
+                                // Re-enable backButton
+                                self.backButton.isEnabled = true
                             }
                         })
                     } // end profile photo to news feed push
@@ -228,22 +231,41 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 object!.saveInBackground(block: {
                                     (success: Bool, error: Error?) in
                                     if error == nil {
-                                        // Changed Caption
-                                        print("Changed Caption: \(object)")
                                         
                                         // Dismiss Progress
                                         SVProgressHUD.dismiss()
                                         
-                                        // Present alert
-                                        let alert = UIAlertController(title: "Successfully Saved Changes",
-                                                                      message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                                      preferredStyle: .alert)
+                                        // Enable back button
+                                        self.backButton.isEnabled = true
+
                                         
-                                        let ok = UIAlertAction(title: "ok",
-                                                               style: .default,
-                                                               handler: { (alertAction: UIAlertAction!) in
+                                        // Present alert
+                                        let alert = AlertController(title: "Successfully Saved Changes",
+                                                                    message: "New Profile Photos are automatically pushed to the news feeds.",
+                                                                    style: .alert)
+                                        
+                                        // Design content view
+                                        alert.configContentView = { view in
+                                            if let view = view as? AlertContentView {
+                                                view.backgroundColor = UIColor.white
+                                                view.titleLabel.textColor = UIColor.black
+                                                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                                                view.messageLabel.textColor = UIColor.black
+                                                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                                view.textBackgroundView.layer.cornerRadius = 3.00
+                                                view.textBackgroundView.clipsToBounds = true
+                                            }
+                                        }
+                                        // Design corner radius
+                                        alert.configContainerCornerRadius = {
+                                            return 14.00
+                                        }
+                                        
+                                        let ok = AlertAction(title: "ok",
+                                                             style: .default,
+                                                             handler: { (AlertAction) in
                                                                 
-                                                                //z Re-enable backButton
+                                                                // Re-enable backButton
                                                                 self.backButton.isEnabled = true
                                                                 
                                                                 // Send Notification to friendsNewsfeed
@@ -257,17 +279,24 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                         })
                                         
                                         
+                                        
                                         alert.addAction(ok)
                                         alert.view.tintColor = UIColor.black
                                         self.present(alert, animated: true, completion: nil)
                                         
+                                        
+                                        
                                     } else {
                                         print(error?.localizedDescription as Any)
+                                        // Re-enable backButton
+                                        self.backButton.isEnabled = true
                                     }
                                 })
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
+                                // Re-enable backButton
+                                self.backButton.isEnabled = true
                             }
                         })
                     } // end caption update
@@ -312,6 +341,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     
                     // Dismiss Progress
                     SVProgressHUD.dismiss()
+                    // Re-enable backButton
+                    self.backButton.isEnabled = true
                 }
             })
 

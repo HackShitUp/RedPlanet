@@ -36,7 +36,7 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                     // Show textfield for email reset
                                     let email = alert.textFields![0]
                                     
-                                    if PFUser.current()!.email == email.text! {
+                                    if PFUser.current()!.email?.lowercased() == email.text!.lowercased() {
                                         // Request new password via email
                                         PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: {
                                             (success: Bool, error: Error?) in
