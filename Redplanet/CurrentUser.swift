@@ -25,20 +25,20 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     // Variable to hold my content
     var posts = [PFObject]()
+    // Handle skipped objects for Pipeline
+    var skipped = [PFObject]()
+    // Hold likers
+    var likes = [PFObject]()
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
-    
-    // Fetch likes, count comments and shares
-    var likes = [PFObject]()
     
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // Set pipeline method
-    var page: Int = 50
-    // Handle skipped objects for Pipeline
-    var skipped = [PFObject]()
+    var page: Int = 25
+    
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -341,60 +341,40 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         vCell.delegate = self.navigationController
         
         // I) FETCH USER'S PFObject: userProfilePicture, username/realNameOfUser, user's PFObject
-        if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-            user.fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (A) userProfilePicture
-                    for p in proPics {
-                        // LayoutViews for rpUserProPic
-                        p?.layoutIfNeeded()
-                        p?.layoutSubviews()
-                        p?.setNeedsLayout()
-                        // Make Profile Photo Circular
-                        p?.layer.cornerRadius = (p?.frame.size.width)!/2
-                        p?.layer.borderColor = UIColor.lightGray.cgColor
-                        p?.layer.borderWidth = 0.5
-                        p?.clipsToBounds = true
-                        if let proPic = object!["userProfilePicture"] as? PFFile {
-                            proPic.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    p?.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    p?.image = UIImage(named: "Gender Neutral User-100")
-                                }
-                            })
-                            // MARK: - SDWebImage
-                            p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: p?.image)
-                        }
-                    }
-                    
-                    // (B) realNameOfUser for FRIENDS && username for FOLLOWING
-                    for u in usernames {
-                        u?.text! = user["realNameOfUser"] as! String
-                    }
-                    
-                    // (C) User's Object
-                    eCell.userObject = user
-                    tpCell.userObject = user
-                    mCell.userObject = user
-                    ppCell.userObject = user
-                    vCell.userObject = user
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+        // (A) userProfilePicture
+        for p in proPics {
+            // LayoutViews for rpUserProPic
+            p?.layoutIfNeeded()
+            p?.layoutSubviews()
+            p?.setNeedsLayout()
+            // Make Profile Photo Circular
+            p?.layer.cornerRadius = (p?.frame.size.width)!/2
+            p?.layer.borderColor = UIColor.lightGray.cgColor
+            p?.layer.borderWidth = 0.5
+            p?.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
         }
+        
+        // (B) realNameOfUser for FRIENDS && username for FOLLOWING
+        for u in usernames {
+            u?.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+        }
+        
+        // (C) User's Object
+        eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
         
         // II) CONFIGURE TIME FOR PHOTOS, PROFILE PHOTOS, VIDEOS, and TEXT POSTS
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
         
         // III) LAYOUT CONTENT
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
@@ -446,10 +426,8 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             tpCell.numberOfLikes.setTitle("likes", for: .normal)
-            tpCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             tpCell.numberOfComments.setTitle("comments", for: .normal)
             tpCell.numberOfShares.setTitle("shares", for: .normal)
-            
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -610,15 +588,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             
             // (2) Fetch photo
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        mCell.mediaAsset.contentMode = .scaleAspectFit
-                        mCell.mediaAsset.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // TODO::
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
@@ -668,7 +638,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             mCell.numberOfLikes.setTitle("likes", for: .normal)
-            mCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             mCell.numberOfComments.setTitle("comments", for: .normal)
             mCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -762,19 +731,10 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             ppCell.rpUserProPic.clipsToBounds = true
             
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        ppCell.rpUserProPic.contentMode = .scaleAspectFit
-                        ppCell.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // set image
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
-                ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
-                
+                ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: ppCell.rpUserProPic.image)
             }
             
             // (2) Handle caption (text post) if it exists
@@ -821,7 +781,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             ppCell.numberOfLikes.setTitle("likes", for: .normal)
-            ppCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             ppCell.numberOfComments.setTitle("comments", for: .normal)
             ppCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -976,7 +935,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // (5) Fetch likes, comments, and shares
             // SET DEFAULTS:
             vCell.numberOfLikes.setTitle("likes", for: .normal)
-            vCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             vCell.numberOfComments.setTitle("comments", for: .normal)
             vCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -1065,7 +1023,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         if page <= self.posts.count + self.skipped.count {
             
             // Increase page size to load more posts
-            page = page + 50
+            page = page + 25
             
             // Query content
             fetchMine()

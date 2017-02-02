@@ -29,10 +29,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Array to hold friends, posts, and skipped objects
     var friends = [PFObject]()
     var posts = [PFObject]()
-    var likesPerPost = [Int]()
-    var commentsPerPost = [Int]()
-    var sharesPerPost = [Int]()
     var skipped = [PFObject]()
+    // Hold likers
+    var likes = [PFObject]()
     
     // Pipeline method
     var page: Int = 50
@@ -46,7 +45,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
     
-    var likes = [PFObject]()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     
     // Function to refresh data
     func refresh() {
@@ -96,12 +96,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
         })
-        
     }
     
-    
-    
     func fetchPosts() {
+        
         // Get News Feed content
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", containedIn: self.friends)
@@ -139,7 +137,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                 }
-                
+
             } else {
                 if (error?.localizedDescription.hasSuffix("offline."))! {
                     // MARK: - SVProgressHUD
@@ -151,7 +149,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         })
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,14 +157,22 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
         
+        appDelegate.queryRelationships()
         // Fetch friends
         fetchFriends()
         
         // Configure table view
-        self.tableView?.estimatedRowHeight = 658
-        self.tableView?.rowHeight = UITableViewAutomaticDimension
-        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView?.tableFooterView = UIView()
+        self.tableView!.estimatedRowHeight = 65.00
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView!.tableFooterView = UIView()
+        
+        // Register Nibs
+        self.tableView?.register(UINib(nibName: "EphemeralCell", bundle: nil), forCellReuseIdentifier: "eCell")
+        self.tableView?.register(UINib(nibName: "TimeTextPostCell", bundle: nil), forCellReuseIdentifier: "tpCell")
+        self.tableView?.register(UINib(nibName: "TimeMediaCell", bundle: nil), forCellReuseIdentifier: "mCell")
+        self.tableView?.register(UINib(nibName: "ProPicCell", bundle: nil), forCellReuseIdentifier: "ppCell")
+        self.tableView?.register(UINib(nibName: "TimeVideoCell", bundle: nil), forCellReuseIdentifier: "vCell")
         
         // Set tabBarController delegate
         self.parentNavigator.tabBarController?.delegate = self
@@ -191,9 +196,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-    
-    
-    
+
     // MARK: DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.posts.count == 0 {
@@ -271,12 +274,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         return self.posts.count
     }
     
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
-            return 65
-        } else {
-            return UITableViewAutomaticDimension
-        }
+        return UITableViewAutomaticDimension
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -299,60 +302,40 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         vCell.delegate = self.parentNavigator
         
         // I) FETCH USER'S PFObject: userProfilePicture, username/realNameOfUser, user's PFObject
-        if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-            user.fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (A) userProfilePicture
-                    for p in proPics {
-                        // LayoutViews for rpUserProPic
-                        p?.layoutIfNeeded()
-                        p?.layoutSubviews()
-                        p?.setNeedsLayout()
-                        // Make Profile Photo Circular
-                        p?.layer.cornerRadius = (p?.frame.size.width)!/2
-                        p?.layer.borderColor = UIColor.lightGray.cgColor
-                        p?.layer.borderWidth = 0.5
-                        p?.clipsToBounds = true
-                        if let proPic = object!["userProfilePicture"] as? PFFile {
-                            proPic.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    p?.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    p?.image = UIImage(named: "Gender Neutral User-100")
-                                }
-                            })
-                            // MARK: - SDWebImage
-                            p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: p?.image)
-                        }
-                    }
-                    
-                    // (B) realNameOfUser for FRIENDS && username for FOLLOWING
-                    for u in usernames {
-                        u?.text! = user["realNameOfUser"] as! String
-                    }
-                    
-                    // (C) User's Object
-                    eCell.userObject = user
-                    tpCell.userObject = user
-                    mCell.userObject = user
-                    ppCell.userObject = user
-                    vCell.userObject = user
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+        // (A) userProfilePicture
+        for p in proPics {
+            // LayoutViews for rpUserProPic
+            p?.layoutIfNeeded()
+            p?.layoutSubviews()
+            p?.setNeedsLayout()
+            // Make Profile Photo Circular
+            p?.layer.cornerRadius = (p?.frame.size.width)!/2
+            p?.layer.borderColor = UIColor.lightGray.cgColor
+            p?.layer.borderWidth = 0.5
+            p?.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
         }
+        
+        // (B) realNameOfUser for FRIENDS && username for FOLLOWING
+        for u in usernames {
+            u?.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+        }
+        
+        // (C) User's Object
+        eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+        vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
         
         // II) CONFIGURE TIME FOR PHOTOS, PROFILE PHOTOS, VIDEOS, and TEXT POSTS
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
         
         // III) LAYOUT CONTENT
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
@@ -404,10 +387,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             tpCell.numberOfLikes.setTitle("likes", for: .normal)
-            tpCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             tpCell.numberOfComments.setTitle("comments", for: .normal)
             tpCell.numberOfShares.setTitle("shares", for: .normal)
-            
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -439,7 +420,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     print(error?.localizedDescription as Any)
                 }
             })
-            
+
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {
@@ -568,15 +549,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             // (2) Fetch photo
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        mCell.mediaAsset.contentMode = .scaleAspectFit
-                        mCell.mediaAsset.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // TODO::
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
@@ -626,7 +599,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             mCell.numberOfLikes.setTitle("likes", for: .normal)
-            mCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             mCell.numberOfComments.setTitle("comments", for: .normal)
             mCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -720,19 +692,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             ppCell.rpUserProPic.clipsToBounds = true
             
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        ppCell.rpUserProPic.contentMode = .scaleAspectFit
-                        ppCell.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // set image
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
-                ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
-                
+                ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: ppCell.rpUserProPic.image)
             }
             
             // (2) Handle caption (text post) if it exists
@@ -779,7 +742,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (4) Fetch likes, comments, and shares
             // SET DEFAULTS:
             ppCell.numberOfLikes.setTitle("likes", for: .normal)
-            ppCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             ppCell.numberOfComments.setTitle("comments", for: .normal)
             ppCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -881,7 +843,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                     vCell.videoPreview.contentMode = .scaleAspectFill
                     vCell.videoPreview.image = UIImage(cgImage: cgImage)
-                    
                     // MARK: - SDWebImage
                     vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
                     
@@ -934,7 +895,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (5) Fetch likes, comments, and shares
             // SET DEFAULTS:
             vCell.numberOfLikes.setTitle("likes", for: .normal)
-            vCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
             vCell.numberOfComments.setTitle("comments", for: .normal)
             vCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
@@ -968,7 +928,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     print(error?.localizedDescription as Any)
                 }
             })
-            
+
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {

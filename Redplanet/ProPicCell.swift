@@ -729,6 +729,7 @@ class ProPicCell: UITableViewCell {
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
+        
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page
@@ -756,6 +757,25 @@ class ProPicCell: UITableViewCell {
                     print(error?.localizedDescription as Any)
                 }
             })
+        }
+        
+        
+        // Handle #object tap
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.pushViewController(hashTags, animated: true)
+        }
+        
+        // Handle http: tap
+        textPost.urlLinkTapHandler = { label, handle, range in
+            
+            // Open url
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
         }
     }
 

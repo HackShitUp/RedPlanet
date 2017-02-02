@@ -652,6 +652,54 @@ class TimeVideoCell: UITableViewCell {
         
         // Share options
         // done in IBOutlet
+        
+        // Handle @username tap
+        textPost.userHandleLinkTapHandler = { label, handle, range in
+            // When mention is tapped, drop the "@" and send to user home page
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            
+            // Query data
+            let user = PFUser.query()!
+            user.whereKey("username", equalTo: mention.lowercased())
+            user.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        
+                        // Append user's username
+                        otherName.append(mention)
+                        // Append user object
+                        otherObject.append(object)
+                        
+                        // Push VC
+                        let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+                        self.delegate?.pushViewController(otherUser, animated: true)
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+        
+        
+        // Handle #object tap
+        textPost.hashtagLinkTapHandler = { label, handle, range in
+            // When # is tapped, drop the "#" and send to hashtags
+            var mention = handle
+            mention = String(mention.characters.dropFirst())
+            hashtags.append(mention.lowercased())
+            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+            self.delegate?.pushViewController(hashTags, animated: true)
+        }
+        
+        // Handle http: tap
+        textPost.urlLinkTapHandler = { label, handle, range in
+            
+            // Open url
+            let url = URL(string: handle)
+            UIApplication.shared.openURL(url!)
+        }
     }
 
     
