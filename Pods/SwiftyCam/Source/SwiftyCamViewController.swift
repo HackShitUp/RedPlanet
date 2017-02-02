@@ -853,7 +853,7 @@ open class SwiftyCamViewController: UIViewController {
         do{
 
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.mixWithOthers])
+                                                            with: .mixWithOthers)
 
             session.automaticallyConfiguresApplicationAudioSession = false
         }

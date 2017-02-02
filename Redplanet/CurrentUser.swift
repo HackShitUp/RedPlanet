@@ -322,71 +322,43 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Intialize UITableViewCells
-        let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
-        let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
-        let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
-        let ppCell = Bundle.main.loadNibNamed("ProPicCell", owner: self, options: nil)?.first as! ProPicCell
-        let vCell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
-        
-        // Initialize all level configurations: rpUserProPic && rpUsername
-        let proPics = [eCell.rpUserProPic, tpCell.rpUserProPic, mCell.rpUserProPic, ppCell.smallProPic, vCell.rpUserProPic]
-        let usernames = [eCell.rpUsername, tpCell.rpUsername, mCell.rpUsername, ppCell.rpUsername, vCell.rpUsername]
-        
-        // Set parent vc's UINavigationController: delegate
-        eCell.delegate = self.navigationController
-        tpCell.delegate = self.navigationController
-        ppCell.delegate = self.navigationController
-        mCell.delegate = self.navigationController
-        vCell.delegate = self.navigationController
-        
-        // I) FETCH USER'S PFObject: userProfilePicture, username/realNameOfUser, user's PFObject
-        // (A) userProfilePicture
-        for p in proPics {
-            // LayoutViews for rpUserProPic
-            p?.layoutIfNeeded()
-            p?.layoutSubviews()
-            p?.setNeedsLayout()
-            // Make Profile Photo Circular
-            p?.layer.cornerRadius = (p?.frame.size.width)!/2
-            p?.layer.borderColor = UIColor.lightGray.cgColor
-            p?.layer.borderWidth = 0.5
-            p?.clipsToBounds = true
-            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                p?.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-            }
-        }
-        
-        // (B) realNameOfUser for FRIENDS && username for FOLLOWING
-        for u in usernames {
-            u?.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
-        }
-        
-        // (C) User's Object
-        eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
-        tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
-        mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
-        ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
-        vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
-        
-        // II) CONFIGURE TIME FOR PHOTOS, PROFILE PHOTOS, VIDEOS, and TEXT POSTS
-        let from = self.posts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
-        // III) LAYOUT CONTENT
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
             // TEXT POST ******************************************************************************************************
             // ****************************************************************************************************************
+            let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
             
-            // (1) Set Text Post
+            // (1) SET USER DATA
+            // (1A) Set rpUserProPic
+            tpCell.rpUserProPic.layoutIfNeeded()
+            tpCell.rpUserProPic.layoutSubviews()
+            tpCell.rpUserProPic.setNeedsLayout()
+            // Make Profile Photo Circular
+            tpCell.rpUserProPic.layer.cornerRadius = tpCell.rpUserProPic.frame.size.width/2
+            tpCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            tpCell.rpUserProPic.layer.borderWidth = 0.5
+            tpCell.rpUserProPic.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            // (1C) User's Object
+            tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            // (2) SET POST OBJECT
+            tpCell.postObject = self.posts[indexPath.row]
+            // (3) SET CELL'S DELEGATE
+            tpCell.delegate = self.navigationController
+            
+            // (4) SET TEXT POST
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
-            // (2) Set time
-            // logic what to show : Seconds, minutes, hours, days, or weeks
+            // (5) SET TIME
+            let from = self.posts[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 tpCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -419,11 +391,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 tpCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
             }
             
-            
-            // (3) Set post object
-            tpCell.postObject = self.posts[indexPath.row]
-            
-            // (4) Fetch likes, comments, and shares
+            // (6) Fetch likes, comments, and shares
             // SET DEFAULTS:
             tpCell.numberOfLikes.setTitle("likes", for: .normal)
             tpCell.numberOfComments.setTitle("comments", for: .normal)
@@ -503,7 +471,39 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // ****************************************************************************************************************
             // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
             // ****************************************************************************************************************
+            let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
             
+            // (1) SET USER DATA
+            // (1A) Set rpUserProPic
+            eCell.rpUserProPic.layoutIfNeeded()
+            eCell.rpUserProPic.layoutSubviews()
+            eCell.rpUserProPic.setNeedsLayout()
+            // Make Profile Photo Circular
+            eCell.rpUserProPic.layer.cornerRadius = eCell.rpUserProPic.frame.size.width/2
+            eCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            eCell.rpUserProPic.layer.borderWidth = 0.5
+            eCell.rpUserProPic.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            // (1C) User's Object
+            eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            // (2) SET POST OBJECT
+            eCell.postObject = self.posts[indexPath.row]
+            // (3) SET CELL'S DELEGATE
+            eCell.delegate = self.navigationController
+            
+            // (4) SET TIME
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "E"
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
+            
+            // (5) Layout content
             // High level configurations
             // Configure IconicPreview by laying out views
             eCell.iconicPreview.layoutIfNeeded()
@@ -514,19 +514,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             eCell.iconicPreview.layer.borderWidth = 0.00
             eCell.iconicPreview.contentMode = .scaleAspectFill
             eCell.iconicPreview.clipsToBounds = true
-            
-            // (1) Set contentObject and user's object
-            eCell.postObject = self.posts[indexPath.row]
-            
-            // (2) Configure time
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
-            
-            // (3) Layout content
-            // (3A) MOMENT
+            // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
                 // Make iconicPreview circular with red border color
@@ -535,43 +523,34 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO
-                    still.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            eCell.iconicPreview.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
                     // MARK: - SDWebImage
                     let fileURL = URL(string: still.url!)
                     eCell.iconicPreview.sd_setImage(with: fileURL, placeholderImage: eCell.iconicPreview.image)
                     
                 } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                    // VIDEO
+                    // VIDEO MOMENT
                     let videoUrl = NSURL(string: videoFile.url!)
                     do {
                         let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
                         let imgGenerator = AVAssetImageGenerator(asset: asset)
                         imgGenerator.appliesPreferredTrackTransform = true
                         let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        eCell.iconicPreview.image = UIImage(cgImage: cgImage)
-                        
-                        // MARK: - SDWebImage
-                        eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                        
+                        DispatchQueue.main.async {
+                            eCell.iconicPreview.image = UIImage(cgImage: cgImage)
+                            // MARK: - SDWebImage
+                            eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                        }
                     } catch let error {
                         print("*** Error generating thumbnail: \(error.localizedDescription)")
                     }
                 }
                 
-                // (3B) SPACE POST
+                // (5B) SPACE POST
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "CSpacePost")
                 
-                // (3C) SHARED POSTS
+                // (5C) SHARED POSTS
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
@@ -583,26 +562,50 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // ****************************************************************************************************************
             // PHOTOS *********************************************************************************************************
             // ****************************************************************************************************************
-            // (1) Set post object
-            mCell.postObject = self.posts[indexPath.row]
+            let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
             
-            // (2) Fetch photo
+            // (1) SET USER DATA
+            // (1A) Set rpUserProPic
+            mCell.rpUserProPic.layoutIfNeeded()
+            mCell.rpUserProPic.layoutSubviews()
+            mCell.rpUserProPic.setNeedsLayout()
+            // Make Profile Photo Circular
+            mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
+            mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            mCell.rpUserProPic.layer.borderWidth = 0.5
+            mCell.rpUserProPic.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            // (1C) User's Object
+            mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            // (2) SET POST OBJECT
+            mCell.postObject = self.posts[indexPath.row]
+            // (3) SET CELL'S DELEGATE
+            mCell.delegate = self.navigationController
+            
+            // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // TODO::
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
             }
             
-            // (2) Handle caption (text post) if it exists
+            // (5) HANDLE CAPTION IF IT EXISTS
             if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
                 mCell.textPost.text! = caption
             } else {
                 mCell.textPost.isHidden = true
             }
             
-            // (3) Set time
-            // logic what to show : Seconds, minutes, hours, days, or weeks
+            // (6) SET TIME
+            let from = self.posts[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 mCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -635,11 +638,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 mCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
             }
             
-            // (4) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            mCell.numberOfLikes.setTitle("likes", for: .normal)
-            mCell.numberOfComments.setTitle("comments", for: .normal)
-            mCell.numberOfShares.setTitle("shares", for: .normal)
+            // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -715,11 +714,32 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // ****************************************************************************************************************
             // PROFILE PHOTO **************************************************************************************************
             // ****************************************************************************************************************
-            // (1) Set post object
-            ppCell.postObject = self.posts[indexPath.row]
+            let ppCell = Bundle.main.loadNibNamed("ProPicCell", owner: self, options: nil)?.first as! ProPicCell
             
-            // (2) Fetch Profile Photo
-            // LayoutViews
+            // (1) SET USER DATA
+            // (1A) Set rpUserProPic
+            ppCell.smallProPic.layoutIfNeeded()
+            ppCell.smallProPic.layoutSubviews()
+            ppCell.smallProPic.setNeedsLayout()
+            // Make Profile Photo Circular
+            ppCell.smallProPic.layer.cornerRadius = ppCell.smallProPic.frame.size.width/2
+            ppCell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
+            ppCell.smallProPic.layer.borderWidth = 0.5
+            ppCell.smallProPic.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            // (1C) User's Object
+            ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            // (2) SET POST OBJECT
+            ppCell.postObject = self.posts[indexPath.row]
+            // (3) SET CELL'S DELEGATE
+            ppCell.delegate = self.navigationController
+            
+            // (4) FETCH PROFILE PHOTO
             ppCell.rpUserProPic.layoutIfNeeded()
             ppCell.rpUserProPic.layoutSubviews()
             ppCell.rpUserProPic.setNeedsLayout()
@@ -729,23 +749,24 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
             ppCell.rpUserProPic.layer.borderWidth = 1.50
             ppCell.rpUserProPic.clipsToBounds = true
-            
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                // set image
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: ppCell.rpUserProPic.image)
             }
             
-            // (2) Handle caption (text post) if it exists
+            // (5) HANDLE CAPTION (TEXT POST) IF IT EXTS
             if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
                 ppCell.textPost.text! = caption
             } else {
                 ppCell.textPost.isHidden = true
             }
             
-            // (3) Set time
-            // logic what to show : Seconds, minutes, hours, days, or weeks
+            // (6) SET TIME
+            let from = self.posts[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 ppCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -778,11 +799,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 ppCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
             }
             
-            // (4) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            ppCell.numberOfLikes.setTitle("likes", for: .normal)
-            ppCell.numberOfComments.setTitle("comments", for: .normal)
-            ppCell.numberOfShares.setTitle("shares", for: .normal)
+            // (7) FETCH LIKES, COMMENTS, AND SHARES
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
@@ -856,10 +873,32 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             // ****************************************************************************************************************
             // VIDEOS *********************************************************************************************************
             // ****************************************************************************************************************
-            // (1) Set video's postObject: PFObject?
-            vCell.postObject = self.posts[indexPath.row]
+            let vCell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
             
-            // (2) Fetch Video Thumbnail
+            // (1) SET USER DATA
+            // (1A) Set rpUserProPic
+            vCell.rpUserProPic.layoutIfNeeded()
+            vCell.rpUserProPic.layoutSubviews()
+            vCell.rpUserProPic.setNeedsLayout()
+            // Make Profile Photo Circular
+            vCell.rpUserProPic.layer.cornerRadius = vCell.rpUserProPic.frame.size.width/2
+            vCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
+            vCell.rpUserProPic.layer.borderWidth = 0.5
+            vCell.rpUserProPic.clipsToBounds = true
+            if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            // (1C) User's Object
+            vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            // (2) SET POST OBJECT
+            vCell.postObject = self.posts[indexPath.row]
+            // (3) SET CELL'S DELEGATE
+            vCell.delegate = self.navigationController
+            
+            // (4) Fetch Video Thumbnail
             if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // VIDEO
                 
@@ -874,32 +913,35 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 vCell.videoPreview.layer.borderWidth = 3.50
                 vCell.videoPreview.clipsToBounds = true
                 
-                let videoUrl = NSURL(string: videoFile.url!)
                 do {
-                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                    let asset = AVURLAsset(url: URL(string: videoFile.url!)!, options: nil)
                     let imgGenerator = AVAssetImageGenerator(asset: asset)
                     imgGenerator.appliesPreferredTrackTransform = true
                     let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                     vCell.videoPreview.contentMode = .scaleAspectFill
-                    vCell.videoPreview.image = UIImage(cgImage: cgImage)
-                    
-                    // MARK: - SDWebImage
-                    vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                    DispatchQueue.main.async {
+                        vCell.videoPreview.image = UIImage(cgImage: cgImage)
+                        // MARK: - SDWebImage
+                        vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
+                    }
                     
                 } catch let error {
                     print("*** Error generating thumbnail: \(error.localizedDescription)")
                 }
             }
             
-            // (3) Handle caption (text post) if it exists
+            // (5) Handle caption (text post) if it exists
             if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
                 vCell.textPost.text! = caption
             } else {
                 vCell.textPost.isHidden = true
             }
             
-            // (4) Set time
-            // logic what to show : Seconds, minutes, hours, days, or weeks
+            // (6) Set time
+            let from = self.posts[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 vCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -932,11 +974,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 vCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
             }
             
-            // (5) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            vCell.numberOfLikes.setTitle("likes", for: .normal)
-            vCell.numberOfComments.setTitle("comments", for: .normal)
-            vCell.numberOfShares.setTitle("shares", for: .normal)
+            // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")
