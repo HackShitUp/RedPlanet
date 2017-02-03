@@ -689,6 +689,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            otherObject.append(self.posts[indexPath.row].value(forKey: "byUser") as! PFUser)
+            otherName.append((self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!)
             // (2) SET POST OBJECT
             ppCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE

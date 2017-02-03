@@ -434,7 +434,7 @@ class ProPicCell: UITableViewCell {
         
         
         // (2)
-        let edit = AlertAction(title: "🔩 Edit",
+        let edit = AlertAction(title: "🔩 Edit 🔩",
                                style: .default,
                                handler: { (AlertAction) in
                                 

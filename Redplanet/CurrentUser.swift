@@ -734,6 +734,8 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            otherObject.append(PFUser.current()!)
+            otherName.append(PFUser.current()!.username!)
             // (2) SET POST OBJECT
             ppCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE

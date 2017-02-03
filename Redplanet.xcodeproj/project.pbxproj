@@ -647,7 +647,7 @@
 			name = Videos;
 			sourceTree = "<group>";
 		};
-		7E4CFF951DB4393A0087454E /* SINGLEPOSTS */ = {
+		7E4CFF951DB4393A0087454E /* SINGLES */ = {
 			isa = PBXGroup;
 			children = (
 				7EE5609E1DD2D3B200DA2849 /* EditContent */,
@@ -659,7 +659,7 @@
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
 				7EA09E131DD406F500BD2D51 /* Moment */,
 			);
-			name = SINGLEPOSTS;
+			name = SINGLES;
 			sourceTree = "<group>";
 		};
 		7E4CFF9E1DB4396D0087454E /* SpacePost */ = {
@@ -1209,7 +1209,7 @@
 				7ED4A91F1DBEBE130016698F /* Interactions */,
 				7EC328D21DBF461A00344AFF /* Comments */,
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
-				7E4CFF951DB4393A0087454E /* SINGLEPOSTS */,
+				7E4CFF951DB4393A0087454E /* SINGLES */,
 				7E41C7A91E4035190025129B /* NIB: POSTS */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,

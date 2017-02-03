@@ -253,6 +253,11 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                     object!.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showSuccess(withStatus: "Saved")
+                            // Clear array and append object
+                            editObjects.removeAll(keepingCapacity: false)
+                            editObjects.append(object!)
                             
                             // Refresh data if successfull
                             if object!.value(forKey: "contentType") as! String == "tp" {
@@ -286,11 +291,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                 NotificationCenter.default.post(name: spaceNotification, object: nil)
                             }
                             
-                            // Clear array and append object
-                            editObjects.removeAll(keepingCapacity: false)
-                            editObjects.append(object!)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.showSuccess(withStatus: "Saved")
                         } else {
                             print(error?.localizedDescription as Any)
                             // MARK: - SVProgressHUD
