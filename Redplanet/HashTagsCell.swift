@@ -32,6 +32,7 @@ class HashTagsCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
     
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var photoAsset: PFImageView!

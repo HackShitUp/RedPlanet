@@ -276,11 +276,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-        // ****************************************************************************************************************
-        // TEXT POST ******************************************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // TEXT POST ******************************************************************************************************
+            // ****************************************************************************************************************
             let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
             
             // (1) SET USER DATA
@@ -292,7 +291,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             tpCell.rpUserProPic.layer.cornerRadius = tpCell.rpUserProPic.frame.size.width/2
             tpCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             tpCell.rpUserProPic.layer.borderWidth = 0.5
-            tpCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -305,7 +303,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             tpCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
             tpCell.delegate = self.parentNavigator
-
+            
             // (4) SET TEXT POST
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
@@ -382,7 +380,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     print(error?.localizedDescription as Any)
                 }
             })
-
+            
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {
@@ -420,14 +418,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             
             return tpCell   // return TimeTextPostCell.swift
-
+            
             
         } else if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
-        // ****************************************************************************************************************
-        // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // MOMENTS, SPACE POSTS, SHARED POSTS *****************************************************************************
+            // ****************************************************************************************************************
             let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
-
+            
             // (1) SET USER DATA
             // (1A) Set rpUserProPic
             eCell.rpUserProPic.layoutIfNeeded()
@@ -437,7 +435,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             eCell.rpUserProPic.layer.cornerRadius = eCell.rpUserProPic.frame.size.width/2
             eCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             eCell.rpUserProPic.layer.borderWidth = 0.5
-            eCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -468,7 +465,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             eCell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
             eCell.iconicPreview.layer.borderWidth = 0.00
             eCell.iconicPreview.contentMode = .scaleAspectFill
-            eCell.iconicPreview.clipsToBounds = true
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
@@ -500,23 +496,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     }
                 }
                 
-            // (5B) SPACE POST
+                // (5B) SPACE POST
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "CSpacePost")
                 
-            // (5C) SHARED POSTS
+                // (5C) SHARED POSTS
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
             }
             
             return eCell // return EphemeralCell.swift
-        
+            
         } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
-        // ****************************************************************************************************************
-        // PHOTOS *********************************************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // PHOTOS *********************************************************************************************************
+            // ****************************************************************************************************************
             let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
             
             // (1) SET USER DATA
@@ -528,7 +524,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
             mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             mCell.rpUserProPic.layer.borderWidth = 0.5
-            mCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -544,6 +539,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                mCell.mediaAsset.layer.cornerRadius = 12.00
+                mCell.mediaAsset.sd_setShowActivityIndicatorView(true)
+                mCell.mediaAsset.sd_setIndicatorStyle(.gray)
+                
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
@@ -660,15 +659,15 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     print(error?.localizedDescription as Any)
                 }
             })
-
+            
             
             return mCell // return TimeMediaCell.swift
-
+            
             
         } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "pp" {
-        // ****************************************************************************************************************
-        // PROFILE PHOTO **************************************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // PROFILE PHOTO **************************************************************************************************
+            // ****************************************************************************************************************
             let ppCell = Bundle.main.loadNibNamed("ProPicCell", owner: self, options: nil)?.first as! ProPicCell
             
             // (1) SET USER DATA
@@ -680,7 +679,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             ppCell.smallProPic.layer.cornerRadius = ppCell.smallProPic.frame.size.width/2
             ppCell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
             ppCell.smallProPic.layer.borderWidth = 0.5
-            ppCell.smallProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -705,8 +703,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             ppCell.rpUserProPic.layer.cornerRadius = ppCell.rpUserProPic.frame.size.width/2
             ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
             ppCell.rpUserProPic.layer.borderWidth = 1.50
-            ppCell.rpUserProPic.clipsToBounds = true
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                ppCell.rpUserProPic.sd_setShowActivityIndicatorView(true)
+                ppCell.rpUserProPic.sd_setIndicatorStyle(.gray)
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: ppCell.rpUserProPic.image)
@@ -827,9 +826,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             return ppCell // return ProPicCell.swift
             
         } else {
-        // ****************************************************************************************************************
-        // VIDEOS *********************************************************************************************************
-        // ****************************************************************************************************************
+            // ****************************************************************************************************************
+            // VIDEOS *********************************************************************************************************
+            // ****************************************************************************************************************
             let vCell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
             
             // (1) SET USER DATA
@@ -841,7 +840,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             vCell.rpUserProPic.layer.cornerRadius = vCell.rpUserProPic.frame.size.width/2
             vCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             vCell.rpUserProPic.layer.borderWidth = 0.5
-            vCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -868,7 +866,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 vCell.videoPreview.layer.cornerRadius = vCell.videoPreview.frame.size.width/2
                 vCell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                 vCell.videoPreview.layer.borderWidth = 3.50
-                vCell.videoPreview.clipsToBounds = true
+                // MARK: - SDWebImage
+                vCell.videoPreview.sd_setShowActivityIndicatorView(true)
+                vCell.videoPreview.sd_setIndicatorStyle(.gray)
                 
                 do {
                     let asset = AVURLAsset(url: URL(string: videoFile.url!)!, options: nil)
@@ -963,7 +963,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     print(error?.localizedDescription as Any)
                 }
             })
-
+            
             let comments = PFQuery(className: "Comments")
             comments.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             comments.countObjectsInBackground(block: {

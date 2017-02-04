@@ -184,7 +184,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             } else {
                 self.title = "New Video"
             }
-            self.mediaCaption.text! = "Say something about this \(mediaType!)"
+            self.mediaCaption.text! = "Say something about this \(mediaType!)..."
             
         }
         

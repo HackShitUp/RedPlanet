@@ -277,7 +277,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             tpCell.rpUserProPic.layer.cornerRadius = tpCell.rpUserProPic.frame.size.width/2
             tpCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             tpCell.rpUserProPic.layer.borderWidth = 0.5
-            tpCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -422,7 +421,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             eCell.rpUserProPic.layer.cornerRadius = eCell.rpUserProPic.frame.size.width/2
             eCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             eCell.rpUserProPic.layer.borderWidth = 0.5
-            eCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -453,7 +451,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             eCell.iconicPreview.layer.borderColor = UIColor.clear.cgColor
             eCell.iconicPreview.layer.borderWidth = 0.00
             eCell.iconicPreview.contentMode = .scaleAspectFill
-            eCell.iconicPreview.clipsToBounds = true
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
@@ -513,7 +510,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
             mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             mCell.rpUserProPic.layer.borderWidth = 0.5
-            mCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -529,6 +525,10 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                mCell.mediaAsset.layer.cornerRadius = 12.00
+                mCell.mediaAsset.sd_setShowActivityIndicatorView(true)
+                mCell.mediaAsset.sd_setIndicatorStyle(.gray)
+                
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 mCell.mediaAsset.sd_setImage(with: fileURL, placeholderImage: mCell.mediaAsset.image)
@@ -665,7 +665,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             ppCell.smallProPic.layer.cornerRadius = ppCell.smallProPic.frame.size.width/2
             ppCell.smallProPic.layer.borderColor = UIColor.lightGray.cgColor
             ppCell.smallProPic.layer.borderWidth = 0.5
-            ppCell.smallProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -674,6 +673,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
+            otherObject.append(self.posts[indexPath.row].value(forKey: "byUser") as! PFUser)
+            otherName.append((self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!)
             // (2) SET POST OBJECT
             ppCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
@@ -688,8 +689,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             ppCell.rpUserProPic.layer.cornerRadius = ppCell.rpUserProPic.frame.size.width/2
             ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
             ppCell.rpUserProPic.layer.borderWidth = 1.50
-            ppCell.rpUserProPic.clipsToBounds = true
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                ppCell.rpUserProPic.sd_setShowActivityIndicatorView(true)
+                ppCell.rpUserProPic.sd_setIndicatorStyle(.gray)
                 // MARK: - SDWebImage
                 let fileURL = URL(string: photo.url!)
                 ppCell.rpUserProPic.sd_setImage(with: fileURL, placeholderImage: ppCell.rpUserProPic.image)
@@ -824,7 +826,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             vCell.rpUserProPic.layer.cornerRadius = vCell.rpUserProPic.frame.size.width/2
             vCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
             vCell.rpUserProPic.layer.borderWidth = 0.5
-            vCell.rpUserProPic.clipsToBounds = true
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -851,7 +852,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.videoPreview.layer.cornerRadius = vCell.videoPreview.frame.size.width/2
                 vCell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                 vCell.videoPreview.layer.borderWidth = 3.50
-                vCell.videoPreview.clipsToBounds = true
+                // MARK: - SDWebImage
+                vCell.videoPreview.sd_setShowActivityIndicatorView(true)
+                vCell.videoPreview.sd_setIndicatorStyle(.gray)
                 
                 do {
                     let asset = AVURLAsset(url: URL(string: videoFile.url!)!, options: nil)

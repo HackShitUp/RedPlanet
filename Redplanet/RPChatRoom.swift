@@ -1026,29 +1026,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
                 cell.time.text = "now"
-            }
-            
-            if difference.second! > 0 && difference.minute! == 0 {
+            } else if difference.second! > 0 && difference.minute! == 0 {
                 cell.time.text = "\(difference.second!)s ago"
-            }
-            
-            if difference.minute! > 0 && difference.hour! == 0 {
+            } else if difference.minute! > 0 && difference.hour! == 0 {
                 cell.time.text = "\(difference.minute!)m ago"
-            }
-            
-            if difference.hour! > 0 && difference.day! == 0 {
+            } else if difference.hour! > 0 && difference.day! == 0 {
                 cell.time.text = "\(difference.hour!)h ago"
-            }
-            
-            if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 cell.time.text = "\(difference.day!)d ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
+            } else if difference.weekOfMonth! > 0 {
                 cell.time.text = "\(difference.weekOfMonth!)w ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
+            } else if difference.weekOfMonth! > 0 {
                 let createdDate = DateFormatter()
                 createdDate.dateFormat = "MMM dd"
                 cell.time.text = createdDate.string(from: self.messageObjects[indexPath.row].createdAt!)
@@ -1103,20 +1091,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             if error == nil {
                                 
                                 // Create rounded corners
-                                mCell.rpMediaAsset.layer.cornerRadius = 0.00
+                                mCell.rpMediaAsset.layer.cornerRadius = 12.00
                                 mCell.rpMediaAsset.contentMode = .scaleAspectFit
                                 mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
                                 mCell.rpMediaAsset.layer.borderWidth = 0.00
-                                mCell.rpMediaAsset.clipsToBounds = true
                                 
                                 // Set Media Asset
                                 mCell.rpMediaAsset.image = UIImage(data: data!)
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
-                                
-                                // TODO::
-                                // Set Default
                             }
                         })
                     } else {
@@ -1126,9 +1110,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             // Make circular
                             mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
                             mCell.rpMediaAsset.contentMode = .scaleAspectFill
-                            mCell.rpMediaAsset.layer.borderColor = UIColor.white.cgColor
-                            mCell.rpMediaAsset.layer.borderWidth = 12.00
-                            mCell.rpMediaAsset.clipsToBounds = true
+                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                            mCell.rpMediaAsset.layer.borderWidth = 1.75
                             
                             let videoUrl = NSURL(string: video.url!)
                             do {
@@ -1219,29 +1202,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
                 mCell.time.text = "now"
-            }
-            
-            if difference.second! > 0 && difference.minute! == 0 {
+            } else if difference.second! > 0 && difference.minute! == 0 {
                 mCell.time.text = "\(difference.second!)s ago"
-            }
-            
-            if difference.minute! > 0 && difference.hour! == 0 {
+            } else if difference.minute! > 0 && difference.hour! == 0 {
                 mCell.time.text = "\(difference.minute!)m ago"
-            }
-            
-            if difference.hour! > 0 && difference.day! == 0 {
+            } else if difference.hour! > 0 && difference.day! == 0 {
                 mCell.time.text = "\(difference.hour!)h ago"
-            }
-            
-            if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 mCell.time.text = "\(difference.day!)d ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
+            } else if difference.weekOfMonth! > 0 {
                 mCell.time.text = "\(difference.weekOfMonth!)w ago"
-            }
-            
-            if difference.weekOfMonth! > 0 {
+            } else if difference.weekOfMonth! > 0 {
                 let createdDate = DateFormatter()
                 createdDate.dateFormat = "MMM dd"
                 mCell.time.text = createdDate.string(from: self.messageObjects[indexPath.row].createdAt!)
