@@ -141,6 +141,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.containerSwipeNavigationController?.shouldShowRightViewController = true
+        self.containerSwipeNavigationController?.shouldShowLeftViewController = true
+        self.containerSwipeNavigationController?.shouldShowBottomViewController = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {

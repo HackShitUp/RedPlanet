@@ -27,10 +27,11 @@ class RPChatMediaCell: UITableViewCell {
     @IBOutlet weak var rpMediaAsset: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-
+    @IBOutlet weak var container: UIView!
+    
     
     // Function to zoom
-    func zoom(sender: AnyObject) {
+    func zoom() {
         
         // Mark: - Agrume
         let agrume = Agrume(image: self.rpMediaAsset.image!)
@@ -50,15 +51,24 @@ class RPChatMediaCell: UITableViewCell {
             self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }
+    
+    // Function to handle UIViewTap
+    func coldCall() {
+        if self.mediaObject?.value(forKey: "photoAsset") != nil {
+            // PHOTO
+            self.zoom()
+        } else if self.mediaObject?.value(forKey: "videoAsset") != nil {
+            // VIDEO
+            self.playVideo()
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
         // Set tap methods depending on type of media
         if self.mediaObject?.value(forKey: "photoAsset") != nil {
-            print("Photo Cell")
-            // PHOTO
-            
+        // PHOTO
             // Add tap gesture to zoom in
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
             zoomTap.numberOfTapsRequired = 1
@@ -66,15 +76,20 @@ class RPChatMediaCell: UITableViewCell {
             self.rpMediaAsset.addGestureRecognizer(zoomTap)
             
         } else if self.mediaObject?.value(forKey: "videoAsset") != nil {
-            
-            print("Video Cell")
-            
-            // VIDEO
+        // VIDEO
             // Add tap gesture to play video
             let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
             playTap.numberOfTapsRequired = 1
             self.rpMediaAsset.isUserInteractionEnabled = true
             self.rpMediaAsset.addGestureRecognizer(playTap) 
+        }
+        
+        // Add method to tap view
+        if self.mediaObject != nil {
+            let viewTap = UITapGestureRecognizer(target: self, action: #selector(coldCall))
+            viewTap.numberOfTapsRequired = 1
+            self.container.isUserInteractionEnabled = true
+            self.container.addGestureRecognizer(viewTap)
         }
         
         

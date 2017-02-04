@@ -22,7 +22,7 @@ import SwipeNavigationController
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationControllerDelegate {
+class CapturedVideo: UIViewController, PlayerDelegate {
     
     // MARK: - Player
     var player: Player!
@@ -271,17 +271,6 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
             }
         }
     }
-    
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        capturedURLS.removeAll(keepingCapacity: false)
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -300,7 +289,9 @@ class CapturedVideo: UIViewController, PlayerDelegate, SwipeNavigationController
             self.player.playbackLoops = true
             
             // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.delegate = self
+            self.containerSwipeNavigationController?.shouldShowRightViewController = false
+            self.containerSwipeNavigationController?.shouldShowLeftViewController = false
+            self.containerSwipeNavigationController?.shouldShowBottomViewController = false
             
             // Add tap methods for..
             // Pause and Play

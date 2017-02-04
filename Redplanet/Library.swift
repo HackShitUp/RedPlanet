@@ -20,7 +20,7 @@ import Bolts
 
 import SwipeNavigationController
 
-class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIScrollViewDelegate, CAPSPageMenuDelegate {
     
     
     // Initilialize pageMenu
@@ -28,12 +28,11 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
     
     // Initialize image picker
     var imagePicker: UIImagePickerController!
-
     
     @IBAction func backButton(_ sender: Any) {
+        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
-    
     
     @IBAction func chooseVia(_ sender: Any) {
         // Instnatiate UIImagePickerController
@@ -124,6 +123,11 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,6 +184,5 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 
 }

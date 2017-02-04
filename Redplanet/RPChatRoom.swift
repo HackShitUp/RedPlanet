@@ -313,7 +313,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         
         if pickerMedia == kUTTypeImage {
-            print("Photo selected")
+            // Disable editing if it's a photo
+            self.imagePicker.allowsEditing = false
             // Selected image
             let image = info[UIImagePickerControllerOriginalImage] as! UIImage
             
@@ -330,7 +331,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         
         if pickerMedia == kUTTypeMovie {
-            
+            // Enable editing if it's a video
+            self.imagePicker.allowsEditing = true
             // Show Progress
             SVProgressHUD.show()
             SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -399,9 +401,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         
     }
-    
-    
-    
     
     
     
@@ -607,7 +606,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         imagePicker.mediaTypes = [(kUTTypeMovie as String), (kUTTypeImage as String)]
         imagePicker.videoMaximumDuration = 180 // Perhaps reduce 180 to 120
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
-        imagePicker.allowsEditing = true
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
         
@@ -1100,7 +1098,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         
                         // Create rounded corners
                         mCell.rpMediaAsset.layer.cornerRadius = 12.00
-                        mCell.rpMediaAsset.contentMode = .scaleAspectFit
                         mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
                         mCell.rpMediaAsset.layer.borderWidth = 0.00
                         
@@ -1116,7 +1113,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             
                             // Make circular
                             mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                            mCell.rpMediaAsset.contentMode = .scaleAspectFill
                             mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                             mCell.rpMediaAsset.layer.borderWidth = 1.75
                             

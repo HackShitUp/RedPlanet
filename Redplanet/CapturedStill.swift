@@ -20,17 +20,15 @@ import SDWebImage
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate, SwipeNavigationControllerDelegate {
-    //    JotViewControllerDelegate
+class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
     
     // MARK: SnapSliderFilters
     fileprivate let slider = SNSlider(frame: CGRect(origin: CGPoint.zero, size: SNUtils.screenSize))
     fileprivate let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
     fileprivate let tapGesture = UITapGestureRecognizer()
     fileprivate var data:[SNFilter] = []
+
     
-    // MARK: - jot
-//    var jotViewController: JotViewController!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var stillPhoto: PFImageView!
@@ -97,61 +95,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.handleTap()
     }
     
-    /*
-    // MARK: - jot
-    func switchToDrawMode() {
-        self.jotViewController.state = .drawing
-    }
-    
-    func switchToTextMode() {
-        self.jotViewController.state = .text
-    }
-    
-    func switchToTextEditMode() {
-        self.jotViewController.state = .editingText
-    }
-    
-    // Custom function to initize JOT
-    func initializeJot() {
-        /*
-        self.jotViewController = JotViewController()
-        self.jotViewController.delegate = self
-        self.addChildViewController(self.jotViewController)
-        self.stillPhoto.addSubview(self.jotViewController.view)
-        self.jotViewController.didMove(toParentViewController: self)
-        self.jotViewController.view.frame = self.view.frame
-        // Bring to front
-        self.stillPhoto.bringSubview(toFront: self.jotViewController.view)
-        self.slider.isUserInteractionEnabled = false
-        */
-    }
-    
-    // Function to undo
-    func undoJot() {
-        if self.jotViewController.state == .drawing {
-            self.jotViewController.clearDrawing()
-        }
-    }
-    
-    func completeJot() {
-        print("\(self.stillPhoto.subviews.count)") // 3
-        print("\(self.slider.subviews.count)") // 12 (1)
-        print("\(self.jotViewController.view.subviews.count)") // (2)
-        // Set image
-//        self.stillPhoto.image = SNUtils.screenShot(self.jotViewController.view)!
-//        self.stillPhoto.image = SNUtils.screenShot(self.view)!
-        self.stillPhoto.image = SNUtils.screenShot(self.stillPhoto)
-        stillImages.append(self.stillPhoto.image!)
-        // Bring subview to front
-//        self.stillPhoto.bringSubview(toFront: self.slider)
-//        self.jotViewController.removeFromParentViewController()
-//        self.jotViewController.view.removeFromSuperview()
-        self.jotViewController.view.isUserInteractionEnabled = false
-        self.jotViewController.state = .default
-//        self.stillPhoto.bringSubview(toFront: self.slider)
-        self.slider.isUserInteractionEnabled = true
-    }
-    */
     
     // MARK: - CLImageEditorDelegate
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
@@ -287,16 +230,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         
     }
 
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        stillImages.removeAll(keepingCapacity: false)
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.setStatusBarHidden(true, with: .none)
@@ -317,13 +250,24 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         self.stillPhoto.isUserInteractionEnabled = true
         
         // MARK:- SwipeNavigationController
-        // Set delegate
-        self.containerSwipeNavigationController?.delegate = self
+        self.containerSwipeNavigationController?.shouldShowRightViewController = false
+        self.containerSwipeNavigationController?.shouldShowLeftViewController = false
+        self.containerSwipeNavigationController?.shouldShowBottomViewController = false
         
         // Hide buttons
         self.editButton.isHidden = true
         self.undoButton.isHidden = true
         self.completeButton.isHidden = true
+        
+//        let completeTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
+//        completeTap.numberOfTapsRequired = 1
+//        self.completeButton.isUserInteractionEnabled = true
+//        self.completeButton.addGestureRecognizer(completeTap)
+        
+//        let undoTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
+//        undoTap.numberOfTapsRequired = 1
+//        self.undoButton.isUserInteractionEnabled = true
+//        self.undoButton.addGestureRecognizer(undoTap)
         
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
@@ -379,9 +323,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     fileprivate func setupTextField() {
         self.slider.addSubview(textField)
         self.tapGesture.delegate = self
-//        self.slider.addGestureRecognizer(tapGesture)
-        self.stillPhoto.addGestureRecognizer(tapGesture)
-        
+        self.slider.addGestureRecognizer(tapGesture)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardTypeChanged(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
