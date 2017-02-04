@@ -15,6 +15,7 @@ import Bolts
 
 import SwipeNavigationController
 import OneSignal
+import SDWebImage
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
@@ -35,6 +36,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     @IBOutlet weak var stillPhoto: PFImageView!
     @IBOutlet weak var leaveButton: UIButton!
     @IBAction func dismissVC(_ sender: Any) {
+        print("FIRED")
         // Remove last
         if !stillImages.isEmpty {
             stillImages.removeLast()
@@ -354,8 +356,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         print(super.didReceiveMemoryWarning())
-        print("MEMORY ISSUE")
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     //MARK: Setup
@@ -374,7 +379,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
     fileprivate func setupTextField() {
         self.slider.addSubview(textField)
         self.tapGesture.delegate = self
-        self.slider.addGestureRecognizer(tapGesture)
+//        self.slider.addGestureRecognizer(tapGesture)
+        self.stillPhoto.addGestureRecognizer(tapGesture)
         
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -433,7 +439,6 @@ extension CapturedStill: SNSliderDataSource {
 
 //MARK: - Extension Gesture Recognizer Delegate and touch Handler for TextField
 extension CapturedStill: UIGestureRecognizerDelegate {
-    
     func handleTap() {
         self.textField.handleTap()
     }

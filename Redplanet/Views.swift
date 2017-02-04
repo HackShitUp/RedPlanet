@@ -188,6 +188,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         // Set tablefooter view
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)

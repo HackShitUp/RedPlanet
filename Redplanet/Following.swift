@@ -526,6 +526,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 mCell.mediaAsset.layer.cornerRadius = 12.00
+                // MARK: - SDWebImage
                 mCell.mediaAsset.sd_setShowActivityIndicatorView(true)
                 mCell.mediaAsset.sd_setIndicatorStyle(.gray)
                 
@@ -690,6 +691,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
             ppCell.rpUserProPic.layer.borderWidth = 1.50
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                // MARK: - SDWebImage
                 ppCell.rpUserProPic.sd_setShowActivityIndicatorView(true)
                 ppCell.rpUserProPic.sd_setIndicatorStyle(.gray)
                 // MARK: - SDWebImage

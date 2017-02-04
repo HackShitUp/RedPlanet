@@ -245,6 +245,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Show Progress
         SVProgressHUD.show()

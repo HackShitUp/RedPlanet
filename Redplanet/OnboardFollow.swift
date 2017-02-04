@@ -134,14 +134,13 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         // Show navigation controller
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         
-        
         // Set estimated row height
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 115
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Fetch users
         fetchUsers()

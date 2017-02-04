@@ -341,7 +341,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Set placeholder depending on mediaType
-        self.mediaCaption.text! = "Say something about this \(mediaType!)"
+        self.mediaCaption.text! = "Say something about this \(mediaType!)..."
         // Add tap methods depnding on mediaType
         if mediaType == "photo" {
             // Enable edit button

@@ -140,6 +140,7 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // Set footer
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

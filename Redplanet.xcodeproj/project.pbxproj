@@ -1096,14 +1096,14 @@
 			name = Camera;
 			sourceTree = "<group>";
 		};
-		7EA730D61E3B293500CF4D12 /* REDPLANET */ = {
+		7EA730D61E3B293500CF4D12 /* CREATE_REDPLANET */ = {
 			isa = PBXGroup;
 			children = (
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* Camera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
 			);
-			name = REDPLANET;
+			name = CREATE_REDPLANET;
 			sourceTree = "<group>";
 		};
 		7EA87D3B1DD6B39400B3471F /* SharedPost */ = {
@@ -1205,16 +1205,15 @@
 				7EC5D19A1DB3541900437219 /* LoginOrSignUp */,
 				7E43833F1DD9139300337007 /* Hashtags */,
 				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
-				7ED4A9131DBEB4F60016698F /* RelationPerPerson */,
-				7ED4A91F1DBEBE130016698F /* Interactions */,
-				7EC328D21DBF461A00344AFF /* Comments */,
+				7ED4A9131DBEB4F60016698F /* RelationsPerPerson */,
+				7ED4A91F1DBEBE130016698F /* INTERACTIONS */,
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7E4CFF951DB4393A0087454E /* SINGLES */,
 				7E41C7A91E4035190025129B /* NIB: POSTS */,
 				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
-				7EA730D61E3B293500CF4D12 /* REDPLANET */,
+				7EA730D61E3B293500CF4D12 /* CREATE_REDPLANET */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1991DB3541000437219 /* CHATS */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
@@ -1338,25 +1337,26 @@
 			name = RPIconsGuideline;
 			sourceTree = "<group>";
 		};
-		7ED4A9131DBEB4F60016698F /* RelationPerPerson */ = {
+		7ED4A9131DBEB4F60016698F /* RelationsPerPerson */ = {
 			isa = PBXGroup;
 			children = (
 				7ED4A90D1DBEB4DE0016698F /* RFriends.swift */,
 				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
 				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
 			);
-			name = RelationPerPerson;
+			name = RelationsPerPerson;
 			sourceTree = "<group>";
 		};
-		7ED4A91F1DBEBE130016698F /* Interactions */ = {
+		7ED4A91F1DBEBE130016698F /* INTERACTIONS */ = {
 			isa = PBXGroup;
 			children = (
+				7EC328D21DBF461A00344AFF /* Comments */,
 				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 				7ED4A9161DBEBDDD0016698F /* Likers.swift */,
 				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
 				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
 			);
-			name = Interactions;
+			name = INTERACTIONS;
 			sourceTree = "<group>";
 		};
 		7EDFB63A1DDBDC71004AE090 /* FAQ */ = {

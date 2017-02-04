@@ -49,6 +49,9 @@ BLUE:
 • UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
 • #00A1FF
  
+LIGHT GREY
+• UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+ 
 
  
  F R A M E W O R K S    T O     L O O K     A T

@@ -22,6 +22,7 @@ import Bolts
 import OneSignal
 import SVProgressHUD
 import SimpleAlert
+import SDWebImage
 
 
 // Global variable to hold user's object and username for chats
@@ -805,9 +806,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                          style: .destructive,
                                          handler: { (AlertAction) in
                                             
-                                            // Show Progress
-                                            SVProgressHUD.show()
+                                            // MARK: - SVProgressHUD
                                             SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                            SVProgressHUD.show()
                                             
                                             // delete chat
                                             let chats = PFQuery(className: "Chats")
@@ -823,12 +825,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                             if error == nil {
                                                                 print("Successfully deleted message: \(object)")
                                                                 
-                                                                // Dismiss progress
-                                                                SVProgressHUD.dismiss()
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                                
+                                                                // Delete chat from tableview
+                                                                self.messageObjects.remove(at: indexPath.row)
+                                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
                                                                 
                                                                 // Query chats
                                                                 self.queryChats()
-                                                                
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
@@ -837,8 +842,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                     }
                                                 } else {
                                                     print(error?.localizedDescription as Any)
-                                                    // Dismiss progress
-                                                    SVProgressHUD.dismiss()
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
                                                 }
                                             })
                 })
@@ -1086,26 +1091,28 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 if error == nil {
                     // Fetch media asset and handle optional chaining
                     if let media = object!["photoAsset"] as? PFFile {
-                        media.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                
-                                // Create rounded corners
-                                mCell.rpMediaAsset.layer.cornerRadius = 12.00
-                                mCell.rpMediaAsset.contentMode = .scaleAspectFit
-                                mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
-                                mCell.rpMediaAsset.layer.borderWidth = 0.00
-                                
-                                // Set Media Asset
-                                mCell.rpMediaAsset.image = UIImage(data: data!)
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
+                        mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
+                        
+                        // Traverse file to URL
+                        let fileURL = URL(string: media.url!)
+                        
+                        // Create rounded corners
+                        mCell.rpMediaAsset.layer.cornerRadius = 12.00
+                        mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                        mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
+                        mCell.rpMediaAsset.layer.borderWidth = 0.00
+                        
+                        // MARK: - SDWebImage
+                        mCell.rpMediaAsset.sd_setImage(with: fileURL!, placeholderImage: mCell.rpMediaAsset.image)
+                        
                     } else {
                         // Get media preview
                         if let video = object!["videoAsset"] as? PFFile {
+                            // MARK: - SDWebImage
+                            mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
+                            mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
                             
                             // Make circular
                             mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
@@ -1113,16 +1120,20 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
                             mCell.rpMediaAsset.layer.borderWidth = 1.75
                             
-                            let videoUrl = NSURL(string: video.url!)
+                            let videoURL = URL(string: video.url!)
                             do {
-                                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
+                                let asset = AVURLAsset(url: videoURL!, options: nil)
                                 let imgGenerator = AVAssetImageGenerator(asset: asset)
                                 imgGenerator.appliesPreferredTrackTransform = true
                                 let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                                 mCell.rpMediaAsset.image = UIImage(cgImage: cgImage)
-                                
+                                // MARK: - SDWebImage
+                                mCell.rpMediaAsset.sd_setImage(with: videoURL!, placeholderImage: mCell.rpMediaAsset.image)
                             } catch let error {
                                 print("*** Error generating thumbnail: \(error.localizedDescription)")
+                                // MARK: - SDWebImage
+                                mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
+                                mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
                             }
 
                         }

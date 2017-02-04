@@ -415,6 +415,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Make tableview free-lined
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Pull to refresh action
         refresher = UIRefreshControl()
