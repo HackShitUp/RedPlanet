@@ -45,6 +45,36 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func doneButton(_ sender: Any) {
+        // Send user chat from TeamRP
+        PFUser.query()!.getObjectInBackground(withId: "NgIJplW03t") {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                let chats = PFObject(className: "Chats")
+                chats["sender"] = object!
+                chats["senderUsername"] = "teamrp"
+                chats["receiver"] = PFUser.current()!
+                chats["receiverUsername"] = PFUser.current()!.username!
+                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet."
+                chats.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        // Show main interface once succeeded
+                        self.showMain()
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show main interface if failed
+                self.showMain()
+            }
+        }
+    }
+    
+    
+    // Function to show main interface
+    func showMain() {
         // :)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let cameraVC = storyboard.instantiateViewController(withIdentifier: "mid") as! UINavigationController
@@ -55,6 +85,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         UIApplication.shared.keyWindow?.rootViewController = swipeNavigationController
         UIApplication.shared.keyWindow?.makeKeyAndVisible()
     }
+    
     
     // Function to fetch these users
     func fetchUsers() {

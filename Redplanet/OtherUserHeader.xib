@@ -68,7 +68,7 @@
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="friendUser:" destination="iN0-l3-epB" eventType="touchUpInside" id="D9A-DW-6Sa"/>
+                        <action selector="friendAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="vQg-iB-Kw0"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VT-qx-8fx">
@@ -82,7 +82,7 @@
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="followUser:" destination="iN0-l3-epB" eventType="touchUpInside" id="UPU-gK-QSK"/>
+                        <action selector="followAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="wQB-2O-uKk"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">

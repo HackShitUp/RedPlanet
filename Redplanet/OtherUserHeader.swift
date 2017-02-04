@@ -71,9 +71,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     // Function to show profile photo
     func showProPic() {
         
-        
-        if otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
-            
+        if otherObject.last!.value(forKey: "proPicExists") as! Bool == true {    
             // Get user's profile photo
             let proPic = PFQuery(className: "Newsfeeds")
             proPic.whereKey("byUser", equalTo: otherObject.last!)
@@ -116,15 +114,13 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     
     
     // FRIEND ACTION
-    @IBAction func friendUser(_ sender: Any) {
-        
+    @IBAction func friendAction(_ sender: Any) {
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
         self.followButton.isUserInteractionEnabled = false
         self.followButton.isEnabled = false
-        
-        
+        // Save friend
         let friend = PFObject(className: "FriendMe")
         friend["frontFriendName"] = PFUser.current()!.username!
         friend["frontFriend"] = PFUser.current()!
@@ -154,12 +150,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                     if success {
                         print("Successfully sent notification: \(notifications)")
                         
-                        // Re enable buttons
+                        // Enable buttons
                         self.friendButton.isUserInteractionEnabled = true
                         self.friendButton.isEnabled = true
                         self.followButton.isUserInteractionEnabled = true
                         self.followButton.isEnabled = true
-                        
                         
                         // Handle optional chaining for user's apnsId
                         if otherObject.last!.value(forKey: "apnsId") != nil {
@@ -178,27 +173,30 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Enable buttons
+                        self.friendButton.isUserInteractionEnabled = true
+                        self.friendButton.isEnabled = true
+                        self.followButton.isUserInteractionEnabled = true
+                        self.followButton.isEnabled = true
                     }
                 })
-                
             } else {
                 print(error?.localizedDescription as Any)
+                // Enable buttons
+                self.friendButton.isUserInteractionEnabled = true
+                self.friendButton.isEnabled = true
+                self.followButton.isUserInteractionEnabled = true
+                self.followButton.isEnabled = true
             }
         })
-        
-        
-        
-        
         // Reload relationships
         appDelegate.queryRelationships()
-        
-    } // end: Friend Action
+    }
     
     
     
     // FOLLOW ACTION
-    @IBAction func followUser(_ sender: Any) {
-        
+    @IBAction func followAction(_ sender: Any) {
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -243,7 +241,6 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             self.followButton.isUserInteractionEnabled = true
                             self.followButton.isEnabled = true
                             
-                            
                             // Handle optional chaining for user's apnsId
                             if otherObject.last!.value(forKey: "apnsId") != nil {
                                 // MARK: - OneSignal
@@ -260,16 +257,25 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             
                         } else {
                             print(error?.localizedDescription as Any)
+                            // Enable buttons
+                            self.friendButton.isUserInteractionEnabled = true
+                            self.friendButton.isEnabled = true
+                            self.followButton.isUserInteractionEnabled = true
+                            self.followButton.isEnabled = true
                         }
                     })
                     
                 } else {
                     print(error?.localizedDescription as Any)
+                    // Enable buttons
+                    self.friendButton.isUserInteractionEnabled = true
+                    self.friendButton.isEnabled = true
+                    self.followButton.isUserInteractionEnabled = true
+                    self.followButton.isEnabled = true
                 }
             })
             
         } else {
-            
             // Public account
             let follow = PFObject(className: "FollowMe")
             follow["followerUsername"] = PFUser.current()!.username!
@@ -281,7 +287,6 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved follow: \(follow)")
-                    
                     
                     // Show relationship button
                     self.relationType.isHidden = false
@@ -300,13 +305,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                         if success {
                             print("Successfully sent notification: \(notifications)")
                             
-                            
                             // Re enable buttons
                             self.friendButton.isUserInteractionEnabled = true
                             self.friendButton.isEnabled = true
                             self.followButton.isUserInteractionEnabled = true
                             self.followButton.isEnabled = true
-                            
                             
                             // Handle optional chaining for user's apnsId
                             if otherObject.last!.value(forKey: "apnsId") != nil {
@@ -321,13 +324,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     ]
                                 )
                             }
-                            
-                            
                         } else {
                             print(error?.localizedDescription as Any)
                         }
                     })
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }
@@ -335,14 +335,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             
         }
         
-        
         // Reload relationships
         appDelegate.queryRelationships()
-        
-    } // end Follow Action
-    
-    
-    
+    }// end followAction
+
     
     // RELATION ACTION
     // (1) Friends
