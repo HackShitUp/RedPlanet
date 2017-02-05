@@ -282,7 +282,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
             // (1C) User's Object
             tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -426,7 +426,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
             // (1C) User's Object
             eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -515,7 +515,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
             // (1C) User's Object
             mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -671,7 +671,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             otherObject.append(self.posts[indexPath.row].value(forKey: "byUser") as! PFUser)
@@ -833,7 +833,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
+            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
             // (1C) User's Object
             vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT

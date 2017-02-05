@@ -520,7 +520,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if chatUserObject.last!.value(forKey: "apnsId") != nil {
             OneSignal.postNotification(
                 ["contents":
-                    ["en": "\(PFUser.current()!.username!.uppercased()) screenshotted the conversation"],
+                    ["en": "\(PFUser.current()!.username!.uppercased()) screenshot the conversation"],
                  "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
                  "ios_badgeType": "Increase",
                  "ios_badgeCount": 1

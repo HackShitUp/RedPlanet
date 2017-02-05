@@ -575,29 +575,12 @@ class OtherUser: UITableViewController {
         header.rpUserProPic.layer.borderWidth = 0.5
         header.rpUserProPic.clipsToBounds = true
         
-        // (1) Get user's object
-        otherObject.last!.fetchInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                
-                // (A) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            header.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            header.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+        // (1) Get user's profile photo
+        if let proPic = otherObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            header.rpUserProPic.sd_setShowActivityIndicatorView(true)
+            header.rpUserProPic.sd_setIndicatorStyle(.gray)
+            header.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
         
         
@@ -671,7 +654,6 @@ class OtherUser: UITableViewController {
         }
         
         return header
-        
     }
     
     

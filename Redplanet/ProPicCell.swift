@@ -279,10 +279,7 @@ class ProPicCell: UITableViewCell {
         let publicShare = AlertAction(title: "All Friends",
                                       style: .default,
                                       handler: { (AlertAction) in
-                                        
-                                        // Share to public ***FRIENDS ONLY***
-                                        
-                                        
+
                                         // Convert UIImage to NSData
                                         let imageData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
                                         // Change UIImage to PFFile

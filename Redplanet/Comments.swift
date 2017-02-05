@@ -82,10 +82,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             NotificationCenter.default.post(name: videoNotification, object: nil)
         }
         
-        // Reload news feed
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "followingNewsfeed"), object: nil)
-        
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -99,6 +95,16 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         
         // Reload data
         self.tableView!.reloadData()
+    }
+    
+    
+    // Function to reload data
+    func reloadData() {
+        // Reload news feed
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "followingNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: otherNotification, object: nil)
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
     }
     
     
@@ -182,12 +188,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                         (success: Bool, error: Error?) in
                         if success {
                             
-                            
-                            // Hashtags only exist for shared content, not comments :/
-                            // Check for user mentions...
-                            let words: [String] = commentText.components(separatedBy: CharacterSet.whitespacesAndNewlines)
                             // Loop through words to check for # and @ prefixes
-                            for var word in words {
+                            for var word in commentText.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                                 
                                 // Define @username
                                 if word.hasPrefix("@") {
@@ -270,6 +272,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                         }
                     })
                     
+                    // Reload data
+                    self.reloadData()
                     
                     // Query Comments
                     self.queryComments()

@@ -120,21 +120,9 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     })
                     
                     
-                    let alert = UIAlertController(title: "Welcome",
-                                                  message: "Thank you for signing up for Redplanet!",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "next",
-                                           style: .cancel,
-                                           handler: {(alert: UIAlertAction!) in
-
-                                            
-                                            // Push VC
-                                            let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
-                                            self.navigationController?.pushViewController(nameVC, animated: true)
-                    })
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // Push VC
+                    let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
+                    self.navigationController?.pushViewController(nameVC, animated: true)
                     
                 } else {
                     let alert = UIAlertController(title: "Sign up failed.",
