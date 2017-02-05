@@ -188,6 +188,7 @@
 		7EECEE651E3C42F7003FA134 /* TimeMediaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */; };
 		7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE661E3C7B6D003FA134 /* UserCell.swift */; };
 		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
+		7EEDE2F11E46E31A00B91045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
@@ -450,6 +451,7 @@
 		7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeMediaCell.xib; sourceTree = "<group>"; };
 		7EECEE661E3C7B6D003FA134 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
+		7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -1188,6 +1190,7 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
+				7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */,
 				7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */,
 				7E2CA4001E25A78A0071B052 /* SnapSliderFilters */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
@@ -1559,6 +1562,7 @@
 			files = (
 				7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */,
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
+				7EEDE2F11E46E31A00B91045 /* GoogleService-Info.plist in Resources */,
 				7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
 				7E35A3B41E4167610007EB99 /* ProPicCell.xib in Resources */,

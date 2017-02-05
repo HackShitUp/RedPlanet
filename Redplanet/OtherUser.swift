@@ -580,7 +580,17 @@ class OtherUser: UITableViewController {
             // MARK: - SDWebImage
             header.rpUserProPic.sd_setShowActivityIndicatorView(true)
             header.rpUserProPic.sd_setIndicatorStyle(.gray)
-            header.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            proPic.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    header.rpUserProPic.image = UIImage(data: data!)
+                    // MARK: - SDWebImage
+                    header.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: header.rpUserProPic.image)
+                } else {
+                    print(error?.localizedDescription as Any)
+                    header.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                }
+            })
         }
         
         
