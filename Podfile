@@ -11,6 +11,7 @@ target 'Redplanet' do
 	pod ‘SDWebImage’
 	pod ‘SimpleAlert’
 	pod ‘SwiftyCam’
+	pod 'Google/Analytics'
 	pod 'SwipeNavigationController', '~> 2.0.2’
 	pod ‘OneSignal’
 	pod 'KILabel', '1.0.0'
