@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SDWebImage
 import SVProgressHUD
 import DZNEmptyDataSet
 
@@ -187,12 +188,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Set tablefooter view
+        self.tableView.backgroundColor = UIColor.white
         self.tableView!.tableFooterView = UIView()
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -253,37 +254,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
-        
-        // Fetch users
-        self.viewers[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set user's proPic
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                }
-                
-                
-                // (2) Set username
-                cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+        // Fetch user's realNameOfUser and user's profile photos
+        cell.rpUsername.text! = self.viewers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
-
-        
 
         return cell
     }

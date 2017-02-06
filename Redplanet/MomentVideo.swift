@@ -15,15 +15,15 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
-import OneSignal
 import SimpleAlert
+import SVProgressHUD
 import SwipeNavigationController
+import OneSignal
 
 // Define Notification
 let momentVideoNotification = Notification.Name("momentVideo")
 
-class MomentVideo: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate, PlayerDelegate {
+class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDelegate {
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -122,10 +122,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, SwipeNaviga
         let views = AlertAction(title: "🙈 Views",
                                 style: .default,
                                 handler: { (AlertAction) in
-                                    
                                     // Append object
                                     viewsObject.append(itmObject.last!)
-                                    
                                     // Push VC
                                     let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
@@ -703,17 +701,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, SwipeNaviga
     }// end fetchContent
     
     
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        itmObject.removeLast()
-    }
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -764,7 +751,13 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, SwipeNaviga
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.delegate = self
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     

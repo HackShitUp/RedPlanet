@@ -331,10 +331,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             }
             
             // (6) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            tpCell.numberOfLikes.setTitle("likes", for: .normal)
-            tpCell.numberOfComments.setTitle("comments", for: .normal)
-            tpCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")

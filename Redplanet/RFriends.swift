@@ -241,7 +241,11 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -354,70 +358,26 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
         
         // If Searched
         if searchActive == true && searchBar.text != "" {
-            
-            // Fetch users
-            searchObjects[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                        // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
-                    }
-                    
-                    
-                    // (2) Set real name
-                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
+        // SEARCHED
+            // Get users' usernames and user's profile photos
+            cell.rpUsername.text! = searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
 
         } else {
-            
+        // FRIENDS
             
             // Sort Friends
             let abcFriends = self.friends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
             
-            // (1) Get user's object
-            abcFriends[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (A) Set user's full name
-                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                    
-                    // (B) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set user's profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Set default
-                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                }
+            // Get users' usernames and user's profile photos
+            cell.rpUsername.text! = abcFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = abcFriends[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
         }
 

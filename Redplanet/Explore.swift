@@ -131,6 +131,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         
         // Set navigationbar's backgroundColor
         self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
 

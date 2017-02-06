@@ -13,11 +13,12 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
 import DZNEmptyDataSet
-import SimpleAlert
-import SwipeNavigationController
 
+import SDWebImage
+import SimpleAlert
+import SVProgressHUD
+import SwipeNavigationController
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
@@ -367,6 +368,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
         // Set design of navigation bar
         configureView()
@@ -426,7 +429,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -494,38 +501,21 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // Set usernames of searched users
             cell.time.text = searchNames[indexPath.row]
             
-            // Get and set user's profile photo
-            searchObjects[indexPath.row].fetchIfNeededInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get Profile Photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
-                        
-                    } else {
-                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                    
-                    // Set full name
-                    // Handle optional chaining for user's real name
-                    if let fullName = object!["realNameOfUser"] as? String {
-                        cell.rpUsername.text! = fullName
-                    } else {
-                        cell.rpUsername.text! = object!["username"] as! String
-                    }
-                    
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+            // (1) Get Profile Photo
+            if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
+                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            
+            // Set full name
+            // Handle optional chaining for user's real name
+            if let fullName = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
+                cell.rpUsername.text! = fullName
+            } else {
+                cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "username") as! String
+            }
             
         } else {
             
@@ -551,7 +541,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 (object: PFObject?, error: Error?) in
                 if error == nil {
 
-
                     // Set time
                     let from = object!.createdAt!
                     let now = Date()
@@ -561,51 +550,36 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     // logic what to show : Seconds, minutes, hours, days, or weeks
                     if difference.second! <= 0 {
                         cell.time.text = "right now"
-                    }
-                    
-                    if difference.second! > 0 && difference.minute! == 0 {
+                    } else if difference.second! > 0 && difference.minute! == 0 {
                         if difference.second! == 1 {
                             cell.time.text = "1 second ago"
                         } else {
                             cell.time.text = "\(difference.second!) seconds ago"
                         }
-                    }
-                    
-                    if difference.minute! > 0 && difference.hour! == 0 {
+                    } else if difference.minute! > 0 && difference.hour! == 0 {
                         if difference.minute! == 1 {
                             cell.time.text = "1 minute ago"
                         } else {
                             cell.time.text = "\(difference.minute!) minutes ago"
                         }
-                    }
-                    
-                    if difference.hour! > 0 && difference.day! == 0 {
+                    } else if difference.hour! > 0 && difference.day! == 0 {
                         if difference.hour! == 1 {
                             cell.time.text = "1 hour ago"
                         } else {
                             cell.time.text = "\(difference.hour!) hours ago"
                         }
-                    }
-                    
-                    if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                    } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                         if difference.day! == 1 {
                             cell.time.text = "1 day ago"
                         } else {
                             cell.time.text = "\(difference.day!) days ago"
                         }
-                    }
-                    
-                    
-                    if difference.weekOfMonth! > 0 {
+                    } else if difference.weekOfMonth! > 0 {
                         let createdDate = DateFormatter()
                         createdDate.dateFormat = "MMM d, yyyy"
                         cell.time.text = createdDate.string(from: object!.createdAt!)
                     }
-                    
-                    
-                    
-                    
-                    
+
                     // If PFUser.currentUser()! received last message
                     if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         // Handle optional chaining for OtherUser's Object
@@ -618,21 +592,15 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             // Get and set user's profile photo
                             // Handle optional chaining
                             if let proPic = theSender["userProfilePicture"] as? PFFile {
-                                proPic.getDataInBackground(block: {
-                                    (data: Data?, error: Error?) in
-                                    if error == nil {
-                                        cell.rpUserProPic.image = UIImage(data: data!)
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                            } else {
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                                // MARK: - SDWebImage
+                                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
+                                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                             }
                             
+                            // Set user's object
                             cell.userObject = theSender
                         }
-                        
                         
                         // Set frame depending on whether the message was read or not
                         // OtherUser
@@ -652,25 +620,19 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     if (object!.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "receiver") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         
                         if let theReceiver = object!.object(forKey: "receiver") as? PFUser {
-                            
                             // Set username
                             cell.rpUsername.text! = theReceiver["realNameOfUser"] as! String
                             
                             // Get and set user's profile photo
                             // Handle optional chaining
                             if let proPic = theReceiver["userProfilePicture"] as? PFFile {
-                                proPic.getDataInBackground(block: {
-                                    (data: Data?, error: Error?) in
-                                    if error == nil {
-                                        cell.rpUserProPic.image = UIImage(data: data!)
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                            } else {
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                                // MARK: - SDWebImage
+                                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
+                                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                             }
                             
+                            // Set user's object
                             cell.userObject = theReceiver
                         }
                         
@@ -683,10 +645,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         } else {
                             cell.status.image = UIImage(named: "Sent Filled-100")
                         }
-                        
                     }
-                    
-                    
                     
                 } else {
                     print(error?.localizedDescription as Any)

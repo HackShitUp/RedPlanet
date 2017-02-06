@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SDWebImage
 import SVProgressHUD
 import DZNEmptyDataSet
 
@@ -191,32 +192,11 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-
-        // Fetch user's objects
-        sharers[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                }
-                
-                // (2) Set usernames
-                cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+        // Fetch user's realNameOfUser and user's profile photos
+        cell.rpUsername.text! = self.sharers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        if let proPic = self.sharers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
 
         return cell

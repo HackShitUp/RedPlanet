@@ -216,6 +216,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Set initial query
         self.queryNotifications()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
 
         // Pull to refresh action
         refresher = UIRefreshControl()

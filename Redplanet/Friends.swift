@@ -157,6 +157,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
         
+        self.tableView.layoutIfNeeded()
+        self.tableView.setNeedsLayout()
+        
         appDelegate.queryRelationships()
         // Fetch friends
         fetchFriends()
@@ -345,10 +348,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            tpCell.numberOfLikes.setTitle("likes", for: .normal)
-            tpCell.numberOfComments.setTitle("comments", for: .normal)
-            tpCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")

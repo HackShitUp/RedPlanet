@@ -13,9 +13,10 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
-import OneSignal
 import SimpleAlert
+import SVProgressHUD
+import SwipeNavigationController
+import OneSignal
 
 // Array to hold object
 var itmObject = [PFObject]()
@@ -133,10 +134,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let views = AlertAction(title: "🙈 Views",
                                   style: .default,
                                   handler: { (AlertAction) in
-                                    
                                     // Append object
                                     viewsObject.append(itmObject.last!)
-                                    
                                     // Push VC
                                     let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
@@ -785,6 +784,14 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

@@ -171,6 +171,9 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         
         let nib = UINib(nibName: "CurrentUserHeader", bundle: nil)
         tableView?.register(nib, forHeaderFooterViewReuseIdentifier: "CurrentUserHeader")
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -391,10 +394,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             }
             
             // (6) Fetch likes, comments, and shares
-            // SET DEFAULTS:
-            tpCell.numberOfLikes.setTitle("likes", for: .normal)
-            tpCell.numberOfComments.setTitle("comments", for: .normal)
-            tpCell.numberOfShares.setTitle("shares", for: .normal)
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)
             likes.includeKey("fromUser")

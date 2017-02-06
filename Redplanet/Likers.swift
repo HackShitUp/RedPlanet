@@ -13,7 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
-
+import SDWebImage
 import SVProgressHUD
 import DZNEmptyDataSet
 
@@ -293,69 +293,19 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         
         // If Searched
         if searchActive == true && searchBar.text != "" {
-
-            // Fetch users
-            searchObjects[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-                    
-                    
-                    // (2) Set real name
-                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    
-                    
-                    // Set result
-                    cell.rpUsername.text! = "Couldn't find anyone by that name..."
-                }
+            // Fetch user's realNameOfUser and user's profile photos
+            cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            
-            
         } else {
-            // Fetch users
-            likers[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-                    
-                    
-                    // (2) Set real name
-                    cell.rpUsername.text! = object!["realNameOfUser"] as! String
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
+            // Fetch user's realNameOfUser and user's profile photos
+            cell.rpUsername.text! = self.likers[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = self.likers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-
         }
         
         
@@ -365,7 +315,6 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
 
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         
         if searchActive == true && self.searchBar.text! != "" {
             // Append to otherObject
@@ -381,11 +330,9 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
             
         }
         
-        
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
-        
     }
     
     

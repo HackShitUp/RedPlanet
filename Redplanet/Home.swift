@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SwipeNavigationController
 
 class Home: UIViewController, UINavigationControllerDelegate {
     
@@ -63,21 +64,14 @@ class Home: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Hide navigation Bar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
-        // Show tabBar
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         // Show statusBar, hide navigation bar, show tab bar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
     }
     
     override func viewWillDisappear(_ animated: Bool) {

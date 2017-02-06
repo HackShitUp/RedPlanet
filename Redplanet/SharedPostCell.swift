@@ -535,8 +535,7 @@ class SharedPostCell: UITableViewCell {
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
-                                    viewsObject.append(sharedObject.last!)
-                                    
+                                    viewsObject.append(itmObject.last!)
                                     // Push VC
                                     let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)

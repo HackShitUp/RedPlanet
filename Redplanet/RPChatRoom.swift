@@ -700,7 +700,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -982,17 +986,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
-                    proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set pro pic
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
             }
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
@@ -1000,17 +995,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-                    proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set pro pic
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
             }
             
@@ -1025,7 +1011,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             
-            // logic what to show : Seconds, minutes, hours, days, or weeks
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
                 cell.time.text = "now"
@@ -1163,17 +1148,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
-                    proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set pro pic
-                            mCell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Set default
-                            mCell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
                 
             }
@@ -1184,17 +1160,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-                    proPic.getDataInBackground(block: { (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set pro pic
-                            mCell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Set default
-                            mCell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
             }
             

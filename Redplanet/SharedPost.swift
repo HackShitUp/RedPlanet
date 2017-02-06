@@ -20,7 +20,6 @@ import OneSignal
 import SVProgressHUD
 import SimpleAlert
 
-
 // Array to hold the sharedObject
 var sharedObject = [PFObject]()
 
@@ -208,6 +207,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
+        
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
 
@@ -306,7 +309,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
-        
         
         // LayoutViews
         cell.fromRpUserProPic.layoutIfNeeded()

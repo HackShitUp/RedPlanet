@@ -201,7 +201,11 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source
@@ -234,34 +238,11 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // (1) Get user's object
-        following[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (A) Set username
-                cell.rpUsername.text! = object!["username"] as! String
-                
-                // (B) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set user's profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-                // Set default
-                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-            }
+        // Get users' usernames and user's profile photos
+        cell.rpUsername.text! = following[indexPath.row].value(forKey: "username") as! String
+        if let proPic = following[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
         
         return cell
