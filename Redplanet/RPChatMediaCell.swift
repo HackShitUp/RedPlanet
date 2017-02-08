@@ -32,17 +32,14 @@ class RPChatMediaCell: UITableViewCell {
     
     // Function to zoom
     func zoom() {
-        
         // Mark: - Agrume
         let agrume = Agrume(image: self.rpMediaAsset.image!)
-        agrume.statusBarStyle = UIStatusBarStyle.lightContent
         agrume.showFrom(self.delegate!.self)
     }
     
     
     // Function to play video
     func playVideo() {
-
         if let video = mediaObject!.value(forKey: "videoAsset") as? PFFile {
             // Traverse video url
             let videoUrl = NSURL(string: video.url!)

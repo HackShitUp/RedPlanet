@@ -27,6 +27,13 @@ class RPChatRoomCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var message: KILabel!
+    
+    
+    // Function to load website
+    func loadWebView() {
+        
+    }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

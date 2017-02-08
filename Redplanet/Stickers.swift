@@ -21,7 +21,26 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         _ = self.navigationController?.popViewController(animated: false)
     }
 
-    let stickers = ["9.png",
+    let stickers = ["Watermelon.png",
+                    "Sun.png",
+                    "strawberry.png",
+                    "Shake.png",
+                    "Pineapple.png",
+                    "milk.png",
+                    "IceCreamCone.png",
+                    "ice-cream.png",
+                    "corn.png",
+                    "cookie.png",
+                    "coffee-cup.png",
+                    "chocolate.png",
+                    "chili-pepper.png",
+                    "cherry.png",
+                    "cheese.png",
+                    "carrot.png",
+                    "broccoli.png",
+                    "bananas.png",
+                    "apple.png",
+                        "9.png",
                         "10.png",
                         "11.png",
                         "12.png",
@@ -60,25 +79,6 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
                         "2318546.png",
                         "2318540.png",
                         "2318537.png",
-                        "Watermelon.png",
-                        "Sun.png",
-                        "strawberry.png",
-                        "Shake.png",
-                        "Pineapple.png",
-                        "milk.png",
-                        "IceCreamCone.png",
-                        "ice-cream.png",
-                        "corn.png",
-                        "cookie.png",
-                        "coffee-cup.png",
-                        "chocolate.png",
-                        "chili-pepper.png",
-                        "cherry.png",
-                        "cheese.png",
-                        "carrot.png",
-                        "broccoli.png",
-                        "bananas.png",
-                        "apple.png",
                         ]
     
     
@@ -160,7 +160,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         chat["senderUsername"] = PFUser.current()!.username!
         chat["receiver"] = chatUserObject.last!
         chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(UIImage(named: self.stickers[indexPath.row])!, 0.5)!)
+        chat["photoAsset"] = PFFile(data: UIImagePNGRepresentation(UIImage(named: self.stickers[indexPath.row])!)!)
         chat["read"] = false
         chat.saveInBackground {
             (success: Bool, error: Error?) in

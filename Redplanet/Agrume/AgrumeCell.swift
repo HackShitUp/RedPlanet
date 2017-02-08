@@ -22,7 +22,7 @@ final class AgrumeCell: UICollectionViewCell {
     let scrollView = UIScrollView(frame: self.contentView.bounds)
     scrollView.delegate = self
     scrollView.zoomScale = 1
-    scrollView.maximumZoomScale = 8
+    scrollView.maximumZoomScale = 3
     scrollView.isScrollEnabled = false
     scrollView.showsHorizontalScrollIndicator = false
     scrollView.showsVerticalScrollIndicator = false

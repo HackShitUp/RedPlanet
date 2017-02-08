@@ -71,13 +71,13 @@ class Home: UIViewController, UINavigationControllerDelegate {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        // Hide menu
+        // Hide menuff
         pageMenu?.hideTopMenuBar = true
     }
     

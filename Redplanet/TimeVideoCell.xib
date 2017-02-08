@@ -182,6 +182,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="blhbk" destination="qll-eK-hkt" id="tkM-7V-tRM"/>
                 <outlet property="commentButton" destination="tTe-D9-Rg1" id="R4H-SP-ry5"/>
                 <outlet property="likeButton" destination="nxh-2s-gqZ" id="ZX5-cz-HDd"/>
                 <outlet property="moreButton" destination="NaF-ND-nu8" id="e10-xK-1cP"/>

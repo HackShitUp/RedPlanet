@@ -24,11 +24,9 @@ import SVProgressHUD
 import SimpleAlert
 import SDWebImage
 
-
 // Global variable to hold user's object and username for chats
 var chatUserObject = [PFObject]()
 var chatUsername = [String]()
-
 
 // Add Notification to reload data
 let rpChat = Notification.Name("rpChat")
@@ -51,7 +49,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // Variable to hold UIImagePickerController
     var imagePicker: UIImagePickerController!
     
-    
     // Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
@@ -69,7 +66,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chatUsername.removeLast()
         
         // Pop view controller
-        _ = self.navigationController?.popViewController(animated: true)
+        if self.navigationController?.viewControllers.count == 3 {
+            let viewControllers = self.navigationController!.viewControllers as [UIViewController]
+            _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
+        } else {
+            // Pop view controller
+            _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     @IBAction func moreButton(_ sender: Any) {
