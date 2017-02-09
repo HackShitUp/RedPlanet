@@ -98,6 +98,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                         self.myActivity.append(object)
                         self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
                     }
+//                    if difference.hour! < 24 {
+//                        self.myActivity.append(object)
+//                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
                 
                 
@@ -254,21 +260,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "😱\nYou Have No Notifications"
+        let str = "😱\nYou have no new Notifications today"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
-            NSFontAttributeName: font!
-        ]
-        
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Share something cool for your friends or followers!"
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.darkGray,
             NSFontAttributeName: font!
         ]
         
@@ -279,7 +274,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     // Button title
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
-        let str = "continue"
+        let str = "Share Something"
         let font = UIFont(name: "AvenirNext-Medium", size: 17.0)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),

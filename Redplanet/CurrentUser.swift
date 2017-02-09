@@ -91,6 +91,11 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                     } else {
                         self.posts.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
             } else {
                 print(error?.localizedDescription as Any)

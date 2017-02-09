@@ -115,14 +115,19 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     // Ephemeral content
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
+//                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
+//                        if difference.hour! < 24 {
+//                            self.posts.append(object)
+//                        } else {
+//                            self.skipped.append(object)
+//                        }
+//                    } else {
+//                        self.posts.append(object)
+//                    }
+                    if difference.hour! < 24 {
                         self.posts.append(object)
+                    } else {
+                        self.skipped.append(object)
                     }
                 }
                 
@@ -198,33 +203,22 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Following's News Feed is empty."
+        let str = "💩\nYour Following News Feed is empty today."
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.darkGray,
             NSFontAttributeName: font!
         ]
         
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Redplanet is more fun when you're following the things you love."
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
-            NSFontAttributeName: font!
-        ]
-        
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
+
     // Button title
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
-        let str = "Find Things to Follow"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let str = "Find People to Follow"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!

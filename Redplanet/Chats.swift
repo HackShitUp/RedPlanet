@@ -504,8 +504,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // (1) Get Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
-                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
@@ -593,8 +591,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             // Handle optional chaining
                             if let proPic = theSender["userProfilePicture"] as? PFFile {
                                 // MARK: - SDWebImage
-                                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
-                                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
                                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                             }
                             
@@ -627,8 +623,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             // Handle optional chaining
                             if let proPic = theReceiver["userProfilePicture"] as? PFFile {
                                 // MARK: - SDWebImage
-                                cell.rpUserProPic.sd_setShowActivityIndicatorView(true)
-                                cell.rpUserProPic.sd_setIndicatorStyle(.gray)
                                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                             }
                             

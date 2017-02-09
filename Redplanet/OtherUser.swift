@@ -299,6 +299,11 @@ class OtherUser: UITableViewController {
                     } else {
                         self.posts.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
                 
                 
@@ -311,7 +316,7 @@ class OtherUser: UITableViewController {
                         // FRIENDS
                         print("Don't hide because FRIENDS")
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
+                            self.cover.setTitle("🤔\nNot Posts Todady.\n", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -344,7 +349,7 @@ class OtherUser: UITableViewController {
                         // FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
+                            self.cover.setTitle("🤔\nNot Posts Today.\n", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -361,7 +366,7 @@ class OtherUser: UITableViewController {
                         // FOLLOWER & FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
+                            self.cover.setTitle("🤔\nNo Posts Today.\n", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -378,7 +383,7 @@ class OtherUser: UITableViewController {
                 } else {
                     // PUBLIC ACCOUNT
                     if self.posts.count == 0 {
-                        self.cover.setTitle("🤔\nNothing Here.\n", for: .normal)
+                        self.cover.setTitle("🤔\nNo Posts Today.\n", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = true
