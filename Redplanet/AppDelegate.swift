@@ -100,8 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Power your app with local datastore
         Parse.enableLocalDatastore()
         
-        // Configure Parse Hosted Server on MLAB
-        // Hosted by AWS' S3 Bucket
+        // Configure Parse Hosted Server MLAB on AWS
         let configuration = ParseClientConfiguration {
             $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
             $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
