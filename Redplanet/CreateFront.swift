@@ -260,7 +260,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "😱\nYou have no new Notifications today"
+        let str = "🦄\nYou have no new Notifications today"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.darkGray,

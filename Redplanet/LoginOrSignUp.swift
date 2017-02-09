@@ -104,7 +104,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                                                                                 let email = alert.textFields![0]
                                                                                                 
                                                                                                 // Send email to reset password
-                                                                                                PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: { (success: Bool, error: Error?) in
+                                                                                                PFUser.requestPasswordResetForEmail(inBackground: email.text!.lowercased(), block: { (success: Bool, error: Error?) in
                                                                                                     if success {
                                                                                                         
                                                                                                         let alert = UIAlertController(title: "Check Your Email!",
