@@ -45,14 +45,58 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         // Pop view controller
         self.navigationController!.popViewController(animated: false)
     }
-    
-    @IBAction func more(_ sender: Any) {
-        let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
-        let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
-        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        self.present(activityVC, animated: true, completion: nil)
+
+    @IBAction func moreButton(_ sender: Any) {
+        if mediaType == "photo" {
+            // Photo to Share
+            let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            let image = self.mediaAsset.image!
+            let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
+            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+            self.present(activityVC, animated: true, completion: nil)
+        } else if mediaType == "video" {
+            // Traverse video url to DATA
+            let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            if shareMediaAsset.isEmpty {
+                // INSTANCEVIDEODATA
+                let videoData = NSData(contentsOf: instanceVideoData!)
+                let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                let docDirectory = paths[0]
+                let filePath = "\(docDirectory)/tmpVideo.mov"
+                videoData?.write(toFile: filePath, atomically: true)
+                let videoLink = NSURL(fileURLWithPath: filePath)
+                let objectsToShare = [videoLink]
+                let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                activityVC.setValue("Video", forKey: "subject")
+                self.present(activityVC, animated: true, completion: nil)
+            } else {
+                // PHASSET
+                // Set video options
+                let videoOptions = PHVideoRequestOptions()
+                videoOptions.deliveryMode = .automatic
+                videoOptions.isNetworkAccessAllowed = true
+                videoOptions.version = .current
+                PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
+                                                       options: videoOptions,
+                                                       resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
+                                                        /* Did we get the URL to the video? */
+                                                        if let asset = asset as? AVURLAsset{
+                                                            let videoData = NSData(contentsOf: asset.url)
+                                                            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                                                            let docDirectory = paths[0]
+                                                            let filePath = "\(docDirectory)/tmpVideo.mov"
+                                                            videoData?.write(toFile: filePath, atomically: true)
+                                                            let videoLink = NSURL(fileURLWithPath: filePath)
+                                                            let objectsToShare = [videoLink]
+                                                            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                                                            activityVC.setValue("Video", forKey: "subject")
+                                                            self.present(activityVC, animated: true, completion: nil)
+                                                        }
+                })
+            }
+        }
     }
-    
+
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBAction func editPhoto(_ sender: AnyObject) {
         // Present CLImageEditor
@@ -71,8 +115,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     
     @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var saveButton: UIButton!
-    
     
     // Function to zoom
     func zoom(sender: AnyObject) {
@@ -330,12 +372,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         zoomTap.numberOfTapsRequired = 1
         self.mediaAsset.isUserInteractionEnabled = true
         self.mediaAsset.addGestureRecognizer(zoomTap)
-        
-        // (6) Add tap to save photo
-        let saveTap = UITapGestureRecognizer(target: self, action: #selector(saveMedia))
-        saveTap.numberOfTapsRequired = 1
-        self.saveButton.isUserInteractionEnabled = true
-        self.saveButton.addGestureRecognizer(saveTap)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -377,85 +413,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
     }
-
-    
-    
-    // Function to save photo
-    func saveMedia() {
-        
-        if mediaType == "photo" {
-            
-            UIView.animate(withDuration: 0.5) { () -> Void in
-                
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
-            }
-    
-            UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-            }, completion: nil)
-            
-            UIImageWriteToSavedPhotosAlbum(self.mediaAsset.image!, self, nil, nil)
-
-        } else {
-            
-            if shareMediaAsset.isEmpty {
-                // Save video URL
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: instanceVideoData!)
-                }) { saved, error in
-                    if saved {
-                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                }
-
-
-            } else {
-                // PHASSET
-                // Set video options
-                let videoOptions = PHVideoRequestOptions()
-                videoOptions.deliveryMode = .automatic
-                videoOptions.isNetworkAccessAllowed = true
-                videoOptions.version = .current
-                PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
-                                                       options: videoOptions,
-                                                       resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
-
-                                                        
-                                                        DispatchQueue.main.async(execute: {
-                                                            
-                                                            /* Did we get the URL to the video? */
-                                                            if let asset = asset as? AVURLAsset{
-                                                                
-                                                                
-                                                                PHPhotoLibrary.shared().performChanges({
-                                                                    PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: asset.url)
-                                                                }) { saved, error in
-                                                                    if saved {
-                                                                        self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
-                                                                    }
-                                                                }
-                                                                
-                                     
-                                                            } else {
-                                                                // Did not get the AVAssetUrl
-                                                                print("This is not a URL asset. Cannot play")
-                                                            }
-                                                            
-                                                        })
-                })
-            }
-
-        }
-    }
-
-    
     
     // Function to share photo data
     func sharePhotoData() {

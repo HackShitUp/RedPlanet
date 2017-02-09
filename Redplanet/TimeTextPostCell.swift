@@ -648,7 +648,6 @@ class TimeTextPostCell: UITableViewCell {
         
         // Handle http: tap
         textPost.urlLinkTapHandler = { label, handle, range in
-            
             // Open url
             let url = URL(string: handle)
             UIApplication.shared.openURL(url!)

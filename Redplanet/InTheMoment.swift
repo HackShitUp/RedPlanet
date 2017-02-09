@@ -141,10 +141,14 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let save = AlertAction(title: "Save",
+        let save = AlertAction(title: "Share Via",
                                 style: .default,
                                 handler: { (AlertAction) in
-                                    UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.view)!, self, nil, nil)
+                                    // Photo to Share
+                                    let image = SNUtils.screenShot(self.view)!
+                                    let imageToShare = [image]
+                                    let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+                                    self.present(activityVC, animated: true, completion: nil)
         })
         
         
@@ -664,16 +668,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.present(options, animated: true, completion: nil)
     }
-    
-    // Save or share the photo
-    func saveShare(sender: UILongPressGestureRecognizer) {
-        // Photo to Share
-        let image = self.itmMedia.image!
-        let imageToShare = [image]
-        let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        self.present(activityVC, animated: true, completion: nil)
-    }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -758,14 +752,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
-        
-        // (10) Add Save
-        let holdTap = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-        holdTap.minimumPressDuration = 0.5
-        self.itmMedia.isUserInteractionEnabled = true
-        self.itmMedia.addGestureRecognizer(holdTap)
-        
-        
+
         // Add shadows
         let buttons = [self.likeButton,
                        self.numberOfLikes,

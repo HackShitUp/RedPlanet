@@ -1893,7 +1893,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GE7-L2-u3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4318.5" y="-575.5"/>
+            <point key="canvasLocation" x="4319" y="-765"/>
         </scene>
         <!--Relationship Requests-->
         <scene sceneID="mRB-yU-bPu">
@@ -2144,7 +2144,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEX-zz-1xu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4749" y="-1336"/>
+            <point key="canvasLocation" x="4749" y="-1526"/>
         </scene>
         <!--Views-->
         <scene sceneID="cQ7-xm-GdP">
@@ -2177,7 +2177,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xEs-zC-cN5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4319" y="-1339"/>
+            <point key="canvasLocation" x="4319" y="-1529"/>
         </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
@@ -2359,7 +2359,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jcw-0y-pFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5180" y="-1337"/>
+            <point key="canvasLocation" x="5180" y="-1527"/>
         </scene>
         <!--Likers-->
         <scene sceneID="syr-ml-sjG">
@@ -2392,7 +2392,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0I5-eO-lbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5623" y="-1340"/>
+            <point key="canvasLocation" x="5623" y="-1530"/>
         </scene>
         <!--Comments-->
         <scene sceneID="gnl-jw-HIQ">
@@ -2581,7 +2581,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aw3-XY-dHl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4749" y="-576"/>
+            <point key="canvasLocation" x="4749" y="-766"/>
         </scene>
         <!--Profile Photo-->
         <scene sceneID="JXx-MN-D0Z">
@@ -4244,23 +4244,15 @@
                                 </constraints>
                                 <state key="normal" image="ShareOP"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EU0-cn-Gsr">
-                                <rect key="frame" x="46" y="138" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="MD1-GA-PDg"/>
-                                    <constraint firstAttribute="width" constant="40" id="sKM-6y-n94"/>
-                                </constraints>
-                                <state key="normal" image="SaveBlack"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GaL-MM-ntm">
-                                <rect key="frame" x="157" y="128" width="60" height="60"/>
+                                <rect key="frame" x="36" y="128" width="60" height="60"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="F7V-wo-Nn8"/>
-                                    <constraint firstAttribute="width" constant="60" id="yo2-OX-8yj"/>
+                                    <constraint firstAttribute="width" constant="60" id="Gw4-Ba-zo3"/>
+                                    <constraint firstAttribute="height" constant="60" id="zci-lz-Xjr"/>
                                 </constraints>
                                 <state key="normal" image="More-100"/>
                                 <connections>
-                                    <action selector="more:" destination="Ir1-z0-Hmq" eventType="touchUpInside" id="GXn-L7-ihY"/>
+                                    <action selector="moreButton:" destination="Ir1-z0-Hmq" eventType="touchUpInside" id="vMo-OS-hd3"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Z3r-WJ-nXx">
@@ -4275,7 +4267,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="f1Q-9h-6p5" id="xdF-kE-dW6">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w2f-0v-b2U">
@@ -4314,7 +4306,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="GaL-MM-ntm" firstAttribute="top" secondItem="SSj-kO-J0n" secondAttribute="bottom" constant="12" id="8Eg-Fa-j7X"/>
+                            <constraint firstItem="GaL-MM-ntm" firstAttribute="top" secondItem="jyt-yY-XtQ" secondAttribute="bottom" constant="12" id="7gw-d2-s8n"/>
                             <constraint firstItem="SSj-kO-J0n" firstAttribute="leading" secondItem="jyt-yY-XtQ" secondAttribute="trailing" constant="8" id="C4q-5J-WD7"/>
                             <constraint firstAttribute="trailing" secondItem="QPd-rH-JJJ" secondAttribute="trailing" constant="16" id="GDj-Px-xDo"/>
                             <constraint firstItem="SSj-kO-J0n" firstAttribute="top" secondItem="ffx-rS-wgV" secondAttribute="bottom" constant="16" id="KU5-xg-qEL"/>
@@ -4325,9 +4317,7 @@
                             <constraint firstAttribute="trailing" secondItem="Z3r-WJ-nXx" secondAttribute="trailing" id="e6A-Kg-d6X"/>
                             <constraint firstItem="QPd-rH-JJJ" firstAttribute="top" secondItem="SSj-kO-J0n" secondAttribute="bottom" constant="12" id="fV4-JA-OAz"/>
                             <constraint firstItem="Z3r-WJ-nXx" firstAttribute="leading" secondItem="zzg-vw-1a7" secondAttribute="leading" id="j1K-8E-Aoc"/>
-                            <constraint firstItem="EU0-cn-Gsr" firstAttribute="leading" secondItem="zzg-vw-1a7" secondAttribute="leading" constant="46" id="tCY-zA-O5E"/>
-                            <constraint firstItem="GaL-MM-ntm" firstAttribute="centerX" secondItem="zzg-vw-1a7" secondAttribute="centerX" id="xLT-jd-pED"/>
-                            <constraint firstItem="EU0-cn-Gsr" firstAttribute="top" secondItem="jyt-yY-XtQ" secondAttribute="bottom" constant="22" id="xor-UJ-yfV"/>
+                            <constraint firstItem="GaL-MM-ntm" firstAttribute="leading" secondItem="zzg-vw-1a7" secondAttribute="leading" constant="36" id="mga-tY-TmQ"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WOH-1y-po8">
@@ -4349,8 +4339,7 @@
                         <outlet property="editBarButton" destination="D7F-Kw-Nth" id="QxA-U3-DGC"/>
                         <outlet property="mediaAsset" destination="jyt-yY-XtQ" id="YRg-L0-bje"/>
                         <outlet property="mediaCaption" destination="SSj-kO-J0n" id="U2x-XG-UPK"/>
-                        <outlet property="saveButton" destination="EU0-cn-Gsr" id="G04-YS-Tm7"/>
-                        <outlet property="shareButton" destination="QPd-rH-JJJ" id="dIT-vr-OZm"/>
+                        <outlet property="shareButton" destination="QPd-rH-JJJ" id="Gph-Il-XGT"/>
                         <outlet property="tableView" destination="Z3r-WJ-nXx" id="7kB-LH-i4P"/>
                     </connections>
                 </viewController>
@@ -6213,7 +6202,6 @@
         <image name="SCRP" width="26" height="26"/>
         <image name="SCRPGray" width="256" height="256"/>
         <image name="SLR Camera Filled" width="20" height="20"/>
-        <image name="SaveBlack" width="50" height="50"/>
         <image name="Search-50" width="25" height="25"/>
         <image name="Settings-48" width="24" height="24"/>
         <image name="ShareOP" width="116" height="116"/>

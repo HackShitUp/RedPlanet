@@ -22,7 +22,6 @@ import SwipeNavigationController
 
 class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIScrollViewDelegate, CAPSPageMenuDelegate {
     
-    
     // Initilialize pageMenu
     var pageMenu : CAPSPageMenu?
     
@@ -173,16 +172,16 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         self.view.addSubview(pageMenu!.view)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configureView()
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
     }
-
+    
 }

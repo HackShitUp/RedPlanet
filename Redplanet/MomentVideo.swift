@@ -129,23 +129,23 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let save = AlertAction(title: "Save",
+        let save = AlertAction(title: "Share Via",
                                style: .default,
                                handler: { (AlertAction) in
                                 
                                 if let videoFile = itmObject.last!.value(forKey: "videoAsset") as? PFFile {
-                                    // Traverse video url
-                                    let videoUrl = NSURL(string: videoFile.url!)
-                                    PHPhotoLibrary.shared().performChanges({
-                                        PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: videoUrl as! URL)
-                                    }) { (saved: Bool, error: Error?) in
-                                        if saved {
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    }
+                                    // Traverse video url to DATA
+                                    let videoData = NSData(contentsOf: URL(string: videoFile.url!)!)
+                                    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+                                    let docDirectory = paths[0]
+                                    let filePath = "\(docDirectory)/tmpVideo.mov"
+                                    videoData?.write(toFile: filePath, atomically: true)
+                                    let videoLink = NSURL(fileURLWithPath: filePath)
+                                    let objectsToShare = [videoLink]
+                                    let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                                    activityVC.setValue("Video", forKey: "subject")
+                                    self.present(activityVC, animated: true, completion: nil)
                                 }
-                                
         })
         
         
