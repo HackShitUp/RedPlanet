@@ -62,6 +62,13 @@ class Home: UIViewController, UINavigationControllerDelegate {
         self.view.addSubview(pageMenu!.view)
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide navigationbar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Show statusBar, hide navigation bar, show tab bar

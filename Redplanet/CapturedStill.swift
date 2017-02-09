@@ -20,15 +20,14 @@ import SDWebImage
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
 
-class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEditorDelegate {
+class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeViewDelegate, SwipeViewDataSource {
     
-    // MARK: SnapSliderFilters
-    fileprivate let slider = SNSlider(frame: CGRect(origin: CGPoint.zero, size: SNUtils.screenSize))
-    fileprivate let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
-    fileprivate let tapGesture = UITapGestureRecognizer()
-    fileprivate var data:[SNFilter] = []
-
+    // MARK: - SNTextField
+    let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
+    let tapGesture = UITapGestureRecognizer()
     
+    // MARK: - SwipeView
+    @IBOutlet weak var filterView: SwipeView!
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var stillPhoto: PFImageView!
@@ -62,57 +61,14 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         }
     }
     
-    @IBOutlet weak var editButton: UIButton!
-    @IBAction func editButton(_ sender: Any) {
-        if chatCamera == false {
-            // Moment
-            // Present CLImageEditor
-            let editor = CLImageEditor(image: SNUtils.screenShot(self.stillPhoto)!)
-            // Disable tools: rotate, clip, and resize
-            let rotateTool = editor?.toolInfo.subToolInfo(withToolName: "CLRotateTool", recursive: false)
-            let cropTool = editor?.toolInfo.subToolInfo(withToolName: "CLClippingTool", recursive: false)
-            let resizeTool = editor?.toolInfo.subToolInfo(withToolName: "CLResizeTool", recursive: false)
-            rotateTool?.available = false
-            cropTool?.available = false
-            resizeTool?.available = false
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            self.navigationController?.navigationBar.tintColor = UIColor.black
-            self.navigationController?.pushViewController(editor!, animated: false)
-        } else {
-            // CHAT
-            // Present CLImageEditor
-            let editor = CLImageEditor(image: SNUtils.screenShot(self.stillPhoto)!)
-            editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-            editor?.delegate = self
-            self.navigationController?.navigationBar.tintColor = UIColor.black
-            self.navigationController?.pushViewController(editor!, animated: false)
-        }
+    @IBOutlet weak var drawButton: UIButton!
+    @IBAction func draw(_ sender: Any) {
+        
     }
     
     @IBOutlet weak var textButton: UIButton!
     @IBAction func text(_ sender: Any) {
         self.handleTap()
-    }
-    
-    
-    // MARK: - CLImageEditorDelegate
-    func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        // Append image
-        stillImages.append(image)
-        // MARK: - SnapSliderFilters
-        setupSlider()
-        setupTextField()
-        tapGesture.addTarget(self, action: #selector(handleTap))
-        
-        // Pop VC
-        _ = editor.navigationController?.popViewController(animated: false)
-    }
-    
-    // Cancel editing
-    func imageEditorDidCancel(_ editor: CLImageEditor!) {
-        // Dismiss VC
-        editor.dismiss(animated: false, completion: nil)
     }
     
     @IBOutlet weak var continueButton: UIButton!
@@ -240,39 +196,39 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set image
+        self.stillPhoto.image = stillImages.last!
         
-        // MARK: - SnapSliderFilters
-        setupSlider()
-        setupTextField()
-        tapGesture.addTarget(self, action: #selector(handleTap))
+        // Add photo to stillPhoto
+        self.stillPhoto.addSubview(self.filterView)
         
         // Enable UIImageView for SnapSliderFilters
         self.stillPhoto.isUserInteractionEnabled = true
-        
+
+        // MARK: - SNTextField
+        setupTextField()
+        tapGesture.addTarget(self, action: #selector(handleTap))
+
         // MARK:- SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowRightViewController = false
         self.containerSwipeNavigationController?.shouldShowLeftViewController = false
         self.containerSwipeNavigationController?.shouldShowBottomViewController = false
         
         // Hide buttons
-        self.editButton.isHidden = true
         self.undoButton.isHidden = true
         self.completeButton.isHidden = true
         
-//        let completeTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
-//        completeTap.numberOfTapsRequired = 1
-//        self.completeButton.isUserInteractionEnabled = true
-//        self.completeButton.addGestureRecognizer(completeTap)
-        
-//        let undoTap = UITapGestureRecognizer(target: self, action: #selector(completeJot))
-//        undoTap.numberOfTapsRequired = 1
-//        self.undoButton.isUserInteractionEnabled = true
-//        self.undoButton.addGestureRecognizer(undoTap)
-        
+        // MARK: - SwipeView
+        self.filterView.delegate = self                 // delegate
+        self.filterView.dataSource = self               // dataSource
+        self.filterView.isPagingEnabled = true          // stifle scroll at index
+        self.filterView.isWrapEnabled = true            // reset to index[0]
+        self.filterView.bounces = true                  // bounce
+
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
                        self.textButton,
-                       self.editButton,
+                       self.drawButton,
                        self.leaveButton,
                        self.completeButton] as [Any]
         for b in buttons {
@@ -281,20 +237,18 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-            self.stillPhoto.bringSubview(toFront: (b as AnyObject) as! UIView)
-            self.slider.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        stillImages.removeAll(keepingCapacity: false)
         NotificationCenter.default.removeObserver(textField)
         UIView.setAnimationsEnabled(true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        UIView.setAnimationsEnabled(true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -307,77 +261,86 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, CLImageEd
         SDImageCache.shared().clearDisk()
     }
     
-    //MARK: Setup
-    fileprivate func setupSlider() {
-        // Setup slider
-        self.stillPhoto.image = stillImages.last!
-        self.createData(self.stillPhoto.image!)
-        self.slider.dataSource = self
-        self.slider.isUserInteractionEnabled = true
-        self.slider.isMultipleTouchEnabled = true
-        self.slider.isExclusiveTouch = false
-        self.stillPhoto.addSubview(slider)
-        self.slider.reloadData()
+    // MARK: - SwipeView
+    func numberOfItems(in swipeView: SwipeView) -> Int {
+        //return the total number of items in the carousel
+        return 5
     }
     
+    func swipeView(_ swipeView: SwipeView, viewForItemAt index: Int, reusing view: UIView) -> UIView? {
+        
+        view.addGestureRecognizer(tapGesture)
+        
+        if index == 0 {
+            view.subviews.forEach({ $0.removeFromSuperview() })
+            view.backgroundColor = UIColor.clear
+        } else if index == 1 {
+            view.subviews.forEach({ $0.removeFromSuperview() })
+            // Configure time
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+            time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
+            time.textColor = UIColor.white
+            time.layer.shadowColor = UIColor.black.cgColor
+            time.layer.shadowOffset = CGSize(width: 1, height: 1)
+            time.layer.shadowRadius = 3
+            time.layer.shadowOpacity = 0.5
+            time.text = "\(timeFormatter.string(from: NSDate() as Date))"
+            time.textAlignment = .center
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            time.layer.render(in: UIGraphicsGetCurrentContext()!)
+            view.backgroundColor = UIColor.clear
+            view.addSubview(time)
+        } else if index == 2 {
+            view.subviews.forEach({ $0.removeFromSuperview() })
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "HardLight")!)
+        } else if index == 3 {
+            view.subviews.forEach({ $0.removeFromSuperview() })
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "Cotton")!)
+        } else if index == 4 {
+            view.subviews.forEach({ $0.removeFromSuperview() })
+            
+            let openGLContext = EAGLContext(api: .openGLES2)
+            let context = CIContext(eaglContext: openGLContext!)
+            let cgImage = stillImages.last!.cgImage
+            let coreImage = CIImage(cgImage: cgImage!)
+            
+            let filter = CIFilter(name: "CIComicEffect")
+            filter?.setValue(coreImage, forKey: kCIInputImageKey)
+//            filter?.setValue(1, forKey: kCIInputIntensityKey)
+            var result: UIImage?
+            if let output = filter?.value(forKey: kCIOutputImageKey) as? CIImage {
+                let cgimgresult = context.createCGImage(output, from: output.extent)
+                result = UIImage(cgImage: cgimgresult!)
+            }
+            
+            // 7 - set filtered image to array
+            self.view.backgroundColor = UIColor(patternImage: result!)
+            
+        }
+
+        return view
+    }
+    
+    func swipeViewItemSize(_ swipeView: SwipeView) -> CGSize {
+        return swipeView.frame.size
+    }
+    
+    
+    
+    // MARK: - SNTextField
     fileprivate func setupTextField() {
-        self.slider.addSubview(textField)
+        self.view.addSubview(textField)
         self.tapGesture.delegate = self
-        self.slider.addGestureRecognizer(tapGesture)
+        self.filterView.addGestureRecognizer(tapGesture)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardTypeChanged(_:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
     }
-    
-    //MARK: Functions
-    fileprivate func createData(_ image: UIImage) {
 
-        // Configure time
-        let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
-        let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
-        time.textColor = UIColor.white
-        time.layer.shadowColor = UIColor.black.cgColor
-        time.layer.shadowOffset = CGSize(width: 1, height: 1)
-        time.layer.shadowRadius = 3
-        time.layer.shadowOpacity = 0.5
-        time.text = "\(timeFormatter.string(from: NSDate() as Date))"
-        time.textAlignment = .center
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        time.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        // Add filter
-        self.data = SNFilter.generateFilters(SNFilter(frame: self.slider.frame, withImage: image), filters: SNFilter.filterNameList)
-        self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: img!, atZPosition: 0))
-        self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "HardLight")!, atZPosition: 2))
-        self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "Cotton")!, atZPosition: 2))
-    }
-    
-    fileprivate func updatePicture(_ newImage: UIImage) {
-        createData(newImage)
-        slider.reloadData()
-    }    
 }
 
-
-//MARK: - Extension SNSlider DataSource
-extension CapturedStill: SNSliderDataSource {
-    
-    func numberOfSlides(_ slider: SNSlider) -> Int {
-        return data.count
-    }
-    
-    func slider(_ slider: SNSlider, slideAtIndex index: Int) -> SNFilter {
-        return data[index]
-    }
-    
-    func startAtIndex(_ slider: SNSlider) -> Int {
-        return 0
-    }
-}
 
 //MARK: - Extension Gesture Recognizer Delegate and touch Handler for TextField
 extension CapturedStill: UIGestureRecognizerDelegate {
@@ -385,5 +348,3 @@ extension CapturedStill: UIGestureRecognizerDelegate {
         self.textField.handleTap()
     }
 }
-
-
