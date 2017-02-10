@@ -68,9 +68,9 @@ class AboutUsCell: UITableViewCell {
         // Handle http: tap
         // Handle http: tap
         aboutText.urlLinkTapHandler = { label, handle, range in
-            // Open url
-            let url = URL(string: handle)
-            UIApplication.shared.openURL(url!)
+            // MARK: - SwiftWebVC
+            let webVC = SwiftModalWebVC(urlString: handle)
+            self.delegate?.present(webVC, animated: true, completion: nil)
         }
 
     }

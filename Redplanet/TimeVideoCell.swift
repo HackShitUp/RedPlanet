@@ -693,10 +693,9 @@ class TimeVideoCell: UITableViewCell {
         
         // Handle http: tap
         textPost.urlLinkTapHandler = { label, handle, range in
-            
-            // Open url
-            let url = URL(string: handle)
-            UIApplication.shared.openURL(url!)
+            // MARK: - SwiftWebVC
+            let webVC = SwiftModalWebVC(urlString: handle)
+            self.delegate?.present(webVC, animated: true, completion: nil)
         }
     }
 
