@@ -264,61 +264,64 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeView
     // MARK: - SwipeView
     func numberOfItems(in swipeView: SwipeView) -> Int {
         //return the total number of items in the carousel
-        return 5
+        return 4
     }
     
     func swipeView(_ swipeView: SwipeView, viewForItemAt index: Int, reusing view: UIView) -> UIView? {
-        
+        // Add tap gesture for all indecies to add a caption
         view.addGestureRecognizer(tapGesture)
+        
+        // Configure time for first filter
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
+        let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
+        time.textColor = UIColor.white
+        time.layer.shadowColor = UIColor.black.cgColor
+        time.layer.shadowOffset = CGSize(width: 1, height: 1)
+        time.layer.shadowRadius = 3
+        time.layer.shadowOpacity = 0.5
+        time.text = "\(timeFormatter.string(from: NSDate() as Date))"
+        time.textAlignment = .center
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        time.layer.render(in: UIGraphicsGetCurrentContext()!)
         
         if index == 0 {
             view.subviews.forEach({ $0.removeFromSuperview() })
             view.backgroundColor = UIColor.clear
-        } else if index == 1 {
+        }
+        
+        if index == 1 {
             view.subviews.forEach({ $0.removeFromSuperview() })
-            // Configure time
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-            time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
-            time.textColor = UIColor.white
-            time.layer.shadowColor = UIColor.black.cgColor
-            time.layer.shadowOffset = CGSize(width: 1, height: 1)
-            time.layer.shadowRadius = 3
-            time.layer.shadowOpacity = 0.5
-            time.text = "\(timeFormatter.string(from: NSDate() as Date))"
-            time.textAlignment = .center
-            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-            time.layer.render(in: UIGraphicsGetCurrentContext()!)
             view.backgroundColor = UIColor.clear
             view.addSubview(time)
-        } else if index == 2 {
+        }
+        
+        if index == 2 {
             view.subviews.forEach({ $0.removeFromSuperview() })
             view.backgroundColor = UIColor(patternImage: UIImage(named: "HardLight")!)
-        } else if index == 3 {
+        }
+        
+        if index == 3 {
             view.subviews.forEach({ $0.removeFromSuperview() })
             view.backgroundColor = UIColor(patternImage: UIImage(named: "Cotton")!)
-        } else if index == 4 {
-            view.subviews.forEach({ $0.removeFromSuperview() })
-            
-            let openGLContext = EAGLContext(api: .openGLES2)
-            let context = CIContext(eaglContext: openGLContext!)
-            let cgImage = stillImages.last!.cgImage
-            let coreImage = CIImage(cgImage: cgImage!)
-            
-            let filter = CIFilter(name: "CIComicEffect")
-            filter?.setValue(coreImage, forKey: kCIInputImageKey)
-//            filter?.setValue(1, forKey: kCIInputIntensityKey)
-            var result: UIImage?
-            if let output = filter?.value(forKey: kCIOutputImageKey) as? CIImage {
-                let cgimgresult = context.createCGImage(output, from: output.extent)
-                result = UIImage(cgImage: cgimgresult!)
-            }
-            
-            // 7 - set filtered image to array
-            self.view.backgroundColor = UIColor(patternImage: result!)
-            
         }
+//        } else if index == 4 {
+//            view.subviews.forEach({ $0.removeFromSuperview() })
+//            
+//            let openGLContext = EAGLContext(api: .openGLES2)
+//            let context = CIContext(eaglContext: openGLContext!)
+//            let cgImage = stillImages.last!.cgImage
+//            let coreImage = CIImage(cgImage: cgImage!)
+//            
+//            let filter = CIFilter(name: "CIComicEffect")
+//            filter?.setValue(coreImage, forKey: kCIInputImageKey)
+//            var result: UIImage?
+//            let cgimgresult = context.createCGImage(filter?.value(forKey: kCIOutputImageKey) as! CIImage, from: (filter?.value(forKey: kCIOutputImageKey) as! CIImage).extent)
+//            result = UIImage(cgImage: cgimgresult!)
+//            
+//            self.view.backgroundColor = UIColor(patternImage: result!)
+//        }
 
         return view
     }

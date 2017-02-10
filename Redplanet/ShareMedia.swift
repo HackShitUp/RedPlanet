@@ -120,10 +120,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     func zoom(sender: AnyObject) {
         
         if mediaType == "photo" {
-            
             // Mark: - Agrume
-            let agrume = Agrume(image: self.mediaAsset.image!)
-            agrume.statusBarStyle = UIStatusBarStyle.lightContent
+            let agrume = Agrume(image: self.mediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
             agrume.showFrom(self)
         } else {
             

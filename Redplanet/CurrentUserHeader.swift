@@ -97,8 +97,8 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
             }
         } else {
             // Mark: - Agrume
-            let agrume = Agrume(image: self.myProPic.image!)
-            agrume.statusBarStyle = UIStatusBarStyle.lightContent
+            let agrume = Agrume(image: self.myProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
+            agrume.hideStatusBar = true
             agrume.showFrom(self.delegate!.self)
         }
         

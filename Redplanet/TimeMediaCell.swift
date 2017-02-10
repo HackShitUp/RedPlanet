@@ -578,8 +578,7 @@ class TimeMediaCell: UITableViewCell {
     // Function to zoom
     func zoom(sender: AnyObject) {
         // Mark: - Agrume
-        let agrume = Agrume(image: self.mediaAsset.image!)
-        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        let agrume = Agrume(image: self.mediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
         agrume.showFrom(self.delegate!.self)
     }
 

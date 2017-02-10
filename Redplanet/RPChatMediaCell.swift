@@ -33,7 +33,7 @@ class RPChatMediaCell: UITableViewCell {
     // Function to zoom
     func zoom() {
         // Mark: - Agrume
-        let agrume = Agrume(image: self.rpMediaAsset.image!)
+        let agrume = Agrume(image: self.rpMediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
         agrume.showFrom(self.delegate!.self)
     }
     

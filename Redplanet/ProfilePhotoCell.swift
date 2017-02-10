@@ -39,10 +39,8 @@ class ProfilePhotoCell: UITableViewCell {
 
     // Function to zoom
     func zoom(sender: AnyObject) {
-        
         // Mark: - Agrume
-        let agrume = Agrume(image: self.rpUserProPic.image!)
-        agrume.statusBarStyle = UIStatusBarStyle.lightContent
+        let agrume = Agrume(image: self.rpUserProPic.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
         agrume.showFrom(self.delegate!.self)
     }
     
