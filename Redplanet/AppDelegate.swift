@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             if (pushToken != nil) {
-                print("pushToken:%@", pushToken)
+                print("pushToken:%@", pushToken ?? "")
             }
         })
     }
@@ -429,7 +429,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
             
-            
             // (1) Get user's birthday
             // MONTH DATE
             // 6 Characters Total
@@ -438,12 +437,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
             let finalBday = usersBirthday[r]
             
-            
             // (2) Change String to Date
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MMM dd"
             let birthDate = dateFormatter.date(from: finalBday) // Date()
-            
 
             // (3) Set up today's date as string
             let date = Date()
@@ -451,25 +448,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             formatter.dateFormat = "MMM dd"
             let todayString = formatter.string(from: date)  // String
             
-            
             // (4) Convert todayString to Date()
             let todayFormat = DateFormatter()
             todayFormat.dateFormat = "MMM dd"
             let today = todayFormat.date(from: todayString)
-            
 
-            print("TODAY: \(today)")
-            print("BDAY: \(birthDate)")
-            
             if today == birthDate {
-                
                 // Save Bool for BirthdayHappened
                 let bdayOccured = UserDefaults.standard.bool(forKey: "BirthdayHappened")
                 if bdayOccured == false {
                     // Save
                     UserDefaults.standard.set(true, forKey: "BirthdayHappened")
                 }
-                
                 
                 // HAPPY BIRTHDAY
                 let alert = UIAlertController(title: "🎂 🎊 🎉\nHappy Birthday \(PFUser.current()!.username!.uppercased())",
@@ -495,26 +485,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 
                                             }
                                         }
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
                 })
-                
                 
                 alert.addAction(ok)
                 alert.view.tintColor = UIColor.black
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
-                
-                
+
             } else {
                 // Save
                 UserDefaults.standard.set(false, forKey: "BirthdayHappened")
             }
-            
-            
         }
  
 

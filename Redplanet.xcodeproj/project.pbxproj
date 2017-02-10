@@ -57,8 +57,8 @@
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */; };
 		7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */; };
-		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; };
-		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; };
+		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
 		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };

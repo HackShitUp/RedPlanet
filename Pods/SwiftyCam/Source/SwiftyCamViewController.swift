@@ -685,10 +685,10 @@ open class SwiftyCamViewController: UIViewController {
     
     fileprivate func processPhoto(_ imageData: Data) -> UIImage {
         let dataProvider = CGDataProvider(data: imageData as CFData)
-        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.defaultIntent)
+        let cgImageRef = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: CGColorRenderingIntent.perceptual)
         
         var image: UIImage!
-        
+
         // Set proper orientation for photo
         // If camera is currently set to front camera, flip image
         
@@ -698,6 +698,7 @@ open class SwiftyCamViewController: UIViewController {
         case .rear:
             image = UIImage(cgImage: cgImageRef!, scale: 1.0, orientation: .right)
         }
+        
         return image
     }
     
@@ -851,10 +852,9 @@ open class SwiftyCamViewController: UIViewController {
         }
         
         do{
-            //            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-            //                                                            with: [.duckOthers, .defaultToSpeaker])
+            
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.mixWithOthers])
+                                                            with: .mixWithOthers)
             
             session.automaticallyConfiguresApplicationAudioSession = false
         }

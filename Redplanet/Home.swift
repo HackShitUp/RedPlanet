@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AVFoundation
 import SwipeNavigationController
 
 class Home: UIViewController, UINavigationControllerDelegate {
@@ -71,6 +72,14 @@ class Home: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Set Audio
+        do {
+            // Reset audio to allo videos to be played
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+                                                            with: [.duckOthers, .defaultToSpeaker])
+        } catch {
+            print("[SwiftyCam]: Failed to set background audio preference")
+        }
         // Show statusBar, hide navigation bar, show tab bar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default

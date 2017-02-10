@@ -22,7 +22,7 @@ import SwipeNavigationController
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, PlayerDelegate {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, PlayerDelegate {
     
     // MARK: - Player
     var player: Player!
@@ -204,6 +204,16 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         UIApplication.shared.setStatusBarHidden(true, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
         
+        // Set Audio
+        do {
+            // Reset audio to allo videos to be played
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+                                                            with: [.duckOthers, .defaultToSpeaker])
+        } catch {
+            print("[SwiftyCam]: Failed to set background audio preference")
+        }
+        
+        
         // Execute if array isn't empty
         if !capturedURLS.isEmpty {
             // Compress Video berfore viewDidLoad()
@@ -239,13 +249,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
         }
 
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
+
     // Function to Play & Pause
     func control() {
         if self.player.playbackState == .paused {
@@ -271,6 +275,24 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             }
         }
     }
+    
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        if position == .bottom {
+            _ = self.navigationController?.popViewController(animated: false)
+        }
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -292,6 +314,7 @@ class CapturedVideo: UIViewController, PlayerDelegate {
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
+            self.containerSwipeNavigationController?.delegate = self
             
             // Add tap methods for..
             // Pause and Play
