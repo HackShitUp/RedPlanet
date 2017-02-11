@@ -309,8 +309,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     // MARK: - SNTextField
     fileprivate func setupTextField() {
-        self.view.addSubview(textField)
         self.tapGesture.delegate = self
+        self.filterView.addSubview(textField)
         self.filterView.addGestureRecognizer(tapGesture)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self.textField, selector: #selector(SNTextField.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)

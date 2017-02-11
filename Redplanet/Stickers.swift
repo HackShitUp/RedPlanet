@@ -21,25 +21,8 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         _ = self.navigationController?.popViewController(animated: false)
     }
 
-    let stickers = ["Watermelon.png",
-                    "Sun.png",
-                    "strawberry.png",
-                    "Shake.png",
+    let stickers = ["Sun.png",
                     "Pineapple.png",
-                    "milk.png",
-                    "IceCreamCone.png",
-                    "ice-cream.png",
-                    "corn.png",
-                    "cookie.png",
-                    "coffee-cup.png",
-                    "chocolate.png",
-                    "chili-pepper.png",
-                    "cherry.png",
-                    "cheese.png",
-                    "carrot.png",
-                    "broccoli.png",
-                    "bananas.png",
-                    "apple.png",
                         "9.png",
                         "10.png",
                         "11.png",
@@ -72,13 +55,6 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
                         "3018646.png",
                         "3018638.png",
                         "3018637.png",
-                        "2318568.png",
-                        "2318559.png",
-                        "2318556.png",
-                        "2318551.png",
-                        "2318546.png",
-                        "2318540.png",
-                        "2318537.png",
                         ]
     
     
@@ -87,7 +63,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
