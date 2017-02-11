@@ -30,11 +30,8 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
     
     // Function to fetch videos
     func fetchVideos() {
-        print("Fired")
-        
         // Clear assets array
         self.videoAssets.removeAll(keepingCapacity: false)
-        
         
         // Options for fetching assets
         let options = PHFetchOptions()

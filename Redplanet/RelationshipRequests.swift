@@ -209,8 +209,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // Function to swithc sourec
     func switchSource(sender: UISegmentedControl) -> Int {
         
-        print("Fired")
-        
         if sender.selectedSegmentIndex == 0 {
             // Friends
             fetchFriends()

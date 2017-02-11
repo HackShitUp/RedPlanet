@@ -1574,7 +1574,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhX-5t-KRY" id="JY8-ZS-aNZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bv-4b-9zT">
@@ -4430,31 +4430,6 @@
                                     <constraint firstAttribute="width" constant="375" id="V8A-lC-kWA"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2S-al-bxi" customClass="SwipeView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
-                                        <rect key="frame" x="298" y="20" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="Marker Pen Filled"/>
-                                        <connections>
-                                            <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
-                                        <rect key="frame" x="257" y="20" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="Download"/>
-                                        <connections>
-                                            <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="667" id="IpE-JW-oOc"/>
-                                    <constraint firstAttribute="width" constant="375" id="fIf-bh-j2a"/>
-                                </constraints>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s65-ak-j9e">
                                 <rect key="frame" x="20" y="20" width="20" height="20"/>
                                 <constraints>
@@ -4485,6 +4460,14 @@
                                     <action selector="text:" destination="oby-Mu-zdT" eventType="touchUpInside" id="IUw-7d-0q8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
+                                <rect key="frame" x="301" y="20" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Marker Pen Filled"/>
+                                <connections>
+                                    <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fui-fV-1S5">
                                 <rect key="frame" x="191" y="15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -4501,19 +4484,23 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbn-Va-JDg">
+                                <rect key="frame" x="268" y="18" width="25" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="Download"/>
+                                <connections>
+                                    <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="IHD-kG-Qo1" firstAttribute="top" secondItem="JEK-5d-Z64" secondAttribute="top" id="9vL-BK-0oT"/>
-                            <constraint firstAttribute="trailing" secondItem="K2S-al-bxi" secondAttribute="trailing" id="BSC-ni-qHf"/>
                             <constraint firstItem="IHD-kG-Qo1" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" id="CAN-jT-s30"/>
                             <constraint firstItem="s65-ak-j9e" firstAttribute="top" secondItem="k0n-4m-K7z" secondAttribute="bottom" constant="20" id="DiQ-D4-5IM"/>
                             <constraint firstAttribute="trailing" secondItem="KuK-8b-F8c" secondAttribute="trailing" constant="16" id="Jxy-7e-msK"/>
                             <constraint firstItem="s65-ak-j9e" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" constant="20" id="QY3-Vc-Nui"/>
-                            <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="K2S-al-bxi" secondAttribute="bottom" id="Qw6-EV-o5v"/>
-                            <constraint firstItem="K2S-al-bxi" firstAttribute="leading" secondItem="JEK-5d-Z64" secondAttribute="leading" id="TQG-Np-gOd"/>
                             <constraint firstAttribute="trailing" secondItem="IHD-kG-Qo1" secondAttribute="trailing" id="YwZ-Eo-d8h"/>
-                            <constraint firstItem="K2S-al-bxi" firstAttribute="top" secondItem="k0n-4m-K7z" secondAttribute="bottom" id="gfX-en-X7W"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="IHD-kG-Qo1" secondAttribute="bottom" id="nHY-SK-d0E"/>
                             <constraint firstItem="cXV-3z-QD0" firstAttribute="top" secondItem="KuK-8b-F8c" secondAttribute="bottom" constant="20" id="tzq-Xp-FE1"/>
                             <constraint firstItem="IHD-kG-Qo1" firstAttribute="centerX" secondItem="JEK-5d-Z64" secondAttribute="centerX" id="vth-hG-KsD"/>
@@ -4525,7 +4512,6 @@
                         <outlet property="completeButton" destination="fui-fV-1S5" id="8R4-Pl-4aB"/>
                         <outlet property="continueButton" destination="KuK-8b-F8c" id="dId-SI-bFO"/>
                         <outlet property="drawButton" destination="Ulw-zq-86o" id="SIn-bg-O6X"/>
-                        <outlet property="filterView" destination="K2S-al-bxi" id="dXw-MU-rjb"/>
                         <outlet property="leaveButton" destination="s65-ak-j9e" id="hgn-oV-AsG"/>
                         <outlet property="saveButton" destination="Fbn-Va-JDg" id="cMn-xU-pms"/>
                         <outlet property="stillPhoto" destination="IHD-kG-Qo1" id="KO7-JQ-7zq"/>

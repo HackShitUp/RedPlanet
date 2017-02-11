@@ -89,7 +89,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 self.fetchPosts()
                 
             } else {
-                if (error?.localizedDescription.hasSuffix("offline."))! {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }
@@ -144,7 +144,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
 
             } else {
-                if (error?.localizedDescription.hasSuffix("offline."))! {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }

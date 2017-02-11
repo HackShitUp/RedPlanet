@@ -18,7 +18,7 @@ class MasterTab: UITabBarController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Create corner radius
+        // Create corner radiuss
         self.view.layer.cornerRadius = 7.50
         self.view.clipsToBounds = true
         

@@ -6,19 +6,12 @@
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
 
-
-
-
 /*
  F U T U R E    P R O D U C T   F E A T U R E S
   • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
  • Best Friends - Let people choose their top 3 best friends.
-*/
 
-
-
-
-/*
+ 
                                                             How does it feel?
  
                                                             How does it feel?
@@ -29,11 +22,7 @@
  
                                                             Like a rolling stone ?
  
- */
 
-
-/*
- 
 YELLOW:
 • UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
  
@@ -53,11 +42,8 @@ LIGHT GREY
 • UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
  
 
- 
- F R A M E W O R K S    T O     L O O K     A T
+ // FRAMEWORKS
  • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
- • CIRCULAR CROP: https://github.com/ruslanskorb/RSKImageCropper
- 
 */
 
 
@@ -173,7 +159,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
+            // Set App ID
             Heap.setAppId("3455525110");
+            // Track Who Opens the App
+            Heap.track("AppOpen", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Attach a unique identifier to user
+            Heap.identify("\(PFUser.current()!.objectId!)")
+            Heap.addUserProperties([
+                "UserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "Email": "\(PFUser.current()!.email!)"
+                ])
+            
             #if DEBUG
                 Heap.enableVisualizer();
             #endif
@@ -263,8 +263,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //        self.saveContext()
     }
-    
-    
     
     
     

@@ -114,7 +114,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 }
                 
             } else {
-                if (error?.localizedDescription.hasSuffix("offline."))! {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }
             }

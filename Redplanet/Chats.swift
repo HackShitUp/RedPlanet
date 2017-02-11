@@ -114,10 +114,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 
                 
             } else {
-                if (error?.localizedDescription.hasSuffix("offline."))! {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }
-
             }
             
             // Reload data
@@ -335,7 +335,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                 self.queryChats()
                                                 
                                             } else {
-                                                if (error?.localizedDescription.hasSuffix("offline."))! {
+                                                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                                                    // MARK: - SVProgressHUD
                                                     SVProgressHUD.dismiss()
                                                 }
                                                 
@@ -701,7 +702,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     self.queryChats()
                     
                 } else {
-                    if (error?.localizedDescription.hasSuffix("offline."))! {
+                    if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                        // MARK: - SVProgressHUD
                         SVProgressHUD.dismiss()
                     }
                     

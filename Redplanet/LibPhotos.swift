@@ -30,12 +30,9 @@ class LibPhotos: UICollectionViewController, UINavigationControllerDelegate {
     
     
     // Function to fetch photos
-    func fetchPhotos() {
-        print("Fired")
-        
+    func fetchPhotos() {        
         // Clear assets array
         self.photoAssets.removeAll(keepingCapacity: false)
-        
         
         // Options for fetching assets
         let options = PHFetchOptions()

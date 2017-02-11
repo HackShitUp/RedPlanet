@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 import SwipeNavigationController
 
-
 class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
     
@@ -55,12 +54,19 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 chats["receiver"] = PFUser.current()!
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
-                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet.🎉🦄😇\n@josh @jakec14 @favbot @nash1aan @xandyy"
+                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet.🎉🦄😇\n@josh @jakec14 @favbot @nash1aan"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
                         // Show main interface once succeeded
                         self.showMain()
+                        
+                        // MARK: - HEAP Analytics
+                        // Track who signed up
+                        Heap.track("SignedUp", withProperties:
+                            ["byUserId": "\(PFUser.current()!.objectId!)",
+                                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                            ])
                     } else {
                         print(error?.localizedDescription as Any)
                     }
