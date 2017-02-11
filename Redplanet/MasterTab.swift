@@ -27,7 +27,6 @@ class MasterTab: UITabBarController {
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()

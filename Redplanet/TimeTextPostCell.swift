@@ -125,12 +125,29 @@ class TimeTextPostCell: UITableViewCell {
                                                 object.deleteInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                        
-                                                        // Reload data
-                                                        self.reloadData()
-                                                        
+                                                        // Delete all Notifications
+                                                        let notifications = PFQuery(className: "Notifications")
+                                                        notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+                                                        notifications.findObjectsInBackground(block: {
+                                                            (objects: [PFObject]?, error: Error?) in
+                                                            if error == nil {
+                                                                for object in objects! {
+                                                                    object.deleteEventually()
+                                                                }
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                                
+                                                                // Reload data
+                                                                self.reloadData()
+                                                                
+                                                                // Pop view controller
+                                                                _ = self.delegate?.popViewController(animated: true)
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showError(withStatus: "Error")
+                                                            }
+                                                        })
                                                     } else {
                                                         print(error?.localizedDescription as Any)
                                                         // MARK: - SVProgressHUD
