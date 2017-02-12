@@ -76,6 +76,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
         } else {
             
+            // Disable button
+            self.shareButton.isUserInteractionEnabled = false
+            self.shareButton.isEnabled = false
+            
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["byUser"]  = PFUser.current()!
             newsfeeds["username"] = PFUser.current()!.username!
@@ -84,17 +88,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    print("Saved \(newsfeeds)")
                     
-                    
+                    // Enable button
+                    self.shareButton.isUserInteractionEnabled = true
+                    self.shareButton.isEnabled = true
                     
                     // Check for hashtags
                     // and user mentions
-                    let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-                    
-                    
-                    // Define #word
-                    for var word in words {
+                    for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                         
                         
                         // #####################
@@ -157,9 +158,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                                             (success: Bool, error: Error?) in
                                             if success {
                                                 
-                                                print("Successfully sent notification: \(notifications)")
-                                                
-                                                
                                                 // If user's apnsId is not nil
                                                 if object["apnsId"] != nil {
                                                     // MARK: - OneSignal
@@ -173,9 +171,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                                                         ]
                                                     )
                                                 }
-
-                                                
-                                                
                                                 
                                             } else {
                                                 print(error?.localizedDescription as Any)
@@ -265,9 +260,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         characterCount.text = String(remainingCharacters)
     }
-    
-    
-    
 
 
     // MARK: - UITextView delegate methods

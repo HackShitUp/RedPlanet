@@ -12,7 +12,19 @@ open class SNFilter: UIImageView {
     
     // Full list of filters available here : https://developer.apple.com/library/tvos/documentation/GraphicsImaging/Reference/CoreImageFilterReference/index.html
     // Nothing, Time, Light, Cotton,
-    open static let filterNameList = ["nil", "nil", "nil", "nil", "CIPhotoEffectMono", "CIPhotoEffectChrome", "CIComicEffect"]
+//    open static let filterNameList = ["nil", "nil", "nil", "nil", "CIPhotoEffectMono", "CIPhotoEffectChrome", "CIColorControls", "CIComicEffect"]
+    // NOTHING
+    // TIME STAMP
+    // FILTER
+    // FILTER
+    // COREIMAGE
+    open static let filterNameList = ["nil",                    // Nothing
+                                      "nil",                    // Time Stamp
+                                      "nil",                    // Filter
+                                      "nil",                    // Filter
+                                      "CIPhotoEffectMono",      // CIPhotoEffectMono
+                                      "CIComicEffect"          // CIComicEffect
+                                      ]
     open var name:String?
     var stickers = [SNSticker]()
     

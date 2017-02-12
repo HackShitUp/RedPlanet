@@ -296,8 +296,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // Add filter
         self.data = SNFilter.generateFilters(SNFilter(frame: self.filterView.frame, withImage: image), filters: SNFilter.filterNameList)
+        // NOTHING
+        // TIME
         self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: img!, atZPosition: 0))
+        // HARDLIGHT
         self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "HardLight")!, atZPosition: 2))
+        // COTTON
         self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.stillPhoto.frame.size.width, height: self.stillPhoto.frame.size.height), image: UIImage(named: "Cotton")!, atZPosition: 2))
     }
     
