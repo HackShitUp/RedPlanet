@@ -548,13 +548,13 @@
 			name = Share;
 			sourceTree = "<group>";
 		};
-		7E35A3B01E4154CE0007EB99 /* VideoCell */ = {
+		7E35A3B01E4154CE0007EB99 /* TimeVideoCell */ = {
 			isa = PBXGroup;
 			children = (
 				7E35A3AC1E4151110007EB99 /* TimeVideoCell.swift */,
 				7E35A3AD1E4151110007EB99 /* TimeVideoCell.xib */,
 			);
-			name = VideoCell;
+			name = TimeVideoCell;
 			sourceTree = "<group>";
 		};
 		7E35A3B51E4167670007EB99 /* ProPicCell */ = {
@@ -607,10 +607,10 @@
 			isa = PBXGroup;
 			children = (
 				7E7E92DE1E3DAE4200E3C8EA /* EphemeralCell */,
-				7E7E92DF1E3DAE4A00E3C8EA /* TextPostCell */,
-				7E7E92E01E3DAE5600E3C8EA /* MediaCell */,
+				7E7E92DF1E3DAE4A00E3C8EA /* TimeTextPostCell */,
+				7E7E92E01E3DAE5600E3C8EA /* TimeMediaCell */,
 				7E35A3B51E4167670007EB99 /* ProPicCell */,
-				7E35A3B01E4154CE0007EB99 /* VideoCell */,
+				7E35A3B01E4154CE0007EB99 /* TimeVideoCell */,
 			);
 			name = "NIB: POSTS";
 			sourceTree = "<group>";
@@ -828,22 +828,22 @@
 			name = EphemeralCell;
 			sourceTree = "<group>";
 		};
-		7E7E92DF1E3DAE4A00E3C8EA /* TextPostCell */ = {
+		7E7E92DF1E3DAE4A00E3C8EA /* TimeTextPostCell */ = {
 			isa = PBXGroup;
 			children = (
 				7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */,
 				7EECEE5F1E3C42EA003FA134 /* TimeTextPostCell.xib */,
 			);
-			name = TextPostCell;
+			name = TimeTextPostCell;
 			sourceTree = "<group>";
 		};
-		7E7E92E01E3DAE5600E3C8EA /* MediaCell */ = {
+		7E7E92E01E3DAE5600E3C8EA /* TimeMediaCell */ = {
 			isa = PBXGroup;
 			children = (
 				7EECEE621E3C42F7003FA134 /* TimeMediaCell.swift */,
 				7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */,
 			);
-			name = MediaCell;
+			name = TimeMediaCell;
 			sourceTree = "<group>";
 		};
 		7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */ = {

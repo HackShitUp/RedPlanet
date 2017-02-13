@@ -345,20 +345,15 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             // Set image
             // photo selected from UIImagePickerController
             self.mediaAsset.image = shareImageAssets.last!
-            
         } else {
             // VIDEO
-            // Get video thumbnail
-            do {
-                let asset = AVURLAsset(url: instanceVideoData!, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.appliesPreferredTrackTransform = true
-                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                self.mediaAsset.image = UIImage(cgImage: cgImage)
-                
-            } catch let error {
-                print("*** Error generating thumbnail: \(error.localizedDescription)")
-            }
+            // Load Video Preview and Play Video
+            let player = AVPlayer(url: instanceVideoData!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.mediaAsset.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.mediaAsset.contentMode = .scaleAspectFit
+            self.mediaAsset.layer.addSublayer(playerLayer)
         }
         
         

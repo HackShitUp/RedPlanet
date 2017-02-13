@@ -256,6 +256,12 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Configure initial setup for time
+        let from = self.posts[indexPath.row].createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
             // TEXT POST ******************************************************************************************************
@@ -276,7 +282,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
+            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -288,10 +294,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 tpCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -416,7 +418,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
+            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -456,20 +458,12 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     
                 } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                     // VIDEO MOMENT
-                    let videoUrl = NSURL(string: videoFile.url!)
-                    do {
-                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                        let imgGenerator = AVAssetImageGenerator(asset: asset)
-                        imgGenerator.appliesPreferredTrackTransform = true
-                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        DispatchQueue.main.async {
-                            eCell.iconicPreview.image = UIImage(cgImage: cgImage)
-                            // MARK: - SDWebImage
-                            eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                        }
-                    } catch let error {
-                        print("*** Error generating thumbnail: \(error.localizedDescription)")
-                    }
+                    let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                    let playerLayer = AVPlayerLayer(player: player)
+                    playerLayer.frame = eCell.iconicPreview.bounds
+                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                    eCell.iconicPreview.contentMode = .scaleAspectFit
+                    eCell.iconicPreview.layer.addSublayer(playerLayer)
                 }
                 
                 // (5B) SPACE POST
@@ -505,7 +499,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
+            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -533,10 +527,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             }
             
             // (6) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 mCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -661,7 +651,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
+            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             otherObject.append(self.posts[indexPath.row].value(forKey: "byUser") as! PFUser)
@@ -697,10 +687,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             }
             
             // (6) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 ppCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -823,7 +809,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).username!.lowercased()
+            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -848,21 +834,15 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.videoPreview.sd_setShowActivityIndicatorView(true)
                 vCell.videoPreview.sd_setIndicatorStyle(.gray)
                 
-                do {
-                    let asset = AVURLAsset(url: URL(string: videoFile.url!)!, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    vCell.videoPreview.contentMode = .scaleAspectFill
-                    DispatchQueue.main.async {
-                        vCell.videoPreview.image = UIImage(cgImage: cgImage)
-                        // MARK: - SDWebImage
-                        vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                    }
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = vCell.videoPreview.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                vCell.videoPreview.contentMode = .scaleAspectFit
+                vCell.videoPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
             }
             
             // (5) Handle caption (text post) if it exists
@@ -872,11 +852,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.textPost.isHidden = true
             }
             
-            // (6) Set time
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+            // (6) SET TIME
             if difference.second! <= 0 {
                 vCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {

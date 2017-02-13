@@ -14,7 +14,6 @@ import MobileCoreServices
 import Photos
 import PhotosUI
 
-
 import Parse
 import ParseUI
 import Bolts
@@ -1094,35 +1093,33 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         
                     } else {
                         // Get media preview
-                        if let video = object!["videoAsset"] as? PFFile {
+                        if let videoFile = object!["videoAsset"] as? PFFile {
+                        // VIDEO
+                            // LayoutViews
+                            mCell.rpMediaAsset.layoutIfNeeded()
+                            mCell.rpMediaAsset.layoutSubviews()
+                            mCell.rpMediaAsset.setNeedsLayout()
+                            
+                            // Make Vide Preview Circular
+                            mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                            mCell.rpMediaAsset.layer.borderWidth = 3.50
                             // MARK: - SDWebImage
                             mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
                             mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
                             
-                            // Make circular
-                            mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                            mCell.rpMediaAsset.layer.borderWidth = 1.75
-                            
-                            let videoURL = URL(string: video.url!)
-                            do {
-                                let asset = AVURLAsset(url: videoURL!, options: nil)
-                                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                                imgGenerator.appliesPreferredTrackTransform = true
-                                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                                mCell.rpMediaAsset.image = UIImage(cgImage: cgImage)
-                                // MARK: - SDWebImage
-                                mCell.rpMediaAsset.sd_setImage(with: videoURL!, placeholderImage: mCell.rpMediaAsset.image)
-                            } catch let error {
-                                print("*** Error generating thumbnail: \(error.localizedDescription)")
-                                // MARK: - SDWebImage
-                                mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
-                                mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
-                            }
-
+                            // Load Video Preview and Play Video
+                            let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                            let playerLayer = AVPlayerLayer(player: player)
+                            playerLayer.frame = mCell.rpMediaAsset.bounds
+                            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                            mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                            mCell.rpMediaAsset.layer.addSublayer(playerLayer)
+                            player.isMuted = true
+                            player.isMuted = true
+                            player.play()
                         }
                     }
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }

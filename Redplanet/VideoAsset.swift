@@ -327,18 +327,15 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Get video preview
         if let videoFile = videoObject.last!["videoAsset"] as? PFFile {
-            let videoUrl = NSURL(string: videoFile.url!)
-            do {
-                let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                let imgGenerator = AVAssetImageGenerator(asset: asset)
-                imgGenerator.appliesPreferredTrackTransform = true
-                let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                cell.videoPreview.image = UIImage(cgImage: cgImage)
-                // MARK: - SDWebImage
-                cell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: cell.videoPreview.image)
-            } catch let error {
-                print("*** Error generating thumbnail: \(error.localizedDescription)")
-            }
+            // Load Video Preview and Play Video
+            let player = AVPlayer(url: URL(string: videoFile.url!)!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = cell.videoPreview.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            cell.videoPreview.contentMode = .scaleAspectFit
+            cell.videoPreview.layer.addSublayer(playerLayer)
+            player.isMuted = true
+            player.play()
         }
         
         

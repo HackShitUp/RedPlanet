@@ -425,18 +425,14 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             
             // (B) Fetch Video Thumbnail
-            if let video = spaceObject.last!.value(forKey: "videoAsset") as? PFFile {
-                let videoUrl = NSURL(string: video.url!)
-                do {
-                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    cell.mediaAsset.image = UIImage(cgImage: cgImage)
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+            if let videoFile = spaceObject.last!.value(forKey: "videoAsset") as? PFFile {
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = cell.mediaAsset.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                cell.mediaAsset.contentMode = .scaleAspectFit
+                cell.mediaAsset.layer.addSublayer(playerLayer)
             }
             
             // (C) Configure textPost

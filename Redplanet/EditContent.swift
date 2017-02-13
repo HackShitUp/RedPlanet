@@ -566,19 +566,29 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             self.mediaAsset.addGestureRecognizer(zoomTap)
             
         } else {
-            // Video
+        // VIDEO
+            // Get media preview
             if let videoFile = editObjects.last!.value(forKeyPath: "videoAsset") as? PFFile {
-                let videoUrl = NSURL(string: videoFile.url!)
-                do {
-                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    self.mediaAsset.image = UIImage(cgImage: cgImage)
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+                // LayoutViews
+                self.mediaAsset.layoutIfNeeded()
+                self.mediaAsset.layoutSubviews()
+                self.mediaAsset.setNeedsLayout()
+                
+                // Make Vide Preview Circular
+                self.mediaAsset.layer.cornerRadius = self.mediaAsset.frame.size.width/2
+                self.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                self.mediaAsset.layer.borderWidth = 3.50
+                // MARK: - SDWebImage
+                self.mediaAsset.sd_setShowActivityIndicatorView(true)
+                self.mediaAsset.sd_setIndicatorStyle(.gray)
+                
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = self.mediaAsset.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                self.mediaAsset.contentMode = .scaleAspectFit
+                self.mediaAsset.layer.addSublayer(playerLayer)
             }
             
             // Add Video preview method tap

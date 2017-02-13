@@ -518,22 +518,27 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.mediaAsset.contentMode = .scaleAspectFill
                 cell.mediaAsset.isHidden = false
                 cell.mediaAsset.clipsToBounds = true
-                
+
                 // (B) Fetch video thumbnail
-                if let video = sharedObject.last!.value(forKey: "videoAsset") as? PFFile {
-                    let videoUrl = NSURL(string: video.url!)
-                    do {
-                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                        let imgGenerator = AVAssetImageGenerator(asset: asset)
-                        imgGenerator.appliesPreferredTrackTransform = true
-                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        cell.mediaAsset.image = UIImage(cgImage: cgImage)
-                        
-                    } catch let error {
-                        print("*** Error generating thumbnail: \(error.localizedDescription)")
-                    }
+                if let videoFile = sharedObject.last!.value(forKey: "videoAsset") as? PFFile {
+                // VIDEO
+                    // LayoutViews
+                    cell.mediaAsset.layoutIfNeeded()
+                    cell.mediaAsset.layoutSubviews()
+                    cell.mediaAsset.setNeedsLayout()
+                    
+                    // MARK: - SDWebImage
+                    cell.mediaAsset.sd_setShowActivityIndicatorView(true)
+                    cell.mediaAsset.sd_setIndicatorStyle(.gray)
+                    
+                    // Load Video Preview and Play Video
+                    let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                    let playerLayer = AVPlayerLayer(player: player)
+                    playerLayer.frame = cell.mediaAsset.bounds
+                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                    cell.mediaAsset.contentMode = .scaleAspectFit
+                    cell.mediaAsset.layer.addSublayer(playerLayer)
                 }
-                
                 
                 // (C) Configure Text
                 cell.textPost.isHidden = false
@@ -591,20 +596,25 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     cell.mediaAsset.contentMode = .scaleAspectFill
                     cell.mediaAsset.isHidden = false
                     cell.mediaAsset.clipsToBounds = true
-                    
+
                     // (B) Fetch video thumbnail
-                    if let video = content["videoAsset"] as? PFFile {
-                        let videoUrl = NSURL(string: video.url!)
-                        do {
-                            let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                            let imgGenerator = AVAssetImageGenerator(asset: asset)
-                            imgGenerator.appliesPreferredTrackTransform = true
-                            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                            cell.mediaAsset.image = UIImage(cgImage: cgImage)
-                            
-                        } catch let error {
-                            print("*** Error generating thumbnail: \(error.localizedDescription)")
-                        }
+                    if let videoFile = content["videoAsset"] as? PFFile {
+                        // LayoutViews
+                        cell.mediaAsset.layoutIfNeeded()
+                        cell.mediaAsset.layoutSubviews()
+                        cell.mediaAsset.setNeedsLayout()
+                        
+                        // MARK: - SDWebImage
+                        cell.mediaAsset.sd_setShowActivityIndicatorView(true)
+                        cell.mediaAsset.sd_setIndicatorStyle(.gray)
+                        
+                        // Load Video Preview and Play Video
+                        let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                        let playerLayer = AVPlayerLayer(player: player)
+                        playerLayer.frame = cell.mediaAsset.bounds
+                        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                        cell.mediaAsset.contentMode = .scaleAspectFit
+                        cell.mediaAsset.layer.addSublayer(playerLayer)
                     }
                     
                     

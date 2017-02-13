@@ -270,6 +270,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // Configure initial setup for time
+        let from = self.posts[indexPath.row].createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
             // TEXT POST ******************************************************************************************************
@@ -302,10 +308,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 tpCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -470,20 +472,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     
                 } else if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                     // VIDEO MOMENT
-                    let videoUrl = NSURL(string: videoFile.url!)
-                    do {
-                        let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                        let imgGenerator = AVAssetImageGenerator(asset: asset)
-                        imgGenerator.appliesPreferredTrackTransform = true
-                        let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                        DispatchQueue.main.async {
-                            eCell.iconicPreview.image = UIImage(cgImage: cgImage)
-                            // MARK: - SDWebImage
-                            eCell.iconicPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                        }
-                    } catch let error {
-                        print("*** Error generating thumbnail: \(error.localizedDescription)")
-                    }
+                    let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                    let playerLayer = AVPlayerLayer(player: player)
+                    playerLayer.frame = eCell.iconicPreview.bounds
+                    playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                    eCell.iconicPreview.contentMode = .scaleAspectFit
+                    eCell.iconicPreview.layer.addSublayer(playerLayer)
                 }
                 
                 // (5B) SPACE POST
@@ -547,10 +541,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 mCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -711,10 +701,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             if difference.second! <= 0 {
                 ppCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
@@ -861,22 +847,17 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 vCell.videoPreview.sd_setShowActivityIndicatorView(true)
                 vCell.videoPreview.sd_setIndicatorStyle(.gray)
-                
-                do {
-                    let asset = AVURLAsset(url: URL(string: videoFile.url!)!, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    vCell.videoPreview.contentMode = .scaleAspectFill
-                    DispatchQueue.main.async {
-                        vCell.videoPreview.image = UIImage(cgImage: cgImage)
-                        // MARK: - SDWebImage
-                        vCell.videoPreview.sd_setImage(with: URL(string: videoFile.url!), placeholderImage: UIImage(cgImage: cgImage))
-                    }
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = vCell.videoPreview.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                vCell.videoPreview.contentMode = .scaleAspectFit
+                vCell.videoPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.isMuted = true
+                player.play()
             }
             
             // (5) Handle caption (text post) if it exists
@@ -886,11 +867,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 vCell.textPost.isHidden = true
             }
             
-            // (6) Set time
-            let from = self.posts[indexPath.row].createdAt!
-            let now = Date()
-            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+            // (6) SET TIME
             if difference.second! <= 0 {
                 vCell.time.text! = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {

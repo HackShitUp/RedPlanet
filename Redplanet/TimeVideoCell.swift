@@ -570,8 +570,6 @@ class TimeVideoCell: UITableViewCell {
                                  handler: nil)
         
         
-        
-//        if (self.userObject.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             //            options.addAction(views)
             options.addAction(edit)

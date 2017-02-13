@@ -345,7 +345,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 print("*** Error generating thumbnail: \(error.localizedDescription)")
             }
             
-            
             // Dismiss
             self.dismiss(animated: true, completion: nil)
         }
