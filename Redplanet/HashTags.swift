@@ -452,17 +452,15 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             
             // (C1) Get video preview
             if let videoFile = hashtagObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                let videoUrl = NSURL(string: videoFile.url!)
-                do {
-                    let asset = AVURLAsset(url: videoUrl as! URL, options: nil)
-                    let imgGenerator = AVAssetImageGenerator(asset: asset)
-                    imgGenerator.appliesPreferredTrackTransform = true
-                    let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
-                    cell.photoAsset.image = UIImage(cgImage: cgImage)
-                    
-                } catch let error {
-                    print("*** Error generating thumbnail: \(error.localizedDescription)")
-                }
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = cell.photoAsset.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                cell.photoAsset.contentMode = .scaleAspectFit
+                cell.photoAsset.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
             }
             
             

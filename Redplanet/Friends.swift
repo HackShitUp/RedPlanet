@@ -641,7 +641,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
             })
             
-            
             return mCell // return TimeMediaCell.swift
             
             
