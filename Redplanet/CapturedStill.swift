@@ -229,6 +229,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Hide buttons
         self.undoButton.isHidden = true
         self.completeButton.isHidden = true
+        self.drawButton.isHidden = true
 
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
