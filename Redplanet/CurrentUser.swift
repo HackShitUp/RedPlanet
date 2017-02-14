@@ -39,22 +39,13 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // Set pipeline method
     var page: Int = 25
     
-    
     // Refresher
     var refresher: UIRefreshControl!
-
-    @IBAction func findFriends(_ sender: Any) {
-        // If iOS 9
-        if #available(iOS 9, *) {
-            // Push VC
-            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.navigationController?.pushViewController(contactsVC, animated: true)
-        } else {
-            // Fallback on earlier versions
-            // Show search
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.navigationController!.pushViewController(search, animated: true)
-        }
+    
+    @IBAction func search(_ sender: Any) {
+        // Show search
+        let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController!.pushViewController(search, animated: true)
     }
     
     // Function to fetch my content

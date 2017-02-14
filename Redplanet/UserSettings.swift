@@ -187,7 +187,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         } else if section == 1 {
             return 2
         } else {
-            return 6
+            return 5
         }
     }
     
@@ -354,14 +354,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         } else {
             
             if indexPath.row == 0 {
-                // Icons Guideline
-                
-                // Push VC
-                let iconsVC = self.storyboard?.instantiateViewController(withIdentifier: "iconsVC") as! RPIconsGuideline
-                self.navigationController!.pushViewController(iconsVC, animated: false)
-            }
-            
-            if indexPath.row == 1 {
                 
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
@@ -373,26 +365,26 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 
             }
             
-            if indexPath.row == 2 {
+            if indexPath.row == 1 {
                 // Push to AboutUs
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
                 self.navigationController?.pushViewController(aboutVC, animated: true)
 
             }
             
-            if indexPath.row == 3 {
+            if indexPath.row == 2 {
                 // FAQ
                 let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
                 self.navigationController?.pushViewController(faqVC, animated: true)
             }
             
-            if indexPath.row == 4 {
+            if indexPath.row == 3 {
                 // TOS
                 let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
                 self.navigationController?.pushViewController(tosVC, animated: true)
             }
             
-            if indexPath.row == 5 {
+            if indexPath.row == 4 {
                 // Privacy Policy
                 let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
                 self.navigationController?.pushViewController(privacyVC, animated: true)

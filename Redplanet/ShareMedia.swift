@@ -47,10 +47,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
 
     @IBAction func moreButton(_ sender: Any) {
+        
+        
+        
         if mediaType == "photo" {
             // Photo to Share
             let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
-            let image = self.mediaAsset.image!
             let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.present(activityVC, animated: true, completion: nil)
@@ -65,7 +67,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 let filePath = "\(docDirectory)/tmpVideo.mov"
                 videoData?.write(toFile: filePath, atomically: true)
                 let videoLink = NSURL(fileURLWithPath: filePath)
-                let objectsToShare = [videoLink]
+                let objectsToShare = [textToShare, videoLink] as [Any]
                 let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                 activityVC.setValue("Video", forKey: "subject")
                 self.present(activityVC, animated: true, completion: nil)
@@ -87,7 +89,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                             let filePath = "\(docDirectory)/tmpVideo.mov"
                                                             videoData?.write(toFile: filePath, atomically: true)
                                                             let videoLink = NSURL(fileURLWithPath: filePath)
-                                                            let objectsToShare = [videoLink]
+                                                            let objectsToShare = [textToShare, videoLink] as [Any]
                                                             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                                                             activityVC.setValue("Video", forKey: "subject")
                                                             self.present(activityVC, animated: true, completion: nil)
@@ -414,6 +416,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     // Function to share photo data
     func sharePhotoData() {
         
+        // MARK: - HEAP
+        Heap.track("SharedVideo", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
+        
+        
         // Clear caption
         if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
             self.mediaCaption.text! = ""
@@ -520,22 +529,30 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Function to compress video data
     func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
-        let urlAsset = AVURLAsset(url: inputURL, options: nil)
-        guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
-            handler(nil)
-            return
-        }
-        
-        exportSession.outputURL = outputURL
-        exportSession.outputFileType = AVFileTypeQuickTimeMovie
-        exportSession.shouldOptimizeForNetworkUse = true
-        exportSession.exportAsynchronously { () -> Void in
-            handler(exportSession)
+        DispatchQueue.main.async {
+            let urlAsset = AVURLAsset(url: inputURL, options: nil)
+            guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
+                handler(nil)
+                return
+            }
+            
+            exportSession.outputURL = outputURL
+            exportSession.outputFileType = AVFileTypeQuickTimeMovie
+            exportSession.shouldOptimizeForNetworkUse = true
+            exportSession.exportAsynchronously { () -> Void in
+                handler(exportSession)
+            }
         }
     }
 
     // Function share library video
     func shareLibVideo() {
+        
+        // MARK: - HEAP
+        Heap.track("SharedVideo", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         
         // Clear caption if it doesn't exist
         if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
@@ -669,6 +686,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Function to share video data
     func shareVideoData() {
+        
+        // MARK: - HEAP
+        Heap.track("SharedVideo", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
+        
         // Clear caption if it doesn't exist
         if self.mediaCaption.text! == "Say something about this photo..." || self.mediaCaption.text! == "Say something about this video..." {
             self.mediaCaption.text! = ""

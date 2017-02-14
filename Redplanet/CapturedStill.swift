@@ -88,6 +88,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                 (success: Bool, error: Error?) in
                 if success {
                     
+                    // MARK: - HEAP
+                    Heap.track("SharedMoment", withProperties:
+                        ["byUserId": "\(PFUser.current()!.objectId!)",
+                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                        ])
+                    
                     // Clear arrray
                     stillImages.removeAll(keepingCapacity: false)
                     
@@ -227,7 +233,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
                        self.textButton,
-                       self.drawButton,
+//                       self.drawButton,
                        self.leaveButton,
                        self.completeButton] as [Any]
         for b in buttons {

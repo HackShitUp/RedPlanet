@@ -7,10 +7,6 @@
 //
 
 /*
- F U T U R E    P R O D U C T   F E A T U R E S
-  • Albums - Share multiple photos. The preview will be displayed as a mosaic, but once one of the photos are tapped, it will display them in a slide-show.
- • Best Friends - Let people choose their top 3 best friends.
-
  
                                                             How does it feel?
  
@@ -21,11 +17,10 @@
                                                             Like a complete unknown?
  
                                                             Like a rolling stone ?
- 
 
 YELLOW:
 • UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
- 
+
 RED:
 • UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
 • #FF0050
@@ -40,13 +35,8 @@ BLUE:
  
 LIGHT GREY
 • UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
- 
 
- // FRAMEWORKS
- • ACTIVITY WITH PHOTOS: https://github.com/mcmatan/JVTImageFilePicker
-*/
-
-
+ */
 
 import UIKit
 import CoreData
@@ -93,7 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             $0.server = "http://parseserver-48bde-env.us-east-1.elasticbeanstalk.com/parse/"
         }
         Parse.initialize(with: configuration)
-        
         
         // OneSignal for custom push notifications
         // 571bbb3a-3612-4496-b3b4-12623256782a
@@ -154,9 +143,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Ask to register for push notifications
         OneSignal.registerForPushNotifications()
-        
-    
-        
+
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
             // Set App ID
@@ -185,8 +172,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         // If first launch...
         if launchedBefore == false {
-            // Set launchedBefore to true
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
             // Save UserDefaults for User's Profile
             UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
             // Save Default for Birthday
@@ -234,10 +219,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Print error
         print(error.localizedDescription)
     }
-    
-    
-    
-    
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -326,7 +307,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 requestedToFriendMe.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    
                     
                     if object.value(forKey: "isFriends") as! Bool == true {
                         // (A) FRIENDS

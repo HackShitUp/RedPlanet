@@ -369,8 +369,7 @@ class RFriends: UITableViewController, UINavigationControllerDelegate, UISearchB
 
         } else {
         // FRIENDS
-            
-            // Sort Friends
+            // Sort Friends in ABC order
             let abcFriends = self.friends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
             
             // Get users' usernames and user's profile photos

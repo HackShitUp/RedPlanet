@@ -252,8 +252,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             self.tableView!.emptyDataSetDelegate = self
             self.tableView!.tableFooterView = UIView()
         }
-        
-        print("NUMBEREXISTS: \(numberExists)")
     }
     
     
@@ -279,7 +277,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
         ]
-        
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
@@ -360,19 +357,16 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
+        label.backgroundColor = UIColor.white
+        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         
         if section == 0 {
-            
-            label.text = " • Redplaneters in Contacts"
+            label.text = " REDPLANETERS IN CONTACTS"
             return label
-            
         } else {
-            
-            label.text = " • Friends"
+            label.text = " FRIENDS"
             return label
-            
         }
         
     }
@@ -386,7 +380,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 65
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -404,16 +398,13 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             
             // Set button
             if myRequestedFriends.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) || requestedToFriendMe.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) {
-                
                 // Change button's title and design
                 cell.friendButton.setTitle("Friend Requested", for: .normal)
                 cell.friendButton.setTitleColor(UIColor.white, for: .normal)
                 cell.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                 cell.friendButton.layer.cornerRadius = 22.00
                 cell.friendButton.clipsToBounds = true
-                
             } else {
-                
                 // Set user's friends button
                 cell.friendButton.setTitle("Friend", for: .normal)
                 cell.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
@@ -422,14 +413,17 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 cell.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                 cell.friendButton.layer.borderWidth = 2.00
                 cell.friendButton.clipsToBounds = true
-                
             }
         } else {
+            
+            // Sort Friends in ABC order
+            let abcFriends = myFriends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            
             // Set user's object contained in UITableViewCell
-            cell.friend = myFriends[indexPath.row]
+            cell.friend = abcFriends[indexPath.row]
             
             // Check whether user has a full name
-            cell.rpUsername.text! = myFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpUsername.text! = abcFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // Change button's title and design
             cell.friendButton.setTitle("Friends", for: .normal)

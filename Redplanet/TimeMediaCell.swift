@@ -20,6 +20,7 @@ import OneSignal
 import SimpleAlert
 import SVProgressHUD
 
+
 class TimeMediaCell: UITableViewCell {
     
     // Initialize delegate

@@ -15,7 +15,6 @@ import Bolts
 
 class MasterTab: UITabBarController {
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Create corner radiuss
@@ -35,6 +34,10 @@ class MasterTab: UITabBarController {
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        // Set tabBar's tintColor and tabBar's barTintColor
+        self.tabBar.tintColor = UIColor.black
+        self.tabBar.barTintColor = UIColor.white
 
         // If current user is not nil
         if PFUser.current() != nil {
@@ -47,6 +50,5 @@ class MasterTab: UITabBarController {
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 10.0)!], for: .normal)
     }
-    
     
 }

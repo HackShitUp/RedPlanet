@@ -169,8 +169,6 @@
 		7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1BC1DB3766200437219 /* CreateFront.swift */; };
 		7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ECE55A81DEA225E00203082 /* ExploreHeader.swift */; };
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
-		7ED0DFA11DD19BC100BC81A1 /* RPIconsGuideline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */; };
-		7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
 		7ED4A90E1DBEB4DE0016698F /* RFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90D1DBEB4DE0016698F /* RFriends.swift */; };
@@ -450,8 +448,6 @@
 		7EC5D1BC1DB3766200437219 /* CreateFront.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFront.swift; sourceTree = "<group>"; };
 		7ECE55A81DEA225E00203082 /* ExploreHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHeader.swift; sourceTree = "<group>"; };
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
-		7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsGuideline.swift; sourceTree = "<group>"; };
-		7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPIconsCell.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
 		7ED4A90D1DBEB4DE0016698F /* RFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriends.swift; sourceTree = "<group>"; };
@@ -725,7 +721,6 @@
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
 				7EDFB63A1DDBDC71004AE090 /* FAQ */,
-				7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */,
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
 			name = Settings;
@@ -800,14 +795,14 @@
 			name = PrivacyPolicy;
 			sourceTree = "<group>";
 		};
-		7E7E38BD1DD533CF00DEC27B /* Contacts */ = {
+		7E7E38BD1DD533CF00DEC27B /* CONTACTS */ = {
 			isa = PBXGroup;
 			children = (
 				7E7E38BB1DD533CB00DEC27B /* Contacts.swift */,
 				7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */,
 				7E7E38B91DD533C100DEC27B /* ContactsCell.swift */,
 			);
-			name = Contacts;
+			name = CONTACTS;
 			sourceTree = "<group>";
 		};
 		7E7E38C71DD595ED00DEC27B /* TermsOfService */ = {
@@ -1292,15 +1287,15 @@
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7E4CFF951DB4393A0087454E /* SINGLES */,
 				7E41C7A91E4035190025129B /* NIB: POSTS */,
-				7E7E38BD1DD533CF00DEC27B /* Contacts */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EA730D61E3B293500CF4D12 /* CREATE_REDPLANET */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
-				7EC5D1991DB3541000437219 /* CHATS */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
-				7EC5D1B41DB36EB800437219 /* NOTIFICATIONS */,
 				7E3F0EDF1DC0630E006BF522 /* RELATIONSHIP_REQUESTS */,
+				7EC5D1B41DB36EB800437219 /* ACTIVITY */,
+				7E7E38BD1DD533CF00DEC27B /* CONTACTS */,
+				7EC5D1991DB3541000437219 /* CHATS */,
 				7EC5D19F1DB3566D00437219 /* CURRENTUSER */,
 				7E5A98051DDD2CFA006DA985 /* Settings */,
 			);
@@ -1401,22 +1396,13 @@
 			name = OtherUserProfile;
 			sourceTree = "<group>";
 		};
-		7EC5D1B41DB36EB800437219 /* NOTIFICATIONS */ = {
+		7EC5D1B41DB36EB800437219 /* ACTIVITY */ = {
 			isa = PBXGroup;
 			children = (
 				7EC5D1BC1DB3766200437219 /* CreateFront.swift */,
 				7EC5D1B71DB36EE900437219 /* ActivityCell.swift */,
 			);
-			name = NOTIFICATIONS;
-			sourceTree = "<group>";
-		};
-		7ED0DFA41DD19BD900BC81A1 /* RPIconsGuideline */ = {
-			isa = PBXGroup;
-			children = (
-				7ED0DFA01DD19BC100BC81A1 /* RPIconsGuideline.swift */,
-				7ED0DFA21DD19BD300BC81A1 /* RPIconsCell.swift */,
-			);
-			name = RPIconsGuideline;
+			name = ACTIVITY;
 			sourceTree = "<group>";
 		};
 		7ED4A9131DBEB4F60016698F /* RelationsPerPerson */ = {
@@ -1812,7 +1798,6 @@
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
-				7ED0DFA31DD19BD300BC81A1 /* RPIconsCell.swift in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */,
@@ -1831,7 +1816,6 @@
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
 				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
 				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
-				7ED0DFA11DD19BC100BC81A1 /* RPIconsGuideline.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,

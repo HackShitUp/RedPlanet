@@ -52,11 +52,19 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.pushViewController(relationshipRequestsVC, animated: true)
     }
 
-    @IBOutlet weak var searchButton: UIBarButtonItem!
-    @IBAction func search(_ sender: Any) {
-        // Push VC
-        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController?.pushViewController(searchVC, animated: true)
+    @IBOutlet weak var contactsButton: UIBarButtonItem!
+    @IBAction func contacts(_ sender: Any) {
+        // If iOS 9
+        if #available(iOS 9, *) {
+            // Push VC
+            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+            self.navigationController?.pushViewController(contactsVC, animated: true)
+        } else {
+            // Fallback on earlier versions
+            // Show search
+            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+            self.navigationController!.pushViewController(search, animated: true)
+        }
     }
 
     // Query Notifications
@@ -145,11 +153,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "Notifications"
+            self.navigationController?.navigationBar.topItem?.title = "Activity"
         }
         
         // Enable UIBarButtonItems, configure navigation bar, && show tabBar (last line)
-        self.searchButton.isEnabled = true
         self.relationshipRequestsButton.isEnabled = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
@@ -161,31 +168,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    
-    // Function to stylize and set title of navigation bar
-    func newConfig() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Bold", size: 21.00) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "Redplanet"
-        }
-        
-        // Disable UIBarButtonItems, configure navigation bar, && hide tabBar
-        self.searchButton.isEnabled = false
-        self.relationshipRequestsButton.isEnabled = false
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-    
     
     
     // Refresh function

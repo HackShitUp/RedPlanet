@@ -128,6 +128,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
+                    
+                    // MARK: - HEAP
+                    Heap.track("SharedMoment", withProperties:
+                        ["byUserId": "\(PFUser.current()!.objectId!)",
+                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                        ])
+                    
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
                     
@@ -216,38 +223,34 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
         
         // Execute if array isn't empty
         if !capturedURLS.isEmpty {
-            // Compress Video berfore viewDidLoad()
-            let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
-            compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
-                guard let session = exportSession else {
-                    return
-                }
-                
-                switch session.status {
-                case .unknown:
-                    break
-                case .waiting:
-                    break
-                case .exporting:
-                    break
-                case .completed:
-                    
-                    // Enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    
-                    guard let compressedData = NSData(contentsOf: compressedURL) else {
+            DispatchQueue.main.async {
+                let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+                self.compressVideo(inputURL: capturedURLS.last!, outputURL: compressedURL) { (exportSession) in
+                    guard let session = exportSession else {
                         return
                     }
-                    self.smallVideoData = compressedData
-                    
-                case .failed:
-                    break
-                case .cancelled:
-                    break
+                    switch session.status {
+                    case .unknown:
+                        break
+                    case .waiting:
+                        break
+                    case .exporting:
+                        break
+                    case .completed:
+                        // Enable buttons
+                        self.continueButton.isUserInteractionEnabled = true
+                        guard let compressedData = NSData(contentsOf: compressedURL) else {
+                            return
+                        }
+                        self.smallVideoData = compressedData
+                    case .failed:
+                        break
+                    case .cancelled:
+                        break
+                    }
                 }
             }
         }
-
     }
 
     // Function to Play & Pause

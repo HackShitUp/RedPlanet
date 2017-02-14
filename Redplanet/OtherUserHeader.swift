@@ -113,6 +113,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     
     // FRIEND ACTION
     @IBAction func friendAction(_ sender: Any) {
+        // MARK: - HEAP
+        Heap.track("AddedFriend", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false
@@ -191,10 +196,13 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         appDelegate.queryRelationships()
     }
     
-    
-    
     // FOLLOW ACTION
     @IBAction func followAction(_ sender: Any) {
+        // MARK: - HEAP
+        Heap.track("FollowedUser", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         // Disable connection buttons
         self.friendButton.isUserInteractionEnabled = false
         self.friendButton.isEnabled = false

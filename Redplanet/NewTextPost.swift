@@ -188,6 +188,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                         } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
                     }
                     
+                    // MARK: - HEAP
+                    Heap.track("SharedTextPost", withProperties:
+                        ["byUserId": "\(PFUser.current()!.objectId!)",
+                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                        ])
                     
                     // Resign keyboard
                     self.textView.resignFirstResponder()
