@@ -89,6 +89,7 @@ class HashTagsCell: UITableViewCell {
                                             newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Post: \(self.textPost.text!)"
                                             newsfeeds["pointObject"] = self.contentObject!
                                             newsfeeds["contentType"] = "sh"
+                                            newsfeeds["saved"] = false
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {

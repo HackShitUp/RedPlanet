@@ -334,10 +334,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
-        
-        
-        
-        
+
         // Query Following && Users you've requested to Follow
         let following = PFQuery(className: "FollowMe")
         following.includeKey("following")
@@ -366,11 +363,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
-        
-        
-        
-        
-        
+
         // Query Followers && Users who've requested to be FRIENDS with YOU
         let followers = PFQuery(className: "FollowMe")
         followers.includeKey("follower")
@@ -436,6 +429,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let bdayOccured = UserDefaults.standard.bool(forKey: "BirthdayHappened")
                 if bdayOccured == false {
                     // Save
+                    print("BDAY FIRED\n\n\n\n\n\n\n")
                     UserDefaults.standard.set(true, forKey: "BirthdayHappened")
                 }
                 
@@ -470,6 +464,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
 
             } else {
+                print("\n\n\n\n\n\n\n\nBDAY FIRED HERE\n\n\n\n\n\n\n")
                 // Save
                 UserDefaults.standard.set(false, forKey: "BirthdayHappened")
             }

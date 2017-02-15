@@ -85,6 +85,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             newsfeeds["username"] = PFUser.current()!.username!
             newsfeeds["textPost"] = self.textView!.text!
             newsfeeds["contentType"] = "tp"
+            newsfeeds["saved"] = false
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {

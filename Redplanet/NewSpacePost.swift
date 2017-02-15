@@ -93,6 +93,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             space["byUser"] = PFUser.current()!
             space["username"] = PFUser.current()!.username!
             space["contentType"] = "sp"
+            space["saved"] = false
             // Save parseFile dependent on Boolean
             if self.mediaAsset.image != nil {
 

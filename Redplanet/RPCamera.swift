@@ -227,8 +227,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.newTextButton.addGestureRecognizer(tpTap)
         
         // Bring buttons to front
-        let buttons = [self.captureButton,
-                       self.flashButton,
+        let buttons = [self.flashButton,
                        self.swapCameraButton,
                        self.libraryButton,
                        self.homeButton,
@@ -239,6 +238,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+            self.view.bringSubview(toFront: self.captureButton)
         }
         
         // Enable view

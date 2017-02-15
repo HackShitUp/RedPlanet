@@ -289,6 +289,7 @@ class TimeTextPostCell: UITableViewCell {
                                         newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Text Post: \(self.textPost.text!)"
                                         newsfeeds["pointObject"] = self.postObject!
                                         newsfeeds["contentType"] = "sh"
+                                        newsfeeds["saved"] = false
                                         newsfeeds.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if error == nil {

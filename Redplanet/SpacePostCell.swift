@@ -302,6 +302,7 @@ class SpacePostCell: UITableViewCell {
                                             newsfeeds["textPost"] = "shared @\(self.rpUsername.text!)'s Space Post:"
                                             newsfeeds["pointObject"] = spaceObject.last!
                                             newsfeeds["contentType"] = "sh"
+                                            newsfeeds["saved"] = false
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {

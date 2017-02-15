@@ -434,6 +434,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         newsfeeds["byUser"] = PFUser.current()!
         newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)!)
         newsfeeds["contentType"] = "ph"
+        newsfeeds["saved"] = false
         newsfeeds["textPost"] = self.mediaCaption.text
         newsfeeds.saveInBackground {
             (success: Bool, error: Error?) in
@@ -586,6 +587,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 newsfeeds["textPost"] = self.mediaCaption.text!
                 newsfeeds["videoAsset"] = parseFile
                 newsfeeds["contentType"] = "vi"
+                newsfeeds["saved"] = false
                 newsfeeds.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -741,6 +743,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                             newsfeeds["textPost"] = self.mediaCaption.text!
                                                             newsfeeds["videoAsset"] = parseFile
                                                             newsfeeds["contentType"] = "vi"
+                                                            newsfeeds["saved"] = false
                                                             newsfeeds.saveInBackground(block: {
                                                                 (success: Bool, error: Error?) in
                                                                 if success {

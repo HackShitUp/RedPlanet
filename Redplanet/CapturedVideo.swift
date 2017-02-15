@@ -77,6 +77,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             newsfeeds["byUser"] = PFUser.current()!
             newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
             newsfeeds["contentType"] = "itm"
+            newsfeeds["saved"] = false
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {

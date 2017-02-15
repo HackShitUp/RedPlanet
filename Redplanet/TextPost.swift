@@ -243,13 +243,10 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        // Content
         let cell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        
         
         // Instantiate parent vc
         cell.delegate = self.navigationController
@@ -320,41 +317,31 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
             } else {
                 cell.time.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.time.text = "1 minute ago"
             } else {
                 cell.time.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.time.text = "1 hour ago"
             } else {
                 cell.time.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1 day ago"
             } else {
                 cell.time.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.time.text = createdDate.string(from: textPostObject.last!.createdAt!)
@@ -379,10 +366,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Set number of likes
         if self.likes.count == 0 {
             cell.numberOfLikes.setTitle("likes", for: .normal)
-            
         } else if self.likes.count == 1 {
             cell.numberOfLikes.setTitle("1 like", for: .normal)
-            
         } else {
             cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
         }
@@ -390,10 +375,8 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         // Set number of comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
-            
         } else if self.comments.count == 1 {
             cell.numberOfComments.setTitle("1 comment", for: .normal)
-            
         } else {
             cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
             
@@ -408,7 +391,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
         }
 
-        
         
         // Grow height
         cell.layoutIfNeeded()

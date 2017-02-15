@@ -141,6 +141,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                         newsfeeds["username"] = PFUser.current()!.username!
                         newsfeeds["photoAsset"] = proPicFile
                         newsfeeds["contentType"] = "pp"
+                        newsfeeds["saved"] = false
                         newsfeeds["textPost"] = profilePhotoCaption.last!
                         newsfeeds.saveInBackground(block: {
                             (success: Bool, error: Error?) in

@@ -1,8 +1,8 @@
 //
-//  Friends.swift
+//  SavedPosts.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 1/31/17.
+//  Created by Joshua Choi on 2/14/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -22,240 +22,111 @@ import SimpleAlert
 import SVProgressHUD
 import SDWebImage
 
-class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
-    // Array to hold friends, posts, and skipped objects
-    var friends = [PFObject]()
+class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+
+    // Saved Posts
     var posts = [PFObject]()
-    var skipped = [PFObject]()
-    // Hold likers
     var likes = [PFObject]()
+    let ephemeralTypes = ["itm", "sh", "sp"]
     
-    // Pipeline method
-    var page: Int = 50
-    
-    // Parent Navigator
-    var parentNavigator: UINavigationController!
-    
-    // Refresher
-    var refresher: UIRefreshControl!
-    
-    // Set ephemeral types
-    let ephemeralTypes = ["itm", "sp", "sh"]
-    
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    
-    // Function to refresh data
-    func refresh() {
-        fetchPosts()
-        self.refresher.endRefreshing()
+    @IBAction func backButton(_ sender: Any) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
-    // Function to fetch friends
-    func fetchFriends() {
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [fFriends, eFriends])
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.findObjectsInBackground(block: {
+    @IBAction func reload(_ sender: Any) {
+    }
+    
+    // Function to fetch saved posts
+    func fetchSaved() {
+        let saved = PFQuery(className: "Newsfeeds")
+        saved.whereKey("byUser", equalTo: PFUser.current()!)
+        saved.whereKey("saved", equalTo: true)
+        saved.includeKeys(["byUser", "toUser", "pointObject"])
+        saved.order(byDescending: "createdAt")
+        saved.findObjectsInBackground { 
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Clear array
-                self.friends.removeAll(keepingCapacity: false)
-                self.friends.append(PFUser.current()!)
+                // clear array
+                self.posts.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        // Append end friend
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    } else {
-                        // Append front friend
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    }
+                    self.posts.append(object)
                 }
-                
-                // Fetch Posts
-                self.fetchPosts()
                 
             } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
+                print(error?.localizedDescription as Any)
             }
             
-        })
-    }
-    
-    func fetchPosts() {
-        
-        // Get News Feed content
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", containedIn: self.friends)
-        newsfeeds.includeKeys(["byUser", "pointObject", "toUser"])
-        newsfeeds.order(byDescending: "createdAt")
-        newsfeeds.limit = self.page
-        newsfeeds.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
-                // Clear array
-                self.posts.removeAll(keepingCapacity: false)
-                self.skipped.removeAll(keepingCapacity: false)
-                
-                for object in objects! {
-                    // Ephemeral content
-                    let components : NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
-                        self.posts.append(object)
-                    }
-//                    if difference.hour! < 24 {
-//                        self.posts.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
-                }
-                
-                // Set DZN
-                if self.posts.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
-                }
-
-            } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
-            }
             // Reload data
             self.tableView!.reloadData()
-        })
+        }
     }
+
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Saved Posts"
+        }
+        
+        // Configure nav bar, show tab bar, and set statusBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.delegate = self
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.clear)
-        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+        // Fetch saved posts
+        fetchSaved()
         
+        // Layout
         self.tableView.layoutIfNeeded()
         self.tableView.setNeedsLayout()
-        
-        appDelegate.queryRelationships()
-        // Fetch friends
-        fetchFriends()
         
         // Configure table view
         self.tableView!.estimatedRowHeight = 65.00
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
-        
-        // Set tabBarController delegate
-        self.parentNavigator.tabBarController?.delegate = self
-        
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        self.tableView!.addSubview(refresher)
-        
-        // Define Notification to reload data
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        PFQuery.clearAllCachedResults()
-        PFFile.clearAllCachedDataInBackground()
-        URLCache.shared.removeAllCachedResponses()
-        SDImageCache.shared().clearMemory()
-        SDImageCache.shared().clearDisk()
     }
 
-    // MARK: DZNEmptyDataSet Framework
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.posts.count == 0 {
-            return true
-        } else {
-            return false
-        }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Friends' News Feed is empty today."
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.darkGray,
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
-        // Title for button
-        let str = "Find Friends"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
-            NSFontAttributeName: font!
-        ]
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // If iOS 9
-        if #available(iOS 9, *) {
-            // Push VC
-            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.parentNavigator.pushViewController(contactsVC, animated: true)
-        } else {
-            // Fallback on earlier versions
-            // Show search
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.parentNavigator.pushViewController(search, animated: true)
-        }
-    }
-    
-    // MARK: - TabBarControllerDelegate method
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if self.parentNavigator.tabBarController?.selectedIndex == 0 {
-            // Scroll to top
-            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
-        }
-    }
-    
+
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
+        // #warning Incomplete implementation, return the number of sections
         return 1
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of rows
         return self.posts.count
     }
     
@@ -300,7 +171,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             tpCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            tpCell.delegate = self.parentNavigator
+            tpCell.delegate = self.navigationController
             
             // (4) SET TEXT POST
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
@@ -436,7 +307,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             eCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            eCell.delegate = self.parentNavigator
+            eCell.delegate = self.navigationController
             
             // (4) SET TIME
             let dateFormatter = DateFormatter()
@@ -517,7 +388,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             mCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            mCell.delegate = self.parentNavigator
+            mCell.delegate = self.navigationController
             
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
@@ -670,7 +541,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             ppCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            ppCell.delegate = self.parentNavigator
+            ppCell.delegate = self.navigationController
             
             // (4) FETCH PROFILE PHOTO
             ppCell.rpUserProPic.layoutIfNeeded()
@@ -826,7 +697,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             vCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            vCell.delegate = self.parentNavigator
+            vCell.delegate = self.navigationController
             
             // (4) Fetch Video Thumbnail
             if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
@@ -844,7 +715,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 vCell.videoPreview.sd_setShowActivityIndicatorView(true)
                 vCell.videoPreview.sd_setIndicatorStyle(.gray)
-
+                
                 // Load Video Preview and Play Video
                 let player = AVPlayer(url: URL(string: videoFile.url!)!)
                 let playerLayer = AVPlayerLayer(player: player)
@@ -968,24 +839,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             return vCell // return TimeVideoCell.swift
         }
     }//end cellForRowAt
+
     
     
-    // MARK: RP's very own Pipeline Method
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
-        }
-    }
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= self.posts.count + self.skipped.count {
-            
-            // Increase page size to load more posts
-            page = page + 50
-            
-            // Query friends
-            fetchPosts()
-        }
-    }
+
 }

@@ -462,6 +462,7 @@ class ActivityCell: UITableViewCell {
             // Find Comment
             // Find in Newsfeed
             let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.includeKeys(["byUser", "toUser"])
             newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
             newsfeeds.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in

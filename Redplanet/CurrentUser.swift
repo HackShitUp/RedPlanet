@@ -42,12 +42,16 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // Refresher
     var refresher: UIRefreshControl!
     
-    @IBAction func search(_ sender: Any) {
+    @IBAction func saved(_ sender: Any) {
+//        // Show Saved Posts
+//        let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
+//        self.navigationController?.pushViewController(savedVC, animated: true)
         // Show search
         let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
         self.navigationController!.pushViewController(search, animated: true)
+
     }
-    
+
     // Function to fetch my content
     func fetchMine() {
         // User's Posts

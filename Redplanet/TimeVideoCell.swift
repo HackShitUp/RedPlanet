@@ -283,6 +283,7 @@ class TimeVideoCell: UITableViewCell {
                                         newsfeeds["pointObject"] = self.postObject!
                                         newsfeeds["videoAsset"] = self.postObject!.value(forKey: "videoAsset") as! PFFile
                                         newsfeeds["contentType"] = "sh"
+                                        newsfeeds["saved"] = false
                                         newsfeeds.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if error == nil {

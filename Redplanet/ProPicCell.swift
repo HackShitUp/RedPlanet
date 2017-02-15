@@ -290,6 +290,7 @@ class ProPicCell: UITableViewCell {
                                         newsfeeds["photoAsset"] = parseFile
                                         newsfeeds["pointObject"] = self.postObject!
                                         newsfeeds["contentType"] = "sh"
+                                        newsfeeds["saved"] = false
                                         newsfeeds.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if error == nil {

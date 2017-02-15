@@ -306,6 +306,7 @@ class TimeMediaCell: UITableViewCell {
                                         newsfeeds["photoAsset"] = self.postObject!.value(forKey: "photoAsset") as! PFFile
                                         newsfeeds["pointObject"] = self.postObject!
                                         newsfeeds["contentType"] = "sh"
+                                        newsfeeds["saved"] = false
                                         newsfeeds.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if error == nil {

@@ -1,8 +1,8 @@
 //
-//  Friends.swift
+//  Newsfeed.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 1/31/17.
+//  Created by Joshua Choi on 2/15/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -22,10 +22,10 @@ import SimpleAlert
 import SVProgressHUD
 import SDWebImage
 
-class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Newsfeed: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // Array to hold friends, posts, and skipped objects
-    var friends = [PFObject]()
+    // Array to hold following, posts, and skipped objects
+    var following = [PFObject]()
     var posts = [PFObject]()
     var skipped = [PFObject]()
     // Hold likers
@@ -34,17 +34,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Pipeline method
     var page: Int = 50
     
-    // Parent Navigator
-    var parentNavigator: UINavigationController!
-    
     // Refresher
     var refresher: UIRefreshControl!
     
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
     
+    // MARK: - AppDelegate
     let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
     
     // Function to refresh data
     func refresh() {
@@ -52,35 +49,23 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         self.refresher.endRefreshing()
     }
     
-    // Function to fetch friends
-    func fetchFriends() {
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [fFriends, eFriends])
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.findObjectsInBackground(block: {
+    // Function to fetch following
+    func fetchFollowing() {
+        // Following
+        let following = PFQuery(className: "FollowMe")
+        following.includeKeys(["follower", "following"])
+        following.whereKey("isFollowing", equalTo: true)
+        following.whereKey("follower", equalTo: PFUser.current()!)
+        following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
-                self.friends.append(PFUser.current()!)
+                self.following.removeAll(keepingCapacity: false)
+                self.following.append(PFUser.current()!)
                 
                 for object in objects! {
-                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        // Append end friend
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    } else {
-                        // Append front friend
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    }
+                    self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
                 // Fetch Posts
@@ -100,7 +85,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         
         // Get News Feed content
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", containedIn: self.friends)
+        newsfeeds.whereKey("byUser", containedIn: self.following)
         newsfeeds.includeKeys(["byUser", "pointObject", "toUser"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.limit = self.page
@@ -128,11 +113,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     } else {
                         self.posts.append(object)
                     }
-//                    if difference.hour! < 24 {
-//                        self.posts.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
+                    //                    if difference.hour! < 24 {
+                    //                        self.posts.append(object)
+                    //                    } else {
+                    //                        self.skipped.append(object)
+                    //                    }
                 }
                 
                 // Set DZN
@@ -140,7 +125,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                 }
-
+                
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
@@ -152,6 +137,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         })
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Show Navigation Bar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,21 +151,20 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
         
-        self.tableView.layoutIfNeeded()
-        self.tableView.setNeedsLayout()
-        
+        // Fetch following
         appDelegate.queryRelationships()
-        // Fetch friends
-        fetchFriends()
+        fetchFollowing()
         
         // Configure table view
+        self.tableView.layoutIfNeeded()
+        self.tableView.setNeedsLayout()
         self.tableView!.estimatedRowHeight = 65.00
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
         // Set tabBarController delegate
-        self.parentNavigator.tabBarController?.delegate = self
+        self.navigationController?.tabBarController?.delegate = self
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -184,7 +174,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         self.tableView!.addSubview(refresher)
         
         // Define Notification to reload data
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "newsfeed"), object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -195,7 +185,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
+    
     // MARK: DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.posts.count == 0 {
@@ -206,7 +196,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Friends' News Feed is empty today."
+        let str = "💩\nYour News Feed is empty today."
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.darkGray,
@@ -218,7 +208,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
-        let str = "Find Friends"
+        let str = "Find People to Follow"
         let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
@@ -232,18 +222,18 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         if #available(iOS 9, *) {
             // Push VC
             let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.parentNavigator.pushViewController(contactsVC, animated: true)
+            self.navigationController?.pushViewController(contactsVC, animated: true)
         } else {
             // Fallback on earlier versions
             // Show search
             let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.parentNavigator.pushViewController(search, animated: true)
+            self.navigationController?.pushViewController(search, animated: true)
         }
     }
     
     // MARK: - TabBarControllerDelegate method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        if self.parentNavigator.tabBarController?.selectedIndex == 0 {
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
             // Scroll to top
             self.tableView!.setContentOffset(CGPoint.zero, animated: true)
         }
@@ -268,11 +258,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Configure initial setup for time
-        let from = self.posts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        // Configure time format
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E"
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
         
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
@@ -293,50 +283,20 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
             tpCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            tpCell.delegate = self.parentNavigator
+            tpCell.delegate = self.navigationController
             
             // (4) SET TEXT POST
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            if difference.second! <= 0 {
-                tpCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    tpCell.time.text! = "1 second ago"
-                } else {
-                    tpCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    tpCell.time.text! = "1 minute ago"
-                } else {
-                    tpCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    tpCell.time.text! = "1 hour ago"
-                } else {
-                    tpCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    tpCell.time.text! = "1 day ago"
-                } else {
-                    tpCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                tpCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            tpCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (6) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -429,20 +389,16 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
             eCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            eCell.delegate = self.parentNavigator
+            eCell.delegate = self.navigationController
             
             // (4) SET TIME
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
             eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (5) Layout content
@@ -510,14 +466,14 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
             mCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            mCell.delegate = self.parentNavigator
+            mCell.delegate = self.navigationController
             
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
@@ -539,37 +495,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                mCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    mCell.time.text! = "1 second ago"
-                } else {
-                    mCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    mCell.time.text! = "1 minute ago"
-                } else {
-                    mCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    mCell.time.text! = "1 hour ago"
-                } else {
-                    mCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    mCell.time.text! = "1 day ago"
-                } else {
-                    mCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                mCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            mCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -661,7 +587,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
@@ -670,7 +596,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // (2) SET POST OBJECT
             ppCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            ppCell.delegate = self.parentNavigator
+            ppCell.delegate = self.navigationController
             
             // (4) FETCH PROFILE PHOTO
             ppCell.rpUserProPic.layoutIfNeeded()
@@ -698,37 +624,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                ppCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    ppCell.time.text! = "1 second ago"
-                } else {
-                    ppCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    ppCell.time.text! = "1 minute ago"
-                } else {
-                    ppCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    ppCell.time.text! = "1 hour ago"
-                } else {
-                    ppCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    ppCell.time.text! = "1 day ago"
-                } else {
-                    ppCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                ppCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            ppCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) FETCH LIKES, COMMENTS, AND SHARES
             let likes = PFQuery(className: "Likes")
@@ -819,15 +715,15 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
             vCell.postObject = self.posts[indexPath.row]
             // (3) SET CELL'S DELEGATE
-            vCell.delegate = self.parentNavigator
-            
+            vCell.delegate = self.navigationController
+
             // (4) Fetch Video Thumbnail
             if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // VIDEO
@@ -844,7 +740,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 // MARK: - SDWebImage
                 vCell.videoPreview.sd_setShowActivityIndicatorView(true)
                 vCell.videoPreview.sd_setIndicatorStyle(.gray)
-
+                
                 // Load Video Preview and Play Video
                 let player = AVPlayer(url: URL(string: videoFile.url!)!)
                 let playerLayer = AVPlayerLayer(player: player)
@@ -865,37 +761,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                vCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    vCell.time.text! = "1 second ago"
-                } else {
-                    vCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    vCell.time.text! = "1 minute ago"
-                } else {
-                    vCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    vCell.time.text! = "1 hour ago"
-                } else {
-                    vCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    vCell.time.text! = "1 day ago"
-                } else {
-                    vCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                vCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            vCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -984,7 +850,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             // Increase page size to load more posts
             page = page + 50
             
-            // Query friends
+            // Query following
             fetchPosts()
         }
     }

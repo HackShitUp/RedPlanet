@@ -35,7 +35,6 @@ class EphemeralCell: UITableViewCell {
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var iconicPreview: PFImageView!
     
-    
     // Function to view post
     func viewPost() {
         // Save post

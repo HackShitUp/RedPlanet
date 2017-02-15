@@ -170,8 +170,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
             NSForegroundColorAttributeName: UIColor.gray,
             NSFontAttributeName: font!
         ]
-        
-        
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
 
@@ -242,7 +240,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
-        
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -256,10 +253,10 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         // Fetch user's realNameOfUser and user's profile photos
         cell.rpUsername.text! = self.viewers[indexPath.row].value(forKey: "realNameOfUser") as! String
-        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-            // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-        }
+//        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+//            // MARK: - SDWebImage
+//            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+//        }
 
         return cell
     }

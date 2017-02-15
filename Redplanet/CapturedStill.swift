@@ -83,6 +83,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             newsfeeds["byUser"] = PFUser.current()!
             newsfeeds["username"] = PFUser.current()!.username!
             newsfeeds["contentType"] = "itm"
+            newsfeeds["saved"] = false
             newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             newsfeeds.saveInBackground(block: {
                 (success: Bool, error: Error?) in

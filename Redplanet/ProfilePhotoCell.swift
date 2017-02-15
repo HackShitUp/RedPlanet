@@ -281,6 +281,7 @@ class ProfilePhotoCell: UITableViewCell {
                                             newsfeeds["photoAsset"] = parseFile
                                             newsfeeds["pointObject"] = proPicObject.last!
                                             newsfeeds["contentType"] = "sh"
+                                            newsfeeds["saved"] = false
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {

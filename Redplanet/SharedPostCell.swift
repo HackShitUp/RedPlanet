@@ -408,6 +408,7 @@ class SharedPostCell: UITableViewCell {
                                             newsfeeds["textPost"] = "shared @\(self.fromRpUsername.text!)'s Share:"
                                             newsfeeds["pointObject"] = self.cellSharedObject!
                                             newsfeeds["contentType"] = "sh"
+                                            newsfeeds["saved"] = false
                                             newsfeeds.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if error == nil {
