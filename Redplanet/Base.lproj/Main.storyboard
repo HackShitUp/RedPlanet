@@ -2029,7 +2029,6 @@
                                         <constraint firstAttribute="width" constant="375" id="j3N-W7-KbJ"/>
                                     </constraints>
                                     <segments>
-                                        <segment title="FRIENDS"/>
                                         <segment title="FOLLOW"/>
                                         <segment title="SENT"/>
                                     </segments>
@@ -2043,7 +2042,7 @@
                                 <constraint firstItem="pq6-Jm-NtL" firstAttribute="leading" secondItem="tci-lZ-sR0" secondAttribute="leading" id="nd3-k0-J2U"/>
                             </constraints>
                             <connections>
-                                <outlet property="friendsFollowersFollowing" destination="pq6-Jm-NtL" id="0y0-pK-MWZ"/>
+                                <outlet property="segmentControl" destination="pq6-Jm-NtL" id="Yrp-Zg-mRa"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
@@ -5394,11 +5393,11 @@
                                                 <constraint firstAttribute="width" constant="137" id="XrJ-Sa-GcE"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                            <state key="normal" title="Friends">
+                                            <state key="normal" title="Following">
                                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
-                                                <action selector="friendAction:" destination="iVW-KB-DCk" eventType="touchUpInside" id="GqF-tB-IOb"/>
+                                                <action selector="followAction:" destination="iVW-KB-DCk" eventType="touchUpInside" id="4Tb-Mt-LXv"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w9d-e9-gqM">
@@ -5423,7 +5422,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="friendButton" destination="fuM-fs-59g" id="c03-rw-pev"/>
+                                    <outlet property="followButton" destination="fuM-fs-59g" id="BON-fo-RQk"/>
                                     <outlet property="rpUsername" destination="w9d-e9-gqM" id="lhd-sW-0VR"/>
                                 </connections>
                             </tableViewCell>
@@ -5535,7 +5534,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HAf-ey-vy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5126.5" y="2602.5"/>
+            <point key="canvasLocation" x="5102" y="3392"/>
         </scene>
         <!--FAQ-->
         <scene sceneID="BWa-W5-Slw">
@@ -5920,7 +5919,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T5o-ft-dEc" id="evC-tJ-Ctt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>

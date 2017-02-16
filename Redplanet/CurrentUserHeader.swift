@@ -24,7 +24,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
 
     @IBOutlet weak var myProPic: PFImageView!
-    @IBOutlet weak var numberOfFriends: UIButton!
+    @IBOutlet weak var numberOfPosts: UIButton!
     @IBOutlet weak var numberOfFollowers: UIButton!
     @IBOutlet weak var numberOfFollowing: UIButton!
     @IBOutlet weak var userBio: KILabel!
@@ -110,26 +110,19 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         super.awakeFromNib()
         
         // Center text
-        numberOfFriends.titleLabel!.textAlignment = NSTextAlignment.center
+        numberOfPosts.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
         
         self.contentView.backgroundColor = UIColor.white
         
-        // (1) Add tap methods to show friends, followers, and following
-        // (a) Friends
-        let friendsTap = UITapGestureRecognizer(target: self, action: #selector(showFriends))
-        friendsTap.numberOfTapsRequired = 1
-        self.numberOfFriends.isUserInteractionEnabled = true
-        self.numberOfFriends.addGestureRecognizer(friendsTap)
-        
-        // (b) Followers
+        // (1) Add tap methods to show followers, and following
+        // (A) Followers
         let followersTap = UITapGestureRecognizer(target: self, action: #selector(showFollowers))
         followersTap.numberOfTapsRequired = 1
         self.numberOfFollowers.isUserInteractionEnabled = true
         self.numberOfFollowers.addGestureRecognizer(followersTap)
-        
-        // (c) Following
+        // (B) Following
         let followingTap = UITapGestureRecognizer(target: self, action: #selector(showFollowing))
         followingTap.numberOfTapsRequired = 1
         self.numberOfFollowing.isUserInteractionEnabled = true
@@ -141,39 +134,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         proPicTap.numberOfTapsRequired = 1
         self.myProPic.isUserInteractionEnabled = true
         self.myProPic.addGestureRecognizer(proPicTap)
-        
-        
-        // (2) Count relationships
-        
-        // Query Relationships
-        appDelegate.queryRelationships()
-        
-        // COUNT FRIENDS
-        if myFriends.count == 0 {
-            self.numberOfFriends.setTitle("friends", for: .normal)
-        } else if myFriends.count == 1 {
-            self.numberOfFriends.setTitle("1\nfriend", for: .normal)
-        } else {
-            self.numberOfFriends.setTitle("\(myFriends.count)\nfriends", for: .normal)
-        }
-        
-        // COUNT FOLLOWERS
-        if myFollowers.count == 0 {
-            self.numberOfFollowers.setTitle("followers", for: .normal)
-        } else if myFollowers.count == 1 {
-            self.numberOfFollowers.setTitle("1\nfollower", for: .normal)
-        } else {
-            self.numberOfFollowers.setTitle("\(myFollowers.count)\nfollowers", for: .normal)
-        }
-        
-        // COUNT FOLLOWING
-        if myFollowing.count == 0 {
-            self.numberOfFollowing.setTitle("following", for: .normal)
-        } else if myFollowing.count == 1 {
-            self.numberOfFollowing.setTitle("1\nfollowing", for: .normal)
-        } else {
-            self.numberOfFollowing.setTitle("\(myFollowing.count)\nfollowing", for: .normal)
-        }
         
         
         // (4) Handle KILabel taps

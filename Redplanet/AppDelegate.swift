@@ -53,13 +53,12 @@ import SwipeNavigationController
 var username = [String]()
 
 // User's relationships: friends, followers, and following
-var myFriends = [PFObject]()
 var myFollowers = [PFObject]()
 var myFollowing = [PFObject]()
 
-// Not yet confirmed: friends, followers, and following
-var myRequestedFriends = [PFObject]()
-var requestedToFriendMe = [PFObject]()
+
+//var myRequestedFriends = [PFObject]()
+//var requestedToFriendMe = [PFObject]()
 
 var myRequestedFollowers = [PFObject]()
 var myRequestedFollowing = [PFObject]()
@@ -285,55 +284,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // (2) Query Relationships --- Checks all of the current user's friends, followers, and followings
     func queryRelationships() {
-        
-        // Query Friends && Users you've requested to be friends WITH
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-        friends.includeKeys(["frontFriend", "endFriend"])
-        friends.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear arrays
-                myFriends.removeAll(keepingCapacity: false)
-                myRequestedFriends.removeAll(keepingCapacity: false)
-                requestedToFriendMe.removeAll(keepingCapacity: false)
-                
-                for object in objects! {
-                    
-                    if object.value(forKey: "isFriends") as! Bool == true {
-                        // (A) FRIENDS
-                        if (object.object(forKey: "frontFriend") as! PFUser).objectId! != PFUser.current()!.objectId! {
-                            // Append frontFriend
-                            myFriends.append(object.object(forKey: "frontFriend") as! PFUser)
-                        } else {
-                            // Append endFriend
-                            myFriends.append(object.object(forKey: "endFriend") as! PFUser)
-                        }
-                    } else {
-                        // NOT FRIENDS
-                        if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                            // Received Friend Requests
-                            requestedToFriendMe.append(object.object(forKey: "frontFriend") as! PFUser)
-                        } else {
-                            // Sent Friend Requests
-                            myRequestedFriends.append(object.object(forKey: "endFriend") as! PFUser)
-                        }
-                    }
-
-                }                
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
 
         // Query Following && Users you've requested to Follow
         let following = PFQuery(className: "FollowMe")
@@ -391,7 +341,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
-
     }
 
     
@@ -441,22 +390,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let ok = UIAlertAction(title: "ok",
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
-                                        
-                                        for theFriend in myFriends {
-                                            if theFriend.value(forKey: "apnsId") != nil {
-                                                // MARK: - OneSignal 
-                                                // Send push notification
-                                                OneSignal.postNotification(
-                                                    ["contents":
-                                                        ["en": "Write in \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Space to say Happy Birthday!"],
-                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"],
-                                                     "ios_badgeType": "Increase",
-                                                     "ios_badgeCount": 1
-                                                    ]
-                                                )
-                                                
-                                            }
-                                        }
+//                                        
+//                                        for theFriend in myFriends {
+//                                            if theFriend.value(forKey: "apnsId") != nil {
+//                                                // MARK: - OneSignal 
+//                                                // Send push notification
+//                                                OneSignal.postNotification(
+//                                                    ["contents":
+//                                                        ["en": "Write in \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Space to say Happy Birthday!"],
+//                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"],
+//                                                     "ios_badgeType": "Increase",
+//                                                     "ios_badgeCount": 1
+//                                                    ]
+//                                                )
+//                                                
+//                                            }
+//                                        }
                 })
                 
                 alert.addAction(ok)

@@ -19,10 +19,7 @@ import DZNEmptyDataSet
 
 
 // Global variable to handle different forms of request
-// IE: if requestType == "friend" > frinedFunctions(), etc.
 var requestType: String?
-
-
 
 // Define Notification Identifier
 let requestsNotification = Notification.Name("relationshipRequests")
@@ -30,15 +27,12 @@ let requestsNotification = Notification.Name("relationshipRequests")
 class RelationshipRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     
-    // Array to hold friends, followers, and following
-    var nFriends = [PFObject]()
+    // Array to hold followers, and following
     var nFollowers = [PFObject]()
 
     // Users you sent requests to
     var sentTo = [PFObject]()
-    var friendVSFollow = [String]()
-    
-    
+
     // SourceType
     var sourceType: Int = 0
     
@@ -53,9 +47,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     @IBAction func refresh(_ sender: Any) {
         // Reload data
         if self.sourceType == 0 {
-            // Friends
-            fetchFriends()
-        } else if self.sourceType == 1 {
             // Followers
             fetchFollowers()
         } else {
@@ -70,46 +61,10 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         self.collectionView!.reloadData()
     }
     
-    func fetchFriends() {
-        // Fetch friends
-        let friends = PFQuery(className: "FriendMe")
-        friends.whereKey("isFriends", equalTo: false)
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("endFriend", equalTo: PFUser.current()!)
-        friends.order(byDescending: "createdAt")
-        friends.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear array
-                self.nFriends.removeAll(keepingCapacity: false)
-                
-                // Append object
-                for object in objects! {
-                    self.nFriends.append(object["frontFriend"] as! PFUser)
-                }
-                
-                // Set DZNEmptyDataSet
-                if self.nFriends.count == 0 {
-                    self.collectionView!.emptyDataSetSource = self
-                    self.collectionView!.emptyDataSetDelegate = self
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-            
-            // Reload data
-            self.collectionView!.reloadData()
-        }
-    }
-    
-    
-    
     // Query followers
     func fetchFollowers() {
         let followers = PFQuery(className: "FollowMe")
-        followers.includeKeys(["endFriend", "frontFriend"])
+        followers.includeKeys(["follower", "following"])
         followers.whereKey("following", equalTo: PFUser.current()!)
         followers.whereKey("isFollowing", equalTo: false)
         followers.order(byDescending: "createdAt")
@@ -123,7 +78,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 for object in objects! {
                     self.nFollowers.append(object["follower"] as! PFUser)
                 }
-                
                 
                 // Set DZNEmptyDataSet
                 if self.nFollowers.count == 0 {
@@ -143,55 +97,29 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
     // Query following
     func fetchSent() {
-        // Fetch all objects where the current user has sent a...
-        // (1) Friend Request: "frontFriend" == PFUser.currentUser()!
-        // (2) Follow Requests: "follower" == PFUser.currentUser()!
-        let friend = PFQuery(className: "FriendMe")
-        friend.includeKeys(["frontFriend", "endFriend"])
-        friend.whereKey("isFriends", equalTo: false)
-        friend.whereKey("frontFriend", equalTo: PFUser.current()!)
-        friend.order(byDescending: "createdAt")
-        friend.findObjectsInBackground(block: {
+        
+        // Fetch Sent Follow Requests
+        let follow = PFQuery(className: "FollowMe")
+        follow.includeKeys(["following", "follower"])
+        follow.whereKey("isFollowing", equalTo: false)
+        follow.whereKey("follower", equalTo: PFUser.current()!)
+        follow.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // Clear arrays
+                
+                // Clear array
                 self.sentTo.removeAll(keepingCapacity: false)
-                self.friendVSFollow.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.sentTo.append(object.object(forKey: "endFriend") as! PFUser)
-                    self.friendVSFollow.append("friend")
+                    self.sentTo.append(object.object(forKey: "following") as! PFUser)
                 }
                 
+                // Set DZNEmptyDataSet
+                if self.sentTo.count == 0 {
+                    self.collectionView!.emptyDataSetSource = self
+                    self.collectionView!.emptyDataSetDelegate = self
+                }
                 
-                // Fetch Sent Follow Requests
-                let follow = PFQuery(className: "FollowMe")
-                follow.includeKeys(["following", "follower"])
-                follow.whereKey("isFollowing", equalTo: false)
-                follow.whereKey("follower", equalTo: PFUser.current()!)
-                follow.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        for object in objects! {
-                            self.sentTo.append(object.object(forKey: "following") as! PFUser)
-                            self.friendVSFollow.append("follow")
-                        }
-                        
-                        // Set DZNEmptyDataSet
-                        if self.sentTo.count == 0 {
-                            self.collectionView!.emptyDataSetSource = self
-                            self.collectionView!.emptyDataSetDelegate = self
-                        }
-                        
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                    
-                })
-                
-                // Reload data
-                self.collectionView!.reloadData()
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -200,7 +128,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             // Reload data
             self.collectionView!.reloadData()
         })
-        
     }
     
     
@@ -210,23 +137,17 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     func switchSource(sender: UISegmentedControl) -> Int {
         
         if sender.selectedSegmentIndex == 0 {
-            // Friends
-            fetchFriends()
-            requestType = "friends"
-
-            sourceType = 0
-        } else if sender.selectedSegmentIndex == 1 {
             // Followers
             fetchFollowers()
             requestType = "follow"
 
-            sourceType = 1
+            sourceType = 0
         } else {
             // Following
             fetchSent()
             requestType = "sent"
 
-            sourceType = 2
+            sourceType = 1
         }
         
         return sourceType
@@ -258,7 +179,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
     // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if nFriends.count == 0 || nFollowers.count == 0 || sentTo.count == 0 {
+        if nFollowers.count == 0 || sentTo.count == 0 {
             return true
         } else {
             return false
@@ -269,13 +190,10 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         
-        
         if sourceType == 0 {
-            str = "🦄\nNo Friend Requests"
-        } else if sourceType == 1 {
             str = "🦄\nNo Follow Requests"
         } else {
-            str = "🦄\nYou haven't requested to Friend or Follow people yet."
+            str = "🦄\nYou haven't requested to Follow anyone recently."
         }
         
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
@@ -299,34 +217,24 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         
         // Set initial query
         if self.sourceType == 0 {
-            // Friends
-            fetchFriends()
-            requestType = "friends"
-
-        } else if self.sourceType == 1 {
             // Followers
             fetchFollowers()
             requestType = "follow"
-
         } else {
             // Sent
             fetchSent()
             requestType = "sent"
-
         }
         
         
         // Add Notification 
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: requestsNotification, object: nil)
         
-        
         // Set background color
         self.collectionView!.backgroundColor = UIColor.white
         
-        
         // Stylize title
         configureView()
-        
         
         // Set collectionview's cell size
         let layout = UICollectionViewFlowLayout()
@@ -370,9 +278,8 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         // Initialize header
         let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "relationshipsHeader", for: indexPath) as! RelationshipRequestsHeader
         
-        
         // Add target method
-        header.friendsFollowersFollowing.addTarget(self, action: #selector(switchSource), for: .allEvents)
+        header.segmentControl.addTarget(self, action: #selector(switchSource), for: .allEvents)
         
         return header
     }
@@ -388,9 +295,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if self.sourceType == 0 {
-            
-            return nFriends.count
-        } else if self.sourceType == 1 {
             
             return nFollowers.count
         } else {
@@ -419,54 +323,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         // Set delegate
         cell.delegate = self
     
-        
         if self.sourceType == 0 {
-            // Friends
-            nFriends[indexPath.row].fetchIfNeededInBackground(block:  {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-
-                    
-                    // (1) Set user's fullName
-                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
-                    
-                    // (2) Get username
-                    cell.rpUsername.text! = object!["username"] as! String
-                    
-                    // (3) Get profile photo
-                    // Handle optional chaining
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
-            // (4) Set user's object
-            cell.userObject = nFriends[indexPath.row]
-            
-            
-            // Hide button and show relative buttons
-            cell.relationState.isHidden = true
-            cell.confirmButton.isHidden = false
-            cell.ignoreButton.isHidden = false
-            
-            
-        } else if self.sourceType == 1 {
             // Followers
             nFollowers[indexPath.row].fetchIfNeededInBackground(block:  {
                 (object: PFObject?, error: Error?) in
@@ -504,7 +361,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             
             // (4) Set user's object
             cell.userObject = nFollowers[indexPath.row]
-            
             
             // Hide button and show relative buttons
             cell.relationState.isHidden = true
@@ -551,33 +407,16 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             // (4) Set user's object
             cell.userObject = sentTo[indexPath.row]
             
-            
-            
-            // Define which type you sent a request to: friend or follow
-            cell.friendFollow = friendVSFollow[indexPath.row]
-            
             // Hide button and show relative buttons
             cell.relationState.isHidden = false
             cell.confirmButton.isHidden = true
             cell.ignoreButton.isHidden = true
-            
-            // Set button: "Rescind Friend Request"
-            // If PFUser.currentUser()! sent "friend requested"
-            if friendVSFollow[indexPath.row] == "friend" {
-                // Hide buttons
-                cell.relationState.isHidden = false
-                cell.relationState.setTitle("Rescind Friend Request", for: .normal)
-            }
-            
+
             // Set button: "Rescind Follow Request"
             // If PFUser.currentUser()! sent "follow requested"
-            if friendVSFollow[indexPath.row] == "follow" {
-                // Hide buttons
-                cell.relationState.isHidden = false
-                cell.relationState.setTitle("Rescind Follow Request", for: .normal)
-            }
-            
-            
+            // Hide buttons
+            cell.relationState.isHidden = false
+            cell.relationState.setTitle("Rescind Follow Request", for: .normal)
         }
         
     

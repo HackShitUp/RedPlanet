@@ -189,8 +189,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
         // MARK: - NSBadge
         // Set badge for Relationship Requests...
-        if (requestedToFriendMe.count + myRequestedFollowers.count) != 0 {
-            relationshipRequestsButton.badge(text: "\(requestedToFriendMe.count + myRequestedFollowers.count)")
+        if myRequestedFollowers.count != 0 {
+            relationshipRequestsButton.badge(text: "\(myRequestedFollowers.count)")
         }
         
         // Clean tableView

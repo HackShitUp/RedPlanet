@@ -31,7 +31,7 @@
                         <constraint firstAttribute="width" constant="125" id="kpP-e9-JUQ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                    <state key="normal" title="friends">
+                    <state key="normal" title="posts">
                         <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
@@ -57,22 +57,8 @@
                         <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUt-aC-chk">
-                    <rect key="frame" x="8" y="304" width="175" height="44"/>
-                    <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="Sk2-tu-cyj"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                    <state key="normal" title="friend">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="friendAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="vQg-iB-Kw0"/>
-                    </connections>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VT-qx-8fx">
-                    <rect key="frame" x="192" y="304" width="175" height="44"/>
+                    <rect key="frame" x="62" y="304" width="250" height="44"/>
                     <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="DLW-Ud-pc3"/>
@@ -85,21 +71,6 @@
                         <action selector="followAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="wQB-2O-uKk"/>
                     </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
-                    <rect key="frame" x="8" y="304" width="359" height="44"/>
-                    <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="NMP-Bw-0CY"/>
-                        <constraint firstAttribute="width" constant="359" id="s1b-11-9Ya"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                    <state key="normal" title="friends">
-                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </state>
-                    <connections>
-                        <action selector="relationAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="5xr-jf-pVS"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMT-KU-90F" customClass="KILabel">
                     <rect key="frame" x="9" y="356" width="359" height="49"/>
                     <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -110,42 +81,54 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
+                    <rect key="frame" x="62" y="304" width="250" height="44"/>
+                    <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="NMP-Bw-0CY"/>
+                        <constraint firstAttribute="width" constant="250" id="s1b-11-9Ya"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                    <state key="normal" title="following">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="relationAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="5xr-jf-pVS"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="5VT-qx-8fx" secondAttribute="trailing" constant="63" id="22R-uq-DG5"/>
                 <constraint firstItem="WMT-KU-90F" firstAttribute="top" secondItem="sGi-mE-cqf" secondAttribute="bottom" constant="8" id="2Ml-dC-1xh"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="62" id="3pS-Ti-kSQ"/>
                 <constraint firstItem="mrM-5U-Xcy" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="4vb-63-bZ8"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="51I-K0-JNb"/>
-                <constraint firstItem="5VT-qx-8fx" firstAttribute="leading" secondItem="eUt-aC-chk" secondAttribute="trailing" constant="9" id="982-N6-c0m"/>
                 <constraint firstAttribute="trailing" secondItem="e4R-zD-fge" secondAttribute="trailing" constant="63" id="Cnh-UA-SuC"/>
                 <constraint firstAttribute="trailing" secondItem="WMT-KU-90F" secondAttribute="trailing" constant="7" id="DE5-oy-TKy"/>
                 <constraint firstItem="5VT-qx-8fx" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="8" id="IFm-Rr-o2Z"/>
                 <constraint firstItem="WMT-KU-90F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="9" id="IWk-su-BEG"/>
-                <constraint firstItem="5VT-qx-8fx" firstAttribute="width" secondItem="eUt-aC-chk" secondAttribute="width" id="QGK-hk-Hnx"/>
-                <constraint firstItem="eUt-aC-chk" firstAttribute="top" secondItem="857-lc-Tmw" secondAttribute="bottom" constant="8" id="QcG-yD-cQT"/>
                 <constraint firstItem="WMT-KU-90F" firstAttribute="top" secondItem="sGi-mE-cqf" secondAttribute="bottom" constant="8" id="RQJ-my-w7J"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="U6Q-OU-jR6"/>
                 <constraint firstItem="sGi-mE-cqf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="V0x-Ty-k6G"/>
                 <constraint firstItem="sGi-mE-cqf" firstAttribute="top" secondItem="857-lc-Tmw" secondAttribute="bottom" constant="8" id="VNQ-Ga-vVu"/>
-                <constraint firstItem="sGi-mE-cqf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="Vyg-41-klG"/>
-                <constraint firstAttribute="trailing" secondItem="sGi-mE-cqf" secondAttribute="trailing" constant="8" id="Wpn-zu-g03"/>
+                <constraint firstItem="sGi-mE-cqf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="62" id="Vyg-41-klG"/>
+                <constraint firstAttribute="trailing" secondItem="sGi-mE-cqf" secondAttribute="trailing" constant="63" id="Wpn-zu-g03"/>
                 <constraint firstAttribute="bottom" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="20" id="XFC-IY-1uY"/>
                 <constraint firstItem="sGi-mE-cqf" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="8" id="Y5Q-fs-dwe"/>
                 <constraint firstItem="mrM-5U-Xcy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Zda-gz-LIm"/>
                 <constraint firstItem="IND-ke-LYZ" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="brW-Lc-oTP"/>
-                <constraint firstAttribute="trailing" secondItem="5VT-qx-8fx" secondAttribute="trailing" constant="8" id="gtD-Gb-JFl"/>
+                <constraint firstAttribute="trailing" secondItem="5VT-qx-8fx" secondAttribute="trailing" constant="63" id="gtD-Gb-JFl"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>
-                <constraint firstItem="eUt-aC-chk" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="tcR-Nh-wCA"/>
+                <constraint firstItem="5VT-qx-8fx" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="62" id="sfE-QX-2Hq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="followButton" destination="5VT-qx-8fx" id="lw4-GM-hWT"/>
-                <outlet property="friendButton" destination="eUt-aC-chk" id="cGd-Nv-2K8"/>
                 <outlet property="numberOfFollowers" destination="857-lc-Tmw" id="H9E-bV-xhy"/>
                 <outlet property="numberOfFollowing" destination="IND-ke-LYZ" id="i5b-YR-YHt"/>
-                <outlet property="numberOfFriends" destination="mrM-5U-Xcy" id="oRL-xX-x1a"/>
+                <outlet property="numberOfPosts" destination="mrM-5U-Xcy" id="27P-mA-AZd"/>
                 <outlet property="relationType" destination="sGi-mE-cqf" id="rET-jE-S88"/>
                 <outlet property="rpUserProPic" destination="e4R-zD-fge" id="Jxc-QX-ZlE"/>
                 <outlet property="userBio" destination="WMT-KU-90F" id="Tlj-Z0-LlU"/>

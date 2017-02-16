@@ -23,9 +23,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     var searchActive: Bool = false
     // Search Bar
     var searchBar = UISearchBar()
-    
-    // Array to hold friends
-    var friends = [PFObject]()
+
+    // Arry to hold following
+    var following = [PFObject]()
     // Array to hold searched users
     var searchObjects = [PFObject]()
     
@@ -42,53 +42,33 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // If search is not active, and searchBar's text is empty
         if searchActive == false && searchBar.text!.isEmpty {
             // Reload data
-            queryFriends()
+            queryFollowing()
         }
     }
     
     
-    // Query friends
-    func queryFriends() {
-        // Fetch friends
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [eFriends, fFriends])
-        friends.includeKeys(["frontFriend", "endFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.limit = self.page
-        friends.findObjectsInBackground(block: {
+    // Query Following
+    func queryFollowing() {
+        let following = PFQuery(className: "FollowMe")
+        following.whereKey("follower", equalTo: PFUser.current()!)
+        following.whereKey("isFollowing", equalTo: true)
+        following.includeKey("following")
+        following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
+                self.following.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Handle optional chaining to fetch user's object and compare with objectId to the current user's objectId
-                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! != PFUser.current()!.objectId! {
-                        // Append frontFriend
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    } else {
-                        // Append endFriend
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    }
-                    
-                    
+                    self.following.append(object.object(forKey: "following") as! PFUser)
                 }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.tableView!.reloadData()
-        })
-
+        }
     }
     
     
@@ -109,8 +89,8 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Query friends
-        queryFriends()
+        // Query Following
+        queryFollowing()
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -250,7 +230,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         if searchActive == true && searchBar.text! != "" {
             return searchObjects.count
         } else {
-            return friends.count
+            return following.count
         }
         
     }
@@ -291,13 +271,13 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         } else {
             
             // Set user's object
-            cell.userObject = friends[indexPath.row]
+            cell.userObject = following[indexPath.row]
             
             // Set username, fullName, and profilePhoto
-            cell.rpUsername.text! = self.friends[indexPath.row].value(forKey: "realNameOfUser") as! String
-            cell.rpFullName.text! = self.friends[indexPath.row].value(forKey: "username") as! String
+            cell.rpUsername.text! = self.following[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpFullName.text! = self.following[indexPath.row].value(forKey: "username") as! String
             // MARK: - SDWebImage
-            if let proPic = self.friends[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            if let proPic = self.following[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
@@ -319,7 +299,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Set tableView background
         self.tableView.backgroundView = UIView()
         // Reload data
-        queryFriends()
+        queryFollowing()
     }
     
     
@@ -333,13 +313,13 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= friends.count {
+        if page <= following.count {
             
             // Increase page size to load more posts
             page = page + 50
             
-            // Query friends
-            queryFriends()
+            // Query following
+            queryFollowing()
         }
     }
     

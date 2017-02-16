@@ -31,7 +31,7 @@
                         <constraint firstAttribute="width" constant="125" id="fWp-AJ-Xhg"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                    <state key="normal" title="friends">
+                    <state key="normal" title="posts">
                         <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                 </button>
@@ -93,7 +93,7 @@
                 <outlet property="myProPic" destination="YgB-fA-d26" id="BR2-Lm-Fuo"/>
                 <outlet property="numberOfFollowers" destination="Tfg-SD-JRh" id="UC3-bY-7kb"/>
                 <outlet property="numberOfFollowing" destination="cpC-g2-2H8" id="sc8-tM-dtS"/>
-                <outlet property="numberOfFriends" destination="o7e-g2-Wuc" id="1ft-9Z-vfU"/>
+                <outlet property="numberOfPosts" destination="o7e-g2-Wuc" id="wwd-2R-MKn"/>
                 <outlet property="userBio" destination="hEu-lr-NsO" id="92C-6j-Dm1"/>
             </connections>
             <point key="canvasLocation" x="28.5" y="172.5"/>

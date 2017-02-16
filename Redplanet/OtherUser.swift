@@ -233,8 +233,8 @@ class OtherUser: UITableViewController {
                                  style: .cancel,
                                  handler: nil)
         
-        // Show options
-        if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        // IF FOLLOWING AND FOLLOWER == SPACE
+        if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             alert.addAction(space)
             alert.addAction(chat)
             alert.addAction(reportOrBlock)
@@ -260,7 +260,9 @@ class OtherUser: UITableViewController {
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
         }
-
+        
+        
+        
     }
     
     
@@ -299,6 +301,7 @@ class OtherUser: UITableViewController {
                     } else {
                         self.posts.append(object)
                     }
+                    
 //                    if difference.hour! < 24 {
 //                        self.posts.append(object)
 //                    } else {
@@ -312,61 +315,41 @@ class OtherUser: UITableViewController {
                     // PRIVATE ACCOUNT
                     // Any logic that contains a print statement DOES NOT place a cover
                     
-                    if myFriends.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // FRIENDS
-                        print("Don't hide because FRIENDS")
-                        if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNot Posts Todady.\n", for: .normal)
-                            self.tableView!.addSubview(self.cover)
-                            self.tableView!.allowsSelection = false
-                            self.tableView!.isScrollEnabled = true
-                        }
-                        
-                    } else if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        
-                        // FRIEND REQUESTED
-                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = false
-                        
-                    } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        
-                        // FOLLOWER ONLY
-                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                    if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                    // FOLLOWER ONLY
+                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
                         
                     } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // CONFIRM FOLLOW REQUEST
-                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                    // CONFIRM FOLLOW REQUEST
+                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
                         
                     } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // FOLLOWING
+                    // FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNot Posts Today.\n", for: .normal)
+                            self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
                         }
                         
                     } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                        // FOLLOW REQUESTED
-                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                    // FOLLOW REQUESTED
+                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
                         
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                        // FOLLOWER & FOLLOWING
-                        print("Don't hide because FOLLOWING")
+                    // FOLLOWER & FOLLOWING == FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Today.\n", for: .normal)
+                            self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -374,7 +357,7 @@ class OtherUser: UITableViewController {
                         
                     } else {
                         // Not yet connected
-                        self.cover.setTitle("🔒\nPrivate Account.\nAdd your friends. Follow the things you love.", for: .normal)
+                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -383,7 +366,7 @@ class OtherUser: UITableViewController {
                 } else {
                     // PUBLIC ACCOUNT
                     if self.posts.count == 0 {
-                        self.cover.setTitle("🤔\nNo Posts Today.\n", for: .normal)
+                        self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = true
@@ -400,6 +383,7 @@ class OtherUser: UITableViewController {
             self.tableView!.reloadData()
         }
     }
+    
     
     
     // Function to stylize and set title of navigation bar
@@ -424,6 +408,7 @@ class OtherUser: UITableViewController {
     }
     
     
+    
     // Function to refresh
     func refresh() {
         // Run relationships
@@ -440,8 +425,6 @@ class OtherUser: UITableViewController {
     }
     
 
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -479,56 +462,54 @@ class OtherUser: UITableViewController {
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
-        // TODO::
-        // Show which button to tap!
-        let openedProfile = UserDefaults.standard.bool(forKey: "DidOpenOtherUserProfile")
-        if openedProfile == false && otherObject.last! != PFUser.current()! {
-            
-            // Save
-            UserDefaults.standard.set(true, forKey: "DidOpenOtherUserProfile")
-            
-            let alert = AlertController(title: "🤗\nFriend or Follow",
-                                        message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
-                                        style: .alert)
-            
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.textColor = UIColor.black
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                    view.messageLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
-            }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
-            }
-            
-            
-            
-            let learnMore = AlertAction(title: "I'm Confused",
-                                        style: .destructive,
-                                        handler: { (AlertAction) in
-                                            // Push VC
-                                            let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
-                                            self.navigationController?.pushViewController(faqVC, animated: true)
-            })
-            
-            let ok = AlertAction(title: "ok",
-                                 style: .default,
-                                 handler: nil)
-            
-            alert.addAction(learnMore)
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-        }
-        
-
+//        // TODO::
+//        // Show which button to tap!
+//        let openedProfile = UserDefaults.standard.bool(forKey: "DidOpenOtherUserProfile")
+//        if openedProfile == false && otherObject.last! != PFUser.current()! {
+//            
+//            // Save
+//            UserDefaults.standard.set(true, forKey: "DidOpenOtherUserProfile")
+//            
+//            let alert = AlertController(title: "🤗\nFriend or Follow",
+//                                        message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
+//                                        style: .alert)
+//            
+//            // Design content view
+//            alert.configContentView = { view in
+//                if let view = view as? AlertContentView {
+//                    view.backgroundColor = UIColor.white
+//                    view.titleLabel.textColor = UIColor.black
+//                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
+//                    view.messageLabel.textColor = UIColor.black
+//                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+//                    view.textBackgroundView.layer.cornerRadius = 3.00
+//                    view.textBackgroundView.clipsToBounds = true
+//                }
+//            }
+//            // Design corner radius
+//            alert.configContainerCornerRadius = {
+//                return 14.00
+//            }
+//            
+//            
+//            
+//            let learnMore = AlertAction(title: "I'm Confused",
+//                                        style: .destructive,
+//                                        handler: { (AlertAction) in
+//                                            // Push VC
+//                                            let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
+//                                            self.navigationController?.pushViewController(faqVC, animated: true)
+//            })
+//            
+//            let ok = AlertAction(title: "ok",
+//                                 style: .default,
+//                                 handler: nil)
+//            
+//            alert.addAction(learnMore)
+//            alert.addAction(ok)
+//            alert.view.tintColor = UIColor.black
+//            self.present(alert, animated: true, completion: nil)
+//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -618,52 +599,38 @@ class OtherUser: UITableViewController {
         header.relationType.isUserInteractionEnabled = true
         header.relationType.isHidden = true
         
-        header.friendButton.isHidden = false
-        header.friendButton.isEnabled = true
-        
         header.followButton.isHidden = false
         header.followButton.isEnabled = true
         
-        if myFriends.contains(where: { $0.objectId! == otherObject.last!.objectId!} ) {
-            // FRIENDS
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Friends", for: .normal)
-        }
-        
-        if myRequestedFriends.contains(where: {$0.objectId == otherObject.last!.objectId!} ) || requestedToFriendMe.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-            // FRIEND REQUESTED
-            header.relationType.isHidden = false
-            header.relationType.setTitle("Friend Requested", for: .normal)
-        }
-        
+
         if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-            // FOLLOWER
+        // FOLLOWER
             header.relationType.isHidden = false
             header.relationType.setTitle("Follower", for: .normal)
             
         }
         
         if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-            // FOLLOWING
+        // FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
         }
         
         if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-            // FOLLOW REQUESTED
+        // FOLLOW REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Follow Requested", for: .normal)
         }
         
         if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-            // FOLLOWER & FOLLOWING
+        // FOLLOWER & FOLLOWING == FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
         }
         
+        // SELF
         // PFUser.currentUser()'s Profile
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
-            header.friendButton.isHidden = true
             header.followButton.isHidden = true
             header.relationType.isHidden = true
         }
@@ -757,7 +724,7 @@ class OtherUser: UITableViewController {
                 // MARK: - SDWebImage
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
@@ -893,7 +860,7 @@ class OtherUser: UITableViewController {
                 // MARK: - SDWebImage
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
@@ -974,7 +941,7 @@ class OtherUser: UITableViewController {
                 // MARK: - SDWebImage
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
@@ -1126,7 +1093,7 @@ class OtherUser: UITableViewController {
                 // MARK: - SDWebImage
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
@@ -1284,7 +1251,7 @@ class OtherUser: UITableViewController {
                 // MARK: - SDWebImage
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
+            // (1B) realNameOfUser for FOLLOWING
             vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser

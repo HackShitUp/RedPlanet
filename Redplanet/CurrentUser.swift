@@ -246,15 +246,22 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
         }
         
-        // (3) Set count for friends, followers, and following
-        if myFriends.count == 0 {
-            header.numberOfFriends.setTitle("\nfriends", for: .normal)
-        } else if myFriends.count == 1 {
-            header.numberOfFriends.setTitle("1\nfriend", for: .normal)
-        } else {
-            header.numberOfFriends.setTitle("\(myFriends.count)\nfriends", for: .normal)
+        // (3) Set count for posts, followers, and following
+        let posts = PFQuery(className: "Newsfeeds")
+        posts.whereKey("byUser", equalTo: PFUser.current()!)
+        posts.countObjectsInBackground {
+            (count: Int32, error: Error?) in
+            if error == nil {
+                if count == 1 {
+                    header.numberOfPosts.setTitle("1\npost", for: .normal)
+                } else {
+                    header.numberOfPosts.setTitle("\(count)\nposts", for: .normal)
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                header.numberOfPosts.setTitle("posts", for: .normal)
+            }
         }
-        
         
         if myFollowers.count == 0 {
             header.numberOfFollowers.setTitle("\nfollowers", for: .normal)
@@ -275,7 +282,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         
         
         return header
-        
     }
     
     

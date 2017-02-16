@@ -19,10 +19,10 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
     // Array to hold user object
     var followObjects = [PFObject]()
-    var friendObjects = [PFObject]()
+    var teamObjects = [PFObject]()
     
-    // Set friends
-    var friends = ["l5L2xZuhIi", // Alex LaVersa (1)
+    // Set Team's ObjectId's
+    var team = ["l5L2xZuhIi", // Alex LaVersa (1)
                    "8ZztVf7CEw", // Michael Furman (2)
                    "OoZRHmiNpX", // Jake Cadez (3)
                    "uvjf6LmD2t", // Yusuf Ahmed (4)
@@ -98,7 +98,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     func fetchUsers() {
         
         let team = PFUser.query()!
-        team.whereKey("objectId", containedIn: self.friends)
+        team.whereKey("objectId", containedIn: self.team)
         
         let follow = PFUser.query()!
         follow.whereKey("private", equalTo: false)
@@ -117,7 +117,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                     
                     if object.objectId! == "2AOI4vtcSI" || object.objectId! == "uvjf6LmD2t" || object.objectId! == "OoZRHmiNpX" || object.objectId! == "8ZztVf7CEw" || object.objectId! == "l5L2xZuhIi" {
                         
-                        self.friendObjects.append(object)
+                        self.teamObjects.append(object)
                         
                     } else {
                         
@@ -153,7 +153,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         fetchUsers()
         
         // Set title
-        self.title = "Friend Or Follow"
+        self.title = "Follow People"
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "onboard"), object: nil)
@@ -177,7 +177,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 0 {
-            return friendObjects.count
+            return teamObjects.count
         } else {
             return followObjects.count
         }
@@ -191,7 +191,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         
         if section == 0 {
             
-            label.text = " • Friend the Redplanet Team"
+            label.text = " • Follow the Redplanet Team"
             return label
             
         } else {
@@ -234,11 +234,11 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
         if indexPath.section == 0 {
             // Set user's object
-            cell.userObject = self.friendObjects[indexPath.row]
+            cell.userObject = self.teamObjects[indexPath.row]
             
             
             // (A) Fetch user's objects
-            friendObjects[indexPath.row].fetchIfNeededInBackground {
+            teamObjects[indexPath.row].fetchIfNeededInBackground {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     // (1) Get and set user's profile photo
@@ -273,18 +273,18 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
             
             
             // Set title
-            if myRequestedFriends.contains(where: {$0.objectId! == self.friendObjects[indexPath.row].objectId!}) {
-                // FOLLOWING
+            if myRequestedFollowing.contains(where: {$0.objectId! == self.teamObjects[indexPath.row].objectId!}) {
+            // FOLLOW REQUESTED
                 // Set button's title and design
-                cell.followButton.setTitle("Friend Requested", for: .normal)
+                cell.followButton.setTitle("Follow Requested", for: .normal)
                 cell.followButton.setTitleColor(UIColor.white, for: .normal)
                 cell.followButton.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                 cell.followButton.layer.cornerRadius = 22.0
                 cell.followButton.clipsToBounds = true
             } else {
-                // FOLLOW
+            // FOLLOW
                 // Set button's title and design
-                cell.followButton.setTitle("Friend", for: .normal)
+                cell.followButton.setTitle("Follow", for: .normal)
                 cell.followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
                 cell.followButton.backgroundColor = UIColor.white
                 cell.followButton.layer.cornerRadius = 22.00
@@ -292,6 +292,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 cell.followButton.layer.borderWidth = 2.00
                 cell.followButton.clipsToBounds = true
             }
+            
         } else {
             // Set user's object
             cell.userObject = self.followObjects[indexPath.row]

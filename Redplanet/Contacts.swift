@@ -40,12 +40,10 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Storing Contact Objects
     var results = [CNContact]()
 
-    
-    // Variable to hold friend objects
-    var friends = [PFObject]()
-    
-    // Users who are not yet friends
-    var notFriends = [PFObject]()
+    // Array to hold following objects
+    var following = [PFObject]()
+    // Array to hold NOT following objects
+    var notFollowing = [PFObject]()
     
     
     // Initiaize AppDelegate
@@ -151,22 +149,22 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             if error == nil {
                 
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
-                self.notFriends.removeAll(keepingCapacity: false)
+                self.following.removeAll(keepingCapacity: false)
+                self.notFollowing.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if myFriends.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.friends.append(object)
+                    if myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.following.append(object)
                     } else {
-                        self.notFriends.append(object)
+                        self.notFollowing.append(object)
                     }
                 }
                 
                 
                 
                 
-                // Load alert if no friends were found
-                if self.notFriends.count == 0 {
+                // Load alert if no friends (following) were found
+                if self.notFollowing.count == 0 {
                     // Show Alert
                     let alert = UIAlertController(title: "No Friends on Redplanet",
                                                   message: "Your Friends Aren't on Redplanet 😕",
@@ -347,9 +345,9 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         if section == 0 {
-            return notFriends.count
+            return notFollowing.count
         } else {
-            return myFriends.count
+            return following.count
         }
     }
     
@@ -362,10 +360,10 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         
         if section == 0 {
-            label.text = " REDPLANETERS IN CONTACTS"
+            label.text = "   REDPLANETERS IN CONTACTS"
             return label
         } else {
-            label.text = " FRIENDS"
+            label.text = "   FOLLOWING"
             return label
         }
         
@@ -390,47 +388,64 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         cell.delegate = self
         
         if indexPath.section == 0 {
+            
+            // Sort notFollowing in ABC order
+            let notABCFollowing = notFollowing.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            
             // Set user's object contained in UITableViewCell
-            cell.friend = notFriends[indexPath.row]
+            cell.userObject = notABCFollowing[indexPath.row]
             
             // Check whether user has a full name
-            cell.rpUsername.text! = notFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpUsername.text! = notABCFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
             
-            // Set button
-            if myRequestedFriends.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) || requestedToFriendMe.contains(where: {$0.objectId! == notFriends[indexPath.row].objectId!}) {
+            
+            // Configure buttons
+            if myRequestedFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
+            // REQUESTED: Follower OR Following
                 // Change button's title and design
-                cell.friendButton.setTitle("Friend Requested", for: .normal)
-                cell.friendButton.setTitleColor(UIColor.white, for: .normal)
-                cell.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                cell.friendButton.layer.cornerRadius = 22.00
-                cell.friendButton.clipsToBounds = true
+                cell.followButton.setTitle("Requested", for: .normal)
+                cell.followButton.setTitleColor(UIColor.white, for: .normal)
+                cell.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                cell.followButton.layer.cornerRadius = 22.00
+                cell.followButton.clipsToBounds = true
+            } else if myFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) && !myFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
+            // FOLLOWER
+                // Change button's title and design
+                cell.followButton.setTitle("Follower", for: .normal)
+                cell.followButton.setTitleColor(UIColor.white, for: .normal)
+                cell.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                cell.followButton.layer.cornerRadius = 22.00
+                cell.followButton.clipsToBounds = true
             } else {
-                // Set user's friends button
-                cell.friendButton.setTitle("Friend", for: .normal)
-                cell.friendButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                cell.friendButton.backgroundColor = UIColor.white
-                cell.friendButton.layer.cornerRadius = 22.00
-                cell.friendButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                cell.friendButton.layer.borderWidth = 2.00
-                cell.friendButton.clipsToBounds = true
+            // NONE
+                // Set user's follow button
+                cell.followButton.setTitle("Follow", for: .normal)
+                cell.followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                cell.followButton.backgroundColor = UIColor.white
+                cell.followButton.layer.cornerRadius = 22.00
+                cell.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                cell.followButton.layer.borderWidth = 2.00
+                cell.followButton.clipsToBounds = true
             }
-        } else {
             
-            // Sort Friends in ABC order
-            let abcFriends = myFriends.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+        } else {
+        // FOLLOWING
+            
+            // Sort Following in ABC order
+            let abcFollowing = following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
             
             // Set user's object contained in UITableViewCell
-            cell.friend = abcFriends[indexPath.row]
+            cell.userObject = abcFollowing[indexPath.row]
             
             // Check whether user has a full name
-            cell.rpUsername.text! = abcFriends[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // Change button's title and design
-            cell.friendButton.setTitle("Friends", for: .normal)
-            cell.friendButton.setTitleColor(UIColor.white, for: .normal)
-            cell.friendButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-            cell.friendButton.layer.cornerRadius = 22.00
-            cell.friendButton.clipsToBounds = true
+            cell.followButton.setTitle("Following", for: .normal)
+            cell.followButton.setTitleColor(UIColor.white, for: .normal)
+            cell.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            cell.followButton.layer.cornerRadius = 22.00
+            cell.followButton.clipsToBounds = true
         }
 
         return cell
