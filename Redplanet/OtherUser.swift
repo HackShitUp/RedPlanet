@@ -59,6 +59,176 @@ class OtherUser: UITableViewController {
         // Pop view controller
         _ = _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    
+    // Function to show Chat
+    func showChat() {
+        // Append user's object
+        chatUserObject.append(otherObject.last!)
+        // Append user's username
+        chatUsername.append(otherName.last!)
+        
+        // Push VC
+        let chatRoomVC = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+        self.navigationController?.pushViewController(chatRoomVC, animated: true)
+    }
+    
+    
+    // Function to create new Space Post
+    func createSpace() {
+        // Append to otherObject
+        otherObject.append(otherObject.last!)
+        // Append to otherName
+        otherName.append(otherName.last!)
+        
+        // Push VC
+        let newSpaceVC = self.storyboard?.instantiateViewController(withIdentifier: "newSpacePostVC") as! NewSpacePost
+        self.navigationController?.pushViewController(newSpaceVC, animated: true)
+    }
+    
+    
+    // Function to Report/Block:
+    func reportOrBlock() {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                    message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
+            style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Report
+        let report = AlertAction(title: "Report",
+                                        style: .destructive,
+                                        handler: { (AlertAction) in
+                                            
+                                            let alert = UIAlertController(title: "Report",
+                                                                          message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
+                                                preferredStyle: .alert)
+                                            
+                                            let report = UIAlertAction(title: "Report", style: .destructive) {
+                                                [unowned self, alert] (action: UIAlertAction!) in
+                                                
+                                                let answer = alert.textFields![0]
+                                                
+                                                // Save to <Block_Reported>
+                                                let report = PFObject(className: "Block_Reported")
+                                                report["from"] = PFUser.current()!.username!
+                                                report["fromUser"] = PFUser.current()!
+                                                report["to"] = otherName.last!
+                                                report["toUser"] = otherObject.last!
+                                                report["forObjectId"] = otherObject.last!.objectId!
+                                                report["type"] = answer.text!
+                                                report.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved report: \(report)")
+                                                        
+                                                        // Dismiss
+                                                        let alert = UIAlertController(title: "Successfully Reported",
+                                                                                      message: "\(otherName.last!.uppercased())",
+                                                            preferredStyle: .alert)
+                                                        
+                                                        let ok = UIAlertAction(title: "ok",
+                                                                               style: .default,
+                                                                               handler: nil)
+                                                        
+                                                        alert.addAction(ok)
+                                                        alert.view.tintColor = UIColor.black
+                                                        self.present(alert, animated: true, completion: nil)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                            
+                                            
+                                            let cancel = UIAlertAction(title: "Cancel",
+                                                                       style: .cancel,
+                                                                       handler: nil)
+                                            
+                                            
+                                            alert.addTextField(configurationHandler: nil)
+                                            alert.addAction(report)
+                                            alert.addAction(cancel)
+                                            alert.view.tintColor = UIColor.black
+                                            self.present(alert, animated: true, completion: nil)
+        })
+
+        
+        // (2) Block
+        let block = AlertAction(title: "Block",
+                                        style: .destructive,
+                                        handler: { (AlertAction) in
+                                        
+                                            // Save to <Block_Reported>
+                                            let report = PFObject(className: "Block_Reported")
+                                            report["from"] = PFUser.current()!.username!
+                                            report["fromUser"] = PFUser.current()!
+                                            report["to"] = otherName.last!
+                                            report["toUser"] = otherObject.last!
+                                            report["forObjectId"] = otherObject.last!.objectId!
+                                            report["type"] = "BLOCK"
+                                            report.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully saved report: \(report)")
+                                                    
+                                                    // Dismiss
+                                                    let alert = UIAlertController(title: "Successfully Blocked",
+                                                                                  message: "\(otherName.last!.uppercased()). You will receive a message from us if the issue is serious.",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: nil)
+                                                    
+                                                    alert.addAction(ok)
+                                                    alert.view.tintColor = UIColor.black
+                                                    self.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+
+        })
+        
+        // (3) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
+        
+
+        options.addAction(report)
+        options.addAction(block)
+        options.addAction(cancel)
+        report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        block.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        block.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        self.present(options, animated: true, completion: nil)
+    }
+    
+    
 
     @IBAction func moreAction(_ sender: Any) {
         // MARK: - SimpleAlert
@@ -88,30 +258,16 @@ class OtherUser: UITableViewController {
         let space = AlertAction(title: "Write on Space",
                                 style: .default,
                                 handler: { (AlertAction) in
-                                    // Append to otherObject
-                                    otherObject.append(otherObject.last!)
-                                    // Append to otherName
-                                    otherName.append(otherName.last!)
-                                    
-                                    // Push VC
-                                    let newSpaceVC = self.storyboard?.instantiateViewController(withIdentifier: "newSpacePostVC") as! NewSpacePost
-                                    self.navigationController?.pushViewController(newSpaceVC, animated: true)
+                                    // Show Space
+                                    self.createSpace()
         })
         
         // (2) Chat
         let chat = AlertAction(title: "Chat",
                                style: .default,
                                handler: { (AlertAction) in
-                                
-                                // Append user's object
-                                chatUserObject.append(otherObject.last!)
-                                // Append user's username
-                                chatUsername.append(otherName.last!)
-                                
-                                // Push VC
-                                let chatRoomVC = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
-                                self.navigationController?.pushViewController(chatRoomVC, animated: true)
-                                
+                                // Show Chat
+                                self.showChat()
         })
         
         
@@ -261,9 +417,6 @@ class OtherUser: UITableViewController {
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
         }
-        
-        
-        
     }
     
     
@@ -452,55 +605,6 @@ class OtherUser: UITableViewController {
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
-        
-//        // TODO::
-//        // Show which button to tap!
-//        let openedProfile = UserDefaults.standard.bool(forKey: "DidOpenOtherUserProfile")
-//        if openedProfile == false && otherObject.last! != PFUser.current()! {
-//            
-//            // Save
-//            UserDefaults.standard.set(true, forKey: "DidOpenOtherUserProfile")
-//            
-//            let alert = AlertController(title: "🤗\nFriend or Follow",
-//                                        message: "Friends and Following are NOT the same thing on Redplanet. Friend people you know for the cool features only friends can interact with.",
-//                                        style: .alert)
-//            
-//            // Design content view
-//            alert.configContentView = { view in
-//                if let view = view as? AlertContentView {
-//                    view.backgroundColor = UIColor.white
-//                    view.titleLabel.textColor = UIColor.black
-//                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-//                    view.messageLabel.textColor = UIColor.black
-//                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-//                    view.textBackgroundView.layer.cornerRadius = 3.00
-//                    view.textBackgroundView.clipsToBounds = true
-//                }
-//            }
-//            // Design corner radius
-//            alert.configContainerCornerRadius = {
-//                return 14.00
-//            }
-//            
-//            
-//            
-//            let learnMore = AlertAction(title: "I'm Confused",
-//                                        style: .destructive,
-//                                        handler: { (AlertAction) in
-//                                            // Push VC
-//                                            let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
-//                                            self.navigationController?.pushViewController(faqVC, animated: true)
-//            })
-//            
-//            let ok = AlertAction(title: "ok",
-//                                 style: .default,
-//                                 handler: nil)
-//            
-//            alert.addAction(learnMore)
-//            alert.addAction(ok)
-//            alert.view.tintColor = UIColor.black
-//            self.present(alert, animated: true, completion: nil)
-//        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -644,6 +748,20 @@ class OtherUser: UITableViewController {
             header.blockButton.isHidden = true
             header.newSpaceButton.isHidden = true
         }
+        
+        
+        // Add Tap Methods
+        let chatTap = UITapGestureRecognizer(target: self, action: #selector(self.showChat))
+        chatTap.numberOfTapsRequired = 1
+        header.chatButton.addGestureRecognizer(chatTap)
+        
+        let spaceTap = UITapGestureRecognizer(target: self, action: #selector(self.createSpace))
+        spaceTap.numberOfTapsRequired = 1
+        header.newSpaceButton.addGestureRecognizer(spaceTap)
+        
+        let reportBlockTap = UITapGestureRecognizer(target: self, action: #selector(self.reportOrBlock))
+        reportBlockTap.numberOfTapsRequired = 1
+        header.blockButton.addGestureRecognizer(reportBlockTap)
         
         return header
     }

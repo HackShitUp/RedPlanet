@@ -171,8 +171,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         // If first launch...
         if launchedBefore == false {
-            // Save UserDefaults for User's Profile
-            UserDefaults.standard.set("false", forKey: "DidOpenOtherUserProfile")
             // Save Default for Birthday
             UserDefaults.standard.set("false", forKey: "BirthdayHappened")
             // Synchronize

@@ -833,9 +833,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         self.followButton.clipsToBounds = true
         
-        
-        
-        // (4) Handle KILabel taps
+        // (5) Handle KILabel taps
         // Handle @username tap
         userBio.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page
