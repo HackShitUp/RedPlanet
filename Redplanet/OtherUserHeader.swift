@@ -789,7 +789,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         countPosts.countObjectsInBackground(block: {
             (count: Int32, error: Error?) -> Void in
             if error == nil {
-                self.numberOfPosts.setTitle("\(count)\nposts", for: .normal)
+                if count == 1 {
+                    self.numberOfPosts.setTitle("1\npost", for: .normal)
+                } else {
+                    self.numberOfPosts.setTitle("\(count)\nposts", for: .normal)
+                }
             } else {
                 self.numberOfPosts.setTitle("0\nposts", for: .normal)
             }

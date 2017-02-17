@@ -259,11 +259,11 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Configure initial setup for time
-        let from = self.posts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        // Configure Time
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "E"
+        let timeFormatter = DateFormatter()
+        timeFormatter.dateFormat = "h:mm a"
         
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
@@ -297,37 +297,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            if difference.second! <= 0 {
-                tpCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    tpCell.time.text! = "1 second ago"
-                } else {
-                    tpCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    tpCell.time.text! = "1 minute ago"
-                } else {
-                    tpCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    tpCell.time.text! = "1 hour ago"
-                } else {
-                    tpCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    tpCell.time.text! = "1 day ago"
-                } else {
-                    tpCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                tpCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            tpCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (6) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -430,10 +400,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             eCell.delegate = self.parentNavigator
             
             // (4) SET TIME
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
             eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (5) Layout content
@@ -530,37 +496,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                mCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    mCell.time.text! = "1 second ago"
-                } else {
-                    mCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    mCell.time.text! = "1 minute ago"
-                } else {
-                    mCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    mCell.time.text! = "1 hour ago"
-                } else {
-                    mCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    mCell.time.text! = "1 day ago"
-                } else {
-                    mCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                mCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            mCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -689,37 +625,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                ppCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    ppCell.time.text! = "1 second ago"
-                } else {
-                    ppCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    ppCell.time.text! = "1 minute ago"
-                } else {
-                    ppCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    ppCell.time.text! = "1 hour ago"
-                } else {
-                    ppCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    ppCell.time.text! = "1 day ago"
-                } else {
-                    ppCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                ppCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            ppCell.time.text! = "updated their Profile Photo at \(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) FETCH LIKES, COMMENTS, AND SHARES
             let likes = PFQuery(className: "Likes")
@@ -856,37 +762,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                vCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    vCell.time.text! = "1 second ago"
-                } else {
-                    vCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    vCell.time.text! = "1 minute ago"
-                } else {
-                    vCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    vCell.time.text! = "1 hour ago"
-                } else {
-                    vCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    vCell.time.text! = "1 day ago"
-                } else {
-                    vCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                vCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            vCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")

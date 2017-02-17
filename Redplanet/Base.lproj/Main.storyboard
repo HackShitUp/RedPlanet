@@ -3710,7 +3710,7 @@
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prY-1c-FMQ">
                                             <rect key="frame" x="25" y="8" width="75" height="75"/>
-                                            <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" red="0.78186458333333331" green="0.78186458333333331" blue="0.78186458333333331" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="75" id="Iaa-U8-Gdk"/>
                                                 <constraint firstAttribute="height" constant="75" id="dpo-L4-2mD"/>

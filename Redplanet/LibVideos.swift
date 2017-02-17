@@ -91,7 +91,6 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("Returning \(self.videoAssets.count)")
         return self.videoAssets.count
     }
 

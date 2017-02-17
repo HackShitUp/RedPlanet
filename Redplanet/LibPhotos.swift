@@ -87,7 +87,6 @@ class LibPhotos: UICollectionViewController, UINavigationControllerDelegate {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("Returning \(self.photoAssets.count)")
         return self.photoAssets.count
     }
 
