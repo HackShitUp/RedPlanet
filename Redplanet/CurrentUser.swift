@@ -77,20 +77,11 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
+                    if difference.hour! < 24 {
                         self.posts.append(object)
+                    } else {
+                        self.skipped.append(object)
                     }
-//                    if difference.hour! < 24 {
-//                        self.posts.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
                 }
             } else {
                 print(error?.localizedDescription as Any)

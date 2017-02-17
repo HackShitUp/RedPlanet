@@ -291,7 +291,7 @@ class SpacePostCell: UITableViewCell {
             return 14.00
         }
         
-        let publicShare = AlertAction(title: "All Friends",
+        let publicShare = AlertAction(title: "Everyone",
                                         style: .default,
                                         handler: { (AlertAction) in
                                             
@@ -374,7 +374,7 @@ class SpacePostCell: UITableViewCell {
         
         
         
-        let privateShare = AlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Person",
                                          style: .default,
                                          handler: { (AlertAction) in
                                             

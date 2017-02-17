@@ -63,7 +63,7 @@ class OtherUser: UITableViewController {
     @IBAction func moreAction(_ sender: Any) {
         // MARK: - SimpleAlert
         let alert = AlertController(title: "Options",
-                                    message: nil,
+                                    message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
                                     style: .alert)
         
         // Design content view
@@ -74,6 +74,7 @@ class OtherUser: UITableViewController {
                 let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
                 attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
                 view.titleLabel.attributedText = attributedText
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
             }
         }
         
@@ -84,7 +85,7 @@ class OtherUser: UITableViewController {
         
         
         // (1) Write in space
-        let space = AlertAction(title: "Write on Space ☄️",
+        let space = AlertAction(title: "Write on Space",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append to otherObject
@@ -98,7 +99,7 @@ class OtherUser: UITableViewController {
         })
         
         // (2) Chat
-        let chat = AlertAction(title: "Chat 💬",
+        let chat = AlertAction(title: "Chat",
                                style: .default,
                                handler: { (AlertAction) in
                                 
@@ -115,7 +116,7 @@ class OtherUser: UITableViewController {
         
         
         // (3) Report or block
-        let reportOrBlock = AlertAction(title: "Report or Block",
+        let reportOrBlock = AlertAction(title: "Report/Block",
                                         style: .destructive,
                                         handler: { (AlertAction) in
                                             
@@ -240,11 +241,11 @@ class OtherUser: UITableViewController {
             alert.addAction(reportOrBlock)
             alert.addAction(cancel)
             space.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            space.button.setTitleColor(UIColor.black, for: .normal)
+            space.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
             chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            reportOrBlock.button.setTitleColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0), for: .normal)
+            reportOrBlock.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
@@ -255,7 +256,7 @@ class OtherUser: UITableViewController {
             chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            reportOrBlock.button.setTitleColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0), for: .normal)
+            reportOrBlock.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(alert, animated: true, completion: nil)
@@ -292,21 +293,11 @@ class OtherUser: UITableViewController {
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
+                    if difference.hour! < 24 {
                         self.posts.append(object)
+                    } else {
+                        self.skipped.append(object)
                     }
-                    
-//                    if difference.hour! < 24 {
-//                        self.posts.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
                 }
                 
                 
@@ -595,19 +586,27 @@ class OtherUser: UITableViewController {
         // Also set title depending on relationship state
         
         // DEFAULT
-        // Not yet connected
+        // Not Yet Connected
+        // Hide Relation button, and show Follow button: chat and report
         header.relationType.isUserInteractionEnabled = true
         header.relationType.isHidden = true
-        
         header.followButton.isHidden = false
-        header.followButton.isEnabled = true
+        header.followButton.isUserInteractionEnabled = true
+        // Show Chat Button
+        header.chatButton.isHidden = false
+        header.chatButton.isUserInteractionEnabled = true
+        // Show Block Button
+        header.blockButton.isHidden = false
+        header.blockButton.isUserInteractionEnabled = true
+        // Hide Space Button
+        header.newSpaceButton.isHidden = true
+        header.newSpaceButton.isUserInteractionEnabled = false
         
 
         if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOWER
             header.relationType.isHidden = false
             header.relationType.setTitle("Follower", for: .normal)
-            
         }
         
         if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
@@ -626,6 +625,13 @@ class OtherUser: UITableViewController {
         // FOLLOWER & FOLLOWING == FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
+            
+            // Hide Block Button
+            header.blockButton.isHidden = true
+            header.blockButton.isUserInteractionEnabled = false
+            // Show Space Button
+            header.newSpaceButton.isHidden = false
+            header.newSpaceButton.isUserInteractionEnabled = true
         }
         
         // SELF
@@ -633,6 +639,10 @@ class OtherUser: UITableViewController {
         if otherObject.last!.objectId! == PFUser.current()!.objectId! {
             header.followButton.isHidden = true
             header.relationType.isHidden = true
+            // Hide all buttons
+            header.chatButton.isHidden = true
+            header.blockButton.isHidden = true
+            header.newSpaceButton.isHidden = true
         }
         
         return header
@@ -1412,7 +1422,7 @@ class OtherUser: UITableViewController {
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.posts.count + self.skipped.count {
+        if self.page <= self.posts.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 25

@@ -55,35 +55,30 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                         // Load Onboarding tutorial
                                         // Perform segueue
                                         let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a new social media app that filters your news feeds.", image: nil, buttonText: nil) { () -> Void in
-                                            // do something here when users press the button, like ask for location services permissions, register for push notifications, connect to social media, or finish the onboarding process
                                         }
-                                        
                                         let secondPage = OnboardingContentViewController(title: "How?", body: "By dividng your news feeds in two: One for your friends, and one for the things you're following.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        
                                         let thirdPage = OnboardingContentViewController(title: "Friends OR Following", body: "You can't be friends and follow someone at the same time on Redplanet.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        
-                                        
                                         let fourthPage = OnboardingContentViewController(title: "Key Differences", body: "Friends are mutual relationships, while following is not.\nWe built many cool features that clarify these differences.", image: nil, buttonText: nil) { () -> Void in
-                                            
                                         }
-                                        
-                                        
                                         let lastPage = OnboardingContentViewController(title: nil, body: "Add the people in your life as friends.\nFollow the things you love.", image: nil, buttonText: "continue") { () -> Void in
-                                            
                                             // Load Things to Follow interface
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
                                         }
-                                        
                                         // Set bottom padding for button
                                         lastPage.bottomPadding = 50
-                                        
                                         let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, thirdPage, fourthPage, lastPage])
                                         onboardingVC?.shouldFadeTransitions = true
-                                        
                                         self.navigationController!.pushViewController(onboardingVC!, animated: true)
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
                 })
                 
                 

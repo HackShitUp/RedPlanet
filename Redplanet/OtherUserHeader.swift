@@ -30,6 +30,9 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var relationType: UIButton!
     @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var userBio: KILabel!
+    @IBOutlet weak var blockButton: UIButton!
+    @IBOutlet weak var chatButton: UIButton!
+    @IBOutlet weak var newSpaceButton: UIButton!
     
     // Function to show followers
     func showFollowers() {

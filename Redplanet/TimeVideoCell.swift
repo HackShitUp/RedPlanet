@@ -250,7 +250,7 @@ class TimeVideoCell: UITableViewCell {
     @IBAction func shareAction(_ sender: Any) {
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share With",
-                                      message: nil,
+                                      message: "Video",
                                       style: .alert)
         // Design content view
         options.configContentView = { view in
@@ -260,6 +260,7 @@ class TimeVideoCell: UITableViewCell {
                 let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
                 attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
                 view.titleLabel.attributedText = attributedText
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
             }
         }
         // Design corner radius
@@ -270,7 +271,7 @@ class TimeVideoCell: UITableViewCell {
         
         
         // EVERYONE
-        let publicShare = AlertAction(title: "All Friends",
+        let publicShare = AlertAction(title: "Everyone",
                                       style: .default,
                                       handler: { (AlertAction) in
                                         
@@ -351,7 +352,7 @@ class TimeVideoCell: UITableViewCell {
         })
         
         // ONE FRIEND
-        let privateShare = AlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Person",
                                        style: .default,
                                        handler: { (AlertAction) in
                                         

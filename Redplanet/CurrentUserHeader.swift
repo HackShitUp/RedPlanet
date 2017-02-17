@@ -28,19 +28,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var numberOfFollowers: UIButton!
     @IBOutlet weak var numberOfFollowing: UIButton!
     @IBOutlet weak var userBio: KILabel!
-    
-    // Function to show friends
-    func showFriends() {
-        // Append to forFriends
-        forFriends.append(PFUser.current()!)
-        forFriends.append(PFUser.current()!)
-        
-        // Push VC
-        let friendsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFriendsVC") as! RFriends
-        self.delegate?.navigationController?.pushViewController(friendsVC, animated: true)
-    }
-    
-    
+
     // Function to show followers
     func showFollowers() {
         // Append to forFriends

@@ -23,8 +23,8 @@ import SimpleAlert
 class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
     
-    // Array to hold friends
-    var friends = [PFObject]()
+    // Array to hold following
+    var following = [PFObject]()
     
     // Variable to determine whether user is searching or not
     var searchActive: Bool = false
@@ -48,46 +48,31 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // Reset Bool
         searchActive = false
         
-        // query friends
-        queryFriends()
+        // Query Following
+        queryFollowing()
     }
     
     
-    // Query Friends
-    func queryFriends() {
-
-        let fFriend = PFQuery(className: "FriendMe")
-        fFriend.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriend.whereKey("frontFriend", notEqualTo: PFUser.current()!)
+    // Query Following
+    func queryFollowing() {
         
-        let eFriend = PFQuery(className: "FriendMe")
-        eFriend.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriend.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        
-        let friends = PFQuery.orQuery(withSubqueries: [eFriend, fFriend])
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.order(byDescending: "createdAt")
-        friends.findObjectsInBackground(block: {
+        let following = PFQuery(className: "FollowMe")
+        following.whereKey("follower", equalTo: PFUser.current()!)
+        following.whereKey("isFollowing", equalTo: true)
+        following.includeKeys(["follower", "following"])
+        following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
                 
-                
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
+                self.following.removeAll(keepingCapacity: false)
                 
                 // Append objects
                 for object in objects! {
-                    
-                    if (object.object(forKey: "endFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    } else {
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    }
+                    self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
                 // Reload data
@@ -118,7 +103,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // Set tableView backgroundView
         self.tableView.backgroundView = UIView()
         // Reload data
-        queryFriends()
+        queryFollowing()
     }
     
     
@@ -156,7 +141,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.friends.contains(where: {$0.objectId! == object.objectId!}) || myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
+                    if self.following.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }
@@ -192,7 +177,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.friends.contains(where: {$0.objectId! == object.objectId!}) || myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
+                    if self.following.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }
@@ -227,7 +212,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Friends"
+            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Following"
         }
         
         // Configure nav bar && show tab bar (last line)
@@ -251,8 +236,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
-        // Fetch friends
-        queryFriends()
+        // Fetch Following
+        queryFollowing()
         
         // Stylize title
         configureView()
@@ -301,7 +286,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         if searchActive == true && searchBar.text! != "" {
             return self.searchObjects.count
         } else {
-            return self.friends.count
+            return self.following.count
         }
     }
 
@@ -336,10 +321,13 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             
         } else {
             
-            // Return FRIENDS
+            // Sort Following in ABC order
+            let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            
+            // Return Follwoing
             // Fetch user's realNameOfUser and user's profile photos
-            cell.rpUsername.text! = self.friends[indexPath.row].value(forKey: "realNameOfUser") as! String
-            if let proPic = self.friends[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
@@ -364,9 +352,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             userName = self.searchNames[indexPath.row]
             shareUserObject = self.searchObjects[indexPath.row]
         } else {
-            // Append Friends
-            userName = self.friends[indexPath.row].value(forKey: "realNameOfUser") as? String
-            shareUserObject = self.friends[indexPath.row]
+            // Append Following
+            userName = self.following[indexPath.row].value(forKey: "realNameOfUser") as? String
+            shareUserObject = self.following[indexPath.row]
         }
         
         

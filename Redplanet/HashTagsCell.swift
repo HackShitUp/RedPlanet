@@ -78,7 +78,7 @@ class HashTagsCell: UITableViewCell {
         // TODO:
         // Add option to share to followers
         
-        let publicShare = UIAlertAction(title: "All Friends",
+        let publicShare = UIAlertAction(title: "Everyone",
                                         style: .default,
                                         handler: {(alertAction: UIAlertAction!) in
                                             
@@ -193,7 +193,7 @@ class HashTagsCell: UITableViewCell {
                                             
         })
         
-        let privateShare = UIAlertAction(title: "One Friend",
+        let privateShare = UIAlertAction(title: "One Person",
                                          style: .default,
                                          handler: {(alertAction: UIAlertAction!) in
                                             

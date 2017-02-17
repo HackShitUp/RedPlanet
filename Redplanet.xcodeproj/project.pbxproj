@@ -173,7 +173,6 @@
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
-		7ED4A90E1DBEB4DE0016698F /* RFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90D1DBEB4DE0016698F /* RFriends.swift */; };
 		7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90F1DBEB4E70016698F /* RFollowers.swift */; };
 		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
@@ -454,7 +453,6 @@
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
-		7ED4A90D1DBEB4DE0016698F /* RFriends.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFriends.swift; sourceTree = "<group>"; };
 		7ED4A90F1DBEB4E70016698F /* RFollowers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowers.swift; sourceTree = "<group>"; };
 		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
@@ -1414,7 +1412,6 @@
 		7ED4A9131DBEB4F60016698F /* RelationsPerPerson */ = {
 			isa = PBXGroup;
 			children = (
-				7ED4A90D1DBEB4DE0016698F /* RFriends.swift */,
 				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
 				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
 			);
@@ -1954,7 +1951,6 @@
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
-				7ED4A90E1DBEB4DE0016698F /* RFriends.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
 				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,

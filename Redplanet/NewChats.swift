@@ -255,6 +255,7 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         
 
         if searchActive == true && searchBar.text! != "" {
+        // SEARCH
             
             // Set user's object
             cell.userObject = searchObjects[indexPath.row]
@@ -269,15 +270,19 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
             }
             
         } else {
+        // FOLLOWING
+            
+            // Sort Following in ABC order
+            let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
             
             // Set user's object
-            cell.userObject = following[indexPath.row]
+            cell.userObject = abcFollowing[indexPath.row]
             
             // Set username, fullName, and profilePhoto
-            cell.rpUsername.text! = self.following[indexPath.row].value(forKey: "realNameOfUser") as! String
-            cell.rpFullName.text! = self.following[indexPath.row].value(forKey: "username") as! String
+            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+            cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "username") as! String
             // MARK: - SDWebImage
-            if let proPic = self.following[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }

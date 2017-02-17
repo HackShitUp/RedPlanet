@@ -231,9 +231,13 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
+        // Sort Following in ABC order
+        let abcFollowers = self.followers.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+        
+        
         // Get users' usernames and user's profile photos
-        cell.rpUsername.text! = followers[indexPath.row].value(forKey: "username") as! String
-        if let proPic = followers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+        cell.rpUsername.text! = abcFollowers[indexPath.row].value(forKey: "realNameOfUser") as! String
+        if let proPic = abcFollowers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }

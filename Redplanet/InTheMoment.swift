@@ -585,7 +585,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share With",
-                                      message: nil,
+                                      message: "Moment",
                                       style: .alert)
         
         // Design content view
@@ -596,6 +596,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                 let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
                 attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
                 view.titleLabel.attributedText = attributedText
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
             }
         }
         // Design corner radius
@@ -603,7 +604,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             return 14.00
         }
         
-        let publicShare = AlertAction(title: "All Friends",
+        let publicShare = AlertAction(title: "Everyone",
                                       style: .default,
                                       handler: { (AlertAction) in
                                             
@@ -688,7 +689,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                             
         })
         
-        let privateShare = AlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Person",
                                        style: .default,
                                        handler: { (AlertAction) in
                                             

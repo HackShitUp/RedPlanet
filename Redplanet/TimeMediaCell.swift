@@ -275,7 +275,7 @@ class TimeMediaCell: UITableViewCell {
         
         // MARK: - SimpleAlert
         let options = AlertController(title: "Share With",
-                                      message: nil,
+                                      message: "Photo",
                                       style: .alert)
         
         // Design content view
@@ -286,6 +286,7 @@ class TimeMediaCell: UITableViewCell {
                 let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
                 attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
                 view.titleLabel.attributedText = attributedText
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
             }
         }
         // Design corner radius
@@ -294,7 +295,7 @@ class TimeMediaCell: UITableViewCell {
         }
         
         
-        let publicShare = AlertAction(title: "All Friends",
+        let publicShare = AlertAction(title: "Everyone",
                                       style: .default,
                                       handler: { (AlertAction) in
                                         
@@ -373,7 +374,7 @@ class TimeMediaCell: UITableViewCell {
                                         })
         })
         
-        let privateShare = AlertAction(title: "One Friend",
+        let privateShare = AlertAction(title: "One Person",
                                        style: .default,
                                        handler: { (AlertAction) in
                                         

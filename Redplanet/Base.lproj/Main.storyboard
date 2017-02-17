@@ -1503,7 +1503,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gok-15-Q2v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2027" y="102"/>
+            <point key="canvasLocation" x="-1553" y="125"/>
         </scene>
         <!--New Space Post-->
         <scene sceneID="JLb-kO-b6Q">
@@ -1656,7 +1656,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PiM-EQ-pRi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1551.5" y="101.5"/>
+            <point key="canvasLocation" x="-1055" y="125"/>
         </scene>
         <!--Hash Tags-->
         <scene sceneID="HkH-96-SEE">
@@ -5998,39 +5998,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ATh-Hc-b3e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1946" y="3392"/>
-        </scene>
-        <!--Friends-->
-        <scene sceneID="5vD-Wr-L5N">
-            <objects>
-                <tableViewController storyboardIdentifier="rFriendsVC" id="Rh5-Wi-AAe" customClass="RFriends" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="NWO-VC-yIh">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="Rh5-Wi-AAe" id="cPQ-Wf-wsC"/>
-                            <outlet property="delegate" destination="Rh5-Wi-AAe" id="dP5-y8-cbU"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="rcr-e8-3nc">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="c2J-1b-pWY">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="backButton:" destination="Rh5-Wi-AAe" id="kFa-ep-1R5"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Bo0-nK-kce">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="refresh:" destination="Rh5-Wi-AAe" id="nmn-mn-fxV"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ouF-Sh-fb3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2026" y="-691"/>
         </scene>
         <!--Followers-->
         <scene sceneID="esi-TJ-TEO">

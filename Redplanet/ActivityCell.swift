@@ -1114,25 +1114,10 @@ class ActivityCell: UITableViewCell {
         // ---------------------------------------------------------------------------------------------------------------
         
         // requested to follow you
-        // asked to be friends=
-        if self.activity.titleLabel!.text! == "requested to follow you" || activity.titleLabel!.text! == "sent you a friend request" {
+        if self.activity.titleLabel!.text! == "requested to follow you" {
             // Push VC
             let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
             self.delegate?.navigationController?.pushViewController(rRequestsVC, animated: true)
-        }
-        
-        
-        // is now friends with you
-        if self.activity.titleLabel!.text! == "is now friends with you" {
-            // Append user's object
-            otherObject.append(self.userObject!)
-            // Append user's username
-            otherName.append(self.userObject!.value(forKey: "username") as! String)
-            
-            // Push VC
-            let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-            self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
-            
         }
         
         
@@ -1146,7 +1131,6 @@ class ActivityCell: UITableViewCell {
             // Push VC
             let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
             self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
-            
         }
         
         
@@ -1155,7 +1139,6 @@ class ActivityCell: UITableViewCell {
         // --------------------------------------------------------------------------------------------------------------
         // -------------------- S P A C E -------------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------
-        
         if self.activity.titleLabel!.text!.hasPrefix("wrote on your Space") {
             // Space Post
             

@@ -95,23 +95,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if object.value(forKey: "type") as! String == "like itm" || object.value(forKey: "type") as! String == "share itm" {
-                        if difference.hour! < 24 {
-                            self.myActivity.append(object)
-                            self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
-                        } else {
-                            self.skipped.append(object)
-                        }
-                    } else {
+                    if difference.hour! < 24 {
                         self.myActivity.append(object)
                         self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                    } else {
+                        self.skipped.append(object)
                     }
-//                    if difference.hour! < 24 {
-//                        self.myActivity.append(object)
-//                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
                 }
                 
                 
@@ -351,23 +340,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // -----------------------------------------------------------------------------------------------------------------
         // ==================== R E L A T I O N S H I P S ------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------------------------------
-        
-        // (1) Friend Requested
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "friend requested" {
-            cell.activity.setTitle("sent you a friend request", for: .normal)
-        }
-        
-        // (2) Friended
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "friended" {
-            cell.activity.setTitle("is now friends with you", for: .normal)
-        }
-        
-        // (3) Follow Requested
+        // (1) Follow Requested
         if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
             cell.activity.setTitle("requested to follow you", for: .normal)
         }
         
-        // (4) Followed
+        // (2) Followed
         if myActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
             cell.activity.setTitle("started following you", for: .normal)
         }
