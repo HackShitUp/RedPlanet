@@ -26,6 +26,7 @@ class Newsfeed: UITableViewController, UINavigationControllerDelegate, UITabBarC
     
     // Array to hold following, posts, and skipped objects
     var following = [PFObject]()
+    var friends = [PFObject]()
     var posts = [PFObject]()
     var skipped = [PFObject]()
     // Hold likers
@@ -51,6 +52,7 @@ class Newsfeed: UITableViewController, UINavigationControllerDelegate, UITabBarC
     
     // Function to fetch following
     func fetchFollowing() {
+        
         // Following
         let following = PFQuery(className: "FollowMe")
         following.includeKeys(["follower", "following"])
@@ -62,15 +64,40 @@ class Newsfeed: UITableViewController, UINavigationControllerDelegate, UITabBarC
                 
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
-                self.following.append(PFUser.current()!)
                 
                 for object in objects! {
                     self.following.append(object.object(forKey: "following") as! PFUser)
                 }
-                
-                // Fetch Posts
-                self.fetchPosts()
-                
+
+                // People Who Follow Me Back
+                let following = PFQuery(className: "FollowMe")
+                following.includeKeys(["follower", "following"])
+                following.whereKey("isFollowing", equalTo: true)
+                following.whereKey("follower", containedIn: self.following)
+                following.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Clear array
+                        self.friends.removeAll(keepingCapacity: false)
+                        self.friends.append(PFUser.current()!)
+                        
+                        for object in objects! {
+                            self.following.append(object.object(forKey: "following") as! PFUser)
+                        }
+                        
+                        // Fetch Posts
+                        self.fetchPosts()
+                        
+                    } else {
+                        if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.dismiss()
+                        }
+                    }
+                    
+                })
+
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
@@ -104,11 +131,20 @@ class Newsfeed: UITableViewController, UINavigationControllerDelegate, UITabBarC
                     // Ephemeral content
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
                     } else {
-                        self.skipped.append(object)
+                        self.posts.append(object)
                     }
+                    //                    if difference.hour! < 24 {
+                    //                        self.posts.append(object)
+                    //                    } else {
+                    //                        self.skipped.append(object)
+                    //                    }
                 }
                 
                 // Set DZN
