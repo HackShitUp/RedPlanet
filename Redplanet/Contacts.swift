@@ -45,9 +45,8 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Array to hold NOT following objects
     var notFollowing = [PFObject]()
     
-    
-    // Initiaize AppDelegate
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    // App Delegate
+    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     
     @IBAction func backButton(_ sender: Any) {

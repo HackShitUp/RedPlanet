@@ -44,17 +44,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Set ephemeral types
     let ephemeralTypes = ["itm", "sp", "sh"]
     
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
-    
-    
     // Function to refresh data
     func refresh() {
         fetchPosts()
         self.refresher.endRefreshing()
     }
    
-
-    // Function to fetch following
+    // FETCH MUTUAL
     func fetchFriends() {
         let following = PFQuery(className: "FollowMe")
         following.includeKeys(["follower", "following"])
@@ -72,7 +68,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 for object in objects! {
                     self.following.append(object.object(forKey: "following") as! PFUser)
                 }
-                
                 // Fetch Mutuals
                 let mutuals = PFQuery(className: "FollowMe")
                 mutuals.includeKeys(["follower", "following"])
@@ -100,7 +95,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                         }
                     }
                 })
-                
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
@@ -110,8 +104,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         }
     }
     
-    
-    
+    // FETCH POSTS
     func fetchPosts() {
         // Get News Feed content
         let newsfeeds = PFQuery(className: "Newsfeeds")
@@ -157,6 +150,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             self.tableView!.reloadData()
         })
     }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()

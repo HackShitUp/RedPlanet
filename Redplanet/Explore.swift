@@ -180,7 +180,6 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("Returning count: \(exploreObjects.count)")
         return exploreObjects.count
     }
     
@@ -232,21 +231,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                 // (2) Get profile photo
                 // Handle optional chaining
                 if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                    
                     // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
                 
             } else {

@@ -29,7 +29,7 @@ let otherNotification = Notification.Name("otherUser")
 
 class OtherUser: UITableViewController {
     
-    // Query Relationships
+    // App Delegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // Array to hold other user's content

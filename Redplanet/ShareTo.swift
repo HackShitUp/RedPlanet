@@ -36,8 +36,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     // Search Bar
     var searchBar = UISearchBar()
     
-    // AppDelegate
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    // App Delegate
+    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Pop view controller
