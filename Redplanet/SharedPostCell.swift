@@ -593,8 +593,42 @@ class SharedPostCell: UITableViewCell {
         })
         
         
+        // (3) Save Post
+        let save = AlertAction(title: "Save Post",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.setBackgroundColor(UIColor.white)
+                                SVProgressHUD.setForegroundColor(UIColor.black)
+                                SVProgressHUD.show(withStatus: "Saving")
+
+                                // Save Post
+                                let newsfeeds = PFQuery(className: "Newsfeeds")
+                                newsfeeds.getObjectInBackground(withId: sharedObject.last!.objectId!, block: {
+                                    (object: PFObject?, error: Error?) in
+                                    if error == nil {
+                                        object!["saved"] = true
+                                        object!.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showSuccess(withStatus: "Saved")
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
+                                    }
+                                })
+        })
         
-        // (3) Delete Shared Post
+        
+        // (4) Delete Shared Post
         let report = AlertAction(title: "Report",
                                  style: .destructive,
                                  handler: { (AlertAction) in
@@ -653,7 +687,7 @@ class SharedPostCell: UITableViewCell {
 
         })
         
-        // (4) Cancel
+        // (5) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
@@ -663,10 +697,13 @@ class SharedPostCell: UITableViewCell {
         
         if (sharedObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
+            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

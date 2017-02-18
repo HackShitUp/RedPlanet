@@ -122,31 +122,10 @@ class EphemeralCell: UITableViewCell {
                                     self.delegate?.pushViewController(viewsVC, animated: true)
         })
         
-        let save = AlertAction(title: "Save",
+        let share = AlertAction(title: "Share Via",
                                style: .default,
                                handler: { (AlertAction) in
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                SVProgressHUD.show(withStatus: "Saving")
-                                // If MOMENT is a Photo or Video
-                                if let file = self.postObject!.value(forKey: "photoAsset") as? PFFile {
-                                    file.getDataInBackground(block: {
-                                        (data: Data?, error: Error?) in
-                                        if error == nil {
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.showSuccess(withStatus: "Saved")
-                                            let dataImage = UIImage(data: data!)
-                                            UIImageWriteToSavedPhotosAlbum(dataImage!, self, nil, nil)
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.showError(withStatus: "Error")
-                                        }
-                                    })
-                                } else {
-                                    
-                                }
+                                
         })
         
         let delete = AlertAction(title: "Delete",
@@ -219,7 +198,7 @@ class EphemeralCell: UITableViewCell {
         
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
-            options.addAction(save)
+            options.addAction(share)
             options.addAction(delete)
             options.addAction(cancel)
             
@@ -228,8 +207,8 @@ class EphemeralCell: UITableViewCell {
             }
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            share.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            share.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

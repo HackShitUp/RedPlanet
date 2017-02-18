@@ -501,7 +501,7 @@ class SpacePostCell: UITableViewCell {
         
         
         // (1) Views
-        let views = AlertAction(title: "🙈 Views",
+        let views = AlertAction(title: "🙈 Views 🙈",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
@@ -514,7 +514,7 @@ class SpacePostCell: UITableViewCell {
         
         
         // (2) Edit
-        let edit = AlertAction(title: "🔩 Edit",
+        let edit = AlertAction(title: "🔩 Edit 🔩",
                                style: .default,
                                handler: { (AlertAction) in
                                 // Append object
@@ -526,7 +526,42 @@ class SpacePostCell: UITableViewCell {
         })
         
         
-        // (3) Delete for byUser
+        // (3) Save post
+        let save = AlertAction(title: "Save Post",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.setBackgroundColor(UIColor.white)
+                                SVProgressHUD.setForegroundColor(UIColor.black)
+                                SVProgressHUD.show(withStatus: "Saving")
+                                
+                                // Save Post
+                                let newsfeeds = PFQuery(className: "Newsfeeds")
+                                newsfeeds.getObjectInBackground(withId: spaceObject.last!.objectId!, block: {
+                                    (object: PFObject?, error: Error?) in
+                                    if error == nil {
+                                        object!["saved"] = true
+                                        object!.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showSuccess(withStatus: "Saved")
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
+                                    }
+                                })
+        })
+        
+        
+        // (4) Delete for byUser
         let delete1 = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
@@ -577,12 +612,8 @@ class SpacePostCell: UITableViewCell {
                                             }
                                         })
         })
-        
-        
-        
-        
-        
-        // (4) Delete for toUser
+
+        // (5) Delete for toUser
         let delete2 = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
@@ -633,10 +664,8 @@ class SpacePostCell: UITableViewCell {
                                             })
                                             
         })
-        
-        
-        
-        // (5) Report Content
+
+        // (6) Report Content
         let report = AlertAction(title: "Report",
                                       style: .destructive,
                                       handler: { (AlertAction) in
@@ -695,39 +724,37 @@ class SpacePostCell: UITableViewCell {
         })
         
         
-        // (6) Cancel
+        // (7) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
         
-        
-        
-
-        
-        
-        
-        
-
         // Return options
         if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
             options.addAction(edit)
+            options.addAction(save)
             options.addAction(delete1)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor.black, for: .normal)
             delete1.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete1.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
+            options.addAction(save)
             options.addAction(delete2)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor.black, for: .normal)
             delete2.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete2.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

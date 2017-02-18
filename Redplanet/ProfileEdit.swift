@@ -114,7 +114,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             let me = PFUser.current()!
             me.email = rpEmail.text!.lowercased()
             me["realNameOfUser"] = self.rpName.text!
-            me["userBiography"] = rpUserBio.text!
+            me["userBiography"] = self.rpUserBio.text!
             me.username = self.rpUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
             me["birthday"] = stringDate
             me["userProfilePicture"] = proPicFile
@@ -127,7 +127,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     SVProgressHUD.showSuccess(withStatus: "Saved")
                     // Enable back button
                     self.backButton.isEnabled = true
-
                     
                     // II) New Profile Photo
                     if isNewProPic == true {
@@ -336,7 +335,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     alert.view.tintColor = UIColor.black
                     self.present(alert, animated: true, completion: nil)
                     
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                     
@@ -350,6 +348,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             
             
         }
+        
+        // Send Notification to myProfile
+        NotificationCenter.default.post(name: myProfileNotification, object: nil)
     }
     
     
@@ -371,8 +372,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         image.navigationBar.tintColor = UIColor.black
         image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
 
-        
-
+    
         let alert = UIAlertController(title: nil,
                                       message: nil,
                                       preferredStyle: .actionSheet)
@@ -384,7 +384,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     // Present image picker
                                     self.present(image, animated: false, completion: nil)
         })
-        
         
         let edit = UIAlertAction(title: "Edit Profile Photo Caption",
                                  style: .default,

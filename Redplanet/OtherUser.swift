@@ -46,7 +46,7 @@ class OtherUser: UITableViewController {
     var refresher: UIRefreshControl!
     
     // Page size
-    var page: Int = 25
+    var page: Int = 50
     
     // View to cover tableView when hidden swift
     let cover = UIButton()
@@ -770,22 +770,21 @@ class OtherUser: UITableViewController {
     // header height
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 304, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 356, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
         // Get user's info and bio
         if PFUser.current()!.value(forKey: "userBiography") != nil {
-            // Set fullname
+            // Set fullname AND bio
             let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as! String
-            
             label.text = "\(fullName.uppercased())\n\(PFUser.current()!.value(forKey: "userBiography") as! String)"
         } else {
-            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
+            // Set Full name
+            label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
         }
         
         label.sizeToFit()
-        
         
         // Add cover
         self.cover.frame = CGRect(x: 0, y: CGFloat(425 + label.frame.size.height), width: self.tableView!.frame.size.width, height: self.tableView!.frame.size.height+425+label.frame.size.height)
@@ -795,7 +794,7 @@ class OtherUser: UITableViewController {
         self.cover.contentVerticalAlignment = .top
         self.cover.contentHorizontalAlignment = .center
         self.cover.titleLabel!.textAlignment = .center
-        self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Demibold", size: 15)
         self.cover.setTitleColor(UIColor.darkGray, for: .normal)
         self.cover.backgroundColor = UIColor.white
         
@@ -806,7 +805,6 @@ class OtherUser: UITableViewController {
     
     
     // MARK: - Table view data source
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -1541,10 +1539,8 @@ class OtherUser: UITableViewController {
     func loadMore() {
         // If posts on server are > than shown
         if self.page <= self.posts.count + self.skipped.count {
-            
             // Increase page size to load more posts
-            page = page + 25
-            
+            page = page + 50
             // Query content
             self.queryContent()
         }

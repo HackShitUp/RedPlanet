@@ -37,7 +37,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // Set pipeline method
-    var page: Int = 25
+    var page: Int = 50
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -279,7 +279,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // header height
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
-        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 304, width: 359, height: CGFloat.greatestFiniteMagnitude))
+        let label:UILabel = UILabel(frame: CGRect(x: 8, y: 305, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
         label.font = UIFont(name: "AvenirNext-Medium", size: 17.0)
@@ -1038,7 +1038,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         if page <= self.posts.count + self.skipped.count {
             
             // Increase page size to load more posts
-            page = page + 25
+            page = page + 50
             
             // Query content
             fetchMine()

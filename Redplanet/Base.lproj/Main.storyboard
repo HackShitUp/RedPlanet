@@ -5906,36 +5906,6 @@
             </objects>
             <point key="canvasLocation" x="3521" y="4175"/>
         </scene>
-        <!--Newsfeed-->
-        <scene sceneID="XDU-pO-Emf">
-            <objects>
-                <tableViewController storyboardIdentifier="newsfeedVC" id="Lyt-9O-TrY" customClass="Newsfeed" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1D3-VX-ndB">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="T5o-ft-dEc">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="T5o-ft-dEc" id="evC-tJ-Ctt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="Lyt-9O-TrY" id="sam-wp-5Xr"/>
-                            <outlet property="delegate" destination="Lyt-9O-TrY" id="40a-uj-b0C"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="fyh-sl-Wch"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="K5V-BT-zTu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1888" y="-4138"/>
-        </scene>
         <!--Activity-->
         <scene sceneID="CfS-Ef-186">
             <objects>

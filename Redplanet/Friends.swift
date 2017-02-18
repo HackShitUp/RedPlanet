@@ -24,7 +24,8 @@ import SDWebImage
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // Array to hold friends, posts, and skipped objects
+    // Array to hold following, and friends AND posts, and skipped objects
+    var following = [PFObject]()
     var friends = [PFObject]()
     var posts = [PFObject]()
     var skipped = [PFObject]()
@@ -51,40 +52,54 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         fetchPosts()
         self.refresher.endRefreshing()
     }
-    
-    // Function to fetch friends
+   
+
+    // Function to fetch following
     func fetchFriends() {
-        let fFriends = PFQuery(className: "FriendMe")
-        fFriends.whereKey("endFriend", equalTo: PFUser.current()!)
-        fFriends.whereKey("frontFriend", notEqualTo: PFUser.current()!)
-        
-        let eFriends = PFQuery(className: "FriendMe")
-        eFriends.whereKey("frontFriend", equalTo: PFUser.current()!)
-        eFriends.whereKey("endFriend", notEqualTo: PFUser.current()!)
-        
-        let friends = PFQuery.orQuery(withSubqueries: [fFriends, eFriends])
-        friends.includeKeys(["endFriend", "frontFriend"])
-        friends.whereKey("isFriends", equalTo: true)
-        friends.findObjectsInBackground(block: {
+        let following = PFQuery(className: "FollowMe")
+        following.includeKeys(["follower", "following"])
+        following.whereKey("follower", equalTo: PFUser.current()!)
+        following.whereKey("isFollowing", equalTo: true)
+        following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
                 
                 // Clear array
-                self.friends.removeAll(keepingCapacity: false)
-                self.friends.append(PFUser.current()!)
+                self.following.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if (object.object(forKey: "frontFriend") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                        // Append end friend
-                        self.friends.append(object.object(forKey: "endFriend") as! PFUser)
-                    } else {
-                        // Append front friend
-                        self.friends.append(object.object(forKey: "frontFriend") as! PFUser)
-                    }
+                    self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
-                // Fetch Posts
-                self.fetchPosts()
+                // Fetch Mutuals
+                let mutuals = PFQuery(className: "FollowMe")
+                mutuals.includeKeys(["follower", "following"])
+                mutuals.whereKey("follower", containedIn: self.following)
+                mutuals.whereKey("following", equalTo: PFUser.current()!)
+                mutuals.whereKey("isFollowing", equalTo: true)
+                mutuals.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Clear array
+                        self.friends.removeAll(keepingCapacity: false)
+                        self.friends.append(PFUser.current()!)
+                        
+                        for object in objects! {
+                            self.friends.append(object.object(forKey: "follower") as! PFUser)
+                        }
+                        
+                        // Fetch posts
+                        self.fetchPosts()
+                        
+                    } else {
+                        if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.dismiss()
+                        }
+                    }
+                })
                 
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -92,12 +107,12 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                     SVProgressHUD.dismiss()
                 }
             }
-            
-        })
+        }
     }
     
+    
+    
     func fetchPosts() {
-        
         // Get News Feed content
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", containedIn: self.friends)
@@ -150,15 +165,13 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-        
-        self.tableView.layoutIfNeeded()
-        self.tableView.setNeedsLayout()
-        
-        appDelegate.queryRelationships()
+
         // Fetch friends
         fetchFriends()
         
         // Configure table view
+        self.tableView.layoutIfNeeded()
+        self.tableView.setNeedsLayout()
         self.tableView!.estimatedRowHeight = 65.00
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)

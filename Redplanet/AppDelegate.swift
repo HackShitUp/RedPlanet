@@ -52,14 +52,10 @@ import SwipeNavigationController
 // Current Username
 var username = [String]()
 
-// User's relationships: friends, followers, and following
+// User's relationships
+// Followers, Following, Received Follow Requests, and Sent Follow Requests
 var myFollowers = [PFObject]()
 var myFollowing = [PFObject]()
-
-
-//var myRequestedFriends = [PFObject]()
-//var requestedToFriendMe = [PFObject]()
-
 var myRequestedFollowers = [PFObject]()
 var myRequestedFollowing = [PFObject]()
 
@@ -388,22 +384,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let ok = UIAlertAction(title: "ok",
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
-//                                        
-//                                        for theFriend in myFriends {
-//                                            if theFriend.value(forKey: "apnsId") != nil {
-//                                                // MARK: - OneSignal 
-//                                                // Send push notification
-//                                                OneSignal.postNotification(
-//                                                    ["contents":
-//                                                        ["en": "Write in \(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Space to say Happy Birthday!"],
-//                                                     "include_player_ids": ["\(theFriend.value(forKey: "apnsId") as! String)"],
-//                                                     "ios_badgeType": "Increase",
-//                                                     "ios_badgeCount": 1
-//                                                    ]
-//                                                )
-//                                                
-//                                            }
-//                                        }
+                                        // TODO Send Push notifications
                 })
                 
                 alert.addAction(ok)
@@ -411,7 +392,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 self.window?.rootViewController?.present(alert, animated: true, completion: nil)
 
             } else {
-                print("\n\n\n\n\n\n\n\nBDAY FIRED HERE\n\n\n\n\n\n\n")
                 // Save
                 UserDefaults.standard.set(false, forKey: "BirthdayHappened")
             }

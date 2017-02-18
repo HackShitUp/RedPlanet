@@ -58,10 +58,10 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5VT-qx-8fx">
-                    <rect key="frame" x="112" y="304" width="150" height="44"/>
+                    <rect key="frame" x="88" y="304" width="200" height="44"/>
                     <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="150" id="xGf-Vo-fZ9"/>
+                        <constraint firstAttribute="width" constant="200" id="xGf-Vo-fZ9"/>
                         <constraint firstAttribute="height" constant="44" id="zBz-C0-T66"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
@@ -73,7 +73,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WMT-KU-90F" customClass="KILabel">
-                    <rect key="frame" x="8" y="356" width="359" height="49"/>
+                    <rect key="frame" x="8" y="356" width="359" height="61"/>
                     <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="359" id="HgQ-Wi-56H"/>
@@ -83,10 +83,10 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
-                    <rect key="frame" x="112" y="304" width="150" height="44"/>
+                    <rect key="frame" x="88" y="304" width="200" height="44"/>
                     <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="150" id="McA-ol-cs2"/>
+                        <constraint firstAttribute="width" constant="200" id="McA-ol-cs2"/>
                         <constraint firstAttribute="height" constant="44" id="aBu-AB-Wxh"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
@@ -113,8 +113,8 @@
                     </constraints>
                     <state key="normal" image="PChat"/>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCm-Dh-77F">
-                    <rect key="frame" x="295" y="309" width="35" height="35"/>
+                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCm-Dh-77F">
+                    <rect key="frame" x="296" y="309" width="35" height="35"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="35" id="DHa-bd-e5t"/>
                         <constraint firstAttribute="height" constant="35" id="Ify-CO-iPO"/>
@@ -142,7 +142,7 @@
                 <constraint firstItem="IND-ke-LYZ" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="brW-Lc-oTP"/>
                 <constraint firstAttribute="trailing" secondItem="HCm-Dh-77F" secondAttribute="trailing" constant="45" id="fn1-lM-jPa"/>
                 <constraint firstAttribute="trailing" secondItem="WMT-KU-90F" secondAttribute="trailing" constant="8" id="gFI-Ap-0fa"/>
-                <constraint firstAttribute="bottom" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="20" id="iRL-cZ-JWR"/>
+                <constraint firstAttribute="bottom" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="8" id="iRL-cZ-JWR"/>
                 <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="13" id="kF5-JV-bDU"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>

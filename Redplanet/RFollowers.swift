@@ -247,16 +247,18 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Sort Following in ABC order
+        let abcFollowers = self.followers.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+        
         // Append to otherObject
-        otherObject.append(followers[indexPath.row])
+        otherObject.append(abcFollowers[indexPath.row])
         
         // Append otherName
-        otherName.append(followers[indexPath.row].value(forKey: "username") as! String)
+        otherName.append(abcFollowers[indexPath.row].value(forKey: "username") as! String)
         
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
-        
     }
     
 

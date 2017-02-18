@@ -256,11 +256,15 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        // Sort Following in ABC order
+        let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+        
         // Append to otherObject
-        otherObject.append(following[indexPath.row])
+        otherObject.append(abcFollowing[indexPath.row])
         
         // Append otherName
-        otherName.append(following[indexPath.row].value(forKey: "username") as! String)
+        otherName.append(abcFollowing[indexPath.row].value(forKey: "username") as! String)
         
         
         // Push VC

@@ -417,20 +417,7 @@ class TimeVideoCell: UITableViewCell {
         }
         
         
-        // (1) Views
-        //        let views = AlertAction(title: "🙈 Views",
-        //                                style: .default,
-        //                                handler: { (AlertAction) in
-        //                                    // Append object
-        //                                    viewsObject.append(videoObject.last!)
-        //
-        //                                    // Push VC
-        //                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-        //                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-        //
-        //        })
-        
-        // (2) Edit
+        // (1) Edit
         let edit = AlertAction(title: "🔩 Edit 🔩",
                                style: .default,
                                handler: { (AlertAction) in
@@ -441,6 +428,40 @@ class TimeVideoCell: UITableViewCell {
                                 // Push VC
                                 let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
                                 self.delegate?.pushViewController(editVC, animated: true)
+        })
+        
+        // (2) Save Post
+        let save = AlertAction(title: "Save Post",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.setBackgroundColor(UIColor.white)
+                                SVProgressHUD.setForegroundColor(UIColor.black)
+                                SVProgressHUD.show(withStatus: "Saving")
+                                
+                                // Save Post
+                                let newsfeeds = PFQuery(className: "Newsfeeds")
+                                newsfeeds.getObjectInBackground(withId: videoObject.last!.objectId!, block: {
+                                    (object: PFObject?, error: Error?) in
+                                    if error == nil {
+                                        object!["saved"] = true
+                                        object!.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showSuccess(withStatus: "Saved")
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
+                                    }
+                                })
         })
         
         // (3) Delete
@@ -573,12 +594,13 @@ class TimeVideoCell: UITableViewCell {
         
         
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
-            //            options.addAction(views)
             options.addAction(edit)
             options.addAction(delete)
             options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

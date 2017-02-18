@@ -27,6 +27,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // Array to hold friends, posts, and skipped objects
     var following = [PFObject]()
+    var finalGroup = [PFObject]()
     var posts = [PFObject]()
     var skipped = [PFObject]()
     
@@ -62,15 +63,15 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // Function to fetch following
     func fetchFollowing() {
+        
         let following = PFQuery(className: "FollowMe")
-        following.includeKeys(["following", "follower"])
-        following.whereKey("isFollowing", equalTo: true)
+        following.includeKeys(["follower", "following"])
         following.whereKey("follower", equalTo: PFUser.current()!)
+        following.whereKey("isFollowing", equalTo: true)
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // MARK: - SVProgresHUD
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Clear array
@@ -79,9 +80,34 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 for object in objects! {
                     self.following.append(object.object(forKey: "following") as! PFUser)
                 }
+                
+                // ONLY FOLLOWING
+                let final = PFQuery(className: "FollowMe")
+                final.includeKeys(["follower", "following"])
+                final.whereKey("follower", notContainedIn: self.following)
+                final.whereKey("following", containedIn: self.following)
+                final.whereKey("follower", equalTo: PFUser.current()!)
+                final.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // Clear array
+                        self.finalGroup.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            self.finalGroup.append(object.object(forKey: "following") as! PFUser)
+                        }
 
-                // Fetch posts
-                self.fetchPosts()
+                        // Fetch Posts
+                        self.fetchPosts()
+                        
+                    } else {
+                        if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.dismiss()
+                        }
+                    }
+                })
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
@@ -99,7 +125,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
-        newsfeeds.whereKey("byUser", containedIn: self.following)
+        newsfeeds.whereKey("byUser", containedIn: self.finalGroup)
         newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
