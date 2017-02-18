@@ -19,19 +19,19 @@ import SVProgressHUD
 import DZNEmptyDataSet
 import SimpleAlert
 
-
 class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
-    
     
     // Array to hold following
     var following = [PFObject]()
     
-    // Variable to determine whether user is searching or not
-    var searchActive: Bool = false
-    
     // Array to hold search objects
     var searchObjects = [PFObject]()
     var searchNames = [String]()
+    
+    // Array to hold share objects
+    var shareObjects = [PFObject]()
+    // Variable to determine whether user is searching or not
+    var searchActive: Bool = false
     
     // Search Bar
     var searchBar = UISearchBar()
@@ -43,15 +43,164 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
+
+    @IBAction func shareAction(_ sender: Any) {
+    // MARK: - SimpleAlert
+        let alert = AlertController(title: "Share To...",
+            message: "Are you sure you'd like to share this with?", // TODO::
+            style: .alert)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                view.titleLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                view.messageLabel.textColor = UIColor.black
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+                
+            }
+        }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let yes = AlertAction(title: "yes",
+                              style: .default,
+                              handler: { (AlertAction) in
+
+                                if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                                    print("SHARED")
+                                    // Share to Everyone in News Feeds
+                                    let newsfeeds = PFObject(className: "Newsfeeds")
+                                    newsfeeds["byUser"] = PFUser.current()!
+                                    newsfeeds["username"] = PFUser.current()!.username!
+                                    newsfeeds["textPost"] = "Shared a post."
+                                    newsfeeds["pointObject"] = shareObject.last!
+                                    newsfeeds["contentType"] = "sh"
+                                    newsfeeds["saved"] = false
+                                    newsfeeds.saveEventually()
+
+                                    // Send Notification
+                                    let notifications = PFObject(className: "Notifications")
+                                    notifications["fromUser"] = PFUser.current()!
+                                    notifications["from"] = PFUser.current()!.username!
+                                    notifications["toUser"] = shareObject.last!.value(forKey: "byUser") as! PFUser
+                                    notifications["to"] = (shareObject.last!.value(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+                                    notifications["type"] = "share tp"
+                                    notifications["forObjectId"] = shareObject.last!.objectId!
+                                    notifications.saveEventually()
+                                }
+                                
+
+                                
+                                
+                                    if shareObject.last!.value(forKey: "photoAsset") != nil {
+                                    // PHOTO
+                                    // Share with user
+                                    // Send to Chats
+                                        for user in self.shareObjects {
+                                            let chats = PFObject(className: "Chats")
+                                            chats["sender"] = PFUser.current()!
+                                            chats["receiver"] = user
+                                            chats["senderUsername"] = PFUser.current()!.username!
+                                            chats["receiverUsername"] = user.value(forKey: "username") as! String
+                                            chats["read"] = false
+                                            chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
+                                            chats.saveEventually()
+                                            // MARK: - OneSignal
+                                            // Send Push Notification
+                                            OneSignal.postNotification(
+                                                ["contents":
+                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
+                                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                                 "ios_badgeType": "Increase",
+                                                 "ios_badgeCount": 1
+                                                ]
+                                            )
+                                        }
+                                    } else if shareObject.last!.value(forKey: "videoAsset") != nil {
+                                    // VIDEO
+                                    // Share with user
+                                    // Send to Chats
+                                        for user in self.shareObjects {
+                                            let chats = PFObject(className: "Chats")
+                                            chats["sender"] = PFUser.current()!
+                                            chats["senderUsername"] =  PFUser.current()!.username!
+                                            chats["receiver"] = user
+                                            chats["receiverUsername"] = user.value(forKey: "username") as! String
+                                            chats["read"] = false
+                                            chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
+                                            chats.saveEventually()
+                                            // MARK: - OneSignal
+                                            // Send Push Notification
+                                            OneSignal.postNotification(
+                                                ["contents":
+                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
+                                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                                 "ios_badgeType": "Increase",
+                                                 "ios_badgeCount": 1
+                                                ]
+                                            )
+                                        }
+                                    } else {
+                                    // TEXT POST
+                                        if let user = shareObject.last!.value(forKey: "byUser") as? PFUser {
+                                            for user in self.shareObjects {
+                                                let chats = PFObject(className: "Chats")
+                                                chats["sender"] = PFUser.current()!
+                                                chats["receiver"] = user
+                                                chats["senderUsername"] = PFUser.current()!.username!
+                                                chats["receiverUsername"] = user.value(forKey: "username") as! String
+                                                chats["read"] = false
+                                                chats["Message"] = "@\(user["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
+                                                chats.saveEventually()
+                                                // MARK: - OneSignal
+                                                // Send Push Notification
+                                                OneSignal.postNotification(
+                                                    ["contents":
+                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
+                                                     "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                                     "ios_badgeType": "Increase",
+                                                     "ios_badgeCount": 1
+                                                    ]
+                                                )
+                                            }
+                                        }
+                                    }
+                                
+                                
+                                
+        })
+        
+        let no = AlertAction(title: "no",
+                             style: .destructive,
+                             handler: { (AlertAction) in
+                                // Clear all
+                                self.shareObjects.removeAll(keepingCapacity: false)
+                                // Pop VC
+                                _ = self.navigationController?.popViewController(animated: true)
+        })
+        
+        alert.addAction(no)
+        alert.addAction(yes)
+        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+        
+    }
     
-    @IBAction func refresh(_ sender: Any) {
+    // Function to refresh
+    func refresh() {
         // Reset Bool
         searchActive = false
         
         // Query Following
         queryFollowing()
     }
-    
     
     // Query Following
     func queryFollowing() {
@@ -77,7 +226,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 
                 // Reload data
                 self.tableView!.reloadData()
-
+                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -85,8 +234,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // Dismiss progress
                 SVProgressHUD.dismiss()
             }
-
+            
         })
+
     }
     
     
@@ -137,12 +287,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if error == nil {
                 
                 // Clear arrays
-                self.searchNames.removeAll(keepingCapacity: false)
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     if self.following.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }
                 }
@@ -173,12 +321,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if error == nil {
                 
                 // Clear arrays
-                self.searchNames.removeAll(keepingCapacity: false)
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     if self.following.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.searchNames.append(object["username"] as! String)
                         self.searchObjects.append(object)
                     }
                 }
@@ -206,13 +352,13 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)'s Following"
+            self.title = "Share To..."
         }
         
         // Configure nav bar && show tab bar (last line)
@@ -227,11 +373,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Clear tableView
-        self.tableView!.tableFooterView = UIView()
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        
+
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -251,6 +393,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
+        self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -269,14 +413,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
-        print("MEMORY WARNING")
-        print(super.didReceiveMemoryWarning())
         URLCache.shared.removeAllCachedResponses()
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -296,7 +436,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareToCell", for: indexPath) as! ShareToCell
+        
+        cell.checkMark.isHidden = true
         
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()
@@ -311,25 +453,34 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Return SEARCH
         if searchActive == true && searchBar.text! != "" {
-            // Return searchObjects
-            // Fetch user's realNameOfUser and user's profile photos
-            cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            
+            if indexPath.row == 0 {
+                cell.rpFullName.text! = "Everyone"
+            } else {
+                // Return searchObjects
+                // Fetch user's realNameOfUser and user's profile photos
+                cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+                if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                }
             }
             
         } else {
             
-            // Sort Following in ABC order
-            let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-            
-            // Return Follwoing
-            // Fetch user's realNameOfUser and user's profile photos
-            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
-            if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            if indexPath.row == 0 {
+                cell.rpFullName.text! = "Everyone"
+            } else {
+                // Sort Following in ABC order
+                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+                
+                // Return Follwoing
+                // Fetch user's realNameOfUser and user's profile photos
+                cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+                if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                }
             }
         }
 
@@ -342,216 +493,50 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    
-        // Variabel to hold username and user's object
-        var userName: String?
-        var shareUserObject: PFObject?
-        
         if searchActive == true && searchBar.text! != "" {
             // Append search object
-            userName = self.searchNames[indexPath.row]
-            shareUserObject = self.searchObjects[indexPath.row]
+            self.shareObjects.append(self.searchObjects[indexPath.row])
         } else {
+            // Append current user if first
+            if indexPath.row == 0 {
+                self.shareObjects.append(PFUser.current()!)
+            } else {
             // Append Following
-            userName = self.following[indexPath.row].value(forKey: "realNameOfUser") as? String
-            shareUserObject = self.following[indexPath.row]
-        }
-        
-        
-        let alert = AlertController(title: "Share With \(userName!.uppercased())?",
-            message: "Are you sure you'd like to share this with \(userName!.uppercased())?",
-            style: .alert)
-        
-        // Design content view
-        alert.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                view.titleLabel.textColor = UIColor.black
-                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                view.messageLabel.textColor = UIColor.black
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
-                
+                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+                self.shareObjects.append(abcFollowing[indexPath.row])
             }
         }
         
-        // Design corner radius
-        alert.configContainerCornerRadius = {
-            return 14.00
-        }
-        
-        let yes = AlertAction(title: "yes",
-                              style: .default,
-                              handler: { (AlertAction) in
-                                    
-                                    if shareObject.last!.value(forKey: "photoAsset") != nil {
-                                        // PHOTO
-                                        // Share with user
-                                        // Send to Chats
-                                        let chats = PFObject(className: "Chats")
-                                        chats["sender"] = PFUser.current()!
-                                        chats["receiver"] = shareUserObject!
-                                        chats["senderUsername"] = PFUser.current()!.username!
-                                        chats["receiverUsername"] = shareUserObject!.value(forKey: "username") as! String
-                                        chats["read"] = false
-                                        chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
-                                        chats.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if error == nil {
-                                                print("Successfully saved chat: \(chats)")
-                                                
-                                                let alert = UIAlertController(title: "Shared ✓",
-                                                                             message: "Successfully shared photo to \(userName!.uppercased()).",
-                                                    preferredStyle: .alert)
-                                                
-                                                let ok = UIAlertAction(title: "ok",
-                                                                       style: .default,
-                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        
-                                                                        // MARK: - OneSignal
-                                                                        // Send Push Notification
-                                                                        OneSignal.postNotification(
-                                                                            ["contents":
-                                                                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a photo with you"],
-                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
-                                                                             "ios_badgeType": "Increase",
-                                                                             "ios_badgeCount": 1
-                                                                            ]
-                                                                        )
-                                                                        
-                                                                        
-                                                                        // Pop view controller
-                                                                        _ = self.navigationController?.popViewController(animated: true)
-                                                })
-                                                
-                                                alert.addAction(ok)
-                                                alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
-                                        
-                                        
-                                    } else if shareObject.last!.value(forKey: "videoAsset") != nil {
-                                        
-                                        // VIDEO
-                                        // Share with user
-                                        // Send to Chats
-                                        let chats = PFObject(className: "Chats")
-                                        chats["sender"] = PFUser.current()!
-                                        chats["senderUsername"] =  PFUser.current()!.username!
-                                        chats["receiver"] = shareUserObject!
-                                        chats["receiverUsername"] = shareUserObject?.value(forKey: "username") as! String
-                                        chats["read"] = false
-                                        chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
-                                        chats.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully saved chat: \(chats)")
-                                                
-                                                let alert = UIAlertController(title: "Shared ✓",
-                                                                              message: "Successfully shared video to \(userName!.uppercased()).",
-                                                    preferredStyle: .alert)
-                                                
-                                                let ok = UIAlertAction(title: "ok",
-                                                                       style: .default,
-                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        
-                                                                        // MARK: - OneSignal
-                                                                        // Send Push Notification
-                                                                        OneSignal.postNotification(
-                                                                            ["contents":
-                                                                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a video with you"],
-                                                                             "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
-                                                                             "ios_badgeType": "Increase",
-                                                                             "ios_badgeCount": 1
-                                                                            ]
-                                                                        )
-                                                                        
-                                                                        // Pop view controller
-                                                                        _ = self.navigationController?.popViewController(animated: true)
-                                                })
-                                                
-                                                alert.addAction(ok)
-                                                alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
-                                        
-                                        
-                                    } else {
-                                        // Text Post
-                                        // Send to chats
-                                        if let user = shareObject.last!.value(forKey: "byUser") as? PFUser {
-                                            let chats = PFObject(className: "Chats")
-                                            chats["sender"] = PFUser.current()!
-                                            chats["receiver"] = shareUserObject!
-                                            chats["senderUsername"] = PFUser.current()!.username!
-                                            chats["receiverUsername"] = shareUserObject!.value(forKey: "username") as! String
-                                            chats["read"] = false
-                                            chats["Message"] = "@\(user["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
-                                            chats.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if error == nil {
-                                                    print("Successfully saved chat: \(chats)")
-                                                    
-                                                    let alert = UIAlertController(title: "Shared ✓",
-                                                                                  message: "Successfully shared text post to \(userName!).",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: {(alertAction: UIAlertAction!) in
-                                                                            
-                                                                            // MARK: - OneSignal
-                                                                            // Send Push Notification
-                                                                            OneSignal.postNotification(
-                                                                                ["contents":
-                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a text post with you"],
-                                                                                 "include_player_ids": ["\(shareUserObject!.value(forKey: "apnsId") as! String)"],
-                                                                                 "ios_badgeType": "Increase",
-                                                                                 "ios_badgeCount": 1
-                                                                                ]
-                                                                            )
-                                                                            
-                                                                            // Pop view controller
-                                                                            _ = self.navigationController?.popViewController(animated: true)
-                                                    })
-                                                    
-                                                    alert.addAction(ok)
-                                                    alert.view.tintColor = UIColor.black
-                                                    self.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                    }
-                                    
-                                    
-        })
-        
-        let no = AlertAction(title: "no",
-                             style: .destructive,
-                             handler: nil)
-        
-        
-        alert.addAction(no)
-        alert.addAction(yes)
-        alert.view.tintColor = UIColor.black
-        self.present(alert, animated: true, completion: nil)
-        
+        self.tableView.cellForRow(at: indexPath)?.accessoryView?.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
     }
 
     
-
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        if searchActive == true && searchBar.text! != "" {
+            // Remove Searched User
+            if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
+                self.shareObjects.remove(at: index)
+            }
+        } else {
+            // Append current user if first
+            if indexPath.row == 0 {
+                if let index = self.shareObjects.index(of: PFUser.current()!) {
+                    self.shareObjects.remove(at: index)
+                }
+            } else {
+                // Append Following
+                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+                if let index = self.shareObjects.index(of: abcFollowing[indexPath.row]) {
+                    self.shareObjects.remove(at: index)
+                }
+            }
+        }
+        
+        // Set state to none
+        self.tableView.cellForRow(at: indexPath)?.accessoryType = .none
+    }
     
     
     

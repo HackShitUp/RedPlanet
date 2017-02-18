@@ -2137,7 +2137,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEX-zz-1xu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4749" y="-1526"/>
+            <point key="canvasLocation" x="4748.5" y="-1526.5"/>
         </scene>
         <!--Views-->
         <scene sceneID="cQ7-xm-GdP">
@@ -2325,10 +2325,42 @@
         <scene sceneID="zOq-a8-cuI">
             <objects>
                 <tableViewController storyboardIdentifier="shareToVC" id="Fd5-Xf-hwZ" customClass="ShareTo" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="uUu-ua-urT">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="uUu-ua-urT">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="shareToCell" rowHeight="50" id="mLv-kG-hjr" customClass="ShareToCell" customModule="Redplanet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mLv-kG-hjr" id="b9a-Ty-y2n">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XlJ-4f-0Aw">
+                                            <rect key="frame" x="8" y="4" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dFV-wF-v0Y">
+                                            <rect key="frame" x="56" y="4" width="278" height="37"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="OkFilled" translatesAutoresizingMaskIntoConstraints="NO" id="ibL-lQ-QMP">
+                                            <rect key="frame" x="342" y="12" width="25" height="25"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="checkMark" destination="ibL-lQ-QMP" id="fzA-tu-lRa"/>
+                                    <outlet property="rpFullName" destination="dFV-wF-v0Y" id="0dr-KM-Jv7"/>
+                                    <outlet property="rpUserProPic" destination="XlJ-4f-0Aw" id="qOT-Ye-wP5"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="Fd5-Xf-hwZ" id="njT-ZX-ZaW"/>
                             <outlet property="delegate" destination="Fd5-Xf-hwZ" id="nLq-y9-Mbe"/>
@@ -2341,10 +2373,10 @@
                                 <action selector="backButton:" destination="Fd5-Xf-hwZ" id="SDQ-Kt-XZK"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="icB-xU-SLW">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="icB-xU-SLW">
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <action selector="refresh:" destination="Fd5-Xf-hwZ" id="tjd-eB-a6f"/>
+                                <action selector="shareAction:" destination="Fd5-Xf-hwZ" id="Sta-Bi-Lzj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2352,7 +2384,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jcw-0y-pFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5180" y="-1527"/>
+            <point key="canvasLocation" x="5179.5" y="-1527.5"/>
         </scene>
         <!--Likers-->
         <scene sceneID="syr-ml-sjG">
@@ -6183,6 +6215,7 @@
         <image name="NewText" width="275" height="275"/>
         <image name="Newsfeed(1)" width="24" height="24"/>
         <image name="Number Pad-48" width="24" height="24"/>
+        <image name="OkFilled" width="250" height="250"/>
         <image name="Redo-100" width="256" height="256"/>
         <image name="RedplanetLogo" width="256" height="256"/>
         <image name="SCRP" width="26" height="26"/>
