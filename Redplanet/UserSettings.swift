@@ -195,7 +195,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let view = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
-        title.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
         title.textColor = UIColor.black
 //        title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.backgroundColor = UIColor.white

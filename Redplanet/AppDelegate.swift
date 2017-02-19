@@ -59,7 +59,6 @@ var myFollowing = [PFObject]()
 var myRequestedFollowers = [PFObject]()
 var myRequestedFollowing = [PFObject]()
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
