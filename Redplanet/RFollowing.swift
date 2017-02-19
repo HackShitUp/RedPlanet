@@ -22,10 +22,16 @@ import DZNEmptyDataSet
 var forFollowing = [PFObject]()
 
 
-class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
     
     // Array to hold following
     var following = [PFObject]()
+    // Array to hold search objects
+    var searchObjects = [PFObject]()
+    // Variable to determine whether user is searching or not
+    var searchActive: Bool = false
+    // Search Bar
+    var searchBar = UISearchBar()
     
     // Set pipeline method
     var page: Int = 50
@@ -67,12 +73,7 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                 self.following.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    //                    self.following.append(object["following"] as! PFUser)
-                    if let followingUser = object["following"] as? PFUser {
-                        print("FIRED\nAPPENDED")
-                        self.following.append(followingUser)
-                    }
-                    
+                    self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
                 // DZNEmptyDataSet
@@ -171,6 +172,16 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         
         // Stylize title
         configureView()
+        
+        // Add searchbar to header
+        self.searchBar.delegate = self
+        self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.searchBar.barTintColor = UIColor.white
+        self.searchBar.sizeToFit()
+        self.tableView?.tableHeaderView = self.searchBar
+        self.tableView?.tableHeaderView?.layer.borderWidth = 0.5
+        self.tableView?.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        self.tableView?.tableHeaderView?.clipsToBounds = true
 
         // Design table view
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
@@ -208,21 +219,86 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         SDImageCache.shared().clearDisk()
     }
 
+    // Dismiss keyboard when UITableView is scrolled
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Set Boolean
+        searchActive = false
+        // Clear searchBar
+        self.searchBar.text! = ""
+        // Set tableView backgroundView
+        self.tableView.backgroundView = UIView()
+        // Reload data
+        queryFollowing()
+    }
+    
+    // MARK: - UISearchBarDelegate methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Set boolean
+        searchActive = true
+        
+        if searchBar.text == "Search" {
+            searchBar.text! = ""
+        } else {
+            searchBar.text! = searchBar.text!
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // Search by username
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.searchObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    if self.following.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.searchObjects.append(object)
+                    }
+                }
+                
+                // Reload data
+                if self.searchObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.backgroundView = UIView()
+                    self.tableView!.reloadData()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+    
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return self.following.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchActive == true && searchBar.text! != "" {
+            return self.searchObjects.count
+        } else {
+            return self.following.count
+        }
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
@@ -238,14 +314,25 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // Sort Following in ABC order
-        let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-        
-        // Get users' usernames and user's profile photos
-        cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
-        if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-            // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+        // SEARCHED
+        if self.searchActive == true && self.searchBar.text! != "" {
+            // Get users' usernames and user's profile photos
+            cell.rpUsername.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+        } else {
+        // FOLLOWING
+            // Sort Following in ABC order
+            let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+            
+            // Get users' usernames and user's profile photos
+            cell.rpUsername.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
         }
         
         return cell
@@ -256,21 +343,25 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // Sort Following in ABC order
-        let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-        
-        // Append to otherObject
-        otherObject.append(abcFollowing[indexPath.row])
-        
-        // Append otherName
-        otherName.append(abcFollowing[indexPath.row].value(forKey: "username") as! String)
-        
+        // SEARCHED
+        if self.searchActive == true && self.searchBar.text! != "" {
+            // Append to otherObject
+            otherObject.append(self.searchObjects[indexPath.row])
+            // Append otherName
+            otherName.append(self.searchObjects[indexPath.row].value(forKey: "username") as! String)
+        } else {
+        // FOLLOWING
+            // Sort Following in ABC order
+            let abcFollowing = self.following.sorted{($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+            // Append to otherObject
+            otherObject.append(abcFollowing[indexPath.row])
+            // Append otherName
+            otherName.append(abcFollowing[indexPath.row].value(forKey: "username") as! String)
+        }
         
         // Push VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
-        
     }
     
     

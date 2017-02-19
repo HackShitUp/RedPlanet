@@ -226,6 +226,9 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
+        self.tableView.tableHeaderView?.layer.borderWidth = 0.5
+        self.tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        self.tableView.tableHeaderView?.clipsToBounds = true
         
         // Set blank
         self.tableView!.tableFooterView = UIView()

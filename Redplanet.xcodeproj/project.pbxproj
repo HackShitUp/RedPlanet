@@ -77,9 +77,6 @@
 		7E8B558C1E4EF67F004D3F31 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55841E4EF67F004D3F31 /* SNTextField.swift */; };
 		7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55851E4EF67F004D3F31 /* SNUtils.swift */; };
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
-		7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */; };
-		7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */; };
-		7E8EC55F1E58E40B004D835F /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8EC55E1E58E40B004D835F /* ShareToCell.swift */; };
 		7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E920BDA1E53AE85005171EE /* SavedPosts.swift */; };
 		7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E989A251DE4F17E000215A1 /* NewPassword.swift */; };
 		7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */; };
@@ -133,6 +130,7 @@
 		7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955661DC99A98003D9D73 /* InTheMoment.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA09E111DD3EF9200BD2D51 /* NewSpacePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA09E101DD3EF9200BD2D51 /* NewSpacePostCell.swift */; };
+		7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
@@ -304,9 +302,6 @@
 		7E8B55841E4EF67F004D3F31 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E8B55851E4EF67F004D3F31 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
-		7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPostCell.swift; sourceTree = "<group>"; };
-		7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMediaCell.swift; sourceTree = "<group>"; };
-		7E8EC55E1E58E40B004D835F /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
 		7E920BDA1E53AE85005171EE /* SavedPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedPosts.swift; sourceTree = "<group>"; };
 		7E989A251DE4F17E000215A1 /* NewPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPassword.swift; sourceTree = "<group>"; };
 		7E98E8CC1DB75057001B7329 /* CLImageEditor.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = CLImageEditor.bundle; sourceTree = "<group>"; };
@@ -406,6 +401,7 @@
 		7E9955661DC99A98003D9D73 /* InTheMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTheMoment.swift; sourceTree = "<group>"; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA09E101DD3EF9200BD2D51 /* NewSpacePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePostCell.swift; sourceTree = "<group>"; };
+		7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
@@ -541,7 +537,6 @@
 			isa = PBXGroup;
 			children = (
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
-				7E8C42E71DC87F1A00021382 /* ShareMediaCell.swift */,
 			);
 			name = Share;
 			sourceTree = "<group>";
@@ -774,7 +769,6 @@
 			isa = PBXGroup;
 			children = (
 				7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */,
-				7E8C42E51DC87F1000021382 /* NewTextPostCell.swift */,
 			);
 			name = NewTextPost;
 			sourceTree = "<group>";
@@ -1142,6 +1136,15 @@
 			name = Moment;
 			sourceTree = "<group>";
 		};
+		7EA1C74E1E59835500FBE39B /* ShareTo */ = {
+			isa = PBXGroup;
+			children = (
+				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
+				7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */,
+			);
+			name = ShareTo;
+			sourceTree = "<group>";
+		};
 		7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1284,7 +1287,7 @@
 				7EC5D19A1DB3541900437219 /* LoginOrSignUp */,
 				7E43833F1DD9139300337007 /* Hashtags */,
 				7EC5D1B01DB359F300437219 /* OtherUserProfile */,
-				7ED4A9131DBEB4F60016698F /* RelationsPerPerson */,
+				7ED4A9131DBEB4F60016698F /* RELATIONSPERPERSON */,
 				7ED4A91F1DBEBE130016698F /* INTERACTIONS */,
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7E4CFF951DB4393A0087454E /* SINGLES */,
@@ -1408,24 +1411,23 @@
 			name = ACTIVITY;
 			sourceTree = "<group>";
 		};
-		7ED4A9131DBEB4F60016698F /* RelationsPerPerson */ = {
+		7ED4A9131DBEB4F60016698F /* RELATIONSPERPERSON */ = {
 			isa = PBXGroup;
 			children = (
 				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
 				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
 			);
-			name = RelationsPerPerson;
+			name = RELATIONSPERPERSON;
 			sourceTree = "<group>";
 		};
 		7ED4A91F1DBEBE130016698F /* INTERACTIONS */ = {
 			isa = PBXGroup;
 			children = (
-				7EC328D21DBF461A00344AFF /* Comments */,
-				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 				7ED4A9161DBEBDDD0016698F /* Likers.swift */,
+				7EC328D21DBF461A00344AFF /* Comments */,
 				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
-				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
-				7E8EC55E1E58E40B004D835F /* ShareToCell.swift */,
+				7EA1C74E1E59835500FBE39B /* ShareTo */,
+				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 			);
 			name = INTERACTIONS;
 			sourceTree = "<group>";
@@ -1814,7 +1816,6 @@
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
-				7E8C42E61DC87F1000021382 /* NewTextPostCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
 				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
@@ -1830,7 +1831,6 @@
 				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E35A3AE1E4151110007EB99 /* TimeVideoCell.swift in Sources */,
-				7E8C42E81DC87F1A00021382 /* ShareMediaCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
@@ -1866,7 +1866,6 @@
 				7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */,
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
-				7E8EC55F1E58E40B004D835F /* ShareToCell.swift in Sources */,
 				7E4CFF9B1DB4395D0087454E /* ProfilePhotoCell.swift in Sources */,
 				7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
@@ -1947,6 +1946,7 @@
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
+				7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,

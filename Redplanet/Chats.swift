@@ -242,7 +242,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // Description for empty data set
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Start conversations with your friends by tapping the ✚ icon on the top right."
+        let str = "Start conversations by tapping the icon on the top right!"
         let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.gray,
@@ -384,8 +384,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
         self.tableView.tableHeaderView = self.searchBar
+        self.tableView.tableHeaderView?.layer.borderWidth = 0.5
+        self.tableView.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        self.tableView.tableHeaderView?.clipsToBounds = true
         self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.tableFooterView = UIView()
+        self.tableView.tableFooterView = UIView()
         
         // Add long press method in tableView
         let hold = UILongPressGestureRecognizer(target: self, action: #selector(deleteChat))

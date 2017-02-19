@@ -17,7 +17,6 @@ class ShareToCell: UITableViewCell {
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpFullName: UILabel!
-    @IBOutlet weak var checkMark: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

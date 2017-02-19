@@ -21,18 +21,16 @@ import SimpleAlert
 
 class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
-    // Array to hold following
-    var following = [PFObject]()
-    
-    // Array to hold search objects
-    var searchObjects = [PFObject]()
-    var searchNames = [String]()
-    
     // Array to hold share objects
     var shareObjects = [PFObject]()
+    
+    // Array to hold following
+    var following = [PFObject]()
+    // Array to hold search objects
+    var searchObjects = [PFObject]()
+
     // Variable to determine whether user is searching or not
     var searchActive: Bool = false
-    
     // Search Bar
     var searchBar = UISearchBar()
     
@@ -149,7 +147,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                         }
                                     } else {
                                     // TEXT POST
-                                        if let user = shareObject.last!.value(forKey: "byUser") as? PFUser {
+                                        if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
                                             for user in self.shareObjects {
                                                 let chats = PFObject(className: "Chats")
                                                 chats["sender"] = PFUser.current()!
@@ -157,7 +155,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                                 chats["senderUsername"] = PFUser.current()!.username!
                                                 chats["receiverUsername"] = user.value(forKey: "username") as! String
                                                 chats["read"] = false
-                                                chats["Message"] = "@\(user["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
+                                                chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
                                                 chats.saveEventually()
                                                 // MARK: - OneSignal
                                                 // Send Push Notification
@@ -197,14 +195,15 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     func refresh() {
         // Reset Bool
         searchActive = false
-        
+        // Clear searchBar text
+        self.searchBar.text! = ""
         // Query Following
         queryFollowing()
     }
     
     // Query Following
     func queryFollowing() {
-        
+        // FOLLOWING
         let following = PFQuery(className: "FollowMe")
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.whereKey("isFollowing", equalTo: true)
@@ -212,8 +211,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Clear array
@@ -224,19 +222,15 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
-                // Reload data
-                self.tableView!.reloadData()
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
                 
                 // Dismiss progress
                 SVProgressHUD.dismiss()
             }
-            
+            // Reload data
+            self.tableView!.reloadData()
         })
-
     }
     
     
@@ -250,14 +244,13 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.resignFirstResponder()
         // Set Boolean
         searchActive = false
+        // Clear searchBar
+        self.searchBar.text! = ""
         // Set tableView backgroundView
         self.tableView.backgroundView = UIView()
         // Reload data
         queryFollowing()
     }
-    
-    
-    
     
     // MARK: - UISearchBarDelegate methods
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -270,44 +263,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             searchBar.text! = searchBar.text!
         }
     }
-    
-    
-    
-    
-    // Begin searching
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        // Search by username
-        let name = PFUser.query()!
-        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFUser.query()!
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-        let user = PFQuery.orQuery(withSubqueries: [name, realName])
-        user.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear arrays
-                self.searchObjects.removeAll(keepingCapacity: false)
-                
-                for object in objects! {
-                    if self.following.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.searchObjects.append(object)
-                    }
-                }
-                
-                // Reload data
-                self.tableView!.reloadData()
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
-        
-        return true
-        
-    }
-    
-    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
@@ -329,10 +284,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     }
                 }
                 
-                
                 // Reload data
                 if self.searchObjects.count != 0 {
                     // Reload data
+                    self.tableView!.backgroundView = UIView()
                     self.tableView!.reloadData()
                 } else {
                     // Set background for tableView
@@ -358,7 +313,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Share To..."
+            self.title = "Share With"
         }
         
         // Configure nav bar && show tab bar (last line)
@@ -392,9 +347,13 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
-        self.tableView.tableHeaderView = self.searchBar
-        self.tableView!.tableFooterView = UIView()
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView?.tableHeaderView = self.searchBar
+        self.tableView?.tableHeaderView?.layer.borderWidth = 0.5
+        self.tableView?.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
+        self.tableView?.tableHeaderView?.clipsToBounds = true
+        self.tableView?.tableFooterView = UIView()
+        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView?.allowsMultipleSelection = true
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -413,21 +372,58 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+        if searchActive == true && searchBar.text! != "" {
+            return 1
+        } else {
+            return 2
+        }
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchActive == true && searchBar.text! != "" {
             return self.searchObjects.count
         } else {
-            return self.following.count
+            if section == 0 {
+               return 1
+            } else {
+                return self.following.count
+            }
         }
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor.white
+        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        
+        if self.tableView?.numberOfSections == 1 {
+            return label
+        } else {
+            if section == 0 {
+                label.text = "   PUBLIC"
+                return label
+            } else {
+                label.text = "   FOLLOWING"
+                return label
+            }
+        }
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
     }
 
     
@@ -436,10 +432,12 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareToCell", for: indexPath) as! ShareToCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareToCell") as! ShareToCell
         
-        cell.checkMark.isHidden = true
-        
+        // Set selection tintColor
+        cell.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        cell.selectionStyle = .none
+
         // Layout views
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -447,43 +445,53 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Make profile photo circular
         cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // Return SEARCH
-        if searchActive == true && searchBar.text! != "" {
-            
-            if indexPath.row == 0 {
-                cell.rpFullName.text! = "Everyone"
-            } else {
-                // Return searchObjects
-                // Fetch user's realNameOfUser and user's profile photos
-                cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-                if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                }
+        // SEARCHED
+        if self.tableView?.numberOfSections == 1 {
+            // Set name 
+            cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            // Set profile photo
+            if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            
-        } else {
-            
-            if indexPath.row == 0 {
-                cell.rpFullName.text! = "Everyone"
+            if self.shareObjects.contains(where: {$0.objectId! == searchObjects[indexPath.row].objectId!}) {
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
             } else {
-                // Sort Following in ABC order
-                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-                
-                // Return Follwoing
-                // Fetch user's realNameOfUser and user's profile photos
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+            }
+        }
+        
+        if self.tableView?.numberOfSections == 2 {
+        // NOT SEARCHED
+            if indexPath.section == 0 {
+                // SET TO PUBLIC
+                cell.rpUserProPic.image = UIImage(named: "ShareOP")
+                cell.rpFullName.text! = "Post"
+                if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                } else {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                }
+            } else {
+                // Sort Following
+                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+                // Set name
                 cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
+                // Set profile photo
                 if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
+                if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                } else {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                }
             }
         }
-
+        
         return cell
     }
     
@@ -493,41 +501,64 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if searchActive == true && searchBar.text! != "" {
+        // SEARCHED
+        if self.tableView?.numberOfSections == 1 {
             // Append search object
             self.shareObjects.append(self.searchObjects[indexPath.row])
-        } else {
-            // Append current user if first
-            if indexPath.row == 0 {
-                self.shareObjects.append(PFUser.current()!)
+            if self.shareObjects.contains(where: {$0.objectId! == searchObjects[indexPath.row].objectId!}) {
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
             } else {
-            // Append Following
-                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
-                self.shareObjects.append(abcFollowing[indexPath.row])
+                 self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
             }
         }
         
-        self.tableView.cellForRow(at: indexPath)?.accessoryView?.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        self.tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        if self.tableView?.numberOfSections == 2 {
+        // NOT SEARCHED
+            if indexPath.section == 0 {
+                // Append PFUser.current()!
+                self.shareObjects.append(PFUser.current()!)
+                if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                } else {
+                     self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                }
+            } else {
+                // Sort Following
+                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+                // Append object
+                self.shareObjects.append(abcFollowing[indexPath.row])
+                if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                } else {
+                     self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                }
+            }
+        }
+        
+         self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+
     }
 
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-        if searchActive == true && searchBar.text! != "" {
+        // SEARCHED
+        if self.tableView?.numberOfSections == 1 {
             // Remove Searched User
             if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
                 self.shareObjects.remove(at: index)
             }
-        } else {
+        }
+        
+        if self.tableView?.numberOfSections == 2 {
+        // NOT SEARCHED
             // Append current user if first
-            if indexPath.row == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 if let index = self.shareObjects.index(of: PFUser.current()!) {
                     self.shareObjects.remove(at: index)
                 }
             } else {
-                // Append Following
-                let abcFollowing = self.following.sorted { ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String) }
+                // Sort Following
+                let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                 if let index = self.shareObjects.index(of: abcFollowing[indexPath.row]) {
                     self.shareObjects.remove(at: index)
                 }

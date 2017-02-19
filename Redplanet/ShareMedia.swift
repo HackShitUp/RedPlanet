@@ -908,8 +908,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "shareMediaCell", for: indexPath) as! ShareMediaCell
-        
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
@@ -924,35 +923,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         
         
         // Fetch user's objects
-        self.userObjects[indexPath.row].fetchIfNeededInBackground {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get and set user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set user's pro pic
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
-                }
-                
-                // (2) Set user's fullName
-                cell.rpFullName.text! = object!["realNameOfUser"] as! String
-                
-                // (3) Set user's username
-                cell.rpUsername.text! = object!["username"] as! String
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+        // (1) Get and set user's profile photo
+        if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
         
+        // (2) Set user's fullName
+        cell.rpUsername.text! = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
         
         return cell
     }
@@ -960,10 +938,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // MARK: - UITableViewDelegate method
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let words: [String] = self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-        // Define #word
-        for var word in words {
+        // Loop through words
+        for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // @@@@@@@@@@@@@@@@@@@@@@@@@@@
             if word.hasPrefix("@") {
                 
