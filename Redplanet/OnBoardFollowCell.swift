@@ -26,8 +26,7 @@ class OnBoardFollowCell: UITableViewCell {
     @IBOutlet weak var bio: UILabel!
     @IBOutlet weak var followButton: UIButton!
     
-    // Function to follow
-    func followUser(sender: UIButton) {
+    @IBAction func followAction(_ sender: Any) {
         // Disable buttons to prevent duplicate data entry
         self.followButton.isUserInteractionEnabled = false
         self.followButton.isEnabled = false
@@ -46,33 +45,32 @@ class OnBoardFollowCell: UITableViewCell {
             follow.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("Successfully followed: \(follow)")
-                    
                     // Change button's title and design
                     self.followButton.setTitle("Following", for: .normal)
                     self.followButton.setTitleColor(UIColor.white, for: .normal)
                     self.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                     self.followButton.layer.cornerRadius = 22.00
                     self.followButton.clipsToBounds = true
-                    
+                } else {
                     // Re-enable buttons
                     self.followButton.isUserInteractionEnabled = true
                     self.followButton.isEnabled = true
                     
-                    // Trigger relationship function
-                    _ = self.appDelegate.queryRelationships()
-                    
                     // Reload data
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
                 }
             })
             
+            // Re-enable buttons
+            self.followButton.isUserInteractionEnabled = true
+            self.followButton.isEnabled = true
+            
+            // Reload data
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
         }
-        
-
+        // ============================================================================================================================
+        // ======================== FOLLOWING =========================================================================================
+        // ============================================================================================================================
         if self.followButton.title(for: .normal) == "Following" {
             // Unfollow user
             let follow = PFQuery(className: "FollowMe")
@@ -83,69 +81,46 @@ class OnBoardFollowCell: UITableViewCell {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
-                        object.deleteInBackground(block: {
-                            (success: Bool, error: Error?) in
-                            if success {
-                                print("Successfully unfollowed user: \(object)")
-                                
-                                // Change button's title and design
-                                self.followButton.setTitle("Follow", for: .normal)
-                                self.followButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                                self.followButton.backgroundColor = UIColor.white
-                                self.followButton.layer.cornerRadius = 22.00
-                                self.followButton.layer.borderWidth = 2.0
-                                self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                                self.followButton.clipsToBounds = true
-                                
-                                
-                                // Re-enable buttons
-                                self.followButton.isUserInteractionEnabled = true
-                                self.followButton.isEnabled = true
-                                
-                                
-                                // Trigger relationship function
-                                self.appDelegate.queryRelationships()
-                                
-                                // Reload data
-                                NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
-                                
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        object.deleteEventually()
                     }
+                    
+                    // Change button's title and design
+                    self.followButton.setTitle("Follow", for: .normal)
+                    self.followButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                    self.followButton.backgroundColor = UIColor.white
+                    self.followButton.layer.cornerRadius = 22.00
+                    self.followButton.layer.borderWidth = 2.0
+                    self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                    self.followButton.clipsToBounds = true
+                    
                 } else {
                     print(error?.localizedDescription as Any)
+                    
+                    // Re-enable buttons
+                    self.followButton.isUserInteractionEnabled = true
+                    self.followButton.isEnabled = true
+                    
+                    // Reload data
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
                 }
             })
             
+            // Re-enable buttons
+            self.followButton.isUserInteractionEnabled = true
+            self.followButton.isEnabled = true
+            
+            // Reload data
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "onboard"), object: nil)
         }
+
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        // Set button design
-        followButton.setTitle("Follow", for: .normal)
-        followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        followButton.backgroundColor = UIColor.white
-        self.followButton.layer.cornerRadius = 22.00
-        self.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.followButton.layer.borderWidth = 2.00
-        self.followButton.clipsToBounds = true
-        
-        // Add follow method
-        let buttonTap = UITapGestureRecognizer(target: self, action: #selector(followUser))
-        buttonTap.numberOfTapsRequired = 1
-        self.followButton.isUserInteractionEnabled = true
-        self.followButton.addGestureRecognizer(buttonTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }

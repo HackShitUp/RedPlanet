@@ -12,7 +12,9 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
+
 import SwipeNavigationController
+import SDWebImage
 
 class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
@@ -33,11 +35,11 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     @IBAction func refresh(_ sender: Any) {
+        // query relationships
+        _ = appDelegate.queryRelationships()
+        
         // Fetch users
         fetchUsers()
-        
-        // query relationships
-        appDelegate.queryRelationships()
         
         // Reload data
         self.tableView!.reloadData()
@@ -96,42 +98,35 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
     // Function to fetch these users
     func fetchUsers() {
-        
         let team = PFUser.query()!
         team.whereKey("objectId", containedIn: self.team)
-        
         let follow = PFUser.query()!
         follow.whereKey("private", equalTo: false)
-        
         let people = PFQuery.orQuery(withSubqueries: [team, follow])
         people.order(byDescending: "createdAt")
-        people.findObjectsInBackground {
+        people.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
                 // Clear arrays
                 self.followObjects.removeAll(keepingCapacity: false)
+                self.teamObjects.removeAll(keepingCapacity: false)
                 
                 // Append object
                 for object in objects! {
-                    
                     if object.objectId! == "2AOI4vtcSI" || object.objectId! == "uvjf6LmD2t" || object.objectId! == "OoZRHmiNpX" || object.objectId! == "8ZztVf7CEw" || object.objectId! == "l5L2xZuhIi" {
-                        
                         self.teamObjects.append(object)
-                        
                     } else {
-                        
                         self.followObjects.append(object)
                     }
                 }
-                
+            
+                // Reload data
+                self.tableView!.reloadData()
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
-            // Reload data
-            self.tableView!.reloadData()
-        }
+        })
     }
 
     
@@ -186,21 +181,17 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        label.font = UIFont(name: "AvenirNext-Medium", size: 19.00)
+        label.backgroundColor = UIColor.white
+        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         
         if section == 0 {
-            
-            label.text = " • Follow the Redplanet Team"
+            label.text = "   FOLLOW THE REDPLANET TEAM"
             return label
-            
         } else {
-            
-            label.text = " • Follow Public Accounts"
+            label.text = "   FOLLOW PUBLIC ACCOUNTS"
             return label
-
         }
-
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -219,6 +210,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "onBoardCell", for: indexPath) as! OnBoardFollowCell
         
+        _ = appDelegate.queryRelationships()
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
@@ -233,50 +225,27 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         
     
         if indexPath.section == 0 {
-            // Set user's object
+            // (1) Set user's object
             cell.userObject = self.teamObjects[indexPath.row]
-            
-            
-            // (A) Fetch user's objects
-            teamObjects[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-                    
-                    // (2) Set user's name
-                    cell.name.text! = object!["realNameOfUser"] as! String
-                    
-                    // (3) Set user's bio
-                    if object!["userBiography"] != nil {
-                        cell.bio.text! = object!["userBiography"] as! String
-                    } else {
-                        cell.bio.text! = ""
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
+            // (2) Set User's Name
+            cell.name.text! = self.teamObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            // (3) Set user's bio
+            if self.teamObjects[indexPath.row].value(forKey: "userBiography") != nil {
+                cell.bio.text! = self.teamObjects[indexPath.row].value(forKey: "userBiography") as! String
+            } else {
+                cell.bio.text! = ""
+            }
+            // (4) Set Pro Pic
+            if let proPic = self.teamObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
             
-            // Set title
-            if myRequestedFollowing.contains(where: {$0.objectId! == self.teamObjects[indexPath.row].objectId!}) {
-            // FOLLOW REQUESTED
+            if myFollowing.contains(where: {$0.objectId! == self.teamObjects[indexPath.row].objectId!}) {
+            // FOLLOWING
                 // Set button's title and design
-                cell.followButton.setTitle("Follow Requested", for: .normal)
+                cell.followButton.setTitle("Following", for: .normal)
                 cell.followButton.setTitleColor(UIColor.white, for: .normal)
                 cell.followButton.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                 cell.followButton.layer.cornerRadius = 22.0
@@ -292,48 +261,24 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 cell.followButton.layer.borderWidth = 2.00
                 cell.followButton.clipsToBounds = true
             }
-            
+
         } else {
-            // Set user's object
+            // (1) Set user's object
             cell.userObject = self.followObjects[indexPath.row]
-            
-            
-            // (A) Fetch user's objects
-            followObjects[indexPath.row].fetchIfNeededInBackground {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // (1) Get and set user's profile photo
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
-                    }
-                    
-                    // (2) Set user's name
-                    cell.name.text! = object!["realNameOfUser"] as! String
-                    
-                    // (3) Set user's bio
-                    if object!["userBiography"] != nil {
-                        cell.bio.text! = object!["userBiography"] as! String
-                    } else {
-                        cell.bio.text! = ""
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
+            // (2) Set User's Name
+            cell.name.text! = self.followObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            // (3) Set user's bio
+            if self.followObjects[indexPath.row].value(forKey: "userBiography") != nil {
+                cell.bio.text! = self.followObjects[indexPath.row].value(forKey: "userBiography") as! String
+            } else {
+                cell.bio.text! = ""
+            }
+            // (4) Set Pro Pic
+            if let proPic = self.followObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
-            
-            // Set title
             if myFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
                 // FOLLOWING
                 // Set button's title and design
@@ -353,10 +298,8 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 cell.followButton.layer.borderWidth = 2.00
                 cell.followButton.clipsToBounds = true
             }
-
         }
-        
-
+    
         return cell
     }
  

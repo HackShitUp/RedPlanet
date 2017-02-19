@@ -208,7 +208,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     // Reload data
     func refresh() {
-        
         // Get contacts from device
         getPhoneContacts()
         
@@ -365,7 +364,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             label.text = "   FOLLOWING"
             return label
         }
-        
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

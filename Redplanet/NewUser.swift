@@ -51,41 +51,28 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 let ok = UIAlertAction(title: "next",
                                        style: .default,
                                        handler: {(alertAction: UIAlertAction!) in
-                                        
                                         // Load Onboarding tutorial
                                         // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a new social media app that filters your news feeds.", image: nil, buttonText: nil) { () -> Void in
+                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, the first ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let secondPage = OnboardingContentViewController(title: "How?", body: "By dividng your news feeds in two: One for your friends, and one for the things you're following.", image: nil, buttonText: nil) { () -> Void in
+                                        let secondPage = OnboardingContentViewController(title: "Ephemeral by Default", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let thirdPage = OnboardingContentViewController(title: "Friends OR Following", body: "You can't be friends and follow someone at the same time on Redplanet.", image: nil, buttonText: nil) { () -> Void in
-                                        }
-                                        let fourthPage = OnboardingContentViewController(title: "Key Differences", body: "Friends are mutual relationships, while following is not.\nWe built many cool features that clarify these differences.", image: nil, buttonText: nil) { () -> Void in
-                                        }
-                                        let lastPage = OnboardingContentViewController(title: nil, body: "Add the people in your life as friends.\nFollow the things you love.", image: nil, buttonText: "continue") { () -> Void in
+                                        let lastPage = OnboardingContentViewController(title: "Two News Feeds", body: "You also have two news feeds: One for mutual followers, and another for following only.", image: nil, buttonText: "continue") { () -> Void in
                                             // Load Things to Follow interface
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
                                         }
                                         // Set bottom padding for button
                                         lastPage.bottomPadding = 50
-                                        let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, thirdPage, fourthPage, lastPage])
+                                        let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])
                                         onboardingVC?.shouldFadeTransitions = true
                                         self.navigationController!.pushViewController(onboardingVC!, animated: true)
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
-                                        
+
                 })
-                
                 
                 alert.addAction(ok)
                 alert.view.tintColor = UIColor.black
                 self.present(alert, animated: true, completion: nil)
-
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -110,12 +97,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         
         self.present(image, animated: true, completion: nil)
     }
-    
-    
-    
-    
-    
-    
+
     // MARK: - UIImagePickerController Delegate method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
@@ -123,14 +105,12 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         PFUser.current()!["proPicExists"] = true
         PFUser.current()!.saveEventually()
 
-        
         // Set image
         self.rpUserProPic.image = info[UIImagePickerControllerOriginalImage] as? UIImage
         
         // Dismiss view controller
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Save bool
@@ -141,9 +121,6 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         self.dismiss(animated: true, completion: nil)
     }
     
-    
-    
-    
     // MARK: - UITextViewDelegate method
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if self.rpUserBio.text! == "Introduce yourself!" {
@@ -152,8 +129,6 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         return true
     }
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
 

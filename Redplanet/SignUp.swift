@@ -85,7 +85,8 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             self.present(alert, animated: false, completion: nil)
             
         } else {
-            
+            // Disable button
+            self.continueButton.isUserInteractionEnabled = false
             
             // OTHERWISE if credentials are correct, create the new user!
             let newUser = PFUser()
@@ -104,21 +105,14 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             newUser.signUpInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    print("User has successfully signed up!")
+                    // Enable button
+                    self.continueButton.isUserInteractionEnabled = true
                     
                     // Set installation
                     let installation = PFInstallation.current()
                     installation!["user"] = PFUser.current()
                     installation!["username"] = PFUser.current()!.username!
-                    installation!.saveInBackground(block :{
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Successfully saved installation data: \(installation)")
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
+                    installation!.saveEventually()
                     
                     // Push VC
                     let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
@@ -126,17 +120,18 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     
                 } else {
                     let alert = UIAlertController(title: "Sign up failed.",
-                                                  message: "Either your email is invalid or your username is taken.",
+                                                  message: "Your email is invalid or your username is taken.",
                                                   preferredStyle: .alert)
                     let tryAgain = UIAlertAction(title: "Try Again",
                                                  style: .cancel,
-                                                 handler: nil)
+                                                 handler: { (alertAction: UIAlertAction!) in
+                                                    // Enable button
+                                                    self.continueButton.isUserInteractionEnabled = true
+                    })
+                    
                     alert.addAction(tryAgain)
                     alert.view.tintColor = UIColor.black
                     self.present(alert, animated: true, completion: nil)
-                    
-                    
-                    print(error?.localizedDescription as Any)
                 }
             })
         }

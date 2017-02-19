@@ -397,7 +397,7 @@ class HashTagsCell: UITableViewCell {
                                  style: .default,
                                  handler: { (AlertAction) in
                                     let alert = UIAlertController(title: "Report",
-                                                                  message: "Please provide your reason for reporting \(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
+                                                                  message: "Please provide your reason for reporting \(self.contentObject!.value(forKey: "username") as! String)'s Post",
                                         preferredStyle: .alert)
                                     
                                     let report = UIAlertAction(title: "Report", style: .destructive) {
@@ -409,9 +409,9 @@ class HashTagsCell: UITableViewCell {
                                         let report = PFObject(className: "Block_Reported")
                                         report["from"] = PFUser.current()!.username!
                                         report["fromUser"] = PFUser.current()!
-                                        report["to"] = self.hashtagObjects[indexPath.row].value(forKey: "username") as! String
-                                        report["toUser"] = self.hashtagObjects[indexPath.row].value(forKey: "byUser") as! PFUser
-                                        report["forObjectId"] = self.hashtagObjects[indexPath.row].objectId!
+                                        report["to"] = self.contentObject!.value(forKey: "username") as! String
+                                        report["toUser"] = self.contentObject!.value(forKey: "byUser") as! PFUser
+                                        report["forObjectId"] = self.contentObject!.objectId!
                                         report["type"] = answer.text!
                                         report.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
@@ -420,34 +420,29 @@ class HashTagsCell: UITableViewCell {
                                                 
                                                 // Dismiss
                                                 let alert = UIAlertController(title: "Successfully Reported",
-                                                                              message: "\(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
+                                                                              message: "\(self.contentObject!.value(forKey: "username") as! String)'s Post",
                                                     preferredStyle: .alert)
-                                                
                                                 let ok = UIAlertAction(title: "ok",
                                                                        style: .default,
                                                                        handler: nil)
-                                                
                                                 alert.addAction(ok)
                                                 alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
-                                                
+                                                self.delegate?.present(alert, animated: true, completion: nil)
                                             } else {
                                                 print(error?.localizedDescription as Any)
                                             }
                                         })
                                     }
                                     
-                                    
                                     let cancel = UIAlertAction(title: "Cancel",
                                                                style: .cancel,
                                                                handler: nil)
-                                    
                                     
                                     alert.addTextField(configurationHandler: nil)
                                     alert.addAction(report)
                                     alert.addAction(cancel)
                                     alert.view.tintColor = UIColor.black
-                                    self.present(alert, animated: true, completion: nil)
+                                    self.delegate?.present(alert, animated: true, completion: nil)
         })
         
         // (4) Cancel
