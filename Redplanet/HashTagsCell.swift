@@ -15,7 +15,8 @@ import Bolts
 
 import KILabel
 import OneSignal
-
+import SimpleAlert
+import SVProgressHUD
 
 class HashTagsCell: UITableViewCell {
     
@@ -27,7 +28,6 @@ class HashTagsCell: UITableViewCell {
     
     // Initizlize Parent VC
     var delegate: UIViewController?
-    
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
@@ -312,6 +312,171 @@ class HashTagsCell: UITableViewCell {
         }
     }
     
+    // Function to show more options
+    func doMore() {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+
+        
+        // (1) Delete Text Post
+        let delete = AlertAction(title: "Delete",
+                                 style: .default,
+                                 handler: { (AlertAction) in
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor.black)
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("byUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: self.contentObject!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: self.contentObject!.objectId!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                    newsfeeds.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                    // Refresh
+                                                    NotificationCenter.default.post(name: hashtagNotification, object: nil)
+                                                    // Pop view controller
+                                                    _ = self.delegate?.navigationController?.popViewController(animated: true)
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
+
+        })
+        
+        // (2) Edit
+        let edit = AlertAction(title: "🔩 Edit 🔩",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // Append object
+                                editObjects.append(self.contentObject!)
+                                
+                                // Push VC
+                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        // (3) Report
+        let report = AlertAction(title: "Report",
+                                 style: .default,
+                                 handler: { (AlertAction) in
+                                    let alert = UIAlertController(title: "Report",
+                                                                  message: "Please provide your reason for reporting \(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
+                                        preferredStyle: .alert)
+                                    
+                                    let report = UIAlertAction(title: "Report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        // Save to <Block_Reported>
+                                        let report = PFObject(className: "Block_Reported")
+                                        report["from"] = PFUser.current()!.username!
+                                        report["fromUser"] = PFUser.current()!
+                                        report["to"] = self.hashtagObjects[indexPath.row].value(forKey: "username") as! String
+                                        report["toUser"] = self.hashtagObjects[indexPath.row].value(forKey: "byUser") as! PFUser
+                                        report["forObjectId"] = self.hashtagObjects[indexPath.row].objectId!
+                                        report["type"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                // Dismiss
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
+                                                self.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                    }
+                                    
+                                    
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
+                                    alert.view.tintColor = UIColor.black
+                                    self.present(alert, animated: true, completion: nil)
+        })
+        
+        // (4) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
+        
+    
+        if (self.contentObject!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(delete)
+            options.addAction(edit)
+            options.addAction(cancel)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
+        } else {
+            options.addAction(report)
+            options.addAction(cancel)
+            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
+        }
+        self.delegate?.present(options, animated: true, completion: nil)
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -327,7 +492,6 @@ class HashTagsCell: UITableViewCell {
         usernameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(usernameTap)
-        
         
         // (4) Add Share tap
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
@@ -363,7 +527,13 @@ class HashTagsCell: UITableViewCell {
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (9)
+        // (9) More Tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
+        
+        // (10)
         if self.contentObject?.value(forKey: "photoAsset") != nil {
             // (A) Zoom for Photo
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))

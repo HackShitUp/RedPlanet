@@ -481,8 +481,8 @@ class TimeVideoCell: UITableViewCell {
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else {
-            options.addAction(cancel)
             options.addAction(report)
+            options.addAction(cancel)
             report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

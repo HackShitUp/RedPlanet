@@ -36,6 +36,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     // Array to hold objects
     var hashtagStrings = [String]()
     var hashtagObjects = [PFObject]()
+    var skipped = [PFObject]()
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -61,21 +62,18 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     
     // Function to fetch hashtags
     func fetchHashtags() {
-        
         // Check which users are public
         let publicUsers = PFUser.query()!
         publicUsers.whereKey("private", equalTo: false)
         publicUsers.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear array
                 self.okUsers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     self.okUsers.append(object)
                 }
-                
                 
                 // Fetch in News Feeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
@@ -87,16 +85,19 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Clear array
                         self.hashtagObjects.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-                            self.hashtagObjects.append(object)
+                            // Ephemeral content
+                            let components : NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            if difference.hour! < 24 {
+                                self.hashtagObjects.append(object)
+                            } else {
+                                self.skipped.append(object)
+                            }
                         }
-                        
-                        print("Number: \(self.hashtagObjects.count)")
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
@@ -104,18 +105,12 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                     // Reload data
                     self.tableView!.reloadData()
                 })
-                
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.tableView!.reloadData()
         })
-        
-
     }
     
     
@@ -150,7 +145,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show Progress
+        // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
     
@@ -161,17 +156,14 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         queryHashtag.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
-                
                 // Clear array
                 self.hashtagStrings.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     self.hashtagStrings.append(object["forObjectId"] as! String)
                 }
-                
                 // DZNEmptyDataSet
                 if self.hashtagObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
@@ -180,14 +172,12 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 
                 // Fetch hashtags
                 self.fetchHashtags()
-                
             } else {
                 print(error?.localizedDescription as Any)
                 // Dismiss
                 SVProgressHUD.dismiss()
             }
         })
-        
         
         // Stylize title
         configureView()
@@ -292,10 +282,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         cell.photoAsset.layoutSubviews()
         cell.photoAsset.setNeedsLayout()
         
-        
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.contentView.frame
-        
         
         // Instantiate parent vc
         cell.delegate = self
@@ -580,184 +568,5 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         
 
         return cell
-    }
-    
-    
-    
-    // MARK: - UITableViewDelegate Method
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    } // end edit boolean
-    
-    
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        // (1) Delete Text Post
-        let delete = UITableViewRowAction(style: .normal,
-                                          title: "X\nDelete") { (UITableViewRowAction, indexPath) in
-                                            
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.show()
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-
-                                            let content = PFQuery(className: "Newsfeeds")
-                                            content.whereKey("byUser", equalTo: PFUser.current()!)
-                                            content.whereKey("objectId", equalTo: self.hashtagObjects[indexPath.row].objectId!)
-                                            
-                                            let shares = PFQuery(className: "Newsfeeds")
-                                            shares.whereKey("pointObject", equalTo: self.hashtagObjects[indexPath.row])
-                                            
-                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        // Delete object
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                // Refresh
-                                                                NotificationCenter.default.post(name: hashtagNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.navigationController?.popViewController(animated: true)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
-        }
-        
-        // (2) Edit
-        let edit = UITableViewRowAction(style: .normal,
-                                        title: "🔩\nEdit") { (UITableViewRowAction, indexPath) in
-                                            
-                                            
-                                            // Append object
-                                            editObjects.append(self.hashtagObjects[indexPath.row])
-                                            
-                                            // Push VC
-                                            let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                            self.navigationController?.pushViewController(editVC, animated: true)
-                                            
-                                            
-                                            // Close cell
-                                            self.tableView!.setEditing(false, animated: true)
-                                            
-        }
-        
-        
-        // (3) Views
-        let views = UITableViewRowAction(style: .normal,
-                                         title: "🙈\nViews") { (UITableViewRowAction, indexPath) in
-                                            // Append object
-                                            viewsObject.append(self.hashtagObjects[indexPath.row])
-                                            
-                                            // Push VC
-                                            let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                            self.navigationController?.pushViewController(viewsVC, animated: true)
-                                            
-        }
-        
-        
-        // (4) Report Content
-        let report = UITableViewRowAction(style: .normal,
-                                          title: "Report") { (UITableViewRowAction, indexPath) in
-                                            
-                                            let alert = UIAlertController(title: "Report",
-                                                                          message: "Please provide your reason for reporting \(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
-                                                preferredStyle: .alert)
-                                            
-                                            let report = UIAlertAction(title: "Report", style: .destructive) {
-                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                
-                                                let answer = alert.textFields![0]
-                                                
-                                                // Save to <Block_Reported>
-                                                let report = PFObject(className: "Block_Reported")
-                                                report["from"] = PFUser.current()!.username!
-                                                report["fromUser"] = PFUser.current()!
-                                                report["to"] = self.hashtagObjects[indexPath.row].value(forKey: "username") as! String
-                                                report["toUser"] = self.hashtagObjects[indexPath.row].value(forKey: "byUser") as! PFUser
-                                                report["forObjectId"] = self.hashtagObjects[indexPath.row].objectId!
-                                                report["type"] = answer.text!
-                                                report.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully saved report: \(report)")
-                                                        
-                                                        // Dismiss
-                                                        let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(self.hashtagObjects[indexPath.row].value(forKey: "username") as! String)'s Post",
-                                                            preferredStyle: .alert)
-                                                        
-                                                        let ok = UIAlertAction(title: "ok",
-                                                                               style: .default,
-                                                                               handler: nil)
-                                                        
-                                                        alert.addAction(ok)
-                                                        alert.view.tintColor = UIColor.black
-                                                        self.present(alert, animated: true, completion: nil)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
-                                            
-                                            
-                                            let cancel = UIAlertAction(title: "Cancel",
-                                                                       style: .cancel,
-                                                                       handler: nil)
-                                            
-                                            
-                                            alert.addTextField(configurationHandler: nil)
-                                            alert.addAction(report)
-                                            alert.addAction(cancel)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-        }
-        
-        
-        
-        
-        
-        // Set background colors
-        
-        // Super Dark Gray
-        delete.backgroundColor = UIColor(red:0.29, green:0.29, blue:0.29, alpha:1.0)
-        // Dark Gray
-        edit.backgroundColor = UIColor(red:0.39, green:0.39, blue:0.39, alpha:1.0)
-        // Red
-        views.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        // Yellow
-        report.backgroundColor = UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-        
-        
-
-        if (self.hashtagObjects[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            return [delete, edit, views]
-        } else {
-            return [report]
-        }
-        
-        
-        
-        
-    } // End edit action
-    
- 
-
+    }// end cellForRowAt method
 }
