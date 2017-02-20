@@ -44,21 +44,20 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
 
     @IBAction func shareAction(_ sender: Any) {
     // MARK: - SimpleAlert
-        let alert = AlertController(title: "Share To...",
-            message: "Are you sure you'd like to share this with?", // TODO::
+        let alert = AlertController(title: "Share With",
+            message: "Are you sure you'd like to share with \(self.shareObjects.count) persons?",
             style: .alert)
         
         // Design content view
         alert.configContentView = { view in
             if let view = view as? AlertContentView {
-                view.backgroundColor = UIColor.white
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
                 view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
                 view.messageLabel.textColor = UIColor.black
-                view.textBackgroundView.layer.cornerRadius = 3.00
-                view.textBackgroundView.clipsToBounds = true
-                
             }
         }
         
@@ -93,14 +92,58 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                     notifications["forObjectId"] = shareObject.last!.objectId!
                                     notifications.saveEventually()
                                 }
-                                
 
-                                
-                                
-                                    if shareObject.last!.value(forKey: "photoAsset") != nil {
+                                if shareObject.last!.value(forKey: "photoAsset") != nil {
                                     // PHOTO
                                     // Share with user
                                     // Send to Chats
+                                    for user in self.shareObjects {
+                                        let chats = PFObject(className: "Chats")
+                                        chats["sender"] = PFUser.current()!
+                                        chats["receiver"] = user
+                                        chats["senderUsername"] = PFUser.current()!.username!
+                                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                                        chats["read"] = false
+                                        chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
+                                        chats.saveEventually()
+                                        // MARK: - OneSignal
+                                        // Send Push Notification
+                                        OneSignal.postNotification(
+                                            ["contents":
+                                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
+                                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                             "ios_badgeType": "Increase",
+                                             "ios_badgeCount": 1
+                                            ]
+                                        )
+                                    }
+                                } else if shareObject.last!.value(forKey: "videoAsset") != nil {
+                                    // VIDEO
+                                    // Share with user
+                                    // Send to Chats
+                                    for user in self.shareObjects {
+                                        let chats = PFObject(className: "Chats")
+                                        chats["sender"] = PFUser.current()!
+                                        chats["senderUsername"] =  PFUser.current()!.username!
+                                        chats["receiver"] = user
+                                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                                        chats["read"] = false
+                                        chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
+                                        chats.saveEventually()
+                                        // MARK: - OneSignal
+                                        // Send Push Notification
+                                        OneSignal.postNotification(
+                                            ["contents":
+                                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
+                                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                             "ios_badgeType": "Increase",
+                                             "ios_badgeCount": 1
+                                            ]
+                                        )
+                                    }
+                                } else {
+                                    // TEXT POST
+                                    if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
                                         for user in self.shareObjects {
                                             let chats = PFObject(className: "Chats")
                                             chats["sender"] = PFUser.current()!
@@ -108,71 +151,23 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                                             chats["senderUsername"] = PFUser.current()!.username!
                                             chats["receiverUsername"] = user.value(forKey: "username") as! String
                                             chats["read"] = false
-                                            chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
+                                            chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
                                             chats.saveEventually()
                                             // MARK: - OneSignal
                                             // Send Push Notification
                                             OneSignal.postNotification(
                                                 ["contents":
-                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
+                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
                                                  "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
                                                  "ios_badgeType": "Increase",
                                                  "ios_badgeCount": 1
                                                 ]
                                             )
-                                        }
-                                    } else if shareObject.last!.value(forKey: "videoAsset") != nil {
-                                    // VIDEO
-                                    // Share with user
-                                    // Send to Chats
-                                        for user in self.shareObjects {
-                                            let chats = PFObject(className: "Chats")
-                                            chats["sender"] = PFUser.current()!
-                                            chats["senderUsername"] =  PFUser.current()!.username!
-                                            chats["receiver"] = user
-                                            chats["receiverUsername"] = user.value(forKey: "username") as! String
-                                            chats["read"] = false
-                                            chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
-                                            chats.saveEventually()
-                                            // MARK: - OneSignal
-                                            // Send Push Notification
-                                            OneSignal.postNotification(
-                                                ["contents":
-                                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
-                                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                                                 "ios_badgeType": "Increase",
-                                                 "ios_badgeCount": 1
-                                                ]
-                                            )
-                                        }
-                                    } else {
-                                    // TEXT POST
-                                        if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
-                                            for user in self.shareObjects {
-                                                let chats = PFObject(className: "Chats")
-                                                chats["sender"] = PFUser.current()!
-                                                chats["receiver"] = user
-                                                chats["senderUsername"] = PFUser.current()!.username!
-                                                chats["receiverUsername"] = user.value(forKey: "username") as! String
-                                                chats["read"] = false
-                                                chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
-                                                chats.saveEventually()
-                                                // MARK: - OneSignal
-                                                // Send Push Notification
-                                                OneSignal.postNotification(
-                                                    ["contents":
-                                                        ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
-                                                     "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                                                     "ios_badgeType": "Increase",
-                                                     "ios_badgeCount": 1
-                                                    ]
-                                                )
-                                            }
                                         }
                                     }
+                                }
                                 
-                                
-                                
+
         })
         
         let no = AlertAction(title: "no",
@@ -186,9 +181,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         alert.addAction(no)
         alert.addAction(yes)
-        alert.view.tintColor = UIColor.black
+        no.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        no.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+        yes.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        yes.button.setTitleColor(UIColor.black, for: .normal)
         self.present(alert, animated: true, completion: nil)
-        
     }
     
     // Function to refresh

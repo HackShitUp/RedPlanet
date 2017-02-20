@@ -284,22 +284,8 @@ class ProPicCell: UITableViewCell {
         options.configContainerCornerRadius = {
             return 14.00
         }
-        
-        
-        //        // (1) Views
-        //        let views = AlertAction(title: "🙈 Views",
-        //                                style: .default,
-        //                                handler: { (AlertAction) in
-        //                                    // Append object
-        //                                    viewsObject.append(proPicObject.last!)
-        //
-        //                                    // Push VC
-        //                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-        //                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-        //        })
-        
-        
-        // (2)
+
+        // (1)
         let edit = AlertAction(title: "🔩 Edit 🔩",
                                style: .default,
                                handler: { (AlertAction) in
@@ -313,7 +299,7 @@ class ProPicCell: UITableViewCell {
         })
         
         
-        // (3) Delete
+        // (2) Delete
         let delete = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
@@ -440,7 +426,7 @@ class ProPicCell: UITableViewCell {
         })
         
         
-        // (4) Report Content
+        // (3) Report Content
         let reportBlock = AlertAction(title: "Report",
                                       style: .destructive,
                                       handler: { (AlertAction) in
@@ -500,7 +486,7 @@ class ProPicCell: UITableViewCell {
         })
         
         
-        // (5) Cancel
+        // (4) Cancel
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)

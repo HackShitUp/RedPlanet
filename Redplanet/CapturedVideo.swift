@@ -27,6 +27,9 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
     // MARK: - Player
     var player: Player!
     
+    // MARK: - SwipeView
+    @IBOutlet weak var swipeView: SwipeView!
+    
     // Compressed URL
     var smallVideoData: NSData?
     

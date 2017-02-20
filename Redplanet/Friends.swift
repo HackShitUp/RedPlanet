@@ -24,11 +24,15 @@ import SDWebImage
 
 class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // Array to hold following, and friends AND posts, and skipped objects
-    var following = [PFObject]()
+    // AppDelegate Constant
+    let appDelegate = AppDelegate()
+    
+    // Array to hold friends (MUTUAL FOLLOWING)
     var friends = [PFObject]()
+    // Array to hold posts/skipped
     var posts = [PFObject]()
     var skipped = [PFObject]()
+    
     // Hold likers
     var likes = [PFObject]()
     
@@ -52,56 +56,37 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
    
     // FETCH MUTUAL
     func fetchFriends() {
-        let following = PFQuery(className: "FollowMe")
-        following.includeKeys(["follower", "following"])
-        following.whereKey("follower", equalTo: PFUser.current()!)
-        following.whereKey("isFollowing", equalTo: true)
-        following.findObjectsInBackground {
+        // MARK: - AppDelegate
+        _ = appDelegate.queryRelationships()
+        
+        // Fetch Mutuals
+        let mutuals = PFQuery(className: "FollowMe")
+        mutuals.includeKeys(["follower", "following"])
+        mutuals.whereKey("following", equalTo: PFUser.current()!)
+        mutuals.whereKey("isFollowing", equalTo: true)
+        mutuals.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
                 // Clear array
-                self.following.removeAll(keepingCapacity: false)
+                self.friends.removeAll(keepingCapacity: false)
+                self.friends.append(PFUser.current()!)
                 
                 for object in objects! {
-                    self.following.append(object.object(forKey: "following") as! PFUser)
-                }
-                // Fetch Mutuals
-                let mutuals = PFQuery(className: "FollowMe")
-                mutuals.includeKeys(["follower", "following"])
-                mutuals.whereKey("follower", containedIn: self.following)
-                mutuals.whereKey("following", equalTo: PFUser.current()!)
-                mutuals.whereKey("isFollowing", equalTo: true)
-                mutuals.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        // Clear array
-                        self.friends.removeAll(keepingCapacity: false)
-                        self.friends.append(PFUser.current()!)
-                        
-                        for object in objects! {
-                            self.friends.append(object.object(forKey: "follower") as! PFUser)
-                        }
-                        
-                        // Fetch posts
-                        self.fetchPosts()
-                        
-                    } else {
-                        if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.dismiss()
-                        }
+                    if myFollowing.contains(where: {$0.objectId! == (object.object(forKey: "follower") as! PFUser).objectId!}) {
+                        self.friends.append(object.object(forKey: "follower") as! PFUser)
                     }
-                })
+                }
+                
+                // Fetch posts
+                self.fetchPosts()
+                
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }
             }
-        }
+        })
     }
     
     // FETCH POSTS
@@ -204,10 +189,10 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Friends' News Feed is empty today."
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let str = "💩\nYour Friends' News Feed\nis empty today."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.darkGray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         

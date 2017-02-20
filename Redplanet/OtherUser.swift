@@ -461,14 +461,14 @@ class OtherUser: UITableViewController {
                     
                     if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWER ONLY
-                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
+                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
                         
                     } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                     // CONFIRM FOLLOW REQUEST
-                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
+                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -477,7 +477,7 @@ class OtherUser: UITableViewController {
                     // FOLLOWING
                         print("Don't hide because FOLLOWING")
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
+                            self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -485,7 +485,7 @@ class OtherUser: UITableViewController {
                         
                     } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                     // FOLLOW REQUESTED
-                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
+                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -493,7 +493,7 @@ class OtherUser: UITableViewController {
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWER & FOLLOWING == FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
+                            self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -501,7 +501,7 @@ class OtherUser: UITableViewController {
                         
                     } else {
                         // Not yet connected
-                        self.cover.setTitle("🔒\nPrivate Account.", for: .normal)
+                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -510,7 +510,7 @@ class OtherUser: UITableViewController {
                 } else {
                     // PUBLIC ACCOUNT
                     if self.posts.count == 0 {
-                        self.cover.setTitle("🤔\nNo Posts Today.", for: .normal)
+                        self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = true
@@ -795,7 +795,7 @@ class OtherUser: UITableViewController {
         self.cover.contentHorizontalAlignment = .center
         self.cover.titleLabel!.textAlignment = .center
         self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-        self.cover.setTitleColor(UIColor.darkGray, for: .normal)
+        self.cover.setTitleColor(UIColor.lightGray, for: .normal)
         self.cover.backgroundColor = UIColor.white
         
         return CGFloat(425 + label.frame.size.height)

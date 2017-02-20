@@ -233,7 +233,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         let str = "🙊\nNo Active Chats"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         
@@ -242,10 +242,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // Description for empty data set
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Start conversations by tapping the icon on the top right!"
+        let str = "Start a conversation by tapping\nthe icon on the top right!"
         let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         

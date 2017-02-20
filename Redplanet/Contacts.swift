@@ -298,9 +298,21 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Contacts"
         }
+        
+        // Configure nav bar && hide tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Style bar
+        configureView()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -316,7 +328,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         self.tableView!.emptyDataSetDelegate = self
         self.tableView!.emptyDataSetSource = self
         self.tableView!.tableFooterView = UIView()
-        
         
         // Add to NSNotificationCenter reload method
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: contactsNotification, object: nil)

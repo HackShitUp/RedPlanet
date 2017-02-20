@@ -487,6 +487,7 @@ class TimeMediaCell: UITableViewCell {
         
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(edit)
+//            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

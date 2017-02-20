@@ -269,7 +269,7 @@ class TimeTextPostCell: UITableViewCell {
         
         if (self.postObject!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(edit)
-            options.addAction(save)
+//            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

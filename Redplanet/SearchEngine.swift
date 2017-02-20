@@ -100,7 +100,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
             hashtags.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
-                    
                     // Clear array
                     self.searchHashes.removeAll(keepingCapacity: false)
                     

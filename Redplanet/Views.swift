@@ -113,7 +113,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
                     self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
                     self.navigationController?.navigationBar.shadowImage = nil
-                    self.navigationController?.navigationBar.isTranslucent = false
+//                    self.navigationController?.navigationBar.isTranslucent = false
                     self.navigationController?.view?.backgroundColor = UIColor.white
                     self.navigationController?.tabBarController?.tabBar.isHidden = false
                     
@@ -131,7 +131,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
                     self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
                     self.navigationController?.navigationBar.shadowImage = nil
-                    self.navigationController?.navigationBar.isTranslucent = false
+//                    self.navigationController?.navigationBar.isTranslucent = false
                     self.navigationController?.view?.backgroundColor = UIColor.white
                     self.navigationController?.tabBarController?.tabBar.isHidden = true
                 }
@@ -253,10 +253,10 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         
         // Fetch user's realNameOfUser and user's profile photos
         cell.rpUsername.text! = self.viewers[indexPath.row].value(forKey: "realNameOfUser") as! String
-//        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-//            // MARK: - SDWebImage
-//            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-//        }
+        if let proPic = self.viewers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+        }
 
         return cell
     }

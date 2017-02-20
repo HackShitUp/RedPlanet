@@ -20,7 +20,6 @@ import SimpleAlert
 
 class SharedPostCell: UITableViewCell {
     
-    
     // Initialize parent VC
     var delegate: UIViewController?
     
@@ -377,7 +376,7 @@ class SharedPostCell: UITableViewCell {
     // Function to share
     func shareOptions() {
         // Append post's object: PFObject
-        shareObject.append(shareObject.last!)
+        shareObject.append(sharedObject.last!)
         
         // Share to chats
         let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
@@ -575,7 +574,7 @@ class SharedPostCell: UITableViewCell {
         
         if (sharedObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
-            options.addAction(save)
+//            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

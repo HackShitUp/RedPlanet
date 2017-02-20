@@ -25,9 +25,13 @@ import SDWebImage
 
 class Following: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // Array to hold friends, posts, and skipped objects
+    // AppDelegate Constant
+    let appDelegate = AppDelegate()
+    
+    // Array to hold following ONLY
     var following = [PFObject]()
-    var finalGroup = [PFObject]()
+
+    // Array to hold posts/skipped
     var posts = [PFObject]()
     var skipped = [PFObject]()
     
@@ -35,7 +39,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     var likes = [PFObject]()
     
     // Pipeline method
-    var page: Int = 25
+    var page: Int = 50
     
     // Parent Navigator
     var parentNavigator: UINavigationController!
@@ -63,6 +67,8 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // Function to fetch following
     func fetchFollowing() {
+        // MARK: - AppDelegate
+        _ = appDelegate.queryRelationships()
         
         let following = PFQuery(className: "FollowMe")
         following.includeKeys(["follower", "following"])
@@ -74,40 +80,16 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
-                // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.following.append(object.object(forKey: "following") as! PFUser)
+                    if !myFollowers.contains(where: {$0.objectId! == (object.object(forKey: "following") as! PFUser).objectId!}) {
+                        self.following.append(object.object(forKey: "following") as! PFUser)
+                    }
                 }
                 
-                // ONLY FOLLOWING
-                let final = PFQuery(className: "FollowMe")
-                final.includeKeys(["follower", "following"])
-                final.whereKey("follower", notContainedIn: self.following)
-                final.whereKey("following", containedIn: self.following)
-                final.whereKey("follower", equalTo: PFUser.current()!)
-                final.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        
-                        // Clear array
-                        self.finalGroup.removeAll(keepingCapacity: false)
-                        
-                        for object in objects! {
-                            self.finalGroup.append(object.object(forKey: "following") as! PFUser)
-                        }
+                self.fetchPosts()
 
-                        // Fetch Posts
-                        self.fetchPosts()
-                        
-                    } else {
-                        if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.dismiss()
-                        }
-                    }
-                })
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
@@ -125,7 +107,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
-        newsfeeds.whereKey("byUser", containedIn: self.finalGroup)
+        newsfeeds.whereKey("byUser", containedIn: self.following)
         newsfeeds.whereKey("contentType", containedIn: self.contentTypes)
         newsfeeds.limit = self.page
         newsfeeds.order(byDescending: "createdAt")
@@ -220,13 +202,12 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Following News Feed is empty today."
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let str = "💩\nYour Following News Feed\nis empty today."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.darkGray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
@@ -987,7 +968,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
         if page <= self.posts.count + self.skipped.count {
             
             // Increase page size to load more posts
-            page = page + 25
+            page = page + 50
             
             // Query friends
             fetchPosts()

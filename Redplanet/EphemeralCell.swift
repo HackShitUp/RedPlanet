@@ -110,7 +110,7 @@ class EphemeralCell: UITableViewCell {
             return 14.00
         }
         
-        let views = AlertAction(title: "🙈 Views",
+        let views = AlertAction(title: "🙈 Views 🙈",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     
@@ -194,7 +194,6 @@ class EphemeralCell: UITableViewCell {
         let cancel = AlertAction(title: "Cancel",
                                  style: .cancel,
                                  handler: nil)
-        
         
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(views)

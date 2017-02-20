@@ -608,7 +608,7 @@ class SpacePostCell: UITableViewCell {
         if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
             options.addAction(edit)
-            options.addAction(save)
+//            options.addAction(save)
             options.addAction(delete1)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
@@ -623,7 +623,7 @@ class SpacePostCell: UITableViewCell {
             cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
-            options.addAction(save)
+//            options.addAction(save)
             options.addAction(delete2)
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
