@@ -61,28 +61,20 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         views.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Clear array
                 self.viewers.removeAll(keepingCapacity: false)
                 
-                
                 // Append objects
                 for object in objects! {
-
-                    
-                    // TODO::
-                    // Shorten this
                     if self.viewers.contains(where: {$0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) || (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
                         // Skip appending
                     } else {
                         self.viewers.append(object.object(forKey: "byUser") as! PFUser)
                     }
-
                 }
-                
                 
                 // Set DZNEmptyDataSet
                 if self.viewers.count == 0 {
@@ -93,7 +85,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 // Change the font and size of nav bar text
                 if self.viewers.count != 0 && self.navigationController != nil {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont
@@ -113,12 +105,11 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
                     self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
                     self.navigationController?.navigationBar.shadowImage = nil
-//                    self.navigationController?.navigationBar.isTranslucent = false
                     self.navigationController?.view?.backgroundColor = UIColor.white
                     self.navigationController?.tabBarController?.tabBar.isHidden = false
                     
                 } else {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 20.0) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont
@@ -131,7 +122,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     self.navigationController?.setNavigationBarHidden(false, animated: true)
                     self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
                     self.navigationController?.navigationBar.shadowImage = nil
-//                    self.navigationController?.navigationBar.isTranslucent = false
                     self.navigationController?.view?.backgroundColor = UIColor.white
                     self.navigationController?.tabBarController?.tabBar.isHidden = true
                 }
@@ -237,7 +227,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // Layout views

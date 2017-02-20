@@ -67,12 +67,10 @@ class OtherUser: UITableViewController {
         chatUserObject.append(otherObject.last!)
         // Append user's username
         chatUsername.append(otherName.last!)
-        
         // Push VC
         let chatRoomVC = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
         self.navigationController?.pushViewController(chatRoomVC, animated: true)
     }
-    
     
     // Function to create new Space Post
     func createSpace() {
@@ -446,11 +444,20 @@ class OtherUser: UITableViewController {
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
                     } else {
-                        self.skipped.append(object)
+                        self.posts.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
                 
                 
@@ -527,9 +534,7 @@ class OtherUser: UITableViewController {
             self.tableView!.reloadData()
         }
     }
-    
-    
-    
+
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
@@ -581,9 +586,9 @@ class OtherUser: UITableViewController {
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
-        self.tableView?.estimatedRowHeight = 658
+        self.tableView?.estimatedRowHeight = 65.00
         self.tableView?.rowHeight = UITableViewAutomaticDimension
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
         
         // Register to receive notification
@@ -806,22 +811,19 @@ class OtherUser: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return self.posts.count
     }
     
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
-            return 65
-        } else {
-            return UITableViewAutomaticDimension
-        }
+        return UITableViewAutomaticDimension
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

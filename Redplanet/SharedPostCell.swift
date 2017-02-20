@@ -404,11 +404,11 @@ class SharedPostCell: UITableViewCell {
         
         
         // (1) Views
-        let views = AlertAction(title: "🙈 Views",
+        let views = AlertAction(title: "🙈 Views 🙈",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
-                                    viewsObject.append(itmObject.last!)
+                                    viewsObject.append(sharedObject.last!)
                                     // Push VC
                                     let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
@@ -573,8 +573,8 @@ class SharedPostCell: UITableViewCell {
             options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+//            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+//            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

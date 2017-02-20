@@ -79,7 +79,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             return 14.00
         }
         
-        let views = AlertAction(title: "🙈 Views",
+        let views = AlertAction(title: "🙈 Views 🙈",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object

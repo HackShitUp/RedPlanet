@@ -56,7 +56,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                         "sh",
                         "vi",
                         "itm"]
-    
 
     // Function to refresh data
     func refresh() {
@@ -123,11 +122,20 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     // Ephemeral content
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
                     } else {
-                        self.skipped.append(object)
+                        self.posts.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
                 
                 // Set DZN

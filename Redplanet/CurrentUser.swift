@@ -77,11 +77,20 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
+                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
                     } else {
-                        self.skipped.append(object)
+                        self.posts.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
             } else {
                 print(error?.localizedDescription as Any)
@@ -143,7 +152,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
-        self.tableView?.estimatedRowHeight = 658
+        self.tableView?.estimatedRowHeight = 65.00
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
@@ -302,7 +311,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -311,14 +319,13 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.posts.count
     }
-
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 65
+    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
-            return 65
-        } else {
-            return UITableViewAutomaticDimension
-        }
+        return UITableViewAutomaticDimension
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
