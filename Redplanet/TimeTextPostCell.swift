@@ -491,54 +491,52 @@ class TimeTextPostCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // (1) Tap for rpUserProPic and rpUsername
+        // (1) NAVIGATE TO USER
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
         
-        // (2) Tap for rpUsername
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
         
-        // (3) Like button tap
+        // (2) LIKE
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // (4) numberOfLikes tap
+        // (3) # OF LIKES
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (5) Comment tap
+        // (4) COMMENT
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // (6) Share tap
+        // (5) SHARE
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (7) numberOfShares tap
+        // (6) # OF SHARES
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (8) More Button
+        // (7) MORE
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
-        
         
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
@@ -549,8 +547,7 @@ class TimeTextPostCell: UITableViewCell {
             // Query data
             let user = PFUser.query()!
             user.whereKey("username", equalTo: mention.lowercased())
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
                         
@@ -568,7 +565,6 @@ class TimeTextPostCell: UITableViewCell {
                 }
             })
         }
-        
         
         // Handle #object tap
         textPost.hashtagLinkTapHandler = { label, handle, range in

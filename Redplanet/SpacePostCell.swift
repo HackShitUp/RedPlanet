@@ -44,8 +44,6 @@ class SpacePostCell: UITableViewCell {
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var mediaAsset: PFImageView!
 
-    
-    
     @IBAction func comment(_ sender: Any) {
         // Append object
         commentsObject.append(spaceObject.last!)
@@ -278,28 +276,6 @@ class SpacePostCell: UITableViewCell {
         let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
         self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
     }
-
-    
-    
-    // Save or share the photo
-    func saveShare(sender: UILongPressGestureRecognizer) {
-        if spaceObject.last!.value(forKey: "photoAsset") != nil {
-            // Photo to Share
-            let image = self.mediaAsset.image!
-            let imageToShare = [image]
-            let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-            self.delegate?.present(activityVC, animated: true, completion: nil)
-
-        } else {
-            // Text to Share
-            let textToShare = "@\(self.rpUsername.text!) Space Post on Redplanet: \(self.textPost.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
-            let objectsToShare = [textToShare]
-            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-            self.delegate?.present(activityVC, animated: true, completion: nil)
-        }
-    }
-    
-    
     
     // Function to zoom
     func zoom(sender: AnyObject) {
@@ -325,12 +301,6 @@ class SpacePostCell: UITableViewCell {
     // Function to layout taps
     func layoutTaps() {
         if spaceObject.last!.value(forKey: "photoAsset") != nil {
-            
-            // Hold to save
-            let mediaHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-            mediaHold.minimumPressDuration = 0.50
-            self.mediaAsset.isUserInteractionEnabled = true
-            self.mediaAsset.addGestureRecognizer(mediaHold)
             
             // Tap to zoom
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
@@ -656,63 +626,53 @@ class SpacePostCell: UITableViewCell {
             self.mediaAsset.clipsToBounds = true
         }
         
-        // (1) Add user's profile photo tap to go to user's profile
+        // (1) NAVIGATE TO USER
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
         userTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(userTap)
         
-        // (2) Add username tap to go to user's profile
         let usernameTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
         usernameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(usernameTap)
         
-        // (3) Add comment tap
+        // (2) COMMENT
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // (7) Add numberOfLikes tap
+        // (3) # OF LIKES
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (4) Add like button tap
+        // (4) LIKE
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // (5) Add numberOfShares tap
+        // (5) # OF SHARES
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (6) Share options tap
+        // (6) SHARE
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (7) Add method to textPost
-        let tpHold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-        tpHold.minimumPressDuration = 0.50
-        self.textPost.isUserInteractionEnabled = true
-        self.textPost.addGestureRecognizer(tpHold)
-        
-        // (8) More tap
+        // (7) MORE
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
 
-        
-        
-        
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page

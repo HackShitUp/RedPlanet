@@ -527,55 +527,53 @@ class ProPicCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // (1) Add tap gesture to zoom in
+        // (1) ZOOM
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(zoomTap)
         
-        // (2) ACTION to Like button tap
+        // (2) LIKE
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(likePP))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // (3) Comment button tap
-        let commentTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
-        commentTap.numberOfTapsRequired = 1
-        self.numberOfComments.isUserInteractionEnabled = true
-        self.numberOfComments.addGestureRecognizer(commentTap)
-        
-        // (4) Number of likes tap
+        // (3) # OF LIKES
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (5) Private Share
+        // (4) COMMENT
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
+        commentTap.numberOfTapsRequired = 1
+        self.numberOfComments.isUserInteractionEnabled = true
+        self.numberOfComments.addGestureRecognizer(commentTap)
+        
+        // (5) SHARE
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareContent))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (6) Number of shares
+        // (6) # OF SHARES
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(sharers))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
         
-        // (7) Go to user's profile
+        // (7) GO TO USER'S PROFILE
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         userTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
-        
-        // (8) Go to user's profile
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.smallProPic.isUserInteractionEnabled = true
         self.smallProPic.addGestureRecognizer(proPicTap)
         
-        // (10) More tap
+        // (8) MORE
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true

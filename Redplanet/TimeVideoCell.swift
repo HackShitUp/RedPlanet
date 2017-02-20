@@ -512,57 +512,52 @@ class TimeVideoCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Add tap for playing video
+        // (1) PLAY VIDEO
         let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
         playTap.numberOfTapsRequired = 1
         self.videoPreview.isUserInteractionEnabled = true
         self.videoPreview.addGestureRecognizer(playTap)
         
-        // Add user's profile photo tap to go to user's profile
+        // (2) USER'S PROFILE
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         userTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(userTap)
-        
-        // Add username tap to go to user's profile
         let usernameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         usernameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(usernameTap)
         
-        // More tap
+        // (3) MORE BUTTON
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
-        // Like tap
+        // (4) LIKE
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // Likers tap
+        // (5) # OF LIKES
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // Comment tap
+        // (6) COMMENT
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comments))
         commentTap.numberOfTapsRequired = 1
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(commentTap)
         
-        // Share tap
+        // (7) SHARE
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
-        
-        // Share options
-        // done in IBOutlet
-        
+
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page
@@ -572,17 +567,13 @@ class TimeVideoCell: UITableViewCell {
             // Query data
             let user = PFUser.query()!
             user.whereKey("username", equalTo: mention.lowercased())
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
-                        
-                        // Append user's username
+                        // APPEND DATA
                         otherName.append(mention)
-                        // Append user object
                         otherObject.append(object)
-                        
-                        // Push VC
+                        // PUSH VC
                         let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.pushViewController(otherUser, animated: true)
                     }
@@ -591,8 +582,7 @@ class TimeVideoCell: UITableViewCell {
                 }
             })
         }
-        
-        
+
         // Handle #object tap
         textPost.hashtagLinkTapHandler = { label, handle, range in
             // When # is tapped, drop the "#" and send to hashtags

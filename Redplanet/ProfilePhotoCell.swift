@@ -266,23 +266,7 @@ class ProfilePhotoCell: UITableViewCell {
         let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
-    
-    
-    
-    // Function to save do more with the photo
-    func saveShare(sender: UILongPressGestureRecognizer) {
-        // set up activity view controller
-        let image = self.rpUserProPic.image!
-        let imageToShare = [image]
-        let activityViewController = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-        activityViewController.popoverPresentationController?.sourceView = self.delegate?.view // so that iPads won't crash
-        
-        // present the view controller
-        self.delegate?.present(activityViewController, animated: true, completion: nil)
-    }
-    
-    
-    
+
     // Function to show number of shares
     func showShares() {
         // Append object
@@ -318,22 +302,8 @@ class ProfilePhotoCell: UITableViewCell {
             return 14.00
         }
         
-        
-//        // (1) Views
-//        let views = AlertAction(title: "🙈 Views",
-//                                style: .default,
-//                                handler: { (AlertAction) in
-//                                    // Append object
-//                                    viewsObject.append(proPicObject.last!)
-//                                    
-//                                    // Push VC
-//                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-//                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-//        })
-        
-        
-        // (2)
-        let edit = AlertAction(title: "🔩 Edit",
+        // (1) EDIT
+        let edit = AlertAction(title: "🔩 Edit 🔩",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     
@@ -346,7 +316,7 @@ class ProfilePhotoCell: UITableViewCell {
         })
         
         
-        // (3) Delete
+        // (2) DELETE
         let delete = AlertAction(title: "Delete",
                                  style: .destructive,
                                  handler: { (AlertAction) in
@@ -475,7 +445,7 @@ class ProfilePhotoCell: UITableViewCell {
         })
         
         
-        // (4) Report Content
+        // (4) REPORT
         let reportBlock = AlertAction(title: "Report",
                                       style: .destructive,
                                       handler: { (AlertAction) in
@@ -568,38 +538,37 @@ class ProfilePhotoCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-
-        // (1) Add tap gesture to zoom in
+        // (1) ZOOM
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(zoomTap)
         
-        // (2) ACTION to Like button tap
+        // (2) LIKE
         let likeTap = UITapGestureRecognizer(target: self, action: #selector(likePP))
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
         
-        // (3) Comment button tap
-        let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
-        commentTap.numberOfTapsRequired = 1
-        self.numberOfComments.isUserInteractionEnabled = true
-        self.numberOfComments.addGestureRecognizer(commentTap)
-        
-        // (4) Number of likes tap
+        // (3) # OF LIKES
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
         numLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numLikesTap)
         
-        // (5) Private Share
+        // (4) COMMENT
+        let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
+        commentTap.numberOfTapsRequired = 1
+        self.numberOfComments.isUserInteractionEnabled = true
+        self.numberOfComments.addGestureRecognizer(commentTap)
+        
+        // (5) SHARE
         let dmTap = UITapGestureRecognizer(target: self, action: #selector(shareContent))
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
         
-        // (6) Number of shares
+        // (6) # OF SHARES
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
@@ -611,19 +580,13 @@ class ProfilePhotoCell: UITableViewCell {
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
         
-        // (8) Go to user's profile
+        // (8) NAVIGATE TO USER
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.smallProPic.isUserInteractionEnabled = true
         self.smallProPic.addGestureRecognizer(proPicTap)
         
-        // (9) Hold the photo to save it
-        let hold = UILongPressGestureRecognizer(target: self, action: #selector(saveShare))
-        hold.minimumPressDuration = 0.50
-        self.rpUserProPic.isUserInteractionEnabled = true
-        self.rpUserProPic.addGestureRecognizer(hold)
-        
-        // (10) More tap
+        // (9) MORE
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
@@ -634,21 +597,15 @@ class ProfilePhotoCell: UITableViewCell {
             // When mention is tapped, drop the "@" and send to user home page
             var mention = handle
             mention = String(mention.characters.dropFirst())
-            
-            // Query data
             let user = PFUser.query()!
             user.whereKey("username", equalTo: mention.lowercased())
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
+            user.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     for object in objects! {
-                        
-                        // Append user's username
+                        // APPEND DATA
                         otherName.append(mention)
-                        // Append user object
                         otherObject.append(object)
-                        
-                        // Push VC
+                        // PUSH VC
                         let otherUser = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
                         self.delegate?.navigationController?.pushViewController(otherUser, animated: true)
                     }
@@ -657,8 +614,6 @@ class ProfilePhotoCell: UITableViewCell {
                 }
             })
         }
-        
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
