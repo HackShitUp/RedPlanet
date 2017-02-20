@@ -218,7 +218,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                     if success {
                                                         print("Successfully saved tag in notifications: \(notifications)")
                                                         
-                                                        
                                                         // Handle optional chaining
                                                         if object.value(forKey: "apnsId") != nil {
                                                             // Send push notification

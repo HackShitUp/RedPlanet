@@ -59,9 +59,7 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
             PFUser.current()!["realNameOfUser"] = fullName
             PFUser.current()!.saveInBackground {
                 (success: Bool, error: Error?) in
-                if success {
-                    print("Successfully saved fullName: \(PFUser.current()!)")
-                    
+                if success {                    
                     // Push VC
                     let birthdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
                     self.navigationController?.pushViewController(birthdayVC, animated: true)

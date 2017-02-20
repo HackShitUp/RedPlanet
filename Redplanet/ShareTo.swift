@@ -71,7 +71,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                               handler: { (AlertAction) in
 
                                 if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                                    print("SHARED")
                                     // Share to Everyone in News Feeds
                                     let newsfeeds = PFObject(className: "Newsfeeds")
                                     newsfeeds["byUser"] = PFUser.current()!

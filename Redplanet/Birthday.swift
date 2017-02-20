@@ -34,9 +34,7 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
         PFUser.current()!["birthday"] = stringDate
         PFUser.current()!.saveInBackground {
             (success: Bool, error: Error?) in
-            if success {
-                print("Successfully saved birthday: \(PFUser.current()!)")
-                
+            if success {                
                 // Push to NewUserVC
                 let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
                 self.navigationController?.pushViewController(userVC, animated: true)

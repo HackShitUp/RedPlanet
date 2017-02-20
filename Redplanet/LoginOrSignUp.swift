@@ -37,9 +37,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         PFUser.logInWithUsername(inBackground: theUsername,
                                  password: thePassword) {
                                     (user: PFUser?, error: Error?) in
-                                    if user != nil {
-                                        print("Logging user in...")
-                                        
+                                    if user != nil {                                        
                                         // Resign keyboard
                                         self.rpPassword.resignFirstResponder()
                                         
@@ -51,23 +49,10 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                         let installation = PFInstallation.current()
                                         installation!["user"] = PFUser.current()
                                         installation!["username"] = PFUser.current()!.username!
-                                        installation!.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully saved installation data: \(installation)")
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
-                                        
+                                        installation!.saveEventually()
                                         
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        
-                                        print("User login failed")
-                                        
-                                        
-                                        
                                         
                                         // Present alert
                                         let alert = UIAlertController(title: "Login Failed",

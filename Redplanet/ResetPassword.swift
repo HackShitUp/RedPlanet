@@ -100,8 +100,6 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     
     @IBOutlet weak var nextButton: UIButton!
     @IBAction func nextAction(_ sender: Any) {
-        print("ASDAPSD:\(self.userPassword.text!)")
-        
         // Re set userEmail
         if userPassword.text!.isEmpty {
             let alert = UIAlertController(title: "Invalid Password",
@@ -121,8 +119,6 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                      password: self.userPassword.text!) {
                                         (user: PFUser?, error: Error?) in
                                         if user != nil {
-                                            print("Correct password")
-
                                             // Push VC
                                             let newPasswordVC = self.storyboard?.instantiateViewController(withIdentifier: "newPasswordVC") as! NewPassword
                                             self.navigationController?.pushViewController(newPasswordVC, animated: true)

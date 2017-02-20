@@ -45,8 +45,6 @@ class LibVideos: UICollectionViewController, UINavigationControllerDelegate {
             self.videoAssets.append(video)
         })
         
-        print("There are: \(self.videoAssets.count) videos")
-        
         // Reload data
         self.collectionView!.reloadData()
         

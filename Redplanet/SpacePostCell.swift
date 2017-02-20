@@ -180,8 +180,7 @@ class SpacePostCell: UITableViewCell {
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved like \(likes)")
-                    
-                    
+                                        
                     // Save to notification
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!

@@ -77,14 +77,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                                             // Save objects in parse
                                             let user = PFUser.current()
                                             user!["private"] = true
-                                            user!.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully made private")
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
+                                            user!.saveEventually()
             })
             
             
@@ -107,14 +100,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                                             // Save object in parse
                                             let user = PFUser.current()
                                             user!["private"] = false
-                                            user!.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully made public")
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
+                                            user!.saveEventually()
             })
             
             

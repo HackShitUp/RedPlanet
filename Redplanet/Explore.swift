@@ -67,9 +67,6 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                     self.exploreObjects.append(object)
                 }
                 
-                // Print results
-                print("Explore objects: \(self.exploreObjects.count)")
-                
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD

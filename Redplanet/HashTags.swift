@@ -245,7 +245,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("ITEMS: \(self.hashtagObjects.count)")
         return self.hashtagObjects.count
     }
 

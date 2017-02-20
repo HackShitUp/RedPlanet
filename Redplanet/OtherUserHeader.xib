@@ -82,30 +82,6 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DhT-Yj-3hi">
-                    <rect key="frame" x="295" y="309" width="35" height="35"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="35" id="9P5-MY-XOw"/>
-                        <constraint firstAttribute="height" constant="35" id="joH-yW-dqz"/>
-                    </constraints>
-                    <state key="normal" image="ReportBlock"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RrC-Vf-83E">
-                    <rect key="frame" x="45" y="309" width="35" height="35"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="35" id="KpX-Zc-cR9"/>
-                        <constraint firstAttribute="height" constant="35" id="xLr-Gj-eOg"/>
-                    </constraints>
-                    <state key="normal" image="PChat"/>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCm-Dh-77F">
-                    <rect key="frame" x="295" y="309" width="35" height="35"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="35" id="DHa-bd-e5t"/>
-                        <constraint firstAttribute="height" constant="35" id="Ify-CO-iPO"/>
-                    </constraints>
-                    <state key="normal" image="CSpacePost"/>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sGi-mE-cqf">
                     <rect key="frame" x="100" y="304" width="175" height="44"/>
                     <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -121,6 +97,30 @@
                         <action selector="relationAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="5xr-jf-pVS"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DhT-Yj-3hi">
+                    <rect key="frame" x="295" y="309" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="9P5-MY-XOw"/>
+                        <constraint firstAttribute="height" constant="35" id="joH-yW-dqz"/>
+                    </constraints>
+                    <state key="normal" image="ReportBlock"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HCm-Dh-77F">
+                    <rect key="frame" x="295" y="309" width="35" height="35"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="35" id="DHa-bd-e5t"/>
+                        <constraint firstAttribute="height" constant="35" id="Ify-CO-iPO"/>
+                    </constraints>
+                    <state key="normal" image="CSpacePost"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RrC-Vf-83E">
+                    <rect key="frame" x="47" y="311" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="KpX-Zc-cR9"/>
+                        <constraint firstAttribute="height" constant="30" id="xLr-Gj-eOg"/>
+                    </constraints>
+                    <state key="normal" image="PChat"/>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -134,7 +134,7 @@
                 <constraint firstAttribute="trailing" secondItem="DhT-Yj-3hi" secondAttribute="trailing" constant="45" id="Cwl-O7-W1c"/>
                 <constraint firstItem="5VT-qx-8fx" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="8" id="EAp-9U-Wau"/>
                 <constraint firstItem="DhT-Yj-3hi" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="13" id="G7L-lD-fFm"/>
-                <constraint firstItem="RrC-Vf-83E" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="45" id="HbS-tg-1hn"/>
+                <constraint firstItem="RrC-Vf-83E" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="47" id="HbS-tg-1hn"/>
                 <constraint firstItem="sGi-mE-cqf" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="MQv-dI-fOG"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="U6Q-OU-jR6"/>
                 <constraint firstItem="WMT-KU-90F" firstAttribute="top" secondItem="sGi-mE-cqf" secondAttribute="bottom" constant="8" id="WR2-g5-Chd"/>
@@ -143,7 +143,7 @@
                 <constraint firstAttribute="trailing" secondItem="HCm-Dh-77F" secondAttribute="trailing" constant="45" id="fn1-lM-jPa"/>
                 <constraint firstAttribute="trailing" secondItem="WMT-KU-90F" secondAttribute="trailing" constant="8" id="gFI-Ap-0fa"/>
                 <constraint firstAttribute="bottom" secondItem="WMT-KU-90F" secondAttribute="bottom" constant="8" id="iRL-cZ-JWR"/>
-                <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="13" id="kF5-JV-bDU"/>
+                <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="15" id="kF5-JV-bDU"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>
                 <constraint firstItem="HCm-Dh-77F" firstAttribute="top" secondItem="IND-ke-LYZ" secondAttribute="bottom" constant="13" id="xQ4-Ad-nkg"/>

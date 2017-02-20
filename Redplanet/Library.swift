@@ -55,7 +55,6 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         
         
         if pickerMedia == kUTTypeImage {
-            print("Photo selected")
             // Edited image
             if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
                 // Append PHAsset
@@ -73,8 +72,6 @@ class Library: UIViewController, UINavigationControllerDelegate, UIImagePickerCo
         }
         
         if pickerMedia == kUTTypeMovie {
-            print("Video selected")
-            
             // Selected image
             if let video = info[UIImagePickerControllerMediaURL] as? URL {
                 instanceVideoData = video

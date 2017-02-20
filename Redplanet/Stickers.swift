@@ -111,7 +111,6 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("NUMBER Of STICKERS:\(stickers.count)\n")
         return stickers.count
     }
 

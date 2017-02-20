@@ -62,9 +62,7 @@ class NewPassword: UIViewController, UINavigationControllerDelegate, UITextField
             PFUser.current()!.password = self.newPasswordAgain.text!
             PFUser.current()!.saveInBackground(block: {
                 (success: Bool, error: Error?) in
-                if success {
-                    print("Successfully saved password: \(PFUser.current()!.password!)")
-                    
+                if success {                    
                     // Show Alert
                     let alert = UIAlertController(title: "Password Reset Complete",
                                                   message: "You now have a new password.",
