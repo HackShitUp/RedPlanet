@@ -13,10 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
-
+import SDWebImage
 import DZNEmptyDataSet
-
-
 
 // Global variable to handle different forms of request
 var requestType: String?
@@ -260,7 +258,11 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     
@@ -329,7 +331,6 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                 (object: PFObject?, error: Error?) in
                 if error == nil {
 
-                    
                     // (1) Set user's fullName
                     cell.rpFullName.text! = object!["realNameOfUser"] as! String
                     
@@ -339,20 +340,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                     // (3) Get profile photo
                     // Handle optional chaining
                     if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                     }
-
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -384,18 +374,8 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
                     // (3) Get profile photo
                     // Handle optional chaining
                     if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                     }
 
                 } else {

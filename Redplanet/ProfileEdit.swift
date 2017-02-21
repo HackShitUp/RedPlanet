@@ -15,6 +15,7 @@ import Bolts
 
 import SVProgressHUD
 import SimpleAlert
+import SDWebImage
 
 // Array to hold profile photo's caption
 var profilePhotoCaption = [String]()
@@ -363,7 +364,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     // Options for profile picture
     func changePhoto(sender: AnyObject) {
         
-        
         // Instantiate UIImagePickerController
         let image = UIImagePickerController()
         image.delegate = self
@@ -621,14 +621,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         self.present(newProPicVC, animated: true, completion: nil)
     }
-
-    
-    
-    
-    
-    
-
-    
     
     // Function to dismiss keybaord
     func dismissKeyboard() {
@@ -643,7 +635,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        // Add border to top of container
+        let upperBorder = CALayer()
+        upperBorder.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.container.frame.width), height: CGFloat(0.50))
+        self.container.layer.addSublayer(upperBorder)
 
         // (A) Layout views
         self.rpUserProPic.layoutIfNeeded()
@@ -653,9 +650,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Load user's current profile picture
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
         self.rpUserProPic.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.rpUserProPic.layer.borderWidth = 0.75
+        self.rpUserProPic.layer.borderWidth = 1.00
         self.rpUserProPic.clipsToBounds = true
-        
         
         
         // (B) If there exists, a current user...
@@ -668,7 +664,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 print("The birthday: \(bday)")
                 userBirthday.date = dateFormatter.date(from: bday)!
             }
-            
             
             // (2) Set username's title to navigation bar
             if let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as? String {
@@ -709,27 +704,15 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             
             // (7) Set user's profile photo
             if let proPic = PFUser.current()!["userProfilePicture"] as? PFFile {
-                proPic.getDataInBackground(block: {
-                    (data: Data?, error: Error?) -> Void in
-                    if error == nil {
-                        // Set profile photo
-                        self.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Set default
-                        self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                })
+                // MARK: - SDWebImage
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             } else {
                 // Set default
                 self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
             }
             
         }
-        
-        
-        
-        
+
         // (C) Add target function to user's profile picture
         let changeProPic = UITapGestureRecognizer(target: self, action: #selector(changePhoto))
         changeProPic.numberOfTapsRequired = 1
@@ -748,7 +731,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
 }

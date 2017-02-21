@@ -16,6 +16,7 @@ import Bolts
 import SimpleAlert
 import SVProgressHUD
 import SwipeNavigationController
+import SDWebImage
 import OneSignal
 
 // Array to hold object
@@ -245,16 +246,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     
                     // (1) Load moment
                     if let moment = object["photoAsset"] as? PFFile {
-                        moment.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set moment
-                                self.itmMedia.image = UIImage(data: data!)
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        self.itmMedia.sd_setImage(with: URL(string: moment.url!), placeholderImage: self.itmMedia.image)
                     }
                     
                     // (2) Set username
@@ -710,7 +703,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
 }

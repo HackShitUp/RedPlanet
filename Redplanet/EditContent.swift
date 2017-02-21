@@ -384,7 +384,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "editContentCell", for: indexPath) as! EditContentCell
+        let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
         
         // LayoutViews for rpUserProPic
         cell.rpUserProPic.layoutIfNeeded()
@@ -403,24 +403,10 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             if error == nil {
                 // (1) Get user's Profile Photo
                 if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set profile photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
-                
-                
-                // (2) Set full name
-                cell.rpFullName.text! = object!["realNameOfUser"] as! String
-                
-                // (3) Set username
+                // (2) Set username
                 cell.rpUsername.text! = object!["username"] as! String
                 
             } else {
@@ -437,9 +423,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     // MARK: - UITableViewdelegeate Method
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         // Define #word
-        for var word in words {
+        for var word in self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // @@@@@@@@@@@@@@@@@@@@@@@@@@@
             if word.hasPrefix("@") {
                 
@@ -449,7 +434,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 
                 // Replace text
                 self.textPost.text! = self.textPost.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
-                
             }
         }
         
@@ -459,9 +443,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         // Hide UITableView
         self.tableView!.isHidden = true
     }
-    
-    
-    
     
     
     // Function to zoom
@@ -548,15 +529,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         if editObjects.last!.value(forKey: "photoAsset") != nil {
             // Photo
             if let photo = editObjects.last!.value(forKeyPath: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set photo
-                        self.mediaAsset.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // MARK: - SDWebImage
+                self.mediaAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: self.mediaAsset.image)
             }
             
             // Add zoom-method tap

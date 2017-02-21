@@ -404,7 +404,7 @@ class SharedPostCell: UITableViewCell {
         
         
         // (1) Views
-        let views = AlertAction(title: "🙈 Views 🙈",
+        let views = AlertAction(title: "Views",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object

@@ -347,6 +347,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
                 (b as AnyObject).layer.shadowOpacity = 0.5
                 self.player.view.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+                self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
         }
     }

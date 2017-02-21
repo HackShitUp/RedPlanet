@@ -10,6 +10,11 @@ import UIKit
 import SVProgressHUD
 import SwiftyCam
 import SwipeNavigationController
+import SDWebImage
+
+import Parse
+import ParseUI
+import Bolts
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
@@ -21,6 +26,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     var time: Float = 0.0
     var timer: Timer?
     
+    @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
@@ -121,7 +127,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     func newTP() {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
@@ -154,15 +160,19 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        // Set application status
         UIApplication.shared.setStatusBarHidden(true, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
         
-        // Disable View and buttons
-        self.view.isUserInteractionEnabled = false
-        self.libraryButton.isEnabled = false
-        self.homeButton.isEnabled = false
-        self.newTextButton.isEnabled = false
+        // Set profile photo
+        if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+            self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
+            self.rpUserProPic.layer.borderColor = UIColor.white.cgColor
+            self.rpUserProPic.layer.borderWidth = 0.75
+            self.rpUserProPic.clipsToBounds = true
+            // MARK: - SDWebImage
+            self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+        }
         
         // MARK: - SwiftyCam
         // Set delegate for camera view
@@ -214,6 +224,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.homeButton.isUserInteractionEnabled = true
         self.homeButton.addGestureRecognizer(leaveTap)
         
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
+        proPicTap.numberOfTapsRequired = 1
+        self.rpUserProPic.isUserInteractionEnabled = true
+        self.rpUserProPic.addGestureRecognizer(proPicTap)
+        
         // Tap to go to library
         let libTap = UITapGestureRecognizer(target: self, action: #selector(showLibrary))
         libTap.numberOfTapsRequired = 1
@@ -227,7 +242,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.newTextButton.addGestureRecognizer(tpTap)
         
         // Bring buttons to front
-        let buttons = [self.flashButton,
+        let buttons = [self.rpUserProPic,
+                       self.flashButton,
                        self.swapCameraButton,
                        self.libraryButton,
                        self.homeButton,
@@ -240,17 +256,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.view.bringSubview(toFront: self.captureButton)
         }
-        
-        // Enable view
-        self.view.isUserInteractionEnabled = true
-        self.homeButton.isEnabled = true
-        self.libraryButton.isEnabled = true
-        self.homeButton.isEnabled = true
-        self.newTextButton.isEnabled = true
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 }

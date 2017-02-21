@@ -243,6 +243,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
             (b as AnyObject).layer.shadowRadius = 3
             (b as AnyObject).layer.shadowOpacity = 0.5
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.filterView.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }

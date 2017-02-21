@@ -19,6 +19,7 @@ import KILabel
 import OneSignal
 import SVProgressHUD
 import SimpleAlert
+import SDWebImage
 
 // Array to hold the sharedObject
 var sharedObject = [PFObject]()
@@ -197,7 +198,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
-
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -213,13 +213,14 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
-    
-    
     
     // Function to calculate how many new lines UILabel should create before laying out the text
     func createText() -> String? {
@@ -298,7 +299,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Set bounds
         cell.contentView.frame = cell.contentView.frame
         
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -334,80 +334,76 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Set parent VC delegate
         cell.delegate = self
-
         
-        
-        // (1) Fetch user
+        // (1) USER WHO SHARED THE POST
         if let user = sharedObject.last!.value(forKey: "byUser") as? PFUser {
             // (A) Set username
             cell.fromRpUsername.text! = user["username"] as! String
             
             // (B) Get user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
-                proPic.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set profile photo
-                        cell.fromRpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Set default
-                        cell.fromRpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                })
+                // MARK: - SDWebImage
+                cell.fromRpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
             // (C) Set fromUser's object
             cell.fromUserObject = user
         }
         
-        // (2) set time
+        // (2) TIME THE POST WAS SHARED
         let from = sharedObject.last!.createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-        // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.sharedTime.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.sharedTime.text = "1 second ago"
             } else {
                 cell.sharedTime.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.sharedTime.text = "1 minute ago"
             } else {
                 cell.sharedTime.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.sharedTime.text = "1 hour ago"
             } else {
                 cell.sharedTime.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.sharedTime.text = "1 day ago"
             } else {
                 cell.sharedTime.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+            if sharedObject.last!.value(forKey: "saved") as! Bool == true {
+                cell.likeButton.isUserInteractionEnabled = false
+                cell.numberOfLikes.isUserInteractionEnabled = false
+                cell.commentButton.isUserInteractionEnabled = false
+                cell.numberOfComments.isUserInteractionEnabled = false
+                cell.shareButton.isUserInteractionEnabled = false
+                cell.numberOfShares.isUserInteractionEnabled = false
+                cell.container.isUserInteractionEnabled = false
+            }
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.sharedTime.text = createdDate.string(from: sharedObject.last!.createdAt!)
+            if sharedObject.last!.value(forKey: "saved") as! Bool == true {
+                cell.likeButton.isUserInteractionEnabled = false
+                cell.numberOfLikes.isUserInteractionEnabled = false
+                cell.commentButton.isUserInteractionEnabled = false
+                cell.numberOfComments.isUserInteractionEnabled = false
+                cell.shareButton.isUserInteractionEnabled = false
+                cell.numberOfShares.isUserInteractionEnabled = false
+                cell.container.isUserInteractionEnabled = false
+            }
         }
         
         // Content
@@ -417,10 +413,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             cell.mediaAsset.isHidden = true
             cell.textPost.isHidden = true
             
-            
             // (4) Set shared content's object
             cell.cellSharedObject = content
-            
             
             // (1) Get user's object
             if let user = content["byUser"] as? PFUser {
@@ -432,17 +426,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         
                         // (B) Get user's profile photo
                         if let proPic = object!["userProfilePicture"] as? PFFile {
-                            proPic.getDataInBackground(block: {
-                                (data: Data?, error: Error?) in
-                                if error == nil {
-                                    // Set profile photo
-                                    cell.rpUserProPic.image = UIImage(data: data!)
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    // Set default
-                                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                                }
-                            })
+                            // MARK: - SDWebImage
+                            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                         }
                         
                         // (C) Set byUser's object
@@ -453,10 +438,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     }
                 })
             }
-            
-            
-            
-            
+
             // (2) Fetch content
             // Create text
             _ = self.createText()
@@ -467,16 +449,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             if content["contentType"] as! String == "tp" {
                 // Show text post
                 cell.textPost.isHidden = false
-                
                 // Text post
                 cell.textPost.text! = content["textPost"] as! String
             }
             
-            
             // ============================================================================================================================
             // PHOTO,  PROFILE PHOTO,    &   ITM ==========================================================================================
             // ============================================================================================================================
-            
             if content["contentType"] as! String == "ph" || content["contentType"] as! String == "pp" || content["contentType"] as! String == "itm" {
                 
                 // (A) Configure photo
@@ -489,15 +468,8 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 
                 // (A) Fetch photo
                 if let photo = content["photoAsset"] as? PFFile {
-                    photo.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set Photo
-                            cell.mediaAsset.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    cell.mediaAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: cell.mediaAsset.image)
                 }
                 
                 // (B) Configure Text
@@ -505,11 +477,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.textPost.text! = self.layoutText!
             }
             
-            
             // ==============================================================================================================
             // VIDEO ========================================================================================================
             // ==============================================================================================================
-            
             if content["contentType"] as! String == "vi" {
                 // (A) Stylize video preview
                 cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
@@ -544,12 +514,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.textPost.isHidden = false
                 cell.textPost.text! = self.layoutText!
             }
-            
-            
-            
-            
-            
-            
             // ==============================================================================================================
             // SPACE POST ===================================================================================================
             // ==============================================================================================================
@@ -557,7 +521,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 
                 // (1) PHOTO
                 if content["photoAsset"] != nil {
-                    
                     
                     // (A) Configure photo
                     cell.mediaAsset.layer.cornerRadius = 0.0
@@ -569,22 +532,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     
                     // (A) Fetch photo
                     if let photo = content["photoAsset"] as? PFFile {
-                        photo.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set Photo
-                                cell.mediaAsset.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        cell.mediaAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: cell.mediaAsset.image)
                     }
                     
                     // (B) Configure Text
                     cell.textPost.isHidden = false
                     cell.textPost.text! = self.layoutText!
-                    
-                    
                 } else if content["videoAsset"] != nil {
                     
                     // (2) VIDEO
@@ -617,19 +571,15 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         cell.mediaAsset.layer.addSublayer(playerLayer)
                     }
                     
-                    
                     // (C) Configure Text
                     cell.textPost.isHidden = false
                     cell.textPost.text! = self.layoutText!
                     
                 } else {
-                    
                     // Add lines for sizing constraints
                     cell.textPost.isHidden = false
                     cell.textPost.text! = "\(content["textPost"] as! String)"
                 }
-                
-                
             }
             
             
@@ -642,41 +592,31 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
                 cell.sharedTime.text = "right now"
-            }
-            
-            if difference.second! > 0 && difference.minute! == 0 {
+            } else if difference.second! > 0 && difference.minute! == 0 {
                 if difference.second! == 1 {
                     cell.time.text = "1 second ago"
                 } else {
                     cell.time.text = "\(difference.second!) seconds ago"
                 }
-            }
-            
-            if difference.minute! > 0 && difference.hour! == 0 {
+            } else if difference.minute! > 0 && difference.hour! == 0 {
                 if difference.minute! == 1 {
                     cell.time.text = "1 minute ago"
                 } else {
                     cell.time.text = "\(difference.minute!) minutes ago"
                 }
-            }
-            
-            if difference.hour! > 0 && difference.day! == 0 {
+            } else if difference.hour! > 0 && difference.day! == 0 {
                 if difference.hour! == 1 {
                     cell.time.text = "1 hour ago"
                 } else {
                     cell.time.text = "\(difference.hour!) hours ago"
                 }
-            }
-            
-            if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 if difference.day! == 1 {
                     cell.time.text = "1 day ago"
                 } else {
                     cell.time.text = "\(difference.day!) days ago"
                 }
-            }
-            
-            if difference.weekOfMonth! > 0 {
+            } else if difference.weekOfMonth! > 0 {
                 let createdDate = DateFormatter()
                 createdDate.dateFormat = "MMM d, yyyy"
                 cell.time.text = createdDate.string(from: content.createdAt!)
@@ -721,12 +661,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
         }
-        
-        
-        
-        
-        
-        
+
         return cell
         
     } // end cellForRowAt

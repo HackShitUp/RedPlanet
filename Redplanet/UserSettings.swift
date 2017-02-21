@@ -40,9 +40,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -158,8 +158,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Dispose of any resources that can be recreated.
     }
 
-    
-    
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -171,9 +169,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         if section == 0 {
             return 6
         } else if section == 1 {
-            return 2
+            return 3
         } else {
-            return 5
+            return 4
         }
     }
     
@@ -181,10 +179,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let view = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
-        title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
-        title.textColor = UIColor.black
-//        title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
-        title.backgroundColor = UIColor.white
+        title.font = UIFont(name: "AvenirNext-Medium", size: 12.00)
+        title.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
         view.addSubview(title)
@@ -337,11 +334,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     self.present(alert, animated: true, completion: nil)
                 }
             }
-        
-        } else {
             
-            if indexPath.row == 0 {
-                
+            if indexPath.row == 2 {
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
@@ -351,27 +345,29 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 }
                 
             }
+        
+        } else {
             
-            if indexPath.row == 1 {
+            if indexPath.row == 0 {
                 // Push to AboutUs
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
                 self.navigationController?.pushViewController(aboutVC, animated: true)
 
             }
             
-            if indexPath.row == 2 {
+            if indexPath.row == 1 {
                 // FAQ
                 let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
                 self.navigationController?.pushViewController(faqVC, animated: true)
             }
             
-            if indexPath.row == 3 {
+            if indexPath.row == 2 {
                 // TOS
                 let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
                 self.navigationController?.pushViewController(tosVC, animated: true)
             }
             
-            if indexPath.row == 4 {
+            if indexPath.row == 3 {
                 // Privacy Policy
                 let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
                 self.navigationController?.pushViewController(privacyVC, animated: true)
@@ -385,6 +381,5 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
     }
-    
 
 }

@@ -14,6 +14,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SDWebImage
 
 class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
@@ -78,7 +79,11 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -220,19 +225,8 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
                     
                     // (3) Fetch user's profile photo
                     if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                                
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                     }
                     
                 } else {

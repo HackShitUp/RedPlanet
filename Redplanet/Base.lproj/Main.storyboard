@@ -429,7 +429,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="115"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UhD-K5-lan" id="Ccj-nz-Nb2">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="114"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="114.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oB2-ze-hdh">
@@ -668,7 +668,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dfg-vL-oO4" id="k9e-VR-idk">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -698,7 +698,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l27-um-zNz" id="xpo-3D-l4r">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -914,7 +914,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="470"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sY9-RV-8iq" id="LQ3-0E-rh2">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="469"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="469.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hUf-RY-S2e">
@@ -1381,7 +1381,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="F1A-fN-SuO" id="aA9-1T-kvs">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="brr-h1-9yM">
@@ -1577,7 +1577,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xhX-5t-KRY" id="JY8-ZS-aNZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4bv-4b-9zT">
@@ -1675,7 +1675,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="515"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gK5-u0-Pd9" id="Dhn-sN-375">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="514"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="514.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iJ4-3D-euh">
@@ -2218,71 +2218,14 @@
                                 </connections>
                             </textView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="2sa-d6-qko">
-                                <rect key="frame" x="16" y="8" width="343" height="150"/>
+                                <rect key="frame" x="0.0" y="93" width="375" height="150"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="343" id="2lP-am-LNq"/>
-                                    <constraint firstAttribute="width" constant="343" id="J6a-Kd-sq1"/>
+                                    <constraint firstAttribute="width" constant="375" id="J6a-Kd-sq1"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="dqK-ry-ex3"/>
                                     <constraint firstAttribute="height" constant="150" id="fYO-NG-KfH"/>
                                 </constraints>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="editContentCell" rowHeight="50" id="cvb-Br-XCg" customClass="EditContentCell" customModule="Redplanet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="50"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cvb-Br-XCg" id="Gnu-ZG-vvg">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="49"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="I85-Dz-KlT">
-                                                    <rect key="frame" x="8" y="4" width="40" height="40"/>
-                                                    <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="h2T-PS-8cJ"/>
-                                                        <constraint firstAttribute="height" constant="40" id="hk2-hr-tqJ"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G1A-mi-csk">
-                                                    <rect key="frame" x="56" y="4" width="311" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="NQL-0e-OOM"/>
-                                                        <constraint firstAttribute="width" constant="311" id="xQm-jZ-jrs"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o94-au-U59">
-                                                    <rect key="frame" x="56" y="24" width="311" height="20"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="CqS-gq-d3C"/>
-                                                        <constraint firstAttribute="width" constant="311" id="Dp8-89-Iw9"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="o94-au-U59" firstAttribute="top" secondItem="G1A-mi-csk" secondAttribute="bottom" id="8l7-fT-0yh"/>
-                                                <constraint firstItem="I85-Dz-KlT" firstAttribute="leading" secondItem="Gnu-ZG-vvg" secondAttribute="leading" constant="8" id="H9l-0n-fGa"/>
-                                                <constraint firstItem="o94-au-U59" firstAttribute="leading" secondItem="I85-Dz-KlT" secondAttribute="trailing" constant="8" id="KiQ-0M-hFw"/>
-                                                <constraint firstAttribute="trailing" secondItem="G1A-mi-csk" secondAttribute="trailing" constant="8" id="Q48-yP-pnn"/>
-                                                <constraint firstItem="G1A-mi-csk" firstAttribute="top" secondItem="Gnu-ZG-vvg" secondAttribute="top" constant="4" id="Uof-iG-d6R"/>
-                                                <constraint firstItem="I85-Dz-KlT" firstAttribute="top" secondItem="Gnu-ZG-vvg" secondAttribute="top" constant="4" id="drk-c2-Wp2"/>
-                                                <constraint firstAttribute="bottom" secondItem="o94-au-U59" secondAttribute="bottom" constant="5" id="gek-l2-ml9"/>
-                                                <constraint firstAttribute="trailing" secondItem="o94-au-U59" secondAttribute="trailing" constant="8" id="hii-eH-aFn"/>
-                                                <constraint firstItem="G1A-mi-csk" firstAttribute="leading" secondItem="I85-Dz-KlT" secondAttribute="trailing" constant="8" id="pYZ-fk-e55"/>
-                                                <constraint firstItem="o94-au-U59" firstAttribute="leading" secondItem="I85-Dz-KlT" secondAttribute="trailing" constant="8" id="xha-fY-qYZ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="rpFullName" destination="G1A-mi-csk" id="b7N-b8-daY"/>
-                                            <outlet property="rpUserProPic" destination="I85-Dz-KlT" id="QHj-uI-a0I"/>
-                                            <outlet property="rpUsername" destination="o94-au-U59" id="55Z-sr-FVr"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="ly8-XK-Wwk" id="dNe-Gl-CdO"/>
                                     <outlet property="delegate" destination="ly8-XK-Wwk" id="Lky-oK-GgZ"/>
@@ -2292,16 +2235,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="p4g-SX-VPU" firstAttribute="top" secondItem="Qpo-Li-4ZO" secondAttribute="bottom" constant="13" id="1A2-dO-Qq3"/>
-                            <constraint firstAttribute="trailing" secondItem="2sa-d6-qko" secondAttribute="trailing" constant="16" id="6Na-ja-iUD"/>
+                            <constraint firstAttribute="trailing" secondItem="2sa-d6-qko" secondAttribute="trailing" id="6Na-ja-iUD"/>
                             <constraint firstItem="p4g-SX-VPU" firstAttribute="leading" secondItem="WSX-yh-PQH" secondAttribute="trailing" constant="15" id="LEK-gQ-red"/>
-                            <constraint firstItem="2sa-d6-qko" firstAttribute="leading" secondItem="ydz-QH-euh" secondAttribute="leading" constant="16" id="PeK-DY-Zyu"/>
+                            <constraint firstItem="2sa-d6-qko" firstAttribute="leading" secondItem="ydz-QH-euh" secondAttribute="leading" id="PeK-DY-Zyu"/>
                             <constraint firstItem="Qpo-Li-4ZO" firstAttribute="leading" secondItem="WSX-yh-PQH" secondAttribute="trailing" constant="8" id="Slq-QJ-P2Q"/>
                             <constraint firstItem="WSX-yh-PQH" firstAttribute="top" secondItem="CrV-Oo-NxJ" secondAttribute="bottom" id="WjT-En-3fy"/>
                             <constraint firstItem="Qpo-Li-4ZO" firstAttribute="top" secondItem="CrV-Oo-NxJ" secondAttribute="bottom" constant="20" id="ZtQ-dG-ZfT"/>
                             <constraint firstItem="WSX-yh-PQH" firstAttribute="leading" secondItem="ydz-QH-euh" secondAttribute="leading" constant="16" id="b0j-JZ-obs"/>
                             <constraint firstAttribute="trailing" secondItem="Qpo-Li-4ZO" secondAttribute="trailing" constant="16" id="kWT-xR-KPx"/>
                             <constraint firstAttribute="trailing" secondItem="p4g-SX-VPU" secondAttribute="trailing" constant="24" id="ndU-Ek-bzC"/>
-                            <constraint firstItem="2sa-d6-qko" firstAttribute="top" secondItem="CrV-Oo-NxJ" secondAttribute="bottom" constant="8" id="sD3-fm-Iu5"/>
+                            <constraint firstItem="2sa-d6-qko" firstAttribute="top" secondItem="CrV-Oo-NxJ" secondAttribute="bottom" constant="93" id="sD3-fm-Iu5"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eCk-Ef-d0k">
@@ -2322,7 +2265,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TR3-A7-3hc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6674" y="-3127"/>
+            <point key="canvasLocation" x="6673.5" y="-3127.5"/>
         </scene>
         <!--Share To-->
         <scene sceneID="zOq-a8-cuI">
@@ -2337,7 +2280,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mLv-kG-hjr" id="b9a-Ty-y2n">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XlJ-4f-0Aw">
@@ -2455,7 +2398,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HAG-DG-Yuh" id="w4x-0D-GOH">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="69.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="13w ago" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAW-g0-GDL">
@@ -2633,7 +2576,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="540"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c38-dU-CSi" id="QeX-Qr-bvI">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="539"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="539.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="923-xd-5zQ">
@@ -2851,7 +2794,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="505"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ajm-6d-4tS" id="5Gi-Zt-4Xp">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="504"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="504.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VFO-NX-wRH">
@@ -3408,7 +3351,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="Qka-lR-eC9">
-                        <barButtonItem key="leftBarButtonItem" image="Exit" id="MZD-jt-2VM">
+                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="MZD-jt-2VM">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="dismiss:" destination="hJv-9K-JPO" id="sKm-Tj-uDm"/>
@@ -3489,6 +3432,13 @@
                                 </constraints>
                                 <state key="normal" image="igcText"/>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qGZ-do-DnD">
+                                <rect key="frame" x="170" y="30" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="3f8-kL-fJe"/>
+                                    <constraint firstAttribute="height" constant="35" id="rTl-OG-HgV"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -3501,12 +3451,14 @@
                             <constraint firstItem="o0j-ms-wo5" firstAttribute="top" secondItem="MQm-L7-0tx" secondAttribute="bottom" constant="16" id="LTg-Zb-JvP"/>
                             <constraint firstAttribute="trailing" secondItem="fb5-iK-SQO" secondAttribute="trailing" id="VKu-3P-bey"/>
                             <constraint firstItem="fb5-iK-SQO" firstAttribute="top" secondItem="EZ9-4T-5Hn" secondAttribute="bottom" id="aKk-Zw-ylg"/>
+                            <constraint firstItem="qGZ-do-DnD" firstAttribute="centerX" secondItem="6Vs-cd-kLD" secondAttribute="centerX" id="bE4-vn-OZt"/>
                             <constraint firstItem="Idk-dT-jjl" firstAttribute="top" secondItem="fb5-iK-SQO" secondAttribute="bottom" constant="12" id="jYR-fP-ELB"/>
                             <constraint firstAttribute="trailing" secondItem="GJn-fd-qj5" secondAttribute="trailing" constant="16" id="nNq-Hj-i6d"/>
                             <constraint firstItem="Nia-WD-2bb" firstAttribute="centerX" secondItem="6Vs-cd-kLD" secondAttribute="centerX" id="onC-79-qPY"/>
                             <constraint firstItem="fb5-iK-SQO" firstAttribute="leading" secondItem="6Vs-cd-kLD" secondAttribute="leading" id="qPI-NX-rQp"/>
                             <constraint firstItem="MQm-L7-0tx" firstAttribute="leading" secondItem="6Vs-cd-kLD" secondAttribute="leading" constant="16" id="qSS-C7-6Rr"/>
                             <constraint firstItem="o0j-ms-wo5" firstAttribute="top" secondItem="Nia-WD-2bb" secondAttribute="bottom" constant="18" id="r9s-03-wuV"/>
+                            <constraint firstItem="qGZ-do-DnD" firstAttribute="top" secondItem="fb5-iK-SQO" secondAttribute="bottom" constant="8" id="s1z-pN-lgx"/>
                             <constraint firstItem="o0j-ms-wo5" firstAttribute="top" secondItem="1ED-Xk-6kr" secondAttribute="bottom" constant="16" id="stt-TI-GMU"/>
                         </constraints>
                     </view>
@@ -3521,6 +3473,7 @@
                         <outlet property="libraryButton" destination="MQm-L7-0tx" id="gDv-YP-Bn9"/>
                         <outlet property="newTextButton" destination="1ED-Xk-6kr" id="6U0-xj-khh"/>
                         <outlet property="progressView" destination="fb5-iK-SQO" id="0hl-2U-PJ8"/>
+                        <outlet property="rpUserProPic" destination="qGZ-do-DnD" id="vGE-Qh-gXh"/>
                         <outlet property="swapCameraButton" destination="Idk-dT-jjl" id="ztr-Td-muD"/>
                     </connections>
                 </viewController>
@@ -3648,7 +3601,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KWe-fX-mgy" id="oab-CE-0jl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sTs-2g-pFR">
@@ -3837,7 +3790,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rbc-8W-RuV" id="qEx-t1-7eM">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5s1-Og-6eq">
@@ -4137,7 +4090,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JIE-pY-HDV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1056" y="-2032"/>
+            <point key="canvasLocation" x="-598" y="-2867"/>
         </scene>
         <!--Lib Photos-->
         <scene sceneID="RvK-6G-W3D">
@@ -4190,7 +4143,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="My0-xc-iWp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1553" y="-2033"/>
+            <point key="canvasLocation" x="-1056" y="-2868"/>
         </scene>
         <!--Share Media-->
         <scene sceneID="Zwe-Ld-yGh">
@@ -4298,7 +4251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6kZ-f6-MfM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2030" y="-2031"/>
+            <point key="canvasLocation" x="-1057" y="-2076"/>
         </scene>
         <!--New Chats-->
         <scene sceneID="vBd-e6-PuV">
@@ -4313,7 +4266,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C6b-dm-dlY" id="nGD-qj-0nG">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iHx-JE-L8r">
@@ -4526,7 +4479,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s4c-Aw-xUn" id="nkm-t1-l9l">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -4571,11 +4524,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xcc-MR-Uw0" id="yGE-5y-VQo">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VKc-aA-rCz">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4588,11 +4541,11 @@
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6VW-fv-DA0" id="33u-0T-3g4">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Relationship Requests" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="17l-L2-NeW">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4605,11 +4558,11 @@
                                         <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eqh-RZ-Ou7" id="zf8-Tc-uNF">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Redplaneters in Contacts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LHq-jK-zri">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4622,11 +4575,11 @@
                                         <rect key="frame" x="0.0" y="160" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="n9H-2p-zXC" id="Oqd-jj-SBZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BzN-go-vOz">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4639,7 +4592,7 @@
                                         <rect key="frame" x="0.0" y="204" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SVc-GH-bZZ" id="Jsh-22-dzf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l1z-Iy-S6z">
@@ -4677,11 +4630,11 @@
                                         <rect key="frame" x="0.0" y="248" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pec-Yo-jBl" id="NlZ-ZB-Q5l">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="LOGOUT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="170-ym-d50">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="17"/>
                                                     <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4698,11 +4651,11 @@
                                         <rect key="frame" x="0.0" y="320" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I0u-gg-QtU" id="o0z-Ua-qlS">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Clear Cache" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="smq-01-UKr">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4715,10 +4668,27 @@
                                         <rect key="frame" x="0.0" y="364" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="odZ-su-m6m" id="m5c-vU-UMs">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Send Feedback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Xan-nR-AaM">
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="FlM-si-cjw" style="IBUITableViewCellStyleDefault" id="6z3-Bo-c0I">
+                                        <rect key="frame" x="0.0" y="408" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6z3-Bo-c0I" id="ZM3-Fc-zlV">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Invite Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FlM-si-cjw">
                                                     <rect key="frame" x="15" y="0.0" width="325" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
@@ -4732,32 +4702,15 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="ABOUT" id="ftl-oV-Z7W">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="LHK-9m-32k" style="IBUITableViewCellStyleDefault" id="TWk-sk-Leg">
-                                        <rect key="frame" x="0.0" y="436" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TWk-sk-Leg" id="aDl-iD-yuo">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Invite Friends" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LHK-9m-32k">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="iCS-B7-u1z" style="IBUITableViewCellStyleDefault" id="cdu-5k-Qqx" userLabel="AboutUs">
                                         <rect key="frame" x="0.0" y="480" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cdu-5k-Qqx" id="Nqw-mN-QvF">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="About Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="iCS-B7-u1z">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4770,11 +4723,11 @@
                                         <rect key="frame" x="0.0" y="524" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EA0-FC-s6Z" id="b6X-9o-XwE">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Frequently Asked Questions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EH3-Gq-0sp">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4787,11 +4740,11 @@
                                         <rect key="frame" x="0.0" y="568" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XZ5-5r-gaZ" id="MxW-1p-e3X">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Terms of Service" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5IN-k8-efl">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4804,11 +4757,11 @@
                                         <rect key="frame" x="0.0" y="612" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wUB-bC-uUg" id="xXr-Yx-D6l">
-                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Privacy Policy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yKG-WI-hrh">
-                                                    <rect key="frame" x="15" y="0.0" width="325" height="43"/>
+                                                    <rect key="frame" x="15" y="0.0" width="325" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -4828,7 +4781,7 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="qgD-yo-oEP">
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="lF0-zl-1Jm">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="jQC-kq-hWo" id="x8Y-nf-gv5"/>
                             </connections>
@@ -4947,7 +4900,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KIU-M3-Ns4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4033" y="3392"/>
+            <point key="canvasLocation" x="2990" y="2617"/>
         </scene>
         <!--Profile Edit-->
         <scene sceneID="fyV-TR-hj4">
@@ -4961,74 +4914,80 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BNz-Ub-Hgp">
-                                <rect key="frame" x="20" y="8" width="80" height="80"/>
-                                <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="YNC-51-hZH"/>
-                                    <constraint firstAttribute="height" constant="80" id="wGx-Z4-7e5"/>
-                                </constraints>
-                            </imageView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Introduce yourself..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CFq-EE-azv">
-                                <rect key="frame" x="108" y="0.0" width="251" height="96"/>
+                                <rect key="frame" x="108" y="0.0" width="251" height="125"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="96" id="3wV-ah-0fh"/>
-                                    <constraint firstAttribute="width" constant="251" id="gLC-9Q-KxL"/>
+                                    <constraint firstAttribute="width" constant="251" id="2bN-3X-b8E"/>
+                                    <constraint firstAttribute="height" constant="125" id="8oz-MS-VIT"/>
+                                    <constraint firstAttribute="width" secondItem="CFq-EE-azv" secondAttribute="height" multiplier="251:125" id="T0W-WJ-gN4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tAQ-cI-d3f">
-                                <rect key="frame" x="0.0" y="96" width="375" height="507"/>
+                                <rect key="frame" x="0.0" y="125" width="375" height="478"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Cg1-Za-6pJ">
-                                        <rect key="frame" x="100" y="8" width="267" height="30"/>
+                                        <rect key="frame" x="46" y="8" width="321" height="30"/>
                                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="267" id="LbF-cp-0TP"/>
-                                            <constraint firstAttribute="height" constant="30" id="VQu-yP-kEu"/>
+                                            <constraint firstAttribute="width" constant="321" id="C0C-4G-b8r"/>
+                                            <constraint firstAttribute="height" constant="30" id="yG1-uS-Ez9"/>
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XMU-6a-Wgy">
-                                        <rect key="frame" x="8" y="8" width="84" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mAH-jY-GSC">
+                                        <rect key="frame" x="46" y="84" width="321" height="30"/>
+                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="84" id="PAU-gs-TSd"/>
-                                            <constraint firstAttribute="height" constant="30" id="XgA-1p-FgJ"/>
+                                            <constraint firstAttribute="height" constant="30" id="SXM-rq-mvf"/>
+                                            <constraint firstAttribute="width" constant="321" id="lVp-xf-MME"/>
                                         </constraints>
+                                        <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BS6-Fr-1mJ">
-                                        <rect key="frame" x="8" y="46" width="55" height="30"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Mail" translatesAutoresizingMaskIntoConstraints="NO" id="Koc-9h-2RB">
+                                        <rect key="frame" x="8" y="84" width="30" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="dcN-gR-p6R"/>
-                                            <constraint firstAttribute="width" constant="55" id="wFO-7R-Yzs"/>
+                                            <constraint firstAttribute="width" constant="30" id="6Hc-EW-jM8"/>
+                                            <constraint firstAttribute="height" constant="30" id="TkT-SU-ruX"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuD-m3-tMu">
-                                        <rect key="frame" x="8" y="84" width="55" height="30"/>
+                                    </imageView>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="m5o-Nw-gFA">
+                                        <rect key="frame" x="46" y="46" width="321" height="30"/>
+                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="JCI-oB-UZG"/>
-                                            <constraint firstAttribute="width" constant="55" id="pjk-Jm-U30"/>
+                                            <constraint firstAttribute="height" constant="30" id="hhr-YS-kyi"/>
+                                            <constraint firstAttribute="width" constant="321" id="wCX-1B-g5M"/>
                                         </constraints>
+                                        <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Name" translatesAutoresizingMaskIntoConstraints="NO" id="0l8-lg-0tf">
+                                        <rect key="frame" x="8" y="46" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="JCp-kg-top"/>
+                                            <constraint firstAttribute="height" constant="30" id="bU1-3K-fzO"/>
+                                        </constraints>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User-96" translatesAutoresizingMaskIntoConstraints="NO" id="wsU-Fq-rpt">
+                                        <rect key="frame" x="8" y="8" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="csM-Mk-7nM"/>
+                                            <constraint firstAttribute="height" constant="30" id="zdD-Rb-5K4"/>
+                                        </constraints>
+                                    </imageView>
                                     <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-Jk-PI2">
-                                        <rect key="frame" x="0.0" y="195" width="375" height="312"/>
+                                        <rect key="frame" x="0.0" y="230" width="375" height="240"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="375" id="L20-wL-Y5G"/>
-                                            <constraint firstAttribute="height" constant="312" id="PC6-rt-b36"/>
+                                            <constraint firstAttribute="height" constant="240" id="cRf-hW-rcG"/>
+                                            <constraint firstAttribute="width" constant="375" id="f2Q-x4-ofY"/>
                                         </constraints>
                                         <date key="date" timeIntervalSinceReferenceDate="499310888.38242501">
                                             <!--2016-10-28 01:28:08 +0000-->
@@ -5037,88 +4996,72 @@
                                             <!--1970-01-01 11:00:00 +0000-->
                                         </date>
                                     </datePicker>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="m5o-Nw-gFA">
-                                        <rect key="frame" x="71" y="46" width="296" height="30"/>
-                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B i r t h d a y" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IDP-L2-2y3">
+                                        <rect key="frame" x="0.0" y="187" width="375" height="35"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="296" id="7xV-Yu-fsi"/>
-                                            <constraint firstAttribute="height" constant="30" id="N9M-9b-hgt"/>
-                                        </constraints>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mAH-jY-GSC">
-                                        <rect key="frame" x="71" y="84" width="296" height="30"/>
-                                        <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="MO6-Tx-r3E"/>
-                                            <constraint firstAttribute="width" constant="296" id="SUV-qv-Fe1"/>
-                                        </constraints>
-                                        <nil key="textColor"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Birthday" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IDP-L2-2y3">
-                                        <rect key="frame" x="0.0" y="152" width="375" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="375" id="4JM-HT-EOn"/>
-                                            <constraint firstAttribute="height" constant="35" id="4W1-DA-ccF"/>
+                                            <constraint firstAttribute="height" constant="35" id="VBF-ix-nDa"/>
+                                            <constraint firstAttribute="width" constant="375" id="pUA-Bz-3Jb"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
-                                        <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="t2r-Jk-PI2" secondAttribute="trailing" id="065-ZL-NiA"/>
-                                    <constraint firstAttribute="width" constant="375" id="2rC-FX-z8Y"/>
-                                    <constraint firstAttribute="trailing" secondItem="m5o-Nw-gFA" secondAttribute="trailing" constant="8" id="6fy-JT-p3M"/>
-                                    <constraint firstAttribute="bottom" secondItem="t2r-Jk-PI2" secondAttribute="bottom" id="A2T-ay-1XO"/>
-                                    <constraint firstItem="iuD-m3-tMu" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="AMM-ZN-CVB"/>
-                                    <constraint firstItem="XMU-6a-Wgy" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="top" constant="8" id="Asg-JR-q54"/>
-                                    <constraint firstAttribute="trailing" secondItem="mAH-jY-GSC" secondAttribute="trailing" constant="8" id="CKR-mp-wLT"/>
-                                    <constraint firstItem="iuD-m3-tMu" firstAttribute="top" secondItem="BS6-Fr-1mJ" secondAttribute="bottom" constant="8" id="Gg7-Hk-IxL"/>
-                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="leading" secondItem="BS6-Fr-1mJ" secondAttribute="trailing" constant="8" id="K2B-jx-XCT"/>
-                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="leading" secondItem="XMU-6a-Wgy" secondAttribute="trailing" constant="8" id="K3W-R0-V3t"/>
-                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="top" constant="8" id="MUs-dY-Eu2"/>
-                                    <constraint firstItem="BS6-Fr-1mJ" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="UWA-sE-exM"/>
-                                    <constraint firstAttribute="height" constant="507" id="UpW-nR-yZk"/>
-                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="top" secondItem="m5o-Nw-gFA" secondAttribute="bottom" constant="8" id="VmN-fe-Fhn"/>
-                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="top" secondItem="XMU-6a-Wgy" secondAttribute="bottom" constant="8" id="bTI-1P-d3z"/>
-                                    <constraint firstItem="t2r-Jk-PI2" firstAttribute="top" secondItem="IDP-L2-2y3" secondAttribute="bottom" constant="8" id="cST-X3-Z11"/>
-                                    <constraint firstItem="XMU-6a-Wgy" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="feq-Ez-XO0"/>
-                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="leading" secondItem="iuD-m3-tMu" secondAttribute="trailing" constant="8" id="h2p-Xo-0jG"/>
-                                    <constraint firstItem="t2r-Jk-PI2" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" id="isi-Rc-kA6"/>
-                                    <constraint firstItem="IDP-L2-2y3" firstAttribute="top" secondItem="mAH-jY-GSC" secondAttribute="bottom" constant="38" id="jRi-Lk-j27"/>
-                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="leading" secondItem="XMU-6a-Wgy" secondAttribute="trailing" constant="8" id="jh1-2m-9AP"/>
-                                    <constraint firstAttribute="trailing" secondItem="IDP-L2-2y3" secondAttribute="trailing" id="qON-fW-Tig"/>
-                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="leading" secondItem="BS6-Fr-1mJ" secondAttribute="trailing" constant="8" id="rKK-jO-jQh"/>
-                                    <constraint firstAttribute="trailing" secondItem="Cg1-Za-6pJ" secondAttribute="trailing" constant="8" id="sgK-Sm-D4z"/>
-                                    <constraint firstItem="IDP-L2-2y3" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" id="tfP-Z0-FsK"/>
-                                    <constraint firstItem="BS6-Fr-1mJ" firstAttribute="top" secondItem="XMU-6a-Wgy" secondAttribute="bottom" constant="8" id="xUE-L6-CKi"/>
-                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="leading" secondItem="iuD-m3-tMu" secondAttribute="trailing" constant="8" id="ycH-Gn-xZT"/>
+                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="leading" secondItem="wsU-Fq-rpt" secondAttribute="trailing" constant="8" id="1Gw-Zi-BsW"/>
+                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="top" constant="8" id="7ks-H1-4nu"/>
+                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="leading" secondItem="Koc-9h-2RB" secondAttribute="trailing" constant="8" id="Buo-so-FK9"/>
+                                    <constraint firstItem="0l8-lg-0tf" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="FCJ-de-mF5"/>
+                                    <constraint firstAttribute="trailing" secondItem="Cg1-Za-6pJ" secondAttribute="trailing" constant="8" id="G3w-1L-BoF"/>
+                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="leading" secondItem="0l8-lg-0tf" secondAttribute="trailing" constant="8" id="I8a-5n-aDB"/>
+                                    <constraint firstItem="t2r-Jk-PI2" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" id="JRP-D9-qZn"/>
+                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="top" secondItem="m5o-Nw-gFA" secondAttribute="bottom" constant="8" id="Lcj-NL-wVp"/>
+                                    <constraint firstItem="0l8-lg-0tf" firstAttribute="top" secondItem="wsU-Fq-rpt" secondAttribute="bottom" constant="8" id="NRI-KM-dfx"/>
+                                    <constraint firstItem="Koc-9h-2RB" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="PNp-IY-06H"/>
+                                    <constraint firstAttribute="height" constant="478" id="S2a-EF-ygq"/>
+                                    <constraint firstItem="IDP-L2-2y3" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" id="bCT-PM-XvD"/>
+                                    <constraint firstAttribute="bottom" secondItem="t2r-Jk-PI2" secondAttribute="bottom" constant="8" id="dff-XX-FGw"/>
+                                    <constraint firstAttribute="trailing" secondItem="t2r-Jk-PI2" secondAttribute="trailing" id="erO-cJ-5bt"/>
+                                    <constraint firstItem="wsU-Fq-rpt" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="top" constant="8" id="fFj-Bt-2ol"/>
+                                    <constraint firstItem="wsU-Fq-rpt" firstAttribute="leading" secondItem="tAQ-cI-d3f" secondAttribute="leading" constant="8" id="gJl-bh-dWa"/>
+                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="leading" secondItem="0l8-lg-0tf" secondAttribute="trailing" constant="8" id="geK-L8-HNX"/>
+                                    <constraint firstAttribute="trailing" secondItem="IDP-L2-2y3" secondAttribute="trailing" id="gsu-z3-sxX"/>
+                                    <constraint firstItem="mAH-jY-GSC" firstAttribute="leading" secondItem="Koc-9h-2RB" secondAttribute="trailing" constant="8" id="hzU-uQ-Mg2"/>
+                                    <constraint firstItem="Koc-9h-2RB" firstAttribute="top" secondItem="0l8-lg-0tf" secondAttribute="bottom" constant="8" id="lsn-D5-lhC"/>
+                                    <constraint firstAttribute="trailing" secondItem="m5o-Nw-gFA" secondAttribute="trailing" constant="8" id="sLI-nJ-ZVf"/>
+                                    <constraint firstItem="Cg1-Za-6pJ" firstAttribute="leading" secondItem="wsU-Fq-rpt" secondAttribute="trailing" constant="8" id="sTc-mx-VKJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="mAH-jY-GSC" secondAttribute="trailing" constant="8" id="tgJ-gf-wYK"/>
+                                    <constraint firstAttribute="width" constant="375" id="tkx-S3-SGm"/>
+                                    <constraint firstItem="t2r-Jk-PI2" firstAttribute="top" secondItem="IDP-L2-2y3" secondAttribute="bottom" constant="8" id="vE8-3G-Py0"/>
+                                    <constraint firstItem="m5o-Nw-gFA" firstAttribute="top" secondItem="Cg1-Za-6pJ" secondAttribute="bottom" constant="8" id="ymx-cF-n4B"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BNz-Ub-Hgp">
+                                <rect key="frame" x="16" y="22" width="80" height="80"/>
+                                <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="0vi-Pa-WRV"/>
+                                    <constraint firstAttribute="width" constant="80" id="tYi-9F-DcU"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="CFq-EE-azv" firstAttribute="leading" secondItem="BNz-Ub-Hgp" secondAttribute="trailing" constant="8" id="4kK-4u-G0G"/>
-                            <constraint firstItem="tAQ-cI-d3f" firstAttribute="leading" secondItem="pri-cS-smk" secondAttribute="leading" id="AOO-8O-NOk"/>
-                            <constraint firstItem="BNz-Ub-Hgp" firstAttribute="leading" secondItem="pri-cS-smk" secondAttribute="leading" constant="20" id="C1M-bu-4hm"/>
-                            <constraint firstItem="CFq-EE-azv" firstAttribute="leading" secondItem="BNz-Ub-Hgp" secondAttribute="trailing" constant="8" id="E3b-pP-MIX"/>
-                            <constraint firstItem="CFq-EE-azv" firstAttribute="top" secondItem="jap-Pn-ZFe" secondAttribute="bottom" id="HIH-Lt-U2W"/>
-                            <constraint firstAttribute="trailing" secondItem="tAQ-cI-d3f" secondAttribute="trailing" id="LdF-8c-8Tv"/>
-                            <constraint firstItem="Dwi-Ug-ZXT" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="bottom" id="QoT-Wb-c2Y"/>
-                            <constraint firstItem="BNz-Ub-Hgp" firstAttribute="top" secondItem="jap-Pn-ZFe" secondAttribute="bottom" constant="8" id="WgV-w1-Pl8"/>
-                            <constraint firstItem="tAQ-cI-d3f" firstAttribute="top" secondItem="CFq-EE-azv" secondAttribute="bottom" id="w95-AX-yGN"/>
-                            <constraint firstAttribute="trailing" secondItem="CFq-EE-azv" secondAttribute="trailing" constant="16" id="y9I-d3-RKK"/>
+                            <constraint firstAttribute="trailing" secondItem="tAQ-cI-d3f" secondAttribute="trailing" id="5Go-15-CuB"/>
+                            <constraint firstItem="CFq-EE-azv" firstAttribute="leading" secondItem="BNz-Ub-Hgp" secondAttribute="trailing" constant="12" id="BVC-29-zaq"/>
+                            <constraint firstItem="Dwi-Ug-ZXT" firstAttribute="top" secondItem="tAQ-cI-d3f" secondAttribute="bottom" id="EXD-zE-e5L"/>
+                            <constraint firstItem="tAQ-cI-d3f" firstAttribute="top" secondItem="CFq-EE-azv" secondAttribute="bottom" id="RDM-rw-dRO"/>
+                            <constraint firstItem="BNz-Ub-Hgp" firstAttribute="leading" secondItem="pri-cS-smk" secondAttribute="leading" constant="16" id="YLo-ds-ABA"/>
+                            <constraint firstItem="BNz-Ub-Hgp" firstAttribute="top" secondItem="jap-Pn-ZFe" secondAttribute="bottom" constant="22" id="mzS-xP-24m"/>
+                            <constraint firstAttribute="trailing" secondItem="CFq-EE-azv" secondAttribute="trailing" constant="16" id="qiI-wt-JsV"/>
+                            <constraint firstItem="CFq-EE-azv" firstAttribute="top" secondItem="jap-Pn-ZFe" secondAttribute="bottom" id="vZS-Dm-lN5"/>
+                            <constraint firstItem="tAQ-cI-d3f" firstAttribute="leading" secondItem="pri-cS-smk" secondAttribute="leading" id="yDt-Oi-8ag"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zTR-1k-pvf">
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="xi8-YX-J8R">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="mUy-Mh-bIv" id="T6A-3R-zfO"/>
                             </connections>
@@ -5145,7 +5088,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sMw-a0-LXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2990" y="3392"/>
+            <point key="canvasLocation" x="2989.5" y="3391.5"/>
         </scene>
         <!--New Profile Photo-->
         <scene sceneID="VBf-nk-h1S">
@@ -5228,7 +5171,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d6h-DV-D7u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3521" y="3392"/>
+            <point key="canvasLocation" x="2478" y="2617"/>
         </scene>
         <!--New Password-->
         <scene sceneID="g1H-Uc-Kn9">
@@ -5327,7 +5270,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yGm-8v-5mV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4540" y="3392"/>
+            <point key="canvasLocation" x="3491" y="2617"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="lP8-0m-eUB">
@@ -5342,7 +5285,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iVW-KB-DCk" id="yqB-OG-qqk">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="64.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuM-fs-59g">
@@ -5494,78 +5437,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HAf-ey-vy9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5102" y="3392"/>
-        </scene>
-        <!--FAQ-->
-        <scene sceneID="BWa-W5-Slw">
-            <objects>
-                <tableViewController storyboardIdentifier="faqVC" id="qZe-mM-lfC" customClass="FAQ" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="VfC-hW-78e">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="faqCell" rowHeight="125" id="niv-iZ-B0a" customClass="FAQCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="125"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="niv-iZ-B0a" id="ld2-j3-FwY">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDf-db-dDv">
-                                            <rect key="frame" x="8" y="8" width="359" height="60"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="60" id="Plt-kL-Mqt"/>
-                                                <constraint firstAttribute="width" constant="359" id="pNd-Bq-2sa"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tPj-7n-rgG">
-                                            <rect key="frame" x="20" y="76" width="335" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="335" id="OsN-vn-WOa"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="tPj-7n-rgG" secondAttribute="trailing" constant="20" id="Crb-ZV-MOG"/>
-                                        <constraint firstAttribute="trailing" secondItem="rDf-db-dDv" secondAttribute="trailing" constant="8" id="Fvp-mX-EfU"/>
-                                        <constraint firstItem="rDf-db-dDv" firstAttribute="top" secondItem="ld2-j3-FwY" secondAttribute="top" constant="8" id="KQd-UK-60p"/>
-                                        <constraint firstItem="tPj-7n-rgG" firstAttribute="leading" secondItem="ld2-j3-FwY" secondAttribute="leading" constant="20" id="gd2-5m-b49"/>
-                                        <constraint firstItem="rDf-db-dDv" firstAttribute="leading" secondItem="ld2-j3-FwY" secondAttribute="leading" constant="8" id="t4b-PM-66o"/>
-                                        <constraint firstAttribute="bottom" secondItem="tPj-7n-rgG" secondAttribute="bottom" constant="8" id="ubx-eW-UlA"/>
-                                        <constraint firstItem="tPj-7n-rgG" firstAttribute="top" secondItem="rDf-db-dDv" secondAttribute="bottom" constant="8" id="zU5-T2-8kE"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="answer" destination="tPj-7n-rgG" id="RmS-hK-436"/>
-                                    <outlet property="question" destination="rDf-db-dDv" id="d5t-3p-M2f"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="qZe-mM-lfC" id="7df-Se-cjX"/>
-                            <outlet property="delegate" destination="qZe-mM-lfC" id="m2s-eq-Gns"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="FAQ" id="rrh-Wg-TpJ">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="4Rb-Bp-voh">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="backButton:" destination="qZe-mM-lfC" id="GFg-HI-tcl"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MFk-RD-bgd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1415" y="4175"/>
+            <point key="canvasLocation" x="3970" y="174"/>
         </scene>
         <!--Privacy Policy-->
         <scene sceneID="kW8-Fg-0F1">
@@ -5580,7 +5452,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nTp-s4-goR" id="apj-b7-Yu0">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Am-9K-RYQ">
@@ -5637,7 +5509,691 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xBk-m2-g8P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1946" y="4175"/>
+            <point key="canvasLocation" x="3491" y="4175"/>
+        </scene>
+        <!--Licenses-->
+        <scene sceneID="sQC-YA-doE">
+            <objects>
+                <viewController storyboardIdentifier="licenseVC" id="f54-aC-TEj" customClass="Licenses" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="OQe-PR-ToU"/>
+                        <viewControllerLayoutGuide type="bottom" id="bQ5-N0-HRu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hpx-FN-cs8">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5yv-ZL-wYl">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="375" id="f4f-XP-QK1"/>
+                                    <constraint firstAttribute="height" constant="603" id="wES-il-wzu"/>
+                                </constraints>
+                                <mutableString key="text">Copyright 2016, Redplanet Media, LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+
+Agrume
+The MIT License (MIT)
+
+Copyright (c) 2015 Jan Gorman
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+Bolts
+BSD License
+
+For Bolts software
+
+Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+ * Neither the name Facebook nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
+   prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+BRYXBanner
+Copyright (c) 2015 Harlan Haskins &lt;harlan@harlanhaskins.com&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+
+CLImageEditor
+The MIT License (MIT)
+
+Copyright (c) 2013 Sho Yakushiji, CALACULU Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+DZNEmptyDataSet
+The MIT License (MIT)
+
+Copyright (c) 2016 Ignacio Romero Zurbuchen iromero@dzen.cl
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Heap
+Terms of Service
+Welcome to the Web site of Heap Inc., a Delaware corporation ("Heap," "we," or "us"). Your use of this Web site (the "Site" or "Website") and the services made available on the Site is subject to these Terms of Use (these "Terms"). By using any of our Services, you agree to be bound by, and use our Services in compliance with, these Terms of Use. IF YOU DO NOT AGREE TO THESE TERMS OF USE, DO NOT USE OUR SERVICES.
+
+ LICENSE TO USE OUR SERVICES
+Subject to these Terms, we grant to you a limited, non-exclusive, non-transferable license to use our Services for your internal use and not for resale or further distribution. Your right to use our Services is limited by all terms and conditions set forth in these Terms.
+
+Except for your pre-existing rights and this license granted to you, we and our licensors retain all right, title and interest in and to our Services, including all related intellectual property rights. Our Services are protected by applicable intellectual property laws, including United States copyright law and international treaties.
+
+Except as otherwise explicitly provided in these Terms or as may be expressly permitted by applicable law, you will not, and will not permit or authorize any third party to: (i) reproduce, modify, translate, enhance, decompile, disassemble, reverse engineer or create derivative works of any of our Services; (ii) rent, lease or sublicense access to any of our Services; or (iii) circumvent or disable any security or technological features or measures of our Services.
+
+ ACCESS TO OUR SERVICES
+We do not provide you with the equipment to access our Services. You are responsible for all fees charged by third parties related to your access and use of our Services (e.g., charges by Internet service providers).
+
+We reserve the right to modify or discontinue, temporarily or permanently, all or any portion of our Services without notice. We will not be liable to you or to any third party for any modification, suspension, or discontinuance of all or any portion of our Services.
+
+We also reserve the right, in our sole discretion, to reject, refuse service, or delete any user data, and to restrict, suspend, or terminate your access to our Services at any time, for any or no reason, with or without prior notice, and without liability.
+
+ RESTRICTIONS
+You must comply with all applicable laws when using our Services. Except as may be expressly permitted by applicable law, or as Heap may authorize expressly in writing, you will not, and will not permit anyone else to: (i) store, copy, modify, distribute, or resell any of the information; audio, visual, and audiovisual works, or other content made available on our Services (collectively, "Service Content") or compile or collect any Service Content as part of a database or other work; (ii) use any automated tool (e.g., robots, spiders) to access or use our Services or to store, copy, modify, distribute, or resell any Service Content; (iii) rent, lease, or sublicense your access to our Services to another person; (iv) use any Services or Service Content for any purpose except for your own internal use; (v) circumvent or disable any digital rights management, usage rules, or other security features of our Services; (vi) use our Services in a manner that overburdens, or that threatens the integrity, performance, or availability of, our Services; or (vii) remove, alter, or obscure any proprietary notices (including copyright and trademark notices) on any portion of our Services or any Service Content.
+
+ RESTRICTED AREAS OF THE SERVICES
+Certain parts of our Services, including account management features, may be password-restricted to registered users or other authorized persons ("Password-Protected Areas"). If you are authorized to gain access to any Password-Protected Areas, you agree that you are entirely responsible for maintaining the confidentiality of your password, and agree to notify us if the password is lost, stolen, disclosed to an unauthorized third party, or otherwise may have been compromised. You agree that you are entirely responsible for any and all activities that occur under your account, whether or not you are the individual who undertakes such activities. You agree to immediately notify us of any unauthorized use of your account or any other breach of security in relation to your password or our Services that is known to you.
+
+ CHANGES
+Heap, Inc. reserves the right, at its sole discretion, to modify or replace any part of this Agreement. It is your responsibility to check this Agreement periodically for changes. Your continued use of or access to the Website following the posting of any changes to this Agreement constitutes acceptance of those changes. Heap, Inc. may also, in the future, offer new services and/or features through the Website (including, the release of new tools and resources). Such new features and/or services shall be subject to the terms and conditions of this Agreement.
+
+ PRIVACY POLICY
+Our Services are designed to allow you to learn how your customers and individuals (your “Users”) use your product by giving you the ability to collect information based on their interaction with your mobile application, mobile web site or web properties where you have integrated our Services and send communications to them. Heap does this in part using a first party cookie placed on your User’s device from your server. Some information is automatically collected from or about your Users when you use our Services. If you integrate an official Heap iOS or JavaScript library in your product it may by default collect User data including but not limited to: the time of an event, the elements a User has interacted with, metadata and other details about these elements, how a User came to your site, what search engine and search keywords Users may have used to get to your site, information about the device your User is on such as their operating system, and browser, as well as the city/region/country location of Users. In addition, you can choose what other User data you want to collect such as age, IP addresses, user names, real names, email addresses and other custom properties.
+
+You agree to comply with all applicable privacy and data protection regulations. Further, you agree to not use our service to send us sensitive information where unauthorized disclosure could cause material, severe, or catastrophic harm or impact to Heap, any data subjects or relying parties. Sensitive Information includes:
+
+Passwords, authentication/authorization credentials
+Information under strict regulatory or contractual handling requirements (e.g., PCI, HIPAA, and state and federal data security laws) including:
+Credit Card Information including credit card numbers, CIV numbers (three digit codes for Visa and MasterCard, four digit code for American Express) and magnetic stripe information
+Social Security Numbers
+Drivers License Numbers
+Passport Numbers
+Government Issued Identification Numbers
+Financial Account Information
+Health data
+Biometric data
+Personally identifiable information knowingly collected from children under the age of 13 or from online services directed toward children and
+Real time geolocation data which can identify an individual.
+Business secrets deemed highly confidential (e.g., highly-confidential business strategies and communications, sensitive attorney-client privileged and confidential communications).
+We collect, store, and use your User data on our servers to provide you with the ability to better maintain and improve your Services. We may also use data in an aggregated form for our own purposes. Our Services transfer data to servers that store User data in the U.S. and outside the U.S. We only share User information with others under special circumstances as follows:
+
+With third parties who work on our behalf to provide your services;
+To comply with laws or to respond to lawful requests and legal process (provided that Heap will endeavor to notify you if Heap has received a lawful request for your information);
+To protect the rights and property of Heap, our agents, customers, and others including to enforce our agreements, policies, and terms of use;
+In an emergency, including to protect the personal safety of any person; and
+For the purposes of a business deal (or negotiation of a business deal) involving sale or transfer of all or a part of our business or assets (business deals may include, for example, any merger, financing, acquisition, divestiture, or bankruptcy transaction or proceeding).
+We provide you with access to your User data and ability to delete any of your User data. We also take commercially reasonable steps to safeguard User data.
+
+You agree to provide appropriate notices to your Users about, and if required by applicable laws obtain appropriate consent from Users for, your information collection and use practices relating to your use of our Services and your use of cookies for tracking purposes. Appropriate notices may include notice in the form of a privacy policy posted on your site and/or your mobile application.
+
+We may also collect registration and other information about you as our customer through our Site. Our collection and use of information collected about you on our website is governed by our Privacy Policy, available at https://heapanalytics.com/privacy/. Our Privacy Policy does not cover information we collect about your Users on your behalf from your mobile and web properties. It is your obligation to provide your own privacy policy or notice to your users.
+
+ LINKS AND THIRD PARTY CONTENT
+Our Services may display, or contain links to, third party products, services, and Web sites. Any opinions, advice, statements, services, offers, or other information that constitutes part of the content expressed, authored, or made available by other users or other third parties on our Services, or which is accessible through or may be located using our Services (collectively, "Third Party Content") are those of the respective authors or producers and not of us or our shareholders, directors, officers, employees, agents, or representatives.
+
+We do not control Third Party Content and do not guarantee the accuracy, integrity or quality of such Third Party Content. We are not responsible for the performance of, we do not endorse, and we are not responsible or liable for, any Third Party Content or any information or materials advertised in any Third Party Content. By using our Services, you may be exposed to content that is offensive, indecent, or objectionable. We are not be responsible or liable, directly or indirectly, for any damage or loss caused to you by your use of or reliance on any goods, services, or information available on or through any third party service or Third Party Content. It is your responsibility to evaluate the information, opinion, advice, or other content available on and through our Services.
+
+You will not use our Services to: (i) upload, post, email, or otherwise transmit any Submission that contains unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable; (ii) harm us or third parties in any way; (iii) impersonate any person or entity, or otherwise misrepresent your affiliation with a person or entity; (iv) upload, post, email, or otherwise transmit any Submission that you do not have a right to transmit under any law or under contractual or fiduciary relationships (such as inside information, proprietary and confidential information learned or disclosed as part of employment relationships or under nondisclosure agreements); (v) upload, post, email or otherwise transmit any Submission that infringes any patent, trademark, trade secret, copyright, or other right of any party; (vi) upload, post, email, or otherwise transmit any unsolicited or unauthorized advertising, promotional materials, "junk mail," "spam," "chain letters," "pyramid schemes," or any other forms of solicitation; (vii) upload, post, email, or otherwise transmit any material that contains software viruses or any other computer code, files, or programs designed to interrupt, destroy, or limit the functionality of any computer software or hardware or telecommunications equipment; (viii) interfere with or disrupt the Services or servers or networks connected to the Services, or disobey any requirements, procedures, policies or regulations of networks connected to the Services; (ix) intentionally or unintentionally violate any applicable local, state, national or international law or regulation; (x) "stalk" or otherwise harass another; or (xi) collect or store personal data about other users.
+
+ ELECTRONIC COMMUNICATIONS
+When you visit the Website or send e-mails to us, you are communicating with us electronically. You consent to receive communications from us electronically. We will communicate with you by e-mail or by posting notices on this Website. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.
+
+ USE POLICIES
+You are solely responsible for any content and other material that you submit, publish, transmit, or display on, through, or with our Services.
+
+ TRADEMARKS
+"Heap," the Heap logo, and any other product or service name or slogan displayed on our Services are trademarks of Heap Inc and its suppliers or licensors, and may not be copied, imitated or used, in whole or in part, without the prior written permission of Heap or the applicable trademark holder. You may not use any metatags or any other "hidden text" utilizing "Heap" or any other name, trademark or product or service name of Heap without our prior written permission. In addition, the look and feel of our Services, including all page headers, custom graphics, button icons and scripts, is the service mark, trademark and/or trade dress of Heap and may not be copied, imitated or used, in whole or in part, without our prior written permission. All other trademarks, registered trademarks, product names and company names or logos mentioned in our Services are the property of their respective owners. Reference to any products, services, processes or other information, by trade name, trademark, manufacturer, supplier, or otherwise does not constitute or imply endorsement, sponsorship, or recommendation thereof by us.
+
+ FEEDBACK
+We may provide you with a mechanism to provide feedback, suggestions, and ideas, if you choose, about our Services ("Feedback"). You agree that we may, in our sole discretion, use the Feedback you provide to us in any way, including in future enhancements and modifications to our Services. You hereby grant to us and our assigns a perpetual, worldwide, fully transferable, sublicensable, irrevocable, royalty free license to use, reproduce, modify, create derivative works from, distribute, and display the Feedback in any manner any for any purpose, without in any media, software, or technology of any kind now existing or developed in the future, without any obligation to provide attribution or compensation to you or any third party.
+
+ DISCLAIMER OF WARRANTIES
+YOUR USE OF THE SERVICES AND THE SERVICE CONTENT IS AT YOUR SOLE RISK. THE SERVICES AND THE SERVICE CONTENT EACH ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. WE AND OUR SUPPLIERS AND LICENSORS EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE THE ACCURACY, COMPLETENESS, OR USEFULNESS OF THE SERVICES OR ANY SERVICE CONTENT, AND YOU RELY ON THE SERVICES AND SERVICE CONTENT AT YOUR OWN RISK. ANY MATERIAL THAT YOU ACCESS OR OBTAIN THROUGH OUR SERVICES IS DONE AT YOUR OWN DISCRETION AND RISK AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER OR LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY MATERIAL THROUGH OUR SERVICES. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM US OR THROUGH OR FROM OUR SERVICES WILL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THIS AGREEMENT. SOME STATES MAY PROHIBIT A DISCLAIMER OF WARRANTIES AND YOU MAY HAVE OTHER RIGHTS THAT VARY FROM STATE TO STATE.
+
+ LIMITATION OF LIABILITY
+WE AND OUR SUPPLIERS AND LICENSORS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES (EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF THESE DAMAGES), RESULTING FROM YOUR USE OF OUR SERVICES AND SERVICE CONTENT. UNDER NO CIRCUMSTANCES WILL THE TOTAL LIABILITY OF US AND OUR SUPPLIERS AND LICENSORS OF ALL KINDS ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICES AND SERVICE CONTENT (INCLUDING BUT NOT LIMITED TO WARRANTY CLAIMS), REGARDLESS OF THE FORUM AND REGARDLESS OF WHETHER ANY ACTION OR CLAIM IS BASED ON CONTRACT, TORT, OR OTHERWISE, EXCEED THE AMOUNTS, IF ANY, THAT YOU HAVE PAID TO US FOR YOUR USE OF THE SERVICES AND SERVICE CONTENT. BECAUSE SOME STATES DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.
+
+ INDEMNITY
+You will indemnify and hold Heap Inc., our suppliers and licensors, and our respective subsidiaries, affiliates, officers, agents, employees, representatives, and assigns harmless from any costs, damages, expenses, and liability caused by your use of the Services and Service Content, your violation of these Terms, or your violation of any rights of a third party through use of the Services or Service Content.
+
+ PUBLICITY
+You agree that Heap, Inc., in its sole discretion, may use your trade names, trademarks, service marks, logos, domain names and other distinctive brand features in presentations, marketing materials, customer lists, financial reports and Web site listings (including links to your website) for the purpose of advertising or publicizing your use of Heap, Inc. products or services.
+
+ LEGAL NOTICES
+Enforcement of any dispute relating to these Terms will be governed by the laws of the State of California, excluding its conflict and choice of law principles. For parties residing in the United States, the exclusive jurisdiction and venue for any claims arising out of or related to these Terms or your use of the Services or Service Content will lie in the state and federal courts located in City and County of San Francisco, California, and you irrevocably agree to submit to the jurisdiction of such courts.
+
+For parties residing outside the United States, any dispute arising hereunder shall be submitted to confidential binding arbitration in the County and City of San Francisco, California for the maximum judgment enforceable, except that to the extent Customer has in any manner violated or threatened to violate Heap’s intellectual property rights, Heap may seek injunctive or other appropriate relief in any state or federal court in the State of California. Customer hereby consents to, and waive all defenses of lack of personal jurisdiction and forum non conveniens with respect to venue and jurisdiction in the state and federal courts of California. Arbitration under this Agreement shall be conducted pursuant to the existing International Arbitration Rules at the American Arbitration Association. The arbitrator's award shall be final and binding and may be entered as a judgment in any court of competent jurisdiction. The parties each agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated or representative action. If for any reason a claim is initiated in court rather than in arbitration we each waive any right to a jury trial.
+
+Our failure to enforce any right or provision in these Terms will not constitute a waiver of such right or provision unless acknowledged and agreed to by us in writing. In the event that a court of competent jurisdiction finds any provision of these Terms to be illegal, invalid, or unenforceable, the remaining provisions will remain in full force and effect.
+
+The terms and conditions which by their nature are intended to survive termination of these Terms shall survive, including Restrictions, Disclaimer of Warranties, Feedback, Indemnity, and Limitation of Liability.
+
+ OTHER
+If any provision of these Terms shall be deemed unlawful, void or for any reason unenforceable, then that provision shall be deemed severable from these Terms and shall not affect the validity and enforceability of any remaining provisions. Heap, Inc. may assign any or all of its rights hereunder to any party without your consent. You are not permitted to assign any of your rights or obligations hereunder without the prior written consent of Heap, Inc., and any such attempted assignment will be void and unenforceable. These Terms constitute the entire agreement between you and Heap, Inc. regarding your use of the Website, and supersede all prior or contemporaneous communications whether electronic, oral or written between you and Heap, Inc. regarding your use of the Website. The parties confirm that it is their wish that these Terms, as well as any other documents relating to this Terms, including notices, have been and shall be drawn up in the English language only.
+
+ CONTACTING US
+If you have any questions or concerns about our Services or these Terms, you may contact us by email at support@heapanalytics.com.
+
+
+
+KILabel
+The MIT License (MIT)
+
+Copyright (c) 2013 Matthew Styles
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+NSBadge
+MIT License
+
+Copyright (c) 2016 Antonio Zaitoun
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+Onboard
+Copyright (c) 2014 Michael Amaral
+
+MIT LICENSE
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+
+OneSignal
+Modified MIT License
+
+Copyright 2016 OneSignal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+1. The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+2. All copies of substantial portions of the Software may only be used in connection
+with services provided by OneSignal.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+Includes portions from DTTJailbreakDetection:
+    The MIT License (MIT)
+
+    Copyright (c) 2014 Doan Truong Thi
+    
+    Permission is hereby granted, free of charge, to any person obtaining a copy of
+    this software and associated documentation files (the "Software"), to deal in
+    the Software without restriction, including without limitation the rights to
+    use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software is furnished to do so,
+    subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+    
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    
+Includes portions from BSMobileProvision:
+    Copyright (c) 2013, The Blindsight Corporation
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+Parse
+BSD License
+
+For Parse iOS/OSX SDK software
+
+Copyright (c) 2015-present, Parse, LLC. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+ * Neither the name Parse nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
+   prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+Parse-Server
+BSD License
+
+For Parse Server software
+
+Copyright (c) 2015-present, Parse, LLC. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+ * Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+ * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+ * Neither the name Parse nor the names of its contributors may be used to
+   endorse or promote products derived from this software without specific
+   prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+
+
+ParseUI
+Copyright (c) 2014, Parse, LLC. All rights reserved.
+
+You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
+copy, modify, and distribute this software in source code or binary form for use
+in connection with the web services and APIs provided by Parse.
+
+As with any software that integrates with the Parse platform, your use of
+this software is subject to the Parse Terms of Service
+[https://www.parse.com/about/terms]. This copyright notice shall be
+included in all copies or substantial portions of the software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+SDWebImage
+Copyright (c) 2009-2017 Olivier Poitrey rs@dailymotion.com
+ 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished
+to do so, subject to the following conditions:
+ 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+ 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+
+SimpleAlert
+The MIT License (MIT)
+
+Copyright (c) 2015 Kyohei Ito
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+SnapSliderFilters
+The MIT License (MIT)
+
+Copyright (c) 2016 Paul Jeannot
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+SVProgressHUD
+Copyright (c) 2011-2017 Sam Vermette, Tobias Tiemerding and contributors.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+A different license may apply to other resources included in this package, including Freepik Icons. Please consult their respective headers for the terms of their individual licenses.
+
+
+
+SwiftyCam
+Copyright (c) 2016, Andrew Walz.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+SwipeNavigationController
+The MIT License (MIT)
+
+Copyright (c) 2016
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+SwipeView
+
+Version 1.3.2, April 28th, 2014
+
+Copyright (C) 2010 Charcoal Design
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+This notice may not be removed or altered from any source distribution.
+
+
+
+PeriscopeVideoViewController
+The MIT License (MIT)
+
+Copyright (c) 2015 Danil Gontovnik
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+Player
+The MIT License (MIT)
+
+Copyright (c) 2014-present patrick piemonte (http://patrickpiemonte.com/)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+
+
+</mutableString>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="bQ5-N0-HRu" firstAttribute="top" secondItem="5yv-ZL-wYl" secondAttribute="bottom" id="8KD-nq-QL7"/>
+                            <constraint firstAttribute="trailing" secondItem="5yv-ZL-wYl" secondAttribute="trailing" id="diD-dt-arW"/>
+                            <constraint firstItem="5yv-ZL-wYl" firstAttribute="leading" secondItem="hpx-FN-cs8" secondAttribute="leading" id="fMg-69-Jeg"/>
+                            <constraint firstItem="5yv-ZL-wYl" firstAttribute="top" secondItem="OQe-PR-ToU" secondAttribute="bottom" id="rGE-IZ-bPC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hcT-fm-HJX">
+                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="eE0-23-DHE">
+                            <color key="tintColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Uk-pj-eZ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3491" y="3392"/>
         </scene>
         <!--Terms of Service-->
         <scene sceneID="wJj-uF-DDJ">
@@ -5652,7 +6208,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="62f-co-e6X" id="FRG-Kc-U2Y">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UbE-WN-wQj">
@@ -5711,89 +6267,6 @@
             </objects>
             <point key="canvasLocation" x="2478" y="4175"/>
         </scene>
-        <!--Icons Guideline-->
-        <scene sceneID="tD3-p5-rGu">
-            <objects>
-                <tableViewController storyboardIdentifier="iconsVC" id="h4G-nC-Txw" customClass="RPIconsGuideline" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="185" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ix3-en-YTx">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="rpIconsCell" rowHeight="117" id="OW0-Tk-M1n" customClass="RPIconsCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="117"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OW0-Tk-M1n" id="we8-EI-sgW">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="116"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lxk-aW-bdA">
-                                            <rect key="frame" x="116" y="8" width="251" height="30"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="251" id="tj2-RU-sy5"/>
-                                                <constraint firstAttribute="height" constant="30" id="yAE-Ls-oGZ"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcZ-Vd-Eug">
-                                            <rect key="frame" x="116" y="46" width="251" height="62"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="251" id="SyX-z9-LGI"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iZC-uO-eeZ">
-                                            <rect key="frame" x="23" y="23" width="70" height="70"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="70" id="Sr5-ed-fiE"/>
-                                                <constraint firstAttribute="height" constant="70" id="tGr-n6-EK9"/>
-                                            </constraints>
-                                        </imageView>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="ZcZ-Vd-Eug" secondAttribute="trailing" constant="8" id="8hK-Ns-vbt"/>
-                                        <constraint firstAttribute="bottom" secondItem="ZcZ-Vd-Eug" secondAttribute="bottom" constant="8" id="Jx3-1U-BHE"/>
-                                        <constraint firstItem="lxk-aW-bdA" firstAttribute="top" secondItem="we8-EI-sgW" secondAttribute="top" constant="8" id="Wv8-3w-n3L"/>
-                                        <constraint firstAttribute="trailing" secondItem="lxk-aW-bdA" secondAttribute="trailing" constant="8" id="XhI-7m-MqX"/>
-                                        <constraint firstItem="lxk-aW-bdA" firstAttribute="leading" secondItem="iZC-uO-eeZ" secondAttribute="trailing" constant="23" id="bdK-V5-0fZ"/>
-                                        <constraint firstItem="ZcZ-Vd-Eug" firstAttribute="leading" secondItem="iZC-uO-eeZ" secondAttribute="trailing" constant="23" id="c65-zC-VPC"/>
-                                        <constraint firstItem="lxk-aW-bdA" firstAttribute="leading" secondItem="iZC-uO-eeZ" secondAttribute="trailing" constant="23" id="heC-ef-hSc"/>
-                                        <constraint firstItem="ZcZ-Vd-Eug" firstAttribute="top" secondItem="lxk-aW-bdA" secondAttribute="bottom" constant="8" id="k5h-2z-jX7"/>
-                                        <constraint firstItem="iZC-uO-eeZ" firstAttribute="top" secondItem="we8-EI-sgW" secondAttribute="top" constant="23" id="k9o-5E-Llr"/>
-                                        <constraint firstItem="iZC-uO-eeZ" firstAttribute="leading" secondItem="we8-EI-sgW" secondAttribute="leading" constant="23" id="n5I-Gv-MkF"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="icon" destination="iZC-uO-eeZ" id="YVX-og-sPE"/>
-                                    <outlet property="iconDescription" destination="ZcZ-Vd-Eug" id="F4k-rd-tx8"/>
-                                    <outlet property="iconName" destination="lxk-aW-bdA" id="mCa-Sa-bEs"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="h4G-nC-Txw" id="xLq-ae-nmb"/>
-                            <outlet property="delegate" destination="h4G-nC-Txw" id="xh2-4W-dVN"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="dB5-TO-C7z">
-                        <barButtonItem key="leftBarButtonItem" image="Expand Arrow-50" id="SR2-sA-aeo">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="backButton:" destination="h4G-nC-Txw" id="LSg-81-DSU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dJV-ud-GeG" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2990" y="4175"/>
-        </scene>
         <!--About Us-->
         <scene sceneID="YXw-RC-Oej">
             <objects>
@@ -5807,7 +6280,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rRL-hg-eW3" id="8Pr-SR-xfL">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="124.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2D1-LL-MuH">
@@ -5864,7 +6337,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yNn-la-INp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3521" y="4175"/>
+            <point key="canvasLocation" x="2990" y="4175"/>
         </scene>
         <!--Activity-->
         <scene sceneID="CfS-Ef-186">
@@ -5897,10 +6370,10 @@
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="VuV-HF-65a">
-                                <rect key="frame" x="0.0" y="56" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VuV-HF-65a" id="1fL-ij-NKJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -6128,18 +6601,19 @@
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="261" height="256"/>
         <image name="Exit" width="24" height="24"/>
-        <image name="Expand Arrow-50" width="25" height="25"/>
         <image name="Gender Neutral User-100" width="399" height="398"/>
         <image name="Left Filled-100" width="50" height="50"/>
         <image name="Left Filled-50" width="25" height="25"/>
         <image name="Lightning Bolt-96" width="256" height="256"/>
         <image name="Like-100" width="50" height="50"/>
+        <image name="Mail" width="48" height="48"/>
         <image name="Marker Pen Filled" width="265" height="256"/>
         <image name="Moon-96" width="41" height="41"/>
         <image name="More" width="48" height="48"/>
         <image name="More-100" width="50" height="50"/>
         <image name="More-50" width="25" height="25"/>
         <image name="MoreBlack" width="50" height="50"/>
+        <image name="Name" width="48" height="48"/>
         <image name="NewChat" width="25" height="25"/>
         <image name="NewText" width="275" height="275"/>
         <image name="Newsfeed(1)" width="24" height="24"/>
@@ -6155,6 +6629,7 @@
         <image name="Switch Camera-100" width="243" height="256"/>
         <image name="Unchecked Circle-100" width="256" height="256"/>
         <image name="User-48" width="24" height="24"/>
+        <image name="User-96" width="48" height="48"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="VolumeOn" width="290" height="256"/>
         <image name="WhiteComment" width="50" height="50"/>

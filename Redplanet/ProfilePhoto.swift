@@ -201,7 +201,11 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source
@@ -251,21 +255,8 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // (A) Get profile photo
         if let proPic = proPicObject.last!.value(forKey: "photoAsset") as? PFFile {
-            proPic.getDataInBackground(block: {
-                (data: Data?, error: Error?) in
-                if error == nil {
-                    // Set profile photo
-                    cell.rpUserProPic.image = UIImage(data: data!)
-                    cell.smallProPic.image = UIImage(data: data!)
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Set default
-                    cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    cell.smallProPic.image = UIImage(named: "Gender Neutral User-100")
-                }
-            })
             // MARK: - SDWebImage
-            cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.smallProPic.image)
+            cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
         } else {
             // Set default

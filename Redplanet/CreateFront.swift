@@ -21,6 +21,7 @@ import Bolts
 import SVProgressHUD
 import DZNEmptyDataSet
 import SwipeNavigationController
+import SDWebImage
 
 class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -95,12 +96,23 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
+                    if object.value(forKey: "type") as! String == "like itm" || object.value(forKey: "type") as! String == "share itm" {
+                        if difference.hour! < 24 {
+                            self.myActivity.append(object)
+                            self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                        } else {
+                            self.skipped.append(object)
+                        }
+                    } else {
                         self.myActivity.append(object)
                         self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
-                    } else {
-                        self.skipped.append(object)
                     }
+//                    if difference.hour! < 24 {
+//                        self.myActivity.append(object)
+//                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
                 }
                 
                 
@@ -217,7 +229,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -275,7 +291,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "activityCell", for: indexPath) as! ActivityCell
         
-        
         // Initialize and set parent vc
         cell.delegate = self
         
@@ -298,7 +313,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // (1) Set user's object
         cell.userObject = fromUsers[indexPath.row]
-        
        
         // (2) Fetch User Object
         fromUsers[indexPath.row].fetchIfNeededInBackground(block: {
@@ -309,17 +323,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
                 // (2) Get and user's profile photo
                 if let proPic = object!["userProfilePicture"] as? PFFile {
-                    proPic.getDataInBackground(block: {
-                        (data: Data?, error: Error?) in
-                        if error == nil {
-                            // Set Profile Photo
-                            cell.rpUserProPic.image = UIImage(data: data!)
-                        } else {
-                            print(error?.localizedDescription as Any)
-                            // Set default
-                            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                        }
-                    })
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
                 
             } else {
@@ -333,7 +338,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // =================================================================================================================
         // START TITLE =====================================================================================================
         // =================================================================================================================
-        
 
         
         

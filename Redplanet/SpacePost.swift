@@ -19,24 +19,21 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
 import OneSignal
+import SVProgressHUD
 import SimpleAlert
-
+import SDWebImage
 
 // Array to hold space post object
 var spaceObject = [PFObject]()
-
 
 // Define Notification
 let spaceNotification = Notification.Name("spaceNotification")
 
 class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
-    
     // Variable to determine string
     var layoutText: String?
-    
     
     // Array to hold likers, comments, and shares
     var likes = [PFObject]()
@@ -146,10 +143,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             self.tableView!.reloadData()
         })
     }
-
-    
-    
-    
     
     
     
@@ -250,7 +243,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
     
     
@@ -351,23 +348,13 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             // (B) Get and set user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
-                proPic.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set pro pic
-                        cell.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Set default
-                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                })
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
             // (C) Set byUser's object
             cell.byUserObject = user
         }
-        
         
         // (2) Fetch toUser's data
         if let toUser = spaceObject.last!.value(forKey: "toUser") as? PFUser {
@@ -391,15 +378,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             // (B) Fetch Photo
             if let photo = spaceObject.last!.value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set photo
-                        cell.mediaAsset.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // MARK: - SDWebImage
+                cell.mediaAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: cell.mediaAsset.image)
             }
             
             // (C) Configure textPost
@@ -474,48 +454,51 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
             } else {
                 cell.time.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.time.text = "1 minute ago"
             } else {
                 cell.time.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.time.text = "1 hour ago"
             } else {
                 cell.time.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1 day ago"
             } else {
                 cell.time.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+            if spaceObject.last!.value(forKey: "saved") as! Bool == true {
+                cell.likeButton.isUserInteractionEnabled = false
+                cell.numberOfLikes.isUserInteractionEnabled = false
+                cell.commentButton.isUserInteractionEnabled = false
+                cell.numberOfComments.isUserInteractionEnabled = false
+                cell.shareButton.isUserInteractionEnabled = false
+                cell.numberOfShares.isUserInteractionEnabled = false
+            }
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
+            if spaceObject.last!.value(forKey: "saved") as! Bool == true {
+                cell.likeButton.isUserInteractionEnabled = false
+                cell.numberOfLikes.isUserInteractionEnabled = false
+                cell.commentButton.isUserInteractionEnabled = false
+                cell.numberOfComments.isUserInteractionEnabled = false
+                cell.shareButton.isUserInteractionEnabled = false
+                cell.numberOfShares.isUserInteractionEnabled = false
+            }
         }
-        
-        
-        
         
         // (6) Determine whether the current user has liked this object or not
         if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
@@ -562,8 +545,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
         }
-
-        
         
         
         return cell

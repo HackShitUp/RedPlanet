@@ -19,7 +19,7 @@ import Bolts
 import DZNEmptyDataSet
 import OneSignal
 import SVProgressHUD
-
+import SDWebImage
 
 // Array to hold hashtag objects
 var hashtags = [String]()
@@ -205,7 +205,11 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     
@@ -304,17 +308,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             
             // (B) Get user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
-                proPic.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set profile photo
-                        cell.rpUserProPic.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        // Set default
-                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                })
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             
             // (C) Set fromUser's object
@@ -397,15 +392,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             
             // (B1) Fetch photo
             if let photo = hashtagObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                photo.getDataInBackground(block: {
-                    (data: Data?, error: Error?) in
-                    if error == nil {
-                        // Set Photo
-                        cell.photoAsset.image = UIImage(data: data!)
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
+                // MARK: - SDWebImage
+                cell.photoAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: cell.photoAsset.image)
             }
             
             // (B2) Check for textPost

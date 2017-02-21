@@ -306,7 +306,7 @@ class TimeMediaCell: UITableViewCell {
         
         
         // (1) Edit
-        let edit = AlertAction(title: "🔩 Edit 🔩",
+        let edit = AlertAction(title: "Edit",
                                style: .default,
                                handler: { (AlertAction) in
                                 
@@ -420,7 +420,7 @@ class TimeMediaCell: UITableViewCell {
         
         
         // (4) Report Content
-        let reportBlock = AlertAction(title: "Report",
+        let report = AlertAction(title: "Report",
                                       style: .destructive,
                                       handler: { (AlertAction) in
                                         let alert = UIAlertController(title: "Report",
@@ -492,19 +492,19 @@ class TimeMediaCell: UITableViewCell {
             options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+//            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+//            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else {
-            options.addAction(reportBlock)
             options.addAction(cancel)
-            reportBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            reportBlock.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            options.addAction(report)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
+            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
         }
         
         self.delegate?.present(options, animated: true, completion: nil)

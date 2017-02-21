@@ -836,6 +836,9 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 }
             })
             
+            
+            // Disable buttons
+            
             return vCell // return TimeVideoCell.swift
         }
     }//end cellForRowAt

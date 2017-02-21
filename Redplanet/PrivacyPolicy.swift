@@ -16,7 +16,7 @@ class PrivacyPolicy: UITableViewController, UINavigationControllerDelegate {
     }
     
     // Set TOS
-    var ppTitles = ["",
+    var ppTitles = ["Last Revised on June 16th, 2016",
                     "Collection of Information",
                     "I. Information You Provide to Us",
                     "II. Information We Collect Automatically When You Use Our Services",
@@ -36,7 +36,7 @@ class PrivacyPolicy: UITableViewController, UINavigationControllerDelegate {
     
     
     
-    var ppTexts = ["Last Revised on June 16th, 2016\nOur privacy policy applies to information we collect when you use or access our website, application, or just interact with us. We may change this privacy policy from time to time. Whenever we make changes to this privacy policy, the changes are effective 24 hours after we post the revised privacy policy (as indicated by revising the date at the top of our privacy policy). We encourage you to review our privacy policy whenever you access our services to stay informed about our information practices and the ways you can help protect your privacy.",
+    var ppTexts = ["Our privacy policy applies to information we collect when you use or access our website, application, or just interact with us. We may change this privacy policy from time to time. Whenever we make changes to this privacy policy, the changes are effective 24 hours after we post the revised privacy policy (as indicated by revising the date at the top of our privacy policy). We encourage you to review our privacy policy whenever you access our services to stay informed about our information practices and the ways you can help protect your privacy.",
                    
                    "We collect information you provide directly to us. For example, we collect information when you participate in any interactive features of our services, fill out a form, request customer support, provide any contact or identifying information or otherwise communicate with us. The types of information we may collect include your name, email address, postal address, credit card information, your content, and other contact or identifying information you choose to provide.",
                    

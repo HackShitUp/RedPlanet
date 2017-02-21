@@ -64,6 +64,7 @@
 		7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */; };
 		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7E7723111E5BCDF200066431 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7723101E5BCDF200066431 /* Licenses.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
 		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };
@@ -181,9 +182,6 @@
 		7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */; };
 		7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4461E07C694005C68C9 /* LibVideos.swift */; };
 		7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */; };
-		7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6361DDBDC60004AE090 /* FAQ.swift */; };
-		7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */; };
-		7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -289,6 +287,7 @@
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
 		7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
+		7E7723101E5BCDF200066431 /* Licenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		7E7E38C31DD5951700DEC27B /* TermsOfService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
@@ -459,9 +458,6 @@
 		7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideosCell.swift; sourceTree = "<group>"; };
 		7EDDF4461E07C694005C68C9 /* LibVideos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideos.swift; sourceTree = "<group>"; };
 		7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotos.swift; sourceTree = "<group>"; };
-		7EDFB6361DDBDC60004AE090 /* FAQ.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQ.swift; sourceTree = "<group>"; };
-		7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQCell.swift; sourceTree = "<group>"; };
-		7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditContentCell.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -715,9 +711,9 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
+				7E7723101E5BCDF200066431 /* Licenses.swift */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
-				7EDFB63A1DDBDC71004AE090 /* FAQ */,
 				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
 			name = Settings;
@@ -1432,20 +1428,10 @@
 			name = INTERACTIONS;
 			sourceTree = "<group>";
 		};
-		7EDFB63A1DDBDC71004AE090 /* FAQ */ = {
-			isa = PBXGroup;
-			children = (
-				7EDFB6361DDBDC60004AE090 /* FAQ.swift */,
-				7EDFB6381DDBDC6D004AE090 /* FAQCell.swift */,
-			);
-			name = FAQ;
-			sourceTree = "<group>";
-		};
 		7EE5609E1DD2D3B200DA2849 /* EditContent */ = {
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
-				7EE5609C1DD2D39900DA2849 /* EditContentCell.swift */,
 			);
 			name = EditContent;
 			sourceTree = "<group>";
@@ -1823,6 +1809,7 @@
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
+				7E7723111E5BCDF200066431 /* Licenses.swift in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
@@ -1871,7 +1858,6 @@
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
-				7EE5609D1DD2D39900DA2849 /* EditContentCell.swift in Sources */,
 				7E6A13051E4D98F600CF108B /* SwiftWebVC.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
@@ -1881,7 +1867,6 @@
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,
 				7E8B558C1E4EF67F004D3F31 /* SNTextField.swift in Sources */,
-				7EDFB6371DDBDC60004AE090 /* FAQ.swift in Sources */,
 				7E98E9641DB75057001B7329 /* UIDevice+SystemVersion.m in Sources */,
 				7E6A13041E4D98F600CF108B /* SwiftModalWebVC.swift in Sources */,
 				7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */,
@@ -1915,7 +1900,6 @@
 				7EC5D1A31DB3569B00437219 /* ExploreCell.swift in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7EA09E111DD3EF9200BD2D51 /* NewSpacePostCell.swift in Sources */,
-				7EDFB6391DDBDC6D004AE090 /* FAQCell.swift in Sources */,
 				7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */,
 				7E6A13071E4D98F600CF108B /* SwiftWebVCActivityChrome.swift in Sources */,
 				7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */,

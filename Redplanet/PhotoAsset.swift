@@ -214,7 +214,11 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source
@@ -273,21 +277,9 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
                     
                     // (B) Get profile photo
                     if let proPic = object!["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // (B1) Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // (B2) Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
                         // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                     }
-
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -299,17 +291,6 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Fetch Photo
         if let media = photoAssetObject.last!["photoAsset"] as? PFFile {
-            media.getDataInBackground(block: {
-                (data: Data?, error: Error?) in
-                if error == nil {
-                    // set media asset
-                    cell.mediaAsset.image = UIImage(data: data!)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
             // MARK: - SDWebImage
             cell.mediaAsset.sd_setImage(with: URL(string: media.url!), placeholderImage: cell.mediaAsset.image)
         }

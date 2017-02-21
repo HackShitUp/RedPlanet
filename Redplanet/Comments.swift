@@ -19,8 +19,6 @@ import SVProgressHUD
 import SimpleAlert
 import OneSignal
 
-
-
 // Array to hold comments
 var commentsObject = [PFObject]()
 
@@ -727,23 +725,13 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     
                     // (B) Get and set profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                // Set profile photo
-                                cell.rpUserProPic.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                // Set default
-                                cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
-                            }
-                        })
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                     } else {
                         // Set default
                         cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                     }
                 }
-                
                 
                 // (2) Set comment
                 cell.comment.text! = object!["commentOfContent"] as! String
