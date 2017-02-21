@@ -647,7 +647,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Add border to top of container
         let upperBorder = CALayer()
         upperBorder.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.container.frame.width), height: CGFloat(0.50))
+        upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.view.frame.width), height: CGFloat(0.50))
         self.container.layer.addSublayer(upperBorder)
 
         // (A) Layout views

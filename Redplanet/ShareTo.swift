@@ -19,7 +19,7 @@ import SVProgressHUD
 import DZNEmptyDataSet
 import SimpleAlert
 
-class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
+class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // Array to hold share objects
     var shareObjects = [PFObject]()
@@ -218,6 +218,12 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     self.following.append(object.object(forKey: "following") as! PFUser)
                 }
                 
+                // Set DZN if count is 0
+                if self.following.count == 0 {
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
                 
@@ -230,6 +236,31 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     
+    
+    
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.following.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "🦄\nNo one to share with..."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
     
     
     

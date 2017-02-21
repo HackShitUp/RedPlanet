@@ -166,7 +166,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 if self.notFollowing.count == 0 {
                     // Show Alert
                     let alert = UIAlertController(title: "No Friends on Redplanet",
-                                                  message: "Your Friends Aren't on Redplanet 😕",
+                                                  message: "😕\nYour friends aren't on Redplanet!",
                                                   preferredStyle: .alert)
                     
                     let inviteFriends = UIAlertAction(title: "Invite Friends",

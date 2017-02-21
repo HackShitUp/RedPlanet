@@ -49,6 +49,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             self.libraryButton.isHidden = true
             self.homeButton.isHidden = true
             self.newTextButton.isHidden = true
+            self.rpUserProPic.isHidden = true
             self.progressView.setProgress(0, animated: false)
             self.progressView.isHidden = false
             self.view.bringSubview(toFront: self.progressView)

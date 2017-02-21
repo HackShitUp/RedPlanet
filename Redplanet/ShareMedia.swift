@@ -417,7 +417,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     func sharePhotoData() {
         
         // MARK: - HEAP
-        Heap.track("SharedVideo", withProperties:
+        Heap.track("SharedPhoto", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])

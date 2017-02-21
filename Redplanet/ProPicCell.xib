@@ -157,7 +157,7 @@
                     <constraint firstAttribute="bottom" secondItem="Gmj-VC-Icr" secondAttribute="bottom" constant="8" id="Res-fj-2Vj"/>
                     <constraint firstAttribute="trailing" secondItem="Fkv-Tv-DrA" secondAttribute="trailing" constant="8" id="SVh-gV-Dj5"/>
                     <constraint firstItem="NIM-tj-dG5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="TNk-eb-zxI"/>
-                    <constraint firstItem="D6Y-Ch-7I6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="UgS-2B-x70"/>
+                    <constraint firstItem="D6Y-Ch-7I6" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="U3N-I6-SKn"/>
                     <constraint firstItem="i51-bm-ZH9" firstAttribute="top" secondItem="Fkv-Tv-DrA" secondAttribute="bottom" constant="8" id="XSJ-W8-NnG"/>
                     <constraint firstItem="Edo-mn-VJt" firstAttribute="leading" secondItem="Phq-3t-Euq" secondAttribute="trailing" constant="8" id="aEH-PJ-3GM"/>
                     <constraint firstItem="Fkv-Tv-DrA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="bVM-of-4hF"/>
@@ -170,7 +170,6 @@
                     <constraint firstAttribute="trailing" secondItem="NIM-tj-dG5" secondAttribute="trailing" constant="8" id="iZY-YR-ujX"/>
                     <constraint firstAttribute="bottom" secondItem="bTN-5v-owm" secondAttribute="bottom" constant="8" id="k79-Rb-keW"/>
                     <constraint firstItem="P6G-OX-maj" firstAttribute="top" secondItem="Fkv-Tv-DrA" secondAttribute="bottom" constant="8" id="kBj-5K-ahO"/>
-                    <constraint firstAttribute="trailing" secondItem="D6Y-Ch-7I6" secondAttribute="trailing" constant="8" id="lVK-DG-Bq3"/>
                     <constraint firstAttribute="trailing" secondItem="QBP-OX-Tn1" secondAttribute="trailing" id="m8i-du-gZ5"/>
                     <constraint firstItem="i51-bm-ZH9" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="tgs-QH-Gqm"/>
                     <constraint firstItem="Fkv-Tv-DrA" firstAttribute="top" secondItem="D6Y-Ch-7I6" secondAttribute="bottom" constant="8" id="v0h-4Q-zIw"/>

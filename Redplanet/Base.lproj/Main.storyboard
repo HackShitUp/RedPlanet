@@ -3754,7 +3754,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sup-Rn-era">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sup-Rn-era">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="135" id="4w0-Bc-qP1"/>
@@ -5097,21 +5097,8 @@
                                             <constraint firstAttribute="height" constant="30" id="zdD-Rb-5K4"/>
                                         </constraints>
                                     </imageView>
-                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-Jk-PI2">
-                                        <rect key="frame" x="0.0" y="230" width="375" height="240"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="240" id="cRf-hW-rcG"/>
-                                            <constraint firstAttribute="width" constant="375" id="f2Q-x4-ofY"/>
-                                        </constraints>
-                                        <date key="date" timeIntervalSinceReferenceDate="499310888.38242501">
-                                            <!--2016-10-28 01:28:08 +0000-->
-                                        </date>
-                                        <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
-                                            <!--1970-01-01 11:00:00 +0000-->
-                                        </date>
-                                    </datePicker>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B i r t h d a y" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IDP-L2-2y3">
-                                        <rect key="frame" x="0.0" y="187" width="375" height="35"/>
+                                        <rect key="frame" x="0.0" y="211" width="375" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="VBF-ix-nDa"/>
                                             <constraint firstAttribute="width" constant="375" id="pUA-Bz-3Jb"/>
@@ -5120,6 +5107,19 @@
                                         <color key="textColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="t2r-Jk-PI2">
+                                        <rect key="frame" x="0.0" y="254" width="375" height="216"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="375" id="f2Q-x4-ofY"/>
+                                            <constraint firstAttribute="width" secondItem="t2r-Jk-PI2" secondAttribute="height" multiplier="125:72" id="n2Q-LN-AAY"/>
+                                        </constraints>
+                                        <date key="date" timeIntervalSinceReferenceDate="499310888.38242501">
+                                            <!--2016-10-28 01:28:08 +0000-->
+                                        </date>
+                                        <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
+                                            <!--1970-01-01 11:00:00 +0000-->
+                                        </date>
+                                    </datePicker>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -5148,6 +5148,7 @@
                                     <constraint firstAttribute="trailing" secondItem="mAH-jY-GSC" secondAttribute="trailing" constant="8" id="tgJ-gf-wYK"/>
                                     <constraint firstAttribute="width" constant="375" id="tkx-S3-SGm"/>
                                     <constraint firstItem="t2r-Jk-PI2" firstAttribute="top" secondItem="IDP-L2-2y3" secondAttribute="bottom" constant="8" id="vE8-3G-Py0"/>
+                                    <constraint firstItem="IDP-L2-2y3" firstAttribute="top" secondItem="Koc-9h-2RB" secondAttribute="bottom" constant="97" id="wQF-jn-y8W"/>
                                     <constraint firstItem="m5o-Nw-gFA" firstAttribute="top" secondItem="Cg1-Za-6pJ" secondAttribute="bottom" constant="8" id="ymx-cF-n4B"/>
                                 </constraints>
                             </view>

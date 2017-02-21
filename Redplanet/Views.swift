@@ -155,9 +155,9 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "🙈\nNo Views Yet"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         return NSAttributedString(string: str, attributes: attributeDictionary)

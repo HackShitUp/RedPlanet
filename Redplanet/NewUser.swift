@@ -53,7 +53,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                        handler: {(alertAction: UIAlertAction!) in
                                         // Load Onboarding tutorial
                                         // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, the first ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
+                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, the first ephemeral media platform.", image: nil, buttonText: nil) { () -> Void in
                                         }
                                         let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Somethings you share on Redplanet disappear in 24 hours!", image: nil, buttonText: nil) { () -> Void in
                                         }
@@ -62,6 +62,13 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
                                         }
+                                        
+                                        firstPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                                        firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
+                                        secondPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                                        secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
+                                        lastPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                                        lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
                                         
                                         // Set bottom padding for button
                                         lastPage.bottomPadding = 50
@@ -168,8 +175,4 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-
-
 }

@@ -371,7 +371,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🤔\nNo Comments"
+        let str = "🤔\nNo Comments Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
