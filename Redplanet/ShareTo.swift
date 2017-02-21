@@ -343,7 +343,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
-        self.tableView?.tableHeaderView = self.searchBar
+//        self.tableView?.tableHeaderView = self.searchBar
         self.tableView?.tableHeaderView?.layer.borderWidth = 0.5
         self.tableView?.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
         self.tableView?.tableHeaderView?.clipsToBounds = true

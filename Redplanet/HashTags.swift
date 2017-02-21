@@ -59,7 +59,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         self.tableView!.reloadData()
     }
     
-    
     // Function to fetch hashtags
     func fetchHashtags() {
         // Check which users are public
@@ -89,14 +88,17 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                         self.hashtagObjects.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-                            // Ephemeral content
-                            let components : NSCalendar.Unit = .hour
-                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                            if difference.hour! < 24 {
+//                            // Ephemeral content
+//                            let components : NSCalendar.Unit = .hour
+//                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                            if self.contentTypes.contains(object.value(forKey: "contentType") as! String) {
                                 self.hashtagObjects.append(object)
-                            } else {
-                                self.skipped.append(object)
                             }
+//                            if difference.hour! < 24 {
+//                                self.hashtagObjects.append(object)
+//                            } else {
+//                                self.skipped.append(object)
+//                            }
                         }
                     } else {
                         print(error?.localizedDescription as Any)
@@ -202,7 +204,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: hashtagNotification, object: nil)
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
@@ -211,8 +212,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
-    
     
     // MARK: DZNEmptyDataSet Framework
     
@@ -326,41 +325,31 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
             } else {
                 cell.time.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.time.text = "1 minute ago"
             } else {
                 cell.time.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.time.text = "1 hour ago"
             } else {
                 cell.time.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1 day ago"
             } else {
                 cell.time.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.time.text = createdDate.string(from: hashtagObjects[indexPath.row].createdAt!)

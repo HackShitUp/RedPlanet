@@ -161,16 +161,21 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return 3
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
+            // ACCOUNT
             return 6
         } else if section == 1 {
+            // MEMORY
+            return 1
+        } else if section == 2{
+            // MORE
             return 3
         } else {
+            // ABOUT
             return 4
         }
     }
@@ -179,8 +184,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let view = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
-        title.font = UIFont(name: "AvenirNext-Medium", size: 12.00)
-        title.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
+//        title.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
@@ -190,20 +196,18 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            
+        // ====================================================================
+        // ACCOUNT ============================================================
+        // ====================================================================
             if indexPath.row == 0 {
                 // Edit Profile
                 let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
-            }
-            
-            if indexPath.row == 1 {
+            } else if indexPath.row == 1 {
                 // Relationship Requests
                 let rRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
                 self.navigationController?.pushViewController(rRequestsVC, animated: true)
-            }
-            
-            if indexPath.row == 2 {
+            } else if indexPath.row == 2 {
                 // Friends in Contacts
                 if #available(iOS 9, *) {
                     // Push to Contacts VC
@@ -231,19 +235,13 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     alert.view.tintColor = UIColor.black
                     self.navigationController!.present(alert, animated: true, completion: nil)
                 }
-            }
-
-            if indexPath.row == 3 {
+            } else if indexPath.row == 3 {
                 // Reset Password
                 let passwordVC = self.storyboard?.instantiateViewController(withIdentifier: "passwordVC") as! ResetPassword
                 self.navigationController?.pushViewController(passwordVC, animated: true)
-            }
-            
-            if indexPath.row == 4 {
+            } else if indexPath.row == 4 {
                 // Privacy
-            }
-            
-            if indexPath.row == 5 {
+            } else if indexPath.row == 5 {
                 // LOGOUT
                 // Remove logged in user from app memory
                 PFUser.logOutInBackground(block: {
@@ -268,7 +266,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             
         
         } else if indexPath.section == 1 {
-            
+        // ====================================================================
+        // MEMORY =============================================================
+        // ====================================================================
             if indexPath.row == 0 {
                 PFQuery.clearAllCachedResults()
                 PFFile.clearAllCachedDataInBackground()
@@ -296,31 +296,60 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     return 14.00
                 }
                 
-                // (1) Write in space
                 let ok = AlertAction(title: "ok",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            PFQuery.clearAllCachedResults()
-                                            PFFile.clearAllCachedDataInBackground()
-                                            URLCache.shared.removeAllCachedResponses()
-                                            SDImageCache.shared().clearMemory()
-                                            SDImageCache.shared().clearDisk()
+                                     style: .default,
+                                     handler: { (AlertAction) in
+                                        PFQuery.clearAllCachedResults()
+                                        PFFile.clearAllCachedDataInBackground()
+                                        URLCache.shared.removeAllCachedResponses()
+                                        SDImageCache.shared().clearMemory()
+                                        SDImageCache.shared().clearDisk()
                 })
                 
                 
                 alert.addAction(ok)
                 alert.view.tintColor = UIColor.black
                 self.present(alert, animated: true, completion: nil)
-                
             }
-            
-            if indexPath.row == 1 {
+        } else if indexPath.section == 2 {
+        // ====================================================================
+        // MORE ===============================================================
+        // ====================================================================
+           
+            if indexPath.row == 0 {
+                // Show Activity
+                let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
+                if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+                    let objectsToShare = [textToShare, myWebsite] as [Any]
+                    let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                    self.present(activityVC, animated: true, completion: nil)
+                }
+            } else if indexPath.row == 1 {
                 if MFMailComposeViewController.canSendMail() {
                     let mail = MFMailComposeViewController()
                     mail.mailComposeDelegate = self
                     mail.setToRecipients(["redplanethub@gmail.com", "redplanetmediahub@gmail.com"])
-                    mail.setSubject("What I REALLY Think About Redplanet")
+                    mail.setSubject("What I Think About Redplanet")
                     mail.setMessageBody("🚀🦄🚀\nBe Brutally Honest\n\n3 Things I Like About Redplanet\n1.)\n2.)\n3.)\n\n3 Things I Don't Like About Redplanet\n1.)\n2.)\n3.)\n", isHTML: false)
+                    present(mail, animated: true)
+                } else {
+                    let alert = UIAlertController(title: "Something Went Wrong",
+                                                  message: "Configure your email to this device to send us feedback!",
+                                                  preferredStyle: .alert)
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
+                }
+            } else {
+                if MFMailComposeViewController.canSendMail() {
+                    let mail = MFMailComposeViewController()
+                    mail.mailComposeDelegate = self
+                    mail.setToRecipients(["redplanethub@gmail.com"])
+                    mail.setSubject("Verify My Account")
+                    mail.setMessageBody("🦄\nI'd Like to Verify My Account!\n\n\n1.) My Email is: \n2.) My Number is: \n3.) My Username on Redplanet is: \(PFUser.current()!.username!)\n\n\nI'd like to verify my account because:", isHTML: false)
                     present(mail, animated: true)
                 } else {
                     let alert = UIAlertController(title: "Something Went Wrong",
@@ -335,16 +364,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 }
             }
             
-            if indexPath.row == 2 {
-                // Show Activity
-                let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
-                if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
-                    let objectsToShare = [textToShare, myWebsite] as [Any]
-                    let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                    self.present(activityVC, animated: true, completion: nil)
-                }
-                
-            }
         
         } else {
             
@@ -353,22 +372,16 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
                 self.navigationController?.pushViewController(aboutVC, animated: true)
 
-            }
-            
-            if indexPath.row == 1 {
-                // FAQ
-                let faqVC = self.storyboard?.instantiateViewController(withIdentifier: "faqVC") as! FAQ
-                self.navigationController?.pushViewController(faqVC, animated: true)
-            }
-            
-            if indexPath.row == 2 {
+            } else if indexPath.row == 1 {
+                // LICENSE
+                let licenseVC = self.storyboard?.instantiateViewController(withIdentifier: "licenseVC") as! Licenses
+                self.navigationController?.pushViewController(licenseVC, animated: true)
+            } else if indexPath.row == 2 {
                 // TOS
                 let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
                 self.navigationController?.pushViewController(tosVC, animated: true)
-            }
-            
-            if indexPath.row == 3 {
-                // Privacy Policy
+            } else {
+                // PRIVACY POLICY
                 let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
                 self.navigationController?.pushViewController(privacyVC, animated: true)
             }

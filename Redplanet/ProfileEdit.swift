@@ -111,12 +111,20 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             let proPicData = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
             let proPicFile = PFFile(data: proPicData!)
             
+            // (C) Configure username and fullname
+            var rUsername = self.rpUsername.text!
+            rUsername = rUsername.replacingOccurrences(of: " ", with: "")
+            rUsername = rUsername.replacingOccurrences(of: "☄️", with: "")
+            
+            var fullName = self.rpName.text!
+            fullName = fullName.replacingOccurrences(of: "☄️", with: "")
+            
             // I) Save changes to Parse className: "_User"
             let me = PFUser.current()!
             me.email = rpEmail.text!.lowercased()
-            me["realNameOfUser"] = self.rpName.text!
+            me["realNameOfUser"] = fullName
             me["userBiography"] = self.rpUserBio.text!
-            me.username = self.rpUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
+            me.username = rUsername.lowercased()
             me["birthday"] = stringDate
             me["userProfilePicture"] = proPicFile
             me.saveInBackground(block: {

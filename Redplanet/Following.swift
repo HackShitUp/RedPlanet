@@ -633,7 +633,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 }
             })
             
-            
             return mCell // return TimeMediaCell.swift
             
             
@@ -694,35 +693,35 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             // (6) SET TIME
             if difference.second! <= 0 {
-                ppCell.time.text! = "now"
+                ppCell.time.text! = "updated their Profile Photo now"
             } else if difference.second! > 0 && difference.minute! == 0 {
                 if difference.second! == 1 {
-                    ppCell.time.text! = "1 second ago"
+                    ppCell.time.text! = "updated their Profile Photo 1s ago"
                 } else {
-                    ppCell.time.text! = "\(difference.second!) seconds ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.second!)s ago"
                 }
             } else if difference.minute! > 0 && difference.hour! == 0 {
                 if difference.minute! == 1 {
-                    ppCell.time.text! = "1 minute ago"
+                    ppCell.time.text! = " updated their Profile Photo 1m ago"
                 } else {
-                    ppCell.time.text! = "\(difference.minute!) minutes ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.minute!)m ago"
                 }
             } else if difference.hour! > 0 && difference.day! == 0 {
                 if difference.hour! == 1 {
-                    ppCell.time.text! = "1 hour ago"
+                    ppCell.time.text! = "updated their Profile Photo 1hr ago"
                 } else {
-                    ppCell.time.text! = "\(difference.hour!) hours ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.hour!)hrs ago"
                 }
             } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 if difference.day! == 1 {
-                    ppCell.time.text! = "1 day ago"
+                    ppCell.time.text! = "updated their Profile Photo yesterday"
                 } else {
-                    ppCell.time.text! = "\(difference.day!) days ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.day!)d ago"
                 }
             } else if difference.weekOfMonth! > 0 {
                 let createdDate = DateFormatter()
                 createdDate.dateFormat = "MMM d, yyyy"
-                ppCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
+                ppCell.time.text! = "updated their Profile Photo on \(createdDate.string(from: self.posts[indexPath.row].createdAt!))"
             }
             
             // (7) FETCH LIKES, COMMENTS, AND SHARES
@@ -847,6 +846,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
                 vCell.videoPreview.contentMode = .scaleAspectFit
                 vCell.videoPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
                 player.isMuted = true
                 player.play()
             }

@@ -173,32 +173,44 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         self.searchBar.resignFirstResponder()
     }
     
+    
+    // MARK: UICollectionViewHeader
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        // Size should be the same size of the headerView's label size:
+        return CGSize(width: self.view.frame.size.width, height: 135.00)
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        // Initialize header
+        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "exploreHeader", for: indexPath) as! ExploreHeader
+        
+        // Set delegate
+        header.delegate = self
+        
+        // ADS
+        let ads = PFQuery(className: "Ads")
+        ads.getObjectInBackground(withId: "B3UqNXF1EE") {
+            (object: PFObject?, error: Error?) in
+            if error == nil {
+                if let image = object!.value(forKey: "photo") as? PFFile {
+                    // MARK: - SDWebImage
+                    header.adOne.sd_setImage(with: URL(string: image.url!), placeholderImage: UIImage())
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+
+        return header
+    }
 
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return exploreObjects.count
     }
-    
-    /*
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 135.00)
-    }
-
-    
-    // MARK: UICollectionViewHeader
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
-        // Initialize header
-        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "exploreHeader", for: indexPath) as! ExploreHeader
-     
-        
-        return header
-    }
-    */
-    
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
