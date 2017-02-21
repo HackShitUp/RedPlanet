@@ -467,29 +467,24 @@ class TimeVideoCell: UITableViewCell {
                                  style: .cancel,
                                  handler: nil)
         
-        
+        options.addAction(cancel)
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(edit)
 //            options.addAction(save)
             options.addAction(delete)
-            options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
 //            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
 //            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else {
-            options.addAction(cancel)
             options.addAction(report)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
             report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
         }
-        
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.delegate?.present(options, animated: true, completion: nil)
     }
 
@@ -505,11 +500,7 @@ class TimeVideoCell: UITableViewCell {
             self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }
-    
-    
-    
-    
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // (1) PLAY VIDEO

@@ -43,14 +43,57 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    
+    // MARK: - SimpleAlert
+    // Function to show alert
+    func showSimpleAlert() {
+        // MARK: - SimpleAlert
+        let alert = AlertController(title: "Successfully Saved Changes",
+                                    message: "New Profile Photos are automatically pushed to the news feeds.",
+                                    style: .alert)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.textColor = UIColor.black
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                view.messageLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let ok = AlertAction(title: "ok",
+                             style: .default,
+                             handler: { (AlertAction) in
+                                // Re-enable backButton
+                                self.backButton.isEnabled = true
+                                // Send Notification to friendsNewsfeed
+                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                // Send Notification to myProfile
+                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                // Pop view controller
+                                _ = self.navigationController?.popViewController(animated: true)
+        })
+        
+        alert.addAction(ok)
+        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+    }
+    
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBAction func save(_ sender: AnyObject) {
         
-        
-        // Check for empty email...
         if rpUsername.text!.isEmpty {
-            
+        // NO USERNAME
             let alert = UIAlertController(title: "Invalid Username",
                                           message: "Please enter your username to save changes.",
                                           preferredStyle: .alert)
@@ -63,7 +106,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             self.present(alert, animated: true, completion: nil)
             
         } else if rpEmail.text!.isEmpty {
-            
+        // NO EMAIL
             let alert = UIAlertController(title: "Invalid Email",
                                           message: "Please enter your email to save changes.",
                                           preferredStyle: .alert)
@@ -76,7 +119,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             self.present(alert, animated: true, completion: nil)
             
         } else if self.rpName.text!.isEmpty {
-            
+        // NO NAME
             let alert = UIAlertController(title: "Please Enter Your Full Name",
                                           message: "Help your friends find you better!",
                                           preferredStyle: .alert)
@@ -89,7 +132,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             self.present(alert, animated: true, completion: nil)
             
         } else {
-        
+        // CLEAR
             // Disable back button
             self.backButton.isEnabled = false
 
@@ -115,16 +158,17 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             var rUsername = self.rpUsername.text!
             rUsername = rUsername.replacingOccurrences(of: " ", with: "")
             rUsername = rUsername.replacingOccurrences(of: "☄️", with: "")
-            
             var fullName = self.rpName.text!
             fullName = fullName.replacingOccurrences(of: "☄️", with: "")
             
-            // I) Save changes to Parse className: "_User"
+            // =====================================================================================================================
+            // I) BASIC CREDENTIAL UPDATE ==========================================================================================
+            // =====================================================================================================================
             let me = PFUser.current()!
-            me.email = rpEmail.text!.lowercased()
+            me["email"] = rpEmail.text!.lowercased()
             me["realNameOfUser"] = fullName
             me["userBiography"] = self.rpUserBio.text!
-            me.username = rUsername.lowercased()
+            me["username"] = rUsername.lowercased()
             me["birthday"] = stringDate
             me["userProfilePicture"] = proPicFile
             me.saveInBackground(block: {
@@ -137,7 +181,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     // Enable back button
                     self.backButton.isEnabled = true
                     
-                    // II) New Profile Photo
+                    
+                    
+                    
+                    // =====================================================================================================================
+                    // II) NEW PROFILE PHOTO ===============================================================================================
+                    // =====================================================================================================================
                     if isNewProPic == true {
                         // Show Progress
                         SVProgressHUD.show()
@@ -156,70 +205,23 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                             if success {
                                 print("Pushed New Profile Photo to Newsfeeeds:\n\(newsfeeds)\n")
 
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.showSuccess(withStatus: "Saved")
-                                // Enable back button
-                                self.backButton.isEnabled = true
-                                
-                                // Present alert
-                                let alert = AlertController(title: "Successfully Saved Changes",
-                                                              message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                              style: .alert)
-                                
-                                // Design content view
-                                alert.configContentView = { view in
-                                    if let view = view as? AlertContentView {
-                                        view.backgroundColor = UIColor.white
-                                        view.titleLabel.textColor = UIColor.black
-                                        view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-                                        view.messageLabel.textColor = UIColor.black
-                                        view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                        view.textBackgroundView.layer.cornerRadius = 3.00
-                                        view.textBackgroundView.clipsToBounds = true
-                                    }
-                                }
-                                // Design corner radius
-                                alert.configContainerCornerRadius = {
-                                    return 14.00
-                                }
-                                
-                                let ok = AlertAction(title: "ok",
-                                                       style: .default,
-                                                       handler: { (AlertAction) in
-                                                        
-                                                        
-                                                        // Re-enable backButton
-                                                        self.backButton.isEnabled = true
-                                                        
-                                                        
-                                                        // Send Notification to friendsNewsfeed
-                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                        
-                                                        // Send Notification to myProfile
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        
-                                                        // Pop view controller
-                                                        _ = self.navigationController?.popViewController(animated: true)
-                                })
-                                
-                                
-                                
-                                alert.addAction(ok)
-                                alert.view.tintColor = UIColor.black
-                                self.present(alert, animated: true, completion: nil)
+                                // Show SimpleAlert
+                                self.showSimpleAlert()
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showError(withStatus: "Error")
                                 // Re-enable backButton
                                 self.backButton.isEnabled = true
                             }
                         })
-                    } // end profile photo to news feed push
-                    
-                    
-                    
-                    // III) Profile Photo Caption Update
+                    } // END PROFILE PHOTO UPDATE
+                    // =====================================================================================================================
+                    // III) PROFILE PHOTO CAPTION UPDATE ===================================================================================
+                    // =====================================================================================================================
                     if isNewProPic == false && didChangeCaption == true {
+                        
                         // Show Progress
                         SVProgressHUD.show()
                         SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -244,59 +246,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                         // Dismiss Progress
                                         SVProgressHUD.dismiss()
                                         
-                                        // Enable back button
-                                        self.backButton.isEnabled = true
-
-                                        
-                                        // Present alert
-                                        let alert = AlertController(title: "Successfully Saved Changes",
-                                                                    message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                                    style: .alert)
-                                        
-                                        // Design content view
-                                        alert.configContentView = { view in
-                                            if let view = view as? AlertContentView {
-                                                view.backgroundColor = UIColor.white
-                                                view.titleLabel.textColor = UIColor.black
-                                                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-                                                view.messageLabel.textColor = UIColor.black
-                                                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                                view.textBackgroundView.layer.cornerRadius = 3.00
-                                                view.textBackgroundView.clipsToBounds = true
-                                            }
-                                        }
-                                        // Design corner radius
-                                        alert.configContainerCornerRadius = {
-                                            return 14.00
-                                        }
-                                        
-                                        let ok = AlertAction(title: "ok",
-                                                             style: .default,
-                                                             handler: { (AlertAction) in
-                                                                
-                                                                // Re-enable backButton
-                                                                self.backButton.isEnabled = true
-                                                                
-                                                                // Send Notification to friendsNewsfeed
-                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                                
-                                                                // Send Notification to myProfile
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.navigationController?.popViewController(animated: true)
-                                        })
-                                        
-                                        
-                                        
-                                        alert.addAction(ok)
-                                        alert.view.tintColor = UIColor.black
-                                        self.present(alert, animated: true, completion: nil)
-                                        
-                                        
+                                        // Show SimpleAlert
+                                        self.showSimpleAlert()
                                         
                                     } else {
                                         print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
                                         // Re-enable backButton
                                         self.backButton.isEnabled = true
                                     }
@@ -304,58 +260,30 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showError(withStatus: "Error")
                                 // Re-enable backButton
                                 self.backButton.isEnabled = true
                             }
                         })
-                    } // end caption update
+                    } // end CAPTION UPDATE
                     
                     
+                    
+                    // NON-Profile Photo Related Update 
+                    // Updated user's credentials or bio...
                     // Dismiss Progress
                     SVProgressHUD.dismiss()
-                    
-                    // Present alert
-                    let alert = UIAlertController(title: "Successfully Saved Changes",
-                                                  message: "New Profile Photos are automatically pushed to the news feeds.",
-                                                  preferredStyle: .alert)
-                    
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: { (alertAction: UIAlertAction!) in
-                                            
-                                            
-                                            // Re-enable backButton
-                                            self.backButton.isEnabled = true
-                                            
-                                            
-                                            // Send Notification to friendsNewsfeed
-                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                            
-                                            // Send Notification to myProfile
-                                            NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                            
-                                            // Pop view controller
-                                            _ = self.navigationController?.popViewController(animated: true)
-                    })
-                    
-                    
-                    
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
-                    
+                    // Show Alert
+                    self.showSimpleAlert()
                 } else {
-                    print(error?.localizedDescription as Any)
-                    
+                    print("ERROR HERE: \(error?.localizedDescription as Any)")
                     // Dismiss Progress
                     SVProgressHUD.dismiss()
                     // Re-enable backButton
                     self.backButton.isEnabled = true
                 }
             })
-
-            
-            
         }
         
         // Send Notification to myProfile
@@ -379,61 +307,78 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         image.allowsEditing = true
         image.navigationBar.tintColor = UIColor.black
         image.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-
-    
-        let alert = UIAlertController(title: nil,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
         
-        let change = UIAlertAction(title: "New Profile Photo",
-                                   style: .default,
-                                   handler: { (alertAction: UIAlertAction!) in
-                                    
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                    message: nil,
+                                    style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+                view.messageLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        let change = AlertAction(title: "New Profile Photo",
+                                 style: .default,
+                                 handler: { (AlertAction) in
                                     // Present image picker
                                     self.present(image, animated: false, completion: nil)
         })
         
-        let edit = UIAlertAction(title: "Edit Profile Photo Caption",
-                                 style: .default,
-                                 handler: {(alertAction: UIAlertAction!) in
-                                    
-                                    // Save boolean
-                                    let me = PFUser.current()!
-                                    me["proPicExists"] = true
-                                    me.saveInBackground(block: {
-                                        (success: Bool, error: Error?) in
-                                        if success {
-                                            
-                                            // Append new profile photo
-                                            changedProPicImg.append(self.rpUserProPic.image!)
-                                            
-                                            // Present Popover
-                                            let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
-                                            newProPicVC.modalPresentationStyle = .popover
-                                            newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-                                            
-                                            
-                                            let popOverVC = newProPicVC.popoverPresentationController
-                                            popOverVC?.permittedArrowDirections = .any
-                                            popOverVC?.delegate = self
-                                            popOverVC?.sourceView = self.rpUserProPic
-                                            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-                                            
-                                            
-                                            self.present(newProPicVC, animated: true, completion: nil)
-                                            
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    })
+        let edit = AlertAction(title: "Edit Profile Photo Caption",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // Save boolean
+                                let me = PFUser.current()!
+                                me["proPicExists"] = true
+                                me.saveInBackground(block: {
+                                    (success: Bool, error: Error?) in
+                                    if success {
+                                        
+                                        // Append new profile photo
+                                        changedProPicImg.append(self.rpUserProPic.image!)
+                                        
+                                        // Present Popover
+                                        let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
+                                        newProPicVC.modalPresentationStyle = .popover
+                                        newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+                                        
+                                        
+                                        let popOverVC = newProPicVC.popoverPresentationController
+                                        popOverVC?.permittedArrowDirections = .any
+                                        popOverVC?.delegate = self
+                                        popOverVC?.sourceView = self.rpUserProPic
+                                        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+                                        
+                                        
+                                        self.present(newProPicVC, animated: true, completion: nil)
+                                        
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
         })
-
         
         
         // Remove
-        let remove = UIAlertAction(title: "Remove Profile Photo",
-                                   style: .destructive,
-                                   handler: { (alertAction: UIAlertAction!) in
+        let remove = AlertAction(title: "Remove Profile Photo",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
                                     
                                     // Show Progress
                                     SVProgressHUD.show()
@@ -476,25 +421,32 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     
         })
         
-        let cancel = UIAlertAction(title: "Cancel",
+        let cancel = AlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         
         
         // Show options depending on whether or not user has a profile photo
         if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
-            alert.addAction(change)
-            alert.addAction(edit)
-            alert.addAction(remove)
-            alert.addAction(cancel)
+            options.addAction(change)
+            options.addAction(edit)
+            options.addAction(remove)
+            options.addAction(cancel)
+            change.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            change.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            remove.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            remove.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
         } else {
-            alert.addAction(change)
-            alert.addAction(cancel)
+            options.addAction(change)
+            options.addAction(cancel)
+            change.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            change.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
         }
-        
-        // Add black tint
-        alert.view.tintColor = UIColor.black
-        self.navigationController!.present(alert, animated: true, completion: nil)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        self.present(options, animated: true, completion: nil)
     }
     
     
@@ -518,7 +470,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 controller?.delegate = self
             }
         }
-
     }
     
 
@@ -532,7 +483,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             (success: Bool, error: Error?) in
             if success {
                 print("Saved Bool!")
-
                 // Set image
                 if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
                     // Set image
@@ -546,7 +496,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     // Dismiss view controller
                     self.dismiss(animated: true, completion: nil)
                     
-                    
                     // MARK: - CLImageEditor
                     // Show Editing Options
                     let editor = CLImageEditor(image: self.rpUserProPic.image!)
@@ -554,15 +503,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     editor?.delegate = self
                     self.present(editor!, animated: true, completion: nil)
                 }
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
-                
-                
                 // Dismiss view controller
                 self.dismiss(animated: true, completion: nil)
-                
             }
         })
         
@@ -572,17 +516,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         return isNewProPic
     }
     
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         // Save bool
         PFUser.current()!["proPicExists"] = false
         PFUser.current()!.saveInBackground()
-        
         // Dismiss view controller
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
     
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
@@ -591,12 +531,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
         
-        
         // Present Popover
         let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
         newProPicVC.modalPresentationStyle = .popover
         newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-        
         
         let popOverVC = newProPicVC.popoverPresentationController
         popOverVC?.permittedArrowDirections = .any
@@ -604,28 +542,23 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         popOverVC?.sourceView = self.rpUserProPic
         popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
         
-        
         self.present(newProPicVC, animated: true, completion: nil)
-        
     }
     
     func imageEditorDidCancel(_ editor: CLImageEditor) {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
         
-        
         // Present Popover
         let newProPicVC = self.storyboard?.instantiateViewController(withIdentifier: "newProPicVC") as! NewProfilePhoto
         newProPicVC.modalPresentationStyle = .popover
         newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-        
         
         let popOverVC = newProPicVC.popoverPresentationController
         popOverVC?.permittedArrowDirections = .any
         popOverVC?.delegate = self
         popOverVC?.sourceView = self.rpUserProPic
         popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        
         
         self.present(newProPicVC, animated: true, completion: nil)
     }
@@ -639,11 +572,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         rpUsername.resignFirstResponder()
     }
 
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Add border to top of container
         let upperBorder = CALayer()
         upperBorder.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
@@ -661,10 +591,8 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         self.rpUserProPic.layer.borderWidth = 1.00
         self.rpUserProPic.clipsToBounds = true
         
-        
         // (B) If there exists, a current user...
         if PFUser.current() != nil {
-            
             // (1) Set birthday date
             if let bday = PFUser.current()!["birthday"] as? String {
                 let dateFormatter = DateFormatter()
@@ -672,15 +600,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 print("The birthday: \(bday)")
                 userBirthday.date = dateFormatter.date(from: bday)!
             }
-            
             // (2) Set username's title to navigation bar
             if let fullName = PFUser.current()!.value(forKey: "realNameOfUser") as? String {
                 self.title = fullName
             }
-            
             // (3) Set username
             rpUsername.text = PFUser.current()!.username!
-            
             // (4) Set user's biography
             if let RPBiography = PFUser.current()!["userBiography"] as? String {
                 if RPBiography.isEmpty {
@@ -690,7 +615,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     rpUserBio.text = RPBiography
                 }
             }
-            
             // (5) Set user's real name
             if let RPRealName = PFUser.current()!["realNameOfUser"] as? String {
                 if RPRealName.isEmpty {
@@ -699,7 +623,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     rpName.text = RPRealName
                 }
             }
-            
             // (6) Set user's email
             if let RPEmail = PFUser.current()!["email"] as? String {
                 if RPEmail.isEmpty {
@@ -708,8 +631,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     rpEmail.text = RPEmail
                 }
             }
-            
-            
             // (7) Set user's profile photo
             if let proPic = PFUser.current()!["userProfilePicture"] as? PFFile {
                 // MARK: - SDWebImage
@@ -718,7 +639,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 // Set default
                 self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
             }
-            
         }
 
         // (C) Add target function to user's profile picture
@@ -726,7 +646,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         changeProPic.numberOfTapsRequired = 1
         self.rpUserProPic.addGestureRecognizer(changeProPic)
         self.rpUserProPic.isUserInteractionEnabled = true
-        
 
         // (D) Add Tap to hide keyboard
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -745,5 +664,4 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
 }

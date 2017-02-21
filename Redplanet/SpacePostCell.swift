@@ -573,13 +573,13 @@ class SpacePostCell: UITableViewCell {
                                  style: .cancel,
                                  handler: nil)
 
-        // Return options
+        
+        options.addAction(cancel)
         if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
             options.addAction(edit)
 //            options.addAction(save)
             options.addAction(delete1)
-            options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
@@ -588,30 +588,23 @@ class SpacePostCell: UITableViewCell {
 //            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete1.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete1.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
 //            options.addAction(save)
             options.addAction(delete2)
-            options.addAction(cancel)
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
 //            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
 //            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete2.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete2.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
         } else {
             options.addAction(report)
-            options.addAction(cancel)
             report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
         }
-        
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
         self.delegate?.present(options, animated: true, completion: nil)
     }
     

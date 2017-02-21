@@ -228,12 +228,14 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         return UITableViewAutomaticDimension
     }
 
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "proPicCell", for: indexPath) as! ProfilePhotoCell
+        let cell = Bundle.main.loadNibNamed("ProPicCell", owner: self, options: nil)?.first as! ProPicCell
         
         // Declare parent VC
-        cell.delegate = self
+        cell.delegate = self.navigationController
+        
+        cell.postObject = proPicObject.last!
+        cell.userObject = proPicObject.last!.value(forKey: "byUser") as! PFUser
         
         // Configure size
         cell.contentView.frame = cell.contentView.frame
@@ -258,22 +260,17 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             // MARK: - SDWebImage
             cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
-        } else {
-            // Set default
-            cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
         }
         
         // (B) Set caption
         if let caption = proPicObject.last!.value(forKey: "textPost") as? String {
-            cell.caption.text! = caption
+            cell.textPost.text! = caption
         } else {
-            cell.caption.isHidden = true
+            cell.textPost.isHidden = true
         }
-        
         
         // (C) Set user's fullName
         cell.rpUsername.text! = otherObject.last!.value(forKey: "realNameOfUser") as! String
-        
         
         // (D) Set time
         let from = proPicObject.last!.createdAt!
@@ -284,49 +281,36 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
             } else {
                 cell.time.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.time.text = "1 minute ago"
             } else {
                 cell.time.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.time.text = "1 hour ago"
             } else {
                 cell.time.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1 day ago"
             } else {
                 cell.time.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.time.text = createdDate.string(from: proPicObject.last!.createdAt!)
         }
-        
-        
-        
-        
+
         // (F) Set likes
         if self.likes.count == 0 {
             cell.numberOfLikes.setTitle("likes", for: .normal)
@@ -347,8 +331,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
             cell.likeButton.setTitle("notLiked", for: .normal)
         }
         
-        
-        
         // (G) Count comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
@@ -357,7 +339,6 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
         }
-        
         
         // (H) Count shares
         if self.shares.count == 0 {

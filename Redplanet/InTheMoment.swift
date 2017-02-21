@@ -577,7 +577,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     func shareOptions(sender: UIButton) {
         // Append post's object: PFObject
         shareObject.append(itmObject.last!)
-        
         // Share to chats
         let shareToVC = self.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
         self.navigationController?.pushViewController(shareToVC, animated: true)
