@@ -3666,10 +3666,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5s1-Og-6eq">
-                                                    <rect key="frame" x="51" y="9" width="258" height="22"/>
+                                                    <rect key="frame" x="51" y="8" width="235" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="dxx-mw-tl5"/>
-                                                        <constraint firstAttribute="width" constant="258" id="xyu-jM-ud9"/>
+                                                        <constraint firstAttribute="width" constant="235" id="xyu-jM-ud9"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                                     <state key="normal">
@@ -3677,10 +3677,10 @@
                                                     </state>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHD-3z-6zH">
-                                                    <rect key="frame" x="317" y="8" width="50" height="21"/>
+                                                    <rect key="frame" x="294" y="8" width="73" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="UH4-rT-ZrS"/>
-                                                        <constraint firstAttribute="width" constant="50" id="hM0-Px-zdc"/>
+                                                        <constraint firstAttribute="width" constant="73" id="hM0-Px-zdc"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -3711,14 +3711,14 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="5s1-Og-6eq" firstAttribute="leading" secondItem="MNo-KX-Ixe" secondAttribute="trailing" constant="8" id="0lQ-bb-IlM"/>
-                                                <constraint firstItem="nOk-m9-PUO" firstAttribute="top" secondItem="5s1-Og-6eq" secondAttribute="bottom" constant="3" id="8Dl-RA-FPg"/>
+                                                <constraint firstItem="nOk-m9-PUO" firstAttribute="top" secondItem="5s1-Og-6eq" secondAttribute="bottom" constant="4" id="8Dl-RA-FPg"/>
                                                 <constraint firstItem="5s1-Og-6eq" firstAttribute="leading" secondItem="MNo-KX-Ixe" secondAttribute="trailing" constant="8" id="Fap-Zn-Wt4"/>
                                                 <constraint firstItem="bHD-3z-6zH" firstAttribute="leading" secondItem="5s1-Og-6eq" secondAttribute="trailing" constant="8" id="VHi-ZT-AXa"/>
                                                 <constraint firstItem="MNo-KX-Ixe" firstAttribute="leading" secondItem="qEx-t1-7eM" secondAttribute="leading" constant="8" id="aXb-ao-hGa"/>
                                                 <constraint firstItem="bHD-3z-6zH" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="8" id="dJx-Co-eaz"/>
                                                 <constraint firstAttribute="bottom" secondItem="nOk-m9-PUO" secondAttribute="bottom" constant="4.5" id="hiY-Hh-i67"/>
                                                 <constraint firstItem="bHD-3z-6zH" firstAttribute="leading" secondItem="5s1-Og-6eq" secondAttribute="trailing" constant="8" id="iYj-iR-OS6"/>
-                                                <constraint firstItem="5s1-Og-6eq" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="9" id="p2Z-Ms-qlT"/>
+                                                <constraint firstItem="5s1-Og-6eq" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="8" id="p2Z-Ms-qlT"/>
                                                 <constraint firstItem="nOk-m9-PUO" firstAttribute="leading" secondItem="MNo-KX-Ixe" secondAttribute="trailing" constant="8" id="rDJ-0g-IUx"/>
                                                 <constraint firstAttribute="trailing" secondItem="nOk-m9-PUO" secondAttribute="trailing" constant="8" id="wui-hF-eiU"/>
                                                 <constraint firstItem="MNo-KX-Ixe" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="12" id="yus-ry-SvM"/>
@@ -3771,7 +3771,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G8T-Oa-J2G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2454" y="173"/>
+            <point key="canvasLocation" x="2453.5" y="172.5"/>
         </scene>
         <!--New Text Post-->
         <scene sceneID="yYO-cS-sPc">
