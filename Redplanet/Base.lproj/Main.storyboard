@@ -3533,7 +3533,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sup-Rn-era">
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sup-Rn-era">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="135"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="135" id="4w0-Bc-qP1"/>
@@ -3585,13 +3585,13 @@
                                                 <constraint firstAttribute="width" constant="359" id="Q8d-Wb-1lx"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eur-B3-9Tj">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eur-B3-9Tj">
                                             <rect key="frame" x="16" y="136" width="343" height="64"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="343" id="0qm-0a-3IQ"/>
                                                 <constraint firstAttribute="height" constant="64" id="yaB-Ja-dQQ"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -4341,21 +4341,11 @@
         <scene sceneID="cmx-y3-aTM">
             <objects>
                 <tableViewController storyboardIdentifier="savedVC" id="frg-Mx-1gp" customClass="SavedPosts" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gdf-Vl-QMm">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="gdf-Vl-QMm">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="s4c-Aw-xUn">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="s4c-Aw-xUn" id="nkm-t1-l9l">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="frg-Mx-1gp" id="aZI-Kd-4bd"/>
                             <outlet property="delegate" destination="frg-Mx-1gp" id="Uch-GO-qUq"/>
@@ -4368,10 +4358,10 @@
                                 <action selector="backButton:" destination="frg-Mx-1gp" id="Cby-1i-KjO"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="g1u-5q-DW2">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="g1u-5q-DW2">
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <action selector="reload:" destination="frg-Mx-1gp" id="xht-SC-3FS"/>
+                                <action selector="edit:" destination="frg-Mx-1gp" id="Ue4-4R-7r0"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -6283,7 +6273,7 @@ SOFTWARE.</string>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="UrX-zO-Bci">
-                        <barButtonItem key="leftBarButtonItem" image="Search-50" id="Apx-k5-583">
+                        <barButtonItem key="leftBarButtonItem" image="RedBookmark50png" id="Apx-k5-583">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="saved:" destination="0Ns-Z2-0Wf" id="sOW-X4-sVe"/>
@@ -6517,6 +6507,7 @@ SOFTWARE.</string>
         <image name="NewText" width="275" height="275"/>
         <image name="Newsfeed(1)" width="24" height="24"/>
         <image name="Number Pad-48" width="24" height="24"/>
+        <image name="RedBookmark50png" width="25" height="25"/>
         <image name="Redo-100" width="256" height="256"/>
         <image name="RedplanetLogo" width="256" height="256"/>
         <image name="SCRP" width="26" height="26"/>

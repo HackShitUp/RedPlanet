@@ -233,7 +233,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // Declare parent VC
         cell.delegate = self.navigationController
-        
+        // Set objects
         cell.postObject = proPicObject.last!
         cell.userObject = proPicObject.last!.value(forKey: "byUser") as! PFUser
         

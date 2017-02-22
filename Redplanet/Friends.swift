@@ -237,7 +237,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
             // Scroll to top
-            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            self.tableView!.setContentOffset(CGPoint.zero, animated: false)
         }
     }
     
@@ -706,9 +706,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
                 }
             } else if difference.hour! > 0 && difference.day! == 0 {
                 if difference.hour! == 1 {
-                    ppCell.time.text! = "updated their Profile Photo 1hr ago"
+                    ppCell.time.text! = "updated their Profile Photo 1h ago"
                 } else {
-                    ppCell.time.text! = "updated their Profile Photo \(difference.hour!)hrs ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.hour!)h ago"
                 }
             } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 if difference.day! == 1 {

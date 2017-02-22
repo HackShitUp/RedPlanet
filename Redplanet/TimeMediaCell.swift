@@ -319,7 +319,7 @@ class TimeMediaCell: UITableViewCell {
         })
         
         // (2) Save Post
-        let save = AlertAction(title: "Save Post",
+        let save = AlertAction(title: "Save",
                                style: .default,
                                handler: { (AlertAction) in
                                 // MARK: - SVProgressHUD
@@ -329,7 +329,7 @@ class TimeMediaCell: UITableViewCell {
                                 
                                 // Save Post
                                 let newsfeeds = PFQuery(className: "Newsfeeds")
-                                newsfeeds.getObjectInBackground(withId: photoAssetObject.last!.objectId!, block: {
+                                newsfeeds.getObjectInBackground(withId: self.postObject!.objectId!, block: {
                                     (object: PFObject?, error: Error?) in
                                     if error == nil {
                                         object!["saved"] = true
@@ -484,18 +484,19 @@ class TimeMediaCell: UITableViewCell {
                                  style: .cancel,
                                  handler: nil)
         
-        options.addAction(cancel)
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(edit)
-//            options.addAction(save)
+            options.addAction(save)
             options.addAction(delete)
+            options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-//            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-//            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
         } else {
+            options.addAction(cancel)
             options.addAction(report)
             report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)

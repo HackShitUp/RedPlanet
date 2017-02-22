@@ -44,12 +44,8 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     @IBAction func saved(_ sender: Any) {
         // Show Saved Posts
-//        let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
-//        self.navigationController?.pushViewController(savedVC, animated: true)
-        // Show search
-        let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController!.pushViewController(search, animated: true)
-
+        let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
+        self.navigationController?.pushViewController(savedVC, animated: true)
     }
 
     // Function to fetch my content
@@ -764,9 +760,9 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 }
             } else if difference.hour! > 0 && difference.day! == 0 {
                 if difference.hour! == 1 {
-                    ppCell.time.text! = "updated their Profile Photo 1hr ago"
+                    ppCell.time.text! = "updated their Profile Photo 1h ago"
                 } else {
-                    ppCell.time.text! = "updated their Profile Photo \(difference.hour!)hrs ago"
+                    ppCell.time.text! = "updated their Profile Photo \(difference.hour!)h ago"
                 }
             } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
                 if difference.day! == 1 {

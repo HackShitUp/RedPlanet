@@ -22,18 +22,34 @@ import SimpleAlert
 import SVProgressHUD
 import SDWebImage
 
-class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
+class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // Saved Posts
     var posts = [PFObject]()
     var likes = [PFObject]()
     let ephemeralTypes = ["itm", "sh", "sp"]
+    var timeString: String?
+    
+    // Refresher
+    var refresher: UIRefreshControl!
     
     @IBAction func backButton(_ sender: Any) {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func reload(_ sender: Any) {
+    @IBAction func edit(_ sender: Any) {
+        if self.tableView?.isEditing == true {
+            self.tableView?.isEditing = false
+        } else {
+            self.tableView?.isEditing = true
+        }
+    }
+    
+    // Function to reload data
+    func refresh() {
+        self.fetchSaved()
+        self.refresher.endRefreshing()
+        self.tableView.reloadData()
     }
     
     // Function to fetch saved posts
@@ -53,6 +69,12 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                     self.posts.append(object)
                 }
                 
+                // Set DZN
+                if self.posts.count == 0 {
+                    self.tableView!.emptyDataSetDelegate = self
+                    self.tableView!.emptyDataSetSource = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -66,13 +88,13 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Saved Posts"
+            self.title = "Saved"
         }
         
         // Configure nav bar, show tab bar, and set statusBar
@@ -111,13 +133,103 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
+        
+        // Add refresher
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        self.tableView?.addSubview(refresher)
+        self.refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
+    
+    // MARK: DZNEmptyDataSet Framework
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.posts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "👽\nNo saved posts yet."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Share Something"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+    }
+    
+    // Function to calculate time
+    func calculateTime(object: PFObject?) -> String? {
+        // Configure initial setup for time
+        let from = object!.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
 
+        if difference.second! <= 0 {
+            self.timeString = "now"
+        } else if difference.second! > 0 && difference.minute! == 0 {
+            if difference.second! == 1 {
+                self.timeString = "1s ago"
+            } else {
+                self.timeString = "\(difference.second!)s ago"
+            }
+        } else if difference.minute! > 0 && difference.hour! == 0 {
+            if difference.minute! == 1 {
+                self.timeString = "1m ago"
+            } else {
+                self.timeString = "\(difference.minute!)m ago"
+            }
+        } else if difference.hour! > 0 && difference.day! == 0 {
+            if difference.hour! == 1 {
+                self.timeString = "1h ago"
+            } else {
+                self.timeString = "\(difference.hour!)h ago"
+            }
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            if difference.day! == 1 {
+                self.timeString = "1d ago"
+            } else {
+                self.timeString = "\(difference.day!)d ago"
+            }
+        } else if difference.weekOfMonth! > 0 {
+            let createdDate = DateFormatter()
+            createdDate.dateFormat = "MMM d, yyyy"
+            self.timeString = createdDate.string(from: object!.createdAt!)
+        }
+        
+        return timeString!
+    }
+    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -139,11 +251,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Configure initial setup for time
-        let from = self.posts[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
@@ -177,37 +284,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            if difference.second! <= 0 {
-                tpCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    tpCell.time.text! = "1 second ago"
-                } else {
-                    tpCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    tpCell.time.text! = "1 minute ago"
-                } else {
-                    tpCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    tpCell.time.text! = "1 hour ago"
-                } else {
-                    tpCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    tpCell.time.text! = "1 day ago"
-                } else {
-                    tpCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                tpCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            tpCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
             
             // (6) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -277,9 +354,15 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 }
             })
             
+            // Disable buttons
+            tpCell.likeButton.isUserInteractionEnabled = false
+            tpCell.numberOfLikes.isUserInteractionEnabled = false
+            tpCell.commentButton.isUserInteractionEnabled = false
+            tpCell.numberOfComments.isUserInteractionEnabled = false
+            tpCell.shareButton.isUserInteractionEnabled = false
+            tpCell.numberOfShares.isUserInteractionEnabled = false
             
             return tpCell   // return TimeTextPostCell.swift
-            
             
         } else if self.ephemeralTypes.contains(self.posts[indexPath.row].value(forKeyPath: "contentType") as! String) {
             // ****************************************************************************************************************
@@ -310,11 +393,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             eCell.delegate = self.navigationController
             
             // (4) SET TIME
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
+            eCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
             
             // (5) Layout content
             // High level configurations
@@ -410,37 +489,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                mCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    mCell.time.text! = "1 second ago"
-                } else {
-                    mCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    mCell.time.text! = "1 minute ago"
-                } else {
-                    mCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    mCell.time.text! = "1 hour ago"
-                } else {
-                    mCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    mCell.time.text! = "1 day ago"
-                } else {
-                    mCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                mCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            mCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -510,8 +559,16 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 }
             })
             
-            return mCell // return TimeMediaCell.swift
             
+            // Disable buttons
+            mCell.likeButton.isUserInteractionEnabled = false
+            mCell.numberOfLikes.isUserInteractionEnabled = false
+            mCell.commentButton.isUserInteractionEnabled = false
+            mCell.numberOfComments.isUserInteractionEnabled = false
+            mCell.shareButton.isUserInteractionEnabled = false
+            mCell.numberOfShares.isUserInteractionEnabled = false
+            
+            return mCell // return TimeMediaCell.swift
             
         } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "pp" {
             // ****************************************************************************************************************
@@ -569,37 +626,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                ppCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    ppCell.time.text! = "1 second ago"
-                } else {
-                    ppCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    ppCell.time.text! = "1 minute ago"
-                } else {
-                    ppCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    ppCell.time.text! = "1 hour ago"
-                } else {
-                    ppCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    ppCell.time.text! = "1 day ago"
-                } else {
-                    ppCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                ppCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            ppCell.time.text! = "updated their Profile Photo," + "\(self.calculateTime(object: self.posts[indexPath.row])!)"
             
             // (7) FETCH LIKES, COMMENTS, AND SHARES
             let likes = PFQuery(className: "Likes")
@@ -669,6 +696,15 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 }
             })
             
+            
+            // Disable buttons
+            ppCell.likeButton.isUserInteractionEnabled = false
+            ppCell.numberOfLikes.isUserInteractionEnabled = false
+            ppCell.commentButton.isUserInteractionEnabled = false
+            ppCell.numberOfComments.isUserInteractionEnabled = false
+            ppCell.shareButton.isUserInteractionEnabled = false
+            ppCell.numberOfShares.isUserInteractionEnabled = false
+            
             return ppCell // return ProPicCell.swift
             
         } else {
@@ -736,37 +772,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            if difference.second! <= 0 {
-                vCell.time.text! = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    vCell.time.text! = "1 second ago"
-                } else {
-                    vCell.time.text! = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    vCell.time.text! = "1 minute ago"
-                } else {
-                    vCell.time.text! = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    vCell.time.text! = "1 hour ago"
-                } else {
-                    vCell.time.text! = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    vCell.time.text! = "1 day ago"
-                } else {
-                    vCell.time.text! = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                vCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
-            }
+            vCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -836,14 +842,73 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 }
             })
             
-            
             // Disable buttons
+            vCell.likeButton.isUserInteractionEnabled = false
+            vCell.numberOfLikes.isUserInteractionEnabled = false
+            vCell.commentButton.isUserInteractionEnabled = false
+            vCell.numberOfComments.isUserInteractionEnabled = false
+            vCell.shareButton.isUserInteractionEnabled = false
+            vCell.numberOfShares.isUserInteractionEnabled = false
             
             return vCell // return TimeVideoCell.swift
         }
     }//end cellForRowAt
-
     
     
-
+    // Mark: UITableviewDelegate methods
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        // Swipe to Delete Messages
+        let unsave = UITableViewRowAction(style: .normal, title: "Unsave") {
+            (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
+            
+            // Show Progress
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setBackgroundColor(UIColor.white)
+            SVProgressHUD.show(withStatus: "Removing")
+           
+            // Fetch
+            let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.getObjectInBackground(withId: "\(self.posts[indexPath.row].objectId!)", block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    object!["saved"] = false
+                    object!.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showSuccess(withStatus: "Unsaved")
+                            
+                            // Delete post from table view
+                            self.posts.remove(at: indexPath.row)
+                            self.tableView?.deleteRows(at: [indexPath], with: .fade)
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showError(withStatus: "Error")
+                        }
+                    })
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
+            
+            // Refresh
+            self.refresh()
+        }
+        
+        // Set background color
+        unsave.backgroundColor = UIColor(red:1.00, green:0.19, blue:0.19, alpha:1.0)
+        
+        return [unsave]
+    }
+    
+    
 }

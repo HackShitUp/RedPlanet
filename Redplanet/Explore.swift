@@ -188,6 +188,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         
         // Set delegate
         header.delegate = self
+        header.adOne.sd_setIndicatorStyle(.gray)
+        header.adOne.sd_showActivityIndicatorView()
         
         // ADS
         let ads = PFQuery(className: "Ads")

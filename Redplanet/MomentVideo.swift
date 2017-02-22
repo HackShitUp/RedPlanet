@@ -44,6 +44,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     
+    // Function to shareVia
+    func shareVia() {
+        
+    }
+    
+    
     // Function to show options
     func showMore(sender: UIButton) {
         
@@ -67,7 +73,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             return 14.00
         }
         
-        let views = AlertAction(title: "🙈 Views 🙈",
+        let views = AlertAction(title: "Views",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
@@ -77,12 +83,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let save = AlertAction(title: "Save Post",
+        let save = AlertAction(title: "Save",
                                style: .default,
                                handler: { (AlertAction) in
                                 // MARK: - SVProgressHUD
                                 SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                SVProgressHUD.setForegroundColor(UIColor.black)
                                 SVProgressHUD.show(withStatus: "Saving")
                                 
                                 // Shared and og content
@@ -112,25 +118,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                                         SVProgressHUD.showError(withStatus: "Error")
                                     }
                                 })
-        })
-        
-        let share = AlertAction(title: "Share Via",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    
-                                    if let videoFile = itmObject.last!.value(forKey: "videoAsset") as? PFFile {
-                                        // Traverse video url to DATA
-                                        let videoData = NSData(contentsOf: URL(string: videoFile.url!)!)
-                                        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-                                        let docDirectory = paths[0]
-                                        let filePath = "\(docDirectory)/tmpVideo.mov"
-                                        videoData?.write(toFile: filePath, atomically: true)
-                                        let videoLink = NSURL(fileURLWithPath: filePath)
-                                        let objectsToShare = [videoLink]
-                                        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                                        activityVC.setValue("Video", forKey: "subject")
-                                        self.present(activityVC, animated: true, completion: nil)
-                                    }
         })
         
         let delete = AlertAction(title: "Delete",
@@ -209,17 +196,16 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         
         if moreButton.image(for: .normal) == UIImage(named: "More") {
             options.addAction(views)
-//            options.addAction(save)
-            options.addAction(share)
+            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             views.button.setTitleColor(UIColor.black, for: .normal)
-            share.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            share.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(options, animated: true, completion: nil)
         } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
@@ -511,11 +497,57 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     }
                     
                     // (3) Set time
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "E"
-                    let timeFormatter = DateFormatter()
-                    timeFormatter.dateFormat = "h:mm a"
-                    self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
+                    let from = itmObject.last!.createdAt!
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                    if difference.second! <= 0 {
+                        self.time.text = "now"
+                    } else if difference.second! > 0 && difference.minute! == 0 {
+                        if difference.second! == 1 {
+                            self.time.text = "1 second ago"
+                        } else {
+                            self.time.text = "\(difference.second!) seconds ago"
+                        }
+                    } else if difference.minute! > 0 && difference.hour! == 0 {
+                        if difference.minute! == 1 {
+                            self.time.text = "1 minute ago"
+                        } else {
+                            self.time.text = "\(difference.minute!) minutes ago"
+                        }
+                    } else if difference.hour! > 0 && difference.day! == 0 {
+                        if difference.hour! == 1 {
+                            self.time.text = "1 hour ago"
+                        } else {
+                            self.time.text = "\(difference.hour!) hours ago"
+                        }
+                    } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                        if difference.day! == 1 {
+                            self.time.text = "1 day ago"
+                        } else {
+                            self.time.text = "\(difference.day!) days ago"
+                        }
+                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                            self.likeButton.isUserInteractionEnabled = false
+                            self.numberOfLikes.isUserInteractionEnabled = false
+                            self.commentButton.isUserInteractionEnabled = false
+                            self.numberOfComments.isUserInteractionEnabled = false
+                            self.shareButton.isUserInteractionEnabled = false
+                            self.numberOfShares.isUserInteractionEnabled = false
+                        }
+                    } else if difference.weekOfMonth! > 0 {
+                        let createdDate = DateFormatter()
+                        createdDate.dateFormat = "MMM d, yyyy"
+                        self.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
+                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                            self.likeButton.isUserInteractionEnabled = false
+                            self.numberOfLikes.isUserInteractionEnabled = false
+                            self.commentButton.isUserInteractionEnabled = false
+                            self.numberOfComments.isUserInteractionEnabled = false
+                            self.shareButton.isUserInteractionEnabled = false
+                            self.numberOfShares.isUserInteractionEnabled = false
+                        }
+                    }
                     
                     // (4) Fetch likes
                     let likes = PFQuery(className: "Likes")
@@ -648,11 +680,27 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             self.moreButton.setImage(UIImage(named: "Exit"), for: .normal)
         }
         
+        // Disable interaction buttons if SAVED
+        if itmObject.last!.value(forKey: "saved") as! Bool == true {
+            self.likeButton.isUserInteractionEnabled = false
+            self.numberOfLikes.isUserInteractionEnabled = false
+            self.commentButton.isUserInteractionEnabled = false
+            self.numberOfComments.isUserInteractionEnabled = false
+            self.shareButton.isUserInteractionEnabled = false
+            self.numberOfShares.isUserInteractionEnabled = false
+        }
+        
         // Fetch data
         fetchContent()
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: momentVideoNotification, object: nil)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
         
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
@@ -671,13 +719,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
-
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+        
+        // (10) Long press to share
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(shareVia))
+        longTap.minimumPressDuration = 0.10
+        self.view.isUserInteractionEnabled = true
+        self.view.addGestureRecognizer(longTap)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -695,6 +742,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
     }
 

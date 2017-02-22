@@ -32,7 +32,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     var comments = [PFObject]()
     var shares = [PFObject]()
     
-    
     @IBOutlet weak var itmMedia: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -54,6 +53,15 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         DispatchQueue.main.async {
             _ = self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    // Functiont to share to other platforms
+    func shareVia() {
+        // Photo to Share
+        let image = SNUtils.screenShot(self.view)!
+        let imageToShare = [image]
+        let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     
@@ -80,7 +88,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             return 14.00
         }
         
-        let views = AlertAction(title: "🙈 Views 🙈",
+        let views = AlertAction(title: "Views",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
@@ -90,22 +98,12 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                     self.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
-        let share = AlertAction(title: "Share Via",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    // Photo to Share
-                                    let image = SNUtils.screenShot(self.view)!
-                                    let imageToShare = [image]
-                                    let activityVC = UIActivityViewController(activityItems: imageToShare, applicationActivities: nil)
-                                    self.present(activityVC, animated: true, completion: nil)
-        })
-        
-        let save = AlertAction(title: "Save Post",
+        let save = AlertAction(title: "Save",
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.setForegroundColor(UIColor.black)
                                     SVProgressHUD.show(withStatus: "Saving")
                                     
                                     // Shared and og content
@@ -211,21 +209,16 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         if moreButton.image(for: .normal) == UIImage(named: "More") {
             options.addAction(views)
-            options.addAction(share)
-//            options.addAction(save)
+            options.addAction(save)
             options.addAction(delete)
             options.addAction(cancel)
-            
-            for b in options.actions {
-                b.button.frame.size.height = 50
-            }
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             views.button.setTitleColor(UIColor.black, for: .normal)
-            share.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            share.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             cancel.button.setTitleColor(UIColor.black, for: .normal)
             self.present(options, animated: true, completion: nil)
         } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
@@ -256,11 +249,58 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     }
                     
                     // (3) Set time
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "E"
-                    let timeFormatter = DateFormatter()
-                    timeFormatter.dateFormat = "h:mm a"
-                    self.time.text = "\(timeFormatter.string(from: object.createdAt!))"
+                    let from = itmObject.last!.createdAt!
+                    let now = Date()
+                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+                    if difference.second! <= 0 {
+                        self.time.text = "now"
+                    } else if difference.second! > 0 && difference.minute! == 0 {
+                        if difference.second! == 1 {
+                            self.time.text = "1 second ago"
+                        } else {
+                            self.time.text = "\(difference.second!) seconds ago"
+                        }
+                    } else if difference.minute! > 0 && difference.hour! == 0 {
+                        if difference.minute! == 1 {
+                            self.time.text = "1 minute ago"
+                        } else {
+                            self.time.text = "\(difference.minute!) minutes ago"
+                        }
+                    } else if difference.hour! > 0 && difference.day! == 0 {
+                        if difference.hour! == 1 {
+                            self.time.text = "1 hour ago"
+                        } else {
+                            self.time.text = "\(difference.hour!) hours ago"
+                        }
+                    } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                        if difference.day! == 1 {
+                            self.time.text = "1 day ago"
+                        } else {
+                            self.time.text = "\(difference.day!) days ago"
+                        }
+                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                            self.likeButton.isUserInteractionEnabled = false
+                            self.numberOfLikes.isUserInteractionEnabled = false
+                            self.commentButton.isUserInteractionEnabled = false
+                            self.numberOfComments.isUserInteractionEnabled = false
+                            self.shareButton.isUserInteractionEnabled = false
+                            self.numberOfShares.isUserInteractionEnabled = false
+                        }
+                    } else if difference.weekOfMonth! > 0 {
+                        let createdDate = DateFormatter()
+                        createdDate.dateFormat = "MMM d, yyyy"
+                        self.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
+                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                            self.likeButton.isUserInteractionEnabled = false
+                            self.numberOfLikes.isUserInteractionEnabled = false
+                            self.commentButton.isUserInteractionEnabled = false
+                            self.numberOfComments.isUserInteractionEnabled = false
+                            self.shareButton.isUserInteractionEnabled = false
+                            self.numberOfShares.isUserInteractionEnabled = false
+                        }
+                    }
+                    
                     
                     // (4) Fetch likes
                     let likes = PFQuery(className: "Likes")
@@ -606,6 +646,29 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // Fetch data
         fetchContent()
         
+        // Add shadows
+        let buttons = [self.likeButton,
+                       self.numberOfLikes,
+                       self.commentButton,
+                       self.numberOfComments,
+                       self.shareButton,
+                       self.numberOfShares,
+                       self.rpUsername,
+                       self.time,
+                       self.moreButton] as [Any]
+        for b in buttons {
+            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
+            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
+            (b as AnyObject).layer.shadowRadius = 3
+            (b as AnyObject).layer.shadowOpacity = 0.5
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+        }
+    }
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
         
@@ -620,7 +683,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
-        
         
         // (2) Add numberOfLikes tap
         let numLikesTap = UITapGestureRecognizer(target: self, action: #selector(showLikes))
@@ -646,13 +708,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         self.numberOfComments.isUserInteractionEnabled = true
         self.numberOfComments.addGestureRecognizer(numCommentsTap)
         
-        
         // (7) Add comment tap
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(showComments))
         commentTap.numberOfTapsRequired = 1
         self.commentButton.isUserInteractionEnabled = true
         self.commentButton.addGestureRecognizer(commentTap)
-        
         
         // (8) Add num shares tap
         let numSharesTap = UITapGestureRecognizer(target: self, action: #selector(showShares))
@@ -665,26 +725,14 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         shareTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(shareTap)
-
-        // Add shadows
-        let buttons = [self.likeButton,
-                       self.numberOfLikes,
-                       self.commentButton,
-                       self.numberOfComments,
-                       self.shareButton,
-                       self.numberOfShares,
-                       self.rpUsername,
-                       self.time,
-                       self.moreButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
-
+        
+        // (10) Long press to share
+        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(shareVia))
+        longTap.minimumPressDuration = 0.10
+        self.itmMedia.isUserInteractionEnabled = true
+        self.itmMedia.addGestureRecognizer(longTap)
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
