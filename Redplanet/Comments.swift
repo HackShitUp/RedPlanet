@@ -27,13 +27,11 @@ let commentNotification = Notification.Name("comment")
 
 class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    
     // Array to hold comment objects
     var comments = [PFObject]()
     
     // Array to hold likers
     var likers = [PFObject]()
-    
     
     // Keyboard frame
     var keyboard = CGRect()
@@ -43,7 +41,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     // Set limit
     var page: Int = 50
-    
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
@@ -95,7 +92,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         self.tableView!.reloadData()
     }
     
-    
     // Function to reload data
     func reloadData() {
         // Reload news feed
@@ -104,7 +100,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         NotificationCenter.default.post(name: otherNotification, object: nil)
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
     }
-    
     
     // Query comments
     func queryComments() {
@@ -118,8 +113,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss Progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Clear array
@@ -138,7 +132,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             } else {
                 print(error?.localizedDescription as Any)
                 
-                // Dismiss Progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
             }
             
@@ -380,13 +374,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
 
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-
-
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         // Show Progress
         SVProgressHUD.show()
@@ -836,8 +827,4 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             queryComments()
         }
     }
-
-    
-    
-
 }

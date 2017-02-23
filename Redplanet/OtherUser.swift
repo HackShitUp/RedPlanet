@@ -30,7 +30,8 @@ let otherNotification = Notification.Name("otherUser")
 class OtherUser: UITableViewController {
     
     // App Delegate
-    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+//    let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
+    let appDelegate = AppDelegate()
     
     // Array to hold other user's content
     var posts = [PFObject]()

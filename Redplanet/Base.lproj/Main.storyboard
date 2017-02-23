@@ -4366,6 +4366,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="editButton" destination="g1u-5q-DW2" id="f5N-wP-8uN"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iX1-gg-538" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -6164,6 +6167,7 @@ SOFTWARE.</string>
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="aboutUsCell" rowHeight="125" id="rRL-hg-eW3" customClass="AboutUsCell" customModule="Redplanet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="125"/>
@@ -6178,17 +6182,17 @@ SOFTWARE.</string>
                                                 <constraint firstAttribute="width" constant="359" id="QhG-13-Lq0"/>
                                                 <constraint firstAttribute="height" constant="60" id="qW6-Hr-X94"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
+                                            <fontDescription key="fontDescription" name="TimesNewRomanPS-BoldMT" family="Times New Roman" pointSize="21"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7o-xv-nKJ" customClass="KILabel">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q7o-xv-nKJ" customClass="KILabel">
                                             <rect key="frame" x="20" y="76" width="335" height="40"/>
                                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="335" id="DM7-wu-P4W"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="21"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -6214,12 +6218,15 @@ SOFTWARE.</string>
                             <outlet property="delegate" destination="lUj-ac-csd" id="RAb-ZI-H2V"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="About Us" id="JfD-NT-EIh">
+                    <navigationItem key="navigationItem" id="JfD-NT-EIh">
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="GOP-rL-zfr">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="lUj-ac-csd" id="0AM-3K-ztL"/>
                             </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="SCRP" id="mGG-nB-Tp1">
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>

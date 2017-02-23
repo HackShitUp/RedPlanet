@@ -50,10 +50,6 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // Query Followers
     func queryFollowers() {
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
-        
         let followers = PFQuery(className: "FollowMe")
         followers.whereKey("isFollowing", equalTo: true)
         followers.whereKey("following", equalTo: forFollowers.last!)
@@ -133,7 +129,6 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
             NSFontAttributeName: font!
         ]
         
-        
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
 
@@ -155,13 +150,14 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
         self.navigationController!.pushViewController(search, animated: true)
     }
-    
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Show Progress
+        SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
+        
         // Query followers
         queryFollowers()
         

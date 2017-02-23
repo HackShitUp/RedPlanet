@@ -51,11 +51,6 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // Fetch following
     func queryFollowing() {
-        
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
-        
         let following = PFQuery(className: "FollowMe")
         following.includeKeys(["follower", "following"])
         following.whereKey("isFollowing", equalTo: true)
@@ -166,6 +161,10 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Show Progress
+        SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Query following
         queryFollowing()

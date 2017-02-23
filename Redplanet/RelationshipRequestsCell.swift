@@ -16,6 +16,7 @@ import Bolts
 import KILabel
 import OneSignal
 import SimpleAlert
+import SVProgressHUD
 
 class RelationshipRequestsCell: UICollectionViewCell {
     
@@ -29,6 +30,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
     // Variable to set delegate
     var delegate: UIViewController?
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpFullName: UILabel!
     @IBOutlet weak var rpUsername: UILabel!
@@ -38,7 +42,172 @@ class RelationshipRequestsCell: UICollectionViewCell {
     @IBOutlet weak var relationState: UIButton!
     
     
-    
+    // Function to show prompt to follow back
+    func followBack() {
+        // MARK: - SimpleAlert
+        let alert = AlertController(title: "Follow Back?",
+                                    message: "Would you like to follow \(self.rpUsername.text!) back?",
+            style: .alert)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                view.titleLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                view.messageLabel.textColor = UIColor.black
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
+        }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let yes = AlertAction(title: "yes",
+                              style: .destructive,
+                              handler: { (AlertAction) in
+                                // FOLLOW BACK
+                                if self.userObject!.value(forKey: "private") as! Bool == true {
+                                // PRIVATE ACCOUNT
+                                    // FollowMe
+                                    let follow = PFObject(className: "FollowMe")
+                                    follow["followerUsername"] = PFUser.current()!.username!
+                                    follow["follower"] = PFUser.current()!
+                                    follow["followingUsername"] = self.rpUsername.text!
+                                    follow["following"] = self.userObject!
+                                    follow["isFollowing"] = false
+                                    follow.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            
+                                            // Send "follow requested" Notification
+                                            let notifications = PFObject(className: "Notifications")
+                                            notifications["from"] = PFUser.current()!.username!
+                                            notifications["fromUser"] = PFUser.current()!
+                                            notifications["forObjectId"] = follow.objectId!
+                                            notifications["to"] = self.rpUsername.text!
+                                            notifications["toUser"] = self.userObject!
+                                            notifications["type"] = "follow requested"
+                                            notifications.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully sent follow notification: \(notifications)")
+                                                    
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                                    SVProgressHUD.setForegroundColor(UIColor.black)
+                                                    SVProgressHUD.showSuccess(withStatus: "Sent")
+                                                    
+                                                    // Handle optional chaining for user's apnsId
+                                                    if self.userObject!.value(forKey: "apnsId") != nil {
+                                                        // MARK: - OneSignal
+                                                        // Send push notificaiton
+                                                        OneSignal.postNotification(
+                                                            ["contents":
+                                                                ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
+                                                             "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                             "ios_badgeType": "Increase",
+                                                             "ios_badgeCount": 1
+                                                            ]
+                                                        )
+                                                    }
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                                    SVProgressHUD.setForegroundColor(UIColor.black)
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.setForegroundColor(UIColor.black)
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
+                                    
+                                } else {
+                                // PUBLIC ACCOUNT
+                                    // FollowMe
+                                    let follow = PFObject(className: "FollowMe")
+                                    follow["followerUsername"] = PFUser.current()!.username!
+                                    follow["follower"] = PFUser.current()!
+                                    follow["followingUsername"] = self.rpUsername.text!
+                                    follow["following"] = self.userObject!
+                                    follow["isFollowing"] = true
+                                    follow.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            print("Successfully saved follow: \(follow)")
+
+                                            // Send following notification
+                                            let notifications = PFObject(className: "Notifications")
+                                            notifications["from"] = PFUser.current()!.username!
+                                            notifications["fromUser"] = PFUser.current()!
+                                            notifications["forObjectId"] = self.userObject!.objectId!
+                                            notifications["to"] = self.rpUsername.text!
+                                            notifications["toUser"] = self.userObject!
+                                            notifications["type"] = "followed"
+                                            notifications.saveInBackground(block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Successfully sent notification: \(notifications)")
+                                                    
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                                    SVProgressHUD.setForegroundColor(UIColor.black)
+                                                    SVProgressHUD.showSuccess(withStatus: "Sent")
+                                                    
+                                                    // Handle optional chaining for user's apnsId
+                                                    if self.userObject!.value(forKey: "apnsId") != nil {
+                                                        // MARK: - OneSignal
+                                                        // Send push notificaiton
+                                                        OneSignal.postNotification(
+                                                            ["contents":
+                                                                ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
+                                                             "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                                                             "ios_badgeType": "Increase",
+                                                             "ios_badgeCount": 1
+                                                            ]
+                                                        )
+                                                    }
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                                    SVProgressHUD.setForegroundColor(UIColor.black)
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            SVProgressHUD.setForegroundColor(UIColor.black)
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
+                                }
+        })
+        
+        let no = AlertAction(title: "no",
+                             style: .cancel,
+                             handler: nil)
+        
+        
+        alert.addAction(no)
+        alert.addAction(yes)
+        alert.view.tintColor = UIColor.black
+        self.delegate?.present(alert, animated: true, completion: nil)
+    }
     
     // Function to confirm
     // ================================================================================================================================
@@ -47,6 +216,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
     // ================================================================================================================================
     // ================================================================================================================================
     @IBAction func confirm(_ sender: Any) {
+        // Fetch relationships
+        _ = appDelegate.queryRelationships()
         
         // Disable buttons
         self.confirmButton.isUserInteractionEnabled = false
@@ -68,7 +239,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                         (success: Bool, error: Error?) in
                         if success {
                             
-                            
                             // Delete from "Notifications"
                             let dnotifications = PFQuery(className: "Notifications")
                             dnotifications.whereKey("toUser", equalTo: PFUser.current()!)
@@ -82,7 +252,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                             (success: Bool, error: Error?) in
                                             if success {
                                                 print("Successfully deleted notification: \(object)")
-                                                
                                                 
                                                 // Send to Notifications: "followed" == started following
                                                 let notifications = PFObject(className: "Notifications")
@@ -107,10 +276,8 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                         self.relationState.isHidden = false
                                                         self.relationState.setTitle("Confirmed", for: .normal)
                                                         
-                                                        
                                                         // Post Notification
                                                         // NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                        
                                                         
                                                         // Send Push Notification
                                                         // Handle optional chaining for user's apnsId
@@ -126,8 +293,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                                                                 ]
                                                             )
                                                         }
-                                                        
-                                                        
                                                     } else {
                                                         print(error?.localizedDescription as Any)
                                                     }
@@ -154,12 +319,12 @@ class RelationshipRequestsCell: UICollectionViewCell {
             }
         })
         
-
+        if !myFollowing.contains(where: { $0.objectId! == self.userObject!.objectId!}) {
+            // Show alert
+            self.followBack()
+        }
+        
     }// end CONFIRM
-    
-    
-    
-    
     
     
     
@@ -224,10 +389,6 @@ class RelationshipRequestsCell: UICollectionViewCell {
                 print(error?.localizedDescription as Any)
             }
         })
-
-        
-        
-        
 
     }// end IGNORE
     

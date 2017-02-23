@@ -37,6 +37,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         _ = self.navigationController?.popViewController(animated: true)
     }
     
+    @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func edit(_ sender: Any) {
         if self.tableView?.isEditing == true {
             self.tableView?.isEditing = false
@@ -71,6 +72,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                 
                 // Set DZN
                 if self.posts.count == 0 {
+                    self.editButton.isEnabled = false
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.emptyDataSetSource = self
                 }

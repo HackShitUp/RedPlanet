@@ -244,8 +244,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     // MARK: - TabBarControllerDelegate method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
-            // Scroll to top
-            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            DispatchQueue.main.async {
+                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            }
         }
     }
     

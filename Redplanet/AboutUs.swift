@@ -14,17 +14,14 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
     
     
     // Variables to hold text
-    var rowTitles = ["Welcome to Redplanet", "Copyright Policy\nEffective: November 16th, 2016", "DMCA Notice of Alleged Infringement (Notice)"]
+    var rowTitles = ["Why Redplanet Exists",
+                     "What is our vision as a startup?",
+                     "What is Redplanet as a product or service?"]
     
     var rowText = [
-        // (1)
-        "Redplanet is a media company.\n\nWe believe that people should be able to explicitly control the type of information they view. And for those reasons, we believe that we are the best platform for people to consume news, not only about their friends, but also about the world.\n\nUnlike other social media platforms, we have 2 different news feeds. While the left-side is for mutual relationships, the right-side is not. You should follow people back to view them in the left-side, and follow others of your interests only to view them on the right.\n\nWe’ve thought quite a while to figure out exactly what Redplanet might be for our community, and we’ve come to our initial intentions of what we wanted Redplanet to be in the first place. So, let’s talk about them:\n\n• What is Redplanet as a product or service?\n\nHave you ever scrolled through your newsfeed and wished you could curate it?\n\nWe realized that social media is no longer a place for friends to communicate and share content because there’s essentially TWO groups that co-exist in a social-media ecosystem:\n(1) Our friends and families.\n(2) Content creators such as brands, aspiring artists, organizations, publishers, celebrities, etc.\nYet, current social media platforms offer no way to distinguish the former from the latter. As a result, our newsfeed is cluttered with all types of content, from different people. But what might frustrate us the most about this is that it intervenes with our streamlined experience. It’s not that we don’t want to see “irrelevant content” it’s that we’d rather see them in a different space, outside of our friends'.\n\nFor more information about the value we deliver, check out our story on Medium: https://medium.com/@redplanetapp/saluton-mondo-be1f2c1ddbc7#.y1m6qz97r\n\n• Why does Redplanet exist, and what does it stand for?\n\nWe didn’t want Redplanet to exist merely as a social media app. We also wanted some meaning as to why we exist. Our business philosophy, or our values, are quite simple:\nWe believe that we should always imagine “what if,” and challenge the status quo. For more information on our values, check out our story on Medium: https://medium.com/@redplanetapp/what-is-value-205d621b240#.z6dcshs4t\n\n\n*** All icons used in this app is credited to icons8. Check out their website for great icons all for free: https://icons8.com/register/?key=jHV6 ***\n\n\n",
-        
-              // (2)
-                   "Redplanet respects the intellectual property rights of others and expects its users to do the same.\n\n In accordance with the Digital Millennium Copyright Act of 1998 (DMCA), the text of which may be found on the U.S. Copyright Office website at http://www.copyright.gov/legislation/pl105-304.pdf, and other applicable laws, Redplanet has adopted a policy of terminating, in appropriate circumstances and at our sole discretion, the accounts of users who are deemed to be repeat infringers. Redplanet may also, at its sole discretion, limit access to Redplanet's website and services (collectively, 'Service') and/or terminate the accounts of any users who infringe any intellectual property rights of others, whether or not there is any repeat infringement. Redplanet will respond to claims of copyright infringement committed on the Redplanet website that are reported to Redplanet's Designated Copyright Agent, identified in the sample notice below.\n\n    If you knowingly misrepresent in your notification that the material or activity is infringing, you will be liable for any damages, including costs and attorneys' fees, incurred by us or the alleged infringer as the result of our relying upon such misrepresentation in removing or disabling access to the material or activity claimed to be infringing.\n\n If you are a copyright owner, or are authorized to act on behalf of one, or authorized to act under any exclusive right under copyright, please report alleged copyright infringements taking place on or through the Services by completing the following DMCA Notice of Alleged Infringement and delivering it to Redplanet's Designated Copyright Agent. Upon receipt of the Notice as described below, Redplanet will take whatever action, in its sole discretion, it deems appropriate, including removal of the challenged material from the Services.",
-                   
-                   // (3)
-                   "Identify the copyrighted work that you claim has been infringed, or if multiple copyrighted works are covered by this Notice you may provide a representative list of the copyrighted works that you claim have been infringed.\n\n Identify the material that you claim is infringing (or to be the subject of infringing activity) and that is to be removed or access to which is to be disabled, and information reasonably sufficient to permit us to locate the material, including at a minimum, if applicable, the URL of the link shown on the Services where such material may be found.\n\n  Provide your mailing address, telephone number, and, if available, email address.\n\n   Include both of the following statements in the body of the Notice: (i) 'I hereby state that I have a good faith belief that the disputed use of the copyrighted material is not authorized by the copyright owner, its agent, or the law (e.g., as a fair use)'; and (ii) 'I hereby state that the information in this Notice is accurate and, under penalty of perjury, that I am the owner, or authorized to act on behalf of the owner, of the copyright or of an exclusive right under the copyright that is allegedly infringed.'\n\n Provide your full legal name and your electronic or physical signature.\n\n Deliver this Notice, with all items completed, to Redplanet's Designated Copyright Agent:\n\n• Address 1: 557 East Fordham Road, 2nd Floor, Bronx, NY 10458\n• Address 2: 1350 15th Street, Apt. No. 3O\n•Phone Number: (201) -281-3502\n•Email: redplanethub@gmail.com\n\nThank you for being part of our community and using our service!\nJoshua 1:9"
+        "Redplanet's mission is to provide people a comfortable way to express themselves through various forms of content.\n\nThe kernel of Redplanet, lies in the belief that sharing, interacting with, and viewing both public and private information should NOT be permanent. This is because we think that people's identities shouldn't be the accumulation of their posts.\n\nUnlike other ephemeral platforms that only focus on Photos or Videos, Redplanet allows you to share publicly-interactive Text Posts, Shared Posts, Moments, Profile Photo updates, or those extremely personal, Space Posts.\n",
+        "Redplanet is a media company. We want to allow people to comfortably (and explicitly) control the type of information they share and view.\n\nFor most of us, the internet revolutionized how we live our lives for the past decade. And with the advent of free-flowing information, innovations everywhere enabled us to freely gather information about whatever we want; including whoever we want. Unfortunately, this backfires once you realize that everything you share on the internet stays there forever.\n\nFor those reasons, we believe that Redplanet is the best platform to share, interact with, or view published news, not only about our friends, but also about the world.\n\nAt the core of Redplanet, our value is to create phenomenally great products that empower people to express themselves.\n\nWhen we design such products, we first ask, “What is the human-problem we’re solving?” Then we ask, “What is the best, intuitive solution to solve this problem.” Finally, we ask, “How do we want people to feel while they use our product?” After we complete this rigorous process and get at the root of the problem, we begin developing our products...",
+        "At the heart of Redplanet, lies ephemerality. Whatever you share, disappears in 24 hours. On Redplanet, there’s no such thing as permanence; you can only save them.\n\nA complementary feature with ephemeral identities is that we have two separate news feeds. On the left-side, we have a news feed of mutual followings/followers. In other words, if you’re following John, and John is following you back, you’ll see all of John’s posts on the left-side of your news feed. On the right-side, you’ll see all of the posts shared by accounts you follow, and they don’t follow you back. We think this might enhance the experience when using our product for two reasons:\n\n(1) You can finally get to see who’s not following you back (via the left-side of the news feed) when they share a post.\n(2) It’ll organize your news feed when it get’s cluttered.\n\nWe do our best to make sure our service naturally enables people to not only share photos or videos about their life, but thoughts in the form of text, perspectives with news, or even how one may currently look with a Profile Photo update. In a nutshell there are 7 different types of posts you can share on Redplanet:\n\n1) Text Posts - Posts that are only focused on text, including urls.\n2) Photos - Posts that are focused on a single photo, shared from your camera roll.\n3) Videos - Posts that are focused on a single video, shared from your camera roll.\n4) Moments - Photos or Videos captured directly with the camera.\n5) Shared Posts - Posts that you share via someone else.\n6) Space Posts - Posts that you share on someone’s Space (digital “wall”).\n7) Profile Photo Updates - Updates about your new Profile Photo.\n\nIMAGINE\n\nJoshua 1:9"
     ]
     
     
@@ -33,9 +30,34 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
         // Pop vc
         _ = _ = self.navigationController?.popViewController(animated: true)
     }
+    
+    
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "About Us"
+        }
+        
+        // Configure nav bar, show tab bar, and set statusBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Stylize navigation bar
+        configureView()
 
         // Set tableView Height
         self.tableView!.setNeedsLayout()
@@ -50,8 +72,9 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
 
+    
+    
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -65,31 +88,27 @@ class AboutUs: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "aboutUsCell", for: indexPath) as! AboutUsCell
         
-        
         // Set delegate
         cell.delegate = self
 
+        // Set indexPath
         if indexPath.row == 0 {
             cell.headerTitle.text! = rowTitles[indexPath.row]
             cell.aboutText.text! = rowText[indexPath.row]
         }
         
-        
         if indexPath.row == 1 {
             cell.headerTitle.text! = rowTitles[indexPath.row]
             cell.aboutText.text! = rowText[indexPath.row]
-            
         }
         
         if indexPath.row == 2 {
             cell.headerTitle.text! = rowTitles[indexPath.row]
             cell.aboutText.text! = rowText[indexPath.row]
-            
         }
 
         return cell

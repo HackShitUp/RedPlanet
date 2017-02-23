@@ -236,8 +236,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // MARK: - TabBarControllerDelegate method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
-            // Scroll to top
-            self.tableView!.setContentOffset(CGPoint.zero, animated: false)
+            DispatchQueue.main.async {
+                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            }
         }
     }
     

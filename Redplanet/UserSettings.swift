@@ -67,7 +67,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             // (1) Friends request must be confirmed
             // (2) Follow requests must be confirmed
             let alert = UIAlertController(title: "Private Account",
-                                          message: "• Friend requests must be accepted. \n • Follow requests must be confirmed.",
+                                          message: "\n• Follow requests must be confirmed.\n• Only your followers can view your posts now.",
                                           preferredStyle: .alert)
             
             
@@ -91,18 +91,16 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             // (2) Follow requests do not have to be confirmed
             
             let alert = UIAlertController(title: "Public Account",
-                                          message: "• Friend requests must be accepted. \n • Anyone can follow you and see your content.",
+                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile will also be part of the EXPLORE page in the second bottom tab.",
                                           preferredStyle: .alert)
             let okAction = UIAlertAction(title: "ok",
                                          style: .default,
                                          handler: { (UIAlertAction) -> Void in
-                                            
                                             // Save object in parse
                                             let user = PFUser.current()
                                             user!["private"] = false
                                             user!.saveEventually()
             })
-            
             
             alert.addAction(okAction)
             alert.view.tintColor = UIColor.black
@@ -185,7 +183,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
         title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
-//        title.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
