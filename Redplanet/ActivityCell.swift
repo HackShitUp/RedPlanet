@@ -581,7 +581,7 @@ class ActivityCell: UITableViewCell {
             // (1) Text Post
             if self.activity.titleLabel!.text!.hasSuffix("text post") {
                 // Find Text Post
-                let newsfeeds = PFQuery(className: "Newsfeed")
+                let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
