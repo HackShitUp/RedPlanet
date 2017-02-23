@@ -165,7 +165,8 @@ class EphemeralCell: UITableViewCell {
                                                             SVProgressHUD.showSuccess(withStatus: "Deleted")
                                                             
                                                             // Send FriendsNewsfeeds Notification
-                                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                                            NotificationCenter.default.post(name: Notification.Name(rawValue:
+                                                                "friendsNewsfeed"), object: nil)
                                                             // Send MyProfile Notification
                                                             NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                                             
