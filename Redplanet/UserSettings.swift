@@ -34,9 +34,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             self.present(activityVC, animated: true, completion: nil)
         }
     }
-    
-    
-    
+
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
@@ -53,12 +51,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    
-    
-    
-    
-    
+
     // Function to set privacy
     func setPrivacy(sender: UISwitch) {
 
@@ -110,7 +103,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     }
     
     
-    
     // Deep link user to change settings
     func openSettings() {
         let url = URL(string: UIApplicationOpenSettingsURLString)
@@ -120,6 +112,18 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Add view
+        let versionView = UIView()
+        let title = UILabel()
+        title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
+        title.font = UIFont(name: "AvenirNext-Medium", size: 12)
+        title.textColor = UIColor.black
+        title.backgroundColor = UIColor.white
+        title.text = "Version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)"
+        title.textAlignment = .center
+        versionView.addSubview(title)
+        self.tableView.tableFooterView = versionView
 
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
@@ -190,6 +194,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         view.addSubview(title)
         return view
     }
+
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {

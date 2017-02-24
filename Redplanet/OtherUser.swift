@@ -1071,7 +1071,6 @@ class OtherUser: UITableViewController {
             
             // (4) FETCH PHOTO
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
-                mCell.mediaAsset.layer.cornerRadius = 12.00
                 // MARK: - SDWebImage
                 mCell.mediaAsset.sd_setShowActivityIndicatorView(true)
                 mCell.mediaAsset.sd_setIndicatorStyle(.gray)

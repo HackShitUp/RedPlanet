@@ -59,6 +59,12 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Set current date
+        birthday.date = Date()
+        
+        // Set maximum date
+        birthday.maximumDate = Date()
         
         // Add method tap to button
         let nextTap = UITapGestureRecognizer(target: self, action: #selector(saveBday))

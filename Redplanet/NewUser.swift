@@ -55,7 +55,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                         // Perform segueue
                                         let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, the first ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappear in 24 hours.", image: nil, buttonText: nil) { () -> Void in
+                                        let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappear in 24 hours!", image: nil, buttonText: nil) { () -> Void in
                                         }
                                         let lastPage = OnboardingContentViewController(title: "2 News Feeds", body: "You also have two news feeds: One for your friends, and another for following only.", image: nil, buttonText: "continue") { () -> Void in
                                             // Load Things to Follow interface

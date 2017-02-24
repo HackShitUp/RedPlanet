@@ -157,9 +157,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // (C) Configure username and fullname
             var rUsername = self.rpUsername.text!
             rUsername = rUsername.replacingOccurrences(of: " ", with: "")
-            rUsername = rUsername.replacingOccurrences(of: "☄️", with: "")
+            rUsername = rUsername.replacingOccurrences(of: "🚀", with: "")
+            rUsername = rUsername.replacingOccurrences(of: "💫", with: "")
             var fullName = self.rpName.text!
-            fullName = fullName.replacingOccurrences(of: "☄️", with: "")
+            fullName = fullName.replacingOccurrences(of: "🚀", with: "")
+            fullName = fullName.replacingOccurrences(of: "💫", with: "")
             
             // =====================================================================================================================
             // I) BASIC CREDENTIAL UPDATE ==========================================================================================

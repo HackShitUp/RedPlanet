@@ -618,8 +618,8 @@ class ProPicCell: UITableViewCell {
         // Handle http: tap
         textPost.urlLinkTapHandler = { label, handle, range in
             // MARK: - SwiftWebVC
-            let webVC = SwiftModalWebVC(urlString: handle)
-            self.delegate?.present(webVC, animated: true, completion: nil)
+//            let webVC = SwiftModalWebVC(urlString: handle)
+//            self.delegate?.present(webVC, animated: true, completion: nil)
         }
     }
 
