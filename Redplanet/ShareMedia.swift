@@ -52,13 +52,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         
         if mediaType == "photo" {
             // Photo to Share
-            let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://redplanetapp.com/download/"
             let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.present(activityVC, animated: true, completion: nil)
         } else if mediaType == "video" {
             // Traverse video url to DATA
-            let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet: \(self.mediaCaption.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+            let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet: \(self.mediaCaption.text!)\nhttps://redplanetapp.com/download/"
             if shareMediaAsset.isEmpty {
                 // INSTANCEVIDEODATA
                 let videoData = NSData(contentsOf: instanceVideoData!)

@@ -73,6 +73,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.libraryButton.isHidden = false
         self.homeButton.isHidden = false
         self.newTextButton.isHidden = false
+        self.rpUserProPic.isHidden = false
         self.progressView.isHidden = true
         timer?.invalidate()
     }
@@ -241,6 +242,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         tpTap.numberOfTapsRequired = 1
         self.newTextButton.isUserInteractionEnabled = true
         self.newTextButton.addGestureRecognizer(tpTap)
+        
         
         // Bring buttons to front
         let buttons = [self.rpUserProPic,

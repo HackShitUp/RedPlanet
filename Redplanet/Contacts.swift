@@ -174,7 +174,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                                                       handler: {(alertAction: UIAlertAction!) in
                                                         
                                                         let textToShare = "🦄 Let's be friends on Redplanet! It's a new app that curates your newsfeeds in a fun way."
-                                                        if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+                                                        if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
                                                             let objectsToShare = [textToShare, myWebsite] as [Any]
                                                             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                                                             self.present(activityVC, animated: true, completion: nil)

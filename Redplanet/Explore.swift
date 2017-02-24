@@ -19,7 +19,6 @@ import SwipeNavigationController
 
 class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
     
-    
     // Variable to hold objects to explore
     var exploreObjects = [PFObject]()
     
@@ -48,11 +47,10 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     // Fetch Public Users
     func queryExplore() {
-        
         let user = PFUser.query()!
         user.whereKey("private", equalTo: false)
         user.limit = self.page
-        user.order(byDescending: "createdAt")
+        user.order(byAscending: "createdAt")
         user.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -245,12 +243,10 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
         })
-        
     
         return cell
     }

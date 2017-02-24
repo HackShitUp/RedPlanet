@@ -28,7 +28,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     @IBAction func invitePeople(_ sender: Any) {
         // Show Activity
         let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
-        if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+        if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
             let objectsToShare = [textToShare, myWebsite] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
             self.present(activityVC, animated: true, completion: nil)
@@ -316,7 +316,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             if indexPath.row == 0 {
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
-                if let myWebsite = NSURL(string: "https://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8") {
+                if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
                     let objectsToShare = [textToShare, myWebsite] as [Any]
                     let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
                     self.present(activityVC, animated: true, completion: nil)

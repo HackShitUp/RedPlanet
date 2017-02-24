@@ -276,7 +276,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     // Function to show more sharing options
     func doMore(sender: UIButton) {
 
-        let textToShare = "@\(PFUser.current()!.username!)'s Space Post on Redplanet: \(self.textView.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let textToShare = "@\(PFUser.current()!.username!)'s Space Post on Redplanet: \(self.textView.text!)\nhttps://redplanetapp.com/download/"
         
         if self.mediaAsset.image != nil {
             let objectsToShare = [textToShare, self.mediaAsset.image!] as [Any]

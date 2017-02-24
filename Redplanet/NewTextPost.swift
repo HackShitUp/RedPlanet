@@ -37,7 +37,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     }
     
     @IBAction func moreButton(_ sender: Any) {
-        let textToShare = "@\(PFUser.current()!.username!)'s Text Post on Redplanet: \(self.textView.text!)\nhttps://itunes.apple.com/us/app/redplanet/id1120915322?ls=1&mt=8"
+        let textToShare = "@\(PFUser.current()!.username!)'s Text Post on Redplanet: \(self.textView.text!)\nhttps://redplanetapp.com/download/"
         let objectsToShare = [textToShare]
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         self.present(activityVC, animated: true, completion: nil)

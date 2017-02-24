@@ -88,17 +88,17 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                         self.hashtagObjects.removeAll(keepingCapacity: false)
                         
                         for object in objects! {
-//                            // Ephemeral content
-//                            let components : NSCalendar.Unit = .hour
-//                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                            if self.contentTypes.contains(object.value(forKey: "contentType") as! String) {
-                                self.hashtagObjects.append(object)
-                            }
-//                            if difference.hour! < 24 {
+                            // Ephemeral content
+                            let components : NSCalendar.Unit = .hour
+                            let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+//                            if self.contentTypes.contains(object.value(forKey: "contentType") as! String) {
 //                                self.hashtagObjects.append(object)
-//                            } else {
-//                                self.skipped.append(object)
 //                            }
+                            if difference.hour! < 24 {
+                                self.hashtagObjects.append(object)
+                            } else {
+                                self.skipped.append(object)
+                            }
                         }
                     } else {
                         print(error?.localizedDescription as Any)

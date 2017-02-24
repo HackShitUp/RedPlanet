@@ -129,7 +129,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2509" y="-5101"/>
+            <point key="canvasLocation" x="-1989" y="-4061"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="10P-Wq-oF8">
@@ -272,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7s-GP-bla" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1912" y="-5101"/>
+            <point key="canvasLocation" x="-1392" y="-4061"/>
         </scene>
         <!--Birthday-->
         <scene sceneID="nq9-hu-UHJ">
@@ -345,7 +345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jwi-lT-03O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1026" y="-5101"/>
+            <point key="canvasLocation" x="-506" y="-4061"/>
         </scene>
         <!--New User-->
         <scene sceneID="KNr-53-jdP">
@@ -414,7 +414,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Sv-8G-mIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-582" y="-5101"/>
+            <point key="canvasLocation" x="-62" y="-4061"/>
         </scene>
         <!--Follow Accounts-->
         <scene sceneID="jNS-Gc-fXv">
@@ -523,7 +523,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="huQ-g7-VvB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-80.5" y="-5101.5"/>
+            <point key="canvasLocation" x="441" y="-4061"/>
         </scene>
         <!--Full Name-->
         <scene sceneID="I6i-Hh-hNm">
@@ -628,7 +628,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jSc-ij-ZWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1468" y="-5101"/>
+            <point key="canvasLocation" x="-948" y="-4061"/>
         </scene>
         <!--Master Tab-->
         <scene sceneID="CMz-wu-l20">
@@ -3510,7 +3510,7 @@
                                                 <constraint firstAttribute="height" constant="26" id="Rlj-iN-CrC"/>
                                                 <constraint firstAttribute="width" constant="109" id="kd1-Ys-bmW"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -6310,7 +6310,7 @@ SOFTWARE.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGq-vG-vr5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3096" y="-5101"/>
+            <point key="canvasLocation" x="-2576" y="-4061"/>
         </scene>
         <!--Left-->
         <scene sceneID="ajF-kb-iBC">
@@ -6451,7 +6451,7 @@ SOFTWARE.</string>
         <image name="Settings-48" width="24" height="24"/>
         <image name="ShareOP" width="116" height="116"/>
         <image name="Switch Camera-100" width="243" height="256"/>
-        <image name="Unchecked Circle-100" width="256" height="256"/>
+        <image name="Unchecked Circle-100" width="249" height="249"/>
         <image name="User-48" width="24" height="24"/>
         <image name="User-96" width="48" height="48"/>
         <image name="UserAction" width="25" height="25"/>
