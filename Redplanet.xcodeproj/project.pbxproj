@@ -20,8 +20,6 @@
 		7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E35A3B61E416BD70007EB99 /* Friends.swift */; };
 		7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */; };
 		7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */; };
-		7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE01DC08015006BF522 /* AboutUs.swift */; };
-		7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */; };
 		7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4065F71DC56589001E0C9C /* ShareMedia.swift */; };
 		7E4199251E4C668000EFA065 /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E4199241E4C668000EFA065 /* SwipeView.m */; };
 		7E41C7A31E3FFDC40025129B /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7A21E3FFDC40025129B /* CurrentUser.swift */; };
@@ -229,8 +227,6 @@
 		7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Redplanet-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
 		7E3E4FBA1DC2DDBE00A7B5FC /* ResetPassword.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPassword.swift; sourceTree = "<group>"; };
 		7E3E4FBD1DC2E7F100A7B5FC /* NewProfilePhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProfilePhoto.swift; sourceTree = "<group>"; };
-		7E3F0EE01DC08015006BF522 /* AboutUs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUs.swift; sourceTree = "<group>"; };
-		7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AboutUsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4065F71DC56589001E0C9C /* ShareMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareMedia.swift; sourceTree = "<group>"; };
 		7E4199201E4C64A400EFA065 /* GPUImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GPUImage.framework; path = "../../Library/Developer/Redplanet-cycwfppcruraxnagqhlxgeaqvwaw/Build/Products/Debug-iphoneos/GPUImage.framework"; sourceTree = "<group>"; };
 		7E4199231E4C668000EFA065 /* SwipeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwipeView.h; sourceTree = "<group>"; };
@@ -585,15 +581,6 @@
 			name = RELATIONSHIP_REQUESTS;
 			sourceTree = "<group>";
 		};
-		7E3F0EE41DC0802B006BF522 /* AboutUs */ = {
-			isa = PBXGroup;
-			children = (
-				7E3F0EE01DC08015006BF522 /* AboutUs.swift */,
-				7E3F0EE21DC08026006BF522 /* AboutUsCell.swift */,
-			);
-			name = AboutUs;
-			sourceTree = "<group>";
-		};
 		7E4199221E4C668000EFA065 /* SwipeView */ = {
 			isa = PBXGroup;
 			children = (
@@ -686,7 +673,6 @@
 				7E7723101E5BCDF200066431 /* Licenses.swift */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
-				7E3F0EE41DC0802B006BF522 /* AboutUs */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -1810,7 +1796,6 @@
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
 				7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */,
-				7E3F0EE11DC08015006BF522 /* AboutUs.swift in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
@@ -1858,7 +1843,6 @@
 				7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */,
 				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */,
-				7E3F0EE31DC08026006BF522 /* AboutUsCell.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
 				7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */,
 				7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */,

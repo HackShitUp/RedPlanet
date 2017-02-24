@@ -365,9 +365,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         } else {
             
             if indexPath.row == 0 {
-                // Push to AboutUs
-                let aboutVC = self.storyboard?.instantiateViewController(withIdentifier: "aboutVC") as! AboutUs
-                self.navigationController?.pushViewController(aboutVC, animated: true)
+                // ABOUT US
+                // MARK: - SwiftWebVC
+                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/about/", theme: .lightBlack)
+                self.present(webVC, animated: true, completion: nil)
 
             } else if indexPath.row == 1 {
                 // LICENSE
