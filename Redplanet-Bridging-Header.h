@@ -12,5 +12,6 @@
 #import "CLImageEditor.h"
 #import "Heap.h"
 #import "SwipeView.h"
+#import "UINavigationController+RadialTransaction.h"
 
 #endif /* Redplanet_Bridging_Header_h */

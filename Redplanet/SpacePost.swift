@@ -46,9 +46,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: Any) {
         // Remove last object
         spaceObject.removeLast()
-        
-        // Pop VC
-        self.navigationController!.popViewController(animated: true)
+        // POP VC
+        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
+        })
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -79,8 +79,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                     // Append objects
                     self.likes.append(object["fromUser"] as! PFUser)
                 }
-                
-                
                 // Fetch comments
                 let comments = PFQuery(className: "Comments")
                 comments.includeKey("byUser")
@@ -96,9 +94,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                         for object in objects! {
                             self.comments.append(object)
                         }
-                        
-                        
-                        
                         // Fetch shares
                         let shares = PFQuery(className: "Newsfeeds")
                         shares.whereKey("contentType", equalTo: "sh")
@@ -121,24 +116,15 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                             // Reload data
                             self.tableView!.reloadData()
                         })
-                        
-                    
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
-                    
                     // Reload data
                     self.tableView!.reloadData()
-                    
                 })
-                
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.tableView!.reloadData()
         })
@@ -227,8 +213,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
+        self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        // MARK: - RadialTransitionSwipe
+        self.navigationController?.enableRadialSwipe()
     }
     
     override func viewDidAppear(_ animated: Bool) {

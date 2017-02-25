@@ -53,33 +53,31 @@ class EphemeralCell: UITableViewCell {
             if self.postObject!.value(forKey: "photoAsset") != nil {
                 // Push VC
                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                self.delegate?.pushViewController(itmVC, animated: true)
+                self.delegate?.radialPushViewController(itmVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+                })
             } else {
             // VIDEO
                 // Push VC
                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                self.delegate?.pushViewController(momentVideoVC, animated: true)
+                self.delegate?.radialPushViewController(momentVideoVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+                })
             }
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sh" {
         // SHARED POST
-            
             // Append object
             sharedObject.append(self.postObject!)
             // Push VC
             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-            self.delegate?.pushViewController(sharedPostVC, animated: true)
+            self.delegate?.radialPushViewController(sharedPostVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+            })
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sp" {
         // SPACE POST
             
             // Append object
             spaceObject.append(self.postObject!)
-            
-            // Append otherObject
             otherObject.append(self.postObject!.value(forKey: "toUser") as! PFUser)
-            
-            // Append otherName
             otherName.append(self.postObject!.value(forKey: "toUsername") as! String)
             
             // Push VC

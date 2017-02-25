@@ -43,9 +43,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: Any) {
         // Remove last
         sharedObject.removeLast()
-        
-        // Pop VC
-        _ = self.navigationController?.popViewController(animated: true)
+        // POP VC
+        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
+        })
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -154,33 +154,31 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         }
         
         // Configure nav bar && hide tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
-    
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         // Stylize navigation bar
         configureView()
-        
         // Fetch interactions
         fetchInteractions()
-                
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
-
         // Set tableView height
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutIfNeeded()
         self.tableView!.estimatedRowHeight = 470
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        
+        // Extend edges
+        self.extendedLayoutIncludesOpaqueBars = true
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -195,19 +193,19 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
+        self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        // MARK: - RadialTransitionSwipe
+        self.navigationController?.enableRadialSwipe()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Stylize title
         configureView()
-        
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
-        
+        // StatusBar
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -453,9 +451,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.textPost.text! = content["textPost"] as! String
             }
             
-            // ============================================================================================================================
-            // PHOTO,  PROFILE PHOTO,    &   ITM ==========================================================================================
-            // ============================================================================================================================
+            // ==============================================================================================================
+            // PHOTO,  PROFILE PHOTO,    &   ITM ============================================================================
+            // ==============================================================================================================
             if content["contentType"] as! String == "ph" || content["contentType"] as! String == "pp" || content["contentType"] as! String == "itm" {
                 
                 // (A) Configure photo

@@ -171,9 +171,12 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         // Query views & configure title
         queryViews()
         
-        // Show progress
+        // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
+        
+        // Extend layouts
+        self.extendedLayoutIncludesOpaqueBars = true
         
         // Set tablefooter view
         self.tableView.backgroundColor = UIColor.white
