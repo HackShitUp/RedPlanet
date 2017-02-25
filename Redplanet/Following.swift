@@ -289,7 +289,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+            tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             tpCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -425,7 +425,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+            eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             eCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -434,11 +434,37 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             eCell.delegate = self.parentNavigator
             
             // (4) SET TIME
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
+            if difference.second! <= 0 {
+                eCell.time.text! = "now"
+            } else if difference.second! > 0 && difference.minute! == 0 {
+                if difference.second! == 1 {
+                    eCell.time.text! = "1 second ago"
+                } else {
+                    eCell.time.text! = "\(difference.second!) seconds ago"
+                }
+            } else if difference.minute! > 0 && difference.hour! == 0 {
+                if difference.minute! == 1 {
+                    eCell.time.text! = "1 minute ago"
+                } else {
+                    eCell.time.text! = "\(difference.minute!) minutes ago"
+                }
+            } else if difference.hour! > 0 && difference.day! == 0 {
+                if difference.hour! == 1 {
+                    eCell.time.text! = "1 hour ago"
+                } else {
+                    eCell.time.text! = "\(difference.hour!) hours ago"
+                }
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                if difference.day! == 1 {
+                    eCell.time.text! = "yesterday"
+                } else {
+                    eCell.time.text! = "\(difference.day!) days ago"
+                }
+            } else if difference.weekOfMonth! > 0 {
+                let createdDate = DateFormatter()
+                createdDate.dateFormat = "MMM d, yyyy"
+                eCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
+            }
             
             // (5) Layout content
             // High level configurations
@@ -506,7 +532,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+            mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             mCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT
@@ -656,7 +682,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+            ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             ppCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             otherObject.append(self.posts[indexPath.row].value(forKey: "byUser") as! PFUser)
@@ -814,7 +840,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
-            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "username") as! String
+            vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
             // (1C) User's Object
             vCell.userObject = self.posts[indexPath.row].object(forKey: "byUser") as! PFUser
             // (2) SET POST OBJECT

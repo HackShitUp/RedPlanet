@@ -989,11 +989,37 @@ class OtherUser: UITableViewController {
             eCell.delegate = self.navigationController
             
             // (4) SET TIME
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "E"
-            let timeFormatter = DateFormatter()
-            timeFormatter.dateFormat = "h:mm a"
-            eCell.time.text! = "\(timeFormatter.string(from: self.posts[indexPath.row].createdAt!))"
+            if difference.second! <= 0 {
+                eCell.time.text! = "now"
+            } else if difference.second! > 0 && difference.minute! == 0 {
+                if difference.second! == 1 {
+                    eCell.time.text! = "1 second ago"
+                } else {
+                    eCell.time.text! = "\(difference.second!) seconds ago"
+                }
+            } else if difference.minute! > 0 && difference.hour! == 0 {
+                if difference.minute! == 1 {
+                    eCell.time.text! = "1 minute ago"
+                } else {
+                    eCell.time.text! = "\(difference.minute!) minutes ago"
+                }
+            } else if difference.hour! > 0 && difference.day! == 0 {
+                if difference.hour! == 1 {
+                    eCell.time.text! = "1 hour ago"
+                } else {
+                    eCell.time.text! = "\(difference.hour!) hours ago"
+                }
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                if difference.day! == 1 {
+                    eCell.time.text! = "yesterday"
+                } else {
+                    eCell.time.text! = "\(difference.day!) days ago"
+                }
+            } else if difference.weekOfMonth! > 0 {
+                let createdDate = DateFormatter()
+                createdDate.dateFormat = "MMM d, yyyy"
+                eCell.time.text! = createdDate.string(from: self.posts[indexPath.row].createdAt!)
+            }
             
             // (5) Layout content
             // High level configurations
@@ -1187,7 +1213,6 @@ class OtherUser: UITableViewController {
                     print(error?.localizedDescription as Any)
                 }
             })
-            
             
             return mCell // return TimeMediaCell.swift
             
@@ -1402,6 +1427,7 @@ class OtherUser: UITableViewController {
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
                 vCell.videoPreview.contentMode = .scaleAspectFit
                 vCell.videoPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
                 player.isMuted = true
                 player.play()
             }
