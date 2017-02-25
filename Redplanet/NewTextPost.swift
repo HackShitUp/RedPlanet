@@ -196,13 +196,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                         ])
                     
-                    // Resign keyboard
-                    self.textView.resignFirstResponder()
                     
-                    // Send notification
+                    self.textView.resignFirstResponder()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-
-                    // Show bottom
+                    self.textView.text! = "What are you doing?"
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                     
                 } else {
