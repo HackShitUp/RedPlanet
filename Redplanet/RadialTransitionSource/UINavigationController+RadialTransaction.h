@@ -26,7 +26,6 @@
 /**
  * radial pushing view controller
  *
- * @param startFrame where circle start
  */
 -(void)radialPushViewController:(UIViewController *)viewController  withDuration:(float)duration withStartFrame:(CGRect)rect  comlititionBlock:(void(^)())block;
 
@@ -48,7 +47,6 @@
 /**
  * radial pop view controller
  *
- * @param startFrame where circle start
  */
 -(void)radialPopViewControllerWithDuration:(float)duration withStartFrame:(CGRect)rect  comlititionBlock:(void(^)())block;
 -(void)radialPopViewControllerWithDuration:(float)duration comlititionBlock:(void(^)())block;

@@ -205,23 +205,19 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                    handler: nil)
         
         
-        if moreButton.image(for: .normal) == UIImage(named: "More") {
-            options.addAction(views)
-            options.addAction(save)
-            options.addAction(delete)
-            options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            views.button.setTitleColor(UIColor.black, for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
-            self.present(options, animated: true, completion: nil)
-        } else if moreButton.image(for: .normal) == UIImage(named: "Exit") {
-            _ = self.navigationController?.popViewController(animated: true)
-        }
+        options.addAction(views)
+        options.addAction(save)
+        options.addAction(delete)
+        options.addAction(cancel)
+        views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        views.button.setTitleColor(UIColor.black, for: .normal)
+        save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+        delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        self.present(options, animated: true, completion: nil)
     }
     
     
@@ -633,12 +629,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         // Hide moreButton if not user's content
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            // Show button
             self.moreButton.isHidden = false
-            self.moreButton.setImage(UIImage(named: "More"), for: .normal)
         } else {
-            self.moreButton.isHidden = false
-            self.moreButton.setImage(UIImage(named: "Exit"), for: .normal)
+            self.moreButton.isHidden = true
         }
 
         // Fetch data
@@ -657,8 +650,8 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         for b in buttons {
             (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
             (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
+            (b as AnyObject).layer.shadowRadius = 3.5
+            (b as AnyObject).layer.shadowOpacity = 0.6
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
@@ -728,7 +721,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         
         // (10) Long press to share
         let longTap = UILongPressGestureRecognizer(target: self, action: #selector(shareVia))
-        longTap.minimumPressDuration = 0.10
+        longTap.minimumPressDuration = 0.15
         self.itmMedia.isUserInteractionEnabled = true
         self.itmMedia.addGestureRecognizer(longTap)
     }
