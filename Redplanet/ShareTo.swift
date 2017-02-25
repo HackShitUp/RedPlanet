@@ -95,66 +95,20 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // Share with user
                 // Send to Chats
                 for user in self.shareObjects {
-                    let chats = PFObject(className: "Chats")
-                    chats["sender"] = PFUser.current()!
-                    chats["receiver"] = user
-                    chats["senderUsername"] = PFUser.current()!.username!
-                    chats["receiverUsername"] = user.value(forKey: "username") as! String
-                    chats["read"] = false
-                    chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
-                    chats.saveEventually()
-                    // MARK: - OneSignal
-                    // Send Push Notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
-                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
-                }
-            } else if shareObject.last!.value(forKey: "videoAsset") != nil {
-                // VIDEO
-                // Share with user
-                // Send to Chats
-                for user in self.shareObjects {
-                    let chats = PFObject(className: "Chats")
-                    chats["sender"] = PFUser.current()!
-                    chats["senderUsername"] =  PFUser.current()!.username!
-                    chats["receiver"] = user
-                    chats["receiverUsername"] = user.value(forKey: "username") as! String
-                    chats["read"] = false
-                    chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
-                    chats.saveEventually()
-                    // MARK: - OneSignal
-                    // Send Push Notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
-                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
-                }
-            } else {
-                // TEXT POST
-                if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
-                    for user in self.shareObjects {
+                    if user.objectId! != PFUser.current()!.objectId! {
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
                         chats["receiver"] = user
                         chats["senderUsername"] = PFUser.current()!.username!
                         chats["receiverUsername"] = user.value(forKey: "username") as! String
                         chats["read"] = false
-                        chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
+                        chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
                         chats.saveEventually()
                         // MARK: - OneSignal
                         // Send Push Notification
                         OneSignal.postNotification(
                             ["contents":
-                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
+                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
                              "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
                              "ios_badgeType": "Increase",
                              "ios_badgeCount": 1
@@ -162,8 +116,60 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         )
                     }
                 }
+            } else if shareObject.last!.value(forKey: "videoAsset") != nil {
+                // VIDEO
+                // Share with user
+                // Send to Chats
+                for user in self.shareObjects {
+                    if user.objectId! != PFUser.current()!.objectId! {
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] =  PFUser.current()!.username!
+                        chats["receiver"] = user
+                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                        chats["read"] = false
+                        chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
+                        chats.saveEventually()
+                        // MARK: - OneSignal
+                        // Send Push Notification
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
+                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1
+                            ]
+                        )
+                    }
+                }
+            } else {
+                // TEXT POST
+                if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
+                    for user in self.shareObjects {
+                        if user.objectId! != PFUser.current()!.objectId! {
+                            let chats = PFObject(className: "Chats")
+                            chats["sender"] = PFUser.current()!
+                            chats["receiver"] = user
+                            chats["senderUsername"] = PFUser.current()!.username!
+                            chats["receiverUsername"] = user.value(forKey: "username") as! String
+                            chats["read"] = false
+                            chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
+                            chats.saveEventually()
+                            // MARK: - OneSignal
+                            // Send Push Notification
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
+                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                 "ios_badgeType": "Increase",
+                                 "ios_badgeCount": 1
+                                ]
+                            )
+                        }
+                    }
+                }
             }
-            
+
             // MARK: - SVProgressHUD
             SVProgressHUD.showSuccess(withStatus: "Shared")
             // Pop VC
@@ -375,6 +381,12 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         
         // Stylize title again
         configureView()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.shareObjects.removeAll(keepingCapacity: false)
+        shareObject.removeAll(keepingCapacity: false)
     }
 
     override func didReceiveMemoryWarning() {

@@ -261,7 +261,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         if remainingCharacters <=  20 {
             characterCount.textColor = UIColor.red
         }
-        
         characterCount.text = String(remainingCharacters)
     }
 
