@@ -192,6 +192,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
+        // Extend edges
+        self.extendedLayoutIncludesOpaqueBars = true
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -221,10 +223,8 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Stylize title
         configureView()
-        
         // Remove lines on load
         self.tableView!.tableFooterView = UIView()
     }
@@ -241,11 +241,9 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     // Function to calculate how many new lines UILabel should create before laying out the text
     func createText() -> String? {
-        
-        
+
         // Check for textPost & handle optional chaining
         if spaceObject.last!.value(forKey: "textPost") != nil {
-            
             // (A) Set textPost
             // Calculate screen height
             if UIScreen.main.nativeBounds.height == 960 {

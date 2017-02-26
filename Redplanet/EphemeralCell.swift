@@ -74,15 +74,14 @@ class EphemeralCell: UITableViewCell {
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sp" {
         // SPACE POST
-            
             // Append object
             spaceObject.append(self.postObject!)
             otherObject.append(self.postObject!.value(forKey: "toUser") as! PFUser)
             otherName.append(self.postObject!.value(forKey: "toUsername") as! String)
-            
             // Push VC
             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-            self.delegate?.pushViewController(spacePostVC, animated: true)
+            self.delegate?.radialPushViewController(spacePostVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+            })
         }
     }
     
@@ -92,7 +91,6 @@ class EphemeralCell: UITableViewCell {
         let options = AlertController(title: "Options",
                                       message: nil,
                                       style: .alert)
-        
         // Design content view
         options.configContentView = { view in
             if let view = view as? AlertContentView {
@@ -107,7 +105,6 @@ class EphemeralCell: UITableViewCell {
         options.configContainerCornerRadius = {
             return 14.00
         }
-        
         let views = AlertAction(title: "Views",
                                 style: .default,
                                 handler: { (AlertAction) in
@@ -118,12 +115,6 @@ class EphemeralCell: UITableViewCell {
                                     // Push VC
                                     let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.delegate?.pushViewController(viewsVC, animated: true)
-        })
-        
-        let share = AlertAction(title: "Share Via",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                
         })
         
         let delete = AlertAction(title: "Delete",
@@ -195,7 +186,6 @@ class EphemeralCell: UITableViewCell {
         
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
             options.addAction(views)
-            options.addAction(share)
             options.addAction(delete)
             options.addAction(cancel)
             
@@ -204,8 +194,6 @@ class EphemeralCell: UITableViewCell {
             }
             views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             views.button.setTitleColor(UIColor.black, for: .normal)
-            share.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            share.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
             cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

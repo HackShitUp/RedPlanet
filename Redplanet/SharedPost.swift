@@ -178,7 +178,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.rowHeight = UITableViewAutomaticDimension
         
         // Extend edges
-        self.extendedLayoutIncludesOpaqueBars = true
+         self.extendedLayoutIncludesOpaqueBars = true
         
         // Pull to refresh action
         refresher = UIRefreshControl()
