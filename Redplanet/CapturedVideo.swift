@@ -84,20 +84,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             newsfeeds.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    
-                    // Clear array
-                    capturedURLS.removeAll(keepingCapacity: false)
-                    
-                    DispatchQueue.main.async {
-                        // Send Notification
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                        
-                        // Show news feed
-                        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                    }
+
                     
                 } else {
                     print(error?.localizedDescription as Any)

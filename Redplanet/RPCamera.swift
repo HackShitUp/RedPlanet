@@ -78,11 +78,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
-        // Append url
-        capturedURLS.append(url)
-        // Push VC
-        let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
-        self.navigationController?.pushViewController(capturedVideoVC, animated: false)
+        DispatchQueue.main.async {
+            capturedURLS.append(url)
+            let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
+            self.navigationController?.pushViewController(capturedVideoVC, animated: false)
+        }
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
@@ -129,20 +129,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        UIApplication.shared.statusBarStyle = .lightContent
-        self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-    }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        UIApplication.shared.statusBarStyle = .lightContent
-        self.setNeedsStatusBarAppearanceUpdate()
+    // Function to configure view
+    func configureView() {
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
@@ -153,17 +142,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.containerSwipeNavigationController?.shouldShowBottomViewController = true
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Set application status
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        configureView()
         
         // Set profile photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
@@ -242,7 +224,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.newTextButton.isUserInteractionEnabled = true
         self.newTextButton.addGestureRecognizer(tpTap)
         
-        
         // Bring buttons to front
         let buttons = [self.rpUserProPic,
                        self.flashButton,
@@ -258,6 +239,22 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.view.bringSubview(toFront: self.captureButton)
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
 
     override func didReceiveMemoryWarning() {
