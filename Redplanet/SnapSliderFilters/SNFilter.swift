@@ -22,8 +22,8 @@ open class SNFilter: UIImageView {
                                       "nil",                    // Time Stamp
                                       "nil",                    // Filter
                                       "nil",                    // Filter
-                                      "CIPhotoEffectMono",      // CIPhotoEffectMono
-                                      "CIComicEffect"          // CIComicEffect
+                                      "CIPhotoEffectMono",
+                                      "CIComicEffect",
                                       ]
     open var name:String?
     var stickers = [SNSticker]()

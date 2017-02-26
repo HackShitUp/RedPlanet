@@ -44,7 +44,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-
         DispatchQueue.main.async {
             self.libraryButton.isHidden = true
             self.homeButton.isHidden = true

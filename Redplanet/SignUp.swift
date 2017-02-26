@@ -90,7 +90,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             
             // OTHERWISE if credentials are correct, create the new user!
             let newUser = PFUser()
-            
+
             // Remove whitespace and newline
             newUser.username = newRPUsername.trimmingCharacters(in: NSCharacterSet.whitespaces)
             newUser.password = newRPUserPassword

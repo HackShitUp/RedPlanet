@@ -766,6 +766,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
         }
     }
+    
+    
+    // while writing something
+    func textViewDidChange(_ textView: UITextView) {
+//        if newChat.contentSize.height > newChat.frame.size.height && newChat.frame.height < 130 {
+//            let difference = newChat.contentSize.height - newChat.frame.size.height
+//            newChat.frame.origin.y = newChat.frame.origin.y - difference
+//            newChat.frame.size.height = newChat.contentSize.height
+//        }
+    }
 
     
     // MARK: - UIScrollViewDelegate
@@ -773,7 +783,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Resign chat
         self.newChat.resignFirstResponder()
     }
-    
     
     
     // Function for options

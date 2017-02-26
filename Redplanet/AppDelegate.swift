@@ -162,27 +162,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
         }
         
-        
-        
-        // Determine first whether app was launched before
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        // If first launch...
-        if launchedBefore == false {
-            // Save Default for Birthday
-            UserDefaults.standard.set("false", forKey: "BirthdayHappened")
-            // Synchronize
-            UserDefaults.standard.synchronize()
-        }
-        
         // Call Login Function
         // Which also calls queryRelationships()
         login()
         
         return true
     }
-
-    
-    
     
     // MARK: - Push Notifications
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
@@ -263,9 +248,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Call relationships function
             _ = queryRelationships()
-
-            // Check birthday
-            checkBirthday()
             
         } else {
             // Login or Sign Up
@@ -338,71 +320,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
     
     }
-
-    
-    // (3) Check Birthday --- Checks whether today is the user's birthday or not
-    func checkBirthday() {
-        
-        if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
-            
-            // (1) Get user's birthday
-            // MONTH DATE
-            // 6 Characters Total
-            let bEndIndex = usersBirthday.startIndex
-            let bStartIndex = usersBirthday.index(bEndIndex, offsetBy: 6)
-            let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
-            let finalBday = usersBirthday[r]
-            
-            // (2) Change String to Date
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM dd"
-            let birthDate = dateFormatter.date(from: finalBday) // Date()
-
-            // (3) Set up today's date as string
-            let date = Date()
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM dd"
-            let todayString = formatter.string(from: date)  // String
-            
-            // (4) Convert todayString to Date()
-            let todayFormat = DateFormatter()
-            todayFormat.dateFormat = "MMM dd"
-            let today = todayFormat.date(from: todayString)
-
-            if today == birthDate {
-                // Save Bool for BirthdayHappened
-                let bdayOccured = UserDefaults.standard.bool(forKey: "BirthdayHappened")
-                if bdayOccured == false {
-                    // Save
-                    print("BDAY FIRED\n\n\n\n\n\n\n")
-                    UserDefaults.standard.set(true, forKey: "BirthdayHappened")
-                }
-                
-                // HAPPY BIRTHDAY
-                let alert = UIAlertController(title: "🎂 🎊 🎉\nHappy Birthday \(PFUser.current()!.username!.uppercased())",
-                    message: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String), we'll send your friends push notifications to remind them it's your birthday.",
-                    preferredStyle: .alert)
-                
-                let ok = UIAlertAction(title: "ok",
-                                       style: .default,
-                                       handler: {(alertAction: UIAlertAction!) in
-                                        // TODO Send Push notifications
-                })
-                
-                alert.addAction(ok)
-                alert.view.tintColor = UIColor.black
-                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
-
-            } else {
-                // Save
-                UserDefaults.standard.set(false, forKey: "BirthdayHappened")
-            }
-        }
- 
-
-    }
-    
-
-
 }
 

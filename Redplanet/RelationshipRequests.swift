@@ -101,6 +101,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         follow.includeKeys(["following", "follower"])
         follow.whereKey("isFollowing", equalTo: false)
         follow.whereKey("follower", equalTo: PFUser.current()!)
+        follow.order(byDescending: "createdAt")
         follow.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -154,13 +155,13 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Relationship Requests"
+            self.title = "Follow Requests"
         }
         
         // Show nav bar && show tabBar
@@ -168,11 +169,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
-    
-    
-    
-    
-    
+  
     // MARK: DZNEmptyDataSet Framework
     
     // DataSource Methods
