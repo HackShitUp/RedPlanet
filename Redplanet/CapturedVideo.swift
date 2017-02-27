@@ -81,31 +81,31 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
             newsfeeds["contentType"] = "itm"
             newsfeeds["saved"] = false
-            newsfeeds.saveInBackground {
+            newsfeeds.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if error == nil {
-
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
-                    
                     // Clear array
                     capturedURLS.removeAll(keepingCapacity: false)
-                    
+                    // Reload data and push to bottom
                     DispatchQueue.main.async {
-                        
-                        // Send Notification
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                        
-                        // Show news feed
                         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                     }
-                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Re-enable buttons
+                    self.continueButton.isUserInteractionEnabled = true
+                    // Clear array
+                    capturedURLS.removeAll(keepingCapacity: false)
+                    // Reload data and push to bottom
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+                    }
                 }
-            }
+            })// end
             
         } else {
             // Send Chats
@@ -119,19 +119,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    
                     // MARK: - HEAP
                     Heap.track("SharedMoment", withProperties:
                         ["byUserId": "\(PFUser.current()!.objectId!)",
                             "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                         ])
-                    
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
-                    
-                    // Re-enable buttons
-                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
-                    
                     // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
@@ -149,29 +143,20 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
                             )
                         }
                     }
-                    
-                    // Make false
+                    // Set bool to false
                     chatCamera = false
-                    
                     // Reload chats
                     NotificationCenter.default.post(name: rpChat, object: nil)
-                    
                     // Pop 2 view controllers
                     let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
                     self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
 
                 } else {
                     print(error?.localizedDescription as Any)
-                    
                     // Re-enable buttons
                     self.continueButton.isUserInteractionEnabled = true
-                    
-                    // Re-enable buttons
-                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
-                    
                     // Reload chats
                     NotificationCenter.default.post(name: rpChat, object: nil)
-                    
                     // Pop 2 view controllers
                     let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
                     self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);

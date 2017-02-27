@@ -5415,7 +5415,7 @@
                                     <constraint firstAttribute="width" constant="375" id="f4f-XP-QK1"/>
                                     <constraint firstAttribute="height" constant="603" id="wES-il-wzu"/>
                                 </constraints>
-                                <mutableString key="text">Copyright 2016, Redplanet Media, LLC
+                                <string key="text">Copyright 2016, Redplanet Media, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -6093,7 +6093,7 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</mutableString>
+SOFTWARE.</string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
@@ -6491,7 +6491,7 @@ SOFTWARE.</mutableString>
         <image name="VolumeOn" width="290" height="256"/>
         <image name="WhiteComment" width="50" height="50"/>
         <image name="WhiteLike" width="50" height="50"/>
-        <image name="WhiteRedo" width="50" height="50"/>
+        <image name="WhiteRedo" width="256" height="256"/>
         <image name="iOS Photos-Grey" width="25" height="25"/>
         <image name="igcPhotos" width="256" height="256"/>
         <image name="igcText" width="256" height="256"/>

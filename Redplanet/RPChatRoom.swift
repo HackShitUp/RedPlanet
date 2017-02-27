@@ -59,11 +59,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     
     @IBAction func backButton(_ sender: AnyObject) {
-        
         // Clear arrays
         chatUserObject.removeLast()
         chatUsername.removeLast()
-        
         // Pop view controller
         if self.navigationController?.viewControllers.count == 3 {
             let viewControllers = self.navigationController!.viewControllers as [UIViewController]
@@ -153,8 +151,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        
-        // (1) Chats subqueries
+        // Chats subqueries
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.includeKeys(["receiver", "sender"])
         chats.order(byAscending: "createdAt")
@@ -162,45 +159,34 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
-                
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
-                
                 for object in objects! {
                     // Append object
                     self.messageObjects.append(object)
                 }
-                
-                
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
             }
-            
             // Reload data
             self.tableView!.reloadData()
-            
-            // Run in main thread...
+            // Scroll to bottom via main thread
             DispatchQueue.main.async(execute: {
-                // Scroll to the bottom
                 if self.messageObjects.count > 0 {
                     let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
                     self.tableView.setContentOffset(bot, animated: false)
                 }
             })
-            
         })
     }
     
     
     // Function to send chat
     func sendChat() {
-
         if self.newChat.text!.isEmpty {
             // Resign first responder
             self.newChat.resignFirstResponder()
@@ -209,7 +195,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let chatText = self.newChat.text!
             // Clear chat
             self.newChat.text!.removeAll()
-            
             // Send to Chats
             let chat = PFObject(className: "Chats")
             chat["sender"] = PFUser.current()!
@@ -221,11 +206,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             chat.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-
                     // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        
                         // Handle optional chaining
                         if chatUserObject.last!.value(forKey: "apnsId") != nil {
                             // MARK: - OneSignal
@@ -239,24 +222,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                 ]
                             )
                         }
-                        
-                        
                     }
-                    
                     // Reload data
                     self.queryChats()
-                    
                 } else {
                     print(error?.localizedDescription as Any)
-
                     // Reload data
                     self.queryChats()
-                    
                 }
             }
-
         }
-        
     }
     
     
@@ -272,7 +247,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 DispatchQueue.main.async(execute: {
                     self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
                 })
-                
                 
                 break
             case .denied:
@@ -307,8 +281,25 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     
+    // Compress video
+    func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
+        let urlAsset = AVURLAsset(url: inputURL, options: nil)
+        guard let exportSession = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetMediumQuality) else {
+            handler(nil)
+            return
+        }
+        
+        exportSession.outputURL = outputURL
+        exportSession.outputFileType = AVFileTypeQuickTimeMovie
+        exportSession.shouldOptimizeForNetworkUse = true
+        exportSession.exportAsynchronously { () -> Void in
+            handler(exportSession)
+        }
+    }
     
-    // UIImagePickercontroller Delegate Method
+    
+    
+    // MARK: - UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 
         let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
@@ -335,73 +326,91 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if pickerMedia == kUTTypeMovie {
             // Enable editing if it's a video
             self.imagePicker.allowsEditing = true
-            // Show Progress
-            SVProgressHUD.show()
-            SVProgressHUD.setBackgroundColor(UIColor.white)
             
-            // Selected image
+            // Traverse to URL
             let video = info[UIImagePickerControllerMediaURL] as! URL
-            
-            let tempImage = video as NSURL?
-            _ = tempImage?.relativePath
-            let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
-            
-            // Send Video
-            let chats = PFObject(className: "Chats")
-            chats["sender"] = PFUser.current()!
-            chats["senderUsername"] = PFUser.current()!.username!
-            chats["receiver"] = chatUserObject.last!
-            chats["receiverUsername"] = chatUsername.last!
-            chats["read"] = false
-            chats["videoAsset"] = PFFile(name: "video.mp4", data: videoData! as Data)
-            chats.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    
-                    // Dismiss Progres
-                    SVProgressHUD.dismiss()
-                    
-                    // Clear newChat
-                    self.newChat.text!.removeAll()
-                    
-                    
-                    // Handle optional chaining
-                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // MARK: - OneSignal
-                        // Send Push Notification to user
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                             "ios_badgeType": "Increase",
-                             "ios_badgeCount": 1
-                            ]
-                        )
+
+            // Compress Video data
+            let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
+            self.compressVideo(inputURL: video, outputURL: compressedURL) { (exportSession) in
+                guard let session = exportSession else {
+                    return
+                }
+                switch session.status {
+                case .unknown:
+                    break
+                case .waiting:
+                    break
+                case .exporting:
+                    break
+                case .completed:
+                    guard let compressedData = NSData(contentsOf: compressedURL) else {
+                        return
                     }
                     
+                    // Handle File Size
+                    let fileSize = Double(compressedData.length / 1048576)
+                    if fileSize <= 1.0 {
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.show()
+                        // Send Video
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] = PFUser.current()!.username!
+                        chats["receiver"] = chatUserObject.last!
+                        chats["receiverUsername"] = chatUsername.last!
+                        chats["read"] = false
+                        chats["videoAsset"] = PFFile(name: "video.mov", data: compressedData as Data)
+                        chats.saveInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                // Dismiss Progres
+                                SVProgressHUD.dismiss()
+                                // Clear newChat
+                                self.newChat.text!.removeAll()
+                                // Handle optional chaining
+                                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                                    // MARK: - OneSignal
+                                    // Send Push Notification to user
+                                    OneSignal.postNotification(
+                                        ["contents":
+                                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                                         "ios_badgeType": "Increase",
+                                         "ios_badgeCount": 1
+                                        ]
+                                    )
+                                }
+                                // Reload data
+                                self.queryChats()
+                                // Dismiss
+                                self.imagePicker.dismiss(animated: true, completion: nil)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // Reload data
+                                self.queryChats()
+                                // Dismiss
+                                self.imagePicker.dismiss(animated: true, completion: nil)
+                            }
+                        })
+                    }
                     
+                    if fileSize > 1.0 {
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.showError(withStatus: "Large File Size")
+                        // Reload data
+                        self.queryChats()
+                        // Dismiss
+                        self.imagePicker.dismiss(animated: true, completion: nil)
+                    }
                     
-                    // Reload data
-                    self.queryChats()
-                    
-                    // Dismiss
-                    self.imagePicker.dismiss(animated: true, completion: nil)
-                    
-
-                } else {
-                    print(error?.localizedDescription as Any)
-                    
-                    // Reload data
-                    self.queryChats()
-                    
-                    // Dismiss
-                    self.imagePicker.dismiss(animated: true, completion: nil)
-
+                case .failed:
+                    break
+                case .cancelled:
+                    break
                 }
-            })
+            }
         }
-        
-        
     }
     
     
@@ -480,14 +489,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         editor.dismiss(animated: true, completion: { _ in })
     }
     
-    
+
     func imageEditorDidCancel(_ editor: CLImageEditor) {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
-    
-    
-    
+
     
     // Function to push camera
     func goCamera(sender: UIButton) {
@@ -502,7 +509,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
         self.navigationController!.pushViewController(stickersVC, animated: false)
     }
-    
     
     // Function to refresh
     func refresh() {
@@ -633,11 +639,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
-        
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.includeKeys(["sender", "receiver"])
         chats.order(byDescending: "createdAt")
@@ -659,7 +663,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     })
                 }
                 
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -679,10 +682,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        // Run in main thread...
+        // Scroll to bottom via main thread
         DispatchQueue.main.async(execute: {
-            // Scroll to the bottom
             if self.messageObjects.count != 0 && self.messageObjects.count > 8 {
                 self.tableView!.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
             }
@@ -691,10 +692,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         // Resign first responder
         self.newChat.resignFirstResponder()
-        
         // Remove observers
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
@@ -712,15 +711,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIKeyboard Notification
     func keyboardWillShow(notification: NSNotification) {
-        
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
         // Move UI up
         UIView.animate(withDuration: 0.4) { () -> Void in
-            
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
-            
             // If table view's origin is 0
             if self.tableView!.frame.origin.y == 0 {
                 // Move tableView up
@@ -733,19 +729,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     self.tableView.setContentOffset(bot, animated: false)
                 }
             }
-            
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
         // Define keyboard frame size
         self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
-        
         if self.tableView!.frame.origin.y != 0 {
             // Move table view up
             self.tableView!.frame.origin.y += self.keyboard.height
-
             // Move chatbox up
             self.frontView.frame.origin.y += self.keyboard.height
         }
@@ -758,12 +750,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if (text == "\n") {
             // Send chat
             self.sendChat()
-
             return false
-            
         } else {
             return true
-            
         }
     }
     
