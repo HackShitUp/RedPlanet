@@ -150,9 +150,6 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         // Set title
         self.title = "Follow People"
         
-        // Register to receive notification
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "onboard"), object: nil)
-        
         // Get rid of back button
         self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"", style: .plain, target: nil, action: nil)
     }

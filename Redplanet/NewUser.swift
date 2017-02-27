@@ -45,7 +45,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 
                 // Show alert, and load onboarding
                 let alert = UIAlertController(title: "😁\nAlmost Finished",
-                                              message: "Please check your email when you can. We've sent you something!",
+                                              message: "We're almost done. But first, a tutorial!",
                                               preferredStyle: .alert)
                 
                 let ok = UIAlertAction(title: "next",
@@ -53,11 +53,11 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                        handler: {(alertAction: UIAlertAction!) in
                                         // Load Onboarding tutorial
                                         // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, the first ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
+                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, an ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappear in 24 hours!", image: nil, buttonText: nil) { () -> Void in
+                                        let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let lastPage = OnboardingContentViewController(title: "2 News Feeds", body: "You also have two news feeds: One for your friends, and another for following only.", image: nil, buttonText: "continue") { () -> Void in
+                                        let lastPage = OnboardingContentViewController(title: "2 News Feeds", body: "You also have 2 news feeds: One for your friends, and one for your following only.", image: nil, buttonText: "continue") { () -> Void in
                                             // Load Things to Follow interface
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
