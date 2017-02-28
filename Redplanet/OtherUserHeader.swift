@@ -126,7 +126,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                     self.relationType.isHidden = false
                     self.relationType.isUserInteractionEnabled = true
                     self.relationType.isEnabled = true
-                    self.relationType.setTitle("Follow Requested", for: .normal)
+                    self.relationType.setTitle("Requested", for: .normal)
                     
                     // Send "follow requested" Notification
                     let notifications = PFObject(className: "Notifications")
@@ -399,7 +399,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                                     
                                                     // Change sender button title
                                                     self.relationType.isHidden = false
-                                                    self.relationType.setTitle("Follow Requested", for: .normal)
+                                                    self.relationType.setTitle("Requested", for: .normal)
                                                     
                                                     // Send notification
                                                     let notifications = PFObject(className: "Notifications")
@@ -564,7 +564,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // ======================================= F O L L O W     R E Q U E S T E D ==================================================
         // ============================================================================================================================
         // ============================================================================================================================
-        if self.relationType.titleLabel!.text! == "Follow Requested" {
+        if self.relationType.titleLabel!.text! == "Requested" {
             
             let options = AlertController(title: "Follow Requested",
                                           message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",

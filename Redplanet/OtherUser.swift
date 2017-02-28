@@ -709,7 +709,7 @@ class OtherUser: UITableViewController {
         if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOW REQUESTED
             header.relationType.isHidden = false
-            header.relationType.setTitle("Follow Requested", for: .normal)
+            header.relationType.setTitle("Requested", for: .normal)
         }
         
         if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
