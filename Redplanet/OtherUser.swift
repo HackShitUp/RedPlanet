@@ -445,15 +445,6 @@ class OtherUser: UITableViewController {
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if self.ephemeralTypes.contains(object.value(forKey: "contentType") as! String) {
-//                        if difference.hour! < 24 {
-//                            self.posts.append(object)
-//                        } else {
-//                            self.skipped.append(object)
-//                        }
-//                    } else {
-//                        self.posts.append(object)
-//                    }
                     if difference.hour! < 24 {
                         self.posts.append(object)
                     } else {
@@ -1248,14 +1239,6 @@ class OtherUser: UITableViewController {
             ppCell.delegate = self.navigationController
             
             // (4) FETCH PROFILE PHOTO
-            ppCell.rpUserProPic.layoutIfNeeded()
-            ppCell.rpUserProPic.layoutSubviews()
-            ppCell.rpUserProPic.setNeedsLayout()
-            
-            // Make Vide Preview Circular
-            ppCell.rpUserProPic.layer.cornerRadius = ppCell.rpUserProPic.frame.size.width/2
-            ppCell.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
-            ppCell.rpUserProPic.layer.borderWidth = 1.50
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 ppCell.rpUserProPic.sd_setShowActivityIndicatorView(true)
@@ -1406,16 +1389,6 @@ class OtherUser: UITableViewController {
             // (4) Fetch Video Thumbnail
             if let videoFile = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // VIDEO
-                
-                // LayoutViews
-                vCell.videoPreview.layoutIfNeeded()
-                vCell.videoPreview.layoutSubviews()
-                vCell.videoPreview.setNeedsLayout()
-                
-                // Make Vide Preview Circular
-                vCell.videoPreview.layer.cornerRadius = vCell.videoPreview.frame.size.width/2
-                vCell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                vCell.videoPreview.layer.borderWidth = 3.50
                 // MARK: - SDWebImage
                 vCell.videoPreview.sd_setShowActivityIndicatorView(true)
                 vCell.videoPreview.sd_setIndicatorStyle(.gray)
@@ -1423,11 +1396,10 @@ class OtherUser: UITableViewController {
                 // Load Video Preview and Play Video
                 let player = AVPlayer(url: URL(string: videoFile.url!)!)
                 let playerLayer = AVPlayerLayer(player: player)
-                playerLayer.frame = vCell.videoPreview.bounds
+                playerLayer.frame = vCell.bounds
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                vCell.videoPreview.contentMode = .scaleAspectFit
+                vCell.videoPreview.contentMode = .scaleToFill
                 vCell.videoPreview.layer.addSublayer(playerLayer)
-                player.isMuted = true
                 player.isMuted = true
                 player.play()
             }

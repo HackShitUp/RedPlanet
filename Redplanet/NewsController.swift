@@ -132,7 +132,7 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
         // Configure table view
         self.tableView!.estimatedRowHeight = 215.00
         self.tableView!.rowHeight = UITableViewAutomaticDimension
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView!.separatorColor = UIColor.white
         self.tableView!.tableFooterView = UIView()
     }
 
@@ -171,9 +171,9 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
         // Set Asset Preview
         // MARK: - SDWebImage
         cell.asset.sd_setImage(with: URL(string: mediaURLS[indexPath.row]), placeholderImage: UIImage())
-        cell.asset.layer.cornerRadius = 12.00
-        cell.asset.layer.borderColor = UIColor.black.cgColor
-        cell.asset.layer.borderWidth = 0.25
+        cell.asset.layer.cornerRadius = 10.00
+        cell.asset.layer.borderColor = UIColor.white.cgColor
+        cell.asset.layer.borderWidth = 0.1
         cell.asset.clipsToBounds = true
 
         return cell

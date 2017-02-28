@@ -519,6 +519,19 @@ class ProPicCell: UITableViewCell {
         let otherVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.pushViewController(otherVC, animated: true)
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Layout views
+        self.rpUserProPic.layoutIfNeeded()
+        self.rpUserProPic.layoutSubviews()
+        self.rpUserProPic.setNeedsLayout()
+        
+        // Make Vide Preview Circular
+        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
+        self.rpUserProPic.layer.borderColor = UIColor.darkGray.cgColor
+        self.rpUserProPic.layer.borderWidth = 1.50
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

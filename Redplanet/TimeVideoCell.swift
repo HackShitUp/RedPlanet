@@ -501,6 +501,19 @@ class TimeVideoCell: UITableViewCell {
             self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // LayoutViews
+        self.videoPreview.layoutIfNeeded()
+        self.videoPreview.layoutSubviews()
+        self.videoPreview.setNeedsLayout()
+        
+        // Make Vide Preview Circular
+        self.videoPreview.layer.cornerRadius = self.videoPreview.frame.size.width/2
+        self.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+        self.videoPreview.layer.borderWidth = 3.50
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()

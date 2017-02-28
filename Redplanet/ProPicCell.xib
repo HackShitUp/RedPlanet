@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +16,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="525"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="524.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="524"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Phq-3t-Euq">
@@ -133,8 +134,7 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D6Y-Ch-7I6">
                         <rect key="frame" x="8" y="56" width="359" height="359"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="359" id="3by-bK-7dX"/>
-                            <constraint firstAttribute="width" constant="359" id="goH-VG-v54"/>
+                            <constraint firstAttribute="width" secondItem="D6Y-Ch-7I6" secondAttribute="height" multiplier="1:1" id="5vl-G9-Get"/>
                         </constraints>
                     </imageView>
                 </subviews>
@@ -157,7 +157,7 @@
                     <constraint firstAttribute="bottom" secondItem="Gmj-VC-Icr" secondAttribute="bottom" constant="8" id="Res-fj-2Vj"/>
                     <constraint firstAttribute="trailing" secondItem="Fkv-Tv-DrA" secondAttribute="trailing" constant="8" id="SVh-gV-Dj5"/>
                     <constraint firstItem="NIM-tj-dG5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="TNk-eb-zxI"/>
-                    <constraint firstItem="D6Y-Ch-7I6" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="U3N-I6-SKn"/>
+                    <constraint firstItem="D6Y-Ch-7I6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="Tf9-hg-m6x"/>
                     <constraint firstItem="i51-bm-ZH9" firstAttribute="top" secondItem="Fkv-Tv-DrA" secondAttribute="bottom" constant="8" id="XSJ-W8-NnG"/>
                     <constraint firstItem="Edo-mn-VJt" firstAttribute="leading" secondItem="Phq-3t-Euq" secondAttribute="trailing" constant="8" id="aEH-PJ-3GM"/>
                     <constraint firstItem="Fkv-Tv-DrA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="bVM-of-4hF"/>
@@ -168,6 +168,7 @@
                     <constraint firstItem="4xn-zx-TJv" firstAttribute="top" secondItem="i51-bm-ZH9" secondAttribute="bottom" constant="8" id="fAi-Nf-mqI"/>
                     <constraint firstItem="bTN-5v-owm" firstAttribute="top" secondItem="QBP-OX-Tn1" secondAttribute="bottom" constant="8" id="goP-Tn-Mre"/>
                     <constraint firstAttribute="trailing" secondItem="NIM-tj-dG5" secondAttribute="trailing" constant="8" id="iZY-YR-ujX"/>
+                    <constraint firstAttribute="trailing" secondItem="D6Y-Ch-7I6" secondAttribute="trailing" constant="8" id="jdA-li-f8s"/>
                     <constraint firstAttribute="bottom" secondItem="bTN-5v-owm" secondAttribute="bottom" constant="8" id="k79-Rb-keW"/>
                     <constraint firstItem="P6G-OX-maj" firstAttribute="top" secondItem="Fkv-Tv-DrA" secondAttribute="bottom" constant="8" id="kBj-5K-ahO"/>
                     <constraint firstAttribute="trailing" secondItem="QBP-OX-Tn1" secondAttribute="trailing" id="m8i-du-gZ5"/>

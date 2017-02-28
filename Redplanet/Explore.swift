@@ -229,7 +229,6 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
         // Fetch Explore Objects
         exploreObjects[indexPath.row].fetchIfNeededInBackground(block:  {
             (object: PFObject?, error: Error?) in
