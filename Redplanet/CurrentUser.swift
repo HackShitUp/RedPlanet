@@ -39,6 +39,9 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // Set pipeline method
     var page: Int = 50
     
+    // View to cover tableView when hidden swift
+    let cover = UIButton()
+    
     // Refresher
     var refresher: UIRefreshControl!
     
@@ -79,6 +82,20 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                         self.skipped.append(object)
                     }
                 }
+                
+                if self.posts.count == 0 {
+                    // Add tap method to share something
+                    let shareTap = UITapGestureRecognizer(target: self, action: #selector(self.showCenter))
+                    shareTap.numberOfTapsRequired = 1
+                    self.cover.isUserInteractionEnabled = true
+                    self.cover.addGestureRecognizer(shareTap)
+                    // Add Tap
+                    self.cover.setTitle("💩\nNo Posts Today\nShare Something", for: .normal)
+                    self.tableView.addSubview(self.cover)
+                    self.tableView!.allowsSelection = false
+                    self.tableView!.isScrollEnabled = false
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -127,6 +144,10 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         self.tableView?.setContentOffset(CGPoint.zero, animated: true)
     }
 
+    // MARK: -SwipeNavigationController
+    func showCenter() {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,7 +276,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             header.numberOfFollowing.setTitle("\(myFollowing.count)\nfollowing", for: .normal)
         }
         
-        
         return header
     }
     
@@ -278,6 +298,17 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         }
         
         label.sizeToFit()
+        
+        
+        // Add cover
+        self.cover.frame = CGRect(x: 0, y: CGFloat(375 + label.frame.size.height), width: self.tableView!.frame.size.width, height: self.tableView!.frame.size.height+375+label.frame.size.height)
+        self.cover.titleLabel?.lineBreakMode = .byWordWrapping
+        self.cover.contentVerticalAlignment = .top
+        self.cover.contentHorizontalAlignment = .center
+        self.cover.titleLabel?.textAlignment = .center
+        self.cover.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+        self.cover.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        self.cover.backgroundColor = UIColor.white
         
         return CGFloat(375 + label.frame.size.height)
     }

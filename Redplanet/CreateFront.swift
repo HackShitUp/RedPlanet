@@ -96,17 +96,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     // Set time configs
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if object.value(forKey: "type") as! String == "like itm" || object.value(forKey: "type") as! String == "share itm" {
-//                        if difference.hour! < 24 {
-//                            self.myActivity.append(object)
-//                            self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
-//                        } else {
-//                            self.skipped.append(object)
-//                        }
-//                    } else {
-//                        self.myActivity.append(object)
-//                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
-//                    }
                     if difference.hour! < 24 {
                         self.myActivity.append(object)
                         self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
