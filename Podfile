@@ -5,20 +5,20 @@ target 'Redplanet' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
+	pod ‘Bolts’
+	pod 'DZNEmptyDataSet'
+	pod ‘Heap’
+	pod 'KILabel', '1.0.0'
+	pod 'Onboard'
+	pod ‘OneSignal’
 	pod ‘Parse’
 	pod ‘ParseUI’
-	pod ‘Bolts’
+	pod 'SCRecorder'
 	pod ‘SDWebImage’
 	pod ‘SimpleAlert’
+	pod 'SVProgressHUD'
 	pod ‘SwiftyCam’
 	pod 'SwipeNavigationController', '~> 2.0.2’
-	pod ‘OneSignal’
-	pod 'KILabel', '1.0.0'
-	pod 'SVProgressHUD'
-	pod 'DZNEmptyDataSet'
-	pod 'Onboard'
-	pod ‘Heap’
-	pod 'SCRecorder'
 
   target 'RedplanetTests' do
     inherit! :search_paths
