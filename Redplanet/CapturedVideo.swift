@@ -204,32 +204,22 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         }
     }
 
-    // Function to Play & Pause
-    func control() {
-//        if self.player.playbackState == .paused {
-//            self.player.playFromCurrentTime()
-//        } else if self.player.playbackState == .playing {
-//            self.player.pause()
-//        }
-        
-    }
     
     // Function to mute and turn volume on
     func setMute() {
-//        if self.player.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
-//            // MUTE
-//            self.player.muted = true
-//            DispatchQueue.main.async {
-//                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
-//            }
-//        } else if self.player.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
-//            // VOLUME ON
-//            self.player.muted = false
-//            DispatchQueue.main.async {
-//                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
-//            }
-//        }
-        
+        // MUTE
+        if self.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
+            self.player.isMuted = true
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
+            }
+        } else if self.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
+        // VOLUME ON
+            self.player.isMuted = false
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            }
+        }
     }
     
     
@@ -241,6 +231,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
     }
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        //
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -274,18 +265,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
             self.containerSwipeNavigationController?.delegate = self
-            
-            // Add tap methods for..
-            // Pause and Play
-//            let controlTap = UITapGestureRecognizer(target: self, action: #selector(control))
-//            controlTap.numberOfTapsRequired = 1
-//            self.player.view.isUserInteractionEnabled = true
-//            self.player.view.addGestureRecognizer(controlTap)
-//            // Mute and Volume-On
-//            let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
-//            muteTap.numberOfTapsRequired = 1
-//            self.muteButton.isUserInteractionEnabled = true
-//            self.muteButton.addGestureRecognizer(muteTap)
+
+            // Mute and Volume-On
+            let muteTap = UITapGestureRecognizer(target: self, action: #selector(setMute))
+            muteTap.numberOfTapsRequired = 1
+            self.muteButton.isUserInteractionEnabled = true
+            self.muteButton.addGestureRecognizer(muteTap)
             
             // Add shadows to buttons and bring to front of view
             let buttons = [self.muteButton,
@@ -297,7 +282,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
                 (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
                 (b as AnyObject).layer.shadowRadius = 3
                 (b as AnyObject).layer.shadowOpacity = 0.5
-//                self.player.view.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
