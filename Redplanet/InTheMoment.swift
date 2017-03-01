@@ -223,185 +223,172 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     
     // Query content
     func fetchContent() {
-        let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("objectId", equalTo: itmObject.last!.objectId!)
-        newsfeeds.includeKey("byUser")
-        newsfeeds.findObjectsInBackground {
+        
+        // (1) Load moment
+        if let moment = itmObject.last!.value(forKey: "photoAsset") as? PFFile {
+            // MARK: - SDWebImage
+            self.itmMedia.sd_setImage(with: URL(string: moment.url!), placeholderImage: self.itmMedia.image)
+        }
+        
+        // (2) Set username
+        if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
+            self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
+        }
+        
+        // (3) Set time
+        let from = itmObject.last!.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        if difference.second! <= 0 {
+            self.time.text = "now"
+        } else if difference.second! > 0 && difference.minute! == 0 {
+            if difference.second! == 1 {
+                self.time.text = "1 second ago"
+            } else {
+                self.time.text = "\(difference.second!) seconds ago"
+            }
+        } else if difference.minute! > 0 && difference.hour! == 0 {
+            if difference.minute! == 1 {
+                self.time.text = "1 minute ago"
+            } else {
+                self.time.text = "\(difference.minute!) minutes ago"
+            }
+        } else if difference.hour! > 0 && difference.day! == 0 {
+            if difference.hour! == 1 {
+                self.time.text = "1 hour ago"
+            } else {
+                self.time.text = "\(difference.hour!) hours ago"
+            }
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            if difference.day! == 1 {
+                self.time.text = "1 day ago"
+            } else {
+                self.time.text = "\(difference.day!) days ago"
+            }
+            if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                self.likeButton.isUserInteractionEnabled = false
+                self.numberOfLikes.isUserInteractionEnabled = false
+                self.commentButton.isUserInteractionEnabled = false
+                self.numberOfComments.isUserInteractionEnabled = false
+                self.shareButton.isUserInteractionEnabled = false
+                self.numberOfShares.isUserInteractionEnabled = false
+            }
+        } else if difference.weekOfMonth! > 0 {
+            let createdDate = DateFormatter()
+            createdDate.dateFormat = "MMM d, yyyy"
+            self.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
+            if itmObject.last!.value(forKey: "saved") as! Bool == true {
+                self.likeButton.isUserInteractionEnabled = false
+                self.numberOfLikes.isUserInteractionEnabled = false
+                self.commentButton.isUserInteractionEnabled = false
+                self.numberOfComments.isUserInteractionEnabled = false
+                self.shareButton.isUserInteractionEnabled = false
+                self.numberOfShares.isUserInteractionEnabled = false
+            }
+        }
+        
+        
+        // (4) Fetch likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
+        likes.includeKey("fromUser")
+        likes.order(byDescending: "createdAt")
+        likes.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
+                // Clear array
+                self.likes.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
                 for object in objects! {
-                    
-                    // (1) Load moment
-                    if let moment = object["photoAsset"] as? PFFile {
-                        // MARK: - SDWebImage
-                        self.itmMedia.sd_setImage(with: URL(string: moment.url!), placeholderImage: self.itmMedia.image)
-                    }
-                    
-                    // (2) Set username
-                    if let user = object["byUser"] as? PFUser {
-                        self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
-                    }
-                    
-                    // (3) Set time
-                    let from = itmObject.last!.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    if difference.second! <= 0 {
-                        self.time.text = "now"
-                    } else if difference.second! > 0 && difference.minute! == 0 {
-                        if difference.second! == 1 {
-                            self.time.text = "1 second ago"
-                        } else {
-                            self.time.text = "\(difference.second!) seconds ago"
-                        }
-                    } else if difference.minute! > 0 && difference.hour! == 0 {
-                        if difference.minute! == 1 {
-                            self.time.text = "1 minute ago"
-                        } else {
-                            self.time.text = "\(difference.minute!) minutes ago"
-                        }
-                    } else if difference.hour! > 0 && difference.day! == 0 {
-                        if difference.hour! == 1 {
-                            self.time.text = "1 hour ago"
-                        } else {
-                            self.time.text = "\(difference.hour!) hours ago"
-                        }
-                    } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        if difference.day! == 1 {
-                            self.time.text = "1 day ago"
-                        } else {
-                            self.time.text = "\(difference.day!) days ago"
-                        }
-                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
-                            self.likeButton.isUserInteractionEnabled = false
-                            self.numberOfLikes.isUserInteractionEnabled = false
-                            self.commentButton.isUserInteractionEnabled = false
-                            self.numberOfComments.isUserInteractionEnabled = false
-                            self.shareButton.isUserInteractionEnabled = false
-                            self.numberOfShares.isUserInteractionEnabled = false
-                        }
-                    } else if difference.weekOfMonth! > 0 {
-                        let createdDate = DateFormatter()
-                        createdDate.dateFormat = "MMM d, yyyy"
-                        self.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
-                        if itmObject.last!.value(forKey: "saved") as! Bool == true {
-                            self.likeButton.isUserInteractionEnabled = false
-                            self.numberOfLikes.isUserInteractionEnabled = false
-                            self.commentButton.isUserInteractionEnabled = false
-                            self.numberOfComments.isUserInteractionEnabled = false
-                            self.shareButton.isUserInteractionEnabled = false
-                            self.numberOfShares.isUserInteractionEnabled = false
-                        }
-                    }
-                    
-                    
-                    // (4) Fetch likes
-                    let likes = PFQuery(className: "Likes")
-                    likes.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
-                    likes.includeKey("fromUser")
-                    likes.order(byDescending: "createdAt")
-                    likes.findObjectsInBackground(block: {
-                        (objects: [PFObject]?, error: Error?) in
-                        if error == nil {
-                            // Clear array
-                            self.likes.removeAll(keepingCapacity: false)
-                            
-                            // (A) Append objects
-                            for object in objects! {
-                                self.likes.append(object["fromUser"] as! PFUser)
-                            }
-                            
-                            // (B) Manipulate likes
-                            if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
-                                // liked
-                                self.likeButton.setTitle("liked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
-                            } else {
-                                // notLiked
-                                self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "WhiteLike"), for: .normal)
-                            }
-                            
-                            // (C) Set number of likes
-                            if self.likes.count == 0 {
-                                self.numberOfLikes.setTitle("likes", for: .normal)
-                            } else if self.likes.count == 1 {
-                                self.numberOfLikes.setTitle("1 like", for: .normal)
-                            } else {
-                                self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
-                            }
-                            
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
-                    
-                    // (5) Fetch comments
-                    let comments = PFQuery(className: "Comments")
-                    comments.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
-                    comments.findObjectsInBackground(block: {
-                        (objects: [PFObject]?, error: Error?) in
-                        if error == nil {
-                            // Clear arrays
-                            self.comments.removeAll(keepingCapacity: false)
-                            
-                            // (A) Append objects
-                            for object in objects! {
-                                self.comments.append(object)
-                            }
-                            
-                            // (B) Set number of comments
-                            if self.comments.count == 0 {
-                                self.numberOfComments.setTitle("comments", for: .normal)
-                            } else if self.comments.count == 1 {
-                                self.numberOfComments.setTitle("1 comment", for: .normal)
-                            } else {
-                                self.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
-                            }
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
-                    
-                    // (6) Fetch shares
-                    let shares = PFQuery(className: "Newsfeeds")
-                    shares.whereKey("contentType", equalTo: "sh")
-                    shares.whereKey("pointObject", equalTo: itmObject.last!)
-                    shares.findObjectsInBackground(block: {
-                        (objects: [PFObject]?, error: Error?) in
-                        if error == nil {
-                            // Clear arrays
-                            self.shares.removeAll(keepingCapacity: false)
-                            
-                            // (A) Append objects
-                            for object in objects! {
-                                self.shares.append(object)
-                            }
-                            
-                            // (B) Set number of shares
-                            if self.shares.count == 0 {
-                                self.numberOfShares.setTitle("shares", for: .normal)
-                            } else if self.shares.count == 1 {
-                                self.numberOfShares.setTitle("1 share", for: .normal)
-                            } else {
-                                self.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
-                            }
-                            
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
+                    self.likes.append(object["fromUser"] as! PFUser)
                 }
+                
+                // (B) Manipulate likes
+                if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
+                    // liked
+                    self.likeButton.setTitle("liked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
+                } else {
+                    // notLiked
+                    self.likeButton.setTitle("notLiked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLike"), for: .normal)
+                }
+                
+                // (C) Set number of likes
+                if self.likes.count == 0 {
+                    self.numberOfLikes.setTitle("likes", for: .normal)
+                } else if self.likes.count == 1 {
+                    self.numberOfLikes.setTitle("1 like", for: .normal)
+                } else {
+                    self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                }
+                
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
-        }
+        })
+        
+        
+        // (5) Fetch comments
+        let comments = PFQuery(className: "Comments")
+        comments.whereKey("forObjectId", equalTo: itmObject.last!.objectId!)
+        comments.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.comments.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
+                for object in objects! {
+                    self.comments.append(object)
+                }
+                
+                // (B) Set number of comments
+                if self.comments.count == 0 {
+                    self.numberOfComments.setTitle("comments", for: .normal)
+                } else if self.comments.count == 1 {
+                    self.numberOfComments.setTitle("1 comment", for: .normal)
+                } else {
+                    self.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        
+        
+        // (6) Fetch shares
+        let shares = PFQuery(className: "Newsfeeds")
+        shares.whereKey("contentType", equalTo: "sh")
+        shares.whereKey("pointObject", equalTo: itmObject.last!)
+        shares.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.shares.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
+                for object in objects! {
+                    self.shares.append(object)
+                }
+                
+                // (B) Set number of shares
+                if self.shares.count == 0 {
+                    self.numberOfShares.setTitle("shares", for: .normal)
+                } else if self.shares.count == 1 {
+                    self.numberOfShares.setTitle("1 share", for: .normal)
+                } else {
+                    self.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
     }
     
     

@@ -253,6 +253,7 @@
 		7E4CFF931DB439170087454E /* SpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpacePost.swift; sourceTree = "<group>"; };
 		7E4CFF9C1DB439680087454E /* SpacePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SpacePostCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E4CFFA91DB45DB30087454E /* RPChatRoom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatRoom.swift; sourceTree = "<group>"; };
+		7E5366F81E6664A70079CA80 /* EVGPUImage2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EVGPUImage2.framework; path = "../../Library/Developer/Redplanet-cycwfppcruraxnagqhlxgeaqvwaw/Build/Products/Debug-iphoneos/EVGPUImage2/EVGPUImage2.framework"; sourceTree = "<group>"; };
 		7E5A98031DDCFFFA006DA985 /* FullName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullName.swift; sourceTree = "<group>"; };
 		7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
@@ -515,6 +516,7 @@
 		601249B385E0E797946F34EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E5366F81E6664A70079CA80 /* EVGPUImage2.framework */,
 				7E4199201E4C64A400EFA065 /* GPUImage.framework */,
 				7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */,
 				7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */,
