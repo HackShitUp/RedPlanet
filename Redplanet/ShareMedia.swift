@@ -48,8 +48,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
 
     @IBAction func moreButton(_ sender: Any) {
         
-        
-        
         if mediaType == "photo" {
             // Photo to Share
             let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://redplanetapp.com/download/"

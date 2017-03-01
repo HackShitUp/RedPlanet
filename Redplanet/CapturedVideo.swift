@@ -73,7 +73,35 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         
-        // Check if it's for Chats
+    
+
+//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+//        let outputPath = "\(documentsPath).mp4"
+//        let outputURL = URL(fileURLWithPath: outputPath)
+//        
+//        let asset = AVAsset(url: capturedURLS.last!)
+//        let exportSession = SCAssetExportSession()
+//        exportSession.inputAsset = asset
+//        exportSession.outputUrl = outputURL
+//        exportSession.outputFileType = AVFileTypeMPEG4
+//        exportSession.videoConfiguration.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
+//        exportSession.videoConfiguration.preset = SCPresetHighestQuality
+//        exportSession.shouldOptimizeForNetworkUse = true
+//        exportSession.exportAsynchronously { 
+//            if exportSession.error == nil {
+//                do {
+//                    let fileData = try Data(contentsOf: outputURL)
+//                    print("EXPORTED??\(outputURL)\n\(fileData)\n\n\n")
+//                    
+//                } catch {
+//                    
+//                }
+//                
+//            } else {
+//                print(exportSession.error?.localizedDescription as Any)
+//            }
+//        }
+        
         if chatCamera == false {
             // Save to Newsfeeds
             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -258,7 +286,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
             self.player.scImageView = filterView
             self.view.addSubview(filterView)
-            
             
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.shouldShowRightViewController = false

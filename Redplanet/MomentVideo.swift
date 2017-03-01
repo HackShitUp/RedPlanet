@@ -15,10 +15,10 @@ import Parse
 import ParseUI
 import Bolts
 
+import OneSignal
 import SimpleAlert
 import SVProgressHUD
 import SwipeNavigationController
-import OneSignal
 
 // Define Notification
 let momentVideoNotification = Notification.Name("momentVideo")
@@ -46,7 +46,19 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     // Function to shareVia
     func shareVia() {
-        
+        // INSTANCEVIDEODATA
+        let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet.\nhttps://redplanetapp.com/download/"
+        let url = URL(string: (itmObject.last!.value(forKey: "videoAsset") as! PFFile).url!)
+        let videoData = NSData(contentsOf: url!)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let docDirectory = paths[0]
+        let filePath = "\(docDirectory)/tmpVideo.mov"
+        videoData?.write(toFile: filePath, atomically: true)
+        let videoLink = NSURL(fileURLWithPath: filePath)
+        let objectsToShare = [textToShare, videoLink] as [Any]
+        let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+        activityVC.setValue("Video", forKey: "subject")
+        self.present(activityVC, animated: true, completion: nil)
     }
     
     
@@ -449,7 +461,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             self.player = Player()
             self.player.delegate = self
             self.player.view.frame = self.view.bounds
-            
             self.addChildViewController(self.player)
             self.view.addSubview(self.player.view)
             self.player.didMove(toParentViewController: self)
@@ -682,27 +693,28 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
         
-        // Tap out implementation
+        // MARK: - RadialTransitionSwipe
+        self.navigationController?.enableRadialSwipe()
+        
+        // Tap to Pop VC
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
         tapOut.numberOfTapsRequired = 1
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(tapOut)
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
         
-        // Add Username tap
+        // Username tap
         let userTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         userTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(userTap)
         
-        // Add more button tap
+        // More button tap
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
         
-        // (10) Long press to share
+        // Long press to share
         let longTap = UILongPressGestureRecognizer(target: self, action: #selector(shareVia))
         longTap.minimumPressDuration = 0.15
         self.view.isUserInteractionEnabled = true

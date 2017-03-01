@@ -545,14 +545,6 @@
 			name = Stickers;
 			sourceTree = "<group>";
 		};
-		7E2CA3FF1E259F400071B052 /* Share */ = {
-			isa = PBXGroup;
-			children = (
-				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
-			);
-			name = Share;
-			sourceTree = "<group>";
-		};
 		7E35A3B01E4154CE0007EB99 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -781,7 +773,7 @@
 				7E088A7E1E5D05E700268FB5 /* EphemeralCell */,
 				7EA87D3B1DD6B39400B3471F /* SharedPost */,
 				7E4CFF9E1DB4396D0087454E /* SpacePost */,
-				7EA09E131DD406F500BD2D51 /* Moment */,
+				7EA09E131DD406F500BD2D51 /* Moments */,
 			);
 			name = EphemeralOG;
 			sourceTree = "<group>";
@@ -1106,13 +1098,13 @@
 			name = NSBadge;
 			sourceTree = "<group>";
 		};
-		7EA09E131DD406F500BD2D51 /* Moment */ = {
+		7EA09E131DD406F500BD2D51 /* Moments */ = {
 			isa = PBXGroup;
 			children = (
 				7E9955661DC99A98003D9D73 /* InTheMoment.swift */,
 				7EA913211E25CD510046F940 /* MomentVideo.swift */,
 			);
-			name = Moment;
+			name = Moments;
 			sourceTree = "<group>";
 		};
 		7EA1C74E1E59835500FBE39B /* ShareTo */ = {
@@ -1149,10 +1141,10 @@
 		7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */ = {
 			isa = PBXGroup;
 			children = (
+				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EDDF4361E07C0A5005C68C9 /* Library.swift */,
 				7E4B59BE1E39EBC0003A3F3C /* Photos */,
 				7E4B59BF1E39EBC4003A3F3C /* Videos */,
-				7E2CA3FF1E259F400071B052 /* Share */,
 			);
 			name = "Photos&Videos";
 			sourceTree = "<group>";

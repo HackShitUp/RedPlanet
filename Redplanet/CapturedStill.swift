@@ -13,9 +13,9 @@ import Parse
 import ParseUI
 import Bolts
 
-import SwipeNavigationController
 import OneSignal
 import SDWebImage
+import SwipeNavigationController
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
