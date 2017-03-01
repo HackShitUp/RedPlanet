@@ -83,35 +83,22 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             newsfeeds["contentType"] = "itm"
             newsfeeds["saved"] = false
             newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
-            newsfeeds.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    
-                    // MARK: - HEAP
-                    Heap.track("SharedMoment", withProperties:
-                        ["byUserId": "\(PFUser.current()!.objectId!)",
-                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                        ])
-                    
-                    // Clear arrray
-                    stillImages.removeAll(keepingCapacity: false)
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Send Notification
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                    // Show bottom
-                    self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Clear arrray
-                    stillImages.removeAll(keepingCapacity: false)
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Send Notification
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                }
-            })
+            newsfeeds.saveInBackground()
+            
+            // MARK: - HEAP
+            Heap.track("SharedMoment", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // Clear arrray
+            stillImages.removeAll(keepingCapacity: false)
+            // Send Notification
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+            // Show bottom
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             
         } else {
             // Chat
@@ -122,55 +109,36 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
             chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             chat["read"] = false
-            chat.saveInBackground {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    
-                    // Re-enable buttons
-                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
-                    
-                    // Send Push Notification to user
-                    // Handle optional chaining
-                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // Handle optional chaining
-                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                            // MARK: - OneSignal
-                            // Send push notification
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
-                                ]
-                            )
-                        }
-                    }
-                    
-                    // Make false
-                    chatCamera = false
-                    // Reload chats
-                    NotificationCenter.default.post(name: rpChat, object: nil)
-                    // Pop 2 view controllers
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Re-enable buttons
-                    self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.isEnabled = true
-                    // Reload chats
-                    NotificationCenter.default.post(name: rpChat, object: nil)
-                    // Pop 2 view controllers
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+            chat.saveInBackground()
+            
+
+            // Send Push Notification to user
+            // Handle optional chaining
+            if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                // Handle optional chaining
+                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    // MARK: - OneSignal
+                    // Send push notification
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                         "ios_badgeType": "Increase",
+                         "ios_badgeCount": 1
+                        ]
+                    )
                 }
             }
+            
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // Make false
+            chatCamera = false
+            // Reload chats
+            NotificationCenter.default.post(name: rpChat, object: nil)
+            // Pop 2 view controllers
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
         }
     }
     

@@ -18,6 +18,7 @@ target 'Redplanet' do
 	pod 'DZNEmptyDataSet'
 	pod 'Onboard'
 	pod ‘Heap’
+	pod 'SCRecorder'
 
   target 'RedplanetTests' do
     inherit! :search_paths

@@ -81,31 +81,16 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
             newsfeeds["contentType"] = "itm"
             newsfeeds["saved"] = false
-            newsfeeds.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Clear array
-                    capturedURLS.removeAll(keepingCapacity: false)
-                    // Reload data and push to bottom
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Clear array
-                    capturedURLS.removeAll(keepingCapacity: false)
-                    // Reload data and push to bottom
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                    }
-                }
-            })// end
+            newsfeeds.saveInBackground()
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // Clear array
+            capturedURLS.removeAll(keepingCapacity: false)
+            // Reload data and push to bottom
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+            }
             
         } else {
             // Send Chats
@@ -116,52 +101,41 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
             chats["read"] = false
             chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
-            chats.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    // MARK: - HEAP
-                    Heap.track("SharedMoment", withProperties:
-                        ["byUserId": "\(PFUser.current()!.objectId!)",
-                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                        ])
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Send Push Notification to user
-                    // Handle optional chaining
-                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // Handle optional chaining
-                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                            // MARK: - OneSignal
-                            // Send push notification
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
-                                ]
-                            )
-                        }
-                    }
-                    // Set bool to false
-                    chatCamera = false
-                    // Reload chats
-                    NotificationCenter.default.post(name: rpChat, object: nil)
-                    // Pop 2 view controllers
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
-
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Re-enable buttons
-                    self.continueButton.isUserInteractionEnabled = true
-                    // Reload chats
-                    NotificationCenter.default.post(name: rpChat, object: nil)
-                    // Pop 2 view controllers
-                    let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-                    self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+            chats.saveInBackground()
+            
+            // MARK: - HEAP
+            Heap.track("SharedMoment", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // Send Push Notification to user
+            // Handle optional chaining
+            if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                // Handle optional chaining
+                if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                    // MARK: - OneSignal
+                    // Send push notification
+                    OneSignal.postNotification(
+                        ["contents":
+                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                         "ios_badgeType": "Increase",
+                         "ios_badgeCount": 1
+                        ]
+                    )
                 }
-            })
+            }
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // Set bool to false
+            chatCamera = false
+            // Reload chats
+            NotificationCenter.default.post(name: rpChat, object: nil)
+            // Pop 2 view controllers
+            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
+            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
         }
     }
 
