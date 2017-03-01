@@ -742,91 +742,87 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                             newsfeeds["videoAsset"] = parseFile
                                                             newsfeeds["contentType"] = "vi"
                                                             newsfeeds["saved"] = false
-                                                            newsfeeds.saveInBackground(block: {
-                                                                (success: Bool, error: Error?) in
-                                                                if success {
+                                                            newsfeeds.saveInBackground()
+                                                            
+                                                            
+                                                            // Define #word
+                                                            for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+                                                                // #####################
+                                                                if word.hasPrefix("#") {
+                                                                    // Cut all symbols
+                                                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
                                                                     
-                                                                    // Define #word
-                                                                    for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                                                                        // #####################
-                                                                        if word.hasPrefix("#") {
-                                                                            // Cut all symbols
-                                                                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                                                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                                                            
-                                                                            // Save hashtag to server
-                                                                            let hashtags = PFObject(className: "Hashtags")
-                                                                            hashtags["hashtag"] = word.lowercased()
-                                                                            hashtags["userHash"] = "#" + word.lowercased()
-                                                                            hashtags["by"] = PFUser.current()!.username!
-                                                                            hashtags["pointUser"] = PFUser.current()!
-                                                                            hashtags["forObjectId"] =  newsfeeds.objectId!
-                                                                            hashtags.saveInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("#\(word) has been saved!")
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                            // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                                                                        } else if word.hasPrefix("@") {
-                                                                            // Cut all symbols
-                                                                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                                                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                                                            
-                                                                            // Search for user
-                                                                            let theUsername = PFUser.query()!
-                                                                            theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                                                                            let realName = PFUser.query()!
-                                                                            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                                                                            let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                                                                            mention.findObjectsInBackground(block: {
-                                                                                (objects: [PFObject]?, error: Error?) in
-                                                                                if error == nil {
-                                                                                    for object in objects! {
+                                                                    // Save hashtag to server
+                                                                    let hashtags = PFObject(className: "Hashtags")
+                                                                    hashtags["hashtag"] = word.lowercased()
+                                                                    hashtags["userHash"] = "#" + word.lowercased()
+                                                                    hashtags["by"] = PFUser.current()!.username!
+                                                                    hashtags["pointUser"] = PFUser.current()!
+                                                                    hashtags["forObjectId"] =  newsfeeds.objectId!
+                                                                    hashtags.saveInBackground(block: {
+                                                                        (success: Bool, error: Error?) in
+                                                                        if success {
+                                                                            print("#\(word) has been saved!")
+                                                                        } else {
+                                                                            print(error?.localizedDescription as Any)
+                                                                        }
+                                                                    })
+                                                                    // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                                                                } else if word.hasPrefix("@") {
+                                                                    // Cut all symbols
+                                                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                                                    
+                                                                    // Search for user
+                                                                    let theUsername = PFUser.query()!
+                                                                    theUsername.whereKey("username", matchesRegex: "(?i)" + word)
+                                                                    let realName = PFUser.query()!
+                                                                    realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
+                                                                    let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+                                                                    mention.findObjectsInBackground(block: {
+                                                                        (objects: [PFObject]?, error: Error?) in
+                                                                        if error == nil {
+                                                                            for object in objects! {
+                                                                                
+                                                                                // Send notification to user
+                                                                                let notifications = PFObject(className: "Notifications")
+                                                                                notifications["from"] = PFUser.current()!.username!
+                                                                                notifications["fromUser"] = PFUser.current()
+                                                                                notifications["to"] = word
+                                                                                notifications["toUser"] = object
+                                                                                notifications["type"] = "tag vi"
+                                                                                notifications["forObjectId"] = newsfeeds.objectId!
+                                                                                notifications.saveInBackground(block: {
+                                                                                    (success: Bool, error: Error?) in
+                                                                                    if success {
                                                                                         
-                                                                                        // Send notification to user
-                                                                                        let notifications = PFObject(className: "Notifications")
-                                                                                        notifications["from"] = PFUser.current()!.username!
-                                                                                        notifications["fromUser"] = PFUser.current()
-                                                                                        notifications["to"] = word
-                                                                                        notifications["toUser"] = object
-                                                                                        notifications["type"] = "tag vi"
-                                                                                        notifications["forObjectId"] = newsfeeds.objectId!
-                                                                                        notifications.saveInBackground(block: {
-                                                                                            (success: Bool, error: Error?) in
-                                                                                            if success {
-                                                                                                
-                                                                                                // If user's apnsId is not nil
-                                                                                                if object["apnsId"] != nil {
-                                                                                                    // MARK: - OneSignal
-                                                                                                    // Send push notification
-                                                                                                    OneSignal.postNotification(
-                                                                                                        ["contents":
-                                                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                                                                         "ios_badgeType": "Increase",
-                                                                                                         "ios_badgeCount": 1
-                                                                                                        ]
-                                                                                                    )
-                                                                                                }
-                                                                                            } else {
-                                                                                                print(error?.localizedDescription as Any)
-                                                                                            }
-                                                                                        })
+                                                                                        // If user's apnsId is not nil
+                                                                                        if object["apnsId"] != nil {
+                                                                                            // MARK: - OneSignal
+                                                                                            // Send push notification
+                                                                                            OneSignal.postNotification(
+                                                                                                ["contents":
+                                                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
+                                                                                                 "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                                                                 "ios_badgeType": "Increase",
+                                                                                                 "ios_badgeCount": 1
+                                                                                                ]
+                                                                                            )
+                                                                                        }
+                                                                                    } else {
+                                                                                        print(error?.localizedDescription as Any)
                                                                                     }
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                    print("Couldn't find the user...")
-                                                                                }
-                                                                            }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
-                                                                    }// end for loop for words
-                                                                    
-                                                                } else {
-                                                                    print(error?.localizedDescription as Any)
-                                                                }
-                                                            })
+                                                                                })
+                                                                            }
+                                                                        } else {
+                                                                            print(error?.localizedDescription as Any)
+                                                                            print("Couldn't find the user...")
+                                                                        }
+                                                                    }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                                                            }// end for loop for words
+                                                            
+                                                            
                                                         case .failed:
                                                             break
                                                         case .cancelled:
