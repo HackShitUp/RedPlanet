@@ -596,7 +596,9 @@
 		7E41C7A91E4035190025129B /* NIB: POSTS */ = {
 			isa = PBXGroup;
 			children = (
-				7E7E92DE1E3DAE4200E3C8EA /* EphemeralOG */,
+				7EA87D3B1DD6B39400B3471F /* SharedPost */,
+				7E4CFF9E1DB4396D0087454E /* SpacePost */,
+				7EA09E131DD406F500BD2D51 /* Moments */,
 				7E7E92DF1E3DAE4A00E3C8EA /* TextPost */,
 				7E7E92E01E3DAE5600E3C8EA /* Photo */,
 				7E35A3B51E4167670007EB99 /* ProPic */,
@@ -655,6 +657,7 @@
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7E088A7E1E5D05E700268FB5 /* EphemeralCell */,
 				7E41C7A91E4035190025129B /* NIB: POSTS */,
 			);
 			name = POSTS;
@@ -765,17 +768,6 @@
 				7E7E38C51DD595E800DEC27B /* TOSCell.swift */,
 			);
 			name = TermsOfService;
-			sourceTree = "<group>";
-		};
-		7E7E92DE1E3DAE4200E3C8EA /* EphemeralOG */ = {
-			isa = PBXGroup;
-			children = (
-				7E088A7E1E5D05E700268FB5 /* EphemeralCell */,
-				7EA87D3B1DD6B39400B3471F /* SharedPost */,
-				7E4CFF9E1DB4396D0087454E /* SpacePost */,
-				7EA09E131DD406F500BD2D51 /* Moments */,
-			);
-			name = EphemeralOG;
 			sourceTree = "<group>";
 		};
 		7E7E92DF1E3DAE4A00E3C8EA /* TextPost */ = {

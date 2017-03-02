@@ -88,7 +88,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             SVProgressHUD.show()
             SVProgressHUD.setBackgroundColor(UIColor.white)
             
-            // (1) Post to user's Space
+            // Post to user's Space
             let space = PFObject(className: "Newsfeeds")
             space["byUser"] = PFUser.current()!
             space["username"] = PFUser.current()!.username!
@@ -97,19 +97,24 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             // Save parseFile dependent on Boolean
             if self.mediaAsset.image != nil {
                 if spaceMediaType == "photo" {
-                    // PHOTO
+                // PHOTO
                     // Traverse UIImage
                     let proPicData = UIImageJPEGRepresentation(self.mediaAsset.image!, 0.5)
                     let mediaFile = PFFile(data: proPicData!)
                     space["photoAsset"] = mediaFile
                 } else if spaceMediaType == "video" {
-                    // VIDEO
+                // VIDEO
                     // Traverse url to Data
                     let tempImage = spaceVideoData as NSURL?
                     _ = tempImage?.relativePath
                     let videoData = NSData(contentsOfFile: (tempImage?.relativePath!)!)
                     let videoFile = PFFile(name: "video.mp4", data: videoData! as Data)
                     space["videoAsset"] = videoFile
+//                    do {
+//                        space["videoAsset"] = try PFFile(name: "video.mp4", data: Data(contentsOf: spaceVideoData!))
+//                    } catch {
+//                        print("error")
+//                    }
                 }
             }
             // Save textPost
@@ -119,98 +124,119 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             }
             space["toUser"] = otherObject.last!
             space["toUsername"] = otherName.last!
-            space.saveInBackground()
-            
-            // (2) Save Notification
-            let notifications = PFObject(className: "Notifications")
-            notifications["fromUser"] = PFUser.current()!
-            notifications["from"] = PFUser.current()!.username!
-            notifications["toUser"] = otherObject.last!
-            notifications["to"] = otherName.last!
-            notifications["type"] = "space"
-            notifications["forObjectId"] = space.objectId!
-            notifications.saveInBackground()
-            
-            
-            // Loop through words to check for # and @ prefixes
-            for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                // Define @username
-                if word.hasPrefix("@") {
-                    // Get username
-                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+            space.saveInBackground {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully shared Space Post: \(space)")
                     
-                    // Look for user
-                    let user = PFUser.query()!
-                    user.whereKey("username", equalTo: word.lowercased())
-                    user.findObjectsInBackground(block: {
-                        (objects: [PFObject]?, error: Error?) in
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                    
+                    // Send Notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = otherObject.last!
+                    notifications["to"] = otherName.last!
+                    notifications["type"] = "space"
+                    notifications["forObjectId"] = space.objectId!
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
                         if error == nil {
-                            for object in objects! {
-                                // Send mention to Parse server, class "Notifications"
-                                let notifications = PFObject(className: "Notifications")
-                                notifications["from"] = PFUser.current()!.username!
-                                notifications["fromUser"] = PFUser.current()!
-                                notifications["type"] = "tag sp"
-                                notifications["forObjectId"] = space.objectId!
-                                notifications["to"] = word
-                                notifications["toUser"] = object
-                                notifications.saveInBackground(block: {
-                                    (success: Bool, error: Error?) in
-                                    if success {
-                                        print("Successfully saved tag in notifications: \(notifications)")
-                                        
-                                        // Handle optional chaining
-                                        if object.value(forKey: "apnsId") != nil {
-                                            // Send push notification
-                                            OneSignal.postNotification(
-                                                ["contents":
-                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
-                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
-                                                 "ios_badgeType": "Increase",
-                                                 "ios_badgeCount": 1
-                                                ]
-                                            )
+                            print("Sent Notification: \(notifications)")
+                            
+                            // Check for user mentions...
+                            // Loop through words to check for @ prefixes
+                            for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+                                
+                                // Define @username
+                                if word.hasPrefix("@") {
+                                    // Get username
+                                    word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                                    word = word.trimmingCharacters(in: CharacterSet.symbols)
+                                    
+                                    // Look for user
+                                    let user = PFUser.query()!
+                                    user.whereKey("username", equalTo: word.lowercased())
+                                    user.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                
+                                                // Send mention to Parse server, class "Notifications"
+                                                let notifications = PFObject(className: "Notifications")
+                                                notifications["from"] = PFUser.current()!.username!
+                                                notifications["fromUser"] = PFUser.current()!
+                                                notifications["type"] = "tag sp"
+                                                notifications["forObjectId"] = space.objectId!
+                                                notifications["to"] = word
+                                                notifications["toUser"] = object
+                                                notifications.saveInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully saved tag in notifications: \(notifications)")
+                                                        
+                                                        
+                                                        // Handle optional chaining
+                                                        if object.value(forKey: "apnsId") != nil {
+                                                            // Send push notification
+                                                            OneSignal.postNotification(
+                                                                ["contents":
+                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
+                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
+                                                                 "ios_badgeType": "Increase",
+                                                                 "ios_badgeCount": 1
+                                                                ]
+                                                            )
+                                                        }
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                                
+                                            }
+                                        } else {
+                                            print(error?.localizedDescription as Any)
                                         }
-                                        
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
+                                    })
+                                    
+                                }
                             }
+                            
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.dismiss()
+                            
+                            // Send push notification
+                            if otherObject.last!.value(forKey: "apnsId") != nil {
+                                OneSignal.postNotification(
+                                    ["contents":
+                                        ["en": "\(PFUser.current()!.username!.uppercased()) wrote on your Space"],
+                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
+                                     "ios_badgeType": "Increase",
+                                     "ios_badgeCount": 1
+                                    ])
+                            }
+                        
+                            // Send Notification to otherUser's Profile
+                            NotificationCenter.default.post(name: otherNotification, object: nil)
+                            // Send Notification to News Feeds
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                            // Pop View Controller
+                            _ = self.navigationController?.popViewController(animated: true)
                         } else {
                             print(error?.localizedDescription as Any)
                         }
                     })
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
                 }
             }
-            
-            // MARK: - SVProgressHUD
-            SVProgressHUD.dismiss()
-            
-            // Send push notification
-            if otherObject.last!.value(forKey: "apnsId") != nil {
-                OneSignal.postNotification(
-                    ["contents":
-                        ["en": "\(PFUser.current()!.username!.uppercased()) wrote on your Space"],
-                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                     "ios_badgeType": "Increase",
-                     "ios_badgeCount": 1
-                    ])
-            }
-            
-            // Send Notification to otherUser's Profile
-            NotificationCenter.default.post(name: otherNotification, object: nil)
-            
-            // Send Notification to News Feeds
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-            
-            // Pop View Controller
-            _ = self.navigationController?.popViewController(animated: true)
         }
     }
-    
-    
     
     // Function to choose photo
     func choosePhoto(sender: UIButton) {
@@ -249,15 +275,13 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     
     // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> String {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         
         let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
         
         
         if pickerMedia == kUTTypeImage {
-            print("Photo selected")
-            
             // Enable button
             self.editButton.isEnabled = true
             
@@ -265,7 +289,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             spaceMediaType = "photo"
             
             // Set image
-            self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as! UIImage
+            self.mediaAsset.image = info[UIImagePickerControllerOriginalImage] as? UIImage
             
             // Dismiss view controller
             self.dismiss(animated: true, completion: nil)
@@ -275,11 +299,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
             editor?.delegate = self
             self.present(editor!, animated: true, completion: nil)
-            
         }
         
         if pickerMedia == kUTTypeMovie {
-            print("Video selected")
             
             // Disable button
             self.editButton.isEnabled = false
@@ -298,7 +320,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 imgGenerator.appliesPreferredTrackTransform = true
                 let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(0, 1), actualTime: nil)
                 self.mediaAsset.image = UIImage(cgImage: cgImage)
-                
             } catch let error {
                 print("*** Error generating thumbnail: \(error.localizedDescription)")
             }
@@ -307,16 +328,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             self.dismiss(animated: true, completion: nil)
         }
         
-        
-        
         // Layout Tap
-        layoutTaps()
-        
-        
-        return spaceMediaType!
-        
+        self.layoutTaps()
+        print("MEDIA SELECTION: \(spaceVideoData!)")
     }
-    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         
@@ -332,8 +347,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         // Dismiss VC
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
+
     
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
@@ -356,9 +370,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     }
 
     
-    
-    
-    
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
@@ -371,9 +382,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             self.title = "\(otherName.last!.uppercased())'s Space"
         }
     }
-    
-
-    
     
     
     // MARK: - UITextView delegate methods
@@ -523,15 +531,12 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         videoViewController.modalPresentationStyle = .popover
         videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
         
-        
-        
+        // Present VideoViewController Modally*** 
         let popOverVC = videoViewController.popoverPresentationController
         popOverVC?.permittedArrowDirections = .any
         popOverVC?.delegate = self
         popOverVC?.sourceView = self.mediaAsset
         popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        
-        
         self.present(videoViewController, animated: true, completion: nil)
     }
     
@@ -539,26 +544,21 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // Function to layout method taps dependednt on whether mediaType is "photo" or "video"
     func layoutTaps() {
-        
-        print("***SPACEMEDIATYPE: \(spaceMediaType!)***")
-        
         if spaceMediaType == "photo" {
-            // PHOTO
+        // PHOTO
             // Add tap to zoom into photo
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
             zoomTap.numberOfTapsRequired = 1
             self.mediaAsset.isUserInteractionEnabled = true
             self.mediaAsset.addGestureRecognizer(zoomTap)
-            
         } else if spaceMediaType == "video" {
-            // VIDEO
+        // VIDEO
             // Add tap to play video
             let playTap = UITapGestureRecognizer(target: self, action: #selector(playVideo))
             playTap.numberOfTapsRequired = 1
             self.mediaAsset.isUserInteractionEnabled = true
             self.mediaAsset.addGestureRecognizer(playTap)
         }
-        
     }
     
     

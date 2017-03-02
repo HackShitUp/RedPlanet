@@ -152,14 +152,16 @@ open class VideoViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
-
         
         if autoplays {
             play()
         }
         
+        // Hide Tabbar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Add swipe method to leave view controller
         let swipeOut = UISwipeGestureRecognizer(target: self, action: #selector(dismissVideo))

@@ -248,10 +248,7 @@ class SpacePostCell: UITableViewCell {
             })
         }
     }
-    
-    
-    
-    
+
     
     // Function to show number of shares
     func showShares() {
@@ -262,9 +259,6 @@ class SpacePostCell: UITableViewCell {
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
     }
-    
-    
-    
     
     // Function to share
     func shareOptions() {
@@ -292,7 +286,9 @@ class SpacePostCell: UITableViewCell {
             let videoUrl = NSURL(string: video.url!)
             // MARK: - Periscope Video View Controller
             let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
-            self.delegate?.present(videoViewController, animated: true, completion: nil)
+//            self.delegate?.present(videoViewController, animated: true, completion: nil)
+            self.delegate?.navigationController?.radialPushViewController(videoViewController, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+            })
         }
     }
     

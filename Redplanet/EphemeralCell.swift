@@ -42,7 +42,7 @@ class EphemeralCell: UITableViewCell {
         views["byUser"] = PFUser.current()!
         views["username"] = PFUser.current()!.username!
         views["forObjectId"] = self.postObject!.objectId!
-        views.saveEventually()
+        views.saveInBackground()
         
         if self.postObject!.value(forKey: "contentType") as! String == "itm" {
         // MOMENT
