@@ -465,7 +465,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.mediaAsset.clipsToBounds = true
                 
                 // (A) Fetch photo
-                if let photo = content["photoAsset"] as? PFFile {
+                if let photo = content.value(forKey: "photoAsset") as? PFFile {
                     // MARK: - SDWebImage
                     cell.mediaAsset.sd_setImage(with: URL(string: photo.url!), placeholderImage: cell.mediaAsset.image)
                 }
@@ -488,13 +488,13 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                 cell.mediaAsset.clipsToBounds = true
 
                 // (B) Fetch video thumbnail
-                if let videoFile = sharedObject.last!.value(forKey: "videoAsset") as? PFFile {
+                if let videoFile = content.value(forKey: "videoAsset") as? PFFile {
                 // VIDEO
                     // LayoutViews
                     cell.mediaAsset.layoutIfNeeded()
                     cell.mediaAsset.layoutSubviews()
                     cell.mediaAsset.setNeedsLayout()
-                    
+
                     // MARK: - SDWebImage
                     cell.mediaAsset.sd_setShowActivityIndicatorView(true)
                     cell.mediaAsset.sd_setIndicatorStyle(.gray)
@@ -502,10 +502,12 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                     // Load Video Preview and Play Video
                     let player = AVPlayer(url: URL(string: videoFile.url!)!)
                     let playerLayer = AVPlayerLayer(player: player)
-                    playerLayer.frame = cell.mediaAsset.bounds
+                    playerLayer.frame = cell.bounds
                     playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                    cell.mediaAsset.contentMode = .scaleAspectFit
+                    cell.mediaAsset.contentMode = .scaleToFill
                     cell.mediaAsset.layer.addSublayer(playerLayer)
+                    player.isMuted = true
+                    player.play()
                 }
                 
                 // (C) Configure Text

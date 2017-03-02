@@ -40,7 +40,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: Any) {
         // Remove last
         videoObject.removeLast()
-        
         // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -49,10 +48,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     @IBAction func refresh(_ sender: Any) {
         // Fetch interactions
         fetchInteractions()
-        
         // End refresher
         self.refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }
@@ -77,8 +74,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                     self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
-                
-                
                 // (2) Fetch Comments
                 let comments = PFQuery(className: "Comments")
                 comments.whereKey("forObjectId", equalTo: videoObject.last!.objectId!)
@@ -95,11 +90,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                         for object in objects! {
                             self.comments.append(object["byUser"] as! PFUser)
                         }
-                        
-                        
-                        
-                        
-                        
+
                         // (3) Fetch Shares
                         let shares = PFQuery(className: "Newsfeeds")
                         shares.whereKey("pointObject", equalTo: videoObject.last!)
@@ -119,34 +110,23 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
-                            
                             // Reload data
                             self.tableView!.reloadData()
                         })
-                        
-                        
-                        
-                        
-                        
-                        
+
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                     
-                    
                     // Reload data
                     self.tableView!.reloadData()
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.tableView!.reloadData()
         }
-
-        
     }
     
     
@@ -189,8 +169,9 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 495
+        self.tableView!.estimatedRowHeight = 490
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        self.tableView!.tableFooterView = UIView()
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -202,27 +183,20 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: videoNotification, object: nil)
         
-        // Remove lines on load
-        self.tableView!.tableFooterView = UIView()
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
-
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Stylize title
         configureView()
-        
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
     }
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -234,24 +208,19 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     }
 
     // MARK: - Table view data source
-    
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 495
+        return 490
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
 
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return 1
     }
 
@@ -260,7 +229,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         let cell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
         
         //set contentView frame and autoresizingMask
-        cell.contentView.frame = cell.contentView.frame
+        cell.contentView.frame = cell.bounds
 
         // Set parent VC
         cell.delegate = self.navigationController
@@ -281,17 +250,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
-        
-        // LayoutViews
-        cell.videoPreview.layoutIfNeeded()
-        cell.videoPreview.layoutSubviews()
-        cell.videoPreview.setNeedsLayout()
-        
-        // Make Vide Preview Circular
-        cell.videoPreview.layer.cornerRadius = cell.videoPreview.frame.size.width/2
-        cell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-        cell.videoPreview.layer.borderWidth = 3.50
-        cell.videoPreview.clipsToBounds = true
         
         // Layout caption views
         cell.textPost.layoutIfNeeded()
@@ -320,6 +278,21 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Get video preview
         if let videoFile = videoObject.last!["videoAsset"] as? PFFile {
+            // LayoutViews
+            cell.videoPreview.layoutIfNeeded()
+            cell.videoPreview.layoutSubviews()
+            cell.videoPreview.setNeedsLayout()
+            
+            // Make Vide Preview Circular
+            cell.videoPreview.layer.cornerRadius = cell.videoPreview.frame.size.width/2
+            cell.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            cell.videoPreview.layer.borderWidth = 3.50
+            cell.videoPreview.clipsToBounds = true
+            
+            // MARK: - SDWebImage
+            cell.videoPreview.sd_setShowActivityIndicatorView(true)
+            cell.videoPreview.sd_setIndicatorStyle(.gray)
+            
             // Load Video Preview and Play Video
             let player = AVPlayer(url: URL(string: videoFile.url!)!)
             let playerLayer = AVPlayerLayer(player: player)
@@ -329,8 +302,8 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             cell.videoPreview.layer.addSublayer(playerLayer)
             player.isMuted = true
             player.play()
+            cell.layoutSubviews()
         }
-        
         
         
         // (3) Set Text Post
@@ -345,47 +318,35 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "right now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
             } else {
                 cell.time.text = "\(difference.second!) seconds ago"
             }
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
                 cell.time.text = "1 minute ago"
             } else {
                 cell.time.text = "\(difference.minute!) minutes ago"
             }
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
                 cell.time.text = "1 hour ago"
             } else {
                 cell.time.text = "\(difference.hour!) hours ago"
             }
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1 day ago"
             } else {
                 cell.time.text = "\(difference.day!) days ago"
             }
-        }
-        
-        if difference.weekOfMonth! > 0 {
+        } else if difference.weekOfMonth! > 0 {
             let createdDate = DateFormatter()
             createdDate.dateFormat = "MMM d, yyyy"
             cell.time.text = createdDate.string(from: videoObject.last!.createdAt!)
         }
-        
-        
         
         // (5) Determine whether the current user has liked this object or not
         if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
@@ -400,14 +361,11 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
         }
         
-        
         // Set number of likes
         if self.likes.count == 0 {
             cell.numberOfLikes.setTitle("likes", for: .normal)
-            
         } else if self.likes.count == 1 {
             cell.numberOfLikes.setTitle("1 like", for: .normal)
-            
         } else {
             cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
         }
@@ -415,13 +373,10 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         // Set number of comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
-            
         } else if self.comments.count == 1 {
             cell.numberOfComments.setTitle("1 comment", for: .normal)
-            
         } else {
             cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
-            
         }
         
         // Set number of shares
@@ -432,10 +387,6 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfShares.setTitle("\(self.sharers.count) shares", for: .normal)
         }
-        
-        
-        // Grow height
-        cell.layoutIfNeeded()
 
         return cell
     }// end CellForRowAt
