@@ -28,6 +28,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
     // MARK: - SCRecorder
     var player: SCPlayer!
     
+    
     // MARK: - SwipeView
     @IBOutlet weak var swipeView: SwipeView!
     
@@ -66,6 +67,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             }
         }
     }
+    
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func share(_ sender: Any) {
@@ -213,10 +215,51 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         //
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
+
+    // MARK: - SwipeView DataSource
+    func numberOfItems(in swipeView: SwipeView) -> Int {
+        //return the total number of items in the carousel
+        return 4
+    }
+    
+    func swipeView(_ swipeView: SwipeView, viewForItemAt index: Int, reusing view: UIView) -> UIView? {
+
+        if index == 0 {
+            view.alpha = 1.0
+            view.backgroundColor = UIColor.clear
+        } else if index == 1 {
+            // Configure time
+            let timeFormatter = DateFormatter()
+            timeFormatter.dateFormat = "h:mm a"
+            let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+            time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
+            time.textColor = UIColor.white
+            time.layer.shadowColor = UIColor.black.cgColor
+            time.layer.shadowOffset = CGSize(width: 1, height: 1)
+            time.layer.shadowRadius = 3
+            time.layer.shadowOpacity = 0.5
+            time.text = "\(timeFormatter.string(from: NSDate() as Date))"
+            time.textAlignment = .center
+            UIGraphicsBeginImageContextWithOptions(self.view.frame.size, false, 0.0)
+            time.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let img = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            view.alpha = 1.0
+            view.backgroundColor = UIColor(patternImage: img!)
+        } else if index == 2 {
+            view.alpha = 0.1
+            view.backgroundColor = UIColor.red
+        } else if index == 3 {
+            view.alpha = 0.1
+            view.backgroundColor = UIColor.yellow
+        }
+        
+        
+        return view
+    }
+    
+    func swipeViewItemSize(_ swipeView: SwipeView) -> CGSize {
+        return self.swipeView.bounds.size
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -224,13 +267,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         // Hide statusBar
         UIApplication.shared.setStatusBarHidden(true, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // MARK: - SwipeView
-        self.swipeView.delegate = self
-        self.swipeView.dataSource = self
-        self.swipeView.isPagingEnabled = true
-        self.swipeView.isUserInteractionEnabled = true
-        print("Number of pages: \(self.swipeView.numberOfPages)")
         
         // Set Audio
         do {
@@ -279,6 +315,14 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         // Execute code if url array is NOT empty
         if !capturedURLS.isEmpty {
             
+            // MARK: - SwipeView
+            self.swipeView.delegate = self
+            self.swipeView.dataSource = self
+            self.swipeView.alignment = .center
+            self.swipeView.itemsPerPage = 1
+            self.swipeView.isPagingEnabled = true
+            self.swipeView.truncateFinalPage = false
+            
             // MARK: - SCRecorder
             self.player = SCPlayer()
             self.player.setItemBy(capturedURLS.last!)
@@ -288,10 +332,15 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             playerLayer.frame = self.view.bounds
             self.view.layer.addSublayer(playerLayer)
             self.view.addSubview(self.swipeView)
-//            let filterView = SCFilterImageView(frame: self.view.bounds)
-//            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
-//            self.player.scImageView = filterView
-//            self.view.addSubview(filterView)
+            
+            
+            // Loop through filters and append to an array
+//            var filterView = SCFilterImageView(frame: view.bounds)
+//            filterVieww.filter = SCFilter(ciFilterName: "CIPhotoEffectInstant")
+//            player.scImageView = filterView
+//            view.addSubview(filterView)
+            
+            
             
             
             // MARK: - SwipeNavigationController
@@ -322,53 +371,16 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         }
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
     }
-    
-    
-
-    
-    // MARK: - SwipeView DataSource
-    
-    func numberOfItems(in swipeView: SwipeView!) -> Int {
-        return 4
-    }
-    
-    func swipeView(_ swipeView: SwipeView!, viewForItemAt index: Int, reusing view: UIView!) -> UIView! {
-        
-        
-        if index == 0 {
-            
-        } else if index == 1 {
-            view.backgroundColor = UIColor(patternImage: UIImage(named: "Cotton")!)
-        } else if index == 2 {
-            view.backgroundColor = UIColor(patternImage: UIImage(named: "HardLight")!)
-        } else if index == 3 {
-            //            let filterView = SCFilterImageView(frame: self.view.bounds)
-            //            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectInstant")
-            //            self.player.scImageView = filterView
-            //            view.addSubview(filterView)
-        } else {
-            //            let filterView = SCFilterImageView(frame: self.view.bounds)
-            //            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
-            //            self.player.scImageView = filterView
-            //            view.addSubview(filterView)
-        }
-        
-        return view
-    }
-    
-    func swipeViewItemSize(_ swipeView: SwipeView!) -> CGSize {
-        return self.view.bounds.size
-    }
-
-    func swipeViewDidScroll(_ swipeView: SwipeView!) {
-        print("SCROLLED")
-    }
-    
-    
 }

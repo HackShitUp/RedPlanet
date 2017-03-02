@@ -27,7 +27,7 @@ typedef void(^animatorCompletionBlock)();
         if (self=[super init]) {
             animLayer=layer;
             caAnimation=anim;
-            [anim setDelegate:self];
+            [anim setDelegate: self];
         }
         return self;
         

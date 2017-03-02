@@ -22,8 +22,8 @@ open class SNFilter: UIImageView {
                                       "nil",                    // Time Stamp
                                       "nil",                    // Filter
                                       "nil",                    // Filter
-                                      "CIPhotoEffectMono",
-                                      "CIComicEffect",
+                                      "CIPhotoEffectNoir",
+                                      "CICMYKHalftone",
                                       ]
     open var name:String?
     var stickers = [SNSticker]()
@@ -95,7 +95,6 @@ open class SNFilter: UIImageView {
             let outputCGImage = context.createCGImage(myFilter!.outputImage!, from: myFilter!.outputImage!.extent)
             
             // 6 - convert filtered CGImage to UIImage
-            print("updated")
             var filteredImage: UIImage?
             if isRearCam! == true {
                 filteredImage = UIImage(cgImage: outputCGImage!, scale: 1.0, orientation: UIImageOrientation.right)
