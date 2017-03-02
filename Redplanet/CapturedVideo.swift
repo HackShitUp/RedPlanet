@@ -28,7 +28,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
     // MARK: - SCRecorder
     var player: SCPlayer!
     
-    
     // MARK: - SwipeView
     @IBOutlet weak var swipeView: SwipeView!
     
@@ -74,35 +73,31 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
-        
-    
-
-//        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-//        let outputPath = "\(documentsPath).mp4"
-//        let outputURL = URL(fileURLWithPath: outputPath)
-//        
-//        let asset = AVAsset(url: capturedURLS.last!)
-//        let exportSession = SCAssetExportSession()
-//        exportSession.inputAsset = asset
-//        exportSession.outputUrl = outputURL
-//        exportSession.outputFileType = AVFileTypeMPEG4
-//        exportSession.videoConfiguration.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
-//        exportSession.videoConfiguration.preset = SCPresetHighestQuality
-//        exportSession.shouldOptimizeForNetworkUse = true
-//        exportSession.exportAsynchronously { 
-//            if exportSession.error == nil {
-//                do {
-//                    let fileData = try Data(contentsOf: outputURL)
-//                    print("EXPORTED??\(outputURL)\n\(fileData)\n\n\n")
-//                    
-//                } catch {
-//                    
-//                }
-//                
-//            } else {
-//                print(exportSession.error?.localizedDescription as Any)
-//            }
-//        }
+        /*
+        // EXPORT NEW VIDEO
+        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
+        let outputPath = "\(documentsPath).mp4"
+        let outputURL = URL(fileURLWithPath: outputPath)
+        let asset = AVAsset(url: capturedURLS.last!)
+        let exportSession = SCAssetExportSession()
+        exportSession.inputAsset = asset
+        exportSession.outputUrl = outputURL
+        exportSession.outputFileType = AVFileTypeMPEG4
+        exportSession.videoConfiguration.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
+        exportSession.videoConfiguration.preset = SCPresetHighestQuality
+        exportSession.shouldOptimizeForNetworkUse = true
+        exportSession.exportAsynchronously { 
+            if exportSession.error == nil {
+                do {
+                    let fileData = try Data(contentsOf: outputURL)
+                    print("EXPORTED??\(outputURL)\n\(fileData)\n\n\n")
+                } catch {
+                    print("ERROR? TRAVERSING")
+                }
+            } else {
+                print(exportSession.error?.localizedDescription as Any)
+            }
+        }*/
         
         if chatCamera == false {
             // Save to Newsfeeds
@@ -223,7 +218,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
     }
     
     func swipeView(_ swipeView: SwipeView, viewForItemAt index: Int, reusing view: UIView) -> UIView? {
-
+        /*
         if index == 0 {
             view.alpha = 1.0
             view.backgroundColor = UIColor.clear
@@ -253,8 +248,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             view.alpha = 0.1
             view.backgroundColor = UIColor.yellow
         }
-        
-        
+        */
         return view
     }
     
