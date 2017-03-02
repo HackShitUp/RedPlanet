@@ -3269,39 +3269,59 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vlb-wk-ZMl" customClass="SwipeView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZE-qk-dfS">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aZE-qk-dfS">
                                         <rect key="frame" x="20" y="19" width="20" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="20" id="DGg-Kx-D3r"/>
+                                            <constraint firstAttribute="height" constant="20" id="X1s-zm-zXa"/>
+                                        </constraints>
                                         <state key="normal" image="Exit"/>
                                         <connections>
                                             <action selector="leave:" destination="rGT-nh-oDq" eventType="touchUpInside" id="tXb-kU-81k"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-B2-Jaa">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc6-B2-Jaa">
                                         <rect key="frame" x="305" y="609" width="50" height="50"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="AD3-TZ-4b9"/>
+                                            <constraint firstAttribute="height" constant="50" id="MOg-Va-kp0"/>
+                                        </constraints>
                                         <state key="normal" image="Checked Filled-100"/>
                                         <connections>
                                             <action selector="share:" destination="rGT-nh-oDq" eventType="touchUpInside" id="enq-Lt-m9R"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5A-lz-cfb">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5A-lz-cfb">
                                         <rect key="frame" x="20" y="619" width="30" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="fCG-sc-Wql"/>
+                                            <constraint firstAttribute="height" constant="30" id="kqo-52-Sds"/>
+                                        </constraints>
                                         <state key="normal" image="Download"/>
                                         <connections>
                                             <action selector="saveVideo:" destination="rGT-nh-oDq" eventType="touchUpInside" id="SzQ-V3-yRT"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YF-FY-Ouh">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2YF-FY-Ouh">
                                         <rect key="frame" x="330" y="17" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="25" id="2LO-Rc-0NM"/>
+                                            <constraint firstAttribute="height" constant="25" id="Hrm-cm-Hs6"/>
+                                        </constraints>
                                         <state key="normal" image="VolumeOn"/>
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="cc6-B2-Jaa" secondAttribute="trailing" constant="20" id="6Cf-z2-ZkX"/>
+                                    <constraint firstAttribute="trailing" secondItem="2YF-FY-Ouh" secondAttribute="trailing" constant="20" id="6Jh-qD-fdg"/>
                                     <constraint firstAttribute="height" constant="667" id="PFD-5S-22B"/>
+                                    <constraint firstAttribute="bottom" secondItem="d5A-lz-cfb" secondAttribute="bottom" constant="18" id="YA1-JN-loO"/>
+                                    <constraint firstItem="2YF-FY-Ouh" firstAttribute="top" secondItem="vlb-wk-ZMl" secondAttribute="top" constant="17" id="c2R-ec-UmF"/>
                                     <constraint firstAttribute="width" constant="375" id="c3p-a1-mwd"/>
+                                    <constraint firstItem="aZE-qk-dfS" firstAttribute="top" secondItem="vlb-wk-ZMl" secondAttribute="top" constant="19" id="j3r-5p-p6N"/>
+                                    <constraint firstAttribute="bottom" secondItem="cc6-B2-Jaa" secondAttribute="bottom" constant="8" id="rbX-Pc-ztk"/>
+                                    <constraint firstItem="d5A-lz-cfb" firstAttribute="leading" secondItem="vlb-wk-ZMl" secondAttribute="leading" constant="20" id="t1Q-Vj-IQO"/>
+                                    <constraint firstItem="aZE-qk-dfS" firstAttribute="leading" secondItem="vlb-wk-ZMl" secondAttribute="leading" constant="20" id="thP-2A-yHR"/>
                                 </constraints>
                             </view>
                         </subviews>
