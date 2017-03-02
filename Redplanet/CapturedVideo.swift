@@ -23,7 +23,7 @@ import SCRecorder
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCRecorderDelegate {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCRecorderDelegate, SwipeViewDelegate, SwipeViewDataSource {
     
     // MARK: - SCRecorder
     var player: SCPlayer!
@@ -167,6 +167,23 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
         }
     }
+    
+    // Function to mute and turn volume on
+    func setMute() {
+        // MUTE
+        if self.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
+            self.player.isMuted = true
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
+            }
+        } else if self.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
+            // VOLUME ON
+            self.player.isMuted = false
+            DispatchQueue.main.async {
+                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
+            }
+        }
+    }
 
     // Compress video
     func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
@@ -184,15 +201,39 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         }
     }
     
+    
+    // MARK: - SwipeNavigationController
+    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
+        if position == .bottom {
+            _ = self.navigationController?.popViewController(animated: false)
+        }
+    }
+    
+    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+        //
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide statusBar
         UIApplication.shared.setStatusBarHidden(true, with: .none)
         self.setNeedsStatusBarAppearanceUpdate()
         
+        // MARK: - SwipeView
+        self.swipeView.delegate = self
+        self.swipeView.dataSource = self
+        self.swipeView.isPagingEnabled = true
+        self.swipeView.isUserInteractionEnabled = true
+        print("Number of pages: \(self.swipeView.numberOfPages)")
+        
         // Set Audio
         do {
-            // Reset audio to allo videos to be played
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
                                                             with: [.duckOthers, .defaultToSpeaker])
         } catch {
@@ -231,42 +272,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             }
         }
     }
-
-    
-    // Function to mute and turn volume on
-    func setMute() {
-        // MUTE
-        if self.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
-            self.player.isMuted = true
-            DispatchQueue.main.async {
-                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
-            }
-        } else if self.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
-        // VOLUME ON
-            self.player.isMuted = false
-            DispatchQueue.main.async {
-                self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
-            }
-        }
-    }
-    
-    
-    // MARK: - SwipeNavigationController
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        if position == .bottom {
-            _ = self.navigationController?.popViewController(animated: false)
-        }
-    }
-    
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        //
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
     
 
     override func viewDidLoad() {
@@ -282,10 +287,12 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             let playerLayer = AVPlayerLayer(player: player)
             playerLayer.frame = self.view.bounds
             self.view.layer.addSublayer(playerLayer)
-            let filterView = SCFilterImageView(frame: self.view.bounds)
-            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
-            self.player.scImageView = filterView
-            self.view.addSubview(filterView)
+            self.view.addSubview(self.swipeView)
+//            let filterView = SCFilterImageView(frame: self.view.bounds)
+//            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
+//            self.player.scImageView = filterView
+//            self.view.addSubview(filterView)
+            
             
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
@@ -321,5 +328,47 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
     }
+    
+    
+
+    
+    // MARK: - SwipeView DataSource
+    
+    func numberOfItems(in swipeView: SwipeView!) -> Int {
+        return 4
+    }
+    
+    func swipeView(_ swipeView: SwipeView!, viewForItemAt index: Int, reusing view: UIView!) -> UIView! {
+        
+        
+        if index == 0 {
+            
+        } else if index == 1 {
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "Cotton")!)
+        } else if index == 2 {
+            view.backgroundColor = UIColor(patternImage: UIImage(named: "HardLight")!)
+        } else if index == 3 {
+            //            let filterView = SCFilterImageView(frame: self.view.bounds)
+            //            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectInstant")
+            //            self.player.scImageView = filterView
+            //            view.addSubview(filterView)
+        } else {
+            //            let filterView = SCFilterImageView(frame: self.view.bounds)
+            //            filterView.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
+            //            self.player.scImageView = filterView
+            //            view.addSubview(filterView)
+        }
+        
+        return view
+    }
+    
+    func swipeViewItemSize(_ swipeView: SwipeView!) -> CGSize {
+        return self.view.bounds.size
+    }
+
+    func swipeViewDidScroll(_ swipeView: SwipeView!) {
+        print("SCROLLED")
+    }
+    
     
 }
