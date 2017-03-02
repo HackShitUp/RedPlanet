@@ -18,15 +18,14 @@ import Bolts
 
 import OneSignal
 import SwipeNavigationController
-import SCRecorder
 
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCRecorderDelegate, SwipeViewDelegate, SwipeViewDataSource {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, PlayerDelegate, SwipeViewDelegate, SwipeViewDataSource {
     
-    // MARK: - SCRecorder
-    var player: SCPlayer!
+    // MARK: - Player
+    var player: Player!
     
     // MARK: - SwipeView
     @IBOutlet weak var swipeView: SwipeView!
@@ -73,32 +72,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
-        /*
-        // EXPORT NEW VIDEO
-        let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as NSString
-        let outputPath = "\(documentsPath).mp4"
-        let outputURL = URL(fileURLWithPath: outputPath)
-        let asset = AVAsset(url: capturedURLS.last!)
-        let exportSession = SCAssetExportSession()
-        exportSession.inputAsset = asset
-        exportSession.outputUrl = outputURL
-        exportSession.outputFileType = AVFileTypeMPEG4
-        exportSession.videoConfiguration.filter = SCFilter(ciFilterName: "CIPhotoEffectMono")
-        exportSession.videoConfiguration.preset = SCPresetHighestQuality
-        exportSession.shouldOptimizeForNetworkUse = true
-        exportSession.exportAsynchronously { 
-            if exportSession.error == nil {
-                do {
-                    let fileData = try Data(contentsOf: outputURL)
-                    print("EXPORTED??\(outputURL)\n\(fileData)\n\n\n")
-                } catch {
-                    print("ERROR? TRAVERSING")
-                }
-            } else {
-                print(exportSession.error?.localizedDescription as Any)
-            }
-        }*/
-        
+
         if chatCamera == false {
             // Save to Newsfeeds
             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -168,14 +142,14 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
     // Function to mute and turn volume on
     func setMute() {
         // MUTE
-        if self.player.isMuted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
-            self.player.isMuted = true
+        if self.player.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
+            self.player.muted = true
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
             }
-        } else if self.player.isMuted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
+        } else if self.player.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
             // VOLUME ON
-            self.player.isMuted = false
+            self.player.muted = false
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
             }
@@ -309,6 +283,18 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
         // Execute code if url array is NOT empty
         if !capturedURLS.isEmpty {
             
+            // MARK: - Player
+            self.player = Player()
+            self.player.delegate = self
+            self.player.view.frame = self.view.bounds
+            self.addChildViewController(self.player)
+            self.view.addSubview(self.player.view)
+            self.player.didMove(toParentViewController: self)
+            self.player.url = capturedURLS.last!
+            self.player.fillMode = "AVLayerVideoGravityResizeAspect"
+            self.player.playFromBeginning()
+            self.player.playbackLoops = true
+            
             // MARK: - SwipeView
             self.swipeView.delegate = self
             self.swipeView.dataSource = self
@@ -316,27 +302,8 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SCReco
             self.swipeView.itemsPerPage = 1
             self.swipeView.isPagingEnabled = true
             self.swipeView.truncateFinalPage = false
-            
-            // MARK: - SCRecorder
-            self.player = SCPlayer()
-            self.player.setItemBy(capturedURLS.last!)
-            self.player.loopEnabled = true
-            self.player.play()
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = self.view.bounds
-            self.view.layer.addSublayer(playerLayer)
             self.view.addSubview(self.swipeView)
-            
-            
-            // Loop through filters and append to an array
-//            var filterView = SCFilterImageView(frame: view.bounds)
-//            filterVieww.filter = SCFilter(ciFilterName: "CIPhotoEffectInstant")
-//            player.scImageView = filterView
-//            view.addSubview(filterView)
-            
-            
-            
-            
+        
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false

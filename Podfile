@@ -13,7 +13,6 @@ target 'Redplanet' do
 	pod ‘OneSignal’
 	pod ‘Parse’
 	pod ‘ParseUI’
-	pod 'SCRecorder'
 	pod ‘SDWebImage’
 	pod ‘SimpleAlert’
 	pod 'SVProgressHUD'

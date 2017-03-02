@@ -15,7 +15,6 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
-  - SCRecorder (2.7.0)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
@@ -33,7 +32,6 @@ DEPENDENCIES:
   - OneSignal
   - Parse
   - ParseUI
-  - SCRecorder
   - SDWebImage
   - SimpleAlert
   - SVProgressHUD
@@ -49,13 +47,12 @@ SPEC CHECKSUMS:
   OneSignal: 4cb42948ebc141bd5deb54d3fda25105db94f6d4
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
-  SCRecorder: bbb521dbc222908876ec9cd9156bbc8a893bed44
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SimpleAlert: 383d1197df2e7b70b9bef5771f3632979c1aadae
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: ef1928f5be22e6433ada5ce238fc09a475a2b83e
+PODFILE CHECKSUM: 698789cb5f1b0cfb0beffac3c94b927f8738bc69
 
 COCOAPODS: 1.1.1
