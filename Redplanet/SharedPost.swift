@@ -478,7 +478,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             // ==============================================================================================================
             // VIDEO ========================================================================================================
             // ==============================================================================================================
-            if content["contentType"] as! String == "vi" {
+            if content["contentType"] as! String == "vi" || content["contentType"] as! String == "itm" && content["videoAsset"] != nil {
                 // (A) Stylize video preview
                 cell.mediaAsset.layer.cornerRadius = cell.mediaAsset.frame.size.width/2
                 cell.mediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor

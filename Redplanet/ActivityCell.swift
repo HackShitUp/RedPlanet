@@ -499,7 +499,6 @@ class ActivityCell: UITableViewCell {
                         if object["contentType"] as! String == "sh" {
                             // Append object
                             sharedObject.append(object)
-                            
                             // Push VC
                             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
                             self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)

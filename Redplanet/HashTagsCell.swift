@@ -271,7 +271,6 @@ class HashTagsCell: UITableViewCell {
     func showShares() {
         // Append object
         shareObject.append(self.contentObject!)
-        
         // Push VC
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)

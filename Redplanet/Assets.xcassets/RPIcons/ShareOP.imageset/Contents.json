@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Screen Shot 2016-10-29 at 7.50.57 PM.png",
+      "filename" : "ShareOP.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Screen Shot 2016-10-29 at 7.50.57 PM-1.png",
+      "filename" : "ShareOP-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Screen Shot 2016-10-29 at 7.50.57 PM-2.png",
+      "filename" : "ShareOP-2.png",
       "scale" : "3x"
     }
   ],

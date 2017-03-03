@@ -141,7 +141,6 @@ class SharedPostCell: UITableViewCell {
                         // Moment
                         // Append object
                         itmObject.append(object)
-                        
                         // Push VC
                         let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                         self.delegate?.navigationController?.pushViewController(itmVC, animated: true)

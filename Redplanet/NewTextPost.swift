@@ -18,19 +18,10 @@ import OneSignal
 import SwipeNavigationController
 import SDWebImage
 
-class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, SwipeNavigationControllerDelegate {
-    
+class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate {
     
     // Array to hold user objects
     var userObjects = [PFObject]()
-    
-    func swipeNavigationController(_ controller: SwipeNavigationController, willShowEmbeddedViewForPosition position: Position) {
-        
-    }
-    
-    func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
-        
-    }
     
     @IBAction func backButton(_ sender: AnyObject) {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
@@ -209,15 +200,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
         }
     }
-
-    
-    // Functino to share privately
-    func sharePrivate() {
-        // Show Chats
-        let newChatVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
-        self.navigationController?.pushViewController(newChatVC, animated: true)
-    }
-    
     
     // Function to stylize and set title of navigation bar
     func configureView() {
@@ -265,26 +247,68 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     }
 
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
+        // Set placeholder
+        self.textView.text! = "What are you doing?"
+        self.textView.textColor = UIColor.lightGray
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Stylize title
+        configureView()
+        
+        // Configure tableView
+        self.tableView!.isHidden = true
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
+        
+        // Show navigation bar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        // Make shareButton circular
+        self.shareButton.layer.cornerRadius = self.shareButton.frame.size.width/2
+        self.shareButton.layer.borderColor = UIColor.lightGray.cgColor
+        self.shareButton.layer.borderWidth = 0.5
+        self.shareButton.clipsToBounds = true
+        
+        // Tap to save
+        let shareTap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
+        shareTap.numberOfTapsRequired = 1
+        self.shareButton.isUserInteractionEnabled = true
+        self.shareButton.addGestureRecognizer(shareTap)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.textView.resignFirstResponder()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+    }
+    
     // MARK: - UITextView delegate methods
     func textViewDidBeginEditing(_ textView: UITextView) {
         if self.textView!.text! == "What are you doing?" {
             self.textView.text! = ""
+            self.textView.textColor = UIColor.black
         }
     }
     
     
-    func textViewDidChange(_ textView: UITextView) {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         // Count characters
         countRemaining()
-    }
-    
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        countRemaining()
-        
-        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
         
         // Define word
-        for var word in words {
+        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // #####################
             if word.hasPrefix("@") {
                 
@@ -327,11 +351,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         return true
     }
-    
-    
-    
-    
-    
     
     
     // MARK: - UITableView Data Source methods
@@ -394,64 +413,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         // Hide UITableView
         self.tableView!.isHidden = true
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureView()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.textView.resignFirstResponder()
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Stylize title
-        configureView()
-        
-        // Hide tableView
-        self.tableView!.isHidden = true
-        // Set Tableview properties
-        self.tableView!.delegate = self
-        self.tableView!.dataSource = self
-        
-        // Hide tableView
-        self.tableView.isHidden = true
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        
-        
-        // Make shareButton circular
-        self.shareButton.layer.cornerRadius = self.shareButton.frame.size.width/2
-        self.shareButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.shareButton.layer.borderWidth = 0.5
-        self.shareButton.clipsToBounds = true
-        
-        
-        // Tap to save
-        let shareTap = UITapGestureRecognizer(target: self, action: #selector(postTextPost))
-        shareTap.numberOfTapsRequired = 1
-        self.shareButton.isUserInteractionEnabled = true
-        self.shareButton.addGestureRecognizer(shareTap)
-        
-        
-        // TODO:::
-        // Tap to share privately
-        let privateShare = UITapGestureRecognizer(target: self, action: #selector(sharePrivate))
-        privateShare.numberOfTapsRequired = 1
-    }
-    
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        PFQuery.clearAllCachedResults()
-        PFFile.clearAllCachedDataInBackground()
-        URLCache.shared.removeAllCachedResponses()
     }
 
 

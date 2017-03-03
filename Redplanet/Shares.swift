@@ -17,11 +17,6 @@ import SDWebImage
 import SVProgressHUD
 import DZNEmptyDataSet
 
-
-// Array to hold shareObject
-var shareObject = [PFObject]()
-
-
 class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
     // Array to hold sharers
@@ -31,11 +26,12 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     var page: Int = 50
     
     @IBAction func backButton(_ sender: Any) {
+        // Clear array
+        shareObject.removeAll(keepingCapacity: false)
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
-    
-    
+
     @IBAction func refresh(_ sender: Any) {
         // Query shares
         queryShares()
@@ -158,7 +154,11 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source

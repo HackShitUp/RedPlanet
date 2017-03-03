@@ -69,6 +69,8 @@
 		7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E92DC1E3D08C100E3C8EA /* Following.swift */; };
 		7E873D7B1E5BEF42004E5FCB /* NewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7A1E5BEF42004E5FCB /* NewsController.swift */; };
 		7E873D7D1E5BEF5F004E5FCB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */; };
+		7E8A04A71E695096008E5723 /* PrivateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8A04A61E695096008E5723 /* PrivateCell.swift */; };
+		7E8A04A91E6950A1008E5723 /* PrivateShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8A04A81E6950A1008E5723 /* PrivateShare.swift */; };
 		7E8B55871E4EF67F004D3F31 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B557F1E4EF67F004D3F31 /* SNButton.swift */; };
 		7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55801E4EF67F004D3F31 /* SNFilter.swift */; };
 		7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55811E4EF67F004D3F31 /* SNSlider.swift */; };
@@ -294,6 +296,8 @@
 		7E7E92DC1E3D08C100E3C8EA /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
 		7E873D7A1E5BEF42004E5FCB /* NewsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsController.swift; sourceTree = "<group>"; };
 		7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
+		7E8A04A61E695096008E5723 /* PrivateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateCell.swift; sourceTree = "<group>"; };
+		7E8A04A81E6950A1008E5723 /* PrivateShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivateShare.swift; sourceTree = "<group>"; };
 		7E8B557F1E4EF67F004D3F31 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
 		7E8B55801E4EF67F004D3F31 /* SNFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNFilter.swift; sourceTree = "<group>"; };
 		7E8B55811E4EF67F004D3F31 /* SNSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNSlider.swift; sourceTree = "<group>"; };
@@ -809,6 +813,15 @@
 			name = EXPLORE;
 			sourceTree = "<group>";
 		};
+		7E8A04A51E693DFC008E5723 /* PrivateShare */ = {
+			isa = PBXGroup;
+			children = (
+				7E8A04A61E695096008E5723 /* PrivateCell.swift */,
+				7E8A04A81E6950A1008E5723 /* PrivateShare.swift */,
+			);
+			name = PrivateShare;
+			sourceTree = "<group>";
+		};
 		7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */ = {
 			isa = PBXGroup;
 			children = (
@@ -1154,6 +1167,7 @@
 		7EA730D61E3B293500CF4D12 /* RP */ = {
 			isa = PBXGroup;
 			children = (
+				7E8A04A51E693DFC008E5723 /* PrivateShare */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
@@ -1813,6 +1827,7 @@
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
+				7E8A04A91E6950A1008E5723 /* PrivateShare.swift in Sources */,
 				7E1CBD6F1E409C3200F68A4B /* Player.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
@@ -1904,6 +1919,7 @@
 				7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,
+				7E8A04A71E695096008E5723 /* PrivateCell.swift in Sources */,
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
