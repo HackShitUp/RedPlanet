@@ -19,6 +19,7 @@ import Bolts
 import OneSignal
 import SwipeNavigationController
 import SVProgressHUD
+import Sharaku
 
 // Array to hold photo or video from library; PHAsset
 var shareMediaAsset = [PHAsset]()
@@ -33,7 +34,7 @@ var instanceVideoData: URL?
 // Photo or Video
 var mediaType: String?
 
-class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate, SwipeNavigationControllerDelegate {
+class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate, SwipeNavigationControllerDelegate, SHViewControllerDelegate {
 
     // Array to hold user's objects for @
     var userObjects = [PFObject]()
@@ -95,6 +96,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             }
         }
     }
+    
+    func shViewControllerImageDidFilter(image: UIImage) {
+        // Filtered image will be returned here.
+    }
+    
+    func shViewControllerDidCancel() {
+        // This will be called when you cancel filtering the image.
+    }
 
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBAction func editPhoto(_ sender: AnyObject) {
@@ -103,6 +112,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
         self.present(editor!, animated: true, completion: nil)
+//        let vc = SHViewController(image: self.mediaAsset.image!)
+//        vc.delegate = self
+//        self.present(vc, animated:true, completion: nil)
     }
     
     // MARK: - CLImageEditorDelegate
