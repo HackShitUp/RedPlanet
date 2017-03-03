@@ -95,6 +95,14 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     // Search bar...
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        // Track Who Searched the App
+        Heap.track("Searched", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "SearchedFor": "\(self.searchBar.text!)"
+            ])
+        
         // Change tableView background
         self.tableView!.backgroundView = UIView()
         
@@ -159,7 +167,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         if searchBar.text!.hasPrefix("#") {
             return searchHashes.count
         } else {

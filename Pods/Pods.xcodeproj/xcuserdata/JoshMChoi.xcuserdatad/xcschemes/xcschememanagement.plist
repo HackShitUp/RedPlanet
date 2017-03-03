@@ -59,11 +59,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Sharaku.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SimpleAlert.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -82,12 +77,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0DB4B07D25CBE928ECF307780598D01F</key>
+		<key>0F515097EE1CFFAAB86CD1482F009831</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>31010F42696DC236E375BE236721121D</key>
+		<key>1709B0F93173452D4257B9798416A3A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>42ADB2FED4F59093463C55BE74405FE6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,7 +102,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7B8CE084EDEC9B51EEA1746C8BB48D81</key>
+		<key>52A0523D1651F638FB18DBB74989540B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>559AA30B348A1759FCF8560A356D26A0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8B12BAE758D3688A6E018EA480621C53</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -127,27 +137,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C42E5292E9BB0191964D7CDAB96B8C4F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>CB62ED76614A3C74E71515393C85B6B9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>D386C75EFD4F03725E4EFB866B600B9A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DCE3E582A47A4A38C83B33EF068FFBF5</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F0EEC518B1F4F37E483FD9B444A5D5C2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

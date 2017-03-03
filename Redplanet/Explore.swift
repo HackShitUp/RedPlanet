@@ -36,10 +36,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     func refresh() {
         // Query Explore
         queryExplore()
-        
         // End refresher
         self.refresher.endRefreshing()
-        
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -143,6 +141,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         self.searchBar.resignFirstResponder()
         
         // Configure navigationBar, tabBar, and statusBar
+        self.extendedLayoutIncludesOpaqueBars = true
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false

@@ -18,7 +18,6 @@ PODS:
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
-  - Sharaku (1.0.1)
   - SimpleAlert (2.0.1)
   - SVProgressHUD (2.1.2)
   - SwiftyCam (2.1.0)
@@ -34,7 +33,6 @@ DEPENDENCIES:
   - Parse
   - ParseUI
   - SDWebImage
-  - Sharaku
   - SimpleAlert
   - SVProgressHUD
   - SwiftyCam
@@ -50,12 +48,11 @@ SPEC CHECKSUMS:
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
-  Sharaku: 8975df53d8d39978fd2bae4584a433650fcce992
   SimpleAlert: 383d1197df2e7b70b9bef5771f3632979c1aadae
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: f6841d76a49831c2e9bde1ca8e78ca2324104daf
+PODFILE CHECKSUM: 698789cb5f1b0cfb0beffac3c94b927f8738bc69
 
 COCOAPODS: 1.1.1

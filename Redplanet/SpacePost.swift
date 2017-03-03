@@ -452,14 +452,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
-        
         // MARK: - RadialTransitionSwipe
         self.navigationController?.enableRadialSwipe()
         
-        // Extend edges
-        self.extendedLayoutIncludesOpaqueBars = true
-        
         // Set estimated row height
+        self.extendedLayoutIncludesOpaqueBars = true
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
