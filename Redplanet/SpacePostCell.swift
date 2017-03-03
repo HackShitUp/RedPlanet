@@ -29,13 +29,14 @@ class SpacePostCell: UITableViewCell {
     // Set toUser's Object
     var toUserObject: PFObject?
     
+    
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
-    @IBOutlet weak var container: UIView!
+    @IBOutlet weak var spaceProPic: PFImageView!
+    @IBOutlet weak var spaceName: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var container: UIView!
     @IBOutlet weak var textPost: KILabel!
-    
     @IBOutlet weak var numberOfLikes: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var numberOfComments: UIButton!
@@ -53,22 +54,6 @@ class SpacePostCell: UITableViewCell {
         self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
     }
     
-    
-    // Function to go to OtherUser
-    func goOther() {
-        // Append user's object
-        otherObject.append(self.byUserObject!)
-        // Append username
-        otherName.append(self.rpUsername.text!.lowercased())
-        
-        // Push VC
-        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-        delegate?.navigationController?.pushViewController(otherVC, animated: true)
-    }
-    
-    
-
-    
     // Function to show number of likes
     func showLikes(seder: UIButton) {
         // Append object
@@ -78,11 +63,7 @@ class SpacePostCell: UITableViewCell {
         let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
         self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
     }
-    
-    
-    
-    
-    
+
     // Function to like content
     func like(sender: UIButton) {
         
@@ -91,7 +72,6 @@ class SpacePostCell: UITableViewCell {
         self.likeButton.isEnabled = false
         
         if self.likeButton.title(for: .normal) == "liked" {
-            
             // UNLIKE
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: spaceObject.last!.objectId!)
@@ -128,12 +108,9 @@ class SpacePostCell: UITableViewCell {
                                     }
                                 })
                                 
-                                
-                                
                                 // Re-enable buttons
                                 self.likeButton.isUserInteractionEnabled = true
                                 self.likeButton.isEnabled = true
-                                
                                 
                                 // Change button title and image
                                 self.likeButton.setTitle("notLiked", for: .normal)
@@ -152,11 +129,7 @@ class SpacePostCell: UITableViewCell {
                                                     self.likeButton.transform = CGAffineTransform.identity
                                                 }
                                 })
-                                
-                                
-                                
-                                
-                                
+
                             } else {
                                 print(error?.localizedDescription as Any)
                             }
@@ -212,10 +185,7 @@ class SpacePostCell: UITableViewCell {
                             print(error?.localizedDescription as Any)
                         }
                     })
-                    
-                    
-                    
-                    
+
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
@@ -238,10 +208,7 @@ class SpacePostCell: UITableViewCell {
                                         self.likeButton.transform = CGAffineTransform.identity
                                     }
                     })
-                    
-                    
-                    
-                    
+
                 } else {
                     print(error?.localizedDescription as Any)
                 }
@@ -286,9 +253,7 @@ class SpacePostCell: UITableViewCell {
             let videoUrl = NSURL(string: video.url!)
             // MARK: - Periscope Video View Controller
             let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
-//            self.delegate?.present(videoViewController, animated: true, completion: nil)
-            self.delegate?.navigationController?.radialPushViewController(videoViewController, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-            })
+            self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }
     
@@ -316,296 +281,26 @@ class SpacePostCell: UITableViewCell {
     }
     
     
-    // Function to do more
-    func doMore(sender: UIButton) {
-        // MARK: - SimpleAlert
-        let options = AlertController(title: "Options",
-                                      message: nil,
-                                      style: .alert)
-        
-        // Design content view
-        options.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-            }
-        }
-        
-        // Design corner radius
-        options.configContainerCornerRadius = {
-            return 14.00
-        }
-        
-        
-        // (1) Views
-        let views = AlertAction(title: "Views",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    // Append object
-                                    viewsObject.append(spaceObject.last!)
-                                    
-                                    // Push VC
-                                    let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-                                    self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
-        })
-        
-        
-        // (2) Edit
-        let edit = AlertAction(title: "Edit",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                // Append object
-                                editObjects.append(spaceObject.last!)
-                                
-                                // Push VC
-                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                self.delegate?.navigationController?.pushViewController(editVC, animated: true)
-        })
-        
-        
-        // (3) Save post
-        let save = AlertAction(title: "Save",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                SVProgressHUD.show(withStatus: "Saving")
-                                
-                                // Save Post
-                                let newsfeeds = PFQuery(className: "Newsfeeds")
-                                newsfeeds.getObjectInBackground(withId: spaceObject.last!.objectId!, block: {
-                                    (object: PFObject?, error: Error?) in
-                                    if error == nil {
-                                        object!["saved"] = true
-                                        object!.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if error == nil {
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showSuccess(withStatus: "Saved")
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showError(withStatus: "Error")
-                                            }
-                                        })
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.showError(withStatus: "Error")
-                                    }
-                                })
-        })
-        
-        
-        // (4) Delete for byUser
-        let delete1 = AlertAction(title: "Delete",
-                                 style: .destructive,
-                                 handler: { (AlertAction) in
-                                            
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                    SVProgressHUD.show(withStatus: "Deleting")
-                                    
-                                        // Set content
-                                        let content = PFQuery(className: "Newsfeeds")
-                                        content.whereKey("byUser", equalTo: PFUser.current()!)
-                                        content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
-                                            
-                                        let shares = PFQuery(className: "Newsfeeds")
-                                        shares.whereKey("pointObject", equalTo: spaceObject.last!)
-                                            
-                                        let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                        newsfeeds.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                // Delete all objects
-                                                PFObject.deleteAll(inBackground: objects, block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                        
-                                                        // Reload data
-                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"),object: nil)
-                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                        
-                                                        // Pop view controller
-                                                        _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                                                })
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showError(withStatus: "Error")
-                                            }
-                                        })
-        })
-
-        // (5) Delete for toUser
-        let delete2 = AlertAction(title: "Delete",
-                                 style: .destructive,
-                                 handler: { (AlertAction) in
-                                            
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.show()
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            
-                                            // Set content
-                                            let content = PFQuery(className: "Newsfeeds")
-                                            content.whereKey("toUser", equalTo: PFUser.current()!)
-                                            content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
-                                            
-                                            let shares = PFQuery(className: "Newsfeeds")
-                                            shares.whereKey("pointObject", equalTo: spaceObject.last!)
-                                            
-                                            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                            newsfeeds.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        // Delete object
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted object: \(object)")
-                                                                
-                                                                // Dismiss
-                                                                SVProgressHUD.dismiss()
-                                                                
-                                                                // Reload data
-                                                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                                                NotificationCenter.default.post(name: myProfileNotification, object: nil)
-                                                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.delegate?.navigationController?.popViewController(animated: true)
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
-        })
-
-        // (6) Report Content
-        let report = AlertAction(title: "Report",
-                                      style: .destructive,
-                                      handler: { (AlertAction) in
-                                        let alert = UIAlertController(title: "Report",
-                                                                      message: "Please provide your reason for reporting \(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",
-                                            preferredStyle: .alert)
-                                        
-                                        let report = UIAlertAction(title: "Report", style: .destructive) {
-                                            [unowned self, alert] (action: UIAlertAction!) in
-                                            
-                                            let answer = alert.textFields![0]
-                                            
-                                            // Save to <Block_Reported>
-                                            let report = PFObject(className: "Block_Reported")
-                                            report["from"] = PFUser.current()!.username!
-                                            report["fromUser"] = PFUser.current()!
-                                            report["to"] = spaceObject.last!.value(forKey: "username") as! String
-                                            report["toUser"] = spaceObject.last!.value(forKey: "byUser") as! PFUser
-                                            report["forObjectId"] = spaceObject.last!.objectId!
-                                            report["type"] = answer.text!
-                                            report.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved report: \(report)")
-                                                    
-                                                    // Dismiss
-                                                    let alert = UIAlertController(title: "Successfully Reported",
-                                                                                  message: "\(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: nil)
-                                                    
-                                                    alert.addAction(ok)
-                                                    self.delegate?.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                        
-                                        
-                                        let cancel = UIAlertAction(title: "Cancel",
-                                                                   style: .cancel,
-                                                                   handler: nil)
-                                        
-                                        
-                                        alert.addTextField(configurationHandler: nil)
-                                        alert.addAction(report)
-                                        alert.addAction(cancel)
-                                        alert.view.tintColor = UIColor.black
-                                        self.delegate?.present(alert, animated: true, completion: nil)
-
-        })
-        
-        
-        // (7) Cancel
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-
-        
-        if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            options.addAction(views)
-            options.addAction(edit)
-            options.addAction(save)
-            options.addAction(delete1)
-            options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            views.button.setTitleColor(UIColor.black, for: .normal)
-            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-            delete1.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            delete1.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-        } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-            options.addAction(views)
-            options.addAction(save)
-            options.addAction(delete2)
-            options.addAction(cancel)
-            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            views.button.setTitleColor(UIColor.black, for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-            delete2.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            delete2.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        } else {
-            options.addAction(cancel)
-            options.addAction(report)
-            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-        }
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.delegate?.present(options, animated: true, completion: nil)
+    
+    // Show byUser
+    func showBy() {
+        // Append user's object and name
+        otherObject.append(self.byUserObject!)
+        otherName.append(self.rpUsername.text!.lowercased())
+        // Push VC
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        delegate?.navigationController?.pushViewController(otherVC, animated: true)
     }
     
+    // Show toUser
+    func showTo() {
+        // Append user's object and name
+        otherObject.append(self.toUserObject!)
+        otherName.append(self.toUserObject!.value(forKey: "username") as! String)
+        // Push VC
+        let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+        delegate?.navigationController?.pushViewController(otherVC, animated: true)
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -616,16 +311,27 @@ class SpacePostCell: UITableViewCell {
             self.mediaAsset.clipsToBounds = true
         }
         
-        // (1) NAVIGATE TO USER
-        let userTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        // (1) NAVIGATE TO BYUSER
+        let userTap = UITapGestureRecognizer(target: self, action: #selector(showBy))
         userTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(userTap)
         
-        let usernameTap = UITapGestureRecognizer(target: self, action: #selector(goOther))
+        let usernameTap = UITapGestureRecognizer(target: self, action: #selector(showBy))
         usernameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(usernameTap)
+        
+        // (2) NAVIGATE TO TOUSER
+        let spaceProPicTap = UITapGestureRecognizer(target: self, action: #selector(showTo))
+        spaceProPicTap.numberOfTapsRequired = 1
+        self.spaceProPic.isUserInteractionEnabled = true
+        self.spaceProPic.addGestureRecognizer(spaceProPicTap)
+        
+        let spaceNameTap = UITapGestureRecognizer(target: self, action: #selector(showTo))
+        spaceNameTap.numberOfTapsRequired = 1
+        self.spaceName.isUserInteractionEnabled = true
+        self.spaceName.addGestureRecognizer(spaceNameTap)
         
         // (2) COMMENT
         let commentTap = UITapGestureRecognizer(target: self, action: #selector(comment))
@@ -656,13 +362,9 @@ class SpacePostCell: UITableViewCell {
         dmTap.numberOfTapsRequired = 1
         self.shareButton.isUserInteractionEnabled = true
         self.shareButton.addGestureRecognizer(dmTap)
-        
-        // (7) MORE
-        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
-        moreTap.numberOfTapsRequired = 1
-        self.moreButton.isUserInteractionEnabled = true
-        self.moreButton.addGestureRecognizer(moreTap)
 
+        self.container.sizeToFit()
+        
         // Handle @username tap
         textPost.userHandleLinkTapHandler = { label, handle, range in
             // When mention is tapped, drop the "@" and send to user home page

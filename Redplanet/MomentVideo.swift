@@ -466,8 +466,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
             self.player.didMove(toParentViewController: self)
             self.player.url = URL(string: momentVideo.url!)
             self.player.fillMode = "AVLayerVideoGravityResizeAspect"
-            self.player.playFromBeginning()
             self.player.playbackLoops = true
+            self.player.playFromBeginning()
             
             // Store buttons in an array
             let buttons = [self.likeButton,

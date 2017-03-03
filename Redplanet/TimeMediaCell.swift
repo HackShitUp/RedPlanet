@@ -490,7 +490,7 @@ class TimeMediaCell: UITableViewCell {
             options.addAction(delete)
             options.addAction(cancel)
             edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+            edit.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
             save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
             save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
             delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)

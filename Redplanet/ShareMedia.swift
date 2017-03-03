@@ -47,7 +47,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     }
 
     @IBAction func moreButton(_ sender: Any) {
-        
         if mediaType == "photo" {
             // Photo to Share
             let textToShare = "@\(PFUser.current()!.username!)'s Photo on Redplanet: \(self.mediaCaption.text!)\nhttps://redplanetapp.com/download/"
@@ -534,7 +533,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 handler(nil)
                 return
             }
-            
             exportSession.outputURL = outputURL
             exportSession.outputFileType = AVFileTypeQuickTimeMovie
             exportSession.shouldOptimizeForNetworkUse = true
@@ -564,7 +562,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             guard let session = exportSession else {
                 return
             }
-            
             switch session.status {
             case .unknown:
                 break
@@ -590,9 +587,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                     (success: Bool, error: Error?) in
                     if success {
                         
-                        // Define #word
+                        // Check for #'s and @'s
                         for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                            // #####################
+                        // #####################
                             if word.hasPrefix("#") {
                                 // Cut all symbols
                                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -613,7 +610,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                         print(error?.localizedDescription as Any)
                                     }
                                 })
-                                // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                            // @@@@@@@@@@@@@@@@@@@@@@@@@@
                             } else if word.hasPrefix("@") {
                                 // Cut all symbols
                                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -670,17 +667,14 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                         print(error?.localizedDescription as Any)
                     }
                 })
-                
             case .failed:
                 break
             case .cancelled:
                 break
             }
         }
-
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-        
     }// end shareLibVideo() function
     
     
@@ -720,7 +714,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                         guard let session = exportSession else {
                                                             return
                                                         }
-                                                        
                                                         switch session.status {
                                                         case .unknown:
                                                             break
@@ -733,6 +726,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                             guard let compressedData = NSData(contentsOf: compressedURL) else {
                                                                 return
                                                             }
+                                                            // (1) Save to Newsfeeds
                                                             let parseFile = PFFile(name: "video.mp4", data: compressedData as Data)
                                                             // Save to Newsfeeds
                                                             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -744,10 +738,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                             newsfeeds["saved"] = false
                                                             newsfeeds.saveInBackground()
                                                             
-                                                            
-                                                            // Define #word
+                                                            // (2) Check for #'s or @'s
                                                             for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                                                                // #####################
+                                                            // #####################
                                                                 if word.hasPrefix("#") {
                                                                     // Cut all symbols
                                                                     word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -768,8 +761,8 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                             print(error?.localizedDescription as Any)
                                                                         }
                                                                     })
-                                                                    // @@@@@@@@@@@@@@@@@@@@@@@@@@
                                                                 } else if word.hasPrefix("@") {
+                                                                // @@@@@@@@@@@@@@@@@@@@@@@@@@
                                                                     // Cut all symbols
                                                                     word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                                                                     word = word.trimmingCharacters(in: CharacterSet.symbols)
@@ -821,8 +814,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                         }
                                                                     }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
                                                             }// end for loop for words
-                                                            
-                                                            
                                                         case .failed:
                                                             break
                                                         case .cancelled:

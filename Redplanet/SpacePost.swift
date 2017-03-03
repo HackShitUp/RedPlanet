@@ -32,9 +32,6 @@ let spaceNotification = Notification.Name("spaceNotification")
 
 class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
-    // Variable to determine string
-    var layoutText: String?
-    
     // Array to hold likers, comments, and shares
     var likes = [PFObject]()
     var comments = [PFObject]()
@@ -51,13 +48,302 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         })
     }
     
-    @IBAction func refresh(_ sender: Any) {
+    
+    @IBAction func more(_ sender: Any) {
+        // MARK: - SimpleAlert
+        let options = AlertController(title: "Options",
+                                      message: nil,
+                                      style: .alert)
+        
+        // Design content view
+        options.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+            }
+        }
+        
+        // Design corner radius
+        options.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        
+        // (1) Views
+        let views = AlertAction(title: "Views",
+                                style: .default,
+                                handler: { (AlertAction) in
+                                    // Append object
+                                    viewsObject.append(spaceObject.last!)
+                                    
+                                    // Push VC
+                                    let viewsVC = self.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+                                    self.navigationController?.pushViewController(viewsVC, animated: true)
+        })
+        
+        
+        // (2) Edit
+        let edit = AlertAction(title: "Edit",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // Append object
+                                editObjects.append(spaceObject.last!)
+                                
+                                // Push VC
+                                let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+                                self.navigationController?.pushViewController(editVC, animated: true)
+        })
+        
+        
+        // (3) Save post
+        let save = AlertAction(title: "Save",
+                               style: .default,
+                               handler: { (AlertAction) in
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.setBackgroundColor(UIColor.white)
+                                SVProgressHUD.setForegroundColor(UIColor.black)
+                                SVProgressHUD.show(withStatus: "Saving")
+                                
+                                // Save Post
+                                let newsfeeds = PFQuery(className: "Newsfeeds")
+                                newsfeeds.getObjectInBackground(withId: spaceObject.last!.objectId!, block: {
+                                    (object: PFObject?, error: Error?) in
+                                    if error == nil {
+                                        object!["saved"] = true
+                                        object!.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if error == nil {
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showSuccess(withStatus: "Saved")
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
+                                    }
+                                })
+        })
+        
+        
+        // (4) Delete for byUser
+        let delete1 = AlertAction(title: "Delete",
+                                  style: .destructive,
+                                  handler: { (AlertAction) in
+                                    
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.show(withStatus: "Deleting")
+                                    
+                                    // Set content
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("byUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: spaceObject.last!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                    newsfeeds.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            // Delete all objects
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                    
+                                                    // Reload data
+                                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"),object: nil)
+                                                    NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                    NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                    
+                                                    // Pop view controller
+                                                    _ = self.navigationController?.popViewController(animated: true)
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
+        })
+        
+        // (5) Delete for toUser
+        let delete2 = AlertAction(title: "Delete",
+                                  style: .destructive,
+                                  handler: { (AlertAction) in
+                                    
+                                    
+                                    // Show Progress
+                                    SVProgressHUD.show()
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    
+                                    // Set content
+                                    let content = PFQuery(className: "Newsfeeds")
+                                    content.whereKey("toUser", equalTo: PFUser.current()!)
+                                    content.whereKey("objectId", equalTo: spaceObject.last!.objectId!)
+                                    
+                                    let shares = PFQuery(className: "Newsfeeds")
+                                    shares.whereKey("pointObject", equalTo: spaceObject.last!)
+                                    
+                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                                    newsfeeds.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                // Delete object
+                                                object.deleteInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully deleted object: \(object)")
+                                                        
+                                                        // Dismiss
+                                                        SVProgressHUD.dismiss()
+                                                        
+                                                        // Reload data
+                                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                                        NotificationCenter.default.post(name: myProfileNotification, object: nil)
+                                                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                                                        
+                                                        // Pop view controller
+                                                        _ = self.navigationController?.popViewController(animated: true)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
+                                            }
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
+        })
+        
+        // (6) Report Content
+        let report = AlertAction(title: "Report",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    let alert = UIAlertController(title: "Report",
+                                                                  message: "Please provide your reason for reporting \(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",
+                                        preferredStyle: .alert)
+                                    
+                                    let report = UIAlertAction(title: "Report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        // Save to <Block_Reported>
+                                        let report = PFObject(className: "Block_Reported")
+                                        report["from"] = PFUser.current()!.username!
+                                        report["fromUser"] = PFUser.current()!
+                                        report["to"] = spaceObject.last!.value(forKey: "username") as! String
+                                        report["toUser"] = spaceObject.last!.value(forKey: "byUser") as! PFUser
+                                        report["forObjectId"] = spaceObject.last!.objectId!
+                                        report["type"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                // Dismiss
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                self.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                            }
+                                        })
+                                    }
+                                    
+                                    
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
+                                    alert.view.tintColor = UIColor.black
+                                    self.present(alert, animated: true, completion: nil)
+                                    
+        })
+        
+        
+        // (7) Cancel
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
+        
+        
+        if (spaceObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(views)
+            options.addAction(edit)
+            options.addAction(save)
+            options.addAction(delete1)
+            options.addAction(cancel)
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.setTitleColor(UIColor.black, for: .normal)
+            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            edit.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            delete1.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete1.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+        } else if (spaceObject.last!.value(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            options.addAction(views)
+            options.addAction(save)
+            options.addAction(delete2)
+            options.addAction(cancel)
+            views.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            views.button.setTitleColor(UIColor.black, for: .normal)
+            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
+            delete2.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            delete2.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        } else {
+            options.addAction(cancel)
+            options.addAction(report)
+            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+        }
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        self.present(options, animated: true, completion: nil)
+    }
+    
+    // Function to refresh
+    func refresh() {
         // Fetch interactions
         fetchInteractions()
-        
         // End refresher
         self.refresher.endRefreshing()
-
         // Reload data
         self.tableView!.reloadData()
     }
@@ -135,13 +421,13 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 20.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName:  UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "\(otherName.last!.uppercased())'s Space"
+            self.navigationController?.navigationBar.topItem?.title = "Space Post"
         }
         
         // Configure nav bar && hide tab bar (last line)
@@ -157,24 +443,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     }
     
     
-    
-    // Function to go to owner's space 
-    func goToUser() {
-        if let userSpace = spaceObject.last!.value(forKey: "toUser") as? PFUser {
-            // Append object
-            otherObject.append(userSpace)
-            
-            // Append othername
-            otherName.append(userSpace["username"] as! String)
-            
-            // Push VC
-            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-            self.navigationController?.pushViewController(otherVC, animated: true)
-        }
-    }
-    
-    
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -184,14 +452,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // Fetch interactions
         fetchInteractions()
         
-        // Add method tap
-        let goUserTap = UITapGestureRecognizer(target: self, action: #selector(goToUser))
-        goUserTap.numberOfTapsRequired = 1
-        self.navigationController?.navigationBar.isUserInteractionEnabled = true
-        self.navigationController?.navigationBar.addGestureRecognizer(goUserTap)
         
-        // Remove lines on load
-        self.tableView!.tableFooterView = UIView()
+        // MARK: - RadialTransitionSwipe
+        self.navigationController?.enableRadialSwipe()
+        
         // Extend edges
         self.extendedLayoutIncludesOpaqueBars = true
         
@@ -199,14 +463,15 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         self.tableView!.setNeedsLayout()
         self.tableView!.layoutSubviews()
         self.tableView!.layoutIfNeeded()
-        self.tableView!.estimatedRowHeight = 505
+        self.tableView!.estimatedRowHeight = 255
         self.tableView!.rowHeight = UITableViewAutomaticDimension
+        self.tableView!.tableFooterView = UIView()
         
         // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor.white
-        refresher.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.refresher = UIRefreshControl()
+        self.refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.refresher.tintColor = UIColor.white
+        self.refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
         // Register to receive notification
@@ -217,8 +482,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         backSwipe.direction = .right
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(backSwipe)
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -239,53 +502,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     }
     
     
-    // Function to calculate how many new lines UILabel should create before laying out the text
-    func createText() -> String? {
-
-        // Check for textPost & handle optional chaining
-        if spaceObject.last!.value(forKey: "textPost") != nil {
-            // (A) Set textPost
-            // Calculate screen height
-            if UIScreen.main.nativeBounds.height == 960 {
-                // iPhone 4
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            } else if UIScreen.main.nativeBounds.height == 1136 {
-                // iPhone 5 √
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            } else if UIScreen.main.nativeBounds.height == 1334 {
-                // iPhone 6 √
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
-                // iPhone 6+ √???
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\(spaceObject.last!.value(forKey: "textPost") as! String)"
-            }
-            
-        } else {
-            // Caption DOES NOT exist
-            
-            // (A) Set textPost
-            // Calculate screen height
-            if UIScreen.main.nativeBounds.height == 960 {
-                // iPhone 4
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n"
-            } else if UIScreen.main.nativeBounds.height == 1136 {
-                // iPhone 5
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            } else if UIScreen.main.nativeBounds.height == 1334 {
-                // iPhone 6
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            } else if UIScreen.main.nativeBounds.height == 2201 || UIScreen.main.nativeBounds.height == 2208 {
-                // iPhone 6+
-                layoutText = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-            }
-        }
-    
-        return layoutText!
-    }
-    
-    
-
-    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -299,7 +515,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
 
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 505
+        return 255
     }
     
     
@@ -311,7 +527,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "spacePostCell", for: indexPath) as! SpacePostCell
 
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -323,10 +538,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
-        // set parent vc
+        // Set parent vc
         cell.delegate = self
         
+        // BYUSER
         // (1) Get byUser's data
         if let user = spaceObject.last!.value(forKey: "byUser") as? PFUser {
             // (A) Set username
@@ -342,22 +557,37 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             cell.byUserObject = user
         }
         
+        // TOUSER
         // (2) Fetch toUser's data
-        if let toUser = spaceObject.last!.value(forKey: "toUser") as? PFUser {
-            // (A) Set toUser's Object
-            cell.toUserObject = toUser
+        let toUser = spaceObject.last!.value(forKey: "toUser") as! PFUser
+        // (A) Set toUser's Object
+        cell.toUserObject = toUser
+        // LayoutViews
+        cell.spaceProPic.layoutIfNeeded()
+        cell.spaceProPic.layoutSubviews()
+        cell.spaceProPic.setNeedsLayout()
+        // Make Profile Photo Circular
+        cell.spaceProPic.layer.cornerRadius = cell.spaceProPic.frame.size.width/2
+        cell.spaceProPic.layer.borderColor = UIColor.lightGray.cgColor
+        cell.spaceProPic.layer.borderWidth = 0.5
+        cell.spaceProPic.clipsToBounds = true
+        // (B) Set user's name
+        cell.spaceName.text! = "shared on \(toUser.value(forKey: "realNameOfUser") as! String)'s Space"
+        // (C) Set user's profile photo
+        if let spaceProPic = toUser.value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.spaceProPic.sd_setImage(with: URL(string: spaceProPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
+        
         
         // (3) Fetch content
         if spaceObject.last!.value(forKey: "photoAsset") != nil {
-            
             // ======================================================================================================================
             // PHOTO ================================================================================================================
             // ======================================================================================================================
-            
             // (A) Configure image
-            cell.mediaAsset.contentMode = .scaleAspectFit
-            cell.mediaAsset.layer.cornerRadius = 0.0
+            cell.mediaAsset.contentMode = .scaleAspectFill
+            cell.mediaAsset.layer.cornerRadius = 12.00
             cell.mediaAsset.layer.borderColor = UIColor.clear.cgColor
             cell.mediaAsset.layer.borderWidth = 0.0
             cell.mediaAsset.clipsToBounds = true
@@ -369,13 +599,11 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             }
             
             // (C) Configure textPost
-            // show mediaAsset
-            cell.mediaAsset.isHidden = false
-            // show textPost
-            cell.textPost.isHidden = false
-            // create text's height
-            _ = createText()
-            cell.textPost.text! = self.layoutText!
+            if let tp = spaceObject.last!.value(forKey: "textPost") as? String {
+                cell.textPost.text! = tp
+            } else {
+                cell.textPost.text! = ""
+            }
             
         } else if spaceObject.last!.value(forKey: "videoAsset") != nil {
             
@@ -397,39 +625,31 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                 let playerLayer = AVPlayerLayer(player: player)
                 playerLayer.frame = cell.mediaAsset.bounds
                 playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                cell.mediaAsset.contentMode = .scaleAspectFit
+                cell.mediaAsset.contentMode = .scaleAspectFill
                 cell.mediaAsset.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
             }
             
             // (C) Configure textPost
-            // show mediaAsset
-            cell.mediaAsset.isHidden = false
-            // show textPost
-            cell.textPost.isHidden = false
-            // create text's height
-            _ = createText()
-            cell.textPost.text! = self.layoutText!
+            if let tp = spaceObject.last!.value(forKey: "textPost") as? String {
+                cell.textPost.text! = tp
+            } else {
+                cell.textPost.text! = ""
+            }
             
         } else {
             
             // ======================================================================================================================
             // TEXT POST ============================================================================================================
             // ======================================================================================================================
-            
-            // No Photo
-            // hide mediaAsset
-            cell.mediaAsset.isHidden = true
-            // show textPost
-            cell.textPost.isHidden = false
-            
-            // (A) Set textPost
             cell.textPost.text! = "\(spaceObject.last!.value(forKey: "textPost") as! String)"
         }
         
         
         // (4) Layout taps
         cell.layoutTaps()
-        
+        cell.textPost.sizeToFit()
         
         // (5) Set time
         let from = spaceObject.last!.createdAt!
@@ -439,30 +659,30 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
-            cell.time.text = "right now"
+            cell.time.text = "now"
         } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
-                cell.time.text = "1 second ago"
+                cell.time.text = "1s ago"
             } else {
-                cell.time.text = "\(difference.second!) seconds ago"
+                cell.time.text = "\(difference.second!)s ago"
             }
         } else if difference.minute! > 0 && difference.hour! == 0 {
             if difference.minute! == 1 {
-                cell.time.text = "1 minute ago"
+                cell.time.text = "1m ago"
             } else {
-                cell.time.text = "\(difference.minute!) minutes ago"
+                cell.time.text = "\(difference.minute!)m ago"
             }
         } else if difference.hour! > 0 && difference.day! == 0 {
             if difference.hour! == 1 {
-                cell.time.text = "1 hour ago"
+                cell.time.text = "1h ago"
             } else {
-                cell.time.text = "\(difference.hour!) hours ago"
+                cell.time.text = "\(difference.hour!)h ago"
             }
         } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
-                cell.time.text = "1 day ago"
+                cell.time.text = "1d ago"
             } else {
-                cell.time.text = "\(difference.day!) days ago"
+                cell.time.text = "\(difference.day!)d ago"
             }
             if spaceObject.last!.value(forKey: "saved") as! Bool == true {
                 cell.likeButton.isUserInteractionEnabled = false
@@ -486,7 +706,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             }
         }
         
-        // (6) Determine whether the current user has liked this object or not
+        // (6) Set Likes, Comments, and Shares
         if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
@@ -498,31 +718,22 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // Set button image
             cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
         }
-        
-        
         // Set number of likes
         if self.likes.count == 0 {
             cell.numberOfLikes.setTitle("likes", for: .normal)
-            
         } else if self.likes.count == 1 {
             cell.numberOfLikes.setTitle("1 like", for: .normal)
-            
         } else {
             cell.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
         }
-        
         // Set number of comments
         if self.comments.count == 0 {
             cell.numberOfComments.setTitle("comments", for: .normal)
-            
         } else if self.comments.count == 1 {
             cell.numberOfComments.setTitle("1 comment", for: .normal)
-            
         } else {
             cell.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
-            
         }
-        
         // Set number of shares
         if self.shares.count == 0 {
             cell.numberOfShares.setTitle("shares", for: .normal)
@@ -531,7 +742,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         } else {
             cell.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
         }
-        
         
         return cell
     } // end cellForRowAt
