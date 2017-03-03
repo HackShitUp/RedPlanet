@@ -107,8 +107,7 @@ extension SNTextField: UIGestureRecognizerDelegate {
         if(self.isHidden == true) {
             self.show()
             self.showKeyboard()
-        }
-        else {
+        } else {
             self.hideKeyboard()
         }
     }
@@ -123,12 +122,10 @@ extension SNTextField: UIGestureRecognizerDelegate {
         if (tempLocation < 0) {
             location.y = 0
             self.frame.origin.y = location.y
-        }
-        else if (tempLocation > heightOfScreen-self.frame.size.height) {
+        } else if (tempLocation > heightOfScreen-self.frame.size.height) {
             location.y = heightOfScreen-self.frame.size.height
             self.frame.origin.y = heightOfScreen-self.frame.size.height
-        }
-        else {
+        } else {
             location.y = tempLocation
             self.frame.origin.y = tempLocation
         }

@@ -9,7 +9,7 @@ PODS:
   - Heap (3.0.0)
   - KILabel (1.0.0)
   - Onboard (2.3.1)
-  - OneSignal (2.3.5)
+  - OneSignal (2.3.6)
   - Parse (1.14.2):
     - Bolts/Tasks (~> 1.8)
   - ParseUI (1.2.0):
@@ -44,7 +44,7 @@ SPEC CHECKSUMS:
   Heap: b95bc7a21f47ddd470e8ebccefa59c91f4fe1d68
   KILabel: 84049969642d4ac1061ebe38ad4c0da37fed108b
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
-  OneSignal: 4cb42948ebc141bd5deb54d3fda25105db94f6d4
+  OneSignal: bbf2aaf982cb2c2d69dc636500271968f983d553
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41

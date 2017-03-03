@@ -185,6 +185,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Clean tableView
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Set tabBarController's delegate to self
         // to access menu via tabBar
