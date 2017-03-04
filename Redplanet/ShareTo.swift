@@ -501,30 +501,22 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             }
             // (3) Configure selected state
             if self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
-//                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
                 cell.accessoryType = .checkmark
             } else {
-//                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
                 cell.accessoryType = .none
             }
-//            cell.accessoryType = cell.isSelected ? .checkmark : .none
-        }
-        
-        // FOLLOWING
-        if self.tableView!.numberOfSections == 2 {
+        } else {
+        // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
             // PUBLIC
                 cell.rpUserProPic.image = UIImage(named: "ShareOP")
                 cell.rpFullName.text! = "Post"
                 // Configure selected state
                 if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
                     cell.accessoryType = .checkmark
                 } else {
-//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
                     cell.accessoryType = .none
                 }
-//                cell.accessoryType = cell.isSelected ? .checkmark : .none
             } else {
             // FOLLOWING
                 // Sort Following in ABC-Order
@@ -538,13 +530,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 }
                 // (3) Configure selected state
                 if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
-//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
                     cell.accessoryType = .checkmark
                 } else {
-//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
                     cell.accessoryType = .none
                 }
-//                cell.accessoryType = cell.isSelected ? .checkmark : .none
             }
         }
         
@@ -554,25 +543,18 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // SEARCHED
-        // METHODS
-        // (1) Append Objects, reload data
-        // (2) Append objects, set configuration, don't reload data?
-        
-        // SEARCHED
         if self.tableView!.numberOfSections == 1 {
-            // (1) Append object
+            // Append searched object
             if !self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
                 self.shareObjects.append(self.searchObjects[indexPath.row])
             }
-            self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
-
         } else {
+        // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
                 // Append current user's object
                 if !self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                     self.shareObjects.append(PFUser.current()!)
                 }
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             } else {
                 // Sort Following in ABC-Order
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
@@ -580,9 +562,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 if !self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
                     self.shareObjects.append(abcFollowing[indexPath.row])
                 }
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             }
         }
+        
+        // Configure selected state
+        self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
     }
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -592,26 +576,26 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
                 self.shareObjects.remove(at: index)
             }
-            self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
-        }
-        
-        if self.tableView?.numberOfSections == 2 {
-            // NOT SEARCHED
-            // Remove current user if first
+        } else {
+        // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
+                // Remove: PFUser.current()!
                 if let index = self.shareObjects.index(of: PFUser.current()!) {
                     self.shareObjects.remove(at: index)
                 }
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+
             } else {
                 // Sort Following
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
+                // Remove: Following
                 if let index = self.shareObjects.index(of: abcFollowing[indexPath.row]) {
                     self.shareObjects.remove(at: index)
                 }
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             }
         }
+        
+        // Configure selected state
+        self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
     }
     
 }
