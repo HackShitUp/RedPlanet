@@ -49,7 +49,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
 
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBAction func shareAction(_ sender: Any) {
-    // MARK: - SimpleAlert
+        // Check if there exists any people to share with...
         if self.shareObjects.count != 0 {
             if shareObject.count != 0 {
                 // Re-share a post

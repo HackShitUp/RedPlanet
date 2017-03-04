@@ -67,16 +67,15 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
         } else {
             // Initialize object
-            let createObject = CreateObject()
-            createObject.byUser = PFUser.current()!
-            createObject.byUsername = PFUser.current()!.username!
-            createObject.contentType = "tp"
-            createObject.textPost = self.textView!.text!
-            createObject.saved = false
-            // Push VC
-            let shareVC = self.storyboard?.instantiateViewController(with: "shareToVC") as! ShareTo
-            self.navigationController?.pushViewController(animated: true)
-            /*
+//            let createObject = CreateObject()
+//            createObject.byUser = PFUser.current()!
+//            createObject.username = PFUser.current()!.username!
+//            createObject.contentType = "tp"
+//            createObject.textPost = self.textView!.text!
+//            createObject.saved = false
+//            // Push VC
+//            let shareVC = self.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+//            self.navigationController?.pushViewController(shareVC, animated: true)
             // Disable button
             self.shareButton.isUserInteractionEnabled = false
             self.shareButton.isEnabled = false
@@ -95,14 +94,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     self.shareButton.isUserInteractionEnabled = true
                     self.shareButton.isEnabled = true
                     
-                    // Check for hashtags
-                    // and user mentions
+                    // Check for #'s and @'s
                     for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                         
-                        
-                        // #####################
                         if word.hasPrefix("#") {
-                            // Cut all symbols
                             word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                             word = word.trimmingCharacters(in: CharacterSet.symbols)
                             
@@ -113,40 +108,23 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             hashtags["by"] = PFUser.current()!.username!
                             hashtags["pointUser"] = PFUser.current()!
                             hashtags["forObjectId"] =  newsfeeds.objectId!
-                            hashtags.saveInBackground(block: {
-                                (success: Bool, error: Error?) in
-                                if success {
-                                    print("#\(word) has been saved!")
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                }
-                            })
-                        }
-                        // end #
+                            hashtags.saveInBackground()
                         
-                        
-                        
-                        // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                        if word.hasPrefix("@") {
-                            // Cut all symbols
+                        } else if word.hasPrefix("@") {
                             word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                             word = word.trimmingCharacters(in: CharacterSet.symbols)
-                            
-                            print("The user's username to notify is: \(word)")
+
                             // Search for user
                             let theUsername = PFUser.query()!
                             theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                            
                             let realName = PFUser.query()!
                             realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                            
                             let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
                             mention.findObjectsInBackground(block: {
                                 (objects: [PFObject]?, error: Error?) in
                                 if error == nil {
                                     for object in objects! {
                                         print("The user is:\(object)")
-                                        
                                         
                                         // Send notification to user
                                         let notifications = PFObject(className: "Notifications")
@@ -156,38 +134,28 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                                         notifications["toUser"] = object
                                         notifications["type"] = "tag tp"
                                         notifications["forObjectId"] = newsfeeds.objectId!
-                                        notifications.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                
-                                                // If user's apnsId is not nil
-                                                if object["apnsId"] != nil {
-                                                    // MARK: - OneSignal
-                                                    // Send push notification
-                                                    OneSignal.postNotification(
-                                                        ["contents":
-                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
-                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                         "ios_badgeType": "Increase",
-                                                         "ios_badgeCount": 1
-                                                        ]
-                                                    )
-                                                }
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
+                                        notifications.saveInBackground()
                                         
-                                        
+                                        // If user's apnsId is not nil
+                                        if object["apnsId"] != nil {
+                                            // MARK: - OneSignal
+                                            // Send push notification
+                                            OneSignal.postNotification(
+                                                ["contents":
+                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
+                                                 "include_player_ids": ["\(object["apnsId"] as! String)"],
+                                                 "ios_badgeType": "Increase",
+                                                 "ios_badgeCount": 1
+                                                ]
+                                            )
+                                        }
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)
                                     print("Couldn't find the user...")
                                 }
                             })
-                            
-                        } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
+                        } // END: looping through words
                     }
                     
                     // MARK: - HEAP
@@ -196,16 +164,15 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                             "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                         ])
                     
-                    
+                    // Completed executing
                     self.textView.resignFirstResponder()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                     self.textView.text! = "What are you doing?"
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }
-            } */
+            }
         }
     }
     
