@@ -3815,18 +3815,6 @@
                                     <outlet property="delegate" destination="z57-bJ-9iv" id="0ud-5F-fCA"/>
                                 </connections>
                             </textView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dJ3-Uv-lQu">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="255"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="255" id="2wR-1H-IVv"/>
-                                    <constraint firstAttribute="width" constant="375" id="qhj-an-fF4"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="dataSource" destination="z57-bJ-9iv" id="1pz-AM-STw"/>
-                                    <outlet property="delegate" destination="z57-bJ-9iv" id="Wcr-H7-PnM"/>
-                                </connections>
-                            </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rsu-xz-GXP">
                                 <rect key="frame" x="309" y="208" width="50" height="50"/>
                                 <constraints>
@@ -3856,6 +3844,18 @@
                                     <action selector="moreButton:" destination="z57-bJ-9iv" eventType="touchUpInside" id="Ckf-0b-3bI"/>
                                 </connections>
                             </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="dJ3-Uv-lQu">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="255"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="255" id="2wR-1H-IVv"/>
+                                    <constraint firstAttribute="width" constant="375" id="qhj-an-fF4"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="z57-bJ-9iv" id="1pz-AM-STw"/>
+                                    <outlet property="delegate" destination="z57-bJ-9iv" id="Wcr-H7-PnM"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>

@@ -75,6 +75,9 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                                 }
                             }
                         }
+                        
+                        // Reload data
+                        self.tableView?.reloadData()
                     } catch {
                         print("ERROR: Unable to read JSON data.")
                         // MARK: - SVProgressHUD
@@ -86,9 +89,6 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                 // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
             }
-            
-            // Reload data
-            self.tableView?.reloadData()
         }
         task.resume()
     }
