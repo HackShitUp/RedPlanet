@@ -39,7 +39,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     @IBOutlet weak var characterCount: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
-    
     // Share
     func postTextPost() {
         
@@ -67,7 +66,17 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             self.present(alert, animated: true)
             
         } else {
-            
+            // Initialize object
+            let createObject = CreateObject()
+            createObject.byUser = PFUser.current()!
+            createObject.byUsername = PFUser.current()!.username!
+            createObject.contentType = "tp"
+            createObject.textPost = self.textView!.text!
+            createObject.saved = false
+            // Push VC
+            let shareVC = self.storyboard?.instantiateViewController(with: "shareToVC") as! ShareTo
+            self.navigationController?.pushViewController(animated: true)
+            /*
             // Disable button
             self.shareButton.isUserInteractionEnabled = false
             self.shareButton.isEnabled = false
@@ -196,8 +205,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                 } else {
                     print(error?.localizedDescription as Any)
                 }
-            }
-            
+            } */
         }
     }
     

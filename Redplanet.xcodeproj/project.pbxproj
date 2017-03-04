@@ -67,6 +67,7 @@
 		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };
 		7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C51DD595E800DEC27B /* TOSCell.swift */; };
 		7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E92DC1E3D08C100E3C8EA /* Following.swift */; };
+		7E86DE311E6A8DAF002121C0 /* CreateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E86DE301E6A8DAF002121C0 /* CreateObject.swift */; };
 		7E873D7B1E5BEF42004E5FCB /* NewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7A1E5BEF42004E5FCB /* NewsController.swift */; };
 		7E873D7D1E5BEF5F004E5FCB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */; };
 		7E8B55871E4EF67F004D3F31 /* SNButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B557F1E4EF67F004D3F31 /* SNButton.swift */; };
@@ -292,6 +293,7 @@
 		7E7E38C31DD5951700DEC27B /* TermsOfService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
 		7E7E38C51DD595E800DEC27B /* TOSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TOSCell.swift; sourceTree = "<group>"; };
 		7E7E92DC1E3D08C100E3C8EA /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
+		7E86DE301E6A8DAF002121C0 /* CreateObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateObject.swift; sourceTree = "<group>"; };
 		7E873D7A1E5BEF42004E5FCB /* NewsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsController.swift; sourceTree = "<group>"; };
 		7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		7E8B557F1E4EF67F004D3F31 /* SNButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNButton.swift; sourceTree = "<group>"; };
@@ -1102,6 +1104,7 @@
 		7EA1C74E1E59835500FBE39B /* ShareTo */ = {
 			isa = PBXGroup;
 			children = (
+				7E86DE301E6A8DAF002121C0 /* CreateObject.swift */,
 				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
 				7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */,
 			);
@@ -1813,6 +1816,7 @@
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
+				7E86DE311E6A8DAF002121C0 /* CreateObject.swift in Sources */,
 				7E1CBD6F1E409C3200F68A4B /* Player.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,

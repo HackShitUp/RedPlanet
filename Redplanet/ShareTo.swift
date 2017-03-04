@@ -28,7 +28,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     // Array to hold share objects
     var shareObjects = [PFObject]()
-    
     // Array to hold following
     var following = [PFObject]()
     // Array to hold search objects
@@ -38,7 +37,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     var searchActive: Bool = false
     // Search Bar
     var searchBar = UISearchBar()
-    
+    // Pipeline method
+    var page: Int = 50
     // App Delegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -197,6 +197,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         }
     }
     
+    
+    // Function to share creation
     func createShare() {
         
     }
@@ -219,6 +221,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.whereKey("isFollowing", equalTo: true)
         following.includeKeys(["follower", "following"])
+        following.limit = self.page
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -371,21 +374,21 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
+        // Query relationships
+        _ = appDelegate.queryRelationships()
+        
         // Fetch Following
         queryFollowing()
         
         // Stylize title
         configureView()
         
-        // Query relationships
-        _ = appDelegate.queryRelationships()
-        
         // Add searchbar to header
         self.searchBar.delegate = self
         self.searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.searchBar.barTintColor = UIColor.white
         self.searchBar.sizeToFit()
-//        self.tableView?.tableHeaderView = self.searchBar
+        self.tableView?.tableHeaderView = self.searchBar
         self.tableView?.tableHeaderView?.layer.borderWidth = 0.5
         self.tableView?.tableHeaderView?.layer.borderColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0).cgColor
         self.tableView?.tableHeaderView?.clipsToBounds = true
@@ -402,13 +405,12 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Stylize title again
         configureView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        // Clear arrays
         self.shareObjects.removeAll(keepingCapacity: false)
         shareObject.removeAll(keepingCapacity: false)
     }
@@ -499,12 +501,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            // (3) Configure selected state
-            if self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
-                cell.accessoryType = .checkmark
-            } else {
-                cell.accessoryType = .none
-            }
+            // (3) Set selected state to none
+            cell.accessoryType = .none
         } else {
         // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
@@ -548,6 +546,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if !self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
                 self.shareObjects.append(self.searchObjects[indexPath.row])
             }
+            // Resign first responder
+            self.searchBar.resignFirstResponder()
+            // Reload data
+            self.refresh()
         } else {
         // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
@@ -576,6 +578,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
                 self.shareObjects.remove(at: index)
             }
+            // Reload data
+            self.refresh()
         } else {
         // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
@@ -597,5 +601,25 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // Configure selected state
         self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
     }
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            loadMore()
+        }
+    }
+    
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.following.count {
+            
+            // Increase page size to load more posts
+            page = page + 50
+            
+            // Query friends
+            queryFollowing()
+        }
+    }
+    
     
 }
