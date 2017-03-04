@@ -132,11 +132,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             self.continueButton.isUserInteractionEnabled = true
             // Set bool to false
             chatCamera = false
-            // Reload chats
-            NotificationCenter.default.post(name: rpChat, object: nil)
-            // Pop 2 view controllers
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+            // Clear array
+            capturedURLS.removeAll(keepingCapacity: false)
+            // Reload data and push to bottom
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: rpChat, object: nil)
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+            }
         }
     }
     

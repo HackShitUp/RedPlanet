@@ -110,7 +110,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             chat["read"] = false
             chat.saveInBackground()
-            
 
             // Send Push Notification to user
             // Handle optional chaining
@@ -134,11 +133,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             self.continueButton.isUserInteractionEnabled = true
             // Make false
             chatCamera = false
-            // Reload chats
-            NotificationCenter.default.post(name: rpChat, object: nil)
-            // Pop 2 view controllers
-            let viewControllers: [UIViewController] = self.navigationController!.viewControllers as [UIViewController];
-            self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true);
+            // Clear arrray
+            stillImages.removeAll(keepingCapacity: false)
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: rpChat, object: nil)
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+            }
         }
     }
     

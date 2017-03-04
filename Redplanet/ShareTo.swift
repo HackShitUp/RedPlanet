@@ -345,7 +345,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -391,7 +391,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.tableView?.tableHeaderView?.clipsToBounds = true
         self.tableView?.tableFooterView = UIView()
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView?.allowsMultipleSelection = true
 
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -469,7 +468,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 44
     }
-
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
@@ -491,48 +489,62 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
         cell.rpUserProPic.clipsToBounds = true
         
+        
         // SEARCHED
-        if self.tableView?.numberOfSections == 1 {
-            // Set name 
+        if self.tableView!.numberOfSections == 1 {
+            // (1) Set name
             cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            // Set profile photo
+            // (2) Set Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-            if self.shareObjects.contains(where: {$0.objectId! == searchObjects[indexPath.row].objectId!}) {
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+            // (3) Configure selected state
+            if self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
+//                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                cell.accessoryType = .checkmark
             } else {
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+//                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                cell.accessoryType = .none
             }
+//            cell.accessoryType = cell.isSelected ? .checkmark : .none
         }
         
-        if self.tableView?.numberOfSections == 2 {
-        // NOT SEARCHED
-            if indexPath.section == 0 {
-                // SET TO PUBLIC
+        // FOLLOWING
+        if self.tableView!.numberOfSections == 2 {
+            if indexPath.section == 0 && indexPath.row == 0 {
+            // PUBLIC
                 cell.rpUserProPic.image = UIImage(named: "ShareOP")
                 cell.rpFullName.text! = "Post"
+                // Configure selected state
                 if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                    cell.accessoryType = .checkmark
                 } else {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                    cell.accessoryType = .none
                 }
+//                cell.accessoryType = cell.isSelected ? .checkmark : .none
             } else {
-                // Sort Following
+            // FOLLOWING
+                // Sort Following in ABC-Order
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
-                // Set name
+                // (1) Set name
                 cell.rpFullName.text! = abcFollowing[indexPath.row].value(forKey: "realNameOfUser") as! String
-                // Set profile photo
-                if let proPic = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // (2) Set proPic
+                if let proPic  = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
+                // (3) Configure selected state
                 if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                    cell.accessoryType = .checkmark
                 } else {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+//                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                    cell.accessoryType = .none
                 }
+//                cell.accessoryType = cell.isSelected ? .checkmark : .none
             }
         }
         
@@ -540,49 +552,38 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     
-    
-    
-    
-    // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // SEARCHED
-        if self.tableView?.numberOfSections == 1 {
-            // Append search object
-            self.shareObjects.append(self.searchObjects[indexPath.row])
-            if self.shareObjects.contains(where: {$0.objectId! == searchObjects[indexPath.row].objectId!}) {
-                self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            } else {
-                 self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
-            }
-        }
+        // METHODS
+        // (1) Append Objects, reload data
+        // (2) Append objects, set configuration, don't reload data?
         
-        if self.tableView?.numberOfSections == 2 {
-        // NOT SEARCHED
-            if indexPath.section == 0 {
-                // Append PFUser.current()!
-                self.shareObjects.append(PFUser.current()!)
-                if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
-                } else {
-                     self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+        // SEARCHED
+        if self.tableView!.numberOfSections == 1 {
+            // (1) Append object
+            if !self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
+                self.shareObjects.append(self.searchObjects[indexPath.row])
+            }
+            self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
+
+        } else {
+            if indexPath.section == 0 && indexPath.row == 0 {
+                // Append current user's object
+                if !self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    self.shareObjects.append(PFUser.current()!)
                 }
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             } else {
-                // Sort Following
+                // Sort Following in ABC-Order
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
-                // Append object
-                self.shareObjects.append(abcFollowing[indexPath.row])
-                if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
-                    self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
-                } else {
-                     self.tableView?.cellForRow(at: indexPath)?.accessoryType = .none
+                // Append following object
+                if !self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                    self.shareObjects.append(abcFollowing[indexPath.row])
                 }
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             }
         }
-        
-         self.tableView?.cellForRow(at: indexPath)?.accessoryType = .checkmark
-
     }
-
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         // SEARCHED
@@ -591,25 +592,26 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
                 self.shareObjects.remove(at: index)
             }
+            self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
         }
         
         if self.tableView?.numberOfSections == 2 {
-        // NOT SEARCHED
-            // Append current user if first
+            // NOT SEARCHED
+            // Remove current user if first
             if indexPath.section == 0 && indexPath.row == 0 {
                 if let index = self.shareObjects.index(of: PFUser.current()!) {
                     self.shareObjects.remove(at: index)
                 }
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             } else {
                 // Sort Following
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                 if let index = self.shareObjects.index(of: abcFollowing[indexPath.row]) {
                     self.shareObjects.remove(at: index)
                 }
+                self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
             }
         }
-        
-        // Set state to none
-        self.tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
+    
 }
