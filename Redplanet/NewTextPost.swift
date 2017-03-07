@@ -227,7 +227,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         configureView()
         // Set placeholder
         self.textView.text! = "What are you doing?"
-        self.textView.textColor = UIColor.lightGray
+        self.textView.textColor = UIColor.darkGray
     }
 
     override func viewDidLoad() {
