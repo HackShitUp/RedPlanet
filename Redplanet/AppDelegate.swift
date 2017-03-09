@@ -162,6 +162,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
         }
         
+        
         // Call Login Function
         // Which also calls queryRelationships()
         login()
@@ -246,6 +247,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
             
+            // Initialize data
+            initializeData()
             // Call relationships function
             _ = queryRelationships()
             
@@ -318,7 +321,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
+    }
     
+    // (3) Initialize first time app launch activities
+    func initializeData() {
+        // Determine first whether app was launched before
+        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
+        // If first launch...
+        if launchedBefore == false {
+            let chats = PFQuery(className: "Chats")
+            chats.whereKey("sender", equalTo: PFUser.current()!)
+            chats.countObjectsInBackground(block: {
+                (count: Int32, error: Error?) in
+                if error == nil {
+                    // Chats Score
+                    UserDefaults.standard.set(count, forKey: "ChatScore")
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Chats Score
+                    UserDefaults.standard.set(0, forKey: "ChatScore")
+                }
+            })
+            // Synchronize
+            UserDefaults.standard.synchronize()
+        }
     }
 }
 

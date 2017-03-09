@@ -1152,19 +1152,17 @@ class ActivityCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        
-        // Add usernam tap
+        // Add username tap
         let nameTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
 
-        // Add username tap
+        // Add profile photo tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

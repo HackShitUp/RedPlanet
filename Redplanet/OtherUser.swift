@@ -136,7 +136,6 @@ class OtherUser: UITableViewController {
                                                     (success: Bool, error: Error?) in
                                                     if success {
                                                         print("Successfully saved report: \(report)")
-                                                        
                                                         // Dismiss
                                                         let alert = UIAlertController(title: "Successfully Reported",
                                                                                       message: "\(otherName.last!.uppercased())",
@@ -473,7 +472,6 @@ class OtherUser: UITableViewController {
                         
                     } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWING
-                        print("Don't hide because FOLLOWING")
                         if self.posts.count == 0 {
                             self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)

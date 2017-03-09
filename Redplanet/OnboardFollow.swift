@@ -24,11 +24,9 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     var teamObjects = [PFObject]()
     
     // Set Team's ObjectId's
-    var team = ["l5L2xZuhIi", // Alex LaVersa (1)
-                   "8ZztVf7CEw", // Michael Furman (2)
-                   "OoZRHmiNpX", // Jake Cadez (3)
-                   "uvjf6LmD2t", // Yusuf Ahmed (4)
-                   "2AOI4vtcSI" // Josh Choi (5)
+    var team = ["8ZztVf7CEw", // Michael Furman (3)
+                   "OoZRHmiNpX", // Jake Cadez (2)
+                   "2AOI4vtcSI" // Josh Choi (1)
     ]
     
     // AppDelegate

@@ -21,12 +21,11 @@ import SVProgressHUD
 import SwipeNavigationController
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-
-    // Boolean to determine what to show in UITableView
-    var searchActive: Bool = false
     
     // Chat objects
     var chatObjects = [PFObject]()
+    // Refresher
+    var refresher: UIRefreshControl!
 
     // Page size
     var page: Int = 100
@@ -34,13 +33,14 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // Search
     var searchNames = [String]()
     var searchObjects = [PFObject]()
-    
-    // Refresher
-    var refresher: UIRefreshControl!
-    
+
     // Search Bar
     var searchBar = UISearchBar()
-
+    // Boolean to determine what to show in UITableView
+    var searchActive: Bool = false
+    
+    // Bool to show chatscore
+    var showScore: Bool = false
 
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func editAction(_ sender: Any) {
@@ -191,12 +191,24 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             }
         })
     }
+    
+    
+    // Function to toggle navigationbar
+    func toggleTitle() {
+        if showScore == true {
+            self.showScore = false
+            self.configureView()
+        } else {
+            self.showScore = true
+            self.showChats()
+        }
+    }
 
     
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
@@ -214,12 +226,28 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    
+    // Show chats
+    func showChats() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            let score: Int = UserDefaults.standard.integer(forKey: "ChatScore")
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = "\(score)"
+        }
+        // Hide tabBarController
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
     
     
     // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if chatObjects.count == 0 {
             return true
@@ -228,7 +256,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
     }
     
-    // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "🙊\nNo Active Chats"
         let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
@@ -240,7 +267,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
-    // Description for empty data set
     func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "Start a conversation by tapping\nthe icon on the top right!"
         let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
@@ -248,7 +274,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
-        
         
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
@@ -317,10 +342,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                 // Dismiss progress
                                                 SVProgressHUD.dismiss()
                                                 
-                                                // Delete chat from tableview
-                                                self.chatObjects.remove(at: indexPath.row)
-                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                
                                                 // Delete all objects
                                                 PFObject.deleteAll(inBackground: objects, block: {
                                                     (success: Bool, error: Error?) in
@@ -330,6 +351,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                         print(error?.localizedDescription as Any)
                                                     }
                                                 })
+                                                
+                                                // Delete chat from tableview
+                                                self.chatObjects.remove(at: indexPath.row)
+                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
                                                 
                                                 // Reload data
                                                 self.queryChats()
@@ -396,6 +421,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.tableView.isUserInteractionEnabled = true
         self.tableView.addGestureRecognizer(hold)
         
+        // Tap navigationbar
+        let navTap = UITapGestureRecognizer(target: self, action: #selector(toggleTitle))
+        navTap.numberOfTapsRequired = 1
+        self.navigationController?.navigationBar.isUserInteractionEnabled = true
+        self.navigationController?.navigationBar.addGestureRecognizer(navTap)
+        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
@@ -412,21 +443,16 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Set design of navigation bar
         configureView()
-        
         // Query chats
         queryChats()
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Set design of navigation bar
         configureView()
-        
         // Query CHATS
         queryChats()
     }

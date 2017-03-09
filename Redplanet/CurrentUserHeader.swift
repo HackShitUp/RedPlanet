@@ -101,7 +101,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         numberOfPosts.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
-        
+        // Configure view
         self.contentView.backgroundColor = UIColor.white
         
         // (1) Add tap methods to show followers, and following
@@ -115,7 +115,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         followingTap.numberOfTapsRequired = 1
         self.numberOfFollowing.isUserInteractionEnabled = true
         self.numberOfFollowing.addGestureRecognizer(followingTap)
-        
         
         // (2) Show profile photo tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))

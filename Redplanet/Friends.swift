@@ -228,7 +228,8 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
             DispatchQueue.main.async {
-                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+                let top = CGPoint(x: 0, y: 0)
+                self.tableView!.setContentOffset(top, animated: true)
             }
         }
     }

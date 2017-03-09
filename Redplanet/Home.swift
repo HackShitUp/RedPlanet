@@ -33,23 +33,21 @@ class Home: UIViewController, UINavigationControllerDelegate {
         // FRIENDS
         let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsVC") as! Friends
         friends.parentNavigator = self.navigationController
-//        friends.title = "F R I E N D S"
-        friends.title = ""
+        friends.title = "F R I E N D S"
         controllerArray.append(friends)
         
         // FOLLOWING
         let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
         following.parentNavigator = self.navigationController
-//        following.title = "F O L L O W I N G"
-        following.title = ""
+        following.title = "F O L L O W I N G"
         controllerArray.append(following)
         
         // Customize page menu to your liking (optional) or use default settings by sending nil for 'options' in the init
         let parameters: [CAPSPageMenuOption] = [
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
-//            .menuHeight(30.00),
-            .menuHeight(5.00),
+            .menuHeight(25.00),
+//            .menuHeight(5.00),
             .menuItemSeparatorRoundEdges(true),
             .selectionIndicatorColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),

@@ -2570,7 +2570,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="285"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ajm-6d-4tS" id="5Gi-Zt-4Xp">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="284.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="284"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VFO-NX-wRH">
@@ -2760,6 +2760,7 @@
                                         <constraint firstItem="yTv-3k-VGL" firstAttribute="top" secondItem="OLF-fd-dxZ" secondAttribute="bottom" constant="8.5" id="z1d-xB-vPK"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
                                     <outlet property="commentButton" destination="SnR-qe-qES" id="qJQ-ua-DHf"/>
                                     <outlet property="container" destination="OLF-fd-dxZ" id="abb-W5-zZ0"/>
@@ -3687,7 +3688,7 @@
                                                         <constraint firstAttribute="height" constant="22" id="dxx-mw-tl5"/>
                                                         <constraint firstAttribute="width" constant="235" id="xyu-jM-ud9"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -3708,7 +3709,7 @@
                                                         <constraint firstAttribute="height" constant="21" id="lO9-9o-xPJ"/>
                                                         <constraint firstAttribute="width" constant="316" id="o0n-wA-SLV"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>

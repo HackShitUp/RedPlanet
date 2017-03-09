@@ -35,28 +35,21 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Variable to hold messageObjects
     var messageObjects = [PFObject]()
-    
     // Keyboard frame
     var keyboard = CGRect()
-    
     // Refresher
     var refresher: UIRefreshControl!
-    
     // Set pipeline
     var page: Int = 50
-    
     // Variable to hold UIImagePickerController
     var imagePicker: UIImagePickerController!
     
-    // Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var frontView: UIView!
     @IBOutlet weak var newChat: UITextView!
-    
     @IBOutlet weak var photosButton: UIButton!
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var stickersButton: UIButton!
-    
     
     @IBAction func backButton(_ sender: AnyObject) {
         // Clear arrays
@@ -141,17 +134,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.present(alert, animated: true, completion: nil)
     }
     
-    // Query all of the user's chats
+    // Fetch chats
     func queryChats() {
-        // (A) Sender
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
-        // (B) Receiver
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        // Chats subqueries
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.includeKeys(["receiver", "sender"])
         chats.order(byAscending: "createdAt")
@@ -167,20 +157,20 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Append object
                     self.messageObjects.append(object)
                 }
+                // Reload data
+                self.tableView!.reloadData()
+                // Scroll to bottom via main thread
+                DispatchQueue.main.async(execute: {
+                    if self.messageObjects.count > 0 {
+                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                        self.tableView.setContentOffset(bot, animated: false)
+                    }
+                })
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
             }
-            // Reload data
-            self.tableView!.reloadData()
-            // Scroll to bottom via main thread
-            DispatchQueue.main.async(execute: {
-                if self.messageObjects.count > 0 {
-                    let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                    self.tableView.setContentOffset(bot, animated: false)
-                }
-            })
         })
     }
     
@@ -223,6 +213,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             )
                         }
                     }
+                    
+                    // Add Int to Chat
+                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
+                    UserDefaults.standard.set(score, forKey: "ChatScore")
+                    UserDefaults.standard.synchronize()
                     // Reload data
                     self.queryChats()
                 } else {
@@ -442,11 +437,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 // Re-enable done button
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
-
                 
                 // Clear newChat
                 self.newChat.text!.removeAll()
-                
                 
                 // Handle optional chaining
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
@@ -465,10 +458,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Reload data
                 self.queryChats()
                 
-                
                 // Dismiss view controller
                 self.dismiss(animated: true, completion: nil)
-                
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -947,15 +938,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Set mCell's delegate
         mCell.delegate = self
         
-        
+        // TEXT POST
         if self.messageObjects[indexPath.row].value(forKey: "Message") != nil {
-        
-            //////////////////////////////
-            ///                       ///
-            /// Return TextPost Cell ///
-            ///                     ///
-            //////////////////////////
-            
             // Set layouts
             cell.rpUserProPic.layoutIfNeeded()
             cell.rpUserProPic.layoutSubviews()
@@ -967,7 +951,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             cell.rpUserProPic.layer.borderWidth = 0.5
             cell.rpUserProPic.clipsToBounds = true
 
-            
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
@@ -976,8 +959,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Set username
                 cell.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
             }
-            
-            
             
             // Fetch Objects
             // (2) Get and set user's profile photos
@@ -1034,11 +1015,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             return cell
             
         } else {
-            
-            
-            /////////////////////////////
-            /// Return Media Cell //////
-            ///////////////////////////
+        // MEDIA CELL
             
             // Set mCell's content object
             mCell.mediaObject = self.messageObjects[indexPath.row]
@@ -1057,7 +1034,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             mCell.rpUserProPic.layer.borderWidth = 0.5
             mCell.rpUserProPic.clipsToBounds = true
             
-            
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
@@ -1066,7 +1042,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Set username
                 mCell.rpUsername.text! = chatUserObject.last!.value(forKey: "realNameOfUser") as! String
             }
-            
             
             // (2) Fetch Media Asset
             messageObjects[indexPath.row].fetchInBackground(block: {

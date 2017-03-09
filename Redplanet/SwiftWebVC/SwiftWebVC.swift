@@ -122,6 +122,10 @@ public class SwiftWebVC: UIViewController {
     }
     
     override public func viewWillAppear(_ animated: Bool) {
+        // Create corner radiuss
+        self.view.layer.cornerRadius = 7.50
+        self.view.clipsToBounds = true
+        
         assert(self.navigationController != nil, "SVWebViewController needs to be contained in a UINavigationController. If you are presenting SVWebViewController modally, use SVModalWebViewController instead.")
         
         navBarTitle = UILabel()

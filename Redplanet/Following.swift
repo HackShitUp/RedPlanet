@@ -220,7 +220,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!
         ]
-        
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
@@ -236,7 +235,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.parentNavigator.tabBarController?.selectedIndex == 0 {
             DispatchQueue.main.async {
-                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+                self.tableView!.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
             }
         }
     }
