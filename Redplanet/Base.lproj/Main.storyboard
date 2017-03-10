@@ -78,11 +78,11 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o4i-TT-tPh">
-                                <rect key="frame" x="16" y="224" width="343" height="50"/>
+                                <rect key="frame" x="16" y="213" width="343" height="50"/>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="Mpz-E6-zLE"/>
-                                    <constraint firstAttribute="width" constant="343" id="f17-Pa-qbP"/>
+                                    <constraint firstAttribute="width" constant="343" id="eZ4-WC-hij"/>
+                                    <constraint firstAttribute="height" constant="50" id="iSq-2e-DaF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="30"/>
                                 <state key="normal" title="login">
@@ -90,13 +90,14 @@
                                 </state>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ywh-Z8-tSI">
-                                <rect key="frame" x="16" y="282" width="343" height="30"/>
+                                <rect key="frame" x="16" y="282" width="343" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="2ob-t9-ZZb"/>
-                                    <constraint firstAttribute="width" constant="343" id="DYS-Lh-skJ"/>
+                                    <constraint firstAttribute="height" constant="50" id="0Gs-IL-BVq"/>
+                                    <constraint firstAttribute="width" constant="343" id="qEA-bi-Snc"/>
                                 </constraints>
-                                <state key="normal" title="Don't have an account? SIGN UP">
-                                    <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="30"/>
+                                <state key="normal" title="sign up">
+                                    <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="signUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="zEY-Yt-rYb"/>
@@ -105,17 +106,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Ywh-Z8-tSI" secondAttribute="trailing" constant="16" id="3bQ-6S-lxs"/>
-                            <constraint firstItem="o4i-TT-tPh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="Csj-AN-gEw"/>
+                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5Kk-Ts-H0R"/>
                             <constraint firstAttribute="trailing" secondItem="wae-8T-duQ" secondAttribute="trailing" constant="16" id="FmC-w7-Mxt"/>
                             <constraint firstItem="66m-Tp-nIe" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LRF-nH-3nB"/>
                             <constraint firstItem="wae-8T-duQ" firstAttribute="top" secondItem="66m-Tp-nIe" secondAttribute="bottom" constant="8" id="MX6-eF-Zi5"/>
-                            <constraint firstItem="o4i-TT-tPh" firstAttribute="top" secondItem="wae-8T-duQ" secondAttribute="bottom" constant="36" id="Wkc-9v-oA3"/>
-                            <constraint firstAttribute="trailing" secondItem="o4i-TT-tPh" secondAttribute="trailing" constant="16" id="b0G-jG-4Ma"/>
-                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="top" secondItem="o4i-TT-tPh" secondAttribute="bottom" constant="8" id="i7k-0T-Uol"/>
+                            <constraint firstItem="o4i-TT-tPh" firstAttribute="top" secondItem="wae-8T-duQ" secondAttribute="bottom" constant="25" id="aH8-29-b3A"/>
                             <constraint firstItem="66m-Tp-nIe" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="iox-tk-zvt"/>
-                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="tod-eP-daM"/>
+                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="top" secondItem="o4i-TT-tPh" secondAttribute="bottom" constant="19" id="tKu-hq-kT0"/>
                             <constraint firstItem="wae-8T-duQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="uA4-py-UNV"/>
+                            <constraint firstItem="o4i-TT-tPh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="wGr-29-9Hu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YIb-Tn-ho4"/>
@@ -125,11 +124,12 @@
                         <outlet property="loginButton" destination="o4i-TT-tPh" id="Vv8-o4-qbZ"/>
                         <outlet property="rpPassword" destination="BWr-3U-ip5" id="nI1-LN-IFl"/>
                         <outlet property="rpUsername" destination="m7h-14-Yxo" id="HuG-NO-iCb"/>
+                        <outlet property="signUpButton" destination="Ywh-Z8-tSI" id="QEQ-gt-a1E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1989" y="-4061"/>
+            <point key="canvasLocation" x="-1990" y="-4061"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="10P-Wq-oF8">
@@ -272,7 +272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7s-GP-bla" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1392" y="-4061"/>
+            <point key="canvasLocation" x="-1393" y="-4061"/>
         </scene>
         <!--Birthday-->
         <scene sceneID="nq9-hu-UHJ">
@@ -286,7 +286,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When's Your Birthday?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="2in-S8-qjk">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="And, your birthday?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="2in-S8-qjk">
                                 <rect key="frame" x="0.0" y="28" width="375" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="5jm-JM-xg7"/>
@@ -345,7 +345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jwi-lT-03O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-506" y="-4061"/>
+            <point key="canvasLocation" x="-507" y="-4061"/>
         </scene>
         <!--New User-->
         <scene sceneID="KNr-53-jdP">
@@ -414,7 +414,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Sv-8G-mIi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-62" y="-4061"/>
+            <point key="canvasLocation" x="-63" y="-4061"/>
         </scene>
         <!--Follow Accounts-->
         <scene sceneID="jNS-Gc-fXv">
@@ -596,7 +596,7 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's Your Name?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ssk-PB-Uah">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's your name?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ssk-PB-Uah">
                                 <rect key="frame" x="16" y="28" width="343" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="343" id="VA1-1r-Qcf"/>
@@ -628,7 +628,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jSc-ij-ZWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-948" y="-4061"/>
+            <point key="canvasLocation" x="-949" y="-4061"/>
         </scene>
         <!--Master Tab-->
         <scene sceneID="CMz-wu-l20">
@@ -4464,7 +4464,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Logout" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="170-ym-d50">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="LOGOUT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="170-ym-d50">
                                                     <rect key="frame" x="15" y="0.0" width="345" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="17"/>
@@ -6315,7 +6315,7 @@ SOFTWARE.</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGq-vG-vr5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2576" y="-4061"/>
+            <point key="canvasLocation" x="-2577" y="-4061"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T7U-Wu-kR3">

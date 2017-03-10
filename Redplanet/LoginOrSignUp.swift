@@ -19,6 +19,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBOutlet weak var rpUsername: UITextField!
     @IBOutlet weak var rpPassword: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signUpButton: UIButton!
     
     @IBAction func signUp(_ sender: Any) {
         // Push VC
@@ -178,19 +179,19 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Text == Hello, welcome to Redplanet, the first social media platform that can filter your newsfeed, the way you want it to.
-        // ^?
-        
+
         // Dismiss keyboard
         let tap0 = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap0.numberOfTapsRequired = 1
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(tap0)
-        
 
         // Design loginButton
         self.loginButton.layer.cornerRadius = 25.00
+        self.signUpButton.layer.cornerRadius = 25.00
+        self.signUpButton.layer.borderWidth = 3.00
+        self.signUpButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        self.signUpButton.clipsToBounds = true
         
         // Set username to be first responder
         self.rpUsername.becomeFirstResponder()
