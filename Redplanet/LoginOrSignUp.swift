@@ -188,10 +188,10 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
 
         // Design loginButton
         self.loginButton.layer.cornerRadius = 25.00
-        self.signUpButton.layer.cornerRadius = 25.00
-        self.signUpButton.layer.borderWidth = 3.00
-        self.signUpButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.signUpButton.clipsToBounds = true
+//        self.signUpButton.layer.cornerRadius = 25.00
+//        self.signUpButton.layer.borderWidth = 3.00
+//        self.signUpButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+//        self.signUpButton.clipsToBounds = true
         
         // Set username to be first responder
         self.rpUsername.becomeFirstResponder()
