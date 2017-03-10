@@ -426,14 +426,14 @@ class TimeVideoCell: UITableViewCell {
                                         
                                         let answer = alert.textFields![0]
                                         
-                                        // Save to <Block_Reported>
-                                        let report = PFObject(className: "Block_Reported")
-                                        report["from"] = PFUser.current()!.username!
-                                        report["fromUser"] = PFUser.current()!
+                                        // REPORTED
+                                        let report = PFObject(className: "Reported")
+                                        report["byUsername"] = PFUser.current()!.username!
+                                        report["byUser"] = PFUser.current()!
                                         report["to"] = self.userObject!.value(forKey: "username") as! String
                                         report["toUser"] = self.userObject!
                                         report["forObjectId"] = self.postObject!.objectId!
-                                        report["type"] = answer.text!
+                                        report["reason"] = answer.text!
                                         report.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if success {

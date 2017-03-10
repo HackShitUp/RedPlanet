@@ -36,7 +36,8 @@ class MasterTab: UITabBarController {
         self.setNeedsStatusBarAppearanceUpdate()
         
         // Set tabBar's tintColor and tabBar's barTintColor
-        self.tabBar.tintColor = UIColor.black
+//        self.tabBar.tintColor = UIColor.black
+        self.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         self.tabBar.barTintColor = UIColor.white
 
         // If current user is not nil

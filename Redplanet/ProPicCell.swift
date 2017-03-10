@@ -438,14 +438,14 @@ class ProPicCell: UITableViewCell {
                                             [unowned self, alert] (action: UIAlertAction!) in
                                             
                                             let answer = alert.textFields![0]
-                                            
-                                            let report = PFObject(className: "Block_Reported")
-                                            report["from"] = PFUser.current()!.username!
-                                            report["fromUser"] = PFUser.current()!
-                                            report["to"] = self.rpUsername.text!
+                                            // REPORTED
+                                            let report = PFObject(className: "Reported")
+                                            report["byUsername"] = PFUser.current()!.username!
+                                            report["byUser"] = PFUser.current()!
+                                            report["toUsername"] = self.rpUsername.text!
                                             report["toUser"] = self.userObject!
                                             report["forObjectId"] = self.postObject!.objectId!
-                                            report["type"] = answer.text!
+                                            report["reason"] = answer.text!
                                             report.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if success {

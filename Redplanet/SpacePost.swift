@@ -250,14 +250,14 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                         
                                         let answer = alert.textFields![0]
                                         
-                                        // Save to <Block_Reported>
-                                        let report = PFObject(className: "Block_Reported")
-                                        report["from"] = PFUser.current()!.username!
-                                        report["fromUser"] = PFUser.current()!
-                                        report["to"] = spaceObject.last!.value(forKey: "username") as! String
+                                        // REPORTED
+                                        let report = PFObject(className: "Reported")
+                                        report["byUsername"] = PFUser.current()!.username!
+                                        report["byUser"] = PFUser.current()!
+                                        report["toUsername"] = spaceObject.last!.value(forKey: "username") as! String
                                         report["toUser"] = spaceObject.last!.value(forKey: "byUser") as! PFUser
                                         report["forObjectId"] = spaceObject.last!.objectId!
-                                        report["type"] = answer.text!
+                                        report["reason"] = answer.text!
                                         report.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if success {

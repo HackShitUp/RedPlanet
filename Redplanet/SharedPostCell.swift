@@ -511,15 +511,14 @@ class SharedPostCell: UITableViewCell {
                                         [unowned self, alert] (action: UIAlertAction!) in
                                         
                                         let answer = alert.textFields![0]
-                                        
-                                        // Save to <Block_Reported>
-                                        let report = PFObject(className: "Block_Reported")
-                                        report["from"] = PFUser.current()!.username!
-                                        report["fromUser"] = PFUser.current()!
-                                        report["to"] = sharedObject.last!.value(forKey: "username") as! String
+                                        // REPORTED
+                                        let report = PFObject(className: "Reported")
+                                        report["byUsername"] = PFUser.current()!.username!
+                                        report["byUser"] = PFUser.current()!
+                                        report["toUsername"] = sharedObject.last!.value(forKey: "username") as! String
                                         report["toUser"] = sharedObject.last!.value(forKey: "byUser") as! PFUser
                                         report["forObjectId"] = sharedObject.last!.objectId!
-                                        report["type"] = answer.text!
+                                        report["reason"] = answer.text!
                                         report.saveInBackground(block: {
                                             (success: Bool, error: Error?) in
                                             if success {

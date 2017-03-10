@@ -231,7 +231,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Redplanet VIP Functions
     // (1) Login ---- Uses iPhone disk CoreData and UserDefaults to check whether is currently logged in or not.
     func login() {
-        
         // Remember user's login
         // By setting their username
         if PFUser.current() != nil {
@@ -274,7 +273,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear arrays
                 myFollowing.removeAll(keepingCapacity: false)
                 myRequestedFollowing.removeAll(keepingCapacity: false)
@@ -323,13 +321,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
-        
-        // TODO::
         // Query BLOCKED
         let blocked = PFQuery(className: "Blocked")
         blocked.whereKey("byUser", equalTo: PFUser.current()!)
         blocked.includeKey("toUser")
-        
+        blocked.order(byDescending: "createdAt")
+        blocked.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                blockedUsers.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    blockedUsers.append(object.object(forKey: "toUser") as! PFUser)
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
     }
     
     // (3) Initialize first time app launch activities

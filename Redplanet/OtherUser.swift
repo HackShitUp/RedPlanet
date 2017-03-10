@@ -123,15 +123,15 @@ class OtherUser: UITableViewController {
                                                 [unowned self, alert] (action: UIAlertAction!) in
                                                 
                                                 let answer = alert.textFields![0]
-                                                
-                                                // Save to <Block_Reported>
-                                                let report = PFObject(className: "Block_Reported")
-                                                report["from"] = PFUser.current()!.username!
-                                                report["fromUser"] = PFUser.current()!
-                                                report["to"] = otherName.last!
+
+                                                // REPORTED
+                                                let report = PFObject(className: "Reported")
+                                                report["byUsername"] = PFUser.current()!.username!
+                                                report["byUser"] = PFUser.current()!
+                                                report["toUsername"] = otherName.last!
                                                 report["toUser"] = otherObject.last!
                                                 report["forObjectId"] = otherObject.last!.objectId!
-                                                report["type"] = answer.text!
+                                                report["reason"] = answer.text!
                                                 report.saveInBackground(block: {
                                                     (success: Bool, error: Error?) in
                                                     if success {
@@ -174,30 +174,33 @@ class OtherUser: UITableViewController {
                                         style: .destructive,
                                         handler: { (AlertAction) in
                                         
-                                            // Save to <Block_Reported>
-                                            let report = PFObject(className: "Block_Reported")
-                                            report["from"] = PFUser.current()!.username!
-                                            report["fromUser"] = PFUser.current()!
-                                            report["to"] = otherName.last!
-                                            report["toUser"] = otherObject.last!
-                                            report["forObjectId"] = otherObject.last!.objectId!
-                                            report["type"] = "BLOCK"
-                                            report.saveInBackground(block: {
+                                            // BLOCKED
+                                            let block = PFObject(className: "Blocked")
+                                            block["byUser"] = PFUser.current()!
+                                            block["byUsername"] = PFUser.current()!.username!
+                                            block["toUser"] = otherObject.last!
+                                            block["toUsername"] = otherName.last!.uppercased()
+                                            block.saveInBackground(block: {
                                                 (success: Bool, error: Error?) in
                                                 if success {
-                                                    print("Successfully saved report: \(report)")
+                                                    print("Successfully blocked: \(report)")
                                                     
                                                     // Dismiss
                                                     let alert = UIAlertController(title: "Successfully Blocked",
-                                                                                  message: "\(otherName.last!.uppercased()). You will receive a message from us if the issue is serious.",
+                                                                                  message: "\(otherName.last!.uppercased())",
                                                         preferredStyle: .alert)
                                                     
                                                     let ok = UIAlertAction(title: "ok",
                                                                            style: .default,
-                                                                           handler: nil)
+                                                                           handler: { (alertAction: UIAlertAction!) in
+                                                                            // Reload data
+                                                                            _ = self.appDelegate.queryRelationships()
+                                                                            // Reload data
+                                                                            self.refresh()
+                                                    })
                                                     
-                                                    alert.addAction(ok)
                                                     alert.view.tintColor = UIColor.black
+                                                    alert.addAction(ok)
                                                     self.present(alert, animated: true, completion: nil)
                                                     
                                                 } else {
@@ -277,7 +280,7 @@ class OtherUser: UITableViewController {
                                                                           message: nil,
                                                                           preferredStyle: .actionSheet)
                                             
-                                            let report = UIAlertAction(title: "Report ✋",
+                                            let report = UIAlertAction(title: "Report",
                                                                        style: .default,
                                                                        handler: {(alertAction: UIAlertAction!) in
                                                                         let alert = UIAlertController(title: "Report",
@@ -289,14 +292,14 @@ class OtherUser: UITableViewController {
                                                                             
                                                                             let answer = alert.textFields![0]
                                                                             
-                                                                            // Save to <Block_Reported>
-                                                                            let report = PFObject(className: "Block_Reported")
-                                                                            report["from"] = PFUser.current()!.username!
-                                                                            report["fromUser"] = PFUser.current()!
-                                                                            report["to"] = otherName.last!
+                                                                            // REPORTED
+                                                                            let report = PFObject(className: "Reported")
+                                                                            report["byUsername"] = PFUser.current()!.username!
+                                                                            report["byUser"] = PFUser.current()!
+                                                                            report["toUsername"] = otherName.last!
                                                                             report["toUser"] = otherObject.last!
                                                                             report["forObjectId"] = otherObject.last!.objectId!
-                                                                            report["type"] = answer.text!
+                                                                            report["reason"] = answer.text!
                                                                             report.saveInBackground(block: {
                                                                                 (success: Bool, error: Error?) in
                                                                                 if success {
@@ -335,25 +338,23 @@ class OtherUser: UITableViewController {
                                                                         
                                             })
                                             
-                                            let block = UIAlertAction(title: "Block 🚫",
+                                            let block = UIAlertAction(title: "Block",
                                                                       style: .default,
                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        // Save to <Block_Reported>
-                                                                        let report = PFObject(className: "Block_Reported")
-                                                                        report["from"] = PFUser.current()!.username!
-                                                                        report["fromUser"] = PFUser.current()!
-                                                                        report["to"] = otherName.last!
-                                                                        report["toUser"] = otherObject.last!
-                                                                        report["forObjectId"] = otherObject.last!.objectId!
-                                                                        report["type"] = "BLOCK"
-                                                                        report.saveInBackground(block: {
+                                                                        // BLOCKED
+                                                                        let block = PFObject(className: "Blocked")
+                                                                        block["byUsername"] = PFUser.current()!.username!
+                                                                        block["byUser"] = PFUser.current()!
+                                                                        block["toUsername"] = otherName.last!
+                                                                        block["toUser"] = otherObject.last!
+                                                                        block.saveInBackground(block: {
                                                                             (success: Bool, error: Error?) in
                                                                             if success {
                                                                                 print("Successfully saved report: \(report)")
                                                                                 
                                                                                 // Dismiss
                                                                                 let alert = UIAlertController(title: "Successfully Blocked",
-                                                                                                              message: "\(otherName.last!.uppercased()). You will receive a message from us if the issue is serious.",
+                                                                                                              message: "\(otherName.last!.uppercased())",
                                                                                     preferredStyle: .alert)
                                                                                 
                                                                                 let ok = UIAlertAction(title: "ok",
@@ -496,7 +497,7 @@ class OtherUser: UITableViewController {
                         }
                         
                     } else {
-                        // Not yet connected
+                    // NOT CONNECTED
                         self.cover.setTitle("🔒\nPrivate Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
@@ -551,13 +552,10 @@ class OtherUser: UITableViewController {
     func refresh() {
         // Run relationships
         _ = appDelegate.queryRelationships()
-        
         // Query Content
         queryContent()
-        
         // End refresher
         self.refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }

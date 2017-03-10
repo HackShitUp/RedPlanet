@@ -590,21 +590,15 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                             let yes = UIAlertAction(title: "yes",
                                                                     style: .destructive,
                                                                     handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // I have to manually delete all "blocked objects..." -__-
-                                                                        let block = PFObject(className: "Block_Reported")
-                                                                        block["from"] = PFUser.current()!.username!
-                                                                        block["fromUser"] = PFUser.current()!
-                                                                        block["to"] = self.comments[indexPath.row].value(forKey: "byUsername") as! String
-                                                                        block["forObjectId"] = self.comments[indexPath.row].objectId!
-                                                                        block.saveInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully reported \(block)")
-                                                                                
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
+                                                                        // REPORT
+                                                                        let report = PFObject(className: "Reported")
+                                                                        report["byUser"] = PFUser.current()!
+                                                                        report["byUsername"] = PFUser.current()!.username!
+                                                                        report["toUser"] = self.comments[indexPath.row].value(forKey: "byUser") as! PFUser
+                                                                        report["toUsername"] = self.comments[indexPath.row].value(forKey: "byUsername") as! String
+                                                                        report["forObjectId"] = self.comments[indexPath.row].objectId!
+                                                                        report["reason"] = "Inappropriate comment."
+                                                                        report.saveInBackground()
                                             })
                                             
                                             let no = UIAlertAction(title: "no",

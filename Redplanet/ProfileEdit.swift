@@ -585,6 +585,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         rpEmail.resignFirstResponder()
         rpUsername.resignFirstResponder()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -668,6 +673,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         self.view.isUserInteractionEnabled = true
         self.container.addGestureRecognizer(tap)
         self.view.addGestureRecognizer(tap)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

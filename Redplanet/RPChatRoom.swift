@@ -853,23 +853,22 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                             let yes = UIAlertAction(title: "yes",
                                                                     style: .destructive,
                                                                     handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // I have to manually delete all "blocked objects..." -__-
-                                                                        let block = PFObject(className: "Block_Reported")
-                                                                        block["from"] = PFUser.current()!.username!
-                                                                        block["fromUser"] = PFUser.current()!
-                                                                        block["to"] = chatUsername.last!
-                                                                        block["forObjectId"] = self.messageObjects[indexPath.row].objectId!
-                                                                        block.saveInBackground(block: {
+                                                                        // REPORTED
+                                                                        let report = PFObject(className: "Reported")
+                                                                        report["byUsername"] = PFUser.current()!.username!
+                                                                        report["byUser"] = PFUser.current()!
+                                                                        report["toUsername"] = chatUsername.last!
+                                                                        report["toUser"] = chatUserObject.last!
+                                                                        report["forObjectId"] = self.messageObjects[indexPath.row].objectId!
+                                                                        report["reason"] = "Inappropriate chat."
+                                                                        report.saveInBackground(block: {
                                                                             (success: Bool, error: Error?) in
                                                                             if success {
-                                                                                print("Successfully reported \(block)")
-                                                                                
+                                                                                print("Successfully reported \(report)")
                                                                             } else {
                                                                                 print(error?.localizedDescription as Any)
                                                                             }
                                                                         })
-                                                                        // Close cell
-                                                                        self.tableView.setEditing(false, animated: true)
                                             })
                                             
                                             let no = UIAlertAction(title: "no",
