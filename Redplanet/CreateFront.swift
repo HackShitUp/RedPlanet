@@ -288,14 +288,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // in Notifications' <forObjectId>
         cell.contentObject = myActivity[indexPath.row]
         
-
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
         cell.rpUserProPic.setNeedsLayout()
         
         // Give Profile Photo Corner Radius
-        cell.rpUserProPic.layer.cornerRadius = 8.00
+//        cell.rpUserProPic.layer.cornerRadius = 8.00
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true

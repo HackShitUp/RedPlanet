@@ -367,7 +367,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                         popOverVC?.sourceView = self.rpUserProPic
                                         popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
                                         
-                                        
                                         self.present(newProPicVC, animated: true, completion: nil)
                                         
                                     } else {
@@ -440,15 +439,28 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
             remove.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
             remove.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+            cancel.button.setTitleColor(UIColor.black, for: .normal)
+            self.present(options, animated: true, completion: nil)
         } else {
-            options.addAction(change)
-            options.addAction(cancel)
-            change.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            change.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
+            // MARK: - UIAlertController
+            let alert = UIAlertController(title: "Options",
+                                          message: nil,
+                                          preferredStyle: .actionSheet)
+            let change = UIAlertAction(title: "New Profile Photo",
+                                       style: .default,
+                                       handler: {(alertAction: UIAlertAction!)in
+                                        // MARK: - UIImagePickerController
+                                        self.present(image, animated: false, completion: nil)
+            })
+            let cancel = UIAlertAction(title: "Cancel",
+                                       style: .cancel,
+                                       handler: nil)
+            alert.view.tintColor = UIColor.black
+            alert.addAction(change)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
         }
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.present(options, animated: true, completion: nil)
     }
     
     
@@ -578,7 +590,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         super.viewDidLoad()
         // Add border to top of container
         let upperBorder = CALayer()
-        upperBorder.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        upperBorder.backgroundColor = UIColor.darkGray.cgColor
         upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.view.frame.width), height: CGFloat(0.50))
         self.container.layer.addSublayer(upperBorder)
 
@@ -590,7 +602,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Load user's current profile picture
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
         self.rpUserProPic.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.rpUserProPic.layer.borderWidth = 1.00
+        self.rpUserProPic.layer.borderWidth = 3.00
         self.rpUserProPic.clipsToBounds = true
         
         // (B) If there exists, a current user...

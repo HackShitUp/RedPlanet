@@ -660,14 +660,12 @@ class OtherUser: UITableViewController {
         }
         
         // (2) Get user's full/real name and bio
-        // Set fullname
-        let fullName = otherObject.last!.value(forKey: "realNameOfUser") as! String
         if otherObject.last!.value(forKey: "userBiography") != nil {
-            header.userBio.text = "\(fullName.uppercased())\n\(otherObject.last!.value(forKey: "userBiography") as! String)"
+            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
+            header.userBio.text! = "\(otherObject.last!.value(forKey: "userBiography") as! String)"
         } else {
-            header.userBio.text = "\(fullName.uppercased())"
+            header.fullName.text! = "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
-        
         
         // (3) Set CurrentUser & OtherUser's relatinship state
         // Hide and show buttons depending on relationship

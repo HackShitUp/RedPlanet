@@ -29,6 +29,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var numberOfFollowing: UIButton!
     @IBOutlet weak var relationType: UIButton!
     @IBOutlet weak var followButton: UIButton!
+    @IBOutlet weak var fullName: UILabel!
     @IBOutlet weak var userBio: KILabel!
     @IBOutlet weak var blockButton: UIButton!
     @IBOutlet weak var chatButton: UIButton!

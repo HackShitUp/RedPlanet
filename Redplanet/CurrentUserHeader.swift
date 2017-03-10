@@ -27,6 +27,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var numberOfPosts: UIButton!
     @IBOutlet weak var numberOfFollowers: UIButton!
     @IBOutlet weak var numberOfFollowing: UIButton!
+    @IBOutlet weak var fullName: UILabel!
     @IBOutlet weak var userBio: KILabel!
 
     // Function to show followers
@@ -52,10 +53,8 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     }
     
     
-    
     // Function to show profile photo
     func showProPic() {
-        
         
         if PFUser.current()!.value(forKey: "proPicExists") as! Bool == true {
             // Append to otherObject
@@ -92,6 +91,12 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         
     }
     
+    // Function to edit profile
+    func editProfile() {
+        let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
+        self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+    }
+    
     
     
     override func awakeFromNib() {
@@ -122,6 +127,11 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         self.myProPic.isUserInteractionEnabled = true
         self.myProPic.addGestureRecognizer(proPicTap)
         
+        // (3) Edit Profile via fullName
+        let editTap = UITapGestureRecognizer(target: self, action: #selector(editProfile))
+        editTap.numberOfTapsRequired = 1
+        self.fullName.isUserInteractionEnabled = true
+        self.fullName.addGestureRecognizer(editTap)
         
         // (4) Handle KILabel taps
         // Handle @username tap

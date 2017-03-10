@@ -60,6 +60,7 @@ var myFollowers = [PFObject]()
 var myFollowing = [PFObject]()
 var myRequestedFollowers = [PFObject]()
 var myRequestedFollowing = [PFObject]()
+var blockedUsers = [PFObject]()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -321,6 +322,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(error?.localizedDescription as Any)
             }
         })
+        
+        
+        // TODO::
+        // Query BLOCKED
+        let blocked = PFQuery(className: "Blocked")
+        blocked.whereKey("byUser", equalTo: PFUser.current()!)
+        blocked.includeKey("toUser")
+        
     }
     
     // (3) Initialize first time app launch activities

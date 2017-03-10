@@ -237,10 +237,15 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         
         // (2) Set user's bio and information
         if PFUser.current()!.value(forKey: "userBiography") != nil {
-            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!["userBiography"] as! String)"
+            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            header.userBio.text! = "\(PFUser.current()!.value(forKey: "userBiography") as! String)"
         } else {
-            header.userBio.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n\(PFUser.current()!.value(forKey: "birthday") as! String)"
+            header.fullName.text! = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
         }
+        // Underline fullname
+        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+        let underlineAttributedString = NSAttributedString(string: "\(header.fullName.text!)", attributes: underlineAttribute)
+        header.fullName.attributedText = underlineAttributedString
         
         // (3) Set count for posts, followers, and following
         let posts = PFQuery(className: "Newsfeeds")
