@@ -135,7 +135,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -164,7 +164,6 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         fetchAssets()
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -174,6 +173,8 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
+        // Fetch Assets
+        fetchAssets()
     }
 
     override func didReceiveMemoryWarning() {
@@ -188,30 +189,24 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         // #warning Incomplete implementation, return the number of sections
         return 2
     }
-    
+
+    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let headerView = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "libraryHeader", for: indexPath) as! LibraryHeader
+        
+        if indexPath.section == 0 {
+            headerView.title.text = "   PHOTOS"
+        } else {
+            headerView.title.text = "   VIDEOS"
+        }
+        
+        headerView.title.textColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        return headerView
+    }
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 44.00)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = UICollectionReusableView()
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
-        label.textColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-        
-        if indexPath.section == 0 {
-            label.text = "   PHOTOS"
-            headerView.addSubview(label)
-        } else {
-            label.text = "   PHOTOS"
-            headerView.addSubview(label)
-        }
-        
-        return headerView
+        return CGSize(width: self.view.frame.size.width, height: 30)
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

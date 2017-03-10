@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import OneSignal
+
 import Parse
 import ParseUI
 import Bolts
@@ -42,25 +44,32 @@ class OnBoardFollowCell: UITableViewCell {
             follow["followerUsername"] = PFUser.current()!.username!
             follow["followingUsername"] = self.name.text!
             follow["isFollowing"] = true
-            follow.saveInBackground(block: {
-                (success: Bool, error: Error?) in
-                if success {
-                    // Change button's title and design
-                    self.followButton.setTitle("Following", for: .normal)
-                    self.followButton.setTitleColor(UIColor.white, for: .normal)
-                    self.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                    self.followButton.layer.cornerRadius = 22.00
-                    self.followButton.clipsToBounds = true
-                    
-                    // Re-enable buttons
-                    self.followButton.isUserInteractionEnabled = true
-                    self.followButton.isEnabled = true
-                } else {
-                    // Re-enable buttons
-                    self.followButton.isUserInteractionEnabled = true
-                    self.followButton.isEnabled = true
-                }
-            })
+            follow.saveInBackground()
+            
+            // Handle optional chaining for user's apnsId
+            if self.userObject!.value(forKey: "apnsId") != nil {
+                // MARK: - OneSignal
+                // Send push notificaiton
+                OneSignal.postNotification(
+                    ["contents":
+                        ["en": "\(PFUser.current()!.username!.uppercased()) started following you."],
+                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
+                     "ios_badgeType": "Increase",
+                     "ios_badgeCount": 1
+                    ]
+                )
+            }
+            
+            // Change button's title and design
+            self.followButton.setTitle("Following", for: .normal)
+            self.followButton.setTitleColor(UIColor.white, for: .normal)
+            self.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            self.followButton.layer.cornerRadius = 22.00
+            self.followButton.clipsToBounds = true
+            
+            // Re-enable buttons
+            self.followButton.isUserInteractionEnabled = true
+            self.followButton.isEnabled = true
         }
         // ============================================================================================================================
         // ======================== FOLLOWING =========================================================================================

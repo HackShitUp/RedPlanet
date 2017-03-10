@@ -126,6 +126,7 @@
 		7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9351DB75057001B7329 /* UIImage+Utility.m */; };
 		7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9371DB75057001B7329 /* UIView+Frame.m */; };
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
+		7E9952A71E722EC70056F45D /* LibraryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9952A61E722EC70056F45D /* LibraryHeader.swift */; };
 		7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */; };
 		7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */; };
 		7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */; };
@@ -190,7 +191,6 @@
 		7EECEE651E3C42F7003FA134 /* TimeMediaCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */; };
 		7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE661E3C7B6D003FA134 /* UserCell.swift */; };
 		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
-		7EEDE2F11E46E31A00B91045 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
@@ -396,6 +396,7 @@
 		7E98E9371DB75057001B7329 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		7E98E9391DB75057001B7329 /* _CLImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CLImageEditorViewController.h; sourceTree = "<group>"; };
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
+		7E9952A61E722EC70056F45D /* LibraryHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryHeader.swift; sourceTree = "<group>"; };
 		7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsHeader.swift; sourceTree = "<group>"; };
 		7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsCell.swift; sourceTree = "<group>"; };
@@ -470,7 +471,6 @@
 		7EECEE631E3C42F7003FA134 /* TimeMediaCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeMediaCell.xib; sourceTree = "<group>"; };
 		7EECEE661E3C7B6D003FA134 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
-		7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
@@ -1115,6 +1115,7 @@
 			children = (
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
 				7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */,
+				7E9952A61E722EC70056F45D /* LibraryHeader.swift */,
 				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
 			);
 			name = "Photos&Videos";
@@ -1224,7 +1225,6 @@
 		7EC5D1311DB2FE4F00437219 /* Redplanet */ = {
 			isa = PBXGroup;
 			children = (
-				7EEDE2F01E46E31A00B91045 /* GoogleService-Info.plist */,
 				7E6A12E21E4D524C00CF108B /* Agrume */,
 				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
@@ -1556,7 +1556,6 @@
 			files = (
 				7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */,
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
-				7EEDE2F11E46E31A00B91045 /* GoogleService-Info.plist in Resources */,
 				7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
 				7E35A3B41E4167610007EB99 /* ProPicCell.xib in Resources */,
@@ -1891,6 +1890,7 @@
 				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
+				7E9952A71E722EC70056F45D /* LibraryHeader.swift in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,
 				7EA39E421E6157A5000AAEBD /* AAPTransitionDirector.m in Sources */,

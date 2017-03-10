@@ -3492,7 +3492,7 @@
         <scene sceneID="sA8-Aa-G9o">
             <objects>
                 <collectionViewController id="GrF-aX-oeE" customClass="Explore" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="u6d-uY-o5J">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="u6d-uY-o5J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3574,6 +3574,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="jHB-iE-SFM"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGR-WB-qOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3876,7 +3877,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="pOW-tm-iP1">
                         <barButtonItem key="leftBarButtonItem" image="SLR Camera Filled" id="xbu-Oi-JdR">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="z57-bJ-9iv" id="4fa-by-5F2"/>
                             </connections>
@@ -4012,13 +4013,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="equ-XF-g2V">
                             <size key="itemSize" width="125" height="125"/>
-                            <size key="headerReferenceSize" width="375" height="44"/>
+                            <size key="headerReferenceSize" width="375" height="30"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="libraryCell" id="Fht-p0-Nis" customClass="LibraryCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="44" width="125" height="125"/>
+                                <rect key="frame" x="0.0" y="30" width="125" height="125"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
@@ -4044,9 +4045,26 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yCu-ue-m7C">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="libraryHeader" id="yCu-ue-m7C" customClass="LibraryHeader" customModule="Redplanet" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
                             <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rsb-LY-qyV">
+                                    <rect key="frame" x="8" y="5" width="359" height="21"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
+                                    <color key="textColor" red="0.50196081400000003" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="Rsb-LY-qyV" secondAttribute="trailing" constant="8" id="Hug-Te-61M"/>
+                                <constraint firstAttribute="bottom" secondItem="Rsb-LY-qyV" secondAttribute="bottom" constant="4" id="Tej-BX-8x6"/>
+                                <constraint firstItem="Rsb-LY-qyV" firstAttribute="top" secondItem="yCu-ue-m7C" secondAttribute="top" constant="5" id="gAr-pj-FZY"/>
+                                <constraint firstItem="Rsb-LY-qyV" firstAttribute="leading" secondItem="yCu-ue-m7C" secondAttribute="leading" constant="8" id="tK0-RC-fJP"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="title" destination="Rsb-LY-qyV" id="x7r-5j-bOw"/>
+                            </connections>
                         </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="ZXI-yA-aQy" id="lIB-cY-rvK"/>
@@ -4061,7 +4079,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="SLR Camera Filled" id="Z7T-PK-r49">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.83726554580000001" green="0.065964154829999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="camera:" destination="ZXI-yA-aQy" id="eH0-up-sd9"/>
                             </connections>
@@ -4071,7 +4089,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="997-8g-uuS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-564" y="-1980"/>
+            <point key="canvasLocation" x="-564.5" y="-1980.5"/>
         </scene>
         <!--New Chats-->
         <scene sceneID="vBd-e6-PuV">
@@ -4271,8 +4289,8 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ha0-l4-bqf" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Explore" image="Search-50" id="MUZ-Nz-NN5"/>
                     <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Sef-25-fEA">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Sef-25-fEA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

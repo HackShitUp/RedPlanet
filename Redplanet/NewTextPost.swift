@@ -170,7 +170,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
