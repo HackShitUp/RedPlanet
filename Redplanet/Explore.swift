@@ -122,10 +122,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         searchBar.frame.size.width = UIScreen.main.bounds.width - 75
         let searchItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = searchItem
-        
-        // Set navigationbar's backgroundColor
-        self.navigationController?.navigationBar.backgroundColor = UIColor.lightGray
-        
+
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }

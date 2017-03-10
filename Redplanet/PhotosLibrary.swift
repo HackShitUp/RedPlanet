@@ -135,7 +135,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
+                NSForegroundColorAttributeName: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -175,7 +175,6 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         collectionView!.collectionViewLayout = layout
         // Fetch Assets
         fetchAssets()
-        self.collectionView?.backgroundColor = UIColor.darkGray
     }
 
     override func didReceiveMemoryWarning() {

@@ -44,6 +44,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         
         // Set background for the image
         self.tableView!.backgroundView = UIImageView(image: UIImage(named: "SearchBackground"))
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
 
         // SearchbarDelegates
