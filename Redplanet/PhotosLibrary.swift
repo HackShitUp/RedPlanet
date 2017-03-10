@@ -133,7 +133,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -175,6 +175,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         collectionView!.collectionViewLayout = layout
         // Fetch Assets
         fetchAssets()
+        self.collectionView?.backgroundColor = UIColor.darkGray
     }
 
     override func didReceiveMemoryWarning() {

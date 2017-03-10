@@ -616,7 +616,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             if let bday = PFUser.current()!["birthday"] as? String {
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM-dd-yyyy"
-                print("The birthday: \(bday)")
                 userBirthday.date = dateFormatter.date(from: bday)!
             }
             // (2) Set username's title to navigation bar

@@ -1062,6 +1062,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		7E9952A81E7273700056F45D /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */,
+				7E9952A61E722EC70056F45D /* LibraryHeader.swift */,
+				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
+			);
+			name = Library;
+			sourceTree = "<group>";
+		};
 		7E9DA1891E14DA900001E8C0 /* NSBadge */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,9 +1124,7 @@
 			isa = PBXGroup;
 			children = (
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
-				7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */,
-				7E9952A61E722EC70056F45D /* LibraryHeader.swift */,
-				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
+				7E9952A81E7273700056F45D /* Library */,
 			);
 			name = "Photos&Videos";
 			sourceTree = "<group>";

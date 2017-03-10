@@ -3877,7 +3877,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="pOW-tm-iP1">
                         <barButtonItem key="leftBarButtonItem" image="SLR Camera Filled" id="xbu-Oi-JdR">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="z57-bJ-9iv" id="4fa-by-5F2"/>
                             </connections>
@@ -4079,7 +4079,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="SLR Camera Filled" id="Z7T-PK-r49">
-                            <color key="tintColor" red="0.83726554580000001" green="0.065964154829999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="camera:" destination="ZXI-yA-aQy" id="eH0-up-sd9"/>
                             </connections>
@@ -6452,7 +6452,7 @@ SOFTWARE.</string>
         <image name="Settings-48" width="24" height="24"/>
         <image name="ShareOP" width="256" height="256"/>
         <image name="Switch Camera-100" width="243" height="256"/>
-        <image name="Unchecked Circle-100" width="249" height="249"/>
+        <image name="Unchecked Circle-100" width="256" height="256"/>
         <image name="User-48" width="24" height="24"/>
         <image name="User-96" width="48" height="48"/>
         <image name="UserAction" width="25" height="25"/>
