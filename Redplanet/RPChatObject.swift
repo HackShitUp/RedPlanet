@@ -14,6 +14,9 @@ import Bolts
 var creationExists: Bool = false
 
 class RPChatObject: PFObject {
+    
+    var chatObject: PFObject?
+    
     var sender: PFUser?
     var senderUsername: String?
     var receiver: PFUser?

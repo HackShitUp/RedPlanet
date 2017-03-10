@@ -145,6 +145,8 @@
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
+		7EBDCB261E72251000E319A0 /* PhotosLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */; };
+		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
 		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
 		7EC05B061DB5E37C0039B357 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B051DB5E37C0039B357 /* Home.swift */; };
@@ -180,11 +182,6 @@
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
 		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
-		7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4361E07C0A5005C68C9 /* Library.swift */; };
-		7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */; };
-		7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */; };
-		7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4461E07C694005C68C9 /* LibVideos.swift */; };
-		7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -421,6 +418,8 @@
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
+		7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosLibrary.swift; sourceTree = "<group>"; };
+		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
 		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		7EC05B051DB5E37C0039B357 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -463,11 +462,6 @@
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
 		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
-		7EDDF4361E07C0A5005C68C9 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
-		7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotosCell.swift; sourceTree = "<group>"; };
-		7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideosCell.swift; sourceTree = "<group>"; };
-		7EDDF4461E07C694005C68C9 /* LibVideos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibVideos.swift; sourceTree = "<group>"; };
-		7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibPhotos.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -637,24 +631,6 @@
 				7E989A251DE4F17E000215A1 /* NewPassword.swift */,
 			);
 			name = Password;
-			sourceTree = "<group>";
-		};
-		7E4B59BE1E39EBC0003A3F3C /* Photos */ = {
-			isa = PBXGroup;
-			children = (
-				7EDDF4481E07C69A005C68C9 /* LibPhotos.swift */,
-				7EDDF4421E07C681005C68C9 /* LibPhotosCell.swift */,
-			);
-			name = Photos;
-			sourceTree = "<group>";
-		};
-		7E4B59BF1E39EBC4003A3F3C /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				7EDDF4461E07C694005C68C9 /* LibVideos.swift */,
-				7EDDF4441E07C689005C68C9 /* LibVideosCell.swift */,
-			);
-			name = Videos;
 			sourceTree = "<group>";
 		};
 		7E4CFF951DB4393A0087454E /* POSTS */ = {
@@ -1138,9 +1114,8 @@
 			isa = PBXGroup;
 			children = (
 				7E4065F71DC56589001E0C9C /* ShareMedia.swift */,
-				7EDDF4361E07C0A5005C68C9 /* Library.swift */,
-				7E4B59BE1E39EBC0003A3F3C /* Photos */,
-				7E4B59BF1E39EBC4003A3F3C /* Videos */,
+				7EBDCB251E72251000E319A0 /* PhotosLibrary.swift */,
+				7EBDCB271E72273A00E319A0 /* LibraryCell.swift */,
 			);
 			name = "Photos&Videos";
 			sourceTree = "<group>";
@@ -1761,7 +1736,6 @@
 				7E6A12E91E4D524C00CF108B /* AgrumeCell.swift in Sources */,
 				7E98E95E1DB75057001B7329 /* CLPickerView.m in Sources */,
 				7E98E95C1DB75057001B7329 /* CLFontPickerView.m in Sources */,
-				7EDDF4451E07C689005C68C9 /* LibVideosCell.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* ExploreHeader.swift in Sources */,
 				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
@@ -1773,6 +1747,7 @@
 				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
+				7EBDCB261E72251000E319A0 /* PhotosLibrary.swift in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
@@ -1788,12 +1763,10 @@
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
 				7E7723111E5BCDF200066431 /* Licenses.swift in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
-				7EDDF4491E07C69A005C68C9 /* LibPhotos.swift in Sources */,
 				7E873D7D1E5BEF5F004E5FCB /* NewsCell.swift in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
-				7EDDF4371E07C0A5005C68C9 /* Library.swift in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
 				7E35A3AE1E4151110007EB99 /* TimeVideoCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
@@ -1832,7 +1805,6 @@
 				7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */,
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
-				7EDDF4471E07C694005C68C9 /* LibVideos.swift in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
@@ -1862,7 +1834,6 @@
 				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,
-				7EDDF4431E07C681005C68C9 /* LibPhotosCell.swift in Sources */,
 				7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */,
 				7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */,
 				7E41C7A31E3FFDC40025129B /* CurrentUser.swift in Sources */,
@@ -1916,6 +1887,7 @@
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
+				7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */,
 				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
