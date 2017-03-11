@@ -85,6 +85,8 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                         SVProgressHUD.dismiss()
                     }
                 }
+                // Reload data
+                self.tableView?.reloadData()
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - SVProgressHUD

@@ -36,8 +36,6 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     func refresh() {
         // Query Explore
         queryExplore()
-        // End refresher
-        self.refresher.endRefreshing()
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -88,9 +86,14 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
-        // Query Public accounts
-        // $$$ MONETIZE ON THIS
+        // Fetch public accounts
         queryExplore()
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        self.collectionView!.addSubview(refresher)
         
         // Configure navigationBar and tabBar
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
@@ -98,8 +101,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.delegate = self
         
-        // Set collectionView's backgroundColor
-        self.collectionView!.backgroundColor = UIColor.white
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
@@ -107,13 +110,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        collectionView!.collectionViewLayout = layout
-        
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        self.collectionView!.addSubview(refresher)
+        self.collectionView!.collectionViewLayout = layout
+        self.collectionView!.backgroundColor = UIColor.white
         
         // SearchbarDelegates
         searchBar.delegate = self
@@ -122,12 +120,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         searchBar.frame.size.width = UIScreen.main.bounds.width - 75
         let searchItem = UIBarButtonItem(customView: searchBar)
         self.navigationItem.rightBarButtonItem = searchItem
-
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
-    
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -147,10 +140,20 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Refresh
+        self.refresh()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     
@@ -260,26 +263,15 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     }
     
     
-    
-    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
-        }
-    }
-    
     func loadMore() {
         // If posts on server are > than shown
         if page <= self.exploreObjects.count {
-            
             // Increase page size to load more posts
             page = page + 50
-            
             // Query friends
             queryExplore()
         }
     }
-    
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -291,5 +283,4 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
             queryExplore()
         }
     }
-
 }

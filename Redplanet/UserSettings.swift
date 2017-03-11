@@ -169,7 +169,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             // ACCOUNT
-            return 6
+            return 7
         } else if section == 1 {
             // MEMORY
             return 1
@@ -244,6 +244,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             } else if indexPath.row == 4 {
                 // Privacy
             } else if indexPath.row == 5 {
+                // Blocked Users
+                let blockedVC = self.storyboard?.instantiateViewController(withIdentifier: "blockedVC") as! BlockedUsers
+                self.navigationController?.pushViewController(blockedVC, animated: true)
+            } else if indexPath.row == 6 {
                 // LOGOUT
                 // Remove logged in user from app memory
                 PFUser.logOutInBackground(block: {
@@ -252,7 +256,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                         // Remove logged in user from App Memory
                         UserDefaults.standard.removeObject(forKey: "username")
                         UserDefaults.standard.synchronize()
-                        
                         DispatchQueue.main.async(execute: {
                             // Logout
                             let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
@@ -381,12 +384,14 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 self.navigationController?.pushViewController(licenseVC, animated: true)
             } else if indexPath.row == 2 {
                 // TOS
-                let tosVC = self.storyboard?.instantiateViewController(withIdentifier: "tosVC") as! TermsOfService
-                self.navigationController?.pushViewController(tosVC, animated: true)
+                // MARK: - SwiftWebVC
+                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/terms-of-service/", theme: .lightBlack)
+                self.present(webVC, animated: true, completion: nil)
             } else {
                 // PRIVACY POLICY
-                let privacyVC = self.storyboard?.instantiateViewController(withIdentifier: "privacyPolicyVC") as! PrivacyPolicy
-                self.navigationController?.pushViewController(privacyVC, animated: true)
+                // MARK: - SwiftWebVC
+                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/privacy-policy/", theme: .lightBlack)
+                self.present(webVC, animated: true, completion: nil)
             }
             
         } // end indexPath

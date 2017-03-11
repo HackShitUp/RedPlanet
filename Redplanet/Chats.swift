@@ -28,7 +28,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var refresher: UIRefreshControl!
 
     // Page size
-    var page: Int = 100
+    var page: Int = 100000
     
     // Search
     var searchNames = [String]()
@@ -44,12 +44,102 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
 
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func editAction(_ sender: Any) {
-        if self.tableView?.isEditing == true {
-            self.tableView?.isEditing = false
-        } else {
-            self.tableView?.isEditing = true
+        
+        // MARK: - SimpleAlert
+        // Present alert
+        let alert = AlertController(title: "Delete All Chats?",
+            message: "They can't be restored once it's forever deleted.",
+            style: .alert)
+        
+        // Design content view
+        alert.configContentView = { view in
+            if let view = view as? AlertContentView {
+                view.backgroundColor = UIColor.white
+                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
+                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
+                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
+                view.titleLabel.attributedText = attributedText
+                view.titleLabel.textColor = UIColor.black
+                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
+                view.messageLabel.textColor = UIColor.black
+                view.textBackgroundView.layer.cornerRadius = 3.00
+                view.textBackgroundView.clipsToBounds = true
+            }
         }
+        
+        // Design corner radius
+        alert.configContainerCornerRadius = {
+            return 14.00
+        }
+        
+        let delete = AlertAction(title: "Delete",
+                                 style: .destructive,
+                                 handler: { (AlertAction) in
+                                    
+                                    // Show Progress
+                                    SVProgressHUD.show()
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                                    
+                                    // Delete chats
+                                    let sender = PFQuery(className: "Chats")
+                                    sender.whereKey("sender", equalTo: PFUser.current()!)
+                                    sender.whereKey("receiver", notEqualTo: PFUser.current()!)
+                                    
+                                    let receiver = PFQuery(className: "Chats")
+                                    receiver.whereKey("receiver", equalTo: PFUser.current()!)
+                                    receiver.whereKey("sender", notEqualTo: PFUser.current()!)
+                                    
+                                    let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+                                    chats.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            
+                                            // Dismiss progress
+                                            SVProgressHUD.dismiss()
+                                            
+                                            // Delete all objects
+                                            PFObject.deleteAll(inBackground: objects, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    print("Deleted all objects: \(objects)")
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                }
+                                            })
+                                            
+                                            // Reload data
+                                            self.queryChats()
+                                            
+                                        } else {
+                                            if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.dismiss()
+                                            }
+                                            
+                                            // Reload data
+                                            self.queryChats()
+                                        }
+                                    })
+        })
+        
+        let cancel = AlertAction(title: "Cancel",
+                                 style: .cancel,
+                                 handler: nil)
+        
+        // Configure options
+        alert.addAction(cancel)
+        alert.addAction(delete)
+        alert.view.tintColor = UIColor.black
+        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        cancel.button.setTitleColor(UIColor.black, for: .normal)
+        delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        self.present(alert, animated: true, completion: nil)
+
     }
+    
     @IBAction func newChat(_ sender: AnyObject) {
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
@@ -102,16 +192,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     }
                 }// end for loop
 
-
-                
                 // Initialize DZNEmptyDataset
                 if self.chatObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.tableFooterView = UIView()
                 }
-                
-                
                 
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -192,17 +278,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         })
     }
     
-    
-    // Function to toggle navigationbar
-    func toggleTitle() {
-        if showScore == true {
-            self.showScore = false
-            self.configureView()
-        } else {
-            self.showScore = true
-            self.showChats()
-        }
-    }
 
     
     // Stylize title
@@ -225,27 +300,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    // Show chats
-    func showChats() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            let score: Int = UserDefaults.standard.integer(forKey: "ChatScore")
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "\(score)"
-        }
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
     
     // MARK: DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
@@ -420,12 +474,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         hold.minimumPressDuration = 0.40
         self.tableView.isUserInteractionEnabled = true
         self.tableView.addGestureRecognizer(hold)
-        
-        // Tap navigationbar
-        let navTap = UITapGestureRecognizer(target: self, action: #selector(toggleTitle))
-        navTap.numberOfTapsRequired = 1
-        self.navigationController?.navigationBar.isUserInteractionEnabled = true
-        self.navigationController?.navigationBar.addGestureRecognizer(navTap)
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -637,8 +685,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         } else {
                             cell.status.image = UIImage(named: "RPSpeechBubbleFilled")
                         }
-                        
-                        
                     }
                     
                     
@@ -681,74 +727,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         return cell
     }
-    
- 
-    
-    // Mark: UITableviewDelegate methods
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
 
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        
-        // Swipe to Delete Messages
-        let delete = UITableViewRowAction(style: .normal, title: "Delete") {
-            (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            
-            // Show Progress
-            SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            
-            // Delete chats
-            let sender = PFQuery(className: "Chats")
-            sender.whereKey("sender", equalTo: PFUser.current()!)
-            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-            
-            let receiver = PFQuery(className: "Chats")
-            receiver.whereKey("receiver", equalTo: PFUser.current()!)
-            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
-            
-            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-            chats.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    
-                    // Dismiss progress
-                    SVProgressHUD.dismiss()
-                    
-                    // Delete all objects
-                    PFObject.deleteAll(inBackground: objects, block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Deleted all objects: \(objects)")
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
-                    
-                    // Query Chats again
-                    self.queryChats()
-                    
-                } else {
-                    if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
-                    }
-                    
-                    // Query Chats again
-                    self.queryChats()
-                }
-            })
-        }
-        
-        // Set background color
-        delete.backgroundColor = UIColor(red:1.00, green:0.19, blue:0.19, alpha:1.0)
-        
-        return [delete]
-    }
-    
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         // If user is searching...
@@ -807,7 +786,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         if page <= chatObjects.count {
             
             // Increase page size to load more posts
-            page = page + 100
+            page = page + 100000
             
             // Query friends
             self.queryChats()

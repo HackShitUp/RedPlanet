@@ -15,6 +15,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import SVProgressHUD
 import SDWebImage
 import SimpleAlert
 
@@ -84,6 +85,119 @@ class OtherUser: UITableViewController {
         self.navigationController?.pushViewController(newSpaceVC, animated: true)
     }
     
+    // Function to Report User
+    func reportUser() {
+        let alert = UIAlertController(title: "Report",
+                                      message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
+            preferredStyle: .alert)
+        
+        let report = UIAlertAction(title: "Report", style: .destructive) {
+            [unowned self, alert] (action: UIAlertAction!) in
+            
+            let answer = alert.textFields![0]
+            
+            // REPORTED
+            let report = PFObject(className: "Reported")
+            report["byUsername"] = PFUser.current()!.username!
+            report["byUser"] = PFUser.current()!
+            report["toUsername"] = otherName.last!
+            report["toUser"] = otherObject.last!
+            report["forObjectId"] = otherObject.last!.objectId!
+            report["reason"] = answer.text!
+            report.saveInBackground(block: {
+                (success: Bool, error: Error?) in
+                if success {
+                    print("Successfully saved report: \(report)")
+                    
+                    let alert = UIAlertController(title: "Successfully Reported",
+                                                  message: "\(otherName.last!.uppercased())",
+                        preferredStyle: .alert)
+                    
+                    let ok = UIAlertAction(title: "ok",
+                                           style: .default,
+                                           handler: nil)
+                    
+                    alert.addAction(ok)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
+        }
+        
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .cancel,
+                                   handler: nil)
+        
+        
+        alert.addTextField(configurationHandler: nil)
+        alert.addAction(report)
+        alert.addAction(cancel)
+        alert.view.tintColor = UIColor.black
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // Function to Block user
+    func blockUser() {
+        // (1) Block
+        let block = PFObject(className: "Blocked")
+        block["byUser"] = PFUser.current()!
+        block["byUsername"] = PFUser.current()!.username!
+        block["toUser"] = otherObject.last!
+        block["toUsername"] = otherName.last!.uppercased()
+        block.saveInBackground()
+        
+        // (2) Delete Follower/Following
+        let follower = PFQuery(className: "FollowMe")
+        follower.whereKey("follower", equalTo: PFUser.current()!)
+        follower.whereKey("following", equalTo: otherObject.last!)
+        let following = PFQuery(className: "FollowMe")
+        following.whereKey("follower", equalTo: otherObject.last!)
+        following.whereKey("following", equalTo: PFUser.current()!)
+        let follow = PFQuery.orQuery(withSubqueries: [follower, following])
+        follow.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                PFObject.deleteAll(inBackground: objects!, block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.dismiss()
+                        
+                        // Dismiss
+                        let alert = UIAlertController(title: "Successfully Blocked",
+                                                      message: "\(otherName.last!.uppercased()). You can unblock \(otherObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
+                            preferredStyle: .alert)
+                        
+                        let ok = UIAlertAction(title: "ok",
+                                               style: .default,
+                                               handler: { (alertAction: UIAlertAction!) in
+                                                _ = self.navigationController?.popViewController(animated: true)
+                        })
+                        
+                        alert.view.tintColor = UIColor.black
+                        alert.addAction(ok)
+                        self.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.showError(withStatus: "Error")
+                    }
+                })
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - SVProgressHUD
+                SVProgressHUD.showError(withStatus: "Error")
+            }
+        })
+    }
+    
     
     // Function to Report/Block:
     func reportOrBlock() {
@@ -114,58 +228,8 @@ class OtherUser: UITableViewController {
         let report = AlertAction(title: "Report",
                                         style: .destructive,
                                         handler: { (AlertAction) in
-                                            
-                                            let alert = UIAlertController(title: "Report",
-                                                                          message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
-                                                preferredStyle: .alert)
-                                            
-                                            let report = UIAlertAction(title: "Report", style: .destructive) {
-                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                
-                                                let answer = alert.textFields![0]
-
-                                                // REPORTED
-                                                let report = PFObject(className: "Reported")
-                                                report["byUsername"] = PFUser.current()!.username!
-                                                report["byUser"] = PFUser.current()!
-                                                report["toUsername"] = otherName.last!
-                                                report["toUser"] = otherObject.last!
-                                                report["forObjectId"] = otherObject.last!.objectId!
-                                                report["reason"] = answer.text!
-                                                report.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully saved report: \(report)")
-                                                        // Dismiss
-                                                        let alert = UIAlertController(title: "Successfully Reported",
-                                                                                      message: "\(otherName.last!.uppercased())",
-                                                            preferredStyle: .alert)
-                                                        
-                                                        let ok = UIAlertAction(title: "ok",
-                                                                               style: .default,
-                                                                               handler: nil)
-                                                        
-                                                        alert.addAction(ok)
-                                                        alert.view.tintColor = UIColor.black
-                                                        self.present(alert, animated: true, completion: nil)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
-                                            
-                                            
-                                            let cancel = UIAlertAction(title: "Cancel",
-                                                                       style: .cancel,
-                                                                       handler: nil)
-                                            
-                                            
-                                            alert.addTextField(configurationHandler: nil)
-                                            alert.addAction(report)
-                                            alert.addAction(cancel)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
+                                            // Report User
+                                            self.reportUser()
         })
 
         
@@ -173,41 +237,11 @@ class OtherUser: UITableViewController {
         let block = AlertAction(title: "Block",
                                         style: .destructive,
                                         handler: { (AlertAction) in
-                                        
-                                            // BLOCKED
-                                            let block = PFObject(className: "Blocked")
-                                            block["byUser"] = PFUser.current()!
-                                            block["byUsername"] = PFUser.current()!.username!
-                                            block["toUser"] = otherObject.last!
-                                            block["toUsername"] = otherName.last!.uppercased()
-                                            block.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully blocked: \(report)")
-                                                    
-                                                    // Dismiss
-                                                    let alert = UIAlertController(title: "Successfully Blocked",
-                                                                                  message: "\(otherName.last!.uppercased())",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: { (alertAction: UIAlertAction!) in
-                                                                            // Reload data
-                                                                            _ = self.appDelegate.queryRelationships()
-                                                                            // Reload data
-                                                                            self.refresh()
-                                                    })
-                                                    
-                                                    alert.view.tintColor = UIColor.black
-                                                    alert.addAction(ok)
-                                                    self.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.show()
+                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0))
+                                            // Block User
+                                            self.blockUser()
         })
         
         // (3) Cancel
@@ -283,92 +317,19 @@ class OtherUser: UITableViewController {
                                             let report = UIAlertAction(title: "Report",
                                                                        style: .default,
                                                                        handler: {(alertAction: UIAlertAction!) in
-                                                                        let alert = UIAlertController(title: "Report",
-                                                                                                      message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
-                                                                            preferredStyle: .alert)
-                                                                        
-                                                                        let report = UIAlertAction(title: "Report", style: .destructive) {
-                                                                            [unowned self, alert] (action: UIAlertAction!) in
-                                                                            
-                                                                            let answer = alert.textFields![0]
-                                                                            
-                                                                            // REPORTED
-                                                                            let report = PFObject(className: "Reported")
-                                                                            report["byUsername"] = PFUser.current()!.username!
-                                                                            report["byUser"] = PFUser.current()!
-                                                                            report["toUsername"] = otherName.last!
-                                                                            report["toUser"] = otherObject.last!
-                                                                            report["forObjectId"] = otherObject.last!.objectId!
-                                                                            report["reason"] = answer.text!
-                                                                            report.saveInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully saved report: \(report)")
-                                                                                    
-                                                                                    // Dismiss
-                                                                                    let alert = UIAlertController(title: "Successfully Reported",
-                                                                                                                  message: "\(otherName.last!.uppercased())",
-                                                                                        preferredStyle: .alert)
-                                                                                    
-                                                                                    let ok = UIAlertAction(title: "ok",
-                                                                                                           style: .default,
-                                                                                                           handler: nil)
-                                                                                    
-                                                                                    alert.addAction(ok)
-                                                                                    alert.view.tintColor = UIColor.black
-                                                                                    self.present(alert, animated: true, completion: nil)
-                                                                                    
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                        
-                                                                        
-                                                                        let cancel = UIAlertAction(title: "Cancel",
-                                                                                                   style: .cancel,
-                                                                                                   handler: nil)
-                                                                        
-                                                                        
-                                                                        alert.addTextField(configurationHandler: nil)
-                                                                        alert.addAction(report)
-                                                                        alert.addAction(cancel)
-                                                                        alert.view.tintColor = UIColor.black
-                                                                        self.present(alert, animated: true, completion: nil)
+                                                                        // Report User
+                                                                        self.reportUser()
                                                                         
                                             })
                                             
                                             let block = UIAlertAction(title: "Block",
                                                                       style: .default,
                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        // BLOCKED
-                                                                        let block = PFObject(className: "Blocked")
-                                                                        block["byUsername"] = PFUser.current()!.username!
-                                                                        block["byUser"] = PFUser.current()!
-                                                                        block["toUsername"] = otherName.last!
-                                                                        block["toUser"] = otherObject.last!
-                                                                        block.saveInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully saved report: \(report)")
-                                                                                
-                                                                                // Dismiss
-                                                                                let alert = UIAlertController(title: "Successfully Blocked",
-                                                                                                              message: "\(otherName.last!.uppercased())",
-                                                                                    preferredStyle: .alert)
-                                                                                
-                                                                                let ok = UIAlertAction(title: "ok",
-                                                                                                       style: .default,
-                                                                                                       handler: nil)
-                                                                                
-                                                                                alert.addAction(ok)
-                                                                                alert.view.tintColor = UIColor.black
-                                                                                self.present(alert, animated: true, completion: nil)
-                                                                                
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
+                                                                        // MARK: - SVProgressHUD
+                                                                        SVProgressHUD.show()
+                                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0))
+                                                                        // Block User
+                                                                        self.blockUser()
                                             })
                                             
                                             
@@ -568,8 +529,13 @@ class OtherUser: UITableViewController {
         // Stylize and set title
         configureView()
         
-        // Query content
-        queryContent()
+        _ = appDelegate.queryRelationships()
+        if blockedUsers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+            _ = self.navigationController?.popViewController(animated: true)
+        } else {
+            // Query content
+            queryContent()
+        }
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white

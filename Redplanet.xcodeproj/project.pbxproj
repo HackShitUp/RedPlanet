@@ -140,6 +140,7 @@
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
 		7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */; };
+		7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA4E4D41E738060000163AD /* BlockedUsers.swift */; };
 		7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D371DD6B38400B3471F /* SharedPostCell.swift */; };
 		7EA87D3A1DD6B38F00B3471F /* SharedPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA87D391DD6B38F00B3471F /* SharedPost.swift */; };
 		7EA913221E25CD510046F940 /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA913211E25CD510046F940 /* MomentVideo.swift */; };
@@ -413,6 +414,7 @@
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
 		7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardFollowCell.swift; sourceTree = "<group>"; };
+		7EA4E4D41E738060000163AD /* BlockedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsers.swift; sourceTree = "<group>"; };
 		7EA87D371DD6B38400B3471F /* SharedPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPostCell.swift; sourceTree = "<group>"; };
 		7EA87D391DD6B38F00B3471F /* SharedPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedPost.swift; sourceTree = "<group>"; };
 		7EA913211E25CD510046F940 /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
@@ -656,6 +658,7 @@
 			isa = PBXGroup;
 			children = (
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
+				7EA4E4D41E738060000163AD /* BlockedUsers.swift */,
 				7E7723101E5BCDF200066431 /* Licenses.swift */,
 				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
 				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
@@ -1870,6 +1873,7 @@
 				7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */,
 				7E98E9411DB75057001B7329 /* CLClippingTool.m in Sources */,
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,
+				7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */,
 				7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */,
 				7E98E95A1DB75057001B7329 /* CLSplashTool.m in Sources */,
 				7E98E93E1DB75057001B7329 /* CLImageToolInfo.m in Sources */,
