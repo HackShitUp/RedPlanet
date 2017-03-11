@@ -59,15 +59,11 @@
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
-		7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */; };
-		7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */; };
 		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E7723111E5BCDF200066431 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7723101E5BCDF200066431 /* Licenses.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
-		7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C31DD5951700DEC27B /* TermsOfService.swift */; };
-		7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38C51DD595E800DEC27B /* TOSCell.swift */; };
 		7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E92DC1E3D08C100E3C8EA /* Following.swift */; };
 		7E873D7B1E5BEF42004E5FCB /* NewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7A1E5BEF42004E5FCB /* NewsController.swift */; };
 		7E873D7D1E5BEF5F004E5FCB /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */; };
@@ -286,13 +282,9 @@
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
-		7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyCell.swift; sourceTree = "<group>"; };
-		7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
 		7E7723101E5BCDF200066431 /* Licenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
-		7E7E38C31DD5951700DEC27B /* TermsOfService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfService.swift; sourceTree = "<group>"; };
-		7E7E38C51DD595E800DEC27B /* TOSCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TOSCell.swift; sourceTree = "<group>"; };
 		7E7E92DC1E3D08C100E3C8EA /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
 		7E873D7A1E5BEF42004E5FCB /* NewsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsController.swift; sourceTree = "<group>"; };
 		7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
@@ -660,8 +652,6 @@
 				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7EA4E4D41E738060000163AD /* BlockedUsers.swift */,
 				7E7723101E5BCDF200066431 /* Licenses.swift */,
-				7E7E38C71DD595ED00DEC27B /* TermsOfService */,
-				7E70E0A21DD9934100A35C87 /* PrivacyPolicy */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -725,15 +715,6 @@
 			name = NewChats;
 			sourceTree = "<group>";
 		};
-		7E70E0A21DD9934100A35C87 /* PrivacyPolicy */ = {
-			isa = PBXGroup;
-			children = (
-				7E70E0A01DD9933B00A35C87 /* PrivacyPolicy.swift */,
-				7E70E09E1DD9932E00A35C87 /* PrivacyPolicyCell.swift */,
-			);
-			name = PrivacyPolicy;
-			sourceTree = "<group>";
-		};
 		7E7E38BD1DD533CF00DEC27B /* CONTACTS */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,15 +723,6 @@
 				7E7E38B91DD533C100DEC27B /* ContactsCell.swift */,
 			);
 			name = CONTACTS;
-			sourceTree = "<group>";
-		};
-		7E7E38C71DD595ED00DEC27B /* TermsOfService */ = {
-			isa = PBXGroup;
-			children = (
-				7E7E38C31DD5951700DEC27B /* TermsOfService.swift */,
-				7E7E38C51DD595E800DEC27B /* TOSCell.swift */,
-			);
-			name = TermsOfService;
 			sourceTree = "<group>";
 		};
 		7E7E92DF1E3DAE4A00E3C8EA /* TextPost */ = {
@@ -1270,7 +1242,6 @@
 				7E7E38BD1DD533CF00DEC27B /* CONTACTS */,
 				7EC5D1991DB3541000437219 /* CHATS */,
 				7EC5D19F1DB3566D00437219 /* CURRENTUSER */,
-				7E5A98051DDD2CFA006DA985 /* Settings */,
 			);
 			path = Redplanet;
 			sourceTree = "<group>";
@@ -1335,6 +1306,7 @@
 				7EC05B181DB5FABF0039B357 /* CurrentUser */,
 				7E3E4FBF1DC2E7F800A7B5FC /* Profile */,
 				7E46EDD61DE4F4400034E434 /* Password */,
+				7E5A98051DDD2CFA006DA985 /* Settings */,
 			);
 			name = CURRENTUSER;
 			sourceTree = "<group>";
@@ -1760,7 +1732,6 @@
 				7EBDCB261E72251000E319A0 /* PhotosLibrary.swift in Sources */,
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
-				7E7E38C61DD595E800DEC27B /* TOSCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
@@ -1787,13 +1758,11 @@
 				7EA87D381DD6B38400B3471F /* SharedPostCell.swift in Sources */,
 				7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
-				7E70E09F1DD9932E00A35C87 /* PrivacyPolicyCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7EA913221E25CD510046F940 /* MomentVideo.swift in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
-				7E70E0A11DD9933B00A35C87 /* PrivacyPolicy.swift in Sources */,
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
@@ -1847,7 +1816,6 @@
 				7EECEE641E3C42F7003FA134 /* TimeMediaCell.swift in Sources */,
 				7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */,
 				7E41C7A31E3FFDC40025129B /* CurrentUser.swift in Sources */,
-				7E7E38C41DD5951700DEC27B /* TermsOfService.swift in Sources */,
 				7E98E95D1DB75057001B7329 /* CLPickerDrum.m in Sources */,
 				7E98E9451DB75057001B7329 /* CLHighlightShadowEffect.m in Sources */,
 				7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */,

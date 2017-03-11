@@ -239,7 +239,7 @@ class OtherUser: UITableViewController {
                                         handler: { (AlertAction) in
                                             // MARK: - SVProgressHUD
                                             SVProgressHUD.show()
-                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0))
+                                            SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
                                             // Block User
                                             self.blockUser()
         })
@@ -327,7 +327,7 @@ class OtherUser: UITableViewController {
                                                                       handler: {(alertAction: UIAlertAction!) in
                                                                         // MARK: - SVProgressHUD
                                                                         SVProgressHUD.show()
-                                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0))
+                                                                        SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
                                                                         // Block User
                                                                         self.blockUser()
                                             })

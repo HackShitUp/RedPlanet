@@ -320,7 +320,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // ====================================================================
         // MORE ===============================================================
         // ====================================================================
-           
             if indexPath.row == 0 {
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
@@ -371,7 +370,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             
         
         } else {
-            
+        // ====================================================================
+        // ABOUT ==============================================================
+        // ====================================================================
             if indexPath.row == 0 {
                 // ABOUT US
                 // MARK: - SwiftWebVC
