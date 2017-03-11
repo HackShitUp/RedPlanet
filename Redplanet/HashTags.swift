@@ -30,6 +30,9 @@ let hashtagNotification = Notification.Name("hashTag")
 
 class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UINavigationControllerDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Array to hold public users
     var okUsers = [PFObject]()
     
@@ -61,6 +64,9 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     
     // Function to fetch hashtags
     func fetchHashtags() {
+        // Fetch users
+        _ = appDelegate.queryRelationships()
+        
         // Check which users are public
         let publicUsers = PFUser.query()!
         publicUsers.whereKey("private", equalTo: false)
@@ -71,7 +77,9 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 self.okUsers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.okUsers.append(object)
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId!}) {
+                        self.okUsers.append(object)
+                    }
                 }
                 
                 // Fetch in News Feeds
@@ -91,9 +99,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                             // Ephemeral content
                             let components : NSCalendar.Unit = .hour
                             let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                            if self.contentTypes.contains(object.value(forKey: "contentType") as! String) {
-//                                self.hashtagObjects.append(object)
-//                            }
                             if difference.hour! < 24 {
                                 self.hashtagObjects.append(object)
                             } else {

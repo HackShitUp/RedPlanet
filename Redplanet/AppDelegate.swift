@@ -9,7 +9,6 @@
 
 
 /*
- 
                                                             How does it feel?
  
                                                             How does it feel?
@@ -260,10 +259,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    // (2) Query Relationships --- Checks all of the current user's friends, followers, and followings
+    // (2) Query Relationships
+    // --- Checks all of the current user's friends, followers, and followings, and blocked users
     func queryRelationships() {
 
-        // Query Following && Users you've requested to Follow
+        // (1) Query Following
+        // && Users you've requested to Follow
         let following = PFQuery(className: "FollowMe")
         following.includeKey("following")
         following.whereKey("follower", equalTo: PFUser.current()!)
@@ -291,7 +292,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        // Query Followers && Users who've requested to be FRIENDS with YOU
+        // (2) Query Followers 
+        // && Users who've requested to be FRIENDS with YOU
         let followers = PFQuery(className: "FollowMe")
         followers.includeKey("follower")
         followers.whereKey("following", equalTo: PFUser.current()!)
@@ -309,7 +311,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     if object.value(forKey: "isFollowing") as! Bool == true {
                         myFollowers.append(object.object(forKey: "follower") as! PFUser)
                     } else {
-                        // Append accounts requested to follow you
+                    // Append accounts requested to follow you
                         myRequestedFollowers.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
@@ -319,23 +321,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
-        // Query BLOCKED
-        let blocked = PFQuery(className: "Blocked")
-        blocked.whereKey("byUser", equalTo: PFUser.current()!)
-        blocked.includeKey("toUser")
-        blocked.order(byDescending: "createdAt")
-        blocked.findObjectsInBackground {
+        // (3) Query BLOCKED
+        let blockedBy = PFQuery(className: "Blocked")
+        blockedBy.whereKey("byUser", equalTo: PFUser.current()!)
+        blockedBy.whereKey("toUser", notEqualTo: PFUser.current()!)
+        let blockedTo = PFQuery(className: "Blocked")
+        blockedTo.whereKey("toUser", equalTo: PFUser.current()!)
+        blockedTo.whereKey("byUser", notEqualTo: PFUser.current()!)
+        let block = PFQuery.orQuery(withSubqueries: [blockedBy, blockedTo])
+        block.includeKeys(["byUser", "toUser"])
+        block.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // Clear array
                 blockedUsers.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    blockedUsers.append(object.object(forKey: "toUser") as! PFUser)
+                    // Append people you've blocked
+                    if (object.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                        blockedUsers.append(object.object(forKey: "toUser") as! PFUser)
+                    } else if (object.object(forKey: "toUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    // Append people who've blocked you
+                        blockedUsers.append(object.object(forKey: "byUser") as! PFUser)
+                    }
                 }
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
-    }
+    }// end QueryRelationships()
 }
-

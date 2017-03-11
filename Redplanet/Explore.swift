@@ -19,6 +19,9 @@ import SwipeNavigationController
 
 class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Variable to hold objects to explore
     var exploreObjects = [PFObject]()
     
@@ -43,6 +46,10 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     // Fetch Public Users
     func queryExplore() {
+        
+        // Fetch blocked users
+        _ = appDelegate.queryRelationships()
+        
         let user = PFUser.query()!
         user.whereKey("private", equalTo: false)
         user.limit = self.page
@@ -58,7 +65,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                 self.exploreObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.exploreObjects.append(object)
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) {
+                        self.exploreObjects.append(object)
+                    }
                 }
                 
             } else {
@@ -130,6 +139,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         // Resign frist responder
         self.searchBar.resignFirstResponder()
         
+        // Refresh
+        refresh()
+        
         // Configure navigationBar, tabBar, and statusBar
         self.extendedLayoutIncludesOpaqueBars = true
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
@@ -144,7 +156,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // Refresh
-        self.refresh()
+        refresh()
     }
 
     override func didReceiveMemoryWarning() {

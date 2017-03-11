@@ -38,7 +38,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -116,11 +116,12 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // Add view
         let versionView = UIView()
         let title = UILabel()
-        title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
+        title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 60)
         title.font = UIFont(name: "AvenirNext-Medium", size: 12)
-        title.textColor = UIColor.black
+        title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor.white
-        title.text = "Version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)"
+        title.numberOfLines = 2
+        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade in NY."
         title.textAlignment = .center
         versionView.addSubview(title)
         self.tableView.tableFooterView = versionView
@@ -187,14 +188,13 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
         title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
-        title.textColor = UIColor.darkGray
+        title.textColor = UIColor.black
         title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
         view.addSubview(title)
         return view
     }
-
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
@@ -202,15 +202,15 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // ACCOUNT ============================================================
         // ====================================================================
             if indexPath.row == 0 {
-                // Edit Profile
+            // Edit Profile
                 let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             } else if indexPath.row == 1 {
-                // Relationship Requests
+            // Relationship Requests
                 let rRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
                 self.navigationController?.pushViewController(rRequestsVC, animated: true)
             } else if indexPath.row == 2 {
-                // Friends in Contacts
+            // Friends in Contacts
                 if #available(iOS 9, *) {
                     // Push to Contacts VC
                     let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
@@ -238,38 +238,34 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     self.navigationController!.present(alert, animated: true, completion: nil)
                 }
             } else if indexPath.row == 3 {
-                // Reset Password
+            // Reset Password
                 let passwordVC = self.storyboard?.instantiateViewController(withIdentifier: "passwordVC") as! ResetPassword
                 self.navigationController?.pushViewController(passwordVC, animated: true)
             } else if indexPath.row == 4 {
-                // Privacy
-            } else if indexPath.row == 5 {
-                // Blocked Users
+            // Blocked Users
                 let blockedVC = self.storyboard?.instantiateViewController(withIdentifier: "blockedVC") as! BlockedUsers
                 self.navigationController?.pushViewController(blockedVC, animated: true)
+            } else if indexPath.row == 5 {
+            // Privacy
             } else if indexPath.row == 6 {
-                // LOGOUT
+            // LOGOUT
                 // Remove logged in user from app memory
                 PFUser.logOutInBackground(block: {
                     (error: Error?) in
                     if error == nil {
-                        // Remove logged in user from App Memory
+                    // Remove logged in user from App Memory
                         UserDefaults.standard.removeObject(forKey: "username")
                         UserDefaults.standard.synchronize()
                         DispatchQueue.main.async(execute: {
-                            // Logout
+                    // Logout
                             let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
                             self.present(logoutToStart, animated: true, completion: nil)
                         })
-                        
-                        // Clear array
+                    // Clear array
                         username.removeAll()
                     }
-                    
                 })
             }
-            
-        
         } else if indexPath.section == 1 {
         // ====================================================================
         // MEMORY =============================================================

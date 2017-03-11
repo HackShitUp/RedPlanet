@@ -214,7 +214,7 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                                   handler: {(AlertAction) in
                                     // MARK: - SVProgressHUD
                                     SVProgressHUD.show(withStatus: "Unblocking")
-                                    SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
+                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                     // Remove
                                     let blocked = PFQuery(className: "Blocked")
                                     blocked.whereKey("byUser", equalTo: PFUser.current()!)
@@ -228,7 +228,7 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                                                     if error == nil {
                                                         // MARK: - SVProgressHUD
                                                         SVProgressHUD.showSuccess(withStatus: "Unblocked")
-                                                        SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
+                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                                         // Reload data
                                                         self.refresh(sender: self)
                                                     } else {

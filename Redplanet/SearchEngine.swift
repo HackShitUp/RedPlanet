@@ -21,6 +21,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     // SearchBar
     let searchBar = UISearchBar()
     
+    // App Delegate
+    let appDelegate = AppDelegate()
+    
     // Array to hold usernames
     var users = [PFObject]()
     
@@ -35,7 +38,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // Fetch relationships
+        _ = appDelegate.queryRelationships()
+        
         // Make first responder
         searchBar.becomeFirstResponder()
         
@@ -72,7 +77,8 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        // Fetch relationships
+        _ = appDelegate.queryRelationships()
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -88,13 +94,12 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     }
     
     
-    // Cancel
+    // MARK: - UISearchBar Delegate Method
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    // Search bar...
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         // Track Who Searched the App
@@ -138,10 +143,8 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
             // Search for user
             let theUsername = PFUser.query()!
             theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-            
             let realName = PFUser.query()!
             realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-            
             let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
             search.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -151,16 +154,27 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
                     self.users.removeAll(keepingCapacity: false)
                     
                     for object in objects! {
-                        self.users.append(object)
+                        if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
+                            self.users.append(object)
+                        }
+                    }
+                    
+                    // Reload data
+                    if self.users.count != 0 {
+                        // Reload data
+                        self.tableView!.reloadData()
+                    } else {
+                        // Set background for tableView
+                        self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                        // Reload data
+                        self.tableView!.reloadData()
                     }
                     
                 } else {
                     print(error?.localizedDescription as Any)
                 }
-                
-                // Reload data
-                self.tableView!.reloadData()
             })
+            
         }
     }
     

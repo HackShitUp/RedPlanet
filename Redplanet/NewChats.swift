@@ -19,6 +19,9 @@ import SVProgressHUD
 
 class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Boolean variable to check whether search bar is active
     var searchActive: Bool = false
     // Search Bar
@@ -49,6 +52,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     // Query Following
     func queryFollowing() {
+        // Fetch blocked
+        _ = appDelegate.queryRelationships()
+        // Following
         let following = PFQuery(className: "FollowMe")
         following.whereKey("follower", equalTo: PFUser.current()!)
         following.whereKey("isFollowing", equalTo: true)
@@ -138,9 +144,12 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
-    
     
     
     // MARK: - UISearchBarDelegate Methods
@@ -152,36 +161,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
     
     
     // Look for users
-    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        // Search by username
-        let name = PFUser.query()!
-        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFUser.query()!
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-        let user = PFQuery.orQuery(withSubqueries: [name, realName])
-        user.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                
-                // Clear arrays
-                self.searchObjects.removeAll(keepingCapacity: false)
-                
-                for object in objects! {
-                    self.searchObjects.append(object)
-                }
-                
-                // Reload data
-                self.tableView!.reloadData()
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
-        
-        return true
-    }
-    
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         // Search by username
         let name = PFUser.query()!
@@ -197,7 +176,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.searchObjects.append(object)
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId!}) {
+                        self.searchObjects.append(object)
+                    }
                 }
                 
                 // Reload data
@@ -297,8 +278,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
 
 
     // MARK: - UIScrollViewDelegate Method
-    
-    // Dismiss keyboard when UITableView is scrolled
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign first responder status
         self.searchBar.resignFirstResponder()
@@ -330,7 +309,4 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
             queryFollowing()
         }
     }
-    
-    
-
 }

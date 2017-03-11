@@ -216,6 +216,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     
     // Query Following
     func queryFollowing() {
+        // Query relationships
+        _ = appDelegate.queryRelationships()
+        
         // FOLLOWING
         let following = PFQuery(className: "FollowMe")
         following.whereKey("follower", equalTo: PFUser.current()!)
@@ -233,7 +236,9 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 
                 // Append objects
                 for object in objects! {
-                    self.following.append(object.object(forKey: "following") as! PFUser)
+                    if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "following") as! PFUser).objectId!}) {
+                        self.following.append(object.object(forKey: "following") as! PFUser)
+                    }
                 }
                 
                 // Set DZN if count is 0
@@ -373,9 +378,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
-
-        // Query relationships
-        _ = appDelegate.queryRelationships()
         
         // Fetch Following
         queryFollowing()

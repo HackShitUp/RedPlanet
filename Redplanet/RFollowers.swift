@@ -23,6 +23,9 @@ var forFollowers = [PFObject]()
 
 class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Variable to hold followers
     var followers = [PFObject]()
     // Array to hold search objects
@@ -50,6 +53,9 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // Query Followers
     func queryFollowers() {
+        // Fetch blocked
+        _ = appDelegate.queryRelationships()
+        
         let followers = PFQuery(className: "FollowMe")
         followers.whereKey("isFollowing", equalTo: true)
         followers.whereKey("following", equalTo: forFollowers.last!)
@@ -67,7 +73,9 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                 self.followers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.followers.append(object.object(forKey: "follower") as! PFUser)
+                    if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "follower") as! PFUser).objectId!}) {
+                        self.followers.append(object.object(forKey: "follower") as! PFUser)
+                    }
                 }
                 
                 
@@ -153,6 +161,9 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Stylize title
+        configureView()
 
         // Show Progress
         SVProgressHUD.show()
@@ -160,9 +171,6 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
         
         // Query followers
         queryFollowers()
-        
-        // Stylize title
-        configureView()
         
         // Design table view
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)

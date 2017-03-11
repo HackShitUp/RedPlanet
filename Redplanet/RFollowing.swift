@@ -24,6 +24,9 @@ var forFollowing = [PFObject]()
 
 class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Array to hold following
     var following = [PFObject]()
     // Array to hold search objects
@@ -51,6 +54,9 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // Fetch following
     func queryFollowing() {
+        // Fetch blocked users
+        _ = appDelegate.queryRelationships()
+        
         let following = PFQuery(className: "FollowMe")
         following.includeKeys(["follower", "following"])
         following.whereKey("isFollowing", equalTo: true)
@@ -68,7 +74,9 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                 self.following.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.following.append(object.object(forKey: "following") as! PFUser)
+                    if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "following") as! PFUser).objectId!}) {
+                        self.following.append(object.object(forKey: "following") as! PFUser)
+                    }
                 }
                 
                 // DZNEmptyDataSet
@@ -162,15 +170,15 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Stylize title
+        configureView()
+        
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Query following
         queryFollowing()
-        
-        // Stylize title
-        configureView()
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -196,14 +204,12 @@ class RFollowing: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         // Stylize title
         configureView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Stylize title
         configureView()
     }

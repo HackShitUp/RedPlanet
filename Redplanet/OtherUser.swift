@@ -239,7 +239,7 @@ class OtherUser: UITableViewController {
                                         handler: { (AlertAction) in
                                             // MARK: - SVProgressHUD
                                             SVProgressHUD.show()
-                                            SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
+                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                             // Block User
                                             self.blockUser()
         })
@@ -327,7 +327,7 @@ class OtherUser: UITableViewController {
                                                                       handler: {(alertAction: UIAlertAction!) in
                                                                         // MARK: - SVProgressHUD
                                                                         SVProgressHUD.show()
-                                                                        SVProgressHUD.setForegroundColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
+                                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
                                                                         // Block User
                                                                         self.blockUser()
                                             })
@@ -511,8 +511,6 @@ class OtherUser: UITableViewController {
     
     // Function to refresh
     func refresh() {
-        // Run relationships
-        _ = appDelegate.queryRelationships()
         // Query Content
         queryContent()
         // End refresher
@@ -528,14 +526,6 @@ class OtherUser: UITableViewController {
         
         // Stylize and set title
         configureView()
-        
-        _ = appDelegate.queryRelationships()
-        if blockedUsers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-            _ = self.navigationController?.popViewController(animated: true)
-        } else {
-            // Query content
-            queryContent()
-        }
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
