@@ -22,8 +22,8 @@ import DZNEmptyDataSet
 var likeObject = [PFObject]()
 
 class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource, UISearchBarDelegate {
-    
-    
+    // AppDelegate
+    let appDelegate = AppDelegate()
     
     // Array to hold likers
     var likers = [PFObject]()
@@ -56,9 +56,8 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     // Query Likes
     func queryLikes() {
-        
-        // Disable searchBar until complete
-        self.searchBar.isUserInteractionEnabled = false
+        // Fetch blocked users
+        _ = appDelegate.queryRelationships()
         
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: likeObject.last!.objectId!)
@@ -73,7 +72,9 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
                 
                 // Append object
                 for object in objects! {
-                    self.likers.append(object["fromUser"] as! PFUser)
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId!}) {
+                        self.likers.append(object["fromUser"] as! PFUser)
+                    }
                 }
                 
                 
@@ -83,14 +84,8 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
                     self.tableView!.emptyDataSetDelegate = self
                 }
                 
-                // Enable searchBar
-                self.searchBar.isUserInteractionEnabled = true
-                
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Enable searchBar
-                self.searchBar.isUserInteractionEnabled = true
             }
             
             // Reload data

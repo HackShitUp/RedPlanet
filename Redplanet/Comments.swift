@@ -27,12 +27,13 @@ let commentNotification = Notification.Name("comment")
 
 class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
+    // AppDelegate
+    let appDelegate = AppDelegate()
+    
     // Array to hold comment objects
     var comments = [PFObject]()
-    
     // Array to hold likers
     var likers = [PFObject]()
-    
     // Keyboard frame
     var keyboard = CGRect()
     
@@ -104,6 +105,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Query comments
     func queryComments() {
         
+        // Blocked users
+        _ = appDelegate.queryRelationships()
+        
         // Fetch comments
         let comments = PFQuery(className: "Comments")
         comments.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
@@ -120,7 +124,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 self.comments.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    self.comments.append(object)
+                    if !blockedUsers.contains(where: {$0.objectId == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
+                        self.comments.append(object)
+                    }
                 }
                 
                 // Set DZNEmptyDataSet

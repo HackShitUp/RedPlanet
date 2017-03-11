@@ -117,11 +117,11 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let versionView = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 60)
-        title.font = UIFont(name: "AvenirNext-Medium", size: 12)
+        title.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor.white
-        title.numberOfLines = 2
-        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade in NY."
+        title.numberOfLines = 0
+        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NY."
         title.textAlignment = .center
         versionView.addSubview(title)
         self.tableView.tableFooterView = versionView

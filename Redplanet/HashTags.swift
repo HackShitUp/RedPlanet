@@ -471,8 +471,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 print(error?.localizedDescription as Any)
             }
             
-            
-            
             // Check whether user has liked it or not
             if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // unlike
