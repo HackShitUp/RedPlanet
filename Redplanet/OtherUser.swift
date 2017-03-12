@@ -523,7 +523,6 @@ class OtherUser: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Stylize and set title
         configureView()
         
@@ -557,14 +556,14 @@ class OtherUser: UITableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Stylize title again
         configureView()
+        // Fetch data
+        queryContent()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         // Stylize title again
         configureView()
     }
@@ -731,7 +730,7 @@ class OtherUser: UITableViewController {
         self.cover.contentHorizontalAlignment = .center
         self.cover.titleLabel!.textAlignment = .center
         self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-        self.cover.setTitleColor(UIColor.lightGray, for: .normal)
+        self.cover.setTitleColor(UIColor.darkGray, for: .normal)
         self.cover.backgroundColor = UIColor.white
         
         return CGFloat(425 + label.frame.size.height)

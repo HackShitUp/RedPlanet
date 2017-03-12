@@ -207,12 +207,10 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         tableView!.addSubview(refresher)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // Stylize title
         configureView()
-        
         // Query notifications
         queryNotifications()
     }
