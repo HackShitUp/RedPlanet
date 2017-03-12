@@ -199,11 +199,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                     })
         })
         
+        // (4) Cancel
         let cancel = UIAlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
         
+        alert.view.tintColor = UIColor.black
         alert.addAction(visit)
+        alert.addAction(block)
         alert.addAction(report)
         alert.addAction(cancel)
         self.present(alert, animated: true, completion: nil)

@@ -28,7 +28,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var refresher: UIRefreshControl!
 
     // Page size
-    var page: Int = 100000
+    var page: Int = 500000
     
     // Search
     var searchNames = [String]()
@@ -790,7 +790,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         if page <= chatObjects.count {
             
             // Increase page size to load more posts
-            page = page + 100000
+            page = page + 500000
             
             // Query friends
             self.queryChats()

@@ -294,7 +294,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.rpUserProPic.setNeedsLayout()
         
         // Give Profile Photo Corner Radius
-//        cell.rpUserProPic.layer.cornerRadius = 8.00
         cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
@@ -539,28 +538,17 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
             cell.time.text = "now"
-        }
-        
-        if difference.second! > 0 && difference.minute! == 0 {
+        } else if difference.second! > 0 && difference.minute! == 0 {
             cell.time.text = "\(difference.second!)s ago"
-        }
-        
-        if difference.minute! > 0 && difference.hour! == 0 {
+        } else if difference.minute! > 0 && difference.hour! == 0 {
             cell.time.text = "\(difference.minute!)m ago"
-        }
-        
-        if difference.hour! > 0 && difference.day! == 0 {
+        } else if difference.hour! > 0 && difference.day! == 0 {
             cell.time.text = "\(difference.hour!)h ago"
-        }
-        
-        if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
             cell.time.text = "\(difference.day!)d ago"
-        }
-        
-        if difference.weekOfMonth! > 0 {
+        } else if difference.weekOfMonth! > 0 {
             cell.time.text = "\(difference.weekOfMonth!)w ago"
         }
-        
         
         return cell
     }
