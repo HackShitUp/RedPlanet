@@ -1,5 +1,5 @@
 //
-//  Explore.swift
+//  Discover
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/16/16.
@@ -17,13 +17,13 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
-class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
+class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
     
-    // Variable to hold objects to explore
-    var exploreObjects = [PFObject]()
+    // Variable to hold objects to discover
+    var discoverObjects = [PFObject]()
     
     // Set pipeline method
     var page: Int = 50
@@ -37,15 +37,21 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     // Function to refresh
     func refresh() {
-        // Query Explore
-        queryExplore()
+        // Query Discover
+        queryDiscover()
         // Reload data
         self.collectionView!.reloadData()
     }
     
+    // Function to show Search
+    func showSearch() {
+        // Push to SearchEngine
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController?.pushViewController(searchVC, animated: true)
+    }
     
     // Fetch Public Users
-    func queryExplore() {
+    func queryDiscover() {
         
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
@@ -62,11 +68,11 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
                 SVProgressHUD.dismiss()
                 
                 // Clear arrays
-                self.exploreObjects.removeAll(keepingCapacity: false)
+                self.discoverObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     if !blockedUsers.contains(where: {$0.objectId == object.objectId}) {
-                        self.exploreObjects.append(object)
+                        self.discoverObjects.append(object)
                     }
                 }
                 
@@ -87,7 +93,6 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
     }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -96,7 +101,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Fetch public accounts
-        queryExplore()
+        queryDiscover()
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -172,9 +177,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     // MARK: - SearchBarDelegate
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Push to SearchEngine
-        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController?.pushViewController(searchVC, animated: true)
+        // Show SearchEngine
+        self.showSearch()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -187,32 +191,24 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 135.00)
+        return CGSize(width: self.view.frame.size.width, height: 200)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         
         // Initialize header
-        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "exploreHeader", for: indexPath) as! ExploreHeader
+        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "discoverHeader", for: indexPath) as! DiscoverHeader
         
         // Set delegate
         header.delegate = self
-        header.adOne.sd_setIndicatorStyle(.gray)
-        header.adOne.sd_showActivityIndicatorView()
+        header.headerTitle.text! = "rp\nS e l e c t e d  🔍  S t o r i e s"
+        header.headerTitle.numberOfLines = 0
         
-        // ADS
-        let ads = PFQuery(className: "Ads")
-        ads.getObjectInBackground(withId: "B3UqNXF1EE") {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                if let image = object!.value(forKey: "photo") as? PFFile {
-                    // MARK: - SDWebImage
-                    header.adOne.sd_setImage(with: URL(string: image.url!), placeholderImage: UIImage())
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
+        // Tap title to search
+        let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))
+        searchTap.numberOfTapsRequired = 1
+        header.headerTitle.isUserInteractionEnabled = true
+        header.headerTitle.addGestureRecognizer(searchTap)
 
         return header
     }
@@ -220,11 +216,11 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     // MARK: UICollectionViewDataSource
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return exploreObjects.count
+        return discoverObjects.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "exploreCell", for: indexPath) as! ExploreCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "discoverCell", for: indexPath) as! DiscoverCell
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
@@ -240,8 +236,8 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // Fetch Explore Objects
-        exploreObjects[indexPath.row].fetchIfNeededInBackground(block:  {
+        // Fetch Discover Objects
+        discoverObjects[indexPath.row].fetchIfNeededInBackground(block:  {
             (object: PFObject?, error: Error?) in
             if error == nil {
                 // (1) Get username
@@ -265,9 +261,9 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // Append to otherObject
-        otherObject.append(self.exploreObjects[indexPath.row])
+        otherObject.append(self.discoverObjects[indexPath.row])
         // Append to otherName
-        otherName.append(self.exploreObjects[indexPath.row].value(forKey: "username") as! String)
+        otherName.append(self.discoverObjects[indexPath.row].value(forKey: "username") as! String)
         
         // Push to VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
@@ -277,11 +273,11 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= self.exploreObjects.count {
+        if page <= self.discoverObjects.count {
             // Increase page size to load more posts
             page = page + 50
             // Query friends
-            queryExplore()
+            queryDiscover()
         }
     }
     
@@ -292,7 +288,7 @@ class Explore: UICollectionViewController, UITabBarControllerDelegate, UISearchB
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
             // Reload data
-            queryExplore()
+            queryDiscover()
         }
     }
 }

@@ -135,7 +135,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         // Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0),
+                NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -199,6 +199,7 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
             headerView.title.text = "   VIDEOS"
         }
         
+        headerView.title.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         headerView.title.textColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
         return headerView
     }

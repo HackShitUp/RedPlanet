@@ -7,6 +7,11 @@
 //
 
 import UIKit
+import CoreData
+
+import Parse
+import ParseUI
+import Bolts
 
 class Licenses: UIViewController, UINavigationControllerDelegate {
 
@@ -17,6 +22,11 @@ class Licenses: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Track when user views license
+        Heap.track("ViewedLicense", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         self.textView.isSelectable = false
     }
 

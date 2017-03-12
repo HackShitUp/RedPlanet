@@ -26,6 +26,11 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     }
 
     @IBAction func invitePeople(_ sender: Any) {
+        // Track when user taps the invite button
+        Heap.track("TappedInvite", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         // Show Activity
         let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
         if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
@@ -108,7 +113,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let url = URL(string: UIApplicationOpenSettingsURLString)
         UIApplication.shared.openURL(url!)
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -317,6 +321,11 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // MORE ===============================================================
         // ====================================================================
             if indexPath.row == 0 {
+                // Track when user taps the invite button
+                Heap.track("TappedInvite", withProperties:
+                    ["byUserId": "\(PFUser.current()!.objectId!)",
+                        "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                    ])
                 // Show Activity
                 let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {

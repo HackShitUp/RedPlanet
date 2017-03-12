@@ -48,14 +48,14 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // MARK: - SimpleAlert
         // Present alert
         let alert = AlertController(title: "Delete All Chats?",
-            message: "They can't be restored once it's forever deleted.",
+            message: "They can never be restored once they're deleted.",
             style: .alert)
         
         // Design content view
         alert.configContentView = { view in
             if let view = view as? AlertContentView {
                 view.backgroundColor = UIColor.white
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
+                view.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 21)
                 let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
                 let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
                 attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
@@ -141,6 +141,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
     
     @IBAction func newChat(_ sender: AnyObject) {
+        // Track when New Chat button was tapped
+        Heap.track("TappedNewChat", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
          // Show new view controller
         let newChatsVC = self.storyboard?.instantiateViewController(withIdentifier: "newChats") as! NewChats
         self.navigationController!.pushViewController(newChatsVC, animated: true)
@@ -150,7 +155,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     func refresh() {
         // Reload data
         queryChats()
-        
         // End refresher
         self.refresher.endRefreshing()
     }
@@ -283,7 +287,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont

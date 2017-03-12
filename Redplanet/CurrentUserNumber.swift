@@ -42,10 +42,15 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
             self.present(alert, animated: true, completion: nil)
             
         } else {
+            // Track when number was saved
+            Heap.track("SavedNumber", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            
             // Show Progress
             SVProgressHUD.show()
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            
             
             // Remove non-integers
             var number = self.phoneNumber.text!

@@ -53,23 +53,21 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                        handler: {(alertAction: UIAlertAction!) in
                                         // Load Onboarding tutorial
                                         // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hello \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, an ephemeral social media platform.", image: nil, buttonText: nil) { () -> Void in
+                                        let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to organize your news feeds.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let secondPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: nil) { () -> Void in
+                                        let secondPage = OnboardingContentViewController(title: "2 News Feeds", body: "You have 2 news feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
                                         }
-                                        let lastPage = OnboardingContentViewController(title: "2 News Feeds", body: "You also have 2 news feeds: One for your friends, and one for your following only.", image: nil, buttonText: "continue") { () -> Void in
+                                        let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: "continue") { () -> Void in
                                             // Load Things to Follow interface
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
                                         }
-                                        
                                         firstPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
                                         firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
                                         secondPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
                                         secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
                                         lastPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
                                         lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
-                                        
                                         // Set bottom padding for button
                                         lastPage.bottomPadding = 50
                                         let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])

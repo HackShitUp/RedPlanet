@@ -317,6 +317,12 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Track when on ContactsVC
+        Heap.track("ViewingContacts", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
+        
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)

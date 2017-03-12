@@ -181,6 +181,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Resign first responder
             self.newChat.resignFirstResponder()
         } else {
+            // Track when chat was sent
+            Heap.track("SentChat", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
             // Clear text to prevent sending again and set constant before sending for better UX
             let chatText = self.newChat.text!
             // Clear chat

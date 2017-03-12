@@ -155,7 +155,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 21.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont

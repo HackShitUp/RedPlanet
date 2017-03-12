@@ -1,5 +1,5 @@
 //
-//  ExploreCell.swift
+//  DiscoverCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/16/16.
@@ -13,7 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
-class ExploreCell: UICollectionViewCell {
+class DiscoverCell: UICollectionViewCell {
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!

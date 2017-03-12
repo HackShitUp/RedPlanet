@@ -7,8 +7,8 @@
 //
 
 import UIKit
+import CoreData
 
 class RelationshipRequestsHeader: UICollectionReusableView {
-    
-    @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBOutlet weak var segmentControl: UISegmentedControl!    
 }

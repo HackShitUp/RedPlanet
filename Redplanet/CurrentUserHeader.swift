@@ -93,6 +93,11 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     
     // Function to edit profile
     func editProfile() {
+        // Track when user taps the EditProfile button
+        Heap.track("TappedEditProfile", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
         let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
         self.delegate?.navigationController?.pushViewController(editVC, animated: true)
     }
@@ -172,7 +177,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
                     self.delegate?.present(alert, animated: true)
                 }
             })
-            
         }
         
         
