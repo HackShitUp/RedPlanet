@@ -69,6 +69,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let alert = UIAlertController(title: nil,
                                       message: nil,
                                       preferredStyle: .actionSheet)
+        // (1) View Profile
         let visit = UIAlertAction(title: "Visit Profile",
             style: .default,
             handler: {(alertAciont: UIAlertAction!) in
@@ -82,46 +83,120 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 self.navigationController?.pushViewController(otherVC, animated: true)
         })
         
+        // (2) Report
         let report = UIAlertAction(title: "Report",
                                   style: .destructive,
                                   handler: {(alertAction: UIAlertAction!) in
                                     
-                                    
-                                    let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
-                                        message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
+                                    let alert = UIAlertController(title: "Report",
+                                                                  message: "Please provide your reason for reporting \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
                                         preferredStyle: .alert)
                                     
-                                    let yes = UIAlertAction(title: "yes",
-                                                            style: .destructive,
-                                                            handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                // I have to manually delete all "blocked objects..." -__-
-                                                                let block = PFObject(className: "Block_Reported")
-                                                                block["from"] = PFUser.current()!.username!
-                                                                block["fromUser"] = PFUser.current()!
-                                                                block["to"] = chatUsername.last!
-                                                                block["forObjectId"] = chatUserObject.last!.objectId!
-                                                                block.saveInBackground(block: {
-                                                                    (success: Bool, error: Error?) in
-                                                                    if success {
-                                                                        print("Successfully reported \(block)")
-                                                                        
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
-                                                                    }
-                                                                })
-                                                                // Close cell
-                                                                self.tableView.setEditing(false, animated: true)
-                                    })
+                                    let report = UIAlertAction(title: "Report", style: .destructive) {
+                                        [unowned self, alert] (action: UIAlertAction!) in
+                                        
+                                        let answer = alert.textFields![0]
+                                        
+                                        // REPORTED
+                                        let report = PFObject(className: "Reported")
+                                        report["byUsername"] = PFUser.current()!.username!
+                                        report["byUser"] = PFUser.current()!
+                                        report["toUsername"] = chatUsername.last!
+                                        report["toUser"] = chatUserObject.last!
+                                        report["forObjectId"] = chatUserObject.last!.objectId!
+                                        report["reason"] = answer.text!
+                                        report.saveInBackground(block: {
+                                            (success: Bool, error: Error?) in
+                                            if success {
+                                                print("Successfully saved report: \(report)")
+                                                
+                                                let alert = UIAlertController(title: "Successfully Reported",
+                                                                              message: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
+                                                    preferredStyle: .alert)
+                                                
+                                                let ok = UIAlertAction(title: "ok",
+                                                                       style: .default,
+                                                                       handler: nil)
+                                                
+                                                alert.addAction(ok)
+                                                alert.view.tintColor = UIColor.black
+                                                self.present(alert, animated: true, completion: nil)
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showError(withStatus: "Error")
+                                            }
+                                        })
+                                    }
                                     
-                                    let no = UIAlertAction(title: "no",
-                                                           style: .cancel,
-                                                           handler: nil)
                                     
-                                    alert.addAction(no)
-                                    alert.addAction(yes)
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .cancel,
+                                                               handler: nil)
+                                    
+                                    
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(report)
+                                    alert.addAction(cancel)
                                     alert.view.tintColor = UIColor.black
                                     self.present(alert, animated: true, completion: nil)
                                     
+        })
+        
+        // (3) Block user
+        let block = UIAlertAction(title: "Block",
+                                  style: .default,
+                                  handler: {(alertAction: UIAlertAction!) in
+                                    // (1) Block
+                                    let block = PFObject(className: "Blocked")
+                                    block["byUser"] = PFUser.current()!
+                                    block["byUsername"] = PFUser.current()!.username!
+                                    block["toUser"] = chatUserObject.last!
+                                    block["toUsername"] = chatUsername.last!.uppercased()
+                                    block.saveInBackground()
+                                    
+                                    // (2) Delete Follower/Following
+                                    let follower = PFQuery(className: "FollowMe")
+                                    follower.whereKey("follower", equalTo: PFUser.current()!)
+                                    follower.whereKey("following", equalTo: chatUserObject.last!)
+                                    let following = PFQuery(className: "FollowMe")
+                                    following.whereKey("follower", equalTo: chatUserObject.last!)
+                                    following.whereKey("following", equalTo: PFUser.current()!)
+                                    let follow = PFQuery.orQuery(withSubqueries: [follower, following])
+                                    follow.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            PFObject.deleteAll(inBackground: objects!, block: {
+                                                (success: Bool, error: Error?) in
+                                                if success {
+                                                    // Dismiss
+                                                    let alert = UIAlertController(title: "Successfully Blocked",
+                                                                                  message: "\(chatUsername.last!.uppercased()). You can unblock \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
+                                                        preferredStyle: .alert)
+                                                    
+                                                    let ok = UIAlertAction(title: "ok",
+                                                                           style: .default,
+                                                                           handler: { (alertAction: UIAlertAction!) in
+                                                                            _ = self.navigationController?.popViewController(animated: true)
+                                                    })
+                                                    
+                                                    alert.view.tintColor = UIColor.black
+                                                    alert.addAction(ok)
+                                                    self.present(alert, animated: true, completion: nil)
+                                                    
+                                                } else {
+                                                    print(error?.localizedDescription as Any)
+                                                    // MARK: - SVProgressHUD
+                                                    SVProgressHUD.showError(withStatus: "Error")
+                                                }
+                                            })
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showError(withStatus: "Error")
+                                        }
+                                    })
         })
         
         let cancel = UIAlertAction(title: "Cancel",
