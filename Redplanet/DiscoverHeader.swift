@@ -24,7 +24,8 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
     let codeIds = ["nytimes061620160702",
                    "wsj061620160702",
                    "buzzfeed061620161456",
-                   "mtv06162016070297"]
+                   "mtv06162016070297",
+                   "mashable986306162016"]
     
     @IBOutlet weak var headerTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -92,6 +93,13 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
                             // MARK: - SDWebImage
                             cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
                         }
+                    } else if object.value(forKey: "code") as! String == self.codeIds[4] && indexPath.item == 4 {
+                    // (5) MASHABLE
+                        // Set Photo
+                        if let photo = object.value(forKey: "photo") as? PFFile {
+                            // MARK: - SDWebImage
+                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
+                        }
                     }
                 }
             } else {
@@ -108,6 +116,7 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
     
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
         // Track Who Tapped a story
         Heap.track("TappedSelectedStories", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
@@ -116,18 +125,25 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
         
         if indexPath.item == 0 {
             // NYTIMES
-            storyURL.append("http://api.nytimes.com/svc/mostpopular/v2/mostviewed/all-sections/1.json?api-key=9510e9823f194040b75af0012d79277c")
+            mediaName.append("The New York Times")
+            storyURL.append("https://newsapi.org/v1/articles?source=the-new-york-times&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         } else if indexPath.item == 1 {
             // WSJ
+            mediaName.append("The Wall Street Journal")
             storyURL.append("https://newsapi.org/v1/articles?source=the-wall-street-journal&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         } else if indexPath.item == 2 {
             // BUZZFEED
+            mediaName.append("BuzzFeed")
             storyURL.append("https://newsapi.org/v1/articles?source=buzzfeed&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         } else if indexPath.item == 3 {
             // MTV
+            mediaName.append("MTV")
             storyURL.append("https://newsapi.org/v1/articles?source=mtv-news&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+        } else if indexPath.item == 4 {
+            // MASHABLE
+            mediaName.append("Mashable")
+            storyURL.append("https://newsapi.org/v1/articles?source=mashable&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         }
-        
         let nytimesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "newsVC") as! NewsController
         self.delegate?.navigationController?.pushViewController(nytimesVC, animated: true)
     }

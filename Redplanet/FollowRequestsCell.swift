@@ -314,11 +314,6 @@ class FollowRequestsCell: UICollectionViewCell {
             }
         })
         
-        if !myFollowing.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
-            // Show alert
-            self.followBack()
-        }
-        
     }// end CONFIRM
     
     

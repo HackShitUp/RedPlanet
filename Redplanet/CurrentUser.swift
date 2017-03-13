@@ -284,8 +284,6 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         return header
     }
     
-    
-    // header height
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         let label:UILabel = UILabel(frame: CGRect(x: 8, y: 305, width: 359, height: CGFloat.greatestFiniteMagnitude))

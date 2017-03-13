@@ -159,7 +159,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Add style font for UISegmentedControl
-        let style = NSDictionary(object: UIFont(name: "AvenirNext-Medium", size: 12.00) as Any, forKey: NSFontAttributeName as NSCopying)
+        let style = NSDictionary(object: UIFont(name: "AvenirNext-Demibold", size: 12.00) as Any, forKey: NSFontAttributeName as NSCopying)
         self.followSent.setTitleTextAttributes(style as! [NSObject: Any], for: .normal)
     }
 
@@ -219,10 +219,15 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         
         // Set title
         if self.followSent.selectedSegmentIndex == 0 {
-            header.title.text! = "Follow Requests"
+            header.title.text! = "FOLLOW REQUESTS"
         } else {
-            header.title.text! = "Sent Follow Requests"
+            header.title.text! = "SENT FOLLOW REQUESTS"
         }
+        
+        // Underline header's title
+        let titleStyle = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+        let underlineAttributedString = NSAttributedString(string: "\(header.title.text!)", attributes: titleStyle)
+        header.title.attributedText = underlineAttributedString
         
         // TODO: Show "People you may know here."
         
