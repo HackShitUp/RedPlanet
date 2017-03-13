@@ -157,12 +157,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Refresh
-        refresh()
-    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

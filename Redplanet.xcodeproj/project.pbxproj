@@ -756,8 +756,8 @@
 			children = (
 				7E873D7A1E5BEF42004E5FCB /* NewsController.swift */,
 				7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */,
-				7E064D071E7688E50074B78C /* NewsHeader.xib */,
 				7E064D091E7688F20074B78C /* NewsHeader.swift */,
+				7E064D071E7688E50074B78C /* NewsHeader.xib */,
 			);
 			name = NEWS;
 			sourceTree = "<group>";

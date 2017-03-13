@@ -51,7 +51,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     // Function to refresh data
     func refresh() {
         fetchFriends()
-        fetchPosts()
         self.refresher.endRefreshing()
     }
    

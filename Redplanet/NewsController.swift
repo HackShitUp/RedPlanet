@@ -187,8 +187,6 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                     if let file = object.value(forKey: "photo") as? PFFile {
                         // Configure UIImageView
                         header.mediaLogo.layer.cornerRadius = 6.00
-                        header.mediaLogo.layer.borderColor = UIColor.lightGray.cgColor
-                        header.mediaLogo.layer.borderWidth = 0.50
                         header.mediaLogo.clipsToBounds = true
                         // MARK: - SDWebImage
                         header.mediaLogo.sd_setImage(with: URL(string: file.url!), placeholderImage: UIImage())

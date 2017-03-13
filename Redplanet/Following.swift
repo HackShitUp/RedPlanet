@@ -59,8 +59,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
 
     // Function to refresh data
     func refresh() {
-        // Reload news feed
-        fetchPosts()
+        fetchFollowing()
         self.refresher.endRefreshing()
     }
     

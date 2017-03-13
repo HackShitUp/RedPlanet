@@ -3730,16 +3730,16 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A9v-QJ-MJq">
-                                            <rect key="frame" x="8" y="4" width="200" height="266"/>
+                                            <rect key="frame" x="4" y="4" width="187" height="266"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="200" id="cPZ-mF-Xgm"/>
+                                                <constraint firstAttribute="width" constant="187" id="cPZ-mF-Xgm"/>
                                                 <constraint firstAttribute="height" constant="266" id="kiF-hb-Rb5"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDA-T3-IyE">
-                                            <rect key="frame" x="216" y="8" width="151" height="21"/>
+                                            <rect key="frame" x="199" y="8" width="168" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="151" id="U5Q-8z-3dF"/>
+                                                <constraint firstAttribute="width" constant="168" id="U5Q-8z-3dF"/>
                                                 <constraint firstAttribute="height" constant="21" id="f6c-zw-WNB"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
@@ -3747,10 +3747,10 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="7" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eur-B3-9Tj">
-                                            <rect key="frame" x="216" y="37" width="151" height="229"/>
+                                            <rect key="frame" x="199" y="37" width="168" height="229"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="229" id="OlE-Uh-m5X"/>
-                                                <constraint firstAttribute="width" constant="151" id="v5v-DQ-hLn"/>
+                                                <constraint firstAttribute="width" constant="168" id="v5v-DQ-hLn"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -3758,7 +3758,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="A9v-QJ-MJq" firstAttribute="leading" secondItem="asa-we-8X1" secondAttribute="leading" constant="8" id="Kes-Ye-dbE"/>
+                                        <constraint firstItem="A9v-QJ-MJq" firstAttribute="leading" secondItem="asa-we-8X1" secondAttribute="leading" constant="4" id="Kes-Ye-dbE"/>
                                         <constraint firstAttribute="trailing" secondItem="Eur-B3-9Tj" secondAttribute="trailing" constant="8" id="PTO-ht-y3r"/>
                                         <constraint firstAttribute="trailing" secondItem="MDA-T3-IyE" secondAttribute="trailing" constant="8" id="WO7-Wh-o8s"/>
                                         <constraint firstAttribute="bottom" secondItem="Eur-B3-9Tj" secondAttribute="bottom" constant="8" id="Wmp-IB-k7n"/>
