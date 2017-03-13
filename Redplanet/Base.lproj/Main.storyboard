@@ -1918,23 +1918,23 @@
             </objects>
             <point key="canvasLocation" x="5519" y="-4060"/>
         </scene>
-        <!--Relationship Requests-->
+        <!--Follow Requests-->
         <scene sceneID="mRB-yU-bPu">
             <objects>
-                <collectionViewController storyboardIdentifier="relationshipsVC" id="WWE-KP-oje" customClass="RelationshipRequests" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="followRequestsVC" id="WWE-KP-oje" customClass="FollowRequests" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="EGY-ei-YlE">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="0mX-1H-CQa">
                             <size key="itemSize" width="375" height="105"/>
-                            <size key="headerReferenceSize" width="50" height="30"/>
+                            <size key="headerReferenceSize" width="375" height="40"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="rRelationshipsCell" id="SJp-tb-iEj" customClass="RelationshipRequestsCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="30" width="375" height="105"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="followRequestsCell" id="SJp-tb-iEj" customClass="FollowRequestsCell" customModule="Redplanet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="40" width="375" height="105"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="105"/>
@@ -2047,31 +2047,29 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="relationshipsHeader" id="tci-lZ-sR0" customClass="RelationshipRequestsHeader" customModule="Redplanet" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="followRequestsHeader" id="tci-lZ-sR0" customClass="FollowRequestsHeader" customModule="Redplanet" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="pq6-Jm-NtL">
-                                    <rect key="frame" x="0.0" y="1" width="375" height="29"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow Requests" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Mw-fg-wCo">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="28" id="LWn-jG-ZfP"/>
-                                        <constraint firstAttribute="width" constant="375" id="j3N-W7-KbJ"/>
+                                        <constraint firstAttribute="height" constant="40" id="GYf-b7-C8i"/>
+                                        <constraint firstAttribute="width" constant="375" id="Tky-z6-R1L"/>
                                     </constraints>
-                                    <segments>
-                                        <segment title="FOLLOW"/>
-                                        <segment title="SENT"/>
-                                    </segments>
-                                    <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </segmentedControl>
+                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="pq6-Jm-NtL" firstAttribute="top" secondItem="tci-lZ-sR0" secondAttribute="top" constant="1" id="Bwz-gA-XGp"/>
-                                <constraint firstAttribute="trailing" secondItem="pq6-Jm-NtL" secondAttribute="trailing" id="Q20-fP-kd3"/>
-                                <constraint firstAttribute="bottom" secondItem="pq6-Jm-NtL" secondAttribute="bottom" constant="1" id="Zgp-Q7-67y"/>
-                                <constraint firstItem="pq6-Jm-NtL" firstAttribute="leading" secondItem="tci-lZ-sR0" secondAttribute="leading" id="nd3-k0-J2U"/>
+                                <constraint firstAttribute="bottom" secondItem="4Mw-fg-wCo" secondAttribute="bottom" id="EzC-Tu-92m"/>
+                                <constraint firstItem="4Mw-fg-wCo" firstAttribute="top" secondItem="tci-lZ-sR0" secondAttribute="top" id="fRY-Fu-E2C"/>
+                                <constraint firstItem="4Mw-fg-wCo" firstAttribute="leading" secondItem="tci-lZ-sR0" secondAttribute="leading" id="uxa-aJ-Z3Q"/>
+                                <constraint firstAttribute="trailing" secondItem="4Mw-fg-wCo" secondAttribute="trailing" id="xbQ-Bx-zqt"/>
                             </constraints>
                             <connections>
-                                <outlet property="segmentControl" destination="pq6-Jm-NtL" id="vfa-JQ-JiD"/>
+                                <outlet property="title" destination="4Mw-fg-wCo" id="mu5-ge-BP7"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
@@ -2080,12 +2078,25 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="H7J-hO-9UD">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="SVK-Jq-3CH">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="WWE-KP-oje" id="ufD-zA-x0y"/>
                             </connections>
                         </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="pq6-Jm-NtL">
+                            <rect key="frame" x="75" y="8" width="225" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="FOLLOW"/>
+                                <segment title="SENT"/>
+                            </segments>
+                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="toggleSource:" destination="WWE-KP-oje" eventType="valueChanged" id="HVa-ia-EoH"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="DUn-qC-9Bw">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -2094,10 +2105,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="followSent" destination="pq6-Jm-NtL" id="eYn-Ps-nrw"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqE-2h-gdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3437" y="174"/>
+            <point key="canvasLocation" x="3436.5" y="173.5"/>
         </scene>
         <!--Photo Asset-->
         <scene sceneID="Lef-W9-5fv">
@@ -3889,7 +3903,7 @@
                         <barButtonItem key="leftBarButtonItem" image="Add User Group Man Man-48" id="9Jx-RJ-joN">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="relationshipRequests:" destination="aSj-NK-ud8" id="CTq-N9-52Y"/>
+                                <action selector="followRequestsAction:" destination="aSj-NK-ud8" id="pVJ-Px-v5D"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="Address Book Filled-50" id="cag-bz-sDk">
@@ -3902,7 +3916,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
                         <outlet property="contactsButton" destination="cag-bz-sDk" id="xWi-lx-cCn"/>
-                        <outlet property="relationshipRequestsButton" destination="9Jx-RJ-joN" id="qGy-Cp-DSf"/>
+                        <outlet property="followRequestsButton" destination="9Jx-RJ-joN" id="M9r-4J-d9h"/>
                         <outlet property="tableView" destination="Jb0-Aj-AQB" id="z9v-S9-fWh"/>
                     </connections>
                 </viewController>
@@ -5485,7 +5499,7 @@
                                     <constraint firstAttribute="width" constant="375" id="f4f-XP-QK1"/>
                                     <constraint firstAttribute="height" constant="603" id="wES-il-wzu"/>
                                 </constraints>
-                                <mutableString key="text">Copyright 2016, Redplanet Media, LLC
+                                <string key="text">Copyright 2016, Redplanet Media, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -6199,7 +6213,7 @@ News API may revise these terms of service for its website at any time without n
 These terms and conditions are governed by and construed in accordance with the laws of United Kingdom and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.
 
 Powered by https://newsapi.org/
-</mutableString>
+</string>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>

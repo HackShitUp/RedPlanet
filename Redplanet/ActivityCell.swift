@@ -1094,7 +1094,7 @@ class ActivityCell: UITableViewCell {
         // requested to follow you
         if self.activity.titleLabel!.text! == "requested to follow you" {
             // Push VC
-            let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
+            let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followRequestsVC") as! FollowRequests
             self.delegate?.navigationController?.pushViewController(rRequestsVC, animated: true)
         }
         

@@ -211,7 +211,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             } else if indexPath.row == 1 {
             // Relationship Requests
-                let rRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
+                let rRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "followRequestsVC") as! FollowRequests
                 self.navigationController?.pushViewController(rRequestsVC, animated: true)
             } else if indexPath.row == 2 {
             // Friends in Contacts

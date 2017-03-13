@@ -46,11 +46,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var tableView: UITableView!
 
-    @IBOutlet weak var relationshipRequestsButton: UIBarButtonItem!
-    @IBAction func relationshipRequests(_ sender: Any) {
-        // Push
-        let relationshipRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "relationshipsVC") as! RelationshipRequests
-        self.navigationController?.pushViewController(relationshipRequestsVC, animated: true)
+    @IBOutlet weak var followRequestsButton: UIBarButtonItem!
+    @IBAction func followRequestsAction(_ sender: Any) {
+        // Push VC
+        let followRequestsVC = self.storyboard?.instantiateViewController(withIdentifier: "followRequestsVC") as! FollowRequests
+        self.navigationController?.pushViewController(followRequestsVC, animated: true)
     }
 
     @IBOutlet weak var contactsButton: UIBarButtonItem!
@@ -70,7 +70,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
     // Query Notifications
     func queryNotifications() {
-
         // Fetch your notifications
         let notifications = PFQuery(className: "Notifications")
         notifications.includeKeys(["toUser", "fromUser"])
@@ -147,7 +146,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         }
         
         // Enable UIBarButtonItems, configure navigation bar, && show tabBar (last line)
-        self.relationshipRequestsButton.isEnabled = true
+        self.followRequestsButton.isEnabled = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
@@ -164,24 +163,14 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func refresh() {
         // Query notifications
         queryNotifications()
-        
         // End refresher
         self.refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // MARK: - NSBadge
-        // Set badge for Relationship Requests...
-        if myRequestedFollowers.count != 0 {
-            relationshipRequestsButton.badge(text: "\(myRequestedFollowers.count)")
-        }
         
         // Clean tableView
         self.tableView!.tableFooterView = UIView()
@@ -213,6 +202,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         configureView()
         // Query notifications
         queryNotifications()
+        // MARK: - NSBadge
+        // Set badge for Relationship Requests...
+        if myRequestedFollowers.count != 0 {
+            followRequestsButton.badge(text: "\(myRequestedFollowers.count)")
+        }
     }
 
     override func didReceiveMemoryWarning() {

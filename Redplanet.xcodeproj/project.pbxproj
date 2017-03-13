@@ -122,9 +122,9 @@
 		7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9371DB75057001B7329 /* UIView+Frame.m */; };
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
 		7E9952A71E722EC70056F45D /* LibraryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9952A61E722EC70056F45D /* LibraryHeader.swift */; };
-		7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */; };
-		7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */; };
-		7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */; };
+		7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* FollowRequestsHeader.swift */; };
+		7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* FollowRequests.swift */; };
+		7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */; };
 		7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955661DC99A98003D9D73 /* InTheMoment.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */; };
@@ -390,9 +390,9 @@
 		7E98E9391DB75057001B7329 /* _CLImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CLImageEditorViewController.h; sourceTree = "<group>"; };
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
 		7E9952A61E722EC70056F45D /* LibraryHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryHeader.swift; sourceTree = "<group>"; };
-		7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsHeader.swift; sourceTree = "<group>"; };
-		7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequests.swift; sourceTree = "<group>"; };
-		7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationshipRequestsCell.swift; sourceTree = "<group>"; };
+		7E99555E1DC9756F003D9D73 /* FollowRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsHeader.swift; sourceTree = "<group>"; };
+		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
+		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
 		7E9955661DC99A98003D9D73 /* InTheMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTheMoment.swift; sourceTree = "<group>"; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
@@ -571,9 +571,9 @@
 		7E3F0EDF1DC0630E006BF522 /* FOLLOWREQUESTS */ = {
 			isa = PBXGroup;
 			children = (
-				7E9955601DC975E5003D9D73 /* RelationshipRequests.swift */,
-				7E99555E1DC9756F003D9D73 /* RelationshipRequestsHeader.swift */,
-				7E9955641DC97791003D9D73 /* RelationshipRequestsCell.swift */,
+				7E99555E1DC9756F003D9D73 /* FollowRequestsHeader.swift */,
+				7E9955601DC975E5003D9D73 /* FollowRequests.swift */,
+				7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */,
 			);
 			name = FOLLOWREQUESTS;
 			sourceTree = "<group>";
@@ -1735,7 +1735,7 @@
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
-				7E9955611DC975E5003D9D73 /* RelationshipRequests.swift in Sources */,
+				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
 				7ED8DD941E73D3A3006AE033 /* QuickShare.swift in Sources */,
@@ -1749,7 +1749,7 @@
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
-				7E9955651DC97791003D9D73 /* RelationshipRequestsCell.swift in Sources */,
+				7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */,
 				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
@@ -1863,7 +1863,7 @@
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
-				7E99555F1DC9756F003D9D73 /* RelationshipRequestsHeader.swift in Sources */,
+				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,

@@ -275,41 +275,37 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         // Define word
         for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-            // #####################
+            // @'s
             if word.hasPrefix("@") {
-                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
                 // Find the user
                 let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
-                        
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        
                         for object in objects! {
                             self.userObjects.append(object)
                         }
-                        
-                        
+                        // Show tableView and reloadData
+                        self.tableView!.isHidden = false
+                        self.tableView!.reloadData()
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
-                // show table view and reload data
-                self.tableView!.isHidden = false
-                self.tableView!.reloadData()
+            } else if word.hasPrefix("http") || word.hasPrefix("https") {
+                let apiEndpoint: String = "http://tinyurl.com/api-create.php?url=\(word)"
+                let shortURL = try? String(contentsOf: URL(string: apiEndpoint)!, encoding: String.Encoding.ascii)
+                // Replace text
+                self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: shortURL!, options: String.CompareOptions.literal, range: nil)
             } else {
                 self.tableView!.isHidden = true
             }
@@ -364,19 +360,15 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // @@@@@@@@@@@@@@@@@@@@@@@@@@@
             if word.hasPrefix("@") {
-                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
                 // Replace text
                 self.textView.text! = self.textView.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
             }
         }
-        
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
-        
         // Hide UITableView
         self.tableView!.isHidden = true
     }

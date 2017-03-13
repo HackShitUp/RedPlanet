@@ -54,7 +54,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 chats["receiver"] = PFUser.current()!
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
-                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet.🎉🦄😇\n@josh @jakec14 @favbot"
+                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet.🎉🦄😇"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -101,15 +101,13 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         let follow = PFUser.query()!
         follow.whereKey("private", equalTo: false)
         let people = PFQuery.orQuery(withSubqueries: [team, follow])
-        people.order(byDescending: "createdAt")
+        people.order(byAscending: "createdAt")
         people.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear arrays
                 self.followObjects.removeAll(keepingCapacity: false)
                 self.teamObjects.removeAll(keepingCapacity: false)
-                
                 // Append object
                 for object in objects! {
                     if object.objectId! == "2AOI4vtcSI" || object.objectId! == "uvjf6LmD2t" || object.objectId! == "OoZRHmiNpX" || object.objectId! == "8ZztVf7CEw" || object.objectId! == "l5L2xZuhIi" {
@@ -118,7 +116,6 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                         self.followObjects.append(object)
                     }
                 }
-            
                 // Reload data
                 self.tableView!.reloadData()
             } else {

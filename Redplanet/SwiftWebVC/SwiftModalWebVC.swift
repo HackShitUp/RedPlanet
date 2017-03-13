@@ -78,6 +78,9 @@ public class SwiftModalWebVC: UINavigationController {
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
+        // Create corner radius
+        self.view.layer.cornerRadius = 7.50
+        self.view.clipsToBounds = true
     }
     
     override public func didReceiveMemoryWarning() {

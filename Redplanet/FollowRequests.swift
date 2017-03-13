@@ -1,5 +1,5 @@
 //
-//  RelationshipRequests.swift
+//  FollowRequests.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 11/1/16.
@@ -16,27 +16,28 @@ import Bolts
 import SDWebImage
 import DZNEmptyDataSet
 
-// Global variable to handle different forms of request
-var requestType: String?
-
 // Define Notification Identifier
-let requestsNotification = Notification.Name("relationshipRequests")
+let requestsNotification = Notification.Name("FollowRequests")
 
-class RelationshipRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     
     // Array to hold followers, and following
     var nFollowers = [PFObject]()
-
     // Users you sent requests to
     var sentTo = [PFObject]()
 
-    // SourceType
-    var sourceType: Int = 0
+    @IBOutlet weak var followSent: UISegmentedControl!
+    @IBAction func toggleSource(_ sender: Any) {
+        if self.followSent.selectedSegmentIndex == 0 {
+            // Followers
+            fetchFollowers()
+        } else {
+            // Following
+            fetchSent()
+        }
+    }
     
-    // Refresher
-    var refresher: UIRefreshControl!
-
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
@@ -44,17 +45,13 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
     @IBAction func refresh(_ sender: Any) {
         // Reload data
-        if self.sourceType == 0 {
+        if self.followSent.selectedSegmentIndex == 0 {
             // Followers
             fetchFollowers()
         } else {
             // Following
             fetchSent()
         }
-        
-        // End refresher
-        self.refresher.endRefreshing()
-        
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -128,51 +125,9 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             self.collectionView!.reloadData()
         })
     }
-    
-    
-    
-    
-    // Function to swithc sourec
-    func switchSource(sender: UISegmentedControl) -> Int {
-        
-        if sender.selectedSegmentIndex == 0 {
-            // Followers
-            fetchFollowers()
-            requestType = "follow"
 
-            sourceType = 0
-        } else {
-            // Following
-            fetchSent()
-            requestType = "sent"
 
-            sourceType = 1
-        }
-        
-        return sourceType
-    }
-    
-    // Stylize title
-    func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Follow Requests"
-        }
-        
-        // Show nav bar && show tabBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-    }
-
-  
     // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if nFollowers.count == 0 || sentTo.count == 0 {
             return true
@@ -185,7 +140,7 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         
-        if sourceType == 0 {
+        if self.followSent.selectedSegmentIndex == 0 {
             str = "🦄\nNo Follow Requests"
         } else {
             str = "🦄\nYou haven't requested to Follow anyone recently."
@@ -200,50 +155,37 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         
         return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
-
     
-    
-    
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Add style font for UISegmentedControl
+        let style = NSDictionary(object: UIFont(name: "AvenirNext-Medium", size: 12.00) as Any, forKey: NSFontAttributeName as NSCopying)
+        self.followSent.setTitleTextAttributes(style as! [NSObject: Any], for: .normal)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
         // Set initial query
-        if self.sourceType == 0 {
+        if self.followSent.selectedSegmentIndex == 0 {
             // Followers
             fetchFollowers()
-            requestType = "follow"
         } else {
             // Sent
             fetchSent()
-            requestType = "sent"
         }
-        
         
         // Add Notification 
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: requestsNotification, object: nil)
         
-        // Set background color
-        self.collectionView!.backgroundColor = UIColor.white
-        
-        // Stylize title
-        configureView()
-        
-        // Set collectionview's cell size
+        // Configure UICollectionView
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: self.view.frame.size.width, height: 105.00)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        collectionView!.collectionViewLayout = layout
-
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        self.collectionView!.addSubview(refresher)
+        self.collectionView!.collectionViewLayout = layout
+        self.collectionView!.backgroundColor = UIColor.white
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -265,45 +207,45 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
     // MARK: - UICollectionReusableView Data source method
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        return CGSize(width: self.view.frame.size.width, height: 30)
+        // width X 40
+        return CGSize(width: self.view.frame.size.width, height: 40)
     }
     
     
     
     // MARK: UICollectionViewHeader
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "followRequestsHeader", for: indexPath) as! FollowRequestsHeader
         
-        // Initialize header
-        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "relationshipsHeader", for: indexPath) as! RelationshipRequestsHeader
+        // Set title
+        if self.followSent.selectedSegmentIndex == 0 {
+            header.title.text! = "Follow Requests"
+        } else {
+            header.title.text! = "Sent Follow Requests"
+        }
         
-        // Add target method
-        header.segmentControl.addTarget(self, action: #selector(switchSource), for: .allEvents)
+        // TODO: Show "People you may know here."
         
         return header
     }
 
 
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if self.sourceType == 0 {
-            
+        if self.followSent.selectedSegmentIndex == 0 {
             return nFollowers.count
         } else {
-            
             return sentTo.count
         }
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "rRelationshipsCell", for: indexPath) as! RelationshipRequestsCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "followRequestsCell", for: indexPath) as! FollowRequestsCell
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
@@ -322,29 +264,21 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
         // Set delegate
         cell.delegate = self
     
-        if self.sourceType == 0 {
-            // Followers
-            nFollowers[indexPath.row].fetchIfNeededInBackground(block:  {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-
-                    // (1) Set user's fullName
-                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
-                    
-                    // (2) Get username
-                    cell.rpUsername.text! = object!["username"] as! String
-                    
-                    // (3) Get profile photo
-                    // Handle optional chaining
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+        if self.followSent.selectedSegmentIndex == 0 {
+        // FOLLOWER REQUESTED
+            
+            // (1) Set user's fullName
+            cell.rpFullName.text! = self.nFollowers[indexPath.row].value(forKey: "realNameOfUser") as! String
+            
+            // (2) Get username
+            cell.rpUsername.text! = self.nFollowers[indexPath.row].value(forKey: "username") as! String
+            
+            // (3) Get profile photo
+            // Handle optional chaining
+            if let proPic = self.nFollowers[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
             
             // (4) Set user's object
             cell.userObject = nFollowers[indexPath.row]
@@ -356,30 +290,19 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
             
             
         } else {
-            // Sent To
-            sentTo[indexPath.row].fetchIfNeededInBackground(block:  {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    
-                    
-                    // (1) Set user's fullName
-                    cell.rpFullName.text! = object!["realNameOfUser"] as! String
-                    
-                    // (2) Get username
-                    cell.rpUsername.text! = object!["username"] as! String
-                    
-                    // (3) Get profile photo
-                    // Handle optional chaining
-                    if let proPic = object!["userProfilePicture"] as? PFFile {
-                        // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                    }
-
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+        // SENT TO
+            // (1) Set user's fullName
+            cell.rpFullName.text! = self.sentTo[indexPath.row].value(forKey: "realNameOfUser") as! String
             
+            // (2) Get username
+            cell.rpUsername.text! = self.sentTo[indexPath.row].value(forKey: "username") as! String
+            
+            // (3) Get profile photo
+            // Handle optional chaining
+            if let proPic = self.sentTo[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
             
             // (4) Set user's object
             cell.userObject = sentTo[indexPath.row]
@@ -399,6 +322,5 @@ class RelationshipRequests: UICollectionViewController, UINavigationControllerDe
     
         return cell
     } // end cellForRowAt
-
 
 }

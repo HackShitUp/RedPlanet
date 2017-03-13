@@ -40,9 +40,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         }
         PFUser.current()!.saveInBackground(block: {
             (success: Bool, error: Error?) in
-            if success {
-                print("Saved user's data!: \(PFUser.current()!)")
-                
+            if success {                
                 // Show alert, and load onboarding
                 let alert = UIAlertController(title: "😁\nAlmost Finished",
                                               message: "We're almost done. But first, a tutorial!",

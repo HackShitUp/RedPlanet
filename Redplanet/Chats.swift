@@ -162,16 +162,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     // Query Chats
     func queryChats() {
-        
         // SubQueries
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", notEqualTo: PFUser.current()!)
-        
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", notEqualTo: PFUser.current()!)
-
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
         chats.limit = self.page
         chats.includeKeys(["receiver", "sender"])

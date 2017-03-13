@@ -454,7 +454,6 @@ class TimeTextPostCell: UITableViewCell {
     func showLikes() {
         // Append object
         likeObject.append(self.postObject!)
-        
         // Push VC
         let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
         self.delegate?.pushViewController(likesVC, animated: true)
@@ -464,7 +463,6 @@ class TimeTextPostCell: UITableViewCell {
     @IBAction func comments(_ sender: Any) {
         // Append object
         commentsObject.append(self.postObject!)
-        
         // Push VC
         let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
         self.delegate?.pushViewController(commentsVC, animated: true)
@@ -474,7 +472,6 @@ class TimeTextPostCell: UITableViewCell {
     func showShares() {
         // Append object
         shareObject.append(self.postObject!)
-        
         // Push VC
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.pushViewController(sharesVC, animated: true)
@@ -577,7 +574,6 @@ class TimeTextPostCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
     

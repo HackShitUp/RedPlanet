@@ -1,5 +1,5 @@
 //
-//  RelationshipRequestsCell.swift
+//  FollowRequestsCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 11/1/16.
@@ -18,7 +18,7 @@ import OneSignal
 import SimpleAlert
 import SVProgressHUD
 
-class RelationshipRequestsCell: UICollectionViewCell {
+class FollowRequestsCell: UICollectionViewCell {
     
     
     // Variable to determine whether current user sent a friend or follow request
@@ -211,14 +211,9 @@ class RelationshipRequestsCell: UICollectionViewCell {
     
     // Function to confirm
     // ================================================================================================================================
-    // ================================================================================================================================
     // ================================================= C O N F I R M ================================================================
     // ================================================================================================================================
-    // ================================================================================================================================
     @IBAction func confirm(_ sender: Any) {
-        // Fetch relationships
-        _ = appDelegate.queryRelationships()
-        
         // Disable buttons
         self.confirmButton.isUserInteractionEnabled = false
         self.confirmButton.isEnabled = false
@@ -319,7 +314,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
             }
         })
         
-        if !myFollowing.contains(where: { $0.objectId! == self.userObject!.objectId!}) {
+        if !myFollowing.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
             // Show alert
             self.followBack()
         }
@@ -392,12 +387,7 @@ class RelationshipRequestsCell: UICollectionViewCell {
 
     }// end IGNORE
     
-    
-    
-    
-    
-    
-    
+
     @IBAction func rescind(_ sender: Any) {
         // Disable buttons
         self.relationState.isUserInteractionEnabled = false
@@ -503,22 +493,16 @@ class RelationshipRequestsCell: UICollectionViewCell {
     }// end RESCIND OR UNDO
     
     
-    
-    
     // Function to go to user's profile
     func goUser() {
         // Append object
         otherObject.append(self.userObject!)
         // Append username
         otherName.append(self.rpUsername.text!)
-        
         // Push VC
         let otherUserVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.delegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
-    
-    
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()
