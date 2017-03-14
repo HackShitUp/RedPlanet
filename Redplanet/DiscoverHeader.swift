@@ -20,12 +20,36 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
     // Parent VC
     var delegate: UIViewController?
     
+    /*
+    
+     1) NYTimes
+     2) WSJ
+     3) CNN
+     
+     4) BuzzFeed
+     5) MTV
+     6) Mashable
+     
+     7) TechCrunch
+     8) National Geographic
+     9) ESPN
+    
+    */
+    
     // Codes to get cover photos
-    let codeIds = ["nytimes061620160702",
-                   "wsj061620160702",
-                   "buzzfeed061620161456",
-                   "mtv06162016070297",
-                   "mashable986306162016"]
+    let codeIds = [
+        "nytimes061620160702",
+        "wsj061620160702",
+        "cnn0702061620160622",
+        
+        "buzzfeed061620161456",
+        "mtv06162016070297",
+        "mashable986306162016",
+        
+        "techcrunch06220616",
+        "natgeo81039706162016",
+        "espn0616201609632"
+                   ]
     
     @IBOutlet weak var headerTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -65,41 +89,11 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 for object in objects! {
-                    // (1) NYTIMES
-                    if object.value(forKey: "code") as! String == self.codeIds[0] && indexPath.item == 0 {
+                    if object.value(forKey: "code") as! String == self.codeIds[indexPath.item] && indexPath.item == self.codeIds.index(of: self.codeIds[indexPath.item]) {
                         // Set photo
-                        if let photo = object.value(forKey: "photo") as? PFFile {
-                            // MARK: - SDWebImage
-                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                        }
-                    } else if object.value(forKey: "code") as! String == self.codeIds[1] && indexPath.item == 1 {
-                    // (2) WSJ
-                        // Set photo
-                        if let photo = object.value(forKey: "photo") as? PFFile {
-                            // MARK: - SDWebImage
-                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                        }
-                    } else if object.value(forKey: "code") as! String == self.codeIds[2] && indexPath.item == 2 {
-                    // (3) BuzzFeed
-                        // Set photo
-                        if let photo = object.value(forKey: "photo") as? PFFile {
-                            // MARK: - SDWebImage
-                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                        }
-                    } else if object.value(forKey: "code") as! String == self.codeIds[3] && indexPath.item == 3 {
-                    // (4) MTV
-                        // Set photo
-                        if let photo = object.value(forKey: "photo") as? PFFile {
-                            // MARK: - SDWebImage
-                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                        }
-                    } else if object.value(forKey: "code") as! String == self.codeIds[4] && indexPath.item == 4 {
-                    // (5) MASHABLE
-                        // Set Photo
-                        if let photo = object.value(forKey: "photo") as? PFFile {
-                            // MARK: - SDWebImage
-                            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                        }
+                        let photo = object.value(forKey: "photo") as! PFFile
+                        // MARK: - SDWebImage
+                        cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
                     }
                 }
             } else {
@@ -124,26 +118,49 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
             ])
         
         if indexPath.item == 0 {
-            // NYTIMES
+        // NYTIMES
             mediaName.append("The New York Times")
             storyURL.append("https://newsapi.org/v1/articles?source=the-new-york-times&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+
         } else if indexPath.item == 1 {
-            // WSJ
+        // WSJ
             mediaName.append("The Wall Street Journal")
             storyURL.append("https://newsapi.org/v1/articles?source=the-wall-street-journal&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+
         } else if indexPath.item == 2 {
-            // BUZZFEED
+        // CNN
+            mediaName.append("CNN")
+            storyURL.append("https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+            
+        } else if indexPath.item == 3 {
+        // BUZZFEED
             mediaName.append("BuzzFeed")
             storyURL.append("https://newsapi.org/v1/articles?source=buzzfeed&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-        } else if indexPath.item == 3 {
-            // MTV
+            
+        } else if indexPath.item == 4 {
+        // MTV
             mediaName.append("MTV")
             storyURL.append("https://newsapi.org/v1/articles?source=mtv-news&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-        } else if indexPath.item == 4 {
-            // MASHABLE
+            
+        } else if indexPath.item == 5 {
+        // MASHABLE
             mediaName.append("Mashable")
             storyURL.append("https://newsapi.org/v1/articles?source=mashable&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+            
+        } else if indexPath.item == 6 {
+        // TECH CRUNCH
+            mediaName.append("TechCrunch")
+            storyURL.append("https://newsapi.org/v1/articles?source=techcrunch&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+        } else if indexPath.item == 7 {
+        // NATGEO
+            mediaName.append("National Geographic")
+            storyURL.append("https://newsapi.org/v1/articles?source=national-geographic&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
+        } else if indexPath.item == 8 {
+        // ESPN
+            mediaName.append("ESPN")
+            storyURL.append("https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         }
+        
         let nytimesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "newsVC") as! NewsController
         self.delegate?.navigationController?.pushViewController(nytimesVC, animated: true)
     }

@@ -491,7 +491,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         }
         
         // (2) Set username
-        if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
+        if let user = itmObject.last!.object(forKey: "byUser") as? PFUser {
             self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
         }
         

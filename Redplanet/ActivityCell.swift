@@ -57,31 +57,27 @@ class ActivityCell: UITableViewCell {
         // (A) LIKED POST
         if self.activity.titleLabel!.text!.hasPrefix("liked") {
             
-            
             // I
             // TEXT POST
-            if self.activity.titleLabel!.text!.hasSuffix("text post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Text Post") {
                 // Check TextPosts
                 let texts = PFQuery(className: "Newsfeeds")
                 texts.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
+                texts.includeKeys(["byUser", "toUser", "pointObject"])
                 texts.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                         
                         for object in objects! {
-                            
                             // Append text post object
                             textPostObject.append(object)
-                            
                             // Push VC
                             let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                             self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                         
@@ -90,39 +86,34 @@ class ActivityCell: UITableViewCell {
                         self.activity.isEnabled = true
                     }
                 })
-                
             }
             
             
             // II
             // PHOTO
-            if self.activity.titleLabel!.text!.hasSuffix("your photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("your Photo") {
                 // Check "Photos_Videos"
                 let photos = PFQuery(className: "Newsfeeds")
+                photos.includeKeys(["byUser", "toUser", "pointObject"])
                 photos.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 photos.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                         
                         // Check Photos
                         for object in objects! {
-                            
                             // Append object
                             photoAssetObject.append(object)
-                            
                             // Push VC
                             let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                             self.delegate?.navigationController!.pushViewController(photoVC, animated: true)
-                            
                         }
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -134,33 +125,29 @@ class ActivityCell: UITableViewCell {
             
             // III
             // PROFILE PHOTO
-            if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
                 let profilePhoto = PFQuery(className: "Newsfeeds")
-                profilePhoto.includeKey("byUser")
+                profilePhoto.includeKeys(["byUser", "toUser", "pointObject"])
                 profilePhoto.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 profilePhoto.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                         
                         for object in objects! {
-                            
                             // Append necessary data for ProfilePhoto
                             proPicObject.append(object)
                             // Append other object
                             otherObject.append(PFUser.current()!)
                             otherName.append(PFUser.current()!.username!)
-                            
                             // Push ProfilePhoto view controller
                             let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                             self.delegate!.navigationController!.pushViewController(proPicVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -171,24 +158,21 @@ class ActivityCell: UITableViewCell {
             
             // IV
             // SHARE
-            if self.activity.titleLabel!.text!.hasSuffix("shared post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Shared Post") {
                 let share = PFQuery(className: "Newsfeeds")
-                share.includeKeys(["byUser", "pointObject"])
+                share.includeKeys(["byUser", "toUser", "pointObject"])
                 share.whereKey("contentType", equalTo: "sh")
                 share.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 share.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                         
                         for object in objects! {
-                            
                             // Append object
                             sharedObject.append(object)
-                            
                             // Push VC
                             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
                             self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
@@ -196,7 +180,6 @@ class ActivityCell: UITableViewCell {
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -208,8 +191,9 @@ class ActivityCell: UITableViewCell {
             
             // V
             // SPACE POST
-            if self.activity.titleLabel!.text!.hasSuffix("space post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
                 let spacePost = PFQuery(className: "Newsfeeds")
+                spacePost.includeKeys(["byUser", "toUser", "pointObject"])
                 spacePost.whereKey("toUser", equalTo: PFUser.current()!)
                 spacePost.whereKey("contentType", equalTo: "sp")
                 spacePost.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -223,15 +207,12 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             spaceObject.append(object)
-                            
                             // Push VC
                             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                             self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -239,10 +220,13 @@ class ActivityCell: UITableViewCell {
                 })
             }
             
+            
+            
             // VI
             // MOMENT
-            if self.activity.titleLabel!.text!.hasSuffix("moment") {
+            if self.activity.titleLabel!.text!.hasSuffix("Moment") {
                 let moment = PFQuery(className: "Newsfeeds")
+                moment.includeKeys(["byUser", "toUser", "pointObject"])
                 moment.whereKey("byUser", equalTo: PFUser.current()!)
                 moment.whereKey("contentType", equalTo: "itm")
                 moment.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -256,23 +240,20 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             itmObject.append(object)
-                            
                             // PHOTO
                             if object.value(forKey: "photoAsset") != nil {
                                 // Push to VC
                                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
                                 self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
                             } else {
-                                // VIDEO
+                            // VIDEO
                                 // Push VC
                                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
                                 self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
                             }
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -283,8 +264,9 @@ class ActivityCell: UITableViewCell {
             
             // VII
             // VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("video") {
+            if self.activity.titleLabel!.text!.hasSuffix("Video") {
                 let video = PFQuery(className: "Newsfeeds")
+                video.includeKeys(["byUser", "toUser", "pointObject"])
                 video.whereKey("byUser", equalTo: PFUser.current()!)
                 video.whereKey("contentType", equalTo: "vi")
                 video.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -298,7 +280,6 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             videoObject.append(object)
-                            
                             // Push VC
                             let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                             self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
@@ -306,13 +287,11 @@ class ActivityCell: UITableViewCell {
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
                     }
                 })
-                
             }
             
         } // End Liked Content
@@ -331,17 +310,17 @@ class ActivityCell: UITableViewCell {
             comments.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
-                    
                     // Re-enable buttons
                     self.activity.isUserInteractionEnabled = true
                     self.activity.isEnabled = true
                     
                     for object in objects! {
                         
-                        let commentId = object["forObjectId"] as! String
+                        let commentId = object.value(forKey: "forObjectId") as! String
                         
                         // Find content
                         let newsfeeds = PFQuery(className: "Newsfeeds")
+                        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                         newsfeeds.whereKey("objectId", equalTo: commentId)
                         newsfeeds.findObjectsInBackground(block: {
                             (objects: [PFObject]?, error: Error?) in
@@ -351,7 +330,7 @@ class ActivityCell: UITableViewCell {
                                 for object in objects! {
                                     
                                     // I TEXT POST
-                                    if object["contentType"] as! String  == "tp" {
+                                    if object.value(forKey: "contentType") as! String  == "tp" {
                                         // Append object
                                         textPostObject.append(object)
                                         
@@ -361,7 +340,7 @@ class ActivityCell: UITableViewCell {
                                     }
                                     
                                     // II PHOTO
-                                    if object["contentType"] as! String  == "ph" {
+                                    if object.value(forKey: "contentType") as! String  == "ph" {
                                         // Append object
                                         photoAssetObject.append(object)
                                         
@@ -371,7 +350,7 @@ class ActivityCell: UITableViewCell {
                                     }
                                     
                                     // III SHARED POST
-                                    if object["contentType"] as! String == "sh" {
+                                    if object.value(forKey: "contentType") as! String == "sh" {
                                         // Append object
                                         sharedObject.append(object)
                                         
@@ -381,7 +360,7 @@ class ActivityCell: UITableViewCell {
                                     }
                                     
                                     // IV PROFILE PHOTO
-                                    if object["contentType"] as! String == "pp" {
+                                    if object.value(forKey: "contentType") as! String == "pp" {
                                         // Append object
                                         proPicObject.append(object)
                                         
@@ -391,14 +370,14 @@ class ActivityCell: UITableViewCell {
                                     }
                                     
                                     // V SPACE POST
-                                    if object["contentType"] as! String == "sp" {
+                                    if object.value(forKey: "contentType") as! String == "sp" {
                                         // Append object
                                         spaceObject.append(object)
                                         
                                         // Append to otherObject
-                                        otherObject.append(object["toUser"] as! PFUser)
+                                        otherObject.append(object.object(forKey: "toUser") as! PFUser)
                                         // Append to otherName
-                                        otherName.append(object["toUsername"] as! String)
+                                        otherName.append(object.value(forKey: "toUsername") as! String)
                                         
                                         // Push VC
                                         let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
@@ -406,17 +385,25 @@ class ActivityCell: UITableViewCell {
                                     }
                                     
                                     // VI MOMENT
-                                    if object["contentType"] as! String == "itm" {
+                                    if object.value(forKey: "contentType") as! String == "itm" {
                                         // Append object
                                         itmObject.append(object)
                                         
-                                        // Push VC
-                                        let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                        self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                                        // PHOTO
+                                        if object.value(forKey: "photoAsset") != nil {
+                                            // Push to VC
+                                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                                        } else {
+                                        // VIDEO
+                                            // Push VC
+                                            let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                                            self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+                                        }
                                     }
                                     
                                     // VII VIDEO
-                                    if object["contentType"] as! String == "vi" {
+                                    if object.value(forKey: "contentType") as! String == "vi" {
                                         // Append object
                                         videoObject.append(object)
                                         
@@ -462,7 +449,7 @@ class ActivityCell: UITableViewCell {
             // Find Comment
             // Find in Newsfeed
             let newsfeeds = PFQuery(className: "Newsfeeds")
-            newsfeeds.includeKeys(["byUser", "toUser"])
+            newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
             newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
             newsfeeds.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
@@ -476,7 +463,7 @@ class ActivityCell: UITableViewCell {
                     for object in objects! {
                         
                         // I TEXT POST
-                        if object["contentType"] as! String  == "tp" {
+                        if object.value(forKey: "contentType") as! String  == "tp" {
                             // Append object
                             textPostObject.append(object)
                             
@@ -486,7 +473,7 @@ class ActivityCell: UITableViewCell {
                         }
                         
                         // II PHOTO
-                        if object["contentType"] as! String  == "ph" {
+                        if object.value(forKey: "contentType") as! String  == "ph" {
                             // Append object
                             photoAssetObject.append(object)
                             
@@ -496,7 +483,7 @@ class ActivityCell: UITableViewCell {
                         }
                         
                         // III SHARED POST
-                        if object["contentType"] as! String == "sh" {
+                        if object.value(forKey: "contentType") as! String == "sh" {
                             // Append object
                             sharedObject.append(object)
                             // Push VC
@@ -505,7 +492,7 @@ class ActivityCell: UITableViewCell {
                         }
                         
                         // IV PROFILE PHOTO
-                        if object["contentType"] as! String == "pp" {
+                        if object.value(forKey: "contentType") as! String == "pp" {
                             // Append object
                             proPicObject.append(object)
                             
@@ -515,14 +502,14 @@ class ActivityCell: UITableViewCell {
                         }
                         
                         // V SPACE POST
-                        if object["contentType"] as! String == "sp" {
+                        if object.value(forKey: "contentType") as! String == "sp" {
                             // Append object
                             spaceObject.append(object)
                             
                             // Append to otherObject
-                            otherObject.append(object["toUser"] as! PFUser)
+                            otherObject.append(object.object(forKey: "toUser") as! PFUser)
                             // Append to otherName
-                            otherName.append(object["toUsername"] as! String)
+                            otherName.append(object.value(forKey: "toUsername") as! String)
                             
                             // Push VC
                             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
@@ -530,17 +517,25 @@ class ActivityCell: UITableViewCell {
                         }
                         
                         // VI MOMENT
-                        if object["contentType"] as! String == "itm" {
+                        if object.value(forKey: "contentType") as! String == "itm" {
                             // Append object
                             itmObject.append(object)
                             
-                            // Push VC
-                            let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                            self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            // PHOTO
+                            if object.value(forKey: "photoAsset") != nil {
+                                // Push to VC
+                                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+                            } else {
+                                // VIDEO
+                                // Push VC
+                                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                                self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+                            }
                         }
                         
                         // VII VIDEO
-                        if object["contentType"] as! String == "vi" {
+                        if object.value(forKey: "contentType") as! String == "vi" {
                             // Append object
                             videoObject.append(object)
                             
@@ -578,9 +573,10 @@ class ActivityCell: UITableViewCell {
             self.activity.isEnabled = false
             
             // (1) Text Post
-            if self.activity.titleLabel!.text!.hasSuffix("text post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Text Post") {
                 // Find Text Post
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -592,15 +588,12 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             textPostObject.append(object)
-                            
                             // Push to VC
                             let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                             self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -610,14 +603,14 @@ class ActivityCell: UITableViewCell {
             
             
             // (2) Photo
-            if self.activity.titleLabel!.text!.hasSuffix("photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("Photo") {
                 // Find Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -625,12 +618,10 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             photoAssetObject.append(object)
-                            
                             // Push to VC
                             let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                             self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
@@ -638,14 +629,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // (3) Profile Photo
-            if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
                 // Find Profile Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -653,13 +644,10 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             proPicObject.append(object)
-                            
                             // Push to VC
                             let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                             self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                         }
-                        
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
@@ -668,14 +656,14 @@ class ActivityCell: UITableViewCell {
             
             
             // (4) Shared Post
-            if self.activity.titleLabel!.text!.hasSuffix("shared post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Shared Post") {
                 // Find Shared Post
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -683,12 +671,10 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             sharedObject.append(object)
-                            
                             // Push to VC
                             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
                             self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
                         }
-                        
                     } else {
                         print(error?.localizedDescription as Any)
                         // Re-enable buttons
@@ -699,14 +685,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // (5) Space Post
-            if self.activity.titleLabel!.text!.hasSuffix("space post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -714,12 +700,10 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             spaceObject.append(object)
-                            
                             // Append otherObject
-                            otherObject.append(object["toUser"] as! PFUser)
+                            otherObject.append(object.object(forKey: "toUser") as! PFUser)
                             // Append otherName
-                            otherName.append(object["toUsername"] as! String)
-                            
+                            otherName.append(object.value(forKey: "toUsername") as! String)
                             // Push to VC
                             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                             self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
@@ -735,14 +719,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // (6) Moment
-            if self.activity.titleLabel!.text!.hasSuffix("moment") {
+            if self.activity.titleLabel!.text!.hasSuffix("Moment") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -750,7 +734,6 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             itmObject.append(object)
-                            
                             // PHOTO
                             if object.value(forKey: "photoAsset") != nil {
                                 // Push to VC
@@ -774,9 +757,10 @@ class ActivityCell: UITableViewCell {
             }
             
             // (7) VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("video") {
+            if self.activity.titleLabel!.text!.hasSuffix("Video") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -821,14 +805,14 @@ class ActivityCell: UITableViewCell {
             
             
             // I Text Post
-            if self.activity.titleLabel!.text!.hasSuffix("text post"){
+            if self.activity.titleLabel!.text!.hasSuffix("Text Post"){
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -836,14 +820,12 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             textPostObject.append(object)
-                            
                             // Push VC
                             let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                             self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -852,14 +834,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // II Photo
-            if self.activity.titleLabel!.text!.hasSuffix("photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("Photo") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -867,14 +849,12 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             photoAssetObject.append(object)
-                            
                             // Push VC
                             let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                             self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -883,14 +863,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // III Profile Photo
-            if self.activity.titleLabel!.text!.hasSuffix("profile photo") {
+            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -898,19 +878,16 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             proPicObject.append(object)
-                            
                             // Append to otherObject
-                            otherObject.append(object["toUser"] as! PFUser)
+                            otherObject.append(object.object(forKey: "toUser") as! PFUser)
                             // Append to otherName
-                            otherName.append(object["toUsername"] as! String)
-                            
+                            otherName.append(object.value(forKey: "toUsername") as! String)
                             // Push VC
                             let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                             self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -919,14 +896,14 @@ class ActivityCell: UITableViewCell {
             }
             
             // IV Space Post
-            if self.activity.titleLabel!.text!.hasSuffix("space post") {
+            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -934,19 +911,16 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             spaceObject.append(object)
-                            
                             // Append to otherObject
-                            otherObject.append(object["toUser"] as! PFUser)
+                            otherObject.append(object.object(forKey: "toUser") as! PFUser)
                             // Append to otherName
-                            otherName.append(object["toUsername"] as! String)
-                            
+                            otherName.append(object.value(forKey: "toUsername") as! String)
                             // Push VC
                             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                             self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -956,14 +930,14 @@ class ActivityCell: UITableViewCell {
             
             
             // V VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("video") {
+            if self.activity.titleLabel!.text!.hasSuffix("Video") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -971,14 +945,12 @@ class ActivityCell: UITableViewCell {
                         for object in objects! {
                             // Append object
                             videoObject.append(object)
-                            
                             // Push VC
                             let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                             self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                         }
                     } else {
                         print(error?.localizedDescription as Any)
-                        
                         // Re-enable buttons
                         self.activity.isUserInteractionEnabled = true
                         self.activity.isEnabled = true
@@ -990,6 +962,7 @@ class ActivityCell: UITableViewCell {
             if self.activity.titleLabel!.text!.hasSuffix("comment") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
+                newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
                 newsfeeds.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
                 newsfeeds.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
@@ -1029,8 +1002,8 @@ class ActivityCell: UITableViewCell {
                                 // Append object
                                 spaceObject.append(object)
                                 // otherUser
-                                otherObject.append(object["toUser"] as! PFUser)
-                                otherName.append(object["toUsername"] as! String)
+                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
+                                otherName.append(object.value(forKey: "toUsername") as! String)
                                 // Push VC
                                 let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                                 self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
@@ -1106,6 +1079,7 @@ class ActivityCell: UITableViewCell {
             // Space Post
             
             let spacePost = PFQuery(className: "Newsfeeds")
+            spacePost.includeKeys(["byUser", "toUser", "pointObject"])
             spacePost.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
             spacePost.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in

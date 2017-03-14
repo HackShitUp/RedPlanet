@@ -114,7 +114,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.uppercased()
+            self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.lowercased()
         }
         
         // Configure nav bar, show tab bar, and set statusBar

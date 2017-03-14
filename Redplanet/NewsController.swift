@@ -77,6 +77,8 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                                 // GET AUTHOR
                                 if let writer = (item as AnyObject).value(forKey: "author") as? String {
                                     self.authors.append(writer)
+                                } else {
+                                    self.authors.append(" ")
                                 }
                             }
                         }
@@ -228,7 +230,9 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
         cell.asset.layer.borderWidth = 0.50
         cell.asset.clipsToBounds = true
         // (3) Set author
-        cell.author.text! = "By \(self.authors[indexPath.row])"
+        if self.authors[indexPath.row] != " " {
+            cell.author.text! = "By \(self.authors[indexPath.row])"
+        }
         
         return cell
     }
