@@ -3723,10 +3723,10 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="newsCell" rowHeight="275" id="LnY-Hr-kwE" customClass="NewsCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="56" width="375" height="275"/>
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="275"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LnY-Hr-kwE" id="asa-we-8X1">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="274"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="274.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="A9v-QJ-MJq">
@@ -3831,12 +3831,12 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5s1-Og-6eq">
-                                                    <rect key="frame" x="51" y="8" width="235" height="22"/>
+                                                    <rect key="frame" x="56" y="8" width="230" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="dxx-mw-tl5"/>
-                                                        <constraint firstAttribute="width" constant="235" id="xyu-jM-ud9"/>
+                                                        <constraint firstAttribute="width" constant="230" id="xyu-jM-ud9"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
                                                     <state key="normal">
                                                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
@@ -3852,10 +3852,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nOk-m9-PUO">
-                                                    <rect key="frame" x="51" y="34" width="316" height="21"/>
+                                                    <rect key="frame" x="56" y="34" width="311" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="lO9-9o-xPJ"/>
-                                                        <constraint firstAttribute="width" constant="316" id="o0n-wA-SLV"/>
+                                                        <constraint firstAttribute="width" constant="311" id="o0n-wA-SLV"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                                     <state key="normal">
@@ -3866,11 +3866,11 @@
                                                     </connections>
                                                 </button>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MNo-KX-Ixe" customClass="PFImageView">
-                                                    <rect key="frame" x="8" y="12" width="35" height="35"/>
+                                                    <rect key="frame" x="8" y="9" width="40" height="40"/>
                                                     <color key="backgroundColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="35" id="EkW-2g-Jmg"/>
-                                                        <constraint firstAttribute="height" constant="35" id="pVS-lQ-QSE"/>
+                                                        <constraint firstAttribute="width" constant="40" id="EkW-2g-Jmg"/>
+                                                        <constraint firstAttribute="height" constant="40" id="pVS-lQ-QSE"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
@@ -3886,7 +3886,7 @@
                                                 <constraint firstItem="5s1-Og-6eq" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="8" id="p2Z-Ms-qlT"/>
                                                 <constraint firstItem="nOk-m9-PUO" firstAttribute="leading" secondItem="MNo-KX-Ixe" secondAttribute="trailing" constant="8" id="rDJ-0g-IUx"/>
                                                 <constraint firstAttribute="trailing" secondItem="nOk-m9-PUO" secondAttribute="trailing" constant="8" id="wui-hF-eiU"/>
-                                                <constraint firstItem="MNo-KX-Ixe" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="12" id="yus-ry-SvM"/>
+                                                <constraint firstItem="MNo-KX-Ixe" firstAttribute="top" secondItem="qEx-t1-7eM" secondAttribute="top" constant="9" id="yus-ry-SvM"/>
                                                 <constraint firstAttribute="trailing" secondItem="bHD-3z-6zH" secondAttribute="trailing" constant="8" id="zHM-lb-TiX"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3958,7 +3958,7 @@
                                     <constraint firstAttribute="width" secondItem="JRN-fH-AcO" secondAttribute="height" multiplier="343:247" constant="65.267206477732827" id="LXd-mt-bA7"/>
                                     <constraint firstAttribute="width" constant="343" id="m7a-ma-KIO"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="21"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
                                     <outlet property="delegate" destination="z57-bJ-9iv" id="0ud-5F-fCA"/>
@@ -4062,7 +4062,7 @@
                                     <constraint firstAttribute="height" constant="116" id="emp-SI-xRb"/>
                                     <constraint firstAttribute="width" constant="235" id="yOO-2f-oQr"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
                                     <outlet property="delegate" destination="Ir1-z0-Hmq" id="m9u-G4-eun"/>

@@ -996,82 +996,67 @@ class ActivityCell: UITableViewCell {
                     if error == nil {
                         // Find Content
                         for object in objects! {
-                            // I TEXT POST
-                            if object["contentType"] as! String  == "tp" {
+                            // TEXT POST
+                            if object.value(forKey: "contentType") as! String == "tp" {
                                 // Append object
                                 textPostObject.append(object)
-                                
                                 // Push VC
                                 let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
                                 self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
-                            }
-                            
-                            // II PHOTO
-                            if object["contentType"] as! String  == "ph" {
+                            } else if object.value(forKey: "contentType") as! String == "ph" {
+                            // PHOTO
                                 // Append object
                                 photoAssetObject.append(object)
-                                
                                 // Push VC
                                 let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
                                 self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
-                            }
-                            
-                            // III SHARED POST
-                            if object["contentType"] as! String == "sh" {
+                            } else if object.value(forKey: "contentType") as! String == "sh" {
+                            // SHARED POST
                                 // Append object
                                 sharedObject.append(object)
-                                
                                 // Push VC
                                 let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
                                 self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
-                            }
-                            
-                            // IV PROFILE PHOTO
-                            if object["contentType"] as! String == "pp" {
+                            } else if object.value(forKey: "contentType") as! String == "pp" {
+                            // PROFILE PHOTO
                                 // Append object
                                 proPicObject.append(object)
-                                
                                 // Push VC
                                 let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                                 self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
-                            }
-                            
-                            // V SPACE POST
-                            if object["contentType"] as! String == "sp" {
+                            } else if object.value(forKey: "contentType") as! String == "sp" {
+                            // SPACE POST
                                 // Append object
                                 spaceObject.append(object)
-                                
-                                // Append to otherObject
+                                // otherUser
                                 otherObject.append(object["toUser"] as! PFUser)
-                                // Append to otherName
                                 otherName.append(object["toUsername"] as! String)
-                                
                                 // Push VC
                                 let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                                 self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
-                            }
-                            
-                            // VI MOMENT
-                            if object["contentType"] as! String == "itm" {
+                            } else if object.value(forKey: "contentType") as! String == "itm" {
+                            // MOMENT
                                 // Append object
                                 itmObject.append(object)
+
+                                // PHOTO MOMENT
+                                if object.value(forKey: "photoAsset") != nil {
+                                    let itmVC = self.delegate?.storyboard!.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+                                    self.delegate?.navigationController!.pushViewController(itmVC, animated: true)
+                                } else {
+                                // VIDEO MOMENT
+                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+                                }
                                 
-                                // Push VC
-                                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-                            }
-                            
-                            // VII VIDEO
-                            if object["contentType"] as! String == "vi" {
+                            } else if object.value(forKey: "contentType") as! String == "vi" {
+                            // VIDEO
                                 // Append object
                                 videoObject.append(object)
-                                
                                 // Push VC
                                 let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                                 self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                             }
-                            
-                            
                         }
                     } else {
                         print(error?.localizedDescription as Any)

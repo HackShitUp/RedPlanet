@@ -144,8 +144,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         // Resign frist responder
         self.searchBar.resignFirstResponder()
         
-        // Refresh
-        refresh()
+        // Fetch public accounts
+        queryDiscover()
         
         // Configure navigationBar, tabBar, and statusBar
         self.extendedLayoutIncludesOpaqueBars = true

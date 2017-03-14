@@ -655,6 +655,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         tapOut.numberOfTapsRequired = 1
         self.itmMedia.isUserInteractionEnabled = true
         self.itmMedia.addGestureRecognizer(tapOut)
+        
         // MARK: - RadialTransitionSwipe
         self.navigationController?.enableRadialSwipe()
         
