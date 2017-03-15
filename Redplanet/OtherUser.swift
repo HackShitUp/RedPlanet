@@ -435,7 +435,7 @@ class OtherUser: UITableViewController {
                     } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
+                            self.cover.setTitle("💩\nNo Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -451,7 +451,7 @@ class OtherUser: UITableViewController {
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWER & FOLLOWING == FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
+                            self.cover.setTitle("💩\nNo Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -468,7 +468,7 @@ class OtherUser: UITableViewController {
                 } else {
                     // PUBLIC ACCOUNT
                     if self.posts.count == 0 {
-                        self.cover.setTitle("🤔\nNo Posts Today", for: .normal)
+                        self.cover.setTitle("💩\nNo Posts Today", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = true
@@ -525,6 +525,14 @@ class OtherUser: UITableViewController {
         super.viewDidLoad()
         // Stylize and set title
         configureView()
+        
+        // Track Who's Profile user lands on
+        Heap.track("ViewedProfile", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                "OtherUserID": "\(otherObject.last!.objectId!)",
+                "OtherUsername": "\(otherObject.last!.value(forKey: "username") as! String)"
+            ])
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
