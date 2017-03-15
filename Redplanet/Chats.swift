@@ -31,7 +31,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var page: Int = 500000
     
     // Search
-    var searchNames = [String]()
     var searchObjects = [PFObject]()
 
     // Search Bar
@@ -251,21 +250,20 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             if error == nil {
                 
                 // Clear arrays
-                self.searchNames.removeAll(keepingCapacity: false)
                 self.searchObjects.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if self.chatObjects.contains(object) {
-                        self.searchNames.append(object["username"] as! String)
+                    if self.chatObjects.contains(where: {$0.objectId! == object.objectId!}) {
                         self.searchObjects.append(object)
                     }
                 }
-                
                 
                 // Reload data
                 if self.searchObjects.count != 0 {
                     // Reload data
                     self.tableView!.reloadData()
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView()
                 } else {
                     // Set background for tableView
                     self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
@@ -578,7 +576,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             cell.status.isHidden = true
             
             // Set usernames of searched users
-            cell.time.text = searchNames[indexPath.row]
+            cell.time.text = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
             
             // (1) Get Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
@@ -735,42 +733,22 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         if searchActive == true && searchBar.text != "" {
             // Append to <chatUserObject>
             // and <chatUsername>
-            let user = PFUser.query()!
-            user.whereKey("username", equalTo: searchNames[indexPath.row])
-            user.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    for object in objects! {
-                        // Append user's object
-                        chatUserObject.append(object)
-                        // Append user's username
-                        chatUsername.append(self.searchNames[indexPath.row])
-                    }
-                    
-                    // Push View controller
-                    let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
-                    self.navigationController!.pushViewController(chatRoom, animated: true)
-                    
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-            
+            // Append user's object
+            chatUserObject.append(self.searchObjects[indexPath.row])
+            // Append user's username
+            chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
+            // Push View controller
+            let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+            self.navigationController!.pushViewController(chatRoom, animated: true)
         } else {
-            
-
             // Append...
             // (1) User's Object
             chatUserObject.append(self.chatObjects[indexPath.row])
             // (2) Username
             chatUsername.append(self.chatObjects[indexPath.row].value(forKey: "username") as! String)
-            
             // Push View controller
             let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
             self.navigationController!.pushViewController(chatRoom, animated: true)
-            
-            
         }
     } // end didSelectRowAt method
  
@@ -804,6 +782,4 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             refresh()
         }
     }
-    
-
 }

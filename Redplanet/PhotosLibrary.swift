@@ -162,6 +162,9 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         configureView()
         // Fetch Assets
         fetchAssets()
+        // Create corner radiuss
+        self.navigationController?.view.layer.cornerRadius = 7.50
+        self.navigationController?.view.clipsToBounds = true
     }
     
     override func viewDidLoad() {

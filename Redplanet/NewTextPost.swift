@@ -51,13 +51,27 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
                                    handler: nil)
+            alert.view.tintColor = UIColor.black
+            alert.addAction(ok)
+            self.present(alert, animated: true)
+            
+        } else if self.textView.text! == "What are you doing?" {
+            
+            let alert = UIAlertController(title: "What ARE you doing?",
+                                          message: "Share your thoughts within 500 characters about anything.",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "ok",
+                                   style: .default,
+                                   handler: nil)
+            
+            alert.view.tintColor = UIColor.black
             alert.addAction(ok)
             self.present(alert, animated: true)
             
         } else if self.textView.text.characters.count > 500 {
             
             let alert = UIAlertController(title: "Exceeded Character Count",
-                                          message: "For experience purposes, your thoughts should be concisely shared within 500 characters.",
+                                          message: "For better experience, your thoughts should be concisely shared within 500 characters.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
@@ -219,6 +233,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Set placeholder
         self.textView.text! = "What are you doing?"
         self.textView.textColor = UIColor.darkGray
+        // Create corner radiuss
+        self.navigationController?.view.layer.cornerRadius = 7.50
+        self.navigationController?.view.clipsToBounds = true
     }
 
     override func viewDidLoad() {

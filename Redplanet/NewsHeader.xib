@@ -18,15 +18,15 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U1A-mM-b6b">
                     <rect key="frame" x="8" y="8" width="85" height="85"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="85" id="Sft-ZC-uWh"/>
-                        <constraint firstAttribute="width" constant="85" id="i9K-Z3-02S"/>
+                        <constraint firstAttribute="width" constant="85" id="CqO-8x-oNp"/>
+                        <constraint firstAttribute="height" constant="85" id="DY1-ef-wxs"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfy-F5-TNK">
                     <rect key="frame" x="101" y="8" width="266" height="85"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="85" id="bP3-Pc-0VQ"/>
-                        <constraint firstAttribute="width" constant="266" id="oRJ-tf-d0P"/>
+                        <constraint firstAttribute="width" constant="266" id="8iz-hb-hkG"/>
+                        <constraint firstAttribute="height" constant="85" id="qKN-Gu-bBl"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="21"/>
                     <nil key="textColor"/>
@@ -35,14 +35,14 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="qfy-F5-TNK" secondAttribute="trailing" constant="8" id="7Df-R9-GmZ"/>
-                <constraint firstItem="qfy-F5-TNK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="101" id="9PD-Tt-ldx"/>
-                <constraint firstItem="qfy-F5-TNK" firstAttribute="top" secondItem="U1A-mM-b6b" secondAttribute="bottom" constant="-85" id="D9q-uZ-sU1"/>
-                <constraint firstItem="U1A-mM-b6b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Iqc-Ka-egK"/>
-                <constraint firstAttribute="trailing" secondItem="U1A-mM-b6b" secondAttribute="trailing" constant="282" id="TZA-gv-3WC"/>
-                <constraint firstAttribute="bottom" secondItem="qfy-F5-TNK" secondAttribute="bottom" constant="7" id="cYk-gB-9br"/>
-                <constraint firstItem="qfy-F5-TNK" firstAttribute="top" secondItem="U1A-mM-b6b" secondAttribute="bottom" constant="-85" id="nut-Ea-i8n"/>
-                <constraint firstItem="U1A-mM-b6b" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="xYa-Hb-9GG"/>
+                <constraint firstAttribute="bottom" secondItem="U1A-mM-b6b" secondAttribute="bottom" constant="7" id="4Ys-Th-PYW"/>
+                <constraint firstItem="U1A-mM-b6b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="Aej-Kd-bWt"/>
+                <constraint firstItem="U1A-mM-b6b" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="CYg-PR-NeW"/>
+                <constraint firstAttribute="trailing" secondItem="qfy-F5-TNK" secondAttribute="trailing" constant="8" id="Keo-Ny-Wu7"/>
+                <constraint firstAttribute="bottom" secondItem="qfy-F5-TNK" secondAttribute="bottom" constant="7" id="OPK-Nm-w2z"/>
+                <constraint firstItem="qfy-F5-TNK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="PFO-VC-NZ2"/>
+                <constraint firstItem="qfy-F5-TNK" firstAttribute="leading" secondItem="U1A-mM-b6b" secondAttribute="trailing" constant="8" id="mJh-4V-ROl"/>
+                <constraint firstItem="qfy-F5-TNK" firstAttribute="leading" secondItem="U1A-mM-b6b" secondAttribute="trailing" constant="8" id="oNB-tW-xHi"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
