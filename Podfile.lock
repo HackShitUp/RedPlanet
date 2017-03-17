@@ -1,4 +1,5 @@
 PODS:
+  - AnimatedCollectionViewLayout (0.2.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -24,6 +25,7 @@ PODS:
   - SwipeNavigationController (2.0.2)
 
 DEPENDENCIES:
+  - AnimatedCollectionViewLayout
   - Bolts
   - DZNEmptyDataSet
   - Heap
@@ -39,6 +41,7 @@ DEPENDENCIES:
   - SwipeNavigationController (~> 2.0.2)
 
 SPEC CHECKSUMS:
+  AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
@@ -53,6 +56,6 @@ SPEC CHECKSUMS:
   SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: 698789cb5f1b0cfb0beffac3c94b927f8738bc69
+PODFILE CHECKSUM: 6e00fc5d5cf00bd5f4c00010850a2157af120330
 
 COCOAPODS: 1.1.1

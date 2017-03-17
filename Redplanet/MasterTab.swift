@@ -13,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import SwipeNavigationController
+
 class MasterTab: UITabBarController {
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,5 +52,6 @@ class MasterTab: UITabBarController {
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 10.0)!], for: .normal)
     }
+    
     
 }

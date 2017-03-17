@@ -1,30 +1,30 @@
 //
-//  NewsController.swift
+//  SelectedStories.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 2/20/17.
+//  Created by Joshua Choi on 3/16/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
-import SDWebImage
+import AnimatedCollectionViewLayout
+
 import Parse
 import ParseUI
 import Bolts
+
+import SDWebImage
 import SVProgressHUD
 
-// Array to hold news URL
-var storyURL = [String]()
-var mediaName = [String]()
-
-class NewsController: UITableViewController, UINavigationControllerDelegate {
-
+class SelectedStories: UICollectionViewController {
+    
+    
     // Arrays to hold data
     var titles = [String]()
     var webURLS = [String]()
     var mediaURLS = [String]()
     var authors = [String]()
-
+    
     @IBAction func back(_ sender: Any) {
         storyURL.removeAll(keepingCapacity: false)
         mediaName.removeAll(keepingCapacity: false)
@@ -83,7 +83,7 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                         }
                         
                         // Reload data
-                        self.tableView?.reloadData()
+                        self.collectionView?.reloadData()
                         
                     } catch {
                         print("ERROR: Unable to read JSON data.")
@@ -92,7 +92,7 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                     }
                 }
                 // Reload data
-                self.tableView?.reloadData()
+                self.collectionView?.reloadData()
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - SVProgressHUD
@@ -100,7 +100,7 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
                 
             }
             // Reload data
-            self.tableView!.reloadData()
+            self.collectionView!.reloadData()
         }
         task.resume()
     }
@@ -115,18 +115,19 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
     
     // Function to stylize and set title of navigation bar
     func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Selected Stories"
-        }
+//        // Change the font and size of nav bar text
+//        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+//            let navBarAttributesDictionary: [String: AnyObject]? = [
+//                NSForegroundColorAttributeName: UIColor.black,
+//                NSFontAttributeName: navBarFont
+//            ]
+//            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+//            self.title = "Selected Stories"
+//        }
         
         // Enable UIBarButtonItems, configure navigation bar, && show tabBar (last line)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         UIApplication.shared.setStatusBarHidden(false, with: .none)
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -139,23 +140,24 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
         // Configure data
         self.setData()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: - SVProgressHUD
         SVProgressHUD.show()
-        
-        // Register NIB
-        let nib = UINib(nibName: "NewsHeader", bundle: nil)
-        tableView?.register(nib, forHeaderFooterViewReuseIdentifier: "NewsHeader")
-        
-        // Configure table view
-        self.tableView!.estimatedRowHeight = 275
-        self.tableView!.rowHeight = UITableViewAutomaticDimension
-        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.tableFooterView = UIView()
+        print("FIRED")
+        self.setData()
+        let layout = AnimatedCollectionViewLayout()
+        layout.scrollDirection = .horizontal
+        layout.animator = ParallaxAttributesAnimator()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        self.collectionView!.collectionViewLayout = layout
+        self.collectionView!.isPagingEnabled = true
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
@@ -164,81 +166,39 @@ class NewsController: UITableViewController, UINavigationControllerDelegate {
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
-    // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 100
-    }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "NewsHeader") as! NewsHeader
-        // (1) Add Tap Method
-        let apiTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
-        apiTap.numberOfTapsRequired = 1
-        header.isUserInteractionEnabled = true
-        header.addGestureRecognizer(apiTap)
-        
-        // (2) Fetch media's logo
-        let ads = PFQuery(className: "Ads")
-        ads.whereKey("adName", equalTo: mediaName.last!)
-        ads.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    if let file = object.value(forKey: "photo") as? PFFile {
-                        // Configure UIImageView
-                        header.mediaLogo.layer.cornerRadius = 6.00
-                        header.mediaLogo.clipsToBounds = true
-                        // MARK: - SDWebImage
-                        header.mediaLogo.sd_setImage(with: URL(string: file.url!), placeholderImage: UIImage())
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-        // (3) Set Media's Name
-        header.mediaName.text! = mediaName.last!
-        return header
-    }
-    
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    // MARK: UICollectionViewDataSource
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // #warning Incomplete implementation, return the number of items
+        print("Titles: \(titles.count)")
         return self.titles.count
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 275
-    }
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ssCell", for: indexPath) as! SelectedStoriesCell
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "newsCell", for: indexPath) as! NewsCell
         // (1) Set title
         cell.title.text! = self.titles[indexPath.row]
         cell.title.sizeToFit()
         cell.title.numberOfLines = 0
         // (2) Set Asset Preview
         // MARK: - SDWebImage
-        cell.asset.sd_setImage(with: URL(string: mediaURLS[indexPath.row]), placeholderImage: UIImage())
-        cell.asset.layer.cornerRadius = 4.00
-        cell.asset.layer.borderColor = UIColor.lightGray.cgColor
-        cell.asset.layer.borderWidth = 0.50
-        cell.asset.clipsToBounds = true
+        cell.coverPhoto.sd_setImage(with: URL(string: mediaURLS[indexPath.row]), placeholderImage: UIImage())
+        cell.coverPhoto.layer.cornerRadius = 4.00
+        cell.coverPhoto.layer.borderColor = UIColor.lightGray.cgColor
+        cell.coverPhoto.layer.borderWidth = 0.50
+        cell.coverPhoto.clipsToBounds = true
         // (3) Set author
         if self.authors[indexPath.row] != " " {
-            cell.author.text! = "By \(self.authors[indexPath.row])"
+//            cell.author.text! = "By \(self.authors[indexPath.row])"
         }
         
         return cell
     }
-    
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // MARK: - SwiftWebVC
-        let webVC = SwiftModalWebVC(urlString: self.webURLS[indexPath.row])
-        self.present(webVC, animated: true, completion: nil)
-    }
+
 }

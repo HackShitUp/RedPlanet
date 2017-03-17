@@ -19,6 +19,24 @@ import SwipeNavigationController
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
+// User's city and state
+var cityState = [String]()
+
+
+extension CGFloat {
+    static func random() -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
+    }
+}
+
+extension UIColor {
+    static func randomColor() -> UIColor {
+        return UIColor(red:   .random(),
+                       green: .random(),
+                       blue:  .random(),
+                       alpha: 0.50)
+    }
+}
 
 class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
     
@@ -71,10 +89,9 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButton(_ sender: Any) {
-        
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
-
+        
         if chatCamera == false {
             // Moment
             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -110,7 +127,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             chat["read"] = false
             chat.saveInBackground()
-
+            
             // Send Push Notification to user
             // Handle optional chaining
             if chatUserObject.last!.value(forKey: "apnsId") != nil {
@@ -153,7 +170,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
         // Delegate
     }
-    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -165,6 +181,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         // Enable interaction with stillPhoto for filterView
         self.stillPhoto.isUserInteractionEnabled = true
 
@@ -187,7 +204,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Add shadows for buttons && bring view to front (last line)
         let buttons = [self.saveButton,
                        self.textButton,
-//                       self.drawButton,
                        self.leaveButton,
                        self.completeButton] as [Any]
         for b in buttons {
@@ -238,11 +254,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
-        // Configure time
+        
+        // (1) Configure time
         let timeFormatter = DateFormatter()
-        timeFormatter.dateFormat = "h:mm a"
+        timeFormatter.dateFormat = "h:mma"
         let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
-        time.font = UIFont(name: "AvenirNextCondensed-Demibold", size: 70)
+        time.font = UIFont(name: "Futura-Medium", size: 70)
         time.textColor = UIColor.white
         time.layer.shadowColor = UIColor.black.cgColor
         time.layer.shadowOffset = CGSize(width: 1, height: 1)
@@ -252,15 +269,59 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         time.textAlignment = .center
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
         time.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // Add filter
-        self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterNameList)
-        self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: img!, atZPosition: 0))
-        self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "HardLight")!, atZPosition: 2))
-        self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Cotton")!, atZPosition: 2))
-    }
+        // (2) Configure City, State
+        let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/5))
+        city.font = UIFont(name: "AvenirNextCondensed-Bold", size: 60)
+        city.textColor = UIColor.white
+        city.backgroundColor = UIColor.randomColor()
+        city.text = "\(cityState.last!)"
+        city.textAlignment = .center
+        city.numberOfLines = 1
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        city.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // Clear filters
+        SNFilter.filterIdentities.removeAll(keepingCapacity: false)
+        
+        // Append data accordingly
+        if cityState.isEmpty {
+            let filterAS =  ["nil",
+                             "nil",
+                             "nil",
+                             "nil",
+                             "CIPhotoEffectNoir",
+                             "CICMYKHalftone",
+                             "CIPhotoEffectInstant"]
+            SNFilter.filterIdentities.append(contentsOf: filterAS)
+            // Add filter
+            self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: timeStamp!, atZPosition: 0))
+            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Dope")!, atZPosition: 2))
+            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Red")!, atZPosition: 2))
+        } else {
+            let filterBS = ["nil",
+                            "nil",
+                            "nil",
+                            "nil",
+                            "nil",
+                            "CIPhotoEffectNoir",
+                            "CICMYKHalftone",
+                            "CIPhotoEffectInstant"]
+            SNFilter.filterIdentities.append(contentsOf: filterBS)
+            // Add filter
+            self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
+            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: timeStamp!, atZPosition: 0))
+            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: cityStamp!, atZPosition: 0))
+            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Dope")!, atZPosition: 2))
+            self.data[4].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Red")!, atZPosition: 2))
+        }
+        
+    }// end creating data
     
     // UPDATE NEW PICTURE
     fileprivate func updatePicture(_ newImage: UIImage) {

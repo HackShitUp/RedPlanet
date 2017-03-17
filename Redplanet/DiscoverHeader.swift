@@ -164,8 +164,10 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
             storyURL.append("https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
         }
         
-        let nytimesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "newsVC") as! NewsController
-        self.delegate?.navigationController?.pushViewController(nytimesVC, animated: true)
+        let ssVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "newsVC") as! NewsController
+        self.delegate?.navigationController?.pushViewController(ssVC, animated: true)
+//        let ssVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "selectedStoriesVC") as! SelectedStories
+//        self.delegate?.navigationController?.pushViewController(ssVC, animated: true)
     }
     
 }

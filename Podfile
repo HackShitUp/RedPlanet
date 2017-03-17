@@ -5,6 +5,7 @@ target 'Redplanet' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
+	pod 'AnimatedCollectionViewLayout'
 	pod ‘Bolts’
 	pod 'DZNEmptyDataSet'
 	pod ‘Heap’

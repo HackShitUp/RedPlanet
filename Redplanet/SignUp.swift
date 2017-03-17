@@ -101,7 +101,6 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             let imageFile = PFFile(data: imageData!)
             newUser["userProfilePicture"] = imageFile
             newUser["userBiography"] = ""
-            newUser["anonymous"] = false
             newUser.signUpInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {

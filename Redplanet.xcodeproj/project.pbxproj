@@ -183,6 +183,8 @@
 		7ED8DD941E73D3A3006AE033 /* QuickShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED8DD931E73D3A3006AE033 /* QuickShare.swift */; };
 		7ED8DD961E73D3B8006AE033 /* QuickShareCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED8DD951E73D3B8006AE033 /* QuickShareCell.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
+		7EE06C241E7B218000472200 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE06C231E7B218000472200 /* SelectedStories.swift */; };
+		7EE06C261E7B218F00472200 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE06C251E7B218F00472200 /* SelectedStoriesCell.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -463,6 +465,8 @@
 		7ED8DD931E73D3A3006AE033 /* QuickShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickShare.swift; sourceTree = "<group>"; };
 		7ED8DD951E73D3B8006AE033 /* QuickShareCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickShareCell.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
+		7EE06C231E7B218000472200 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
+		7EE06C251E7B218F00472200 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -754,6 +758,7 @@
 		7E873D7E1E5BEF64004E5FCB /* NEWS */ = {
 			isa = PBXGroup;
 			children = (
+				7EE06C281E7B2C2700472200 /* SS */,
 				7E873D7A1E5BEF42004E5FCB /* NewsController.swift */,
 				7E873D7C1E5BEF5F004E5FCB /* NewsCell.swift */,
 				7E064D091E7688F20074B78C /* NewsHeader.swift */,
@@ -1388,6 +1393,15 @@
 			name = QuickShare;
 			sourceTree = "<group>";
 		};
+		7EE06C281E7B2C2700472200 /* SS */ = {
+			isa = PBXGroup;
+			children = (
+				7EE06C231E7B218000472200 /* SelectedStories.swift */,
+				7EE06C251E7B218F00472200 /* SelectedStoriesCell.swift */,
+			);
+			name = SS;
+			sourceTree = "<group>";
+		};
 		7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1785,6 +1799,7 @@
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
+				7EE06C241E7B218000472200 /* SelectedStories.swift in Sources */,
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */,
 				7E4CFF901DB439060087454E /* PhotoAsset.swift in Sources */,
@@ -1869,6 +1884,7 @@
 				7E98E9561DB75057001B7329 /* UIView+CLImageToolInfo.m in Sources */,
 				7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */,
 				7E98E9511DB75057001B7329 /* CLCircleView.m in Sources */,
+				7EE06C261E7B218F00472200 /* SelectedStoriesCell.swift in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,

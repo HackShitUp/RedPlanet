@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AnimatedCollectionViewLayout.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,17 +82,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0F515097EE1CFFAAB86CD1482F009831</key>
+		<key>01B5F9358EAD17782FA546BF99060034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1709B0F93173452D4257B9798416A3A1</key>
+		<key>2056771B199BD695CB2251E2B5240FA1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>42ADB2FED4F59093463C55BE74405FE6</key>
+		<key>2995558172751E9976A7AF7ABA340C97</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,22 +107,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>52A0523D1651F638FB18DBB74989540B</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>559AA30B348A1759FCF8560A356D26A0</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>8B12BAE758D3688A6E018EA480621C53</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>930F75C326424783582C21DA6136C7C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,12 +127,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>A951E7BD437424E34EB068AAFCC87DDC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BA0B5469998BBD0685EA42960CCE59C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C2079E3EEFFF738C2A5FE978A07048D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>D386C75EFD4F03725E4EFB866B600B9A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DF7F36DD17D838D00463BB082150F1A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -7,22 +7,28 @@
 //
 
 import UIKit
-import SVProgressHUD
-import SwiftyCam
-import SwipeNavigationController
-import SDWebImage
+import CoreLocation
 
 import Parse
 import ParseUI
 import Bolts
+
+import SVProgressHUD
+import SwiftyCam
+import SwipeNavigationController
+import SDWebImage
 
 // Bool to determine whether camera was accessed from Chats
 var chatCamera: Bool = false
 // Bool to determine camera side
 var isRearCam: Bool?
 
-class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavigationControllerDelegate {
+class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
+    // MARK: - CoreLocation
+    let manager = CLLocationManager()
+    
+    // Timer for recording videos
     var time: Float = 0.0
     var timer: Timer?
     
@@ -35,6 +41,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     @IBOutlet weak var newTextButton: UIButton!
     @IBOutlet weak var homeButton: UIButton!
 
+    
+    // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         DispatchQueue.main.async {
             stillImages.append(photo)
@@ -56,18 +64,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         }
     }
     
-    func countDown() {
-        // Edit
-        DispatchQueue.main.async {
-            self.time += 1
-            self.progressView.setProgress(10/self.time, animated: true)
-            if self.time >= 10 {
-                self.timer!.invalidate()
-            }
-        }
-    }
-    
-    
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         self.libraryButton.isHidden = false
         self.homeButton.isHidden = false
@@ -86,9 +82,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
+        // Tapped preview layer
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didChangeZoomLevel zoom: CGFloat) {
+        // Zoom level changed
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
@@ -96,6 +94,105 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
             isRearCam = true
         } else if camera == .front {
             isRearCam = false
+        }
+    }
+    
+    
+    
+    // MARK: - CoreLocation Delegate Methods
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations[0]
+        let geolocation = CLGeocoder()
+        // Reverse engineer coordinates
+        geolocation.reverseGeocodeLocation(location) {
+            (placemarks: [CLPlacemark]?, error: Error?) in
+            if error == nil {
+                if placemarks!.count > 0 {
+                    let pm = placemarks![0]
+                    if cityState.isEmpty {
+                        cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
+                    } else {
+                        // End queue
+                        geolocation.cancelGeocode()
+                    }
+                }
+            } else {
+                print("Reverse geocoderfailed with error: \(error?.localizedDescription as Any)")
+            }
+        }
+        
+        // Save user's location to server
+        let userLocation = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        if PFUser.current() != nil {
+            PFUser.current()!["location"] = userLocation
+            PFUser.current()!.saveInBackground()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("locationManager:\(manager) didFailWithError:\(error)")
+    }
+    
+    
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        if status == .authorizedWhenInUse {
+            // Trigger location
+            self.triggerLocation()
+        }
+    }
+    
+    
+    // Function to trigger location
+    func triggerLocation() {
+        // MARK: - CoreLocation
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
+    }
+    
+    
+    // Function to authorize user's location
+    func authorizeLocation() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse:
+            self.triggerLocation()
+        case .notDetermined:
+            manager.requestWhenInUseAuthorization()
+        case .denied:
+            // THIS might get a bit annoying
+            let alert = UIAlertController(title: "Background Location Access Denied",
+                                                     message: "If you'd like to share Moments with Location-Based filters, please allow Redplanet to enable location services on your device.",
+                                                     preferredStyle: .alert)
+            
+            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            let settings = UIAlertAction(title: "Settings", style: .default) { (action) in
+                if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
+                    UIApplication.shared.openURL(url as URL)
+                }
+            }
+            
+            alert.addAction(settings)
+            alert.addAction(cancel)
+            self.present(alert, animated: true, completion: nil)
+            
+        default:
+            break;
+        }
+        
+    }
+    
+    
+    // Function to countdown timer when recording video
+    func countDown() {
+        // Edit
+        DispatchQueue.main.async {
+            self.time += 1
+            self.progressView.setProgress(10/self.time, animated: true)
+            if self.time >= 10 {
+                self.timer!.invalidate()
+            }
         }
     }
     
@@ -129,7 +226,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
         self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
     }
 
-    
     // Function to configure view
     func configureView() {
         UIApplication.shared.setStatusBarHidden(false, with: .none)
@@ -144,8 +240,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        // Stylize title
         configureView()
+        
+        // Authorization
+        authorizeLocation()
         
         // Set profile photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
@@ -254,6 +353,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, UINavi
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
     }
 
     override func didReceiveMemoryWarning() {
