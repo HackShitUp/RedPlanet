@@ -290,8 +290,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Count characters
         countRemaining()
         
-        // Define word
-        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+        // Define words
+        let words: [String] = self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
+        
+        // Define single word
+        for var word in words {
             // @'s
             if word.hasPrefix("@") {
                 // Cut all symbols
@@ -311,14 +314,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                         for object in objects! {
                             self.userObjects.append(object)
                         }
-                        // Show tableView and reloadData
-                        self.tableView!.isHidden = false
-                        self.tableView!.reloadData()
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
-            } else if word.hasPrefix("http") || word.hasPrefix("https") {
+                // Show tableView and reloadData
+                self.tableView!.isHidden = false
+                self.tableView!.reloadData()
+            } else if word.hasPrefix("http") {
                 let apiEndpoint: String = "http://tinyurl.com/api-create.php?url=\(word)"
                 let shortURL = try? String(contentsOf: URL(string: apiEndpoint)!, encoding: String.Encoding.ascii)
                 // Replace text
@@ -328,6 +331,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             }
         }
         
+        return true
+    }
+    
+    // iOS 10 only
+    @available(iOS 10.0, *)
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return true
     }
     
@@ -368,7 +377,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         return cell
     }
-    
     
     
     // MARK: - UITableViewdelegeate Method

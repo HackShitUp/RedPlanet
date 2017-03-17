@@ -854,21 +854,17 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
                 // Find the user
                 let fullName = PFUser.query()!
                 fullName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                
                 let theUsername = PFUser.query()!
                 theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                
                 let search = PFQuery.orQuery(withSubqueries: [fullName, theUsername])
                 search.findObjectsInBackground(block: {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         // Clear arrays
                         self.userObjects.removeAll(keepingCapacity: false)
-                        
                         for object in objects! {
                             self.userObjects.append(object)
                         }
@@ -934,11 +930,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // @@@@@@@@@@@@@@@@@@@@@@@@@@@
             if word.hasPrefix("@") {
-                
                 // Cut all symbols
                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
                 word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
                 // Replace text
                 self.mediaCaption.text! = self.mediaCaption.text!.replacingOccurrences(of: "\(word)", with: self.userObjects[indexPath.row].value(forKey: "username") as! String, options: String.CompareOptions.literal, range: nil)
             }
@@ -946,7 +940,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         
         // Clear array
         self.userObjects.removeAll(keepingCapacity: false)
-        
         // Hide UITableView
         self.tableView!.isHidden = true
     }
