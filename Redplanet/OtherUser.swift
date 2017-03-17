@@ -525,8 +525,7 @@ class OtherUser: UITableViewController {
         super.viewDidLoad()
         // Stylize and set title
         configureView()
-        
-        /*
+
         // Track Who's Profile user lands on
         Heap.track("ViewedProfile", withProperties:
             ["byUserId": "\(PFUser.current()!.objectId!)",
@@ -534,7 +533,7 @@ class OtherUser: UITableViewController {
                 "OtherUserID": "\(otherObject.last!.objectId!)",
                 "OtherUsername": "\(otherObject.last!.value(forKey: "username") as! String)"
             ])
-        */
+ 
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white

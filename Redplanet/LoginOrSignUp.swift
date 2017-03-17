@@ -29,16 +29,26 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     
     // Function to login
     func loginToRP() {
-        
-        // Superseed to lowercaseString
-        let theUsername = rpUsername.text!.lowercased()
-        let thePassword = rpPassword.text!
-        
+        // Loop thorugh words to check for email vs username
+        for word in self.rpUsername.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+            if word.contains("@") {
+                // LOGIN WITH EMAIL
+                loginEmail()
+            } else {
+                // LOGIW WITH USERNAME
+                loginUsername(theUsername: word)
+            }
+        }
+    }
+    
+    
+    // Function to login with Username
+    func loginUsername(theUsername: String?) {
         // Login
-        PFUser.logInWithUsername(inBackground: theUsername,
-                                 password: thePassword) {
+        PFUser.logInWithUsername(inBackground: theUsername!.lowercased(),
+                                 password: self.rpPassword.text!) {
                                     (user: PFUser?, error: Error?) in
-                                    if user != nil {                                        
+                                    if user != nil {
                                         // Resign keyboard
                                         self.rpPassword.resignFirstResponder()
                                         
@@ -54,105 +64,129 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                         
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        
-                                        // Present alert
-                                        let alert = UIAlertController(title: "Login Failed",
-                                                                      message: "The username and password do not match!",
-                                                                      preferredStyle: .alert)
-                                        
-                                        
-                                        let cancelAction = UIAlertAction(title: "Try Again",
-                                                                         style: .cancel,
-                                                                         handler: {(alertAction: UIAlertAction!) in
-                                                                            
-                                                                            // Clear textfields
-                                                                            self.rpUsername.text! = ""
-                                                                            self.rpPassword.text! = ""
-                                                                            
-                                                                            // Set first responder
-                                                                            self.rpUsername.becomeFirstResponder()
-                                                                            
-                                        })
-                                        
-                                        let forgot = UIAlertAction(title: "Forgot Password",
-                                                                   style: .default,
-                                                                   handler: {(alertAction: UIAlertAction!) in
-                                                                    
-                                                                    let alert = UIAlertController(title: "What's Your Email?",
-                                                                                                  message: "Please enter your email to reset your password.",
-                                                                                                  preferredStyle: .alert)
-                                                                    
-                                                                    
-                                                                    let email = UIAlertAction(title: "Done",
-                                                                                              style: .default) {
-                                                                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                                                                
-                                                                                                let email = alert.textFields![0]
-                                                                                                
-                                                                                                // Send email to reset password
-                                                                                                PFUser.requestPasswordResetForEmail(inBackground: email.text!.lowercased(), block: { (success: Bool, error: Error?) in
-                                                                                                    if success {
-                                                                                                        
-                                                                                                        let alert = UIAlertController(title: "Check Your Email!",
-                                                                                                                                      message: "You can reset your password via our link.",
-                                                                                                                                      preferredStyle: .alert)
-                                                                                                        
-                                                                                                let ok = UIAlertAction(title: "ok",
-                                                                                                                               style: .default,
-                                                                                                                               handler: {(alertAction: UIAlertAction!) in
-                                                                                                                                // Pop back view controller
-                                                                                                                                self.dismiss(animated: true, completion: nil)
-                                                                                                        })
-                                                                                                        
-                                                                                                        alert.addAction(ok)
-                                                                                                        self.present(alert, animated: true, completion: nil)
-                                                                                                    } else {
-                                                                                                        
-                                                                                                        // Invalid email
-                                                                                                        let alert = UIAlertController(title: "Invalid Email",
-                                                                                                                                      message: "Your email doesn't exist in our database.",
-                                                                                                                                      preferredStyle: .alert)
-                                                                                                        
-                                                                                                        let ok = UIAlertAction(title: "ok",
-                                                                                                                               style: .default,
-                                                                                                                               handler: {(alertAction: UIAlertAction!) in
-                                                                                                                                self.dismiss(animated: true, completion: nil)
-                                                                                                        })
-                                                                                                        
-                                                                                                        alert.addAction(ok)
-                                                                                                        self.present(alert, animated: true, completion: nil)
-                                                                                                        
-                                                                                                    }
-                                                                                                })
-                                                                                                
-                                                                                                
-                                                                                                
+                                        // Show error
+                                        self.showError()
+                                    }
+        }
+    }
+    
+    // Function to login with Email
+    func loginEmail() {
+        let user = PFUser.query()!
+        user.whereKey("email", equalTo: self.rpUsername.text!.lowercased().replacingOccurrences(of: " ", with: ""))
+        user.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    // Login with username
+                    self.loginUsername(theUsername: (object.value(forKey: "username") as! String).lowercased())
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                // Show error
+                self.showError()
+            }
+        }
+    }
+    
+    
+    // Function to show error
+    func showError() {
+        // Present alert
+        let alert = UIAlertController(title: "Login Failed",
+                                      message: "The username and password do not match!",
+                                      preferredStyle: .alert)
+        
+        
+        let cancelAction = UIAlertAction(title: "Try Again",
+                                         style: .cancel,
+                                         handler: {(alertAction: UIAlertAction!) in
+                                            
+                                            // Clear textfields
+                                            self.rpUsername.text! = ""
+                                            self.rpPassword.text! = ""
+                                            
+                                            // Set first responder
+                                            self.rpUsername.becomeFirstResponder()
+                                            
+        })
+        
+        let forgot = UIAlertAction(title: "Forgot Password",
+                                   style: .default,
+                                   handler: {(alertAction: UIAlertAction!) in
+                                    
+                                    let alert = UIAlertController(title: "What's Your Email?",
+                                                                  message: "Please enter your email to reset your password.",
+                                                                  preferredStyle: .alert)
+                                    
+                                    
+                                    let email = UIAlertAction(title: "Done",
+                                                              style: .default) {
+                                                                [unowned self, alert] (action: UIAlertAction!) in
+                                                                
+                                                                let email = alert.textFields![0]
+                                                                
+                                                                // Send email to reset password
+                                                                PFUser.requestPasswordResetForEmail(inBackground: email.text!.lowercased(), block: { (success: Bool, error: Error?) in
+                                                                    if success {
+                                                                        
+                                                                        let alert = UIAlertController(title: "Check Your Email!",
+                                                                                                      message: "You can reset your password via our link.",
+                                                                                                      preferredStyle: .alert)
+                                                                        
+                                                                        let ok = UIAlertAction(title: "ok",
+                                                                                               style: .default,
+                                                                                               handler: {(alertAction: UIAlertAction!) in
+                                                                                                // Pop back view controller
+                                                                                                self.dismiss(animated: true, completion: nil)
+                                                                        })
+                                                                        
+                                                                        alert.addAction(ok)
+                                                                        self.present(alert, animated: true, completion: nil)
+                                                                    } else {
+                                                                        
+                                                                        // Invalid email
+                                                                        let alert = UIAlertController(title: "Invalid Email",
+                                                                                                      message: "Your email doesn't exist in our database.",
+                                                                                                      preferredStyle: .alert)
+                                                                        
+                                                                        let ok = UIAlertAction(title: "ok",
+                                                                                               style: .default,
+                                                                                               handler: {(alertAction: UIAlertAction!) in
+                                                                                                self.dismiss(animated: true, completion: nil)
+                                                                        })
+                                                                        
+                                                                        alert.addAction(ok)
+                                                                        self.present(alert, animated: true, completion: nil)
+                                                                        
                                                                     }
-                                                                    
-                                                                    let cancel = UIAlertAction(title: "Cancel",
-                                                                                               style: .destructive,
-                                                                                               handler: nil)
-                                                                    
-                                                                    
-                                                                    // Add textfield
-                                                                    alert.addTextField(configurationHandler: nil)
-                                                                    alert.addAction(email)
-                                                                    alert.addAction(cancel)
-                                                                    self.present(alert, animated: true, completion: nil)
-                                                                    
-                                                                    
-                                        })
-                                        
-                                        alert.addAction(forgot)
-                                        alert.addAction(cancelAction)
-                                        
-                                        self.present(alert, animated: false, completion: nil)
-                                        
+                                                                })
+                                                                
+                                                                
+                                                                
                                     }
                                     
-        }
+                                    let cancel = UIAlertAction(title: "Cancel",
+                                                               style: .destructive,
+                                                               handler: nil)
+                                    
+                                    
+                                    // Add textfield
+                                    alert.addTextField(configurationHandler: nil)
+                                    alert.addAction(email)
+                                    alert.addAction(cancel)
+                                    self.present(alert, animated: true, completion: nil)
+                                    
+                                    
+        })
         
+        alert.addAction(forgot)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: false, completion: nil)
     }
+    
+    
+    
     
     // UITextField Delegates
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

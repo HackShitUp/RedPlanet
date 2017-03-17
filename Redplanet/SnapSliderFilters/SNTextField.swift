@@ -26,7 +26,7 @@ open class SNTextField: UITextField {
         self.textColor = UIColor.white
         self.placeholder = ""
         self.font = UIFont(name: "AvenirNext-Medium", size: 17)
-        self.borderStyle = UITextBorderStyle.none
+        self.borderStyle = .none
         self.autocorrectionType = UITextAutocorrectionType.no
         self.keyboardType = UIKeyboardType.default
         self.returnKeyType = UIReturnKeyType.done
@@ -99,8 +99,8 @@ extension SNTextField: UITextFieldDelegate {
     }
 }
 
-//MARK: - Extension Gesture Recognizer Delegate and touch handler for TextField
 
+//MARK: - Extension Gesture Recognizer Delegate and touch handler for TextField
 extension SNTextField: UIGestureRecognizerDelegate {
     
     public func handleTap() {
