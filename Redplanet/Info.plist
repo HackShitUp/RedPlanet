@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.4.69</string>
+	<string>3.4.7</string>
 	<key>CFBundleVersion</key>
 	<string>2.5</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -31,12 +31,12 @@
 	<string>To capture Moments and share them with the people you love.</string>
 	<key>NSContactsUsageDescription</key>
 	<string>To help you find your friends easily.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>To share Moments with filters based on your location!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To record Moments and share them with the people you love.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To share photos from your library and save photos to your Camera Roll.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To share Moments with filters based on your location!</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

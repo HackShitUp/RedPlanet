@@ -118,6 +118,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 }
             } else {
                 print("Reverse geocoderfailed with error: \(error?.localizedDescription as Any)")
+                if (error?.localizedDescription as Any) as! String == "The operation couldn’t be completed. (kCLErrorDomain error 2.)" {
+                    // End queue
+                    geolocation.cancelGeocode()
+                }
             }
         }
         

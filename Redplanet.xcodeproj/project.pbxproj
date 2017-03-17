@@ -185,6 +185,7 @@
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
 		7EE06C241E7B218000472200 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE06C231E7B218000472200 /* SelectedStories.swift */; };
 		7EE06C261E7B218F00472200 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE06C251E7B218F00472200 /* SelectedStoriesCell.swift */; };
+		7EE06C2A1E7BD2C800472200 /* TagUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE06C291E7BD2C800472200 /* TagUsers.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -467,6 +468,7 @@
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EE06C231E7B218000472200 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
 		7EE06C251E7B218F00472200 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
+		7EE06C291E7BD2C800472200 /* TagUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagUsers.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -1406,6 +1408,7 @@
 			isa = PBXGroup;
 			children = (
 				7EECEE661E3C7B6D003FA134 /* UserCell.swift */,
+				7EE06C291E7BD2C800472200 /* TagUsers.swift */,
 				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
 			);
 			name = "NIB:UserCell";
@@ -1815,6 +1818,7 @@
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,
 				7E98E93D1DB75057001B7329 /* CLImageEditorTheme.m in Sources */,
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
+				7EE06C2A1E7BD2C800472200 /* TagUsers.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
