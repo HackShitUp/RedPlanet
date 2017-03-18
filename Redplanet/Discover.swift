@@ -181,7 +181,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     }
     
     
-    // MARK: UICollectionViewHeader
+    // MARK: - UICollectionViewHeader
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         // Size should be the same size of the headerView's label size:
@@ -195,8 +195,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         
         // Set delegate
         header.delegate = self
-        header.headerTitle.text! = "rp\nSELECTED 🔍 STORIES"
-        header.headerTitle.numberOfLines = 0
+        header.headerTitle.text! = "SELECTED 🔍 STORIES"
+        header.headerTitle.numberOfLines = 1
         
         // Tap title to search
         let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))
