@@ -114,10 +114,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
         // Stylize view
-//        self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Configure data
@@ -127,6 +124,17 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: - SVProgressHUD
+        SVProgressHUD.show()
+/*
+        ZoomInOutAttributesAnimator()
+        RotateInOutAttributesAnimator()
+        LinearCardAttributesAnimator()
+        CubeAttributesAnimator()
+        CrossFadeAttributesAnimator()
+        PageAttributesAnimator()
+        SnapInAttributesAnimator()
+*/
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
@@ -196,7 +204,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        print("Titles: \(titles.count)")
         return self.titles.count
     }
     

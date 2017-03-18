@@ -278,7 +278,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // MARK: - SnapSliderFilters
         // Set bool so images aren't flipped and reloaded
-        isRearCam = true
+        if currentCamera == .front {
+            isRearCam = false
+        } else {
+            isRearCam = true
+        }
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
