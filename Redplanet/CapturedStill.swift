@@ -275,7 +275,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // (2) Configure City, State
         let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/6))
         city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 60)
-//        city.textColor = UIColor.white
         city.textColor = UIColor.randomColor()
         city.backgroundColor = UIColor.randomColor()
         city.text = "\(cityState.last!)"

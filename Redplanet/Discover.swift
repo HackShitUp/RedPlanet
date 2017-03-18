@@ -195,7 +195,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         
         // Set delegate
         header.delegate = self
-        header.headerTitle.text! = "rp\nS e l e c t e d  🔍  S t o r i e s"
+        header.headerTitle.text! = "rp\nSELECTED 🔍 STORIES"
         header.headerTitle.numberOfLines = 0
         
         // Tap title to search

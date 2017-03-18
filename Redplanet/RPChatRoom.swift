@@ -1139,10 +1139,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         // Traverse file to URL
                         let fileURL = URL(string: media.url!)
                         
-                        // Create rounded corners
-                        mCell.rpMediaAsset.layer.cornerRadius = 12.00
-                        mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
-                        mCell.rpMediaAsset.layer.borderWidth = 0.00
+                        // Create Moment indication
+                        mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                        mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                        mCell.rpMediaAsset.layer.borderWidth = 3.50
                         
                         // MARK: - SDWebImage
                         mCell.rpMediaAsset.sd_setImage(with: fileURL!, placeholderImage: mCell.rpMediaAsset.image)
