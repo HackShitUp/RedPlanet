@@ -117,7 +117,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize view
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Configure data
         self.fetchStories(mediaSource: storyURL.last!)
