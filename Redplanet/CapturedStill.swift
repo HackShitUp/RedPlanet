@@ -272,24 +272,12 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // (2) Configure City, State
-        let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/6))
-        city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 60)
-        city.textColor = UIColor.white
-        city.backgroundColor = UIColor.randomColor()
-        city.text = "\(cityState.last!)"
-        city.textAlignment = .center
-        city.numberOfLines = 1
-        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        city.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
         // Clear filters
         SNFilter.filterIdentities.removeAll(keepingCapacity: false)
         
         // Append data accordingly
         if cityState.isEmpty {
+        // GEOLOCATION ENABLED
             let filterAS =  ["nil",
                              "nil",
                              "nil",
@@ -304,6 +292,20 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Dope")!, atZPosition: 2))
             self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Red")!, atZPosition: 2))
         } else {
+        // GEOLOCATION DISABLED
+            // (2) Configure City, State
+            let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/6))
+            city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 60)
+            city.textColor = UIColor.white
+            city.backgroundColor = UIColor.randomColor()
+            city.text = "\(cityState.last!)"
+            city.textAlignment = .center
+            city.numberOfLines = 1
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            city.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
             let filterBS = ["nil",
                             "nil",
                             "nil",

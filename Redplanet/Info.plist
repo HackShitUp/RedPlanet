@@ -32,7 +32,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>To help you find your friends easily.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>To share Moments with filters based on your location!</string>
+	<string>To share Moments with location-based filters, and help your friends find you!</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To record Moments and share them with the people you love.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

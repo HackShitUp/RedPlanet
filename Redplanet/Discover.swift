@@ -221,8 +221,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         // Set delegate
         header.delegate = self
         // Set titles
-        header.ssTitle.text! = "SELECTED 🔍 STORIES"
-        header.discoverTitle.text! = "People You May Know"
+        header.ssTitle.text! = "rp\nSELECTED 🔍 STORIES"
+        header.ssTitle.numberOfLines = 2
         
         // Tap title to search
         let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))

@@ -3787,7 +3787,7 @@
                                                 <constraint firstAttribute="height" constant="26" id="Rlj-iN-CrC"/>
                                                 <constraint firstAttribute="width" constant="109" id="kd1-Ys-bmW"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -3813,22 +3813,21 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Stories" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-eF-Syw">
-                                    <rect key="frame" x="0.0" y="8" width="375" height="20"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-eF-Syw">
+                                    <rect key="frame" x="0.0" y="7" width="375" height="48"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="JBf-6g-hPi"/>
+                                        <constraint firstAttribute="height" constant="48" id="JBf-6g-hPi"/>
                                         <constraint firstAttribute="width" constant="375" id="seg-jq-3Ru"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="17"/>
-                                    <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="a2P-N5-1Ew">
-                                    <rect key="frame" x="0.0" y="37" width="375" height="135"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <rect key="frame" x="0.0" y="55" width="375" height="145"/>
+                                    <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="135" id="SQb-OZ-c91"/>
+                                        <constraint firstAttribute="height" constant="145" id="SQb-OZ-c91"/>
                                         <constraint firstAttribute="width" constant="375" id="UnD-Vc-Nue"/>
                                     </constraints>
                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="CaQ-l4-Mhy">
@@ -3839,7 +3838,7 @@
                                     </collectionViewFlowLayout>
                                     <cells>
                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="discoverHeaderCell" id="83K-85-KNZ" customClass="DiscoverHeaderCell" customModule="Redplanet" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="5" width="125" height="125"/>
+                                            <rect key="frame" x="0.0" y="10" width="125" height="125"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                 <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
@@ -3854,7 +3853,7 @@
                                                     </imageView>
                                                 </subviews>
                                             </view>
-                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="mkh-DZ-xW5" secondAttribute="bottom" constant="3" id="0dp-WD-M74"/>
                                                 <constraint firstItem="mkh-DZ-xW5" firstAttribute="top" secondItem="83K-85-KNZ" secondAttribute="top" constant="2" id="IfE-np-553"/>
@@ -3867,34 +3866,18 @@
                                         </collectionViewCell>
                                     </cells>
                                 </collectionView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="People You May Know" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vzv-v1-kZS">
-                                    <rect key="frame" x="0.0" y="180" width="375" height="20"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="20" id="431-m1-d7B"/>
-                                        <constraint firstAttribute="width" constant="375" id="L9T-Jm-8eN"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
-                                    <color key="textColor" red="0.2550490359" green="0.2550490359" blue="0.2550490359" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="vzv-v1-kZS" secondAttribute="bottom" id="03T-Df-JeT"/>
-                                <constraint firstItem="vzv-v1-kZS" firstAttribute="leading" secondItem="5rr-5D-wvn" secondAttribute="leading" id="Gbu-Yj-5I4"/>
                                 <constraint firstAttribute="trailing" secondItem="f3S-eF-Syw" secondAttribute="trailing" id="Lzx-AJ-RRf"/>
                                 <constraint firstAttribute="trailing" secondItem="a2P-N5-1Ew" secondAttribute="trailing" id="N9M-y4-ZHN"/>
-                                <constraint firstItem="a2P-N5-1Ew" firstAttribute="top" secondItem="f3S-eF-Syw" secondAttribute="bottom" constant="9" id="Qop-cJ-wUR"/>
-                                <constraint firstItem="vzv-v1-kZS" firstAttribute="top" secondItem="a2P-N5-1Ew" secondAttribute="bottom" constant="8" id="Qwv-0J-0Fc"/>
-                                <constraint firstItem="f3S-eF-Syw" firstAttribute="top" secondItem="5rr-5D-wvn" secondAttribute="top" constant="8" id="jmr-fw-fLT"/>
+                                <constraint firstItem="a2P-N5-1Ew" firstAttribute="top" secondItem="f3S-eF-Syw" secondAttribute="bottom" id="Qop-cJ-wUR"/>
+                                <constraint firstItem="f3S-eF-Syw" firstAttribute="top" secondItem="5rr-5D-wvn" secondAttribute="top" constant="7" id="jmr-fw-fLT"/>
                                 <constraint firstItem="a2P-N5-1Ew" firstAttribute="leading" secondItem="5rr-5D-wvn" secondAttribute="leading" id="tEM-jk-3Px"/>
-                                <constraint firstAttribute="trailing" secondItem="vzv-v1-kZS" secondAttribute="trailing" id="tb1-oB-dae"/>
                                 <constraint firstItem="f3S-eF-Syw" firstAttribute="leading" secondItem="5rr-5D-wvn" secondAttribute="leading" id="vZZ-vl-hKp"/>
                             </constraints>
                             <connections>
                                 <outlet property="collectionView" destination="a2P-N5-1Ew" id="HFH-l8-jkh"/>
-                                <outlet property="discoverTitle" destination="vzv-v1-kZS" id="4li-NA-WzS"/>
                                 <outlet property="ssTitle" destination="f3S-eF-Syw" id="4yG-j9-zO4"/>
                             </connections>
                         </collectionReusableView>
@@ -4281,7 +4264,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-mL-axr">
-                                            <rect key="frame" x="2" y="2" width="120" height="120"/>
+                                            <rect key="frame" x="2" y="3" width="120" height="120"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="120" id="SCg-yW-0rm"/>
                                                 <constraint firstAttribute="height" constant="120" id="yd0-At-8OG"/>
@@ -4290,10 +4273,10 @@
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="FMp-mL-axr" secondAttribute="bottom" constant="3" id="Ef4-I1-fZ8"/>
+                                    <constraint firstAttribute="bottom" secondItem="FMp-mL-axr" secondAttribute="bottom" constant="2" id="Ef4-I1-fZ8"/>
                                     <constraint firstItem="FMp-mL-axr" firstAttribute="leading" secondItem="Fht-p0-Nis" secondAttribute="leading" constant="2" id="ITg-1S-BEB"/>
                                     <constraint firstAttribute="trailing" secondItem="FMp-mL-axr" secondAttribute="trailing" constant="3" id="MFX-Bc-ghh"/>
-                                    <constraint firstItem="FMp-mL-axr" firstAttribute="top" secondItem="Fht-p0-Nis" secondAttribute="top" constant="2" id="fbr-1C-CNj"/>
+                                    <constraint firstItem="FMp-mL-axr" firstAttribute="top" secondItem="Fht-p0-Nis" secondAttribute="top" constant="3" id="fbr-1C-CNj"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="thumbnail" destination="FMp-mL-axr" id="NTg-3G-1g1"/>
@@ -4439,7 +4422,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="797CB374-1CB0-4388-A5DB-9217C1325874"/>
+                                <state key="normal" image="CC81CA74-0D21-4D84-ADEE-71D04A6A5E3A"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6594,7 +6577,9 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="797CB374-1CB0-4388-A5DB-9217C1325874" width="265" height="256">
+        <image name="Add User Group Man Man-48" width="24" height="24"/>
+        <image name="Address Book Filled-50" width="25" height="25"/>
+        <image name="CC81CA74-0D21-4D84-ADEE-71D04A6A5E3A" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11170,8 +11155,6 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
-        <image name="Add User Group Man Man-48" width="24" height="24"/>
-        <image name="Address Book Filled-50" width="25" height="25"/>
         <image name="CCamera" width="256" height="256"/>
         <image name="Chat Filled-50" width="27" height="23"/>
         <image name="ChatPhotos" width="256" height="256"/>

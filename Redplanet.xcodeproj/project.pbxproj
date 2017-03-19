@@ -190,8 +190,6 @@
 		7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE671E3C7B6D003FA134 /* UserCell.xib */; };
 		7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */; };
 		7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */; };
-		7EFC5AA71E7E3F3400F4062C /* PeopleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC5AA61E7E3F3400F4062C /* PeopleCell.swift */; };
-		7EFC5AA91E7E3F4000F4062C /* PeopleYouMayKnow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFC5AA81E7E3F4000F4062C /* PeopleYouMayKnow.swift */; };
 		7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */; };
 /* End PBXBuildFile section */
 
@@ -469,8 +467,6 @@
 		7EECEE671E3C7B6D003FA134 /* UserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserCell.xib; sourceTree = "<group>"; };
 		7EF2B7C31E23275F00D08FC2 /* CapturedStill.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedStill.swift; sourceTree = "<group>"; };
 		7EF2B7C51E23276800D08FC2 /* CapturedVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CapturedVideo.swift; sourceTree = "<group>"; };
-		7EFC5AA61E7E3F3400F4062C /* PeopleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleCell.swift; sourceTree = "<group>"; };
-		7EFC5AA81E7E3F4000F4062C /* PeopleYouMayKnow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleYouMayKnow.swift; sourceTree = "<group>"; };
 		7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		870EA34939AE4D93F2E4D0AF /* Pods-Redplanet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Redplanet.release.xcconfig"; path = "Pods/Target Support Files/Pods-Redplanet/Pods-Redplanet.release.xcconfig"; sourceTree = "<group>"; };
 		948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RedplanetTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1302,7 +1298,6 @@
 			children = (
 				7EC5D1A91DB357C600437219 /* SEARCH */,
 				7E873D821E5C0C6D004E5FCB /* DISCOVER */,
-				7EFC5AAA1E7E3F4500F4062C /* PeopleYouMayKnow */,
 				7EE06C281E7B2C2700472200 /* SELECTED_STORIES */,
 			);
 			name = DISCOVER;
@@ -1383,15 +1378,6 @@
 				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
 			);
 			name = "NIB:UserCell";
-			sourceTree = "<group>";
-		};
-		7EFC5AAA1E7E3F4500F4062C /* PeopleYouMayKnow */ = {
-			isa = PBXGroup;
-			children = (
-				7EFC5AA81E7E3F4000F4062C /* PeopleYouMayKnow.swift */,
-				7EFC5AA61E7E3F3400F4062C /* PeopleCell.swift */,
-			);
-			name = PeopleYouMayKnow;
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1748,7 +1734,6 @@
 				7E98E9571DB75057001B7329 /* CLEmoticonTool.m in Sources */,
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
-				7EFC5AA71E7E3F3400F4062C /* PeopleCell.swift in Sources */,
 				7E35A3B71E416BD70007EB99 /* Friends.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* CreateFront.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
@@ -1823,7 +1808,6 @@
 				7EC5D16B1DB32F0D00437219 /* MasterTab.swift in Sources */,
 				7E98E9541DB75057001B7329 /* CLImageToolInfo+Private.m in Sources */,
 				7E41C7A71E4012300025129B /* CurrentUserHeader.swift in Sources */,
-				7EFC5AA91E7E3F4000F4062C /* PeopleYouMayKnow.swift in Sources */,
 				7E4199251E4C668000EFA065 /* SwipeView.m in Sources */,
 				7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */,
 				7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */,

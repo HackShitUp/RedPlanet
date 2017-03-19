@@ -171,9 +171,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         case .notDetermined:
             manager.requestWhenInUseAuthorization()
         case .denied:
-            // THIS might get a bit annoying
-            let alert = UIAlertController(title: "Background Location Access Denied",
-                                                     message: "If you'd like to share Moments with Location-Based filters, please allow Redplanet to enable location services on your device.",
+        // THIS might get a bit annoying
+            let alert = UIAlertController(title: "Location Access Disabled",
+                                                     message: "To share Moments with location-based filters, and help your friends find you better, please allow Redplanet to access your location!",
                                                      preferredStyle: .alert)
             
             let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)

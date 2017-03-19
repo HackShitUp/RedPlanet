@@ -39,7 +39,6 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
                    ]
     
     @IBOutlet weak var ssTitle: UILabel!
-    @IBOutlet weak var discoverTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
     override func awakeFromNib() {
