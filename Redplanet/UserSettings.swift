@@ -176,8 +176,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             // ACCOUNT
             return 7
         } else if section == 1 {
-            // MEMORY
-            return 1
+            // DEVICE
+            return 2
         } else if section == 2{
             // MORE
             return 3
@@ -315,6 +315,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 alert.addAction(ok)
                 alert.view.tintColor = UIColor.black
                 self.present(alert, animated: true, completion: nil)
+            } else if indexPath.row == 1 {
+                // Push VC
+                let permissionsVC = self.storyboard?.instantiateViewController(withIdentifier: "permissionsVC") as! PermissionsScope
+                self.navigationController?.pushViewController(permissionsVC, animated: true)
             }
         } else if indexPath.section == 2 {
         // ====================================================================

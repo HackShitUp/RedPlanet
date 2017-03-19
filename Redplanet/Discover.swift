@@ -208,13 +208,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     
     // MARK: - UICollectionViewHeader
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
         // Size should be the same size of the headerView's label size:
         return CGSize(width: self.view.frame.size.width, height: 200)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         // Initialize header
         let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "discoverHeader", for: indexPath) as! DiscoverHeader
         
@@ -229,6 +227,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         searchTap.numberOfTapsRequired = 1
         header.ssTitle.isUserInteractionEnabled = true
         header.ssTitle.addGestureRecognizer(searchTap)
+        
+        // Update Stories
+        header.updateUI()
 
         return header
     }

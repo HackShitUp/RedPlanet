@@ -191,7 +191,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         default:
             break;
         }
-        
     }
     
     

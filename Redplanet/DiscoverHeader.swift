@@ -19,34 +19,40 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
     
     // Parent VC
     var delegate: UIViewController?
-    
-    // Codes to get cover photos
-    let codeIds = [
-        "nytimes061620160702",
-        "wsj061620160702",
-        "cnn0702061620160622",
-        "theeconomist127060622",
-        
-        "buzzfeed061620161456",
-        "mtv06162016070297",
-        "mashable986306162016",
-        "entertainmentweekly061123",
-        
-        "tnw0701923801239",
-        "natgeo81039706162016",
-        "ign070206220905",
-        "espn0616201609632"
-                   ]
+    // Array to hold Selected Stories
+    var sStories = [PFObject]()
     
     @IBOutlet weak var ssTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    
+    // Function to update UI
+    func updateUI() {
         // Set dataSource and delegate
         self.collectionView!.delegate = self
         self.collectionView!.dataSource = self
         
+        // ADS
+        let ads = PFQuery(className: "Ads")
+        ads.order(byAscending: "createdAt")
+        ads.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                self.sStories.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    self.sStories.append(object)
+                }
+                
+                // Reload data
+                self.collectionView!.reloadData()
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -62,34 +68,18 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
         return 1
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return self.codeIds.count
+        return self.sStories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "discoverHeaderCell", for: indexPath) as! DiscoverHeaderCell
         
-        // MARK: - SDWebImage
-        cell.coverPhoto.sd_setIndicatorStyle(.gray)
-        cell.coverPhoto.sd_showActivityIndicatorView()
-        
-        // ADS
-        let ads = PFQuery(className: "Ads")
-        ads.whereKey("code", containedIn: self.codeIds)
-        ads.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    if object.value(forKey: "code") as! String == self.codeIds[indexPath.item] && indexPath.item == self.codeIds.index(of: self.codeIds[indexPath.item]) {
-                        // Set photo
-                        let photo = object.value(forKey: "photo") as! PFFile
-                        // MARK: - SDWebImage
-                        cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
+        // Optionaly chain photos
+        if let photo = self.sStories[indexPath.row].value(forKey: "photo") as? PFFile {
+            // MARK: - SDWebImage
+            cell.coverPhoto.sd_setIndicatorStyle(.gray)
+            cell.coverPhoto.sd_showActivityIndicatorView()
+            cell.coverPhoto.sd_setImage(with: URL(string: photo.url!)!, placeholderImage: UIImage())
         }
         
         // Configure cover photo
@@ -108,65 +98,9 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         
-        if indexPath.item == 0 {
-            // NYTIMES
-            mediaName.append("The New York Times")
-            storyURL.append("https://newsapi.org/v1/articles?source=the-new-york-times&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-
-        } else if indexPath.item == 1 {
-            // WSJ
-            mediaName.append("The Wall Street Journal")
-            storyURL.append("https://newsapi.org/v1/articles?source=the-wall-street-journal&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-
-        } else if indexPath.item == 2 {
-            // CNN
-            mediaName.append("CNN")
-            storyURL.append("https://newsapi.org/v1/articles?source=cnn&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 3 {
-            // THE ECONOMIST
-            mediaName.append("The Economist")
-            storyURL.append("https://newsapi.org/v1/articles?source=the-economist&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 4 {
-            // BUZZFEED
-            mediaName.append("BuzzFeed")
-            storyURL.append("https://newsapi.org/v1/articles?source=buzzfeed&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 5 {
-            // MTV
-            mediaName.append("MTV")
-            storyURL.append("https://newsapi.org/v1/articles?source=mtv-news&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 6 {
-            // MASHABLE
-            mediaName.append("Mashable")
-            storyURL.append("https://newsapi.org/v1/articles?source=mashable&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 7 {
-            // ENTERTAINMENT WEEKLY
-            mediaName.append("Entertainment Weekly")
-            storyURL.append("https://newsapi.org/v1/articles?source=entertainment-weekly&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-            
-        } else if indexPath.item == 8 {
-            // TNW
-            mediaName.append("The Next Web")
-            storyURL.append("https://newsapi.org/v1/articles?source=the-next-web&sortBy=latest&apiKey=eb568b2491d1431194e224121f7c4f03")
-
-        } else if indexPath.item == 9 {
-            // NATGEO
-            mediaName.append("National Geographic")
-            storyURL.append("https://newsapi.org/v1/articles?source=national-geographic&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-
-        } else if indexPath.item == 10 {
-            // IGN
-            mediaName.append("IGN")
-            storyURL.append("https://newsapi.org/v1/articles?source=ign&sortBy=latest&apiKey=eb568b2491d1431194e224121f7c4f03")
-        } else if indexPath.item == 11 {
-            // ESPN
-            mediaName.append("ESPN")
-            storyURL.append("https://newsapi.org/v1/articles?source=espn&sortBy=top&apiKey=eb568b2491d1431194e224121f7c4f03")
-        }
+        // Append mediaName and storyUrl
+        mediaName.append(self.sStories[indexPath.row].value(forKey: "adName") as! String)
+        storyURL.append(self.sStories[indexPath.row].value(forKey: "URL") as! String)
         
         // SS VC
         let ssVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "selectedStoriesVC") as! SelectedStories
