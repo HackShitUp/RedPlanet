@@ -21,16 +21,13 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     
     // AppDelegate
     let appDelegate = AppDelegate()
-    
     // Variable to hold objects to discover
     var discoverObjects = [PFObject]()
-    
     // Set pipeline method
     var page: Int = 50
     
     // Refresher
     var refresher: UIRefreshControl!
-    
     // Search Bar
     var searchBar = UISearchBar()
     
@@ -38,7 +35,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     // Function to refresh
     func refresh() {
         // Query Discover
-        queryDiscover()
+        fetchDiscover()
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -51,29 +48,33 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     }
     
     // Fetch Public Users
-    func queryDiscover() {
+    func fetchDiscover() {
         
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
         
-        let user = PFUser.query()!
-        user.whereKey("private", equalTo: false)
-        user.limit = self.page
-        user.order(byAscending: "createdAt")
-        user.findObjectsInBackground(block: {
+        // Fetch objects
+        let publicAccounts = PFUser.query()!
+        publicAccounts.limit = self.page
+        publicAccounts.order(byAscending: "createdAt")
+        publicAccounts.whereKey("private", equalTo: false)
+        publicAccounts.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // Dismiss progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
-                
                 // Clear arrays
                 self.discoverObjects.removeAll(keepingCapacity: false)
-                
                 for object in objects! {
                     if !blockedUsers.contains(where: {$0.objectId == object.objectId}) {
                         self.discoverObjects.append(object)
                     }
+                }
+
+                // Check for other users
+                if PFUser.current()!.value(forKey: "location") != nil {
+                    // Fetch People Near You
+                    self.discoverGeoCodes()
                 }
                 
             } else {
@@ -82,11 +83,38 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
                     SVProgressHUD.dismiss()
                 }
             }
-            
             // Reload data
             self.collectionView!.reloadData()
         })
     }
+    
+    
+    // Function to fetch geoLocation
+    func discoverGeoCodes() {
+        // Find location
+        let discover = PFUser.query()!
+        discover.limit = self.page
+        discover.order(byAscending: "createdAt")
+        discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+        discover.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoverObjects.contains(where: {$0.objectId! == object.objectId!}) && (object.objectId! !=  PFUser.current()!.objectId!) {
+                        self.discoverObjects.append(object)
+                    }
+                }
+            } else {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
+            }
+            // Reload data
+            self.collectionView!.reloadData()
+        })
+    }
+
     
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -101,7 +129,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         SVProgressHUD.setBackgroundColor(UIColor.white)
 
         // Fetch public accounts
-        queryDiscover()
+        fetchDiscover()
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -145,7 +173,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         self.searchBar.resignFirstResponder()
         
         // Fetch public accounts
-        queryDiscover()
+//        fetchDiscover()
         
         // Configure navigationBar, tabBar, and statusBar
         self.extendedLayoutIncludesOpaqueBars = true
@@ -195,14 +223,19 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         
         // Set delegate
         header.delegate = self
-        header.headerTitle.text! = "SELECTED 🔍 STORIES"
-        header.headerTitle.numberOfLines = 1
+        // Set titles
+        header.ssTitle.text! = "Selected 🔍 Stories"
+        header.discoverTitle.text! = "People You May Know"
+        // Underline fullname
+        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+        let underlineAttributedString = NSAttributedString(string: "\(header.discoverTitle.text!)", attributes: underlineAttribute)
+        header.discoverTitle.attributedText = underlineAttributedString
         
         // Tap title to search
         let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))
         searchTap.numberOfTapsRequired = 1
-        header.headerTitle.isUserInteractionEnabled = true
-        header.headerTitle.addGestureRecognizer(searchTap)
+        header.ssTitle.isUserInteractionEnabled = true
+        header.ssTitle.addGestureRecognizer(searchTap)
 
         return header
     }
@@ -271,7 +304,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
             // Increase page size to load more posts
             page = page + 50
             // Query friends
-            queryDiscover()
+            fetchDiscover()
         }
     }
     
@@ -282,7 +315,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         } else {
             // Reload data
-            queryDiscover()
+            fetchDiscover()
         }
     }
 }

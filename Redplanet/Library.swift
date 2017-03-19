@@ -1,5 +1,5 @@
 //
-//  PhotosLibrary.swift
+//  Library.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 3/9/17.
@@ -21,14 +21,12 @@ import ParseUI
 import Bolts
 
 
-class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class Library: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     // Initialize image picker
     var imagePicker: UIImagePickerController!
-    // Array to hold photos
-    var photoAssets = [PHAsset]()
-    // Array to hold videos
-    var videoAssets = [PHAsset]()
+    // Array to hold all PHAssets
+    var allAssets = [PHAsset]()
     
     @IBAction func camera(_ sender: Any) {
         // MARK: - SwipeNavigationController
@@ -101,27 +99,17 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
     // Function to fetch assets
     func fetchAssets() {
         // Clear assets array
-        self.photoAssets.removeAll(keepingCapacity: false)
-        // Clear assets array
-        self.videoAssets.removeAll(keepingCapacity: false)
+        self.allAssets.removeAll(keepingCapacity: false)
         
         // Options for fetching assets
         let options = PHFetchOptions()
         options.includeAllBurstAssets = true
         options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        
-        // Fetch assets
-        let photos = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: options)
-        photos.enumerateObjects({ (photo: PHAsset, i: Int, Bool) in
+        // Get all assets
+        let all = PHAsset.fetchAssets(with: options)
+        all.enumerateObjects({ (asset: PHAsset, i: Int, Bool) in
             // append PHAsset
-            self.photoAssets.append(photo)
-        })
-        
-        // Fetch assets
-        let videos = PHAsset.fetchAssets(with: PHAssetMediaType.video, options: options)
-        videos.enumerateObjects({ (video: PHAsset, i: Int, Bool) in
-            // append PHAsset
-            self.videoAssets.append(video)
+            self.allAssets.append(asset)
         })
         
         // Reload data
@@ -189,36 +177,11 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
 
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 1
     }
-
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let headerView = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "libraryHeader", for: indexPath) as! LibraryHeader
-        
-        if indexPath.section == 0 {
-            headerView.title.text = "   PHOTOS"
-        } else {
-            headerView.title.text = "   VIDEOS"
-        }
-        
-        headerView.title.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-        headerView.title.textColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-        return headerView
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
-        // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 30)
-    }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return self.photoAssets.count
-        } else {
-            return self.videoAssets.count
-        }
+        return self.allAssets.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -230,72 +193,53 @@ class PhotosLibrary: UICollectionViewController, UINavigationControllerDelegate,
         cell.thumbnail.setNeedsLayout()
         cell.contentView.frame = cell.contentView.frame
         
-        if indexPath.section == 0 {
-        // PHOTOS
-            // Set frame
-            cell.thumbnail.layer.cornerRadius = 6.00
-            cell.thumbnail.clipsToBounds = true
-            
-            // Set PHImageRequestOptions
-            // To high quality; cancel pixelation
-            // Synchronously called
-            let imageOptions = PHImageRequestOptions()
-            imageOptions.deliveryMode = .highQualityFormat
-            imageOptions.isSynchronous = true
-            
-            PHImageManager.default().requestImage(for: photoAssets[indexPath.row],
-                                                  targetSize: CGSize(width: UIScreen.main.bounds.size.width/3,
-                                                                     height: UIScreen.main.bounds.size.width/3),
-                                                  contentMode: .aspectFit,
-                                                  options: nil) {
-                                                    (img, _) -> Void in
-                                                    
-                                                    // Set cell's image to photo
-                                                    cell.thumbnail.image = img
-            }
-        } else {
-        // VIDEOS
-            
-            // Make Profile Photo Circular
-            cell.thumbnail.layer.cornerRadius = cell.thumbnail.frame.size.width/2.0
-            cell.thumbnail.clipsToBounds = true
-            
-            // Set PHImageRequestOptions
-            // To high quality; cancel pixelation
-            // Synchronously called
-            let imageOptions = PHImageRequestOptions()
-            imageOptions.deliveryMode = .highQualityFormat
-            imageOptions.isSynchronous = true
-            
-            PHImageManager.default().requestImage(for: videoAssets[indexPath.row],
-                                                  targetSize: CGSize(width: UIScreen.main.bounds.size.width/3,
-                                                                     height: UIScreen.main.bounds.size.width/3),
-                                                  contentMode: .aspectFit,
-                                                  options: nil) {
-                                                    (img, _) -> Void in
-                                                    
-                                                    // set FIRST frame of video
-                                                    cell.thumbnail.image = img
-            }
+        // Set PHImageRequestOptions
+        // To high quality; cancel pixelation
+        // Synchronously called
+        let imageOptions = PHImageRequestOptions()
+        imageOptions.deliveryMode = .highQualityFormat
+        imageOptions.isSynchronous = true
+        PHImageManager.default().requestImage(for: self.allAssets[indexPath.row],
+                                              targetSize: CGSize(width: UIScreen.main.bounds.size.width/3,
+                                                                 height: UIScreen.main.bounds.size.width/3),
+                                              contentMode: .aspectFit,
+                                              options: nil) {
+                                                (img, _) -> Void in
+                                                
+                                                // Set cell's image to photo
+                                                cell.thumbnail.image = img
+                                                
+                                                // Configure Assets's design depending on mediaType
+                                                if self.allAssets[indexPath.row].mediaType == .image {
+                                                    cell.thumbnail.layer.cornerRadius = 4.00
+                                                } else {
+                                                    cell.thumbnail.layer.cornerRadius = cell.thumbnail.frame.size.width/2
+                                                }
         }
+        
+        // Clip to bounds
+        cell.thumbnail.clipsToBounds = true
+
     
         return cell
     }
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
+
+        if self.allAssets[indexPath.row].mediaType = .image {
         // PHOTO
             mediaType = "photo"
             // Append PHAsset
             shareMediaAsset.append(photoAssets[indexPath.item])
-
+            
         } else {
         // VIDEO
             mediaType = "video"
             // Append PHAsset
             shareMediaAsset.append(self.videoAssets[indexPath.item])
         }
+        
         
         // Push VC
         let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia

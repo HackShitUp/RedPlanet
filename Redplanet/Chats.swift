@@ -109,7 +109,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                             })
                                             
                                             // Reload data
-                                            self.queryChats()
+                                            self.fetchChats()
                                             
                                         } else {
                                             if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -118,7 +118,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                             }
                                             
                                             // Reload data
-                                            self.queryChats()
+                                            self.fetchChats()
                                         }
                                     })
         })
@@ -153,14 +153,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // Refresh function
     func refresh() {
         // Reload data
-        queryChats()
+        fetchChats()
         // End refresher
         self.refresher.endRefreshing()
     }
     
-    
     // Query Chats
-    func queryChats() {
+    func fetchChats() {
         // SubQueries
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
@@ -175,7 +174,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Clear array
@@ -205,7 +204,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     SVProgressHUD.dismiss()
                 }
             }
-            
             // Reload data
             self.tableView!.reloadData()
         })
@@ -224,7 +222,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Set tableView
         self.tableView.backgroundView = UIView()
         // Reload data
-        queryChats()
+        fetchChats()
     }
     
     
@@ -410,7 +408,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                 self.tableView!.deleteRows(at: [indexPath], with: .fade)
                                                 
                                                 // Reload data
-                                                self.queryChats()
+                                                self.fetchChats()
+                                                // Reload data in main thread
+                                                DispatchQueue.main.async {
+                                                    self.tableView!.reloadData()
+                                                }
                                                 
                                             } else {
                                                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -419,7 +421,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                 }
                                                 
                                                 // Reload data
-                                                self.queryChats()
+                                                self.fetchChats()
                                             }
                                         })
                 })
@@ -454,7 +456,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         configureView()
         
         // Get chats
-        queryChats()
+        fetchChats()
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -493,7 +495,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Set design of navigation bar
         configureView()
         // Query chats
-        queryChats()
+        fetchChats()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -501,7 +503,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Set design of navigation bar
         configureView()
         // Query CHATS
-        queryChats()
+        fetchChats()
     }
     
     override func didReceiveMemoryWarning() {
@@ -728,7 +730,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         // If user is searching...
         if searchActive == true && searchBar.text != "" {
             // Append to <chatUserObject>
@@ -768,7 +769,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             page = page + 500000
             
             // Query friends
-            self.queryChats()
+            self.fetchChats()
         }
     }
     

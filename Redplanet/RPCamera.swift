@@ -27,6 +27,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     // MARK: - CoreLocation
     let manager = CLLocationManager()
+    let geoLocation = CLGeocoder()
     
     // Timer for recording videos
     var time: Float = 0.0
@@ -102,36 +103,42 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
-        let geolocation = CLGeocoder()
-        // Reverse engineer coordinates
-        geolocation.reverseGeocodeLocation(location) {
+        // MARK: - CLGeocoder
+        // Reverse engineer coordinates, and get address
+        geoLocation.reverseGeocodeLocation(location) {
             (placemarks: [CLPlacemark]?, error: Error?) in
             if error == nil {
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
                     if cityState.isEmpty {
                         cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
+                        // MARK: - CLLocationManager
+                        manager.stopUpdatingLocation()
                     } else {
-                        // End queue
-                        geolocation.cancelGeocode()
+                        // End queues
+                        self.geoLocation.cancelGeocode()
+                        // MARK: - CLLocationManager
+                        manager.stopUpdatingLocation()
                     }
                 }
             } else {
                 print("Reverse geocoderfailed with error: \(error?.localizedDescription as Any)")
                 if (error?.localizedDescription as Any) as! String == "The operation couldn’t be completed. (kCLErrorDomain error 2.)" {
-                    // End queue
-                    geolocation.cancelGeocode()
+                    // End queues
+                    self.geoLocation.cancelGeocode()
+                    // MARK: - CLLocationManager
+                    manager.stopUpdatingLocation()
                 }
             }
         }
-        
         // Save user's location to server
-        let userLocation = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        if PFUser.current() != nil {
-            PFUser.current()!["location"] = userLocation
+        if PFUser.current() != nil && PFUser.current()!.value(forKey: "location") != nil {
+            let userGeocode = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            PFUser.current()!["location"] = userGeocode
             PFUser.current()!.saveInBackground()
         }
     }
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("locationManager:\(manager) didFailWithError:\(error)")

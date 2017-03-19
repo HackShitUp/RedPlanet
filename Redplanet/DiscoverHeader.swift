@@ -38,7 +38,8 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
         "espn0616201609632"
                    ]
     
-    @IBOutlet weak var headerTitle: UILabel!
+    @IBOutlet weak var ssTitle: UILabel!
+    @IBOutlet weak var discoverTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
     override func awakeFromNib() {
@@ -75,6 +76,7 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
         
         // ADS
         let ads = PFQuery(className: "Ads")
+        ads.whereKey("code", containedIn: self.codeIds)
         ads.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -91,7 +93,7 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
             }
         }
         
-        // Configure covers
+        // Configure cover photo
         cell.coverPhoto.layer.cornerRadius = 4.00
         cell.coverPhoto.clipsToBounds = true
         

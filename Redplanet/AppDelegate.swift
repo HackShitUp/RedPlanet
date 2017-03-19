@@ -175,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Get user's playerId
         // this is also the user's "apnsId" in the Parse-Server
         OneSignal.idsAvailable({ (userId, pushToken) in
-            print("UserId:%@", userId as Any)
+            print("• UserId:%@", userId as Any)
             
             if PFUser.current() != nil {
                 PFUser.current()!["apnsId"] = userId
@@ -183,7 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             if (pushToken != nil) {
-                print("pushToken:%@", pushToken ?? "")
+                print("• PushToken:%@", pushToken ?? "")
             }
         })
     }
@@ -248,7 +248,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Call relationships function
             _ = queryRelationships()
-            
+            // Initialize data
+            initializeData()
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -262,7 +263,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // (2) Query Relationships
     // --- Checks all of the current user's friends, followers, and followings, and blocked users
     func queryRelationships() {
-
         // (1) Query Following
         // && Users you've requested to Follow
         let following = PFQuery(className: "FollowMe")
@@ -348,4 +348,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }// end QueryRelationships()
+    
+    // (3) Save Chat Objects
+    func initializeData() {
+        
+    }
 }

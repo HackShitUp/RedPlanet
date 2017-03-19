@@ -32,7 +32,6 @@ let contactsNotification = Notification.Name("contacts")
 // Set for iOS 9 +
 @available(iOS 9, *)
 class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-
     
     // Array to hold contacts
     var contactNumbers = [String]()
