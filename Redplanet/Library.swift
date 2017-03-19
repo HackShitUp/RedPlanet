@@ -28,6 +28,16 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     // Array to hold all PHAssets
     var allAssets = [PHAsset]()
     
+    // Refresher
+    var refresher: UIRefreshControl!
+    
+    // Function to refresh
+    func refresh() {
+        self.fetchAssets()
+        self.refresher.endRefreshing()
+    }
+    
+    
     @IBAction func camera(_ sender: Any) {
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
@@ -100,7 +110,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     func fetchAssets() {
         // Clear assets array
         self.allAssets.removeAll(keepingCapacity: false)
-        
+
         // Options for fetching assets
         let options = PHFetchOptions()
         options.includeAllBurstAssets = true
@@ -157,10 +167,17 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.collectionView!.addSubview(refresher)
+        
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width/4, height: self.view.frame.size.width/4)
+        layout.itemSize = CGSize(width: self.view.frame.size.width/3, height: self.view.frame.size.width/3)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
@@ -181,6 +198,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
         return self.allAssets.count
     }
 
@@ -211,7 +229,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
                                                 
                                                 // Configure Assets's design depending on mediaType
                                                 if self.allAssets[indexPath.row].mediaType == .image {
-                                                    cell.thumbnail.layer.cornerRadius = 4.00
+                                                    cell.thumbnail.layer.cornerRadius = 2.00
                                                 } else {
                                                     cell.thumbnail.layer.cornerRadius = cell.thumbnail.frame.size.width/2
                                                 }
@@ -219,7 +237,6 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         
         // Clip to bounds
         cell.thumbnail.clipsToBounds = true
-
     
         return cell
     }
@@ -227,17 +244,17 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
-        if self.allAssets[indexPath.row].mediaType = .image {
+        if self.allAssets[indexPath.row].mediaType == .image {
         // PHOTO
             mediaType = "photo"
             // Append PHAsset
-            shareMediaAsset.append(photoAssets[indexPath.item])
+            shareMediaAsset.append(self.allAssets[indexPath.item])
             
         } else {
         // VIDEO
             mediaType = "video"
             // Append PHAsset
-            shareMediaAsset.append(self.videoAssets[indexPath.item])
+            shareMediaAsset.append(self.allAssets[indexPath.item])
         }
         
         

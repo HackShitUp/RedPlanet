@@ -220,11 +220,18 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             if mediaType == "photo" {
                 self.title = "New Photo"
+                self.mediaAsset.layer.cornerRadius = 6.0
+                self.mediaAsset.layer.borderColor = UIColor.white.cgColor
+                self.mediaAsset.layer.borderWidth = 0.5
+                self.mediaAsset.clipsToBounds = true
             } else {
                 self.title = "New Video"
+                self.mediaAsset.layer.cornerRadius = self.mediaAsset.frame.size.width/2
+                self.mediaAsset.layer.borderColor = UIColor.white.cgColor
+                self.mediaAsset.layer.borderWidth = 0.5
+                self.mediaAsset.clipsToBounds = true
             }
             self.mediaCaption.text! = "Say something about this \(mediaType!)..."
-            
         }
         
         // * Show navigation bar and tab bar
@@ -303,13 +310,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         self.shareButton.layer.borderWidth = 0.5
         self.shareButton.clipsToBounds = true
         
-        // (2) Add rounded corners and set clip within bounds
-        self.mediaAsset.layer.cornerRadius = 6.0
-        self.mediaAsset.layer.borderColor = UIColor.white.cgColor
-        self.mediaAsset.layer.borderWidth = 0.5
-        self.mediaAsset.clipsToBounds = true
-        
-        // (3) Set image
+        // (2) Set image
         // Set Image Request Options
         // Cancel pixelation
         // with Synchronous call
@@ -356,10 +357,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         }
         
         
-        // (4) Stylize title
+        // (3) Stylize title
         configureView()
         
-        // (5) Add tap gesture to zoom in
+        // (4) Add tap gesture to zoom in
         let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
         zoomTap.numberOfTapsRequired = 1
         self.mediaAsset.isUserInteractionEnabled = true

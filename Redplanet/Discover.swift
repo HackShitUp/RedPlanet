@@ -172,9 +172,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         // Resign frist responder
         self.searchBar.resignFirstResponder()
         
-        // Fetch public accounts
-//        fetchDiscover()
-        
         // Configure navigationBar, tabBar, and statusBar
         self.extendedLayoutIncludesOpaqueBars = true
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
@@ -224,12 +221,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         // Set delegate
         header.delegate = self
         // Set titles
-        header.ssTitle.text! = "Selected 🔍 Stories"
+        header.ssTitle.text! = "SELECTED 🔍 STORIES"
         header.discoverTitle.text! = "People You May Know"
-        // Underline fullname
-        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
-        let underlineAttributedString = NSAttributedString(string: "\(header.discoverTitle.text!)", attributes: underlineAttribute)
-        header.discoverTitle.attributedText = underlineAttributedString
         
         // Tap title to search
         let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))
