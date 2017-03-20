@@ -134,6 +134,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="WMT-KU-90F" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="1aq-ZJ-j7B"/>
                 <constraint firstItem="5VT-qx-8fx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="3iO-Zq-gpS"/>
                 <constraint firstItem="mrM-5U-Xcy" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="4vb-63-bZ8"/>
                 <constraint firstItem="857-lc-Tmw" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="51I-K0-JNb"/>
@@ -154,6 +155,7 @@
                 <constraint firstItem="IND-ke-LYZ" firstAttribute="top" secondItem="e4R-zD-fge" secondAttribute="bottom" constant="8" id="brW-Lc-oTP"/>
                 <constraint firstAttribute="trailing" secondItem="HCm-Dh-77F" secondAttribute="trailing" constant="45" id="fn1-lM-jPa"/>
                 <constraint firstItem="RrC-Vf-83E" firstAttribute="top" secondItem="mrM-5U-Xcy" secondAttribute="bottom" constant="15" id="kF5-JV-bDU"/>
+                <constraint firstAttribute="trailing" secondItem="WMT-KU-90F" secondAttribute="trailing" constant="8" id="kub-Qt-BKT"/>
                 <constraint firstItem="e4R-zD-fge" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nBG-98-Ycf"/>
                 <constraint firstAttribute="trailing" secondItem="IND-ke-LYZ" secondAttribute="trailing" id="oFN-aa-rR5"/>
                 <constraint firstItem="A2r-a2-Kmb" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wh2-pG-c5q"/>

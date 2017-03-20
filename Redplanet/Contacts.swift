@@ -180,13 +180,12 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                                                         }
                     })
                     
-                    let ok = UIAlertAction(title: "ok",
+                    let ok = UIAlertAction(title: "Ok",
                                            style: .default,
                                            handler: nil)
                     
                     alert.addAction(inviteFriends)
                     alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
                     self.present(alert, animated: true, completion: nil)
                 }
                 

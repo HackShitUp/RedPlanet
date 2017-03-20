@@ -65,23 +65,8 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // Function to share
     func postSpace(sender: UIButton) {
-        
-        // Check if text is empty 
-        if self.textView!.text!.isEmpty || self.textView!.text! == "" {
-            
-            let alert = UIAlertController(title: "Space Post Failed",
-                                          message: "Please say something about this Space Post.",
-                                          preferredStyle: .alert)
-            
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.view.tintColor = UIColor.black
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
-            
-        } else if self.mediaAsset.image != nil {
+        // (1) PHOTO or VIDEO
+        if self.mediaAsset.image != nil {
             // Show Progress
             SVProgressHUD.show()
             SVProgressHUD.setBackgroundColor(UIColor.white)
@@ -93,8 +78,25 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 self.shareVideo()
             }
         } else {
-        // TEXT POST
-            self.shareText()
+            // Check if text is empty
+            if self.textView!.text!.isEmpty || self.textView!.text! == "" && mediaAsset.image == nil {
+                
+                let alert = UIAlertController(title: "Space Post Failed",
+                                              message: "Please say something about this Space Post.",
+                                              preferredStyle: .alert)
+                
+                let ok = UIAlertAction(title: "ok",
+                                       style: .default,
+                                       handler: nil)
+                
+                alert.view.tintColor = UIColor.black
+                alert.addAction(ok)
+                self.present(alert, animated: true, completion: nil)
+                
+            } else {
+                // TEXT POST
+                self.shareText()
+            }
         }
     }
     

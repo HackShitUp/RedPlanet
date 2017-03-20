@@ -88,8 +88,10 @@
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="Tfg-SD-JRh" secondAttribute="bottom" constant="16" id="Oae-OK-hfc"/>
                 <constraint firstItem="Tfg-SD-JRh" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="V8I-b1-PhD"/>
                 <constraint firstItem="o7e-g2-Wuc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VLX-OB-QFh"/>
+                <constraint firstAttribute="trailing" secondItem="hEu-lr-NsO" secondAttribute="trailing" constant="8" id="dEB-UZ-Kks"/>
                 <constraint firstItem="YgB-fA-d26" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="dfz-aA-fye"/>
                 <constraint firstItem="hEu-lr-NsO" firstAttribute="top" secondItem="fcI-96-jrp" secondAttribute="bottom" id="dp5-c6-muJ"/>
+                <constraint firstItem="hEu-lr-NsO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="eSg-rj-hFq"/>
                 <constraint firstItem="Tfg-SD-JRh" firstAttribute="top" secondItem="YgB-fA-d26" secondAttribute="bottom" constant="8" id="gDM-wB-HbY"/>
                 <constraint firstItem="hEu-lr-NsO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pPR-qA-gPY"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="Tfg-SD-JRh" secondAttribute="bottom" constant="16" id="qig-Dj-h5k"/>
