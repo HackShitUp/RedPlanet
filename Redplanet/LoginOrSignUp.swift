@@ -102,10 +102,6 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
                                          style: .cancel,
                                          handler: {(alertAction: UIAlertAction!) in
                                             
-                                            // Clear textfields
-                                            self.rpUsername.text! = ""
-                                            self.rpPassword.text! = ""
-                                            
                                             // Set first responder
                                             self.rpUsername.becomeFirstResponder()
                                             
@@ -219,13 +215,11 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         tap0.numberOfTapsRequired = 1
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(tap0)
+        
+        self.rpUsername.autocorrectionType = .no
 
         // Design loginButton
         self.loginButton.layer.cornerRadius = 25.00
-//        self.signUpButton.layer.cornerRadius = 25.00
-//        self.signUpButton.layer.borderWidth = 3.00
-//        self.signUpButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-//        self.signUpButton.clipsToBounds = true
         
         // Set username to be first responder
         self.rpUsername.becomeFirstResponder()
