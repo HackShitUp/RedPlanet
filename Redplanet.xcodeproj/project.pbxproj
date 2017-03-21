@@ -179,8 +179,6 @@
 		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
 		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
-		7ED8DD941E73D3A3006AE033 /* QuickShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED8DD931E73D3A3006AE033 /* QuickShare.swift */; };
-		7ED8DD961E73D3B8006AE033 /* QuickShareCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED8DD951E73D3B8006AE033 /* QuickShareCell.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
@@ -460,8 +458,6 @@
 		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
 		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
-		7ED8DD931E73D3A3006AE033 /* QuickShare.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickShare.swift; sourceTree = "<group>"; };
-		7ED8DD951E73D3B8006AE033 /* QuickShareCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickShareCell.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
@@ -1118,7 +1114,6 @@
 		7EA730D61E3B293500CF4D12 /* RP */ = {
 			isa = PBXGroup;
 			children = (
-				7ED8DD971E73D3C0006AE033 /* QuickShare */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
@@ -1369,15 +1364,6 @@
 				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 			);
 			name = INTERACTIONS;
-			sourceTree = "<group>";
-		};
-		7ED8DD971E73D3C0006AE033 /* QuickShare */ = {
-			isa = PBXGroup;
-			children = (
-				7ED8DD931E73D3A3006AE033 /* QuickShare.swift */,
-				7ED8DD951E73D3B8006AE033 /* QuickShareCell.swift */,
-			);
-			name = QuickShare;
 			sourceTree = "<group>";
 		};
 		7EE06C281E7B2C2700472200 /* SELECTED_STORIES */ = {
@@ -1745,7 +1731,6 @@
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
-				7ED8DD941E73D3A3006AE033 /* QuickShare.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7EBDCB261E72251000E319A0 /* Library.swift in Sources */,
@@ -1846,7 +1831,6 @@
 				7EC5D1A31DB3569B00437219 /* DiscoverCell.swift in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */,
-				7ED8DD961E73D3B8006AE033 /* QuickShareCell.swift in Sources */,
 				7E5936AE1E74B9E60042F041 /* DiscoverHeaderCell.swift in Sources */,
 				7E6A13071E4D98F600CF108B /* SwiftWebVCActivityChrome.swift in Sources */,
 				7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */,

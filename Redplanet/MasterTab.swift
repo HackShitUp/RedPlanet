@@ -24,7 +24,7 @@ class MasterTab: UITabBarController {
         self.view.clipsToBounds = true
         
         // Change status bar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -33,7 +33,7 @@ class MasterTab: UITabBarController {
         super.viewDidLoad()
         
         // Change status bar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         

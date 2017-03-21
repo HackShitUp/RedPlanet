@@ -147,7 +147,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

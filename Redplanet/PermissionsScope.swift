@@ -52,7 +52,7 @@ class PermissionsScope: UITableViewController {
         }
         
         // Show statusBar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
 

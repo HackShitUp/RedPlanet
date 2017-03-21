@@ -238,7 +238,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.navigationController?.navigationBar.barTintColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

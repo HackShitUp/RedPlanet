@@ -153,7 +153,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = false
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

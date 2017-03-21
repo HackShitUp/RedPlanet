@@ -627,7 +627,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

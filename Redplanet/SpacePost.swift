@@ -431,7 +431,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         }
         
         // Configure nav bar && hide tab bar (last line)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(false, animated: true)

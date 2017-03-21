@@ -293,7 +293,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.navigationController!.tabBarController!.tabBar.isHidden = false
         self.navigationController!.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.delegate = self
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

@@ -152,7 +152,7 @@ open class VideoViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         

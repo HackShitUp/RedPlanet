@@ -159,7 +159,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
         configureView()
     
         // Show Status bar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
         
         // Fetch Likes and Comments

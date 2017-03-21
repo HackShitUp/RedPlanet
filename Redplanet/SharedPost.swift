@@ -206,7 +206,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
         // StatusBar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

@@ -173,7 +173,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true

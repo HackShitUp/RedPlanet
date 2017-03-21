@@ -178,7 +178,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.delegate = self
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }

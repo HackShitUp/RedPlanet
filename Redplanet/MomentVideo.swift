@@ -656,7 +656,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         super.viewWillAppear(animated)
         
         // Hide status bar
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         
         // Hide navigationBar and tab bar
@@ -723,14 +723,14 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
 

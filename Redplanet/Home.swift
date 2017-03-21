@@ -82,7 +82,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
             print("[SwiftyCam]: Failed to set background audio preference")
         }
         // Show statusBar, hide navigation bar, show tab bar
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)

@@ -236,7 +236,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide statusBar
-        UIApplication.shared.setStatusBarHidden(true, with: .none)
+        UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         
         // Set Audio
@@ -337,7 +337,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UIApplication.shared.setStatusBarHidden(false, with: .none)
+        UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
     

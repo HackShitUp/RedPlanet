@@ -239,7 +239,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "theMasterTab") as! MasterTab
-            UIApplication.shared.setStatusBarHidden(false, with: .none)
+            UIApplication.shared.isStatusBarHidden = false
             UIApplication.shared.statusBarStyle = .lightContent
             swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
             self.window = UIWindow(frame: UIScreen.main.bounds)
