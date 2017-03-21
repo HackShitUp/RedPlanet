@@ -4351,7 +4351,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="E7454AAD-2B77-49A3-9752-EE17BE7552B8"/>
+                                <state key="normal" image="B77DA865-BB34-47FD-BC7E-CCEFEA9675DC"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6619,12 +6619,7 @@ Powered by https://newsapi.org/
     <resources>
         <image name="Add User Group Man Man-48" width="24" height="24"/>
         <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="CCamera" width="256" height="256"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="ChatPhotos" width="256" height="256"/>
-        <image name="Comment-100" width="50" height="50"/>
-        <image name="Download" width="261" height="256"/>
-        <image name="E7454AAD-2B77-49A3-9752-EE17BE7552B8" width="265" height="256">
+        <image name="B77DA865-BB34-47FD-BC7E-CCEFEA9675DC" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11200,6 +11195,11 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
+        <image name="CCamera" width="256" height="256"/>
+        <image name="Chat Filled-50" width="27" height="23"/>
+        <image name="ChatPhotos" width="256" height="256"/>
+        <image name="Comment-100" width="50" height="50"/>
+        <image name="Download" width="261" height="256"/>
         <image name="Exit" width="750" height="750"/>
         <image name="Gender Neutral User-100" width="256" height="256"/>
         <image name="Left Filled-100" width="50" height="50"/>

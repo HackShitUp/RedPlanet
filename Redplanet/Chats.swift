@@ -578,7 +578,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             cell.status.isHidden = true
             
             // Set usernames of searched users
-            cell.time.text = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+            if let names = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as? String {
+                cell.time.text! = names
+            }
             
             // (1) Get Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {

@@ -337,7 +337,7 @@ open class Banner: UIView {
         let (damping, velocity) = self.springiness.springValues
         let oldStatusBarStyle = UIApplication.shared.statusBarStyle
         if adjustsStatusBarStyle {
-          UIApplication.shared.setStatusBarStyle(preferredStatusBarStyle, animated: true)
+            UIApplication.shared.statusBarStyle = preferredStatusBarStyle
         }
         UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: .allowUserInteraction, animations: {
             self.bannerState = .showing
@@ -355,7 +355,7 @@ open class Banner: UIView {
         UIView.animate(withDuration: animationDuration, delay: 0.0, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: .allowUserInteraction, animations: {
             self.bannerState = .hidden
             if let oldStatusBarStyle = oldStatusBarStyle {
-                UIApplication.shared.setStatusBarStyle(oldStatusBarStyle, animated: true)
+                UIApplication.shared.statusBarStyle = oldStatusBarStyle
             }
             }, completion: { finished in
                 self.bannerState = .gone
