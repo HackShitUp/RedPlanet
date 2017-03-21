@@ -396,6 +396,8 @@
 		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
 		7E9955661DC99A98003D9D73 /* InTheMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InTheMoment.swift; sourceTree = "<group>"; };
+		7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
 		7EA39E3C1E6157A5000AAEBD /* AAPTransitionDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPTransitionDirector.h; sourceTree = "<group>"; };
@@ -512,6 +514,8 @@
 		601249B385E0E797946F34EC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */,
+				7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */,
 				7E5366F81E6664A70079CA80 /* EVGPUImage2.framework */,
 				7E4199201E4C64A400EFA065 /* GPUImage.framework */,
 				7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */,
@@ -2072,7 +2076,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2093,7 +2097,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 4AFFM98UVG;
 				INFOPLIST_FILE = Redplanet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";

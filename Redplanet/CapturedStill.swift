@@ -284,7 +284,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                              "nil",
                              "CIPhotoEffectNoir",
                              "CICMYKHalftone",
-                             "CIPhotoEffectInstant"]
+                             "CIPhotoEffectInstant",
+                             "CIPhotoEffectChrome"]
             SNFilter.filterIdentities.append(contentsOf: filterAS)
             // Add filter
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
@@ -313,7 +314,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                             "nil",
                             "CIPhotoEffectNoir",
                             "CICMYKHalftone",
-                            "CIPhotoEffectInstant"]
+                            "CIPhotoEffectInstant",
+                            "CIPhotoEffectChrome"]
             SNFilter.filterIdentities.append(contentsOf: filterBS)
             // Add filter
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
