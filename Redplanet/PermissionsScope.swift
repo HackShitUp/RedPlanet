@@ -48,7 +48,7 @@ class PermissionsScope: UITableViewController {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Permissions"
+            self.title = "Permission Scope"
         }
         
         // Show statusBar

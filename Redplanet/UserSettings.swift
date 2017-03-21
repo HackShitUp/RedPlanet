@@ -125,7 +125,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         title.textColor = UIColor.darkGray
         title.backgroundColor = UIColor.white
         title.numberOfLines = 0
-        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NY."
+        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NYC."
         title.textAlignment = .center
         versionView.addSubview(title)
         self.tableView.tableFooterView = versionView
@@ -192,7 +192,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 30)
         title.font = UIFont(name: "AvenirNext-Heavy", size: 12.00)
-        title.textColor = UIColor.black
+        title.textColor = UIColor.lightGray
         title.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         title.text = "      \(self.tableView(tableView, titleForHeaderInSection: section)!)"
         title.textAlignment = .natural
