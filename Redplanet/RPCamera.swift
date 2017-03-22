@@ -103,6 +103,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
+        
+        
         // MARK: - CLGeocoder
         // Reverse engineer coordinates, and get address
         geoLocation.reverseGeocodeLocation(location) {
@@ -131,11 +133,31 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 }
             }
         }
+        
+        
+        
         // Save user's location to server
         if PFUser.current() != nil && PFUser.current()!.value(forKey: "location") != nil {
-            let userGeocode = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            PFUser.current()!["location"] = userGeocode
-            PFUser.current()!.saveInBackground()
+//            print("LOCATION: \(location.coordinate.latitude)\n\(location.coordinate.longitude)\n")
+//            let userGeocode = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+//            PFUser.current()!["location"] = userGeocode
+//            PFUser.current()!.saveInBackground(block: {
+//                (success: Bool, error: Error?) in
+//                if error == nil {
+//                    print("SAVED")
+//                } else {
+//                    print(error?.localizedDescription as Any)
+//                }
+//            })
+            PFGeoPoint.geoPointForCurrentLocation(inBackground: {
+                (geoPoint: PFGeoPoint?, error: Error?) in
+                if error == nil {
+                    PFUser.current()!.setValue(geoPoint, forKey: "location")
+                    PFUser.current()!.saveInBackground()
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
         }
     }
     
@@ -268,19 +290,19 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // MARK: - SwiftyCam
         // Set delegate for camera view
-        cameraDelegate = self
+        self.cameraDelegate = self
         // Set delegate to record video
-        captureButton.delegate = self
+        self.captureButton.delegate = self
         // Set video duration and length
-        maximumVideoDuration = 10.00
+        self.maximumVideoDuration = 10.00
         // Set tap to focus
-        tapToFocus = true
+        self.tapToFocus = true
         // Double tap to switch camera
-        doubleTapCameraSwitch = true
+        self.doubleTapCameraSwitch = true
         // Allow background music
-        allowBackgroundAudio = true
+        self.allowBackgroundAudio = true
         // Add boost
-        lowLightBoost = true
+        self.lowLightBoost = true
         
         // MARK: - SnapSliderFilters
         // Set bool so images aren't flipped and reloaded
@@ -367,7 +389,21 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        // MARK: - SwiftyCam
+        // Set delegate for camera view
+        self.cameraDelegate = self
+        // Set delegate to record video
+        self.captureButton.delegate = self
+        // Set video duration and length
+        self.maximumVideoDuration = 10.00
+        // Set tap to focus
+        self.tapToFocus = true
+        // Double tap to switch camera
+        self.doubleTapCameraSwitch = true
+        // Allow background music
+        self.allowBackgroundAudio = true
+        // Add boost
+        self.lowLightBoost = true
     }
 
     override func didReceiveMemoryWarning() {

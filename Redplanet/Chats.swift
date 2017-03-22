@@ -107,7 +107,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                     print(error?.localizedDescription as Any)
                                                 }
                                             })
-                                            
                                             // Reload data
                                             self.fetchChats()
                                             
@@ -444,19 +443,22 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Set design of navigation bar
+        configureView()
+        // Query chats
+        fetchChats()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
-        
         // Set design of navigation bar
         configureView()
         
-        // Get chats
-        fetchChats()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
         // Add searchbar to header
         self.searchBar.delegate = self
@@ -489,21 +491,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.tableView!.addGestureRecognizer(swipe)
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Set design of navigation bar
-        configureView()
-        // Query chats
-        fetchChats()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Set design of navigation bar
-        configureView()
-        // Query CHATS
-        fetchChats()
     }
     
     override func didReceiveMemoryWarning() {
@@ -766,10 +755,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     func loadMore() {
         // If posts on server are > than shown
         if page <= chatObjects.count {
-            
             // Increase page size to load more posts
             page = page + 500000
-            
             // Query friends
             self.fetchChats()
         }
