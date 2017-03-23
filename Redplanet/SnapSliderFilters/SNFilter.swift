@@ -61,7 +61,7 @@ open class SNFilter: UIImageView {
     
     func applyFilter(filterNamed name:String) -> SNFilter {
         
-        let filter:SNFilter = self.copy() as! SNFilter
+        let filter: SNFilter = self.copy() as! SNFilter
         filter.name = name
         
         if (SNFilter.filterIdentities.contains(name) == false) {
@@ -71,6 +71,35 @@ open class SNFilter: UIImageView {
             // Figure out how to replicate the code 
             // in the next statement
             return filter
+            
+        /*
+        } else if name == "CIColorControls" {
+            // (1) CIImage:
+            // UIImage --> CGImage --> CIImage
+            let aCIImage = CIImage(cgImage: filter.image!.cgImage!)
+            // (2) Define Context
+            let context = CIContext(options: nil)
+            // (3) CIFilter
+            let brightnessFilter = CIFilter(name: name)
+            // Set Image
+            brightnessFilter?.setValue(aCIImage, forKey: "inputImage")
+            // Configure Brightness
+            brightnessFilter?.setValue(0.50, forKey: "inputBrightness")
+            // (4) CIImage --> declare and get output image from filter
+            let outputImage = brightnessFilter?.outputImage
+            // (5) CGImage --> get cgImage created from CIContext
+            let imageRef = context.createCGImage(outputImage!, from: outputImage!.extent)
+            // (6) Convert filtered cgImage to UIImage and set orientation
+            var filteredImage: UIImage?
+            if isRearCam! == true {
+                filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.right)
+            } else if isRearCam! == false {
+                filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
+            }
+            // (7) Add filtered image to array
+            filter.image = filteredImage
+            return filter
+        */  
         } else {
             // Create and apply filter
             // (1) Create Source Image
@@ -122,7 +151,6 @@ open class SNFilter: UIImageView {
 // MARK: - NSCopying protocol
 
 extension SNFilter: NSCopying {
-
     public func copy(with zone: NSZone?) -> Any {
         let copy = SNFilter(frame: self.frame)
         copy.backgroundColor = self.backgroundColor

@@ -296,12 +296,13 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // GEOLOCATION DISABLED
             // (2) Configure City, State
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/6))
-            city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 60)
+            city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 40)
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.randomColor()
             city.text = "\(cityState.last!)"
             city.textAlignment = .center
-            city.numberOfLines = 1
+            city.lineBreakMode = .byWordWrapping
+            city.numberOfLines = 0
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()

@@ -49,6 +49,7 @@ import Bolts
 
 import OneSignal
 import SwipeNavigationController
+import SDWebImage
 
 // Current Username
 var username = [String]()
@@ -107,11 +108,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {
-                                                    
                                                     // if notificaiton titles: "from <Username>"
                                                     // and PFUser.currentUser! is CURRENTLY talking to OtherUser...
                                                     // Reload data for Chats
                                                     NotificationCenter.default.post(name: rpChat, object: nil)
+                                                    
+                                                } else if fullMessage!.hasSuffix("is typing...") {
+                                                    // SHOW that the user is typing
+                                                    // Set visible banner
+                                                    let banner = Banner(title: nil,
+                                                        subtitle: "\(fullMessage!)",
+                                                        image: nil,
+                                                        backgroundColor: UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
+                                                    banner.adjustsStatusBarStyle = false
+                                                    banner.detailLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                                    banner.detailLabel.textColor = UIColor.white
+                                                    banner.dismissesOnTap = true
+                                                    banner.springiness = .heavy
+                                                    banner.hasShadows = false
+                                                    banner.alpha = 1
+                                                    banner.show(duration: 3.0)
                                                 }
                                                 
                                             } else {
@@ -127,6 +143,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
                                                 banner.detailLabel.textColor = UIColor.black
                                                 banner.dismissesOnTap = true
+                                                banner.springiness = .heavy
+                                                banner.alpha = 1
                                                 banner.show(duration: 3.0)
                                             }
                                             
