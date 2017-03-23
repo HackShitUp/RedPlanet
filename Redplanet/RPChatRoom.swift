@@ -643,32 +643,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         queryChats()
         // Stylize title
         configureView()
-        
-        //create a new button
-        let button = UIButton.init(type: .custom)
-        //set image for button
-        if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
-            proPic.getDataInBackground(block: {
-                (data: Data?, error: Error?) in
-                if error == nil {
-                    button.setImage(UIImage(data: data!), for: .normal)
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-        }
-//        button.setImage(UIImage(named: "fb.png"), for: UIControlState.normal)
-        //add function for button
-//        button.addTarget(self, action: #selector(ViewController.fbButtonPressed), for: UIControlEvents.touchUpInside)
-        //set frame
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.layer.cornerRadius = 15.0
-        button.clipsToBounds = true
-        let barButton = UIBarButtonItem(customView: button)
-        //assign button to navigationbar
-        self.navigationItem.rightBarButtonItem = barButton
-        
-        
 
         // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
