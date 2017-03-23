@@ -204,7 +204,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                    style: .cancel,
                                    handler: nil)
         
-        alert.view.tintColor = UIColor.black
         alert.addAction(visit)
         alert.addAction(block)
         alert.addAction(report)
@@ -644,6 +643,32 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         queryChats()
         // Stylize title
         configureView()
+        
+        //create a new button
+        let button = UIButton.init(type: .custom)
+        //set image for button
+        if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+            proPic.getDataInBackground(block: {
+                (data: Data?, error: Error?) in
+                if error == nil {
+                    button.setImage(UIImage(data: data!), for: .normal)
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+        }
+//        button.setImage(UIImage(named: "fb.png"), for: UIControlState.normal)
+        //add function for button
+//        button.addTarget(self, action: #selector(ViewController.fbButtonPressed), for: UIControlEvents.touchUpInside)
+        //set frame
+        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        button.layer.cornerRadius = 15.0
+        button.clipsToBounds = true
+        let barButton = UIBarButtonItem(customView: button)
+        //assign button to navigationbar
+        self.navigationItem.rightBarButtonItem = barButton
+        
+        
 
         // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
@@ -654,12 +679,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
         // Add observer to reload chats
         NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
-        
-        // Add long press method in tableView
-        let hold = UILongPressGestureRecognizer(target: self, action: #selector(options))
-        hold.minimumPressDuration = 0.30
-        self.tableView.isUserInteractionEnabled = true
-        self.tableView.addGestureRecognizer(hold)
         
         // Set bool
         chatCamera = false
@@ -723,7 +742,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.getFirstObjectInBackground(block: {
             (object: PFObject?, error: Error?) in
             if error == nil {
-                
                 // Get user's first object
                 // And set bool value for read receipt
                 if (object!.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -737,7 +755,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         }
                     })
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -841,164 +858,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 //            newChat.frame.size.height = newChat.contentSize.height
 //        }
     }
-
     
     // MARK: - UIScrollViewDelegate
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign chat
         self.newChat.resignFirstResponder()
     }
-    
-    
-    // Function for options
-    func options(sender: UILongPressGestureRecognizer) {
-        if sender.state == .began {
-            let touchedAt = sender.location(in: self.tableView)
-            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-                
-                
-                // MARK: - SimpleAlert
-                let options = AlertController(title: "Options",
-                                              message: nil,
-                                              style: .alert)
-                
-                // Design content view
-                options.configContentView = { view in
-                    if let view = view as? AlertContentView {
-                        view.backgroundColor = UIColor.white
-                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                        view.titleLabel.textColor = UIColor.black
-                        view.textBackgroundView.layer.cornerRadius = 3.00
-                        view.textBackgroundView.clipsToBounds = true
-                        
-                    }
-                }
-                
-                // Design corner radius
-                options.configContainerCornerRadius = {
-                    return 14.00
-                }
-                
-                
-                let delete = AlertAction(title: "Delete",
-                                         style: .destructive,
-                                         handler: { (AlertAction) in
-                                            
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                            SVProgressHUD.show()
-                                            
-                                            // delete chat
-                                            let chats = PFQuery(className: "Chats")
-                                            chats.whereKey("sender", equalTo: PFUser.current()!)
-                                            chats.whereKey("receiver", equalTo: chatUserObject.last!)
-                                            chats.whereKey("objectId", equalTo: self.messageObjects[indexPath.row].objectId!)
-                                            chats.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if error == nil {
-                                                                print("Successfully deleted message: \(object)")
-                                                                
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                                
-                                                                // Delete chat from tableview
-                                                                self.messageObjects.remove(at: indexPath.row)
-                                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                                
-                                                                // Query chats
-                                                                self.queryChats()
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.showError(withStatus: "Error")
-                                                }
-                                            })
-                })
-                
-                let report = AlertAction(title: "Report",
-                                         style: .default,
-                                         handler: { (AlertAction) in
-                                            
-                                            let alert = UIAlertController(title: "Report \(chatUsername.last!.uppercased())?",
-                                                message: "Are you sure you'd like to report \(chatUsername.last!.uppercased())?",
-                                                preferredStyle: .alert)
-                                            
-                                            let yes = UIAlertAction(title: "yes",
-                                                                    style: .destructive,
-                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // REPORTED
-                                                                        let report = PFObject(className: "Reported")
-                                                                        report["byUsername"] = PFUser.current()!.username!
-                                                                        report["byUser"] = PFUser.current()!
-                                                                        report["toUsername"] = chatUsername.last!
-                                                                        report["toUser"] = chatUserObject.last!
-                                                                        report["forObjectId"] = self.messageObjects[indexPath.row].objectId!
-                                                                        report["reason"] = "Inappropriate chat."
-                                                                        report.saveInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully reported \(report)")
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
-                                            })
-                                            
-                                            let no = UIAlertAction(title: "no",
-                                                                   style: .cancel,
-                                                                   handler: nil)
-                                            
-                                            alert.addAction(no)
-                                            alert.addAction(yes)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
-                                            
-                })
-                
-
-                let cancel = AlertAction(title: "Cancel",
-                                         style: .cancel,
-                                         handler: nil)
-                
-                
-                // Return specific actions depending on user's object
-                if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                    options.addAction(cancel)
-                    options.addAction(delete)
-                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                } else {
-                    options.addAction(cancel)
-                    options.addAction(report)
-                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 19.0)
-                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-                }
-                
-                for b in options.actions {
-                    b.button.frame.size.height = 50
-                }
-                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                cancel.button.setTitleColor(UIColor.black, for: .normal)
-                
-                // Show Alert
-                self.present(options, animated: true, completion: nil)
-                
-            }
-        }
-    }
-    
-    
 
     // MARK: - UITableViewDataSource and Delegate methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -128,6 +128,13 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - HEAP
+        // Track who viewed sharers
+        Heap.track("ViewedSharers", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
 
         // Fetch sharers
         queryShares()

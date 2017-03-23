@@ -168,6 +168,13 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: - HEAP
+        // Track who viewed views
+        Heap.track("ViewedViews", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
+        
         // Query views & configure title
         queryViews()
         

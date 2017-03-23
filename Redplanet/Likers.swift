@@ -208,6 +208,13 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - HEAP
+        // Track who viewed likers
+        Heap.track("ViewedLikers", withProperties:
+            ["byUserId": "\(PFUser.current()!.objectId!)",
+                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+            ])
 
         // Fetch likers
         queryLikes()
