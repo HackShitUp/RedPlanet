@@ -88,7 +88,7 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         
         // Mark: - SVProgressHUD
         SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
 
         // Fetch blocked users
         fetchBlocked()

@@ -439,6 +439,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         chats["receiverUsername"] = chatUsername.last!
                         chats["read"] = false
                         chats["videoAsset"] = PFFile(name: "video.mov", data: compressedData as Data)
+                        chats["mediaType"] = "vi"
                         chats.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
@@ -504,14 +505,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
     
         // Send to Chats
-        let chat = PFObject(className: "Chats")
-        chat["sender"] = PFUser.current()!
-        chat["senderUsername"] = PFUser.current()!.username!
-        chat["receiver"] = chatUserObject.last!
-        chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
-        chat["read"] = false
-        chat.saveInBackground {
+        let chats = PFObject(className: "Chats")
+        chats["sender"] = PFUser.current()!
+        chats["senderUsername"] = PFUser.current()!.username!
+        chats["receiver"] = chatUserObject.last!
+        chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+        chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
+        chats["mediaType"] = "ph"
+        chats["read"] = false
+        chats.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
                 
@@ -850,6 +852,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
+    
+    /*
+     <mediaType>
+     • ph
+     • vi
+     • itm
+ */
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -969,59 +978,64 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
             
             // (2) Fetch Media Asset
-            messageObjects[indexPath.row].fetchInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    // Fetch media asset and handle optional chaining
-                    if let media = object!["photoAsset"] as? PFFile {
-                        // MARK: - SDWebImage
-                        mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
-                        mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
-                        
-                        // Traverse file to URL
-                        let fileURL = URL(string: media.url!)
-                        
-                        // Create Moment indication
-                        mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                        mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                        mCell.rpMediaAsset.layer.borderWidth = 3.50
-                        
-                        // MARK: - SDWebImage
-                        mCell.rpMediaAsset.sd_setImage(with: fileURL!, placeholderImage: mCell.rpMediaAsset.image)
-                        
-                    } else {
-                        // Get media preview
-                        if let videoFile = object!["videoAsset"] as? PFFile {
-                        // VIDEO
-                            // LayoutViews
-                            mCell.rpMediaAsset.layoutIfNeeded()
-                            mCell.rpMediaAsset.layoutSubviews()
-                            mCell.rpMediaAsset.setNeedsLayout()
-                            
-                            // Make Vide Preview Circular
-                            mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                            mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                            mCell.rpMediaAsset.layer.borderWidth = 3.50
-                            // MARK: - SDWebImage
-                            mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
-                            mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
-                            
-                            // Load Video Preview and Play Video
-                            let player = AVPlayer(url: URL(string: videoFile.url!)!)
-                            let playerLayer = AVPlayerLayer(player: player)
-                            playerLayer.frame = mCell.rpMediaAsset.bounds
-                            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-                            mCell.rpMediaAsset.contentMode = .scaleAspectFit
-                            mCell.rpMediaAsset.layer.addSublayer(playerLayer)
-                            player.isMuted = true
-                            player.isMuted = true
-                            player.play()
-                        }
-                    }
-                } else {
-                    print(error?.localizedDescription as Any)
+            mCell.rpMediaAsset.contentMode = .scaleAspectFill
+            mCell.rpMediaAsset.layer.borderColor = UIColor.clear.cgColor
+            mCell.rpMediaAsset.layer.borderWidth = 0.0
+            
+            // (2A) PHOTO
+            if let photo = self.messageObjects[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                // Traverse file to URL
+                let fileURL = URL(string: photo.url!)
+            
+                // (A) REGULAR:  PHOTO OR STICKER
+                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "ph" {
+                    mCell.rpMediaAsset.layer.cornerRadius = 2.00
+                } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "sti" {
+                // STICKER
+                    mCell.rpMediaAsset.layer.cornerRadius = 2.00
+                    mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "itm" {
+                // (B) MOMENT
+                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                    mCell.rpMediaAsset.layer.borderWidth = 3.50
                 }
-            })
+            
+                // MARK: - SDWebImage
+                mCell.rpMediaAsset.sd_setShowActivityIndicatorView(true)
+                mCell.rpMediaAsset.sd_setIndicatorStyle(.gray)
+                mCell.rpMediaAsset.sd_setImage(with: fileURL!, placeholderImage: mCell.rpMediaAsset.image)
+            }
+            
+            // (2B) VIDEO
+            if let videoFile = self.messageObjects[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // LayoutViews
+                mCell.rpMediaAsset.layoutIfNeeded()
+                mCell.rpMediaAsset.layoutSubviews()
+                mCell.rpMediaAsset.setNeedsLayout()
+                
+                if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "vi" {
+                // (A) REGULAR: VIDEO
+                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    mCell.rpMediaAsset.layer.borderWidth = 3.50
+                } else {
+                // (B) MOMENT
+                    mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
+                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                    mCell.rpMediaAsset.layer.borderWidth = 3.50
+                }
+                
+                // Load Video Preview and Play Video
+                let player = AVPlayer(url: URL(string: videoFile.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = mCell.rpMediaAsset.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                mCell.rpMediaAsset.contentMode = .scaleAspectFit
+                mCell.rpMediaAsset.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
+            }
             
             
             // Call Media Cell's awakeFromNib to layout the tap functions

@@ -126,7 +126,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         
         // Show Progress
         SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
+        SVProgressHUD.setBackgroundColor(UIColor.clear)
 
         // Fetch public accounts
         fetchDiscover()

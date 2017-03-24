@@ -24,8 +24,8 @@ class Home: UIViewController, UINavigationControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UIApplication.shared.statusBarStyle = .default
-
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
 
         // Array to keep track of controllers in page menu
         var controllerArray : [UIViewController] = []
@@ -67,8 +67,12 @@ class Home: UIViewController, UINavigationControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide navigationbar
+        // Show statusBar, hide navigation bar, show tab bar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -81,26 +85,16 @@ class Home: UIViewController, UINavigationControllerDelegate {
         } catch {
             print("[SwiftyCam]: Failed to set background audio preference")
         }
-        // Show statusBar, hide navigation bar, show tab bar
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Hide menuff
+        // Hide menu
         pageMenu?.hideTopMenuBar = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
         // Hide menu
         pageMenu?.hideTopMenuBar = true
         

@@ -85,11 +85,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                     let sender = PFQuery(className: "Chats")
                                     sender.whereKey("sender", equalTo: PFUser.current()!)
                                     sender.whereKey("receiver", notEqualTo: PFUser.current()!)
-                                    
                                     let receiver = PFQuery(className: "Chats")
                                     receiver.whereKey("receiver", equalTo: PFUser.current()!)
                                     receiver.whereKey("sender", notEqualTo: PFUser.current()!)
-                                    
                                     let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
                                     chats.findObjectsInBackground(block: {
                                         (objects: [PFObject]?, error: Error?) in
@@ -385,6 +383,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                         receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
                                         
                                         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+                                        chats.includeKeys(["receiver", "sender"])
                                         chats.findObjectsInBackground(block: {
                                             (objects: [PFObject]?, error: Error?) in
                                             if error == nil {
@@ -418,7 +417,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                                     // MARK: - SVProgressHUD
                                                     SVProgressHUD.dismiss()
                                                 }
-                                                
                                                 // Reload data
                                                 self.fetchChats()
                                             }

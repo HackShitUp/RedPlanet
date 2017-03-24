@@ -102,6 +102,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
             chats["read"] = false
             chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+            chats["mediaType"] = "itm"
             chats.saveInBackground()
             
             // MARK: - HEAP
@@ -134,9 +135,10 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chatCamera = false
             // Clear array
             capturedURLS.removeAll(keepingCapacity: false)
-            // Reload data and push to bottom
+            // Reload data
+            NotificationCenter.default.post(name: rpChat, object: nil)
+            // Push to bottom
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: rpChat, object: nil)
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             }
         }

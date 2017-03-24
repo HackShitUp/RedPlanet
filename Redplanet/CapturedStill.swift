@@ -119,14 +119,15 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             
         } else {
             // Chat
-            let chat = PFObject(className: "Chats")
-            chat["sender"] = PFUser.current()!
-            chat["senderUsername"] = PFUser.current()!.username!
-            chat["receiver"] = chatUserObject.last!
-            chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chat["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
-            chat["read"] = false
-            chat.saveInBackground()
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
+            chats["mediaType"] = "itm"
+            chats["read"] = false
+            chats.saveInBackground()
             
             // Send Push Notification to user
             // Handle optional chaining
@@ -152,8 +153,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chatCamera = false
             // Clear arrray
             stillImages.removeAll(keepingCapacity: false)
+            // Reload data
+            NotificationCenter.default.post(name: rpChat, object: nil)
+            // Push to bottom
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: rpChat, object: nil)
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             }
         }

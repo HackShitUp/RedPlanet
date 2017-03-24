@@ -130,14 +130,15 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // Send to Chats
-        let chat = PFObject(className: "Chats")
-        chat["sender"] = PFUser.current()!
-        chat["senderUsername"] = PFUser.current()!.username!
-        chat["receiver"] = chatUserObject.last!
-        chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-        chat["photoAsset"] = PFFile(data: UIImagePNGRepresentation(UIImage(named: self.stickers[indexPath.row])!)!)
-        chat["read"] = false
-        chat.saveInBackground {
+        let chats = PFObject(className: "Chats")
+        chats["sender"] = PFUser.current()!
+        chats["senderUsername"] = PFUser.current()!.username!
+        chats["receiver"] = chatUserObject.last!
+        chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+        chats["photoAsset"] = PFFile(data: UIImagePNGRepresentation(UIImage(named: self.stickers[indexPath.row])!)!)
+        chats["mediaType"] = "sti"
+        chats["read"] = false
+        chats.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
                 

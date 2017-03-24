@@ -129,6 +129,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["receiverUsername"] = user.value(forKey: "username") as! String
                     chats["read"] = false
                     chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
+                    chats["mediaType"] = "ph"
                     chats.saveEventually()
                     // MARK: - OneSignal
                     // Send Push Notification
@@ -155,6 +156,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["receiverUsername"] = user.value(forKey: "username") as! String
                     chats["read"] = false
                     chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
+                    chats["mediaType"] = "vi"
                     chats.saveEventually()
                     // MARK: - OneSignal
                     // Send Push Notification
