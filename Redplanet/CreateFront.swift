@@ -27,10 +27,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // NOTIFICATIONs
     // Array to hold my notifications
-    var myActivity = [PFObject]()
-    
-    // Array to hold fromUser Objects
-    var fromUsers = [PFObject]()
+    var activityObjects = [PFObject]()
     
     // Skipped objects for Moments
     var skipped = [PFObject]()
@@ -72,9 +69,9 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func queryNotifications() {
         // Fetch your notifications
         let notifications = PFQuery(className: "Notifications")
-        notifications.includeKeys(["toUser", "fromUser"])
         notifications.whereKey("toUser", equalTo: PFUser.current()!)
         notifications.whereKey("fromUser", notEqualTo: PFUser.current()!)
+        notifications.includeKeys(["toUser", "fromUser"])
         notifications.order(byDescending: "createdAt")
         notifications.limit = self.page
         notifications.findObjectsInBackground(block: {
@@ -85,8 +82,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 SVProgressHUD.dismiss()
                 
                 // Clear array
-                self.myActivity.removeAll(keepingCapacity: false)
-                self.fromUsers.removeAll(keepingCapacity: false)
+                self.activityObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 // Append objects
@@ -96,8 +92,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-                        self.myActivity.append(object)
-                        self.fromUsers.append(object.object(forKey: "fromUser") as! PFUser)
+                        self.activityObjects.append(object)
                     } else {
                         self.skipped.append(object)
                     }
@@ -105,7 +100,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
                 
                 // Set DZN
-                if self.myActivity.count == 0 {
+                if self.activityObjects.count == 0 {
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.emptyDataSetSource = self
                 }
@@ -223,7 +218,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if myActivity.count == 0 {
+        if activityObjects.count == 0 {
             return true
         } else {
             return false
@@ -264,7 +259,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return myActivity.count
+        return activityObjects.count
     }
     
     
@@ -280,7 +275,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Declare content's object
         // in Notifications' <forObjectId>
-        cell.contentObject = myActivity[indexPath.row]
+        cell.contentObject = activityObjects[indexPath.row]
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
@@ -293,27 +288,21 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        
-        // (1) Set user's object
-        cell.userObject = fromUsers[indexPath.row]
-       
-        // (2) Fetch User Object
-        fromUsers[indexPath.row].fetchIfNeededInBackground(block: {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Set Username
-                cell.rpUsername.setTitle("\(object!["realNameOfUser"] as! String)", for: .normal)
-                
-                // (2) Get and user's profile photo
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
+        // (1) GET user's object
+        if let user = self.activityObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
+            
+            // (1A) Set user's object
+            cell.userObject = user
+            
+            // (1B) Set user's fullName
+            cell.rpUsername.setTitle("\(user.value(forKey: "realNameOfUser") as! String)", for: .normal)
+            
+            // (1C) Get and user's profile photo
+            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
-        })
+        }
         
         
         
@@ -328,12 +317,12 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ==================== R E L A T I O N S H I P S ------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------------------------------
         // (1) Follow Requested
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "follow requested" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "follow requested" {
             cell.activity.setTitle("requested to follow you", for: .normal)
         }
         
         // (2) Followed
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "followed" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "followed" {
             cell.activity.setTitle("started following you", for: .normal)
         }
         
@@ -344,7 +333,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ==================== S P A C E ------------------------------------------------------------------------------
         // -------------------------------------------------------------------------------------------------------------
 
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "space" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "space" {
             cell.activity.setTitle("wrote on your Space", for: .normal)
         }
 
@@ -354,42 +343,42 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
 
         
         // (1) Text Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like tp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like tp" {
             cell.activity.setTitle("liked your Text Post", for: .normal)
         }
         
         // (2) Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like ph" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like ph" {
             cell.activity.setTitle("liked your Photo", for: .normal)
         }
         
         // (3) Profile Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like pp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like pp" {
             cell.activity.setTitle("liked your Profile Photo", for: .normal)
         }
         
         // (4) Space Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like sp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sp" {
             cell.activity.setTitle("liked your Space Post", for: .normal)
         }
         
         // (5) Shared
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like sh" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sh" {
             cell.activity.setTitle("liked your Shared Post", for: .normal)
         }
         
         // (6) Moment
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like itm" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like itm" {
             cell.activity.setTitle("liked your Moment", for: .normal)
         }
         
         // (7) Video
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like vi" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like vi" {
             cell.activity.setTitle("liked your Video", for: .normal)
         }
         
         // (9)  Liked Comment
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "like co" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like co" {
             cell.activity.setTitle("liked your comment", for: .normal)
         }
         
@@ -399,38 +388,35 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ------------------------------------------------------------------------------------------------
         
         // (1) Text Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag tp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag tp" {
             cell.activity.setTitle("tagged you in a Text Post", for: .normal)
         }
 
         // (2) Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag ph" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag ph" {
             cell.activity.setTitle("tagged you in a Photo", for: .normal)
         }
         
         // (3) Profile Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag pp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag pp" {
             cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
         }
         
         // (4) Space Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag sp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag sp" {
             cell.activity.setTitle("tagged you in a Space Post", for: .normal)
         }
         
         // (5) SKIP: Shared Post
-        
         // (6) SKIP: Moment
         
         // (7) Video
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag vi" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag vi" {
             cell.activity.setTitle("tagged you in a Video", for: .normal)
         }
         
-        
-        
         // (8) Comment
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "tag co" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
             cell.activity.setTitle("tagged you in a comment", for: .normal)
         }
         
@@ -441,39 +427,8 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ==================== C O M M E N T -------------------------------------------------------------------------
         // ------------------------------------------------------------------------------------------------------------
         
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "comment" {
-            cell.activity.setTitle("commented on your Post", for: .normal)
-        }
-        
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co tp" {
-            cell.activity.setTitle("commented on your Text Post", for: .normal)
-        }
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co ph" {
-            cell.activity.setTitle("commented on your Photo", for: .normal)
-        }
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co pp" {
-            cell.activity.setTitle("commented on your Profile Photo", for: .normal)
-        }
-        
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co itm" {
-            cell.activity.setTitle("commented on your Moment", for: .normal)
-        }
-        
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co sp" {
-            cell.activity.setTitle("commented on your Space Post", for: .normal)
-        }
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co sh" {
-            cell.activity.setTitle("commented on your Shared Post", for: .normal)
-        }
-        
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "co vi" {
-            cell.activity.setTitle("commented on your Video", for: .normal)
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
+            cell.activity.setTitle("commented on your post", for: .normal)
         }
         
         
@@ -482,37 +437,37 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // ------------------------------------------------------------------------------------------
         
         // (1) Text Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share tp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share tp" {
             cell.activity.setTitle("shared your Text Post", for: .normal)
         }
         
         // (2) Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share ph" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share ph" {
             cell.activity.setTitle("shared your Photo", for: .normal)
         }
         
         // (3) Profile Photo
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share pp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share pp" {
             cell.activity.setTitle("shared your Profile Photo", for: .normal)
         }
         
         // (4) Space Post
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sp" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sp" {
             cell.activity.setTitle("shared your Space Post", for: .normal)
         }
         
         // (5) Share
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share sh" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
             cell.activity.setTitle("re-shared your Shared Post", for: .normal)
         }
         
         // (6) Moment
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share itm" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
             cell.activity.setTitle("shared your Moment", for: .normal)
         }
         
         // (7) Video
-        if myActivity[indexPath.row].value(forKey: "type") as! String == "share vi" {
+        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
             cell.activity.setTitle("shared your Video", for: .normal)
         }
         
@@ -523,7 +478,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         
         // (4) Set time
-        let from = myActivity[indexPath.row].createdAt!
+        let from = activityObjects[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
@@ -556,7 +511,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     func loadMore() {
         // If posts on server are > than shown
-        if page <= myActivity.count + self.skipped.count {
+        if page <= activityObjects.count + self.skipped.count {
             
             // Increase page size to load more posts
             page = page + 25
