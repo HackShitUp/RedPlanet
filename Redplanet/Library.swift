@@ -158,8 +158,6 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         super.viewWillAppear(animated)
         // Stylize navigation bar
         configureView()
-        // Fetch Assets
-        fetchAssets()
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 7.50
         self.navigationController?.view.clipsToBounds = true
@@ -181,6 +179,11 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
+        // Fetch Assets
+        fetchAssets()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         // Fetch Assets
         fetchAssets()
     }
@@ -256,7 +259,6 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             // Append PHAsset
             shareMediaAsset.append(self.allAssets[indexPath.item])
         }
-        
         
         // Push VC
         let shareMediaVC = self.storyboard?.instantiateViewController(withIdentifier: "shareMediaVC") as! ShareMedia
