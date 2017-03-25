@@ -247,7 +247,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                             // Handle optional chaining for user object
                             if let user = commentsObject.last!.value(forKey: "byUser") as? PFUser {
                                 // Handle optional chaining for user's apnsId
-                                if user["apnsId"] != nil {
+                                if user.value(forKey: "apnsId") != nil {
                                     // MARK: - OneSignal
                                     // Send push notification
                                     OneSignal.postNotification(

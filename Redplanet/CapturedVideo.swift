@@ -114,21 +114,20 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             self.continueButton.isUserInteractionEnabled = true
             // Send Push Notification to user
             // Handle optional chaining
+            // Handle optional chaining
             if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                // Handle optional chaining
-                if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                    // MARK: - OneSignal
-                    // Send push notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
-                }
+                // MARK: - OneSignal
+                // Send push notification
+                OneSignal.postNotification(
+                    ["contents":
+                        ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                     "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                     "ios_badgeType": "Increase",
+                     "ios_badgeCount": 1
+                    ]
+                )
             }
+            
             // Re-enable buttons
             self.continueButton.isUserInteractionEnabled = true
             // Set bool to false

@@ -281,21 +281,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Send Push Notification to user
                     // Handle optional chaining
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // Handle optional chaining
-                        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                            // MARK: - OneSignal
-                            // Send push notification
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1,
-                                ]
-                            )
-                        }
+                        // MARK: - OneSignal
+                        // Send push notification
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1,
+                             ]
+                        )
                     }
-                    
                     
                     // Add Int to Chat
                     let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
@@ -610,7 +606,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                  "ios_badgeCount": 1
                 ]
             )
-            
         }
     }
     
@@ -815,17 +810,19 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UITextViewDelegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
-        print("FIRED")
-        // Show user is typing
-        // MARK: - OneSignal
-        OneSignal.postNotification(
-            ["contents":
-                ["en": "\(PFUser.current()!.username!.uppercased()) is typing..."],
-             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-             "ios_badgeType": "Increase",
-             "ios_badgeCount": 1,
-             ]
-        )
+        // APNSID
+        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+            // Show user is typing
+            // MARK: - OneSignal
+            OneSignal.postNotification(
+                ["contents":
+                    ["en": "\(PFUser.current()!.username!.uppercased()) is typing..."],
+                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                 "ios_badgeType": "Increase",
+                 "ios_badgeCount": 1,
+                 ]
+            )
+        }
     }
     // Send chat if text starts a new line
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

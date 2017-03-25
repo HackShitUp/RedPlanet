@@ -133,14 +133,16 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats.saveEventually()
                     // MARK: - OneSignal
                     // Send Push Notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
-                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
+                    if user.value(forKey: "apnsId") != nil {
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Photo with you"],
+                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1
+                            ]
+                        )
+                    }
                 }
             }
         } else if shareObject.last!.value(forKey: "videoAsset") != nil {
@@ -160,14 +162,16 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats.saveEventually()
                     // MARK: - OneSignal
                     // Send Push Notification
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
-                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
+                    if user.value(forKey: "apnsId") != nil {
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Video with you"],
+                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1
+                            ]
+                        )
+                    }
                 }
             }
         } else {
@@ -185,14 +189,16 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         chats.saveEventually()
                         // MARK: - OneSignal
                         // Send Push Notification
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
-                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                             "ios_badgeType": "Increase",
-                             "ios_badgeCount": 1
-                            ]
-                        )
+                        if user.value(forKey: "apnsId") != nil {
+                            OneSignal.postNotification(
+                                ["contents":
+                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared a Text Post with you"],
+                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                                 "ios_badgeType": "Increase",
+                                 "ios_badgeCount": 1
+                                ]
+                            )
+                        }
                     }
                 }
             }
