@@ -113,7 +113,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
                     if cityState.isEmpty {
-                        cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
+                        cityState.append("\(pm.subLocality!), \(pm.administrativeArea!)")
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()
                     } else {
@@ -138,17 +138,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // Save user's location to server
         if PFUser.current() != nil && PFUser.current()!.value(forKey: "location") != nil {
-//            print("LOCATION: \(location.coordinate.latitude)\n\(location.coordinate.longitude)\n")
-//            let userGeocode = PFGeoPoint(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-//            PFUser.current()!["location"] = userGeocode
-//            PFUser.current()!.saveInBackground(block: {
-//                (success: Bool, error: Error?) in
-//                if error == nil {
-//                    print("SAVED")
-//                } else {
-//                    print(error?.localizedDescription as Any)
-//                }
-//            })
             PFGeoPoint.geoPointForCurrentLocation(inBackground: {
                 (geoPoint: PFGeoPoint?, error: Error?) in
                 if error == nil {
