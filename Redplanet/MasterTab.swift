@@ -37,11 +37,6 @@ class MasterTab: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Change status bar
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
-        
         // Set tabBar's tintColor and tabBar's barTintColor
         self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white

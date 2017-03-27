@@ -46,7 +46,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
         let parameters: [CAPSPageMenuOption] = [
             .menuItemSeparatorWidth(0.0),
             .useMenuLikeSegmentedControl(true),
-            .menuHeight(23.00),
+            .menuHeight(20.00),
             .menuItemSeparatorRoundEdges(true),
             .selectionIndicatorColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)),
             .scrollMenuBackgroundColor(UIColor.white),

@@ -234,7 +234,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.textView.text! = "What are you doing?"
         self.textView.textColor = UIColor.darkGray
         // Create corner radiuss
-        self.navigationController?.view.layer.cornerRadius = 7.50
+        self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
     }
 

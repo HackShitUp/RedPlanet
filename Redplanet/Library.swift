@@ -159,7 +159,7 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
         // Stylize navigation bar
         configureView()
         // Create corner radiuss
-        self.navigationController?.view.layer.cornerRadius = 7.50
+        self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
     }
     

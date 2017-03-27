@@ -83,7 +83,7 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
         }
         
         // Configure cover photo
-        cell.coverPhoto.layer.cornerRadius = 4.00
+        cell.coverPhoto.layer.cornerRadius = 2.00
         cell.coverPhoto.clipsToBounds = true
         
         return cell

@@ -4195,19 +4195,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FMp-mL-axr">
-                                            <rect key="frame" x="2" y="3" width="120" height="120"/>
+                                            <rect key="frame" x="1" y="1" width="123" height="123"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="120" id="SCg-yW-0rm"/>
-                                                <constraint firstAttribute="height" constant="120" id="yd0-At-8OG"/>
+                                                <constraint firstAttribute="width" constant="123" id="SCg-yW-0rm"/>
+                                                <constraint firstAttribute="height" constant="123" id="yd0-At-8OG"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                 </view>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="FMp-mL-axr" secondAttribute="bottom" constant="2" id="Ef4-I1-fZ8"/>
-                                    <constraint firstItem="FMp-mL-axr" firstAttribute="leading" secondItem="Fht-p0-Nis" secondAttribute="leading" constant="2" id="ITg-1S-BEB"/>
-                                    <constraint firstAttribute="trailing" secondItem="FMp-mL-axr" secondAttribute="trailing" constant="3" id="MFX-Bc-ghh"/>
-                                    <constraint firstItem="FMp-mL-axr" firstAttribute="top" secondItem="Fht-p0-Nis" secondAttribute="top" constant="3" id="fbr-1C-CNj"/>
+                                    <constraint firstAttribute="bottom" secondItem="FMp-mL-axr" secondAttribute="bottom" constant="1" id="Ef4-I1-fZ8"/>
+                                    <constraint firstItem="FMp-mL-axr" firstAttribute="leading" secondItem="Fht-p0-Nis" secondAttribute="leading" constant="1" id="ITg-1S-BEB"/>
+                                    <constraint firstAttribute="trailing" secondItem="FMp-mL-axr" secondAttribute="trailing" constant="1" id="MFX-Bc-ghh"/>
+                                    <constraint firstItem="FMp-mL-axr" firstAttribute="top" secondItem="Fht-p0-Nis" secondAttribute="top" constant="1" id="fbr-1C-CNj"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="thumbnail" destination="FMp-mL-axr" id="NTg-3G-1g1"/>
@@ -4353,7 +4353,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="DAA25E67-4F0E-4547-B555-A7AFC21C5B09"/>
+                                <state key="normal" image="392E2018-6F5F-4133-8411-CE96366571BA"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6619,13 +6619,7 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="Add User Group Man Man-48" width="24" height="24"/>
-        <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="CCamera" width="256" height="256"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="ChatPhotos" width="256" height="256"/>
-        <image name="Comment-100" width="50" height="50"/>
-        <image name="DAA25E67-4F0E-4547-B555-A7AFC21C5B09" width="265" height="256">
+        <image name="392E2018-6F5F-4133-8411-CE96366571BA" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11201,6 +11195,12 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
+        <image name="Add User Group Man Man-48" width="24" height="24"/>
+        <image name="Address Book Filled-50" width="25" height="25"/>
+        <image name="CCamera" width="256" height="256"/>
+        <image name="Chat Filled-50" width="27" height="23"/>
+        <image name="ChatPhotos" width="256" height="256"/>
+        <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="261" height="256"/>
         <image name="Exit" width="750" height="750"/>
         <image name="Gender Neutral User-100" width="256" height="256"/>
