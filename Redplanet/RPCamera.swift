@@ -103,8 +103,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
-        
-        
+
         // MARK: - CLGeocoder
         // Reverse engineer coordinates, and get address
         geoLocation.reverseGeocodeLocation(location) {
@@ -112,8 +111,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             if error == nil {
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
+                                    
                     if cityState.isEmpty {
                         cityState.append("\(pm.subLocality!), \(pm.administrativeArea!)")
+
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()
                     } else {

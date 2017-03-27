@@ -16,13 +16,18 @@ import Bolts
 import SwipeNavigationController
 
 class MasterTab: UITabBarController {
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Create corner radiuss
-        self.view.layer.cornerRadius = 7.50
+        // Create corner radius for topLeft/topRight of UIView
+        let shape = CAShapeLayer()
+        shape.bounds = self.view.frame
+        shape.position = self.view.center
+        shape.path = UIBezierPath(roundedRect: self.view.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
+        self.view.layer.backgroundColor = UIColor.black.cgColor
+        self.view.layer.mask = shape
         self.view.clipsToBounds = true
-        
+
         // Change status bar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
