@@ -58,7 +58,6 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
             
-            
         } else if newRPUserEmailAddress.isEmpty {
             // Show that user's passwords must match && password must be greater than 8 characters long
             let alert = UIAlertController(title: "Invalid Email",
@@ -70,7 +69,6 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
             alert.addAction(cancelAction)
             alert.view.tintColor = UIColor.black
             self.present(alert, animated: false, completion: nil)
-            
             
         } else if newRPUserPassword.characters.count < 8 {
             // Show that user's passwords must match && password must be greater than 8 characters long

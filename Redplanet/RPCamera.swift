@@ -113,7 +113,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                     let pm = placemarks![0]
                                     
                     if cityState.isEmpty {
-                        cityState.append("\(pm.subLocality!), \(pm.administrativeArea!)")
+                        cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
 
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()

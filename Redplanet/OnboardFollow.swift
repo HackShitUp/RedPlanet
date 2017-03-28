@@ -21,14 +21,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
     // Array to hold user object
     var followObjects = [PFObject]()
-    var teamObjects = [PFObject]()
-    
-    // Set Team's ObjectId's
-    var team = ["8ZztVf7CEw", // Michael Furman (3)
-                   "OoZRHmiNpX", // Jake Cadez (2)
-                   "2AOI4vtcSI" // Josh Choi (1)
-    ]
-    
+
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
@@ -96,26 +89,20 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     
     // Function to fetch these users
     func fetchUsers() {
-        let team = PFUser.query()!
-        team.whereKey("objectId", containedIn: self.team)
-        let follow = PFUser.query()!
-        follow.whereKey("private", equalTo: false)
-        let people = PFQuery.orQuery(withSubqueries: [team, follow])
+        let people = PFUser.query()!
+        people.whereKey("private", equalTo: false)
         people.order(byAscending: "createdAt")
         people.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear arrays
                 self.followObjects.removeAll(keepingCapacity: false)
-                self.teamObjects.removeAll(keepingCapacity: false)
+
                 // Append object
                 for object in objects! {
-                    if object.objectId! == "2AOI4vtcSI" || object.objectId! == "uvjf6LmD2t" || object.objectId! == "OoZRHmiNpX" || object.objectId! == "8ZztVf7CEw" || object.objectId! == "l5L2xZuhIi" {
-                        self.teamObjects.append(object)
-                    } else {
-                        self.followObjects.append(object)
-                    }
+                    self.followObjects.append(object)
                 }
+                
                 // Reload data
                 self.tableView!.reloadData()
             } else {
@@ -125,11 +112,35 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     }
 
     
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "Follow People!"
+        }
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.view?.backgroundColor = UIColor.white
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show navigation controller
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        // Stylize title
+        configureView()
         
         // Set estimated row height
         self.tableView!.setNeedsLayout()
@@ -142,58 +153,28 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         // Fetch users
         fetchUsers()
         
-        // Set title
-        self.title = "Follow People"
-        
         // Get rid of back button
         self.navigationController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title:"", style: .plain, target: nil, action: nil)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if section == 0 {
-            return teamObjects.count
-        } else {
-            return followObjects.count
-        }
+        return followObjects.count
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.textColor = UIColor.white
-        label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
-        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        
-        if section == 0 {
-            label.text = "   FOLLOW THE REDPLANET TEAM"
-            return label
-        } else {
-            label.text = "   FOLLOW PUBLIC ACCOUNTS"
-            return label
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 44
-        } else {
-            return 44
-        }
+        return 0
     }
-    
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
@@ -216,80 +197,41 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.clipsToBounds = true
         
     
-        if indexPath.section == 0 {
-            // (1) Set user's object
-            cell.userObject = self.teamObjects[indexPath.row]
-            // (2) Set User's Name
-            cell.name.text! = self.teamObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            // (3) Set user's bio
-            if self.teamObjects[indexPath.row].value(forKey: "userBiography") != nil {
-                cell.bio.text! = self.teamObjects[indexPath.row].value(forKey: "userBiography") as! String
-            } else {
-                cell.bio.text! = ""
-            }
-            // (4) Set Pro Pic
-            if let proPic = self.teamObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-            }
-            
-            
-            if myFollowing.contains(where: {$0.objectId! == self.teamObjects[indexPath.row].objectId!}) {
-            // FOLLOWING
-                // Set button's title and design
-                cell.followButton.setTitle("Following", for: .normal)
-                cell.followButton.setTitleColor(UIColor.white, for: .normal)
-                cell.followButton.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                cell.followButton.layer.cornerRadius = 22.0
-                cell.followButton.clipsToBounds = true
-            } else {
-            // FOLLOW
-                // Set button's title and design
-                cell.followButton.setTitle("Follow", for: .normal)
-                cell.followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                cell.followButton.backgroundColor = UIColor.white
-                cell.followButton.layer.cornerRadius = 22.00
-                cell.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                cell.followButton.layer.borderWidth = 2.00
-                cell.followButton.clipsToBounds = true
-            }
-
+        // (1) Set user's object
+        cell.userObject = self.followObjects[indexPath.row]
+        // (2) Set User's Name
+        cell.name.text! = self.followObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+        // (3) Set user's bio
+        if self.followObjects[indexPath.row].value(forKey: "userBiography") != nil {
+            cell.bio.text! = self.followObjects[indexPath.row].value(forKey: "userBiography") as! String
         } else {
-            // (1) Set user's object
-            cell.userObject = self.followObjects[indexPath.row]
-            // (2) Set User's Name
-            cell.name.text! = self.followObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-            // (3) Set user's bio
-            if self.followObjects[indexPath.row].value(forKey: "userBiography") != nil {
-                cell.bio.text! = self.followObjects[indexPath.row].value(forKey: "userBiography") as! String
-            } else {
-                cell.bio.text! = ""
-            }
-            // (4) Set Pro Pic
-            if let proPic = self.followObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-            }
-            
-            if myFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
-                // FOLLOWING
-                // Set button's title and design
-                cell.followButton.setTitle("Following", for: .normal)
-                cell.followButton.setTitleColor(UIColor.white, for: .normal)
-                cell.followButton.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                cell.followButton.layer.cornerRadius = 22.0
-                cell.followButton.clipsToBounds = true
-            } else {
-                // FOLLOW
-                // Set button's title and design
-                cell.followButton.setTitle("Follow", for: .normal)
-                cell.followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                cell.followButton.backgroundColor = UIColor.white
-                cell.followButton.layer.cornerRadius = 22.00
-                cell.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                cell.followButton.layer.borderWidth = 2.00
-                cell.followButton.clipsToBounds = true
-            }
+            cell.bio.text! = ""
+        }
+        // (4) Set Pro Pic
+        if let proPic = self.followObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+        }
+        
+        
+        if myFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
+            // FOLLOWING
+            // Set button's title and design
+            cell.followButton.setTitle("Following", for: .normal)
+            cell.followButton.setTitleColor(UIColor.white, for: .normal)
+            cell.followButton.backgroundColor =  UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            cell.followButton.layer.cornerRadius = 22.0
+            cell.followButton.clipsToBounds = true
+        } else {
+            // FOLLOW
+            // Set button's title and design
+            cell.followButton.setTitle("Follow", for: .normal)
+            cell.followButton.setTitleColor( UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            cell.followButton.backgroundColor = UIColor.white
+            cell.followButton.layer.cornerRadius = 22.00
+            cell.followButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+            cell.followButton.layer.borderWidth = 2.00
+            cell.followButton.clipsToBounds = true
         }
     
         return cell
