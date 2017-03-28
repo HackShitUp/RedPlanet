@@ -131,6 +131,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         SVProgressHUD.show()
         
         // Make corner radius
+        let exitImage = UIImage(cgImage: UIImage(named: "Left Filled-100")!.cgImage!, scale: 1.0, orientation: .down)
+        self.exitButton.setImage(exitImage, for: .normal)
         self.exitButton.layer.cornerRadius = 12.5
         self.exitButton.clipsToBounds = true
 /*
