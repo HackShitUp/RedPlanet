@@ -593,6 +593,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             cell.status.isHidden = false
             // Show time
             cell.time.isHidden = false
+            // Set default font
+            cell.rpUsername.font = UIFont(name: "AvenirNext-Medium", size: 17)
             
             // Order by most recent
             // Read reciepts
@@ -678,6 +680,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             cell.status.image = UIImage(named: "RPSpeechBubble")
                         } else {
                             cell.status.image = UIImage(named: "RPSpeechBubbleFilled")
+                            cell.rpUsername.font = UIFont(name: "AvenirNext-Demibold", size: 17)
                         }
                     }
                     
