@@ -8,12 +8,14 @@
 
 
 import UIKit
-import AnimatedCollectionViewLayout
+import CoreData
+import SafariServices
 
 import Parse
 import ParseUI
 import Bolts
 
+import AnimatedCollectionViewLayout
 import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
@@ -109,8 +111,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     // Function to show API
     func showAPIUsage() {
-        // MARK: - SwiftWebVC
-        let webVC = SwiftModalWebVC(urlString: "https://newsapi.org/")
+        // MARK: - SafariServices
+        let webVC = SFSafariViewController(url: URL(string: "https://newsapi.org/")!, entersReaderIfAvailable: true)
+        webVC.view.layer.cornerRadius = 8.00
+        webVC.view.clipsToBounds = true
         self.present(webVC, animated: true, completion: nil)
     }
     
@@ -228,8 +232,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // MARK: - SwiftWebVC
-        let webVC = SwiftModalWebVC(urlString: self.webURLS[indexPath.row])
+        // MARK: - SafariServices
+        let webVC = SFSafariViewController(url: URL(string: self.webURLS[indexPath.row])!, entersReaderIfAvailable: true)
+        webVC.view.layer.cornerRadius = 8.00
+        webVC.view.clipsToBounds = true
         self.present(webVC, animated: true, completion: nil)
     }
     

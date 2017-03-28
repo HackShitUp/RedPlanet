@@ -699,8 +699,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.stickersButton.isUserInteractionEnabled = true
         self.stickersButton.addGestureRecognizer(stickersTap)
         
-        
-        // Add Function Method to add user's read recipets
+
+        // Save read receipt
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
@@ -717,14 +717,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // And set bool value for read receipt
                 if (object!.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     object!["read"] = true
-                    object!.saveInBackground(block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Read")
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
+                    object!.saveInBackground()
                 }
             } else {
                 print(error?.localizedDescription as Any)

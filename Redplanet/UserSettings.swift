@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import SafariServices
 
 import Parse
 import ParseUI
@@ -384,8 +385,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // ====================================================================
             if indexPath.row == 0 {
                 // ABOUT US
-                // MARK: - SwiftWebVC
-                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/about/", theme: .lightBlack)
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/about/")!, entersReaderIfAvailable: true)
+                webVC.view.layer.cornerRadius = 8.00
+                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
 
             } else if indexPath.row == 1 {
@@ -394,13 +397,17 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 self.navigationController?.pushViewController(licenseVC, animated: true)
             } else if indexPath.row == 2 {
                 // TOS
-                // MARK: - SwiftWebVC
-                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/terms-of-service/", theme: .lightBlack)
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/terms-of-service/")!, entersReaderIfAvailable: true)
+                webVC.view.layer.cornerRadius = 8.00
+                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
             } else {
                 // PRIVACY POLICY
-                // MARK: - SwiftWebVC
-                let webVC = SwiftModalWebVC(urlString: "https://redplanetapp.com/privacy-policy/", theme: .lightBlack)
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: true)
+                webVC.view.layer.cornerRadius = 8.00
+                webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
             }
             

@@ -20,10 +20,12 @@ import SimpleAlert
 import SVProgressHUD
 import SwipeNavigationController
 
+
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Chat objects
     var chatObjects = [PFObject]()
+    var chatters = [PFObject]()
     // Refresher
     var refresher: UIRefreshControl!
 
@@ -161,12 +163,14 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", notEqualTo: PFUser.current()!)
+        
         let receiver = PFQuery(className: "Chats")
         receiver.whereKey("receiver", equalTo: PFUser.current()!)
         receiver.whereKey("sender", notEqualTo: PFUser.current()!)
+
         let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.limit = self.page
         chats.includeKeys(["receiver", "sender"])
+        chats.limit = self.page
         chats.order(byDescending: "createdAt")
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -187,7 +191,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         self.chatObjects.append(object["receiver"] as! PFUser)
                     }
                 }// end for loop
-
+                
                 // Initialize DZNEmptyDataset
                 if self.chatObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
@@ -229,7 +233,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         // Set boolean
         searchActive = true
-
+        
     }
     
     
@@ -272,7 +276,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         })
     }
     
-
+    
     
     // Stylize title
     func configureView() {
@@ -365,67 +369,67 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 }
                 
                 let delete = AlertAction(title: "Delete",
-                                      style: .destructive,
-                                      handler: { (AlertAction) in
-                                        
-                                        // Show Progress
-                                        SVProgressHUD.show()
-                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        
-                                        // Delete chats
-                                        let sender = PFQuery(className: "Chats")
-                                        sender.whereKey("sender", equalTo: PFUser.current()!)
-                                        sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-                                        
-                                        let receiver = PFQuery(className: "Chats")
-                                        receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                                        receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
-                                        
-                                        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-                                        chats.includeKeys(["receiver", "sender"])
-                                        chats.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                
-                                                // Dismiss progress
-                                                SVProgressHUD.dismiss()
-                                                
-                                                // Delete all objects
-                                                PFObject.deleteAll(inBackground: objects, block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Deleted all objects: \(objects)")
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                                
-                                                // Delete chat from tableview
-                                                self.chatObjects.remove(at: indexPath.row)
-                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                
-                                                // Reload data
-                                                self.fetchChats()
-                                                // Reload data in main thread
-                                                DispatchQueue.main.async {
-                                                    self.tableView!.reloadData()
-                                                }
-                                                
-                                            } else {
-                                                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                                                    // MARK: - SVProgressHUD
+                                         style: .destructive,
+                                         handler: { (AlertAction) in
+                                            
+                                            // Show Progress
+                                            SVProgressHUD.show()
+                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                            SVProgressHUD.setBackgroundColor(UIColor.white)
+                                            
+                                            // Delete chats
+                                            let sender = PFQuery(className: "Chats")
+                                            sender.whereKey("sender", equalTo: PFUser.current()!)
+                                            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
+                                            
+                                            let receiver = PFQuery(className: "Chats")
+                                            receiver.whereKey("receiver", equalTo: PFUser.current()!)
+                                            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+                                            
+                                            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+                                            chats.includeKeys(["receiver", "sender"])
+                                            chats.findObjectsInBackground(block: {
+                                                (objects: [PFObject]?, error: Error?) in
+                                                if error == nil {
+                                                    
+                                                    // Dismiss progress
                                                     SVProgressHUD.dismiss()
+                                                    
+                                                    // Delete all objects
+                                                    PFObject.deleteAll(inBackground: objects, block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Deleted all objects: \(objects)")
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
+                                                    
+                                                    // Delete chat from tableview
+                                                    self.chatObjects.remove(at: indexPath.row)
+                                                    self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                    
+                                                    // Reload data
+                                                    self.fetchChats()
+                                                    // Reload data in main thread
+                                                    DispatchQueue.main.async {
+                                                        self.tableView!.reloadData()
+                                                    }
+                                                    
+                                                } else {
+                                                    if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.dismiss()
+                                                    }
+                                                    // Reload data
+                                                    self.fetchChats()
                                                 }
-                                                // Reload data
-                                                self.fetchChats()
-                                            }
-                                        })
+                                            })
                 })
                 
                 let cancel = AlertAction(title: "Cancel",
-                                     style: .cancel,
-                                     handler: nil)
+                                         style: .cancel,
+                                         handler: nil)
                 
                 // Configure options
                 alert.addAction(cancel)
@@ -448,7 +452,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Query chats
         fetchChats()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -530,7 +534,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
     }
     
-
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
@@ -606,7 +610,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             chats.getFirstObjectInBackground(block: {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
-
+                    
                     // Set time
                     let from = object!.createdAt!
                     let now = Date()
@@ -645,7 +649,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         createdDate.dateFormat = "MMM d, yyyy"
                         cell.time.text = createdDate.string(from: object!.createdAt!)
                     }
-
+                    
                     // If PFUser.currentUser()! received last message
                     if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
                         // Handle optional chaining for OtherUser's Object
@@ -717,6 +721,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         return cell
     }
+
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // If user is searching...
