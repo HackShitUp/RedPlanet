@@ -130,10 +130,10 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🤔\nNo Followers"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let str = "💩\nNo Followers"
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.gray,
+            NSForegroundColorAttributeName: UIColor.black,
             NSFontAttributeName: font!
         ]
         
@@ -144,7 +144,7 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Find People To Follow"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!

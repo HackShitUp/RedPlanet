@@ -4327,7 +4327,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="F0D0D9AA-AC61-4F53-90C0-9E8EE750490A"/>
+                                <state key="normal" image="FC5AE92D-9F4B-45D2-B834-2FB44A968DCE"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6582,7 +6582,7 @@ Powered by https://newsapi.org/
         <image name="Comment-100" width="50" height="50"/>
         <image name="Download" width="261" height="256"/>
         <image name="Exit" width="750" height="750"/>
-        <image name="F0D0D9AA-AC61-4F53-90C0-9E8EE750490A" width="265" height="256">
+        <image name="FC5AE92D-9F4B-45D2-B834-2FB44A968DCE" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
