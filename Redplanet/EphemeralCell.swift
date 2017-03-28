@@ -62,6 +62,10 @@ class EphemeralCell: UITableViewCell {
                 self.delegate?.radialPushViewController(momentVideoVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
                 })
             }
+//            momentObjects.append(self.postObject!)
+//            let momentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentsVC") as! Moments
+//            self.delegate?.radialPushViewController(momentsVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+//            })
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sh" {
         // SHARED POST
