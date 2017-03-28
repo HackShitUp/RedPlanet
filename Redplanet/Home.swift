@@ -77,14 +77,14 @@ class Home: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Set Audio
-        do {
-            // Reset audio to allo videos to be played
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-                                                            with: [.duckOthers, .defaultToSpeaker])
-        } catch {
-            print("[SwiftyCam]: Failed to set background audio preference")
-        }
+//        // Set Audio DELETED THIS on 3/28/16 for volume issues
+//        do {
+//            // Reset audio to allo videos to be played
+//            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+//                                                            with: [.duckOthers, .defaultToSpeaker])
+//        } catch {
+//            print("[SwiftyCam]: Failed to set background audio preference")
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

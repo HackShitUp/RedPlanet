@@ -219,7 +219,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         // Set delegate
         header.delegate = self
         // Set titles
-        header.ssTitle.text! = "rp\nSELECTED 🔍 STORIES"
+        header.ssTitle.text! = "rp\nSelected 🔍 Stories"
         header.ssTitle.numberOfLines = 2
         
         // Tap title to search

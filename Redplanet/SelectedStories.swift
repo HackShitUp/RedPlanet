@@ -32,8 +32,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     var mediaURLS = [String]()
     var authors = [String]()
     
-    @IBOutlet weak var designView: UIView!
-    @IBOutlet weak var ssTitle: UILabel!
     @IBOutlet weak var exitButton: UIButton!
     @IBOutlet weak var publisherLogo: PFImageView!
     @IBOutlet weak var publisherName: UILabel!
@@ -103,8 +101,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
                 SVProgressHUD.dismiss()
             }
         }
-        // Reload data
-//        self.collectionView!.reloadData()
+        // Resume query if ended
         task.resume()
     }
     
@@ -132,6 +129,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         
         // MARK: - SVProgressHUD
         SVProgressHUD.show()
+        
+        // Make corner radius
+        self.exitButton.layer.cornerRadius = 12.5
+        self.exitButton.clipsToBounds = true
 /*
         ZoomInOutAttributesAnimator()
         RotateInOutAttributesAnimator()
@@ -146,23 +147,23 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         layout.scrollDirection = .horizontal
         layout.animator = LinearCardAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 541)
+        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 576)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
         
-        // Add Tap Method to show api...
-        // Title
-        let titleTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
-        titleTap.numberOfTapsRequired = 1
-        self.ssTitle.isUserInteractionEnabled = true
-        self.ssTitle.addGestureRecognizer(titleTap)
-        // Redbar
-        let barTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
-        barTap.numberOfTapsRequired = 1
-        self.designView.isUserInteractionEnabled = true
-        self.designView.addGestureRecognizer(barTap)
+        // SHOW API
+        // publisherLogo
+        let oneTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
+        oneTap.numberOfTapsRequired = 1
+        self.publisherLogo.isUserInteractionEnabled = true
+        self.publisherLogo.addGestureRecognizer(oneTap)
+        // publisherName
+        let twoTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
+        twoTap.numberOfTapsRequired = 1
+        self.publisherName.isUserInteractionEnabled = true
+        self.publisherName.addGestureRecognizer(twoTap)
         
         // PUBLISHER
         // Fetch media's logo
@@ -227,6 +228,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         if self.authors[indexPath.row] != " " {
             cell.author.text! = "By \(self.authors[indexPath.row])"
         }
+        
+        // Set corner radius for view
+        cell.contentView.layer.cornerRadius = 8.00
+        cell.contentView.clipsToBounds = true
         
         return cell
     }
