@@ -1622,7 +1622,7 @@
         <scene sceneID="wOY-5X-5HH">
             <objects>
                 <collectionViewController storyboardIdentifier="momentsVC" id="ACh-9u-CCq" customClass="Moments" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="NqF-8A-TDK">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="NqF-8A-TDK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1648,6 +1648,8 @@
                             <outlet property="delegate" destination="ACh-9u-CCq" id="eXE-bF-eBk"/>
                         </connections>
                     </collectionView>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hYK-DR-7tO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4362,7 +4364,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="4EB16B9C-5210-48F6-9E6E-14EC56B9C3C8"/>
+                                <state key="normal" image="63697760-BDFD-4EBF-9237-A9829982D248"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6609,7 +6611,7 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="4EB16B9C-5210-48F6-9E6E-14EC56B9C3C8" width="265" height="256">
+        <image name="63697760-BDFD-4EBF-9237-A9829982D248" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

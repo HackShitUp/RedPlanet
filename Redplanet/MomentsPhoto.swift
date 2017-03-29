@@ -21,7 +21,11 @@ class MomentsPhoto: UICollectionViewCell {
     
     // Initialize parentVC and PFObject
     var delegate: UIViewController?
-    var stillObject: PFObject?
+    var postObject: PFObject?
+    
+    var likes = [PFObject]()
+    var comments = [PFObject]()
+    var shares = [PFObject]()
 
     @IBOutlet weak var stillMoment: PFImageView!
     @IBOutlet weak var time: UILabel!
@@ -33,6 +37,179 @@ class MomentsPhoto: UICollectionViewCell {
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var numberOfShares: UIButton!
     @IBOutlet weak var shareButton: UIButton!
+    
+    
+    
+    // Query content
+    func fetchContent() {
+        
+        // (1) Load moment
+        if let moment = self.postObject!.value(forKey: "photoAsset") as? PFFile {
+            // MARK: - SDWebImage
+            self.stillMoment.sd_setImage(with: URL(string: moment.url!), placeholderImage: self.stillMoment.image)
+        }
+        
+        // (2) Set username
+        if let user = self.postObject!.object(forKey: "byUser") as? PFUser {
+            self.rpUsername.setTitle("\(user["username"] as! String)", for: .normal)
+        }
+        
+        // (3) Set time
+        let from = self.postObject!.createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        if difference.second! <= 0 {
+            self.time.text = "now"
+        } else if difference.second! > 0 && difference.minute! == 0 {
+            if difference.second! == 1 {
+                self.time.text = "1 second ago"
+            } else {
+                self.time.text = "\(difference.second!) seconds ago"
+            }
+        } else if difference.minute! > 0 && difference.hour! == 0 {
+            if difference.minute! == 1 {
+                self.time.text = "1 minute ago"
+            } else {
+                self.time.text = "\(difference.minute!) minutes ago"
+            }
+        } else if difference.hour! > 0 && difference.day! == 0 {
+            if difference.hour! == 1 {
+                self.time.text = "1 hour ago"
+            } else {
+                self.time.text = "\(difference.hour!) hours ago"
+            }
+        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+            if difference.day! == 1 {
+                self.time.text = "1 day ago"
+            } else {
+                self.time.text = "\(difference.day!) days ago"
+            }
+            if self.postObject!.value(forKey: "saved") as! Bool == true {
+                self.likeButton.isUserInteractionEnabled = false
+                self.numberOfLikes.isUserInteractionEnabled = false
+                self.commentButton.isUserInteractionEnabled = false
+                self.numberOfComments.isUserInteractionEnabled = false
+                self.shareButton.isUserInteractionEnabled = false
+                self.numberOfShares.isUserInteractionEnabled = false
+            }
+        } else if difference.weekOfMonth! > 0 {
+            let createdDate = DateFormatter()
+            createdDate.dateFormat = "MMM d, yyyy"
+            self.time.text = createdDate.string(from: spaceObject.last!.createdAt!)
+            if self.postObject!.value(forKey: "saved") as! Bool == true {
+                self.likeButton.isUserInteractionEnabled = false
+                self.numberOfLikes.isUserInteractionEnabled = false
+                self.commentButton.isUserInteractionEnabled = false
+                self.numberOfComments.isUserInteractionEnabled = false
+                self.shareButton.isUserInteractionEnabled = false
+                self.numberOfShares.isUserInteractionEnabled = false
+            }
+        }
+        
+        
+        // (4) Fetch likes
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+        likes.includeKey("fromUser")
+        likes.order(byDescending: "createdAt")
+        likes.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.likes.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
+                for object in objects! {
+                    self.likes.append(object["fromUser"] as! PFUser)
+                }
+                
+                // (B) Manipulate likes
+                if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
+                    // liked
+                    self.likeButton.setTitle("liked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
+                } else {
+                    // notLiked
+                    self.likeButton.setTitle("notLiked", for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLike"), for: .normal)
+                }
+                
+                // (C) Set number of likes
+                if self.likes.count == 0 {
+                    self.numberOfLikes.setTitle("likes", for: .normal)
+                } else if self.likes.count == 1 {
+                    self.numberOfLikes.setTitle("1 like", for: .normal)
+                } else {
+                    self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                }
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        
+        
+        // (5) Fetch comments
+        let comments = PFQuery(className: "Comments")
+        comments.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+        comments.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.comments.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
+                for object in objects! {
+                    self.comments.append(object)
+                }
+                
+                // (B) Set number of comments
+                if self.comments.count == 0 {
+                    self.numberOfComments.setTitle("comments", for: .normal)
+                } else if self.comments.count == 1 {
+                    self.numberOfComments.setTitle("1 comment", for: .normal)
+                } else {
+                    self.numberOfComments.setTitle("\(self.comments.count) comments", for: .normal)
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+        
+        
+        // (6) Fetch shares
+        let shares = PFQuery(className: "Newsfeeds")
+        shares.whereKey("contentType", equalTo: "sh")
+        shares.whereKey("pointObject", equalTo: self.postObject!)
+        shares.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.shares.removeAll(keepingCapacity: false)
+                
+                // (A) Append objects
+                for object in objects! {
+                    self.shares.append(object)
+                }
+                
+                // (B) Set number of shares
+                if self.shares.count == 0 {
+                    self.numberOfShares.setTitle("shares", for: .normal)
+                } else if self.shares.count == 1 {
+                    self.numberOfShares.setTitle("1 share", for: .normal)
+                } else {
+                    self.numberOfShares.setTitle("\(self.shares.count) shares", for: .normal)
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+
     
     
     // Functiont to share to other platforms
@@ -72,7 +249,7 @@ class MomentsPhoto: UICollectionViewCell {
                                 style: .default,
                                 handler: { (AlertAction) in
                                     // Append object
-                                    viewsObject.append(self.stillObject!)
+                                    viewsObject.append(self.postObject!)
                                     // Push VC
                                     let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
                                     self.delegate?.navigationController?.pushViewController(viewsVC, animated: true)
@@ -89,7 +266,7 @@ class MomentsPhoto: UICollectionViewCell {
                                 // Shared and og content
                                 let newsfeeds = PFQuery(className: "Newsfeeds")
                                 newsfeeds.whereKey("byUser", equalTo: PFUser.current()!)
-                                newsfeeds.whereKey("objectId", equalTo: self.stillObject!.objectId!)
+                                newsfeeds.whereKey("objectId", equalTo: self.postObject!.objectId!)
                                 newsfeeds.findObjectsInBackground(block: {
                                     (objects: [PFObject]?, error: Error?) in
                                     if error == nil {
@@ -127,10 +304,10 @@ class MomentsPhoto: UICollectionViewCell {
                                     // Shared and og content
                                     let content = PFQuery(className: "Newsfeeds")
                                     content.whereKey("byUser", equalTo: PFUser.current()!)
-                                    content.whereKey("objectId", equalTo: self.stillObject!.objectId!)
+                                    content.whereKey("objectId", equalTo: self.postObject!.objectId!)
                                     
                                     let shares = PFQuery(className: "Newsfeeds")
-                                    shares.whereKey("pointObject", equalTo: self.stillObject!)
+                                    shares.whereKey("pointObject", equalTo: self.postObject!)
                                     
                                     let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
                                     newsfeeds.findObjectsInBackground(block: {
@@ -142,7 +319,7 @@ class MomentsPhoto: UICollectionViewCell {
                                                 if success {
                                                     // Delete all Notifications
                                                     let notifications = PFQuery(className: "Notifications")
-                                                    notifications.whereKey("forObjectId", equalTo: self.stillObject!.objectId!)
+                                                    notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
                                                     notifications.findObjectsInBackground(block: {
                                                         (objects: [PFObject]?, error: Error?) in
                                                         if error == nil {
@@ -206,7 +383,7 @@ class MomentsPhoto: UICollectionViewCell {
     // Function to show number of likes
     func showLikes(sender: UIButton) {
         // Append object
-        likeObject.append(self.stillObject!)
+        likeObject.append(self.postObject!)
         
         // Push VC
         let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
@@ -225,7 +402,7 @@ class MomentsPhoto: UICollectionViewCell {
             // unlike
             let likes = PFQuery(className: "Likes")
             likes.whereKey("fromUser", equalTo: PFUser.current()!)
-            likes.whereKey("forObjectId", equalTo: self.stillObject!.objectId!)
+            likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
             likes.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
@@ -236,7 +413,7 @@ class MomentsPhoto: UICollectionViewCell {
                                 
                                 // Delete "Notifications"
                                 let notifications = PFQuery(className: "Notifications")
-                                notifications.whereKey("forObjectId", equalTo: self.stillObject!.objectId!)
+                                notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
                                 notifications.whereKey("fromUser", equalTo: PFUser.current()!)
                                 notifications.findObjectsInBackground(block: {
                                     (objects: [PFObject]?, error: Error?) in
@@ -297,9 +474,9 @@ class MomentsPhoto: UICollectionViewCell {
             let likes = PFObject(className: "Likes")
             likes["fromUser"] = PFUser.current()!
             likes["from"] = PFUser.current()!.username!
-            likes["toUser"] = self.stillObject!.value(forKey: "byUser") as! PFUser
+            likes["toUser"] = self.postObject!.value(forKey: "byUser") as! PFUser
             likes["to"] = self.rpUsername.titleLabel!.text!
-            likes["forObjectId"] = self.stillObject!.objectId!
+            likes["forObjectId"] = self.postObject!.objectId!
             likes.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
@@ -309,8 +486,8 @@ class MomentsPhoto: UICollectionViewCell {
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
                     notifications["to"] = self.rpUsername.titleLabel!.text!
-                    notifications["toUser"] = self.stillObject!.value(forKey: "byUser") as! PFUser
-                    notifications["forObjectId"] = self.stillObject!.objectId!
+                    notifications["toUser"] = self.postObject!.value(forKey: "byUser") as! PFUser
+                    notifications["forObjectId"] = self.postObject!.objectId!
                     notifications["type"] = "like itm"
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
@@ -318,7 +495,7 @@ class MomentsPhoto: UICollectionViewCell {
                             print("Successfully saved notificaiton: \(notifications)")
                             
                             // Handle optional chaining
-                            if let user = self.stillObject!.value(forKey: "byUser") as? PFUser {
+                            if let user = self.postObject!.value(forKey: "byUser") as? PFUser {
                                 // MARK: - OneSignal
                                 // Send push notification
                                 if user.value(forKey: "apnsId") != nil {
@@ -376,7 +553,7 @@ class MomentsPhoto: UICollectionViewCell {
     // Function to go to user's profile
     func goUser(sender: UIButton) {
         // Append otherObject
-        otherObject.append(self.stillObject!.object(forKey: "byUser") as! PFUser)
+        otherObject.append(self.postObject!.object(forKey: "byUser") as! PFUser)
         // Append otherName
         otherName.append(self.rpUsername.titleLabel!.text!)
         
@@ -388,7 +565,7 @@ class MomentsPhoto: UICollectionViewCell {
     // Function to show comments
     func showComments(sender: UIButton) {
         // Append object
-        commentsObject.append(self.stillObject!)
+        commentsObject.append(self.postObject!)
         
         // Push VC
         let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
@@ -398,36 +575,31 @@ class MomentsPhoto: UICollectionViewCell {
     // Function to show shares
     func showShares(sender: UIButton) {
         // Append object
-        shareObject.append(self.stillObject!)
-        
+        shareObject.append(self.postObject!)
         // Push VC
         let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
         self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
-        
     }
     
     // Function to share
     func shareOptions(sender: UIButton) {
         // Append post's object: PFObject
-        shareObject.append(self.stillObject!)
-        
+        shareObject.append(self.postObject!)
         // Share to chats
         let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
         self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
     }
 
-    
-    
-    func configureMoment(object: PFObject?) {
+    func configureMoment() {
+        
+        // MARK: - RadialTransitionSwipe
+        self.delegate?.navigationController?.enableRadialSwipe()
         
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(self.delegate?.dismiss))
         tapOut.numberOfTapsRequired = 1
         self.stillMoment.isUserInteractionEnabled = true
         self.stillMoment.addGestureRecognizer(tapOut)
-        
-        // MARK: - RadialTransitionSwipe
-        self.delegate?.navigationController?.enableRadialSwipe()
         
         // (1) Add more tap method
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
@@ -470,7 +642,7 @@ class MomentsPhoto: UICollectionViewCell {
         numSharesTap.numberOfTapsRequired = 1
         self.numberOfShares.isUserInteractionEnabled = true
         self.numberOfShares.addGestureRecognizer(numSharesTap)
-        
+
         // (9) Add share options
         let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareOptions))
         shareTap.numberOfTapsRequired = 1

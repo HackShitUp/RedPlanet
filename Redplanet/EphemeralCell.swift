@@ -49,23 +49,25 @@ class EphemeralCell: UITableViewCell {
             // Append content object
             itmObject.append(self.postObject!)
             
-            // PHOTO
-            if self.postObject!.value(forKey: "photoAsset") != nil {
-                // Push VC
-                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                self.delegate?.radialPushViewController(itmVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-                })
-            } else {
-            // VIDEO
-                // Push VC
-                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                self.delegate?.radialPushViewController(momentVideoVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-                })
-            }
-//            momentObjects.append(self.postObject!)
-//            let momentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentsVC") as! Moments
-//            self.delegate?.radialPushViewController(momentsVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-//            })
+//            // PHOTO
+//            if self.postObject!.value(forKey: "photoAsset") != nil {
+//                // Push VC
+//                let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+//                self.delegate?.radialPushViewController(itmVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+//                })
+//            } else {
+//            // VIDEO
+//                // Push VC
+//                let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+//                self.delegate?.radialPushViewController(momentVideoVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+//                })
+//            }
+            
+            single == false
+            momentObjects.append(self.postObject!)
+            let momentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentsVC") as! Moments
+            self.delegate?.radialPushViewController(momentsVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
+            })
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sh" {
         // SHARED POST
