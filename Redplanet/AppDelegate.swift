@@ -228,6 +228,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          */
         
         print("IDL")
+        
+        
+//        // Track Who Opens the App
+//        Heap.track("AppOpen", withProperties:
+//            ["byUserId": "\(PFUser.current()!.objectId!)",
+//                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+//            ])
+
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
