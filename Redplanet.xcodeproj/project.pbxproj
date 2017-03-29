@@ -116,11 +116,6 @@
 		7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9351DB75057001B7329 /* UIImage+Utility.m */; };
 		7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E9371DB75057001B7329 /* UIView+Frame.m */; };
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
-		7E98F78E1E8B185500468CD0 /* MomentsVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E98F78A1E8B185500468CD0 /* MomentsVideo.xib */; };
-		7E98F78F1E8B185500468CD0 /* MomentsVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E98F78B1E8B185500468CD0 /* MomentsVideo.swift */; };
-		7E98F7901E8B185500468CD0 /* MomentsPhoto.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E98F78C1E8B185500468CD0 /* MomentsPhoto.xib */; };
-		7E98F7911E8B185500468CD0 /* MomentsPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E98F78D1E8B185500468CD0 /* MomentsPhoto.swift */; };
-		7E98F7931E8B193800468CD0 /* Moments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E98F7921E8B193800468CD0 /* Moments.swift */; };
 		7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99555E1DC9756F003D9D73 /* FollowRequestsHeader.swift */; };
 		7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* FollowRequests.swift */; };
 		7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */; };
@@ -371,11 +366,6 @@
 		7E98E9371DB75057001B7329 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
 		7E98E9391DB75057001B7329 /* _CLImageEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CLImageEditorViewController.h; sourceTree = "<group>"; };
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
-		7E98F78A1E8B185500468CD0 /* MomentsVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentsVideo.xib; sourceTree = "<group>"; };
-		7E98F78B1E8B185500468CD0 /* MomentsVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentsVideo.swift; sourceTree = "<group>"; };
-		7E98F78C1E8B185500468CD0 /* MomentsPhoto.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentsPhoto.xib; sourceTree = "<group>"; };
-		7E98F78D1E8B185500468CD0 /* MomentsPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentsPhoto.swift; sourceTree = "<group>"; };
-		7E98F7921E8B193800468CD0 /* Moments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Moments.swift; sourceTree = "<group>"; };
 		7E99555E1DC9756F003D9D73 /* FollowRequestsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsHeader.swift; sourceTree = "<group>"; };
 		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
@@ -1010,11 +1000,6 @@
 		7EA09E131DD406F500BD2D51 /* Moments */ = {
 			isa = PBXGroup;
 			children = (
-				7E98F7921E8B193800468CD0 /* Moments.swift */,
-				7E98F78A1E8B185500468CD0 /* MomentsVideo.xib */,
-				7E98F78B1E8B185500468CD0 /* MomentsVideo.swift */,
-				7E98F78C1E8B185500468CD0 /* MomentsPhoto.xib */,
-				7E98F78D1E8B185500468CD0 /* MomentsPhoto.swift */,
 				7E9955661DC99A98003D9D73 /* InTheMoment.swift */,
 				7EA913211E25CD510046F940 /* MomentVideo.swift */,
 			);
@@ -1514,8 +1499,6 @@
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EECEE611E3C42EA003FA134 /* TimeTextPostCell.xib in Resources */,
-				7E98F7901E8B185500468CD0 /* MomentsPhoto.xib in Resources */,
-				7E98F78E1E8B185500468CD0 /* MomentsVideo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1704,7 +1687,6 @@
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
 				7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */,
 				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
-				7E98F7911E8B185500468CD0 /* MomentsPhoto.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
@@ -1753,7 +1735,6 @@
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
-				7E98F7931E8B193800468CD0 /* Moments.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
@@ -1817,7 +1798,6 @@
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
-				7E98F78F1E8B185500468CD0 /* MomentsVideo.swift in Sources */,
 				7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */,
