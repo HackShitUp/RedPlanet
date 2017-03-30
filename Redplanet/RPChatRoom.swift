@@ -20,7 +20,6 @@ import Bolts
 
 import OneSignal
 import SVProgressHUD
-import SimpleAlert
 import SDWebImage
 
 // Global variable to hold user's object and username for chats

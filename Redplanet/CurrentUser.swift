@@ -16,7 +16,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SimpleAlert
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")

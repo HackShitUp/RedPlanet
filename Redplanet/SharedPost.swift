@@ -18,7 +18,6 @@ import Bolts
 import KILabel
 import OneSignal
 import SVProgressHUD
-import SimpleAlert
 import SDWebImage
 
 // Array to hold the sharedObject

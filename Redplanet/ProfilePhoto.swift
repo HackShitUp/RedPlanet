@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
-import SimpleAlert
 import SDWebImage
 
 // ProfilePhoto's Object Id

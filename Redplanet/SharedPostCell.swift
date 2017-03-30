@@ -16,7 +16,6 @@ import Bolts
 import KILabel
 import OneSignal
 import SVProgressHUD
-import SimpleAlert
 
 class SharedPostCell: UITableViewCell {
     

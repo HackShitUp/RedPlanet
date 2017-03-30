@@ -16,7 +16,6 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
-import SimpleAlert
 import SDWebImage
 
 // Global array to hold video asset object

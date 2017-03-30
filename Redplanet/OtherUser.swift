@@ -17,7 +17,6 @@ import Bolts
 
 import SVProgressHUD
 import SDWebImage
-import SimpleAlert
 
 // Global variable to hold other user's object
 var otherObject = [PFObject]()

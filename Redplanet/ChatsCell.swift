@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 import SVProgressHUD
-import SimpleAlert
 
 class ChatsCell: UITableViewCell {
     

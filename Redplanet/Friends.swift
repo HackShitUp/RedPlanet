@@ -18,7 +18,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import OneSignal
-import SimpleAlert
 import SVProgressHUD
 import SDWebImage
 
