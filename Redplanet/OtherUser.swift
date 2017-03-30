@@ -79,14 +79,13 @@ class OtherUser: UITableViewController {
         otherObject.append(otherObject.last!)
         // Append to otherName
         otherName.append(otherName.last!)
-        
         // Push VC
         let newSpaceVC = self.storyboard?.instantiateViewController(withIdentifier: "newSpacePostVC") as! NewSpacePost
         self.navigationController?.pushViewController(newSpaceVC, animated: true)
     }
     
     // Function to Report User
-    func reportUser() {
+    func reportUser(fromVC: AZDialogViewController?) {
         let alert = UIAlertController(title: "Report",
                                       message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
             preferredStyle: .alert)
@@ -109,17 +108,8 @@ class OtherUser: UITableViewController {
                 if success {
                     print("Successfully saved report: \(report)")
                     
-                    let alert = UIAlertController(title: "Successfully Reported",
-                                                  message: "\(otherName.last!.uppercased())",
-                        preferredStyle: .alert)
-                    
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
-                    
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showSuccess(withStatus: "Reported")
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -138,12 +128,11 @@ class OtherUser: UITableViewController {
         alert.addTextField(configurationHandler: nil)
         alert.addAction(report)
         alert.addAction(cancel)
-        alert.view.tintColor = UIColor.black
-        self.present(alert, animated: true, completion: nil)
+        fromVC!.present(alert, animated: true, completion: nil)
     }
     
     // Function to Block user
-    func blockUser() {
+    func blockUser(fromVC: AZDialogViewController?) {
         // (1) Block
         let block = PFObject(className: "Blocked")
         block["byUser"] = PFUser.current()!
@@ -177,12 +166,13 @@ class OtherUser: UITableViewController {
                         let ok = UIAlertAction(title: "ok",
                                                style: .default,
                                                handler: { (alertAction: UIAlertAction!) in
+                                                fromVC!.dismiss()
                                                 _ = self.navigationController?.popViewController(animated: true)
                         })
                         
                         alert.view.tintColor = UIColor.black
                         alert.addAction(ok)
-                        self.present(alert, animated: true, completion: nil)
+                        fromVC!.present(alert, animated: true, completion: nil)
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -201,180 +191,146 @@ class OtherUser: UITableViewController {
     
     // Function to Report/Block:
     func reportOrBlock() {
-        // MARK: - SimpleAlert
-        let options = AlertController(title: "Options",
-                                    message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-            style: .alert)
         
-        // Design content view
-        options.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        
+        dialogController.imageHandler = { (imageView) in
+            if let proPic = otherObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+                proPic.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        imageView.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            } else {
+                imageView.image = UIImage(named: "Gender Neutral User-100")
             }
+            imageView.contentMode = .scaleAspectFill
+            return true //must return true, otherwise image won't show.
         }
         
-        // Design corner radius
-        options.configContainerCornerRadius = {
-            return 14.00
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
         }
         
+        // (1) REPORT
+        dialogController.addAction(AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            // Report User
+            self.reportUser(fromVC: dialog)
+        }))
         
-        // (1) Report
-        let report = AlertAction(title: "Report",
-                                        style: .destructive,
-                                        handler: { (AlertAction) in
-                                            // Report User
-                                            self.reportUser()
-        })
-
+        // (2) BLOCK
+        dialogController.addAction(AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
+            // MARK: - SVProgressHUD
+            SVProgressHUD.show()
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            // Block User
+            self.blockUser(fromVC: dialog)
+        }))
         
-        // (2) Block
-        let block = AlertAction(title: "Block",
-                                        style: .destructive,
-                                        handler: { (AlertAction) in
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.show()
-                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                            // Block User
-                                            self.blockUser()
-        })
-        
-        // (3) Cancel
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-        
-
-        options.addAction(report)
-        options.addAction(block)
-        options.addAction(cancel)
-        report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        block.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        block.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.present(options, animated: true, completion: nil)
+        // Show
+        dialogController.show(in: self)
     }
     
     
 
     @IBAction func moreAction(_ sender: Any) {
-        // MARK: - SimpleAlert
-        let alert = AlertController(title: "Options",
-                                    message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                    style: .alert)
+
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
         
-        // Design content view
-        alert.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
+        dialogController.imageHandler = { (imageView) in
+            if let proPic = otherObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+                proPic.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        imageView.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            } else {
+                imageView.image = UIImage(named: "Gender Neutral User-100")
             }
+            imageView.contentMode = .scaleAspectFill
+            return true //must return true, otherwise image won't show.
         }
         
-        // Design corner radius
-        alert.configContainerCornerRadius = {
-            return 14.00
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.masksToBounds = true
         }
-        
-        
-        // (1) Write in space
-        let space = AlertAction(title: "Write on Space",
-                                style: .default,
-                                handler: { (AlertAction) in
-                                    // Show Space
-                                    self.createSpace()
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        // (1) SPACE POST
+        let space = AZDialogAction(title: "Share in Space", handler: { (dialog) -> (Void) in
+            // Show Space
+            self.createSpace()
+            // Dismiss
+            dialog.dismiss()
         })
         
-        // (2) Chat
-        let chat = AlertAction(title: "Chat",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                // Show Chat
-                                self.showChat()
+        // (2) CHAT
+        let chat = AZDialogAction(title: "Chat", handler: { (dialog) -> (Void) in
+            // Show Chat
+            self.showChat()
+            // Dismiss
+            dialog.dismiss()
         })
         
-        
-        // (3) Report or block
-        let reportOrBlock = AlertAction(title: "Report/Block",
-                                        style: .destructive,
-                                        handler: { (AlertAction) in
-                                            
-                                            let alert = UIAlertController(title: nil,
-                                                                          message: nil,
-                                                                          preferredStyle: .actionSheet)
-                                            
-                                            let report = UIAlertAction(title: "Report",
-                                                                       style: .default,
-                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        // Report User
-                                                                        self.reportUser()
-                                                                        
-                                            })
-                                            
-                                            let block = UIAlertAction(title: "Block",
-                                                                      style: .default,
-                                                                      handler: {(alertAction: UIAlertAction!) in
-                                                                        // MARK: - SVProgressHUD
-                                                                        SVProgressHUD.show()
-                                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                                                        // Block User
-                                                                        self.blockUser()
-                                            })
-                                            
-                                            
-                                            let cancel = UIAlertAction(title: "Cancel",
-                                                                       style: .cancel,
-                                                                       handler: nil)
-                                            
-                                            alert.addAction(report)
-                                            alert.addAction(block)
-                                            alert.addAction(cancel)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
+        // (3) REPORT
+        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            // Report User
+            self.reportUser(fromVC: dialog)
         })
         
-        // (5) Cancel
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-        
+        // (4) BLOCK
+        let block = AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
+            // MARK: - SVProgressHUD
+            SVProgressHUD.show()
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            // Block User
+            self.blockUser(fromVC: dialog)
+        })
+
         // IF FOLLOWING AND FOLLOWER == SPACE
         if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-            alert.addAction(space)
-            alert.addAction(chat)
-            alert.addAction(reportOrBlock)
-            alert.addAction(cancel)
-            space.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            space.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-            chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            reportOrBlock.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
-            self.present(alert, animated: true, completion: nil)
+            dialogController.addAction(space)
+            dialogController.addAction(chat)
+            dialogController.addAction(report)
+            dialogController.addAction(block)
+            dialogController.show(in: self)
         } else {
-            alert.addAction(chat)
-            alert.addAction(reportOrBlock)
-            alert.addAction(cancel)
-            chat.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            chat.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            reportOrBlock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            reportOrBlock.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-            cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            cancel.button.setTitleColor(UIColor.black, for: .normal)
-            self.present(alert, animated: true, completion: nil)
+            dialogController.addAction(chat)
+            dialogController.addAction(report)
+            dialogController.addAction(block)
+            dialogController.show(in: self)
         }
     }
     

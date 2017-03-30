@@ -6,12 +6,19 @@
 //  Copyright © 2017 Crofis. All rights reserved.
 //
 
+/*
+ 
+ Redplanet
+ ---> last updated on 3/29/17
+ 
+ */
+
 import Foundation
 import UIKit
 
 typealias ActionHandler = ((AZDialogViewController)->(Void))
 
-open class AZDialogViewController: UIViewController{
+open class AZDialogViewController: UIViewController {
 
     // Title of the dialog.
     fileprivate var mTitle: String?

@@ -413,9 +413,6 @@ class TimeVideoCell: UITableViewCell {
         
         // (5) REPORT
         let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
-            
             let alert = UIAlertController(title: "Report",
                                           message: "Please provide your reason for reporting \(self.userObject!.value(forKey: "username") as! String)'s Video",
                 preferredStyle: .alert)
@@ -438,18 +435,10 @@ class TimeVideoCell: UITableViewCell {
                     if success {
                         print("Successfully saved report: \(report)")
                         
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.showSuccess(withStatus: "Reported")
                         // Dismiss
-                        let alert = UIAlertController(title: "Successfully Reported",
-                                                      message: "\(self.userObject!.value(forKey: "username") as! String)'s Video",
-                            preferredStyle: .alert)
-                        
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: nil)
-                        
-                        alert.addAction(ok)
-                        alert.view.tintColor = UIColor.black
-                        self.delegate?.present(alert, animated: true, completion: nil)
+                        dialog.dismiss()
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -460,14 +449,17 @@ class TimeVideoCell: UITableViewCell {
             
             let cancel = UIAlertAction(title: "Cancel",
                                        style: .cancel,
-                                       handler: nil)
+                                       handler: { (alertAction: UIAlertAction!) in
+                                        // Dismiss
+                                        dialog.dismiss()
+            })
             
             
             alert.addTextField(configurationHandler: nil)
             alert.addAction(report)
             alert.addAction(cancel)
             alert.view.tintColor = UIColor.black
-            self.delegate?.present(alert, animated: true, completion: nil)
+            dialog.present(alert, animated: true, completion: nil)
         })
         
         // Show options dependent on user's objectId

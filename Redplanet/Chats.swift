@@ -352,11 +352,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     let sender = PFQuery(className: "Chats")
                     sender.whereKey("sender", equalTo: PFUser.current()!)
                     sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-                    
                     let receiver = PFQuery(className: "Chats")
                     receiver.whereKey("receiver", equalTo: PFUser.current()!)
                     receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
-                    
                     let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
                     chats.includeKeys(["receiver", "sender"])
                     chats.findObjectsInBackground(block: {

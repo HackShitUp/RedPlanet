@@ -495,7 +495,8 @@ class ActivityCell: UITableViewCell {
                         if object.value(forKey: "contentType") as! String == "pp" {
                             // Append object
                             proPicObject.append(object)
-                            
+                            otherObject.append(object.object(forKey: "byUser") as! PFUser)
+                            otherName.append((object.object(forKey: "byUser") as! PFUser).username!)
                             // Push VC
                             let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
                             self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)

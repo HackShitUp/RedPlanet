@@ -50,6 +50,31 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     
     @IBAction func more(_ sender: Any) {
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: "Space Post")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Configure style
+        // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        
+        
+        
+        
+        
+        
         // MARK: - SimpleAlert
         let options = AlertController(title: "Options",
                                       message: nil,

@@ -579,8 +579,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 
                 // (3)
                 let report = AZDialogAction(title: "Report", handler: { (dialog) -> Void in
-                    // Dismiss
-                    dialog.dismiss()
                     // Show Report
                     let alert = UIAlertController(title: "Report?",
                                                   message: "Are you sure you'd like to report this comment and the user?",
@@ -598,16 +596,24 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                 report["forObjectId"] = self.comments[indexPath.row].objectId!
                                                 report["reason"] = "Inappropriate comment."
                                                 report.saveInBackground()
+                                                
+                                                // MARK: - SVProgressHUD
+                                                SVProgressHUD.showSuccess(withStatus: "Reported")
+                                                // Dismiss
+                                                dialog.dismiss()
                     })
                     
                     let no = UIAlertAction(title: "no",
                                            style: .cancel,
-                                           handler: nil)
+                                           handler: { (alertAction: UIAlertAction!) in
+                                            // Dismiss
+                                            dialog.dismiss()
+                    })
                     
                     alert.addAction(no)
                     alert.addAction(yes)
                     alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    dialog.present(alert, animated: true, completion: nil)
                 })
                 
                 
