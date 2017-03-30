@@ -229,8 +229,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         let underlineAttributedString = NSAttributedString(string: "\(header.title.text!)", attributes: titleStyle)
         header.title.attributedText = underlineAttributedString
         
-        // TODO: Show "People you may know here."
-        
         return header
     }
 

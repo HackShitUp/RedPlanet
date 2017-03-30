@@ -110,11 +110,15 @@ class OtherUser: UITableViewController {
                     
                     // MARK: - SVProgressHUD
                     SVProgressHUD.showSuccess(withStatus: "Reported")
+                    // Dismiss
+                    fromVC!.dismiss()
                     
                 } else {
                     print(error?.localizedDescription as Any)
                     // MARK: - SVProgressHUD
                     SVProgressHUD.showError(withStatus: "Error")
+                    // Dismiss
+                    fromVC!.dismiss()
                 }
             })
         }
@@ -166,6 +170,7 @@ class OtherUser: UITableViewController {
                         let ok = UIAlertAction(title: "ok",
                                                style: .default,
                                                handler: { (alertAction: UIAlertAction!) in
+                                                // Dismiss and Pop
                                                 fromVC!.dismiss()
                                                 _ = self.navigationController?.popViewController(animated: true)
                         })
@@ -178,12 +183,16 @@ class OtherUser: UITableViewController {
                         print(error?.localizedDescription as Any)
                         // MARK: - SVProgressHUD
                         SVProgressHUD.showError(withStatus: "Error")
+                        // Dismiss
+                        fromVC!.dismiss()
                     }
                 })
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - SVProgressHUD
                 SVProgressHUD.showError(withStatus: "Error")
+                // Dismiss
+                fromVC!.dismiss()
             }
         })
     }

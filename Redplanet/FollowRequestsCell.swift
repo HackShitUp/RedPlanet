@@ -15,7 +15,6 @@ import Bolts
 
 import KILabel
 import OneSignal
-import SimpleAlert
 import SVProgressHUD
 
 class FollowRequestsCell: UICollectionViewCell {
@@ -44,6 +43,7 @@ class FollowRequestsCell: UICollectionViewCell {
     
     // Function to show prompt to follow back
     func followBack() {
+/*
         // MARK: - SimpleAlert
         let alert = AlertController(title: "Follow Back?",
                                     message: "Would you like to follow \(self.rpUsername.text!) back?",
@@ -207,6 +207,7 @@ class FollowRequestsCell: UICollectionViewCell {
         alert.addAction(yes)
         alert.view.tintColor = UIColor.black
         self.delegate?.present(alert, animated: true, completion: nil)
+ */
     }
     
     // Function to confirm
@@ -387,102 +388,99 @@ class FollowRequestsCell: UICollectionViewCell {
         // Disable buttons
         self.relationState.isUserInteractionEnabled = false
         self.relationState.isEnabled = false
-        
+
         // R E S C I N D     F O L L O W     R E Q U E S T
         if self.relationState.titleLabel!.text! == "Rescind Follow Request" {
-            
-            // MARK: - SimpleAlert
-            let alert = AlertController(title: "Rescind Follow Request?",
-                                          message: "Are you sure you'd like to unfollow \(self.rpUsername.text!)?",
-                style: .alert)
-            
-            // Design content view
-            alert.configContentView = { view in
-                if let view = view as? AlertContentView {
-                    view.backgroundColor = UIColor.white
-                    view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                    view.titleLabel.textColor = UIColor.black
-                    view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                    view.messageLabel.textColor = UIColor.black
-                    view.textBackgroundView.layer.cornerRadius = 3.00
-                    view.textBackgroundView.clipsToBounds = true
-                }
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Sent Follow Request",
+                                                          message: "\(self.rpUsername.text!)")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Add proPic
+            dialogController.imageHandler = { (imageView) in
+                imageView.image = self.rpUserProPic.image!
+                imageView.contentMode = .scaleAspectFill
+                return true //must return true, otherwise image won't show.
             }
-            // Design corner radius
-            alert.configContainerCornerRadius = {
-                return 14.00
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Cancel button
+            dialogController.cancelButtonStyle = { (button,height) in
+                button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                button.setTitle("CANCEL", for: [])
+                return true
             }
             
-            let yes = AlertAction(title: "yes",
-                                    style: .destructive,
-                                    handler: { (AlertAction) in
-                                        // Delete from parse: "FollowMe"
-                                        let follow = PFQuery(className: "FollowMe")
-                                        follow.whereKey("follower", equalTo: PFUser.current()!)
-                                        follow.whereKey("following", equalTo: self.userObject!)
-                                        follow.whereKey("isFollowing", equalTo: false)
-                                        follow.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                for object in objects! {
-                                                    object.deleteInBackground(block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            print("Succesfully deleted follow request: \(object)")
-                                                            
-                                                            // Delete from "Notifications": "type" == "follow requested"
-                                                            let notifications = PFQuery(className: "Notifications")
-                                                            notifications.whereKey("toUser", equalTo: self.userObject!)
-                                                            notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                            notifications.whereKey("type", equalTo: "follow requested")
-                                                            notifications.findObjectsInBackground(block: {
-                                                                (objects: [PFObject]?, error: Error?) in
-                                                                if error == nil {
-                                                                    for object in objects! {
-                                                                        object.deleteInBackground(block: {
-                                                                            (success: Bool, error: Error?) in
-                                                                            if success {
-                                                                                print("Successfully deleted notificaiton: \(object)")
-                                                                                
-                                                                                // Change Button's Title
-                                                                                self.relationState.setTitle("Rescinded", for: .normal)
-                                                                                
-                                                                                
-                                                                                // Post Notification
-                                                                                NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                                                
-                                                                            } else {
-                                                                                print(error?.localizedDescription as Any)
-                                                                            }
-                                                                        })
-                                                                    }
-                                                                } else {
-                                                                    print(error?.localizedDescription as Any)
-                                                                }
-                                                            })
-                                                            
-                                                            
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                        }
-                                                    })
-                                                }
-                                            } else {
-                                                print(error?.localizedDescription as Any)
+            // RESCIND
+            dialogController.addAction(AZDialogAction(title: "Rescind", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                
+                // Delete from parse: "FollowMe"
+                let follow = PFQuery(className: "FollowMe")
+                follow.whereKey("follower", equalTo: PFUser.current()!)
+                follow.whereKey("following", equalTo: self.userObject!)
+                follow.whereKey("isFollowing", equalTo: false)
+                follow.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        for object in objects! {
+                            object.deleteInBackground(block: {
+                                (success: Bool, error: Error?) in
+                                if success {
+                                    print("Succesfully deleted follow request: \(object)")
+                                    
+                                    // Delete from "Notifications": "type" == "follow requested"
+                                    let notifications = PFQuery(className: "Notifications")
+                                    notifications.whereKey("toUser", equalTo: self.userObject!)
+                                    notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                    notifications.whereKey("type", equalTo: "follow requested")
+                                    notifications.findObjectsInBackground(block: {
+                                        (objects: [PFObject]?, error: Error?) in
+                                        if error == nil {
+                                            for object in objects! {
+                                                object.deleteInBackground(block: {
+                                                    (success: Bool, error: Error?) in
+                                                    if success {
+                                                        print("Successfully deleted notificaiton: \(object)")
+                                                        
+                                                        // Change Button's Title
+                                                        self.relationState.setTitle("Rescinded", for: .normal)
+                                                        
+                                                        
+                                                        // Post Notification
+                                                        NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                    }
+                                                })
                                             }
-                                        })
-                                        
-            })
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
+                                    
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }))
             
-            let no = AlertAction(title: "no",
-                                   style: .cancel,
-                                   handler: nil)
-            
-            
-            alert.addAction(no)
-            alert.addAction(yes)
-            alert.view.tintColor = UIColor.black
-            self.delegate?.present(alert, animated: true, completion: nil)
+            // Show
+            dialogController.show(in: self)
         }
 
     }// end RESCIND OR UNDO

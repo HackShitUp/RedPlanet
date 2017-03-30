@@ -442,6 +442,8 @@ class TimeVideoCell: UITableViewCell {
                         
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Dismiss
+                        dialog.dismiss()
                     }
                 })
             }

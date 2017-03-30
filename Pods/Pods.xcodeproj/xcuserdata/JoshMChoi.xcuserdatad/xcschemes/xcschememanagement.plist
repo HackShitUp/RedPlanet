@@ -64,11 +64,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>SimpleAlert.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SwiftyCam.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -87,12 +82,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2056771B199BD695CB2251E2B5240FA1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2995558172751E9976A7AF7ABA340C97</key>
+		<key>1A1A45E7B997FFA3BA4B8DE064E79C2A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -107,12 +97,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
+		<key>812196490A66C2644BC036BB50322A0C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>930F75C326424783582C21DA6136C7C3</key>
+		<key>8D6284E23201558288F46AAD690EC2A8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8F5682E0AC126B1910FC04BA8A16F382</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -127,12 +122,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A951E7BD437424E34EB068AAFCC87DDC</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>BA0B5469998BBD0685EA42960CCE59C1</key>
+		<key>B8AEBAA41F6430B9BED5A538DEC233F6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -147,7 +137,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF7F36DD17D838D00463BB082150F1A0</key>
+		<key>D84CE1B56A361F84689146376FEAC47B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -17,7 +17,6 @@ import Bolts
 
 import KILabel
 import OneSignal
-import SimpleAlert
 import SVProgressHUD
 
 
@@ -283,227 +282,200 @@ class TimeMediaCell: UITableViewCell {
     
     // Function for moreButton
     func doMore(sender: UIButton) {
-        // MARK: - SimpleAlert
-        let options = AlertController(title: "Options",
-                                      message: nil,
-                                      style: .alert)
-        
-        // Design content view
-        options.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-            }
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: "Photo")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Configure style
+        // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
         }
         
-        // Design corner radius
-        options.configContainerCornerRadius = {
-            return 14.00
-        }
-        
-        
-        // (1) Edit
-        let edit = AlertAction(title: "Edit",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                
-                                // Append object
-                                editObjects.append(self.postObject!)
-                                
-                                // Push VC
-                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                self.delegate?.pushViewController(editVC, animated: true)
+        // (1) EDIT
+        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Append object
+            editObjects.append(self.postObject!)
+            // Push VC
+            let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+            self.delegate?.pushViewController(editVC, animated: true)
         })
         
-        // (2) Save Post
-        let save = AlertAction(title: "Save",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                SVProgressHUD.show(withStatus: "Saving")
-                                
-                                // Save Post
-                                let newsfeeds = PFQuery(className: "Newsfeeds")
-                                newsfeeds.getObjectInBackground(withId: self.postObject!.objectId!, block: {
-                                    (object: PFObject?, error: Error?) in
-                                    if error == nil {
-                                        object!["saved"] = true
-                                        object!.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if error == nil {
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showSuccess(withStatus: "Saved")
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showError(withStatus: "Error")
-                                            }
-                                        })
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.showError(withStatus: "Error")
+        // (2) SAVE
+        let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // MARK: - SVProgressHUD
+            SVProgressHUD.setBackgroundColor(UIColor.white)
+            SVProgressHUD.setForegroundColor(UIColor.black)
+            SVProgressHUD.show(withStatus: "Saving")
+            
+            // Save Post
+            let newsfeeds = PFQuery(className: "Newsfeeds")
+            newsfeeds.getObjectInBackground(withId: self.postObject!.objectId!, block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    object!["saved"] = true
+                    object!.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if error == nil {
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showSuccess(withStatus: "Saved")
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showError(withStatus: "Error")
+                        }
+                    })
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
+        })
+        
+        
+        // (3) DELETE
+        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // MARK: - SVProgressHUD
+            SVProgressHUD.setBackgroundColor(UIColor.white)
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.show()
+            
+            // Delete all shared posts and the original post
+            let content = PFQuery(className: "Newsfeeds")
+            content.whereKey("byUser", equalTo: PFUser.current()!)
+            content.whereKey("objectId", equalTo: self.postObject!.objectId!)
+            
+            let shares = PFQuery(className: "Newsfeeds")
+            shares.whereKey("pointObject", equalTo: self.postObject!)
+            
+            let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+            newsfeeds.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Delete objects
+                    PFObject.deleteAll(inBackground: objects, block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            // Delete all Notifications
+                            let notifications = PFQuery(className: "Notifications")
+                            notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+                            notifications.findObjectsInBackground(block: {
+                                (objects: [PFObject]?, error: Error?) in
+                                if error == nil {
+                                    for object in objects! {
+                                        object.deleteEventually()
                                     }
-                                })
-        })
-        
-        // (3) Delete Photo
-        let delete = AlertAction(title: "Delete",
-                                 style: .destructive,
-                                 handler: { (AlertAction) in
                                     // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                    SVProgressHUD.show()
+                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
                                     
-                                    // Delete all shared posts and the original post
-                                    let content = PFQuery(className: "Newsfeeds")
-                                    content.whereKey("byUser", equalTo: PFUser.current()!)
-                                    content.whereKey("objectId", equalTo: self.postObject!.objectId!)
+                                    // Reload data
+                                    self.reloadData()
                                     
-                                    let shares = PFQuery(className: "Newsfeeds")
-                                    shares.whereKey("pointObject", equalTo: self.postObject!)
-                                    
-                                    let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                    newsfeeds.findObjectsInBackground(block: {
-                                        (objects: [PFObject]?, error: Error?) in
-                                        if error == nil {
-                                            // Delete objects
-                                            PFObject.deleteAll(inBackground: objects, block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {    
-                                                    // Delete all Notifications
-                                                    let notifications = PFQuery(className: "Notifications")
-                                                    notifications.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-                                                    notifications.findObjectsInBackground(block: {
-                                                        (objects: [PFObject]?, error: Error?) in
-                                                        if error == nil {
-                                                            for object in objects! {
-                                                                object.deleteEventually()
-                                                            }
-                                                            // MARK: - SVProgressHUD
-                                                            SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                            
-                                                            // Reload data
-                                                            self.reloadData()
-                                                            
-                                                            // Pop view controller
-                                                            _ = self.delegate?.popViewController(animated: true)
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                            // MARK: - SVProgressHUD
-                                                            SVProgressHUD.showError(withStatus: "Error")
-                                                        }
-                                                    })
-                                                    
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.showError(withStatus: "Error")
-                                                }
-                                            })
-                                            
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.showError(withStatus: "Error")
-                                        }
-                                    })
-                                    
+                                    // Pop view controller
+                                    _ = self.delegate?.popViewController(animated: true)
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                    // MARK: - SVProgressHUD
+                                    SVProgressHUD.showError(withStatus: "Error")
+                                }
+                            })
+                            
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showError(withStatus: "Error")
+                        }
+                    })
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
         })
         
-        
-        // (4) Report Content
-        let report = AlertAction(title: "Report",
-                                      style: .destructive,
-                                      handler: { (AlertAction) in
-                                        let alert = UIAlertController(title: "Report",
-                                                                      message: "Please provide your reason for reporting \(self.userObject!.value(forKey: "username") as! String)'s Photo",
-                                            preferredStyle: .alert)
-                                        
-                                        let report = UIAlertAction(title: "Report", style: .destructive) {
-                                            [unowned self, alert] (action: UIAlertAction!) in
-                                            
-                                            let answer = alert.textFields![0]
-                                            
-                                            
-                                            // REPORTED
-                                            let report = PFObject(className: "Reported")
-                                            report["byUsername"] = PFUser.current()!.username!
-                                            report["byUser"] = PFUser.current()!
-                                            report["to"] = self.userObject!.value(forKey: "username") as! String
-                                            report["toUser"] = self.userObject!
-                                            report["forObjectId"] = self.postObject!.objectId!
-                                            report["reason"] = answer.text!
-                                            report.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved report: \(report)")
-                                                    
-                                                    // Dismiss
-                                                    let alert = UIAlertController(title: "Successfully Reported",
-                                                                                  message: "\(self.userObject!.value(forKey: "username") as! String)'s Photo",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: nil)
-                                                    
-                                                    alert.addAction(ok)
-                                                    alert.view.tintColor = UIColor.black
-                                                    self.delegate?.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                        
-                                        
-                                        let cancel = UIAlertAction(title: "Cancel",
-                                                                   style: .cancel,
-                                                                   handler: nil)
-                                        
-                                        
-                                        alert.addTextField(configurationHandler: nil)
-                                        alert.addAction(report)
-                                        alert.addAction(cancel)
-                                        alert.view.tintColor = UIColor.black
-                                        self.delegate?.present(alert, animated: true, completion: nil)
+        // (4) REPORT
+        let report = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            let alert = UIAlertController(title: "Report",
+                                          message: "Please provide your reason for reporting \(self.userObject!.value(forKey: "username") as! String)'s Photo",
+                preferredStyle: .alert)
+            
+            let report = UIAlertAction(title: "Report", style: .destructive) {
+                [unowned self, alert] (action: UIAlertAction!) in
+                
+                let answer = alert.textFields![0]
+                
+                
+                // REPORTED
+                let report = PFObject(className: "Reported")
+                report["byUsername"] = PFUser.current()!.username!
+                report["byUser"] = PFUser.current()!
+                report["to"] = self.userObject!.value(forKey: "username") as! String
+                report["toUser"] = self.userObject!
+                report["forObjectId"] = self.postObject!.objectId!
+                report["reason"] = answer.text!
+                report.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved report: \(report)")
+                        
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.showSuccess(withStatus: "Reported")
+                        // Dismiss
+                        dialog.dismiss()
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // Dismiss
+                        dialog.dismiss()
+                    }
+                })
+            }
+            
+            
+            let cancel = UIAlertAction(title: "Cancel",
+                                       style: .cancel,
+                                       handler: { (alertAction: UIAlertAction!) in
+                                        // Dismiss
+                                        dialog.dismiss()
+            })
+            
+            
+            alert.addTextField(configurationHandler: nil)
+            alert.addAction(report)
+            alert.addAction(cancel)
+            dialog.present(alert, animated: true, completion: nil)
         })
         
-        
-        // (5) Cancel
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-        
+        // Show options dependent on user's objectId
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
-            options.addAction(edit)
-            options.addAction(save)
-            options.addAction(delete)
-            options.addAction(cancel)
-            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            edit.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0), for: .normal)
-            save.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-            save.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            dialogController.addAction(edit)
+            dialogController.addAction(save)
+            dialogController.addAction(delete)
+            dialogController.show(in: self.delegate!)
         } else {
-            options.addAction(cancel)
-            options.addAction(report)
-            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            report.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            dialogController.addAction(report)
+            dialogController.show(in: self.delegate!)
         }
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.delegate?.present(options, animated: true, completion: nil)
     }
 
     // Function to zoom

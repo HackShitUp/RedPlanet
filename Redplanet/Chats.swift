@@ -325,6 +325,23 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
+                // add image
+                dialogController.imageHandler = { (imageView) in
+                    if let proPic = self.chatObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                imageView.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    } else {
+                        imageView.image = UIImage(named: "Gender Neutral User-100")
+                    }
+                    imageView.contentMode = .scaleAspectFill
+                    return true //must return true, otherwise image won't show.
+                }
                 // Configure style
                 dialogController.buttonStyle = { (button,height,position) in
                     button.setTitleColor(UIColor.white, for: .normal)
