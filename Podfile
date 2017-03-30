@@ -18,7 +18,7 @@ target 'Redplanet' do
 	pod ‘SimpleAlert’
 	pod 'SVProgressHUD'
 	pod ‘SwiftyCam’
-	pod 'SwipeNavigationController', '~> 2.0.2’
+	pod 'SwipeNavigationController'
 
   target 'RedplanetTests' do
     inherit! :search_paths

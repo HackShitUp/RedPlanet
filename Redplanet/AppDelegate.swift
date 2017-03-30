@@ -19,9 +19,6 @@
  
                                                             Like a rolling stone ?
 
-YELLOW:
-• UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
-
 RED:
 • UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
 • #FF0050
@@ -37,6 +34,8 @@ BLUE:
 LIGHT GREY
 • UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
 
+YELLOW:
+• UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
  */
 
 import UIKit
@@ -118,7 +117,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                     // Set visible banner
                                                     let banner = Banner(title: nil,
                                                         subtitle: "\(fullMessage!)",
-                                                        image: nil,
+                                                        image: UIImage(named: "RedplanetLogo"),
                                                         backgroundColor: UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
                                                     banner.adjustsStatusBarStyle = false
                                                     banner.detailLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
@@ -299,8 +298,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // Call relationships function
             _ = queryRelationships()
-            // Initialize data
-            initializeData()
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -399,9 +396,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }// end QueryRelationships()
-    
-    // (3) Save Chat Objects
-    func initializeData() {
-        
-    }
 }

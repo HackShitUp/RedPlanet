@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 import DZNEmptyDataSet
-
 import SDWebImage
 import SimpleAlert
 import SVProgressHUD
@@ -336,110 +335,95 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         if sender.state == .began {
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-                
-                
+
                 let fullName = self.chatObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
                 
-                // MARK: - SimpleAlert
-                // Present alert
-                let alert = AlertController(title: "\(fullName)",
-                    message: "Delete Chat?\nIt can't be restored once it's forever deleted.",
-                    style: .alert)
+                /*
+                 = AlertController(title:
+                 */
                 
-                // Design content view
-                alert.configContentView = { view in
-                    if let view = view as? AlertContentView {
-                        view.backgroundColor = UIColor.white
-                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21)
-                        let textRange = NSMakeRange(0, fullName.characters.count)
-                        let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                        attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                        view.titleLabel.attributedText = attributedText
-                        view.titleLabel.textColor = UIColor.black
-                        view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 17)
-                        view.messageLabel.textColor = UIColor.black
-                        view.textBackgroundView.layer.cornerRadius = 3.00
-                        view.textBackgroundView.clipsToBounds = true
-                    }
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "\(fullName)",
+                    message: "Delete Chat?\nIt can't be restored once it's forever deleted.")
+                dialogController.messageFontSize = 21
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                    button.layer.masksToBounds = true
+                    button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                 }
-                
-                // Design corner radius
-                alert.configContainerCornerRadius = {
-                    return 14.00
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
                 }
-                
-                let delete = AlertAction(title: "Delete",
-                                         style: .destructive,
-                                         handler: { (AlertAction) in
-                                            
-                                            // Show Progress
-                                            SVProgressHUD.show()
-                                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            
-                                            // Delete chats
-                                            let sender = PFQuery(className: "Chats")
-                                            sender.whereKey("sender", equalTo: PFUser.current()!)
-                                            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
-                                            
-                                            let receiver = PFQuery(className: "Chats")
-                                            receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                                            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
-                                            
-                                            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-                                            chats.includeKeys(["receiver", "sender"])
-                                            chats.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    
-                                                    // Dismiss progress
-                                                    SVProgressHUD.dismiss()
-                                                    
-                                                    // Delete all objects
-                                                    PFObject.deleteAll(inBackground: objects, block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            print("Deleted all objects: \(objects)")
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                        }
-                                                    })
-                                                    
-                                                    // Delete chat from tableview
-                                                    self.chatObjects.remove(at: indexPath.row)
-                                                    self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                    
-                                                    // Reload data
-                                                    self.fetchChats()
-                                                    // Reload data in main thread
-                                                    DispatchQueue.main.async {
-                                                        self.tableView!.reloadData()
-                                                    }
-                                                    
-                                                } else {
-                                                    if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.dismiss()
-                                                    }
-                                                    // Reload data
-                                                    self.fetchChats()
-                                                }
-                                            })
-                })
-                
-                let cancel = AlertAction(title: "Cancel",
-                                         style: .cancel,
-                                         handler: nil)
-                
-                // Configure options
-                alert.addAction(cancel)
-                alert.addAction(delete)
-                alert.view.tintColor = UIColor.black
-                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                cancel.button.setTitleColor(UIColor.black, for: .normal)
-                delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                self.present(alert, animated: true, completion: nil)
+                // Add Delete button
+                dialogController.addAction(AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                    
+                    // DELETE CHAT
+                    
+                    // Show Progress
+                    SVProgressHUD.show()
+                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                    SVProgressHUD.setBackgroundColor(UIColor.white)
+                    
+                    // Delete chats
+                    let sender = PFQuery(className: "Chats")
+                    sender.whereKey("sender", equalTo: PFUser.current()!)
+                    sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
+                    
+                    let receiver = PFQuery(className: "Chats")
+                    receiver.whereKey("receiver", equalTo: PFUser.current()!)
+                    receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+                    
+                    let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+                    chats.includeKeys(["receiver", "sender"])
+                    chats.findObjectsInBackground(block: {
+                        (objects: [PFObject]?, error: Error?) in
+                        if error == nil {
+                            
+                            // Dismiss progress
+                            SVProgressHUD.dismiss()
+                            
+                            // Delete all objects
+                            PFObject.deleteAll(inBackground: objects, block: {
+                                (success: Bool, error: Error?) in
+                                if success {
+                                    print("Deleted all objects: \(objects)")
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                            
+                            // Delete chat from tableview
+                            self.chatObjects.remove(at: indexPath.row)
+                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                            
+                            // Reload data
+                            self.fetchChats()
+                            // Reload data in main thread
+                            DispatchQueue.main.async {
+                                self.tableView!.reloadData()
+                            }
+                            
+                        } else {
+                            if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.dismiss()
+                            }
+                            // Reload data
+                            self.fetchChats()
+                        }
+                    })
+                    
+                    dialog.dismiss()
+                }))
+                // Show
+                dialogController.show(in: self)
             }
         }
         

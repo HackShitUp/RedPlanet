@@ -121,7 +121,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Follow People!"
+            self.title = "Follow People"
         }
         
         // Configure nav bar && show tab bar (last line)

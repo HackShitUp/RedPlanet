@@ -38,7 +38,7 @@ DEPENDENCIES:
   - SimpleAlert
   - SVProgressHUD
   - SwiftyCam
-  - SwipeNavigationController (~> 2.0.2)
+  - SwipeNavigationController
 
 SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 6f385ed7deb673af8989f5240c4b0c32c9d25276
@@ -56,6 +56,6 @@ SPEC CHECKSUMS:
   SwiftyCam: 966b67eeab2dfcfd0077eaa3c5a6bd69e1748af0
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: e179b25e4a7308a52dbb317684df2d211d2a3fc7
+PODFILE CHECKSUM: 269506fb0c1429e4e5e45c1cdfb0253ade57c8c2
 
 COCOAPODS: 1.1.1

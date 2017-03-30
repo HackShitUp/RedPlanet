@@ -46,6 +46,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     let tapGesture = UITapGestureRecognizer()
     var data:[SNFilter] = []
     
+    var label: UILabel!
+    
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
     @IBOutlet weak var stillPhoto: PFImageView!

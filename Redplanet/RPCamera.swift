@@ -279,6 +279,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
         
         // MARK: - SwiftyCam
+        
         // Set delegate for camera view
         self.cameraDelegate = self
         // Set delegate to record video

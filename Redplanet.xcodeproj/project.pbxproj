@@ -138,6 +138,7 @@
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
+		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
 		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
 		7EC05B061DB5E37C0039B357 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B051DB5E37C0039B357 /* Home.swift */; };
@@ -393,6 +394,7 @@
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
+		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
 		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		7EC05B051DB5E37C0039B357 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -1086,6 +1088,14 @@
 			name = RPChatRoom;
 			sourceTree = "<group>";
 		};
+		7EC005761E8CD95A00405530 /* AZDialogViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7EC005771E8CD95A00405530 /* AZDialogViewController.swift */,
+			);
+			path = AZDialogViewController;
+			sourceTree = "<group>";
+		};
 		7EC05AE51DB5B7B00039B357 /* BRYXBanner */ = {
 			isa = PBXGroup;
 			children = (
@@ -1150,6 +1160,7 @@
 			isa = PBXGroup;
 			children = (
 				7E6A12E21E4D524C00CF108B /* Agrume */,
+				7EC005761E8CD95A00405530 /* AZDialogViewController */,
 				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
@@ -1794,6 +1805,7 @@
 				7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
+				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,

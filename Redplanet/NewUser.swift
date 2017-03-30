@@ -14,6 +14,7 @@ import ParseUI
 import Bolts
 
 import Onboard
+import OneSignal
 
 class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDelegate, UINavigationControllerDelegate {
     
@@ -51,11 +52,12 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                        handler: {(alertAction: UIAlertAction!) in
                                         // Load Onboarding tutorial
                                         // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to organize your news feeds.", image: nil, buttonText: nil) { () -> Void in
+                                        let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create organized news feeds!", image: nil, buttonText: nil) { () -> Void in
                                         }
                                         let secondPage = OnboardingContentViewController(title: "2 News Feeds", body: "You have 2 news feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
                                         }
                                         let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: "continue") { () -> Void in
+                                            
                                             // Load Things to Follow interface
                                             let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
                                             self.navigationController?.pushViewController(onBoardVC, animated: true)
@@ -66,6 +68,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                                         secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
                                         lastPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
                                         lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
+                                        lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
                                         // Set bottom padding for button
                                         lastPage.bottomPadding = 50
                                         let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])
@@ -130,6 +133,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         if self.rpUserBio.text! == "Introduce yourself!" {
             self.rpUserBio.text! = ""
         }
+        
         return true
     }
     
