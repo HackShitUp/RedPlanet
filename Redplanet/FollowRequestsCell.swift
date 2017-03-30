@@ -480,7 +480,7 @@ class FollowRequestsCell: UICollectionViewCell {
             }))
             
             // Show
-            dialogController.show(in: self)
+            dialogController.show(in: self.delegate!)
         }
 
     }// end RESCIND OR UNDO

@@ -26,7 +26,6 @@ let videoNotification = Notification.Name("videoNotification")
 
 class VideoAsset: UITableViewController, UINavigationControllerDelegate {
     
-    
     // Array values to hold likes, comments, and shares
     var likes = [PFObject]()
     var comments = [PFObject]()
