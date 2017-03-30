@@ -16,7 +16,6 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 import SVProgressHUD
-import SimpleAlert
 import OneSignal
 
 // Array to hold comments
@@ -485,187 +484,147 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     // Function to show more options
     func options(sender: UILongPressGestureRecognizer) {
         if sender.state == .began {
-
-            
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-                
-                // MARK: - SimpleAlert
-                // Present alert
-                let options = AlertController(title: "Options",
-                                              message: nil,
-                                              style: .alert)
-                
-                // Design content view
-                options.configContentView = { view in
-                    if let view = view as? AlertContentView {
-                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                        let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                        let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                        attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                        view.titleLabel.attributedText = attributedText
-                        
-                    }
+
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Options", message: "Comment")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
                 }
                 
-                // Design corner radius
-                options.configContainerCornerRadius = {
-                    return 14.00
-                }
-                
-                let delete = AlertAction(title: "Delete",
-                                         style: .destructive,
-                                         handler: { (AlertAction) in
-                                            
-                                            // Delete Comment
-                                            let comment = PFQuery(className: "Comments")
-                                            comment.whereKey("byUser", equalTo: self.comments[indexPath.row].value(forKey: "byUser") as! PFUser)
-                                            comment.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                            comment.whereKey("commentOfContent", equalTo: self.comments[indexPath.row].value(forKey: "commentOfContent") as! String)
-                                            comment.findObjectsInBackground(block: {
-                                                (objects: [PFObject]?, error: Error?) in
-                                                if error == nil {
-                                                    for object in objects! {
-                                                        object.deleteInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Successfully deleted comment: \(object)")
-                                                                
-                                                                // Delete from Parse: "Notifications"
-                                                                let notifications = PFQuery(className: "Notifications")
-                                                                notifications.whereKey("fromUser", equalTo: PFUser.current()!)
-                                                                notifications.whereKey("type", equalTo: "comment")
-                                                                notifications.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
-                                                                notifications.findObjectsInBackground(block: {
-                                                                    (objects: [PFObject]?, error: Error?) in
-                                                                    if error == nil {
-                                                                        for object in objects! {
-                                                                            object.deleteInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("Successfully deleted from notifications: \(object)")
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        }
-                                                                    } else {
-                                                                        print(error?.localizedDescription as Any)
-                                                                    }
-                                                                })
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                            }
-                                                        })
-                                                    }
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
+                // (1) DELETE
+                let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    
+                    // Delete Comment
+                    let comment = PFQuery(className: "Comments")
+                    comment.whereKey("byUser", equalTo: self.comments[indexPath.row].value(forKey: "byUser") as! PFUser)
+                    comment.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
+                    comment.whereKey("commentOfContent", equalTo: self.comments[indexPath.row].value(forKey: "commentOfContent") as! String)
+                    comment.findObjectsInBackground(block: {
+                        (objects: [PFObject]?, error: Error?) in
+                        if error == nil {
+                            for object in objects! {
+                                object.deleteInBackground(block: {
+                                    (success: Bool, error: Error?) in
+                                    if success {
+                                        print("Successfully deleted comment: \(object)")
+                                        
+                                        // Delete from Parse: "Notifications"
+                                        let notifications = PFQuery(className: "Notifications")
+                                        notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                        notifications.whereKey("type", equalTo: "comment")
+                                        notifications.whereKey("forObjectId", equalTo: commentsObject.last!.objectId!)
+                                        notifications.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object.deleteInBackground(block: {
+                                                        (success: Bool, error: Error?) in
+                                                        if success {
+                                                            print("Successfully deleted from notifications: \(object)")
+                                                        } else {
+                                                            print(error?.localizedDescription as Any)
+                                                        }
+                                                    })
                                                 }
-                                            })
-                                            
-                                            
-                                            // (1B) Delete comment from table view
-                                            self.comments.remove(at: indexPath.row)
-                                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                            
-                })
-                
-                
-                
-                let reply = AlertAction(title: "Reply",
-                                        style: .default,
-                                        handler: { (AlertAction) in
-                                            // Clear comment box
-                                            if self.newComment.text == "Share your comment!" {
-                                                self.newComment.text! = ""
+                                            } else {
+                                                print(error?.localizedDescription as Any)
                                             }
-                                            
-                                            // Set username in newComment
-                                            self.newComment.text = "\(self.newComment.text!)" + "@" + "\(self.comments[indexPath.row].value(forKey: "byUsername") as! String)" + " "
+                                        })
+                                        
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                    }
+                                })
+                            }
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                    
+                    
+                    // (1B) Delete comment from table view
+                    self.comments.remove(at: indexPath.row)
+                    self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                })
+                
+                // (2) REPLY
+                let reply = AZDialogAction(title: "Reply", handler: { (dialog) -> Void in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Clear comment box
+                    if self.newComment.text == "Share your comment!" {
+                        self.newComment.text! = ""
+                    }
+                    // Set username in newComment
+                    self.newComment.text = "\(self.newComment.text!)" + "@" + "\(self.comments[indexPath.row].value(forKey: "byUsername") as! String)" + " "
+                })
+                
+                // (3)
+                let report = AZDialogAction(title: "Report", handler: { (dialog) -> Void in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Show Report
+                    let alert = UIAlertController(title: "Report?",
+                                                  message: "Are you sure you'd like to report this comment and the user?",
+                                                  preferredStyle: .alert)
+                    
+                    let yes = UIAlertAction(title: "yes",
+                                            style: .destructive,
+                                            handler: { (alertAction: UIAlertAction!) -> Void in
+                                                // REPORT
+                                                let report = PFObject(className: "Reported")
+                                                report["byUser"] = PFUser.current()!
+                                                report["byUsername"] = PFUser.current()!.username!
+                                                report["toUser"] = self.comments[indexPath.row].value(forKey: "byUser") as! PFUser
+                                                report["toUsername"] = self.comments[indexPath.row].value(forKey: "byUsername") as! String
+                                                report["forObjectId"] = self.comments[indexPath.row].objectId!
+                                                report["reason"] = "Inappropriate comment."
+                                                report.saveInBackground()
+                    })
+                    
+                    let no = UIAlertAction(title: "no",
+                                           style: .cancel,
+                                           handler: nil)
+                    
+                    alert.addAction(no)
+                    alert.addAction(yes)
+                    alert.view.tintColor = UIColor.black
+                    self.present(alert, animated: true, completion: nil)
                 })
                 
                 
-                let report = AlertAction(title: "Report",
-                                         style: .default,
-                                         handler: { (AlertAction) in
-                                            let alert = UIAlertController(title: "Report?",
-                                                                          message: "Are you sure you'd like to report this comment and the user?",
-                                                                          preferredStyle: .alert)
-                                            
-                                            let yes = UIAlertAction(title: "yes",
-                                                                    style: .destructive,
-                                                                    handler: { (alertAction: UIAlertAction!) -> Void in
-                                                                        // REPORT
-                                                                        let report = PFObject(className: "Reported")
-                                                                        report["byUser"] = PFUser.current()!
-                                                                        report["byUsername"] = PFUser.current()!.username!
-                                                                        report["toUser"] = self.comments[indexPath.row].value(forKey: "byUser") as! PFUser
-                                                                        report["toUsername"] = self.comments[indexPath.row].value(forKey: "byUsername") as! String
-                                                                        report["forObjectId"] = self.comments[indexPath.row].objectId!
-                                                                        report["reason"] = "Inappropriate comment."
-                                                                        report.saveInBackground()
-                                            })
-                                            
-                                            let no = UIAlertAction(title: "no",
-                                                                   style: .cancel,
-                                                                   handler: nil)
-                                            
-                                            alert.addAction(no)
-                                            alert.addAction(yes)
-                                            alert.view.tintColor = UIColor.black
-                                            
-                                            self.present(alert, animated: true, completion: nil)
-                                            
-                })
-                
-                let cancel = AlertAction(title: "Cancel",
-                                         style: .cancel,
-                                         handler: nil)
-                
-                
-                
-                
+                // Determine which options to show dependent on user's objectId
                 if (self.comments[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                    options.addAction(cancel)
-                    options.addAction(delete)
-                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-                    
+                    dialogController.addAction(delete)
                 } else if (commentsObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                    options.addAction(delete)
-                    options.addAction(reply)
-                    options.addAction(report)
-                    options.addAction(cancel)
-                    
-                    delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
-                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha: 1.0), for: .normal)
-                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0), for: .normal)
-                    
+                    dialogController.addAction(delete)
+                    dialogController.addAction(reply)
+                    dialogController.addAction(report)
                 } else {
-                    options.addAction(reply)
-                    options.addAction(report)
-                    options.addAction(cancel)
-                    
-                    reply.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    reply.button.setTitleColor(UIColor(red:0.00, green:0.63, blue:1.00, alpha: 1.0), for: .normal)
-                    report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                    report.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
+                    dialogController.addAction(reply)
+                    dialogController.addAction(report)
                 }
                 
-                
-                for b in options.actions {
-                    b.button.frame.size.height = 50
-                }
-                
-                cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-                cancel.button.setTitleColor(UIColor.black, for: .normal)
-                
-                // Show Alert
-                self.present(options, animated: true, completion: nil)
+                // Show
+                dialogController.show(in: self)
             }
             
         }

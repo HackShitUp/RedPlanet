@@ -44,19 +44,16 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func editAction(_ sender: Any) {
         
-        
-        
+        // MARK: - AZDialogViewController
         let dialogController = AZDialogViewController(title: "Delete all Chats?",
             message: "They can never be restored once they're deleted.")
-        
-        
-        dialogController.messageFontSize = 21
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
-            button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.layer.masksToBounds = true
             button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         }
@@ -325,13 +322,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "\(fullName)",
                     message: "Delete Chat?\nIt can't be restored once it's forever deleted.")
-                dialogController.messageFontSize = 21
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
                 // Configure style
                 dialogController.buttonStyle = { (button,height,position) in
-                    button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                     button.layer.masksToBounds = true
                     button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
                 }

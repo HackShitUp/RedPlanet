@@ -16,7 +16,6 @@ import Bolts
 import KILabel
 import OneSignal
 import SVProgressHUD
-import SimpleAlert
 
 class ProPicCell: UITableViewCell {
     
@@ -263,250 +262,229 @@ class ProPicCell: UITableViewCell {
     // Function for moreButton
     func doMore(sender: UIButton) {
         
-        // MARK: - SimpleAlert
-        let options = AlertController(title: "Options",
-                                      message: nil,
-                                      style: .alert)
-        
-        // Design content view
-        options.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-            }
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Options", message: "Profile Photo")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Configure style
+        // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
         }
         
-        // Design corner radius
-        options.configContainerCornerRadius = {
-            return 14.00
-        }
-
-        // (1)
-        let edit = AlertAction(title: "Edit",
-                               style: .default,
-                               handler: { (AlertAction) in
-                                
-                                // Append object
-                                editObjects.append(self.postObject!)
-                                
-                                // Push VC
-                                let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
-                                self.delegate?.pushViewController(editVC, animated: true)
+        // (1) EDIT POST
+        let editAction = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Append object
+            editObjects.append(self.postObject!)
+            // Push VC
+            let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+            self.delegate?.pushViewController(editVC, animated: true)
         })
         
-        
-        // (2) Delete
-        let delete = AlertAction(title: "Delete",
-                                 style: .destructive,
-                                 handler: { (AlertAction) in
-                                    /*
-                                     (1) If currentUser is trying to delete his/her's most RECENT Profile Photo...
-                                     • Change 'proPicExists' == false
-                                     • Save new profile photo
-                                     • Delete object from <Newsfeeds>
-                                     
-                                     (2) OTHERWISE
-                                     • Keep 'proPicExists' == true
-                                     • Delete object from <Newsfeeds>
-                                     
-                                     */
-                                    
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                    SVProgressHUD.show(withStatus: "Deleting")
-                                    
-                                    // (1) Check if object is most recent by querying getFirstObject
-                                    let recentProPic = PFQuery(className: "Newsfeeds")
-                                    recentProPic.whereKey("byUser", equalTo: PFUser.current()!)
-                                    recentProPic.whereKey("contentType", equalTo: "pp")
-                                    recentProPic.order(byDescending: "createdAt")
-                                    recentProPic.getFirstObjectInBackground(block: {
-                                        (object: PFObject?, error: Error?) in
-                                        if error == nil {
-
-                                            if object!.objectId! == self.postObject!.objectId! {
-                                                // Most recent Profile Photo
-                                                // Delete object
-                                                object?.deleteInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        
-                                                        // Set new profile photo
-                                                        let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
-                                                        let parseFile = PFFile(data: proPicData!)
-                                                        
-                                                        // User's Profile Photo DOES NOT exist
-                                                        PFUser.current()!["proPicExists"] = false
-                                                        PFUser.current()!["userProfilePicture"] = parseFile
-                                                        PFUser.current()!.saveInBackground(block: {
-                                                            (success: Bool, error: Error?) in
-                                                            if success {
-                                                                print("Deleted current profile photo and saved a new one.")
-                                                                
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                                
-                                                                // Reload data
-                                                                self.reloadData()
-                                                                
-                                                                // Pop view controller
-                                                                _ = self.delegate?.popViewController(animated: true)
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showError(withStatus: "Error")
-                                                            }
-                                                        })
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                                                })
-                                            } else {
-                                                
-                                                // Delete content
-                                                let content = PFQuery(className: "Newsfeeds")
-                                                content.whereKey("byUser", equalTo: PFUser.current()!)
-                                                content.whereKey("objectId", equalTo: self.postObject!.objectId!)
-                                                
-                                                let shares = PFQuery(className: "Newsfeeds")
-                                                shares.whereKey("pointObject", equalTo: self.postObject!)
-                                                
-                                                let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
-                                                newsfeeds.findObjectsInBackground(block: {
-                                                    (objects: [PFObject]?, error: Error?) in
-                                                    if error == nil {
-                                                        for object in objects! {
-                                                            // Delete object
-                                                            object.deleteInBackground(block: {
-                                                                (success: Bool, error: Error?) in
-                                                                if success {
-                                                                    print("Successfully deleted profile photo: \(object)")
-                                                                    
-                                                                    // MARK: - SVProgressHUD
-                                                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                                    
-                                                                    // Current User's Profile Photo DOES EXIST
-                                                                    PFUser.current()!["proPicExists"] = true
-                                                                    PFUser.current()!.saveEventually()
-                                                                    
-                                                                    // Reload data
-                                                                    self.reloadData()
-                                                                    
-                                                                    // Pop view controller
-                                                                    _ = self.delegate?.popViewController(animated: true)
-                                                                    
-                                                                } else {
-                                                                    print(error?.localizedDescription as Any)
-                                                                    // MARK: - SVProgressHUD
-                                                                    SVProgressHUD.showError(withStatus: "Error")
-                                                                }
-                                                            })
-                                                        }
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                                                })
-                                            }
+        // (2) DELETE POST
+        let deleteAction = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            /*
+             (1) If currentUser is trying to delete his/her's most RECENT Profile Photo...
+             • Change 'proPicExists' == false
+             • Save new profile photo
+             • Delete object from <Newsfeeds>
+             
+             (2) OTHERWISE
+             • Keep 'proPicExists' == true
+             • Delete object from <Newsfeeds>
+             */
+            
+            // MARK: - SVProgressHUD
+            SVProgressHUD.setBackgroundColor(UIColor.white)
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.show(withStatus: "Deleting")
+            
+            // (1) Check if object is most recent by querying getFirstObject
+            let recentProPic = PFQuery(className: "Newsfeeds")
+            recentProPic.whereKey("byUser", equalTo: PFUser.current()!)
+            recentProPic.whereKey("contentType", equalTo: "pp")
+            recentProPic.order(byDescending: "createdAt")
+            recentProPic.getFirstObjectInBackground(block: {
+                (object: PFObject?, error: Error?) in
+                if error == nil {
+                    
+                    if object!.objectId! == self.postObject!.objectId! {
+                        // Most recent Profile Photo
+                        // Delete object
+                        object?.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if success {
+                                
+                                // Set new profile photo
+                                let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
+                                let parseFile = PFFile(data: proPicData!)
+                                
+                                // User's Profile Photo DOES NOT exist
+                                PFUser.current()!["proPicExists"] = false
+                                PFUser.current()!["userProfilePicture"] = parseFile
+                                PFUser.current()!.saveInBackground(block: {
+                                    (success: Bool, error: Error?) in
+                                    if success {
+                                        print("Deleted current profile photo and saved a new one.")
+                                        
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                        
+                                        // Reload data
+                                        self.reloadData()
+                                        
+                                        // Pop view controller
+                                        _ = self.delegate?.popViewController(animated: true)
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - SVProgressHUD
+                                        SVProgressHUD.showError(withStatus: "Error")
+                                    }
+                                })
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showError(withStatus: "Error")
+                            }
+                        })
+                    } else {
+                        
+                        // Delete content
+                        let content = PFQuery(className: "Newsfeeds")
+                        content.whereKey("byUser", equalTo: PFUser.current()!)
+                        content.whereKey("objectId", equalTo: self.postObject!.objectId!)
+                        
+                        let shares = PFQuery(className: "Newsfeeds")
+                        shares.whereKey("pointObject", equalTo: self.postObject!)
+                        
+                        let newsfeeds = PFQuery.orQuery(withSubqueries: [content, shares])
+                        newsfeeds.findObjectsInBackground(block: {
+                            (objects: [PFObject]?, error: Error?) in
+                            if error == nil {
+                                for object in objects! {
+                                    // Delete object
+                                    object.deleteInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            print("Successfully deleted profile photo: \(object)")
+                                            
+                                            // MARK: - SVProgressHUD
+                                            SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                            
+                                            // Current User's Profile Photo DOES EXIST
+                                            PFUser.current()!["proPicExists"] = true
+                                            PFUser.current()!.saveEventually()
+                                            
+                                            // Reload data
+                                            self.reloadData()
+                                            
+                                            // Pop view controller
+                                            _ = self.delegate?.popViewController(animated: true)
+                                            
                                         } else {
                                             print(error?.localizedDescription as Any)
                                             // MARK: - SVProgressHUD
                                             SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
-                                    
+                                }
+                            } else {
+                                print(error?.localizedDescription as Any)
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showError(withStatus: "Error")
+                            }
+                        })
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
         })
         
-        
-        // (3) Report Content
-        let report = AlertAction(title: "Report",
-                                      style: .destructive,
-                                      handler: { (AlertAction) in
-                                        
-                                        let alert = UIAlertController(title: "Report",
-                                                                      message: "Please provide your reason for reporting \(self.rpUsername.text!)'s Profile Photo",
-                                            preferredStyle: .alert)
-                                        
-                                        let report = UIAlertAction(title: "Report", style: .destructive) {
-                                            [unowned self, alert] (action: UIAlertAction!) in
-                                            
-                                            let answer = alert.textFields![0]
-                                            // REPORTED
-                                            let report = PFObject(className: "Reported")
-                                            report["byUsername"] = PFUser.current()!.username!
-                                            report["byUser"] = PFUser.current()!
-                                            report["toUsername"] = self.rpUsername.text!
-                                            report["toUser"] = self.userObject!
-                                            report["forObjectId"] = self.postObject!.objectId!
-                                            report["reason"] = answer.text!
-                                            report.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved report: \(report)")
-                                                    
-                                                    // Dismiss
-                                                    let alert = UIAlertController(title: "Successfully Reported",
-                                                                                  message: "\(self.rpUsername.text!)'s Profile Photo",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: nil)
-                                                    
-                                                    alert.addAction(ok)
-                                                    alert.view.tintColor = UIColor.black
-                                                    self.delegate?.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                        
-                                        
-                                        let cancel = UIAlertAction(title: "Cancel",
-                                                                   style: .cancel,
-                                                                   handler: nil)
-                                        
-                                        
-                                        alert.addTextField(configurationHandler: nil)
-                                        alert.addAction(report)
-                                        alert.addAction(cancel)
-                                        alert.view.tintColor = UIColor.black
-                                        self.delegate?.present(alert, animated: true, completion: nil)
-                                        
+        // (3) REPORT POST
+        let reportAction = AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            
+            let alert = UIAlertController(title: "Report",
+                                          message: "Please provide your reason for reporting \(self.rpUsername.text!)'s Profile Photo",
+                preferredStyle: .alert)
+            
+            let report = UIAlertAction(title: "Report", style: .destructive) {
+                [unowned self, alert] (action: UIAlertAction!) in
+                
+                let answer = alert.textFields![0]
+                // REPORTED
+                let report = PFObject(className: "Reported")
+                report["byUsername"] = PFUser.current()!.username!
+                report["byUser"] = PFUser.current()!
+                report["toUsername"] = self.rpUsername.text!
+                report["toUser"] = self.userObject!
+                report["forObjectId"] = self.postObject!.objectId!
+                report["reason"] = answer.text!
+                report.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved report: \(report)")
+                        
+                        // Dismiss
+                        let alert = UIAlertController(title: "Successfully Reported",
+                                                      message: "\(self.rpUsername.text!)'s Profile Photo",
+                            preferredStyle: .alert)
+                        
+                        let ok = UIAlertAction(title: "ok",
+                                               style: .default,
+                                               handler: nil)
+                        
+                        alert.addAction(ok)
+                        alert.view.tintColor = UIColor.black
+                        self.delegate?.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+            
+            
+            let cancel = UIAlertAction(title: "Cancel",
+                                       style: .cancel,
+                                       handler: nil)
+            
+            
+            alert.addTextField(configurationHandler: nil)
+            alert.addAction(report)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            self.delegate?.present(alert, animated: true, completion: nil)
         })
         
-        
-        // (4) Cancel
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-        
+        // SHOW OPTIONS DEPENDING ON USER'S OBJECTID
         if self.userObject!.objectId! == PFUser.current()!.objectId! {
-            options.addAction(edit)
-            options.addAction(delete)
-            options.addAction(cancel)
-            edit.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            edit.button.setTitleColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha: 1.0), for: .normal)
-            delete.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            delete.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+            dialogController.addAction(editAction)
+            dialogController.addAction(deleteAction)
+            dialogController.show(in: self.delegate!)
         } else {
-            options.addAction(cancel)
-            options.addAction(report)
-            report.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-            report.button.setTitleColor(UIColor(red: 1.00, green:0.00, blue:0.31, alpha: 1.0), for: .normal)
+            dialogController.addAction(reportAction)
+            dialogController.show(in: self.delegate!)
         }
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.delegate?.present(options, animated: true, completion: nil)
+        
     }
     
     

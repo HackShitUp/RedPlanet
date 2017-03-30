@@ -15,7 +15,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import SDWebImage
-import SimpleAlert
 import SVProgressHUD
 
 class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
@@ -187,71 +186,64 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
 
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // MARK: - SimpleAlert
-        let alert = AlertController(title: "Unblock?",
-                                    message: "Would you like to unblock \(self.blockedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)?",
-            style: .alert)
         
-        // Design content view
-        alert.configContentView = { view in
-            if let view = view as? AlertContentView {
-                view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                let textRange = NSMakeRange(0, view.titleLabel.text!.characters.count)
-                let attributedText = NSMutableAttributedString(string: view.titleLabel.text!)
-                attributedText.addAttribute(NSUnderlineStyleAttributeName, value: NSUnderlineStyle.styleSingle.rawValue, range: textRange)
-                view.titleLabel.attributedText = attributedText
-                view.messageLabel.font = UIFont(name: "AvenirNext-Medium", size: 15.00)
-            }
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Unblock?",
+                                                      message: "Would you like to unblock \(self.blockedUsers[indexPath.row].value(forKey: "realNameOfUser") as! String)?")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            button.layer.masksToBounds = true
+            button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
         }
-        
-        // Design corner radius
-        alert.configContainerCornerRadius = {
-            return 14.00
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
         }
+        // Add Delete button
+        dialogController.addAction(AZDialogAction(title: "Unblock", handler: { (dialog) -> (Void) in
+            // dismiss
+            dialog.dismiss()
+            
+            // MARK: - SVProgressHUD
+            SVProgressHUD.show(withStatus: "Unblocking")
+            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            
+            // Remove
+            let blocked = PFQuery(className: "Blocked")
+            blocked.whereKey("byUser", equalTo: PFUser.current()!)
+            blocked.whereKey("toUser", equalTo: self.blockedUsers[indexPath.row])
+            blocked.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    for object in objects! {
+                        object.deleteInBackground(block: {
+                            (success: Bool, error: Error?) in
+                            if error == nil {
+                                // MARK: - SVProgressHUD
+                                SVProgressHUD.showSuccess(withStatus: "Unblocked")
+                                SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                // Reload data
+                                self.refresh(sender: self)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
+
+            
+        }))
         
-        let unblock = AlertAction(title: "Unblock",
-                                  style: .default,
-                                  handler: {(AlertAction) in
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.show(withStatus: "Unblocking")
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                    // Remove
-                                    let blocked = PFQuery(className: "Blocked")
-                                    blocked.whereKey("byUser", equalTo: PFUser.current()!)
-                                    blocked.whereKey("toUser", equalTo: self.blockedUsers[indexPath.row])
-                                    blocked.findObjectsInBackground(block: {
-                                        (objects: [PFObject]?, error: Error?) in
-                                        if error == nil {
-                                            for object in objects! {
-                                                object.deleteInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if error == nil {
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Unblocked")
-                                                        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-                                                        // Reload data
-                                                        self.refresh(sender: self)
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                            }
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    })
-        })
-        
-        let cancel = AlertAction(title: "Cancel",
-                                 style: .cancel,
-                                 handler: nil)
-        
-        alert.addAction(cancel)
-        alert.addAction(unblock)
-        unblock.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        unblock.button.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
-        cancel.button.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
-        cancel.button.setTitleColor(UIColor.black, for: .normal)
-        self.present(alert, animated: true, completion: nil)
+        dialogController.show(in: self)
     }
 }

@@ -14,7 +14,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SimpleAlert
 import SDWebImage
 import MessageUI
 
@@ -276,46 +275,41 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // MEMORY =============================================================
         // ====================================================================
             if indexPath.row == 0 {
+                // Clear cache first
                 PFQuery.clearAllCachedResults()
                 PFFile.clearAllCachedDataInBackground()
                 URLCache.shared.removeAllCachedResponses()
                 SDImageCache.shared().clearMemory()
                 SDImageCache.shared().clearDisk()
-                
-                // MARK: - SimpleAlert
-                let alert = AlertController(title: "Cleared Cache",
-                                            message: "Redplanet's network cache policy and storage was successfully reset.",
-                                            style: .alert)
-                
-                // Design content view
-                alert.configContentView = { view in
-                    if let view = view as? AlertContentView {
-                        view.backgroundColor = UIColor.white
-                        view.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 21.00)
-                        view.textBackgroundView.layer.cornerRadius = 3.00
-                        view.textBackgroundView.clipsToBounds = true
-                    }
+
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Cleared Cache",
+                                                              message: "Redplanet's network cache policy and storage was successfully reset!")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                    button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
+                    button.layer.masksToBounds = true
                 }
+                // Add Delete button
+                dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Clear cache again
+                    PFQuery.clearAllCachedResults()
+                    PFFile.clearAllCachedDataInBackground()
+                    URLCache.shared.removeAllCachedResponses()
+                    SDImageCache.shared().clearMemory()
+                    SDImageCache.shared().clearDisk()
+
+                }))
                 
-                // Design corner radius
-                alert.configContainerCornerRadius = {
-                    return 14.00
-                }
+                dialogController.show(in: self)
                 
-                let ok = AlertAction(title: "ok",
-                                     style: .default,
-                                     handler: { (AlertAction) in
-                                        PFQuery.clearAllCachedResults()
-                                        PFFile.clearAllCachedDataInBackground()
-                                        URLCache.shared.removeAllCachedResponses()
-                                        SDImageCache.shared().clearMemory()
-                                        SDImageCache.shared().clearDisk()
-                })
-                
-                
-                alert.addAction(ok)
-                alert.view.tintColor = UIColor.black
-                self.present(alert, animated: true, completion: nil)
             } else if indexPath.row == 1 {
                 // Push VC
                 let permissionsVC = self.storyboard?.instantiateViewController(withIdentifier: "permissionsVC") as! PermissionsScope
