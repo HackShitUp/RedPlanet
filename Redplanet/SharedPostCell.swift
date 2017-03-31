@@ -498,8 +498,7 @@ class SharedPostCell: UITableViewCell {
                                           message: "Please provide your reason for reporting \(sharedObject.last!.value(forKey: "username") as! String)'s Share",
                 preferredStyle: .alert)
             
-            let report = UIAlertAction(title: "Report", style: .destructive) {
-                [unowned self, alert] (action: UIAlertAction!) in
+            let report = UIAlertAction(title: "Report", style: .destructive) { (action: UIAlertAction!) in
                 
                 let answer = alert.textFields![0]
                 // REPORTED

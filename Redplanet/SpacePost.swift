@@ -233,8 +233,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                                           message: "Please provide your reason for reporting \(spaceObject.last!.value(forKey: "username") as! String)'s Space Post",
                 preferredStyle: .alert)
             
-            let report = UIAlertAction(title: "Report", style: .destructive) {
-                [unowned self, alert] (action: UIAlertAction!) in
+            let report = UIAlertAction(title: "Report", style: .destructive) { (action: UIAlertAction!) in
                 
                 let answer = alert.textFields![0]
                 

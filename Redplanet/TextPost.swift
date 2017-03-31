@@ -284,7 +284,6 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
                     // (A) Set username
                     cell.rpUsername.text! = "\(user["username"] as! String)"
                     
-                    
                     // (B) Get profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {
                         // MARK: - SDWebImage
@@ -298,6 +297,7 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // (2) Set Text Post
         cell.textPost.text! = textPostObject.last!["textPost"] as! String
+        cell.textPost.font = UIFont(name: "AvenirNext-Medium", size: 27)
         
         // (3) Set time
         let from = textPostObject.last!.createdAt!

@@ -328,16 +328,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         // (1) NEW PRO PIC
         let new = AZDialogAction(title: "New Profile Photo", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
             // Present image picker
-            self.present(image, animated: false, completion: nil)
+            dialog.present(image, animated: false, completion: nil)
         })
         
         // (2) EDIT PRO PIC CAPTION
         let edit = AZDialogAction(title: "Edit Caption", handler: { (dialog) -> (Void) in
-            // Dismiss
-            dialog.dismiss()
             // Save boolean
             PFUser.current()!["proPicExists"] = true
             PFUser.current()!.saveInBackground(block: {
@@ -352,14 +348,13 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     newProPicVC.modalPresentationStyle = .popover
                     newProPicVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
                     
-                    
                     let popOverVC = newProPicVC.popoverPresentationController
                     popOverVC?.permittedArrowDirections = .any
                     popOverVC?.delegate = self
                     popOverVC?.sourceView = self.rpUserProPic
                     popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
                     
-                    self.present(newProPicVC, animated: true, completion: nil)
+                    dialog.present(newProPicVC, animated: true, completion: nil)
                     
                 } else {
                     print(error?.localizedDescription as Any)
@@ -372,7 +367,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Dismiss
             dialog.dismiss()
             
-            // Show Progress
+            // MARK: - SVProgressHUD
             SVProgressHUD.show()
             SVProgressHUD.setBackgroundColor(UIColor.white)
             
@@ -381,28 +376,16 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             PFUser.current()!.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    // Dismiss
-                    SVProgressHUD.dismiss()
-                    
                     // Replace current photo
                     self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                     
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showSuccess(withStatus: "Success")
+                    
                 } else {
                     print(error?.localizedDescription as Any)
-                    // Dismiss
-                    SVProgressHUD.dismiss()
-                    
-                    // Show Network
-                    let error = UIAlertController(title: "Changes Failed",
-                                                  message: "Something went wrong 😬.",
-                                                  preferredStyle: .alert)
-                    
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
-                    
-                    error.addAction(ok)
-                    self.present(error, animated: true, completion: nil)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
                 }
             })
             
@@ -421,14 +404,12 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             dialogController.show(in: self)
         }
     }
-    
-    
+        
     // Prevent forced sizes for ipad
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
     }
 
-    
     // Show PopOver
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "popOver" {
@@ -443,8 +424,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             }
         }
     }
-    
-
     
     // MARK: - UIImagePickerController Delegate method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {

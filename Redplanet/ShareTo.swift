@@ -366,7 +366,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Share With"
+            self.title = "Share With..."
         }
         
         // Configure nav bar && show tab bar (last line)
