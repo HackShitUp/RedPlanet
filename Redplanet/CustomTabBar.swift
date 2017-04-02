@@ -9,7 +9,14 @@
 import UIKit
 
 class CustomTabBar: UITabBar {
-
+    
+    override func awakeFromNib() {
+//        self.backgroundImage = UIImage()
+//        self.shadowImage = nil
+//        self.setValue(true, forKey: "_hidesShadows")
+//        self.clipsToBounds = true
+    }
+    
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         var sizeThatFits = super.sizeThatFits(size)
         sizeThatFits.height = 45.00

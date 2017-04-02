@@ -49,12 +49,19 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Settings"
+            self.navigationController?.title = "Settings"
         }
-        
-        // Show statusBar
+        // Configure UINavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
+        
     }
 
     // Function to set privacy
@@ -311,9 +318,9 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 dialogController.show(in: self)
                 
             } else if indexPath.row == 1 {
-                // Push VC
-                let permissionsVC = self.storyboard?.instantiateViewController(withIdentifier: "permissionsVC") as! PermissionsScope
-                self.navigationController?.pushViewController(permissionsVC, animated: true)
+                // Show permissions
+                let url = URL(string: UIApplicationOpenSettingsURLString)
+                UIApplication.shared.openURL(url!)
             }
         } else if indexPath.section == 2 {
         // ====================================================================

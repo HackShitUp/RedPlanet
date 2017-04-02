@@ -2,7 +2,7 @@
 //  CurrentUser.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 1/30/17.
+//  Created by Joshua Choi on 4/2/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -20,7 +20,8 @@ import SDWebImage
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
-class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigationControllerDelegate {
+class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, UINavigationControllerDelegate {
+    
     
     // Variable to hold my content
     var posts = [PFObject]()
@@ -44,12 +45,11 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     // Refresher
     var refresher: UIRefreshControl!
     
-    @IBAction func saved(_ sender: Any) {
-        // Show Saved Posts
-        let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
-        self.navigationController?.pushViewController(savedVC, animated: true)
-    }
-
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var shareButton: UIButton!
+    
+    
+    
     // Function to fetch my content
     func fetchMine() {
         // User's Posts
@@ -117,13 +117,12 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         }
         
         // Configure nav bar, show tab bar, and set statusBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
         self.navigationController?.tabBarController?.delegate = self
+        
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -140,14 +139,14 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        self.tableView?.setContentOffset(CGPoint.zero, animated: true)
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
-
+    
     // MARK: -SwipeNavigationController
     func showCenter() {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -185,12 +184,17 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Stylize bar
         configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Stylize bar
         configureView()
+        // Create corner radiuss
+        self.navigationController?.view.layer.cornerRadius = 8.00
+        self.navigationController?.view.clipsToBounds = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -201,13 +205,13 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
     }
-
+    
     // MARK: - UITableViewHeader Section View
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         // created a constant that stores a registered header
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "CurrentUserHeader") as! CurrentUserHeader
-
+        
         // Declare delegate
         header.delegate = self
         
@@ -283,7 +287,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
         return header
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         let label:UILabel = UILabel(frame: CGRect(x: 8, y: 305, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
@@ -317,26 +321,26 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     
     
-
+    
     // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.posts.count
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 65
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
@@ -1047,7 +1051,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     // MARK: - UIScrollViewDelegate method
     // MARK: - RP Pipeline method
-    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
@@ -1068,7 +1072,7 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
     
     
     // ScrollView -- Pull To Pop
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y <= -140.00 {
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
@@ -1076,5 +1080,4 @@ class CurrentUser: UITableViewController, UITabBarControllerDelegate, UINavigati
             self.refresher.endRefreshing()
         }
     }
-    
 }
