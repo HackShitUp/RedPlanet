@@ -20,10 +20,9 @@ import SwipeNavigationController
  Hide this button in viewWillAppear and show this button when viewWillDisappear is called 
  in the respective UIViewController's lifecycle hierarchy
 */
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
 
 class MainUITab: UITabBarController, UITabBarControllerDelegate {
-    
     
     func showShareUI() {
         DispatchQueue.main.async {
@@ -75,5 +74,4 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 10.0)!], for: .normal)
     }
-    
 }

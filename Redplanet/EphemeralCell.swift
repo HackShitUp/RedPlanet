@@ -96,13 +96,13 @@ class EphemeralCell: UITableViewCell {
         // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
             button.layer.masksToBounds = true
         }
         // Add Cancel button
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
             button.setTitle("CANCEL", for: [])
             return true
         }
@@ -126,6 +126,7 @@ class EphemeralCell: UITableViewCell {
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
             SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 15))
             SVProgressHUD.show()
             
             // Delete shared and original post

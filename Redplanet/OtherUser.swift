@@ -481,7 +481,15 @@ class OtherUser: UITableViewController {
         self.tableView!.reloadData()
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title again
+        configureView()
+        // Fetch data
+        queryContent()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -523,14 +531,6 @@ class OtherUser: UITableViewController {
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Stylize title again
-        configureView()
-        // Fetch data
-        queryContent()
     }
     
     override func viewDidAppear(_ animated: Bool) {

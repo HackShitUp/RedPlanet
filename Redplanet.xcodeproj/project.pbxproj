@@ -137,7 +137,6 @@
 		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
-		7EBE7BA31E8F6B9000B63ECD /* LaunchUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBE7BA21E8F6B9000B63ECD /* LaunchUI.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
 		7EC05AE41DB5B7A60039B357 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05AE31DB5B7A60039B357 /* Banner.swift */; };
 		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
@@ -392,7 +391,6 @@
 		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
-		7EBE7BA21E8F6B9000B63ECD /* LaunchUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchUI.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
 		7EC05AE31DB5B7A60039B357 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Banner.swift; path = ../Banner.swift; sourceTree = "<group>"; };
 		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
@@ -1172,7 +1170,6 @@
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7E4CFF951DB4393A0087454E /* POSTS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
-				7EBE7BA21E8F6B9000B63ECD /* LaunchUI.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EA730D61E3B293500CF4D12 /* RP */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
@@ -1732,7 +1729,6 @@
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
-				7EBE7BA31E8F6B9000B63ECD /* LaunchUI.swift in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,

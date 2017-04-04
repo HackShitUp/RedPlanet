@@ -16,6 +16,7 @@ import ParseUI
 import Bolts
 
 import SDWebImage
+import SVProgressHUD
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
@@ -46,6 +47,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     var refresher: UIRefreshControl!
     
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var shareButton: UIButton!
     @IBAction func showShareUI(_ sender: Any) {
         // MARK: - SwipeNavigationController
@@ -198,7 +200,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Stylize bar
+        // Stylize title
         configureView()
     }
     
@@ -206,16 +208,25 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewWillAppear(animated)
         // Stylize bar
         configureView()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
+        
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
         // Design button
         self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        
+        
         // TODO::
         // Add animations in either RPCamera.swift or CurrentUser.swift to 
         // give an illusion of the view transitioning
         // Add shadows to the button only
-        
+        self.shadowView.layer.shadowColor = UIColor.white.cgColor
+        self.shadowView.layer.shadowOffset = CGSize(width: 10, height: 10)
+        self.shadowView.layer.shadowRadius = 10
+        self.shadowView.layer.shadowOpacity = 0.6
     }
     
     override func didReceiveMemoryWarning() {
