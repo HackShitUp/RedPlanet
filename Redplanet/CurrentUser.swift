@@ -47,6 +47,11 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var shareButton: UIButton!
+    @IBAction func showShareUI(_ sender: Any) {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+    }
+    
     
     @IBAction func saved(_ sender: Any) {
         let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
@@ -204,6 +209,13 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
+        // Design button
+        self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        // TODO::
+        // Add animations in either RPCamera.swift or CurrentUser.swift to 
+        // give an illusion of the view transitioning
+        // Add shadows to the button only
+        
     }
     
     override func didReceiveMemoryWarning() {

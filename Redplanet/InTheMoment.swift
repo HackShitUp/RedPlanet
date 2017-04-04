@@ -42,7 +42,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var commentButton: UIButton!
     @IBOutlet weak var shareButton: UIButton!
     
-    
     // Functiont to go back
     func goBack(sender: UIGestureRecognizer) {
         // Remove last objects

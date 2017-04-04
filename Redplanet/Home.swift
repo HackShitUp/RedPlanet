@@ -23,9 +23,6 @@ class Home: UIViewController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
 
         // Array to keep track of controllers in page menu
         var controllerArray : [UIViewController] = []
@@ -73,6 +70,9 @@ class Home: UIViewController, UINavigationControllerDelegate {
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -96,8 +96,7 @@ class Home: UIViewController, UINavigationControllerDelegate {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // Hide menu
-        pageMenu?.hideTopMenuBar = true
-        
+        pageMenu?.hideTopMenuBar = true   
     }
 
     override func didReceiveMemoryWarning() {
