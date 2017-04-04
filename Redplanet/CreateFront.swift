@@ -178,8 +178,6 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         // Stylize title
         configureView()
         
-        // MARK: - Radial
-        
         // Set initial query
         self.queryNotifications()
         
@@ -523,11 +521,16 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // ScrollView -- Pull To Pop
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y <= -140.00 {
+//        if self.tableView!.contentOffset.y <= -140.00 {
+//            refresher.endRefreshing()
+//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+//        } else {
+//            refresh()
+//        }
+        
+        if self.tableView!.contentOffset.y <= -1 {
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-        } else {
-            refresh()
         }
     }
 

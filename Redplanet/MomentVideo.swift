@@ -638,13 +638,15 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Hide status bar
+        // Hide statusBar, navigationBar, and tabBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // Hide navigationBar and tab bar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainTabUI
+        // Hide button
+        rpButton.isHidden = true
         
         // Hide moreButton if not user's content
         if (itmObject.last!.object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -713,8 +715,12 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // Show statusBar
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {

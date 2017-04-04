@@ -284,16 +284,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // By setting their username
         if PFUser.current() != nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+            // MARK: - SwipeNavigationController
             let cameraVC = storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController
             let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
             swipeNavigationController.topViewController = storyboard.instantiateViewController(withIdentifier: "top") as! UINavigationController
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab
+            swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
+            // Set status bar
             UIApplication.shared.isStatusBarHidden = false
             UIApplication.shared.statusBarStyle = .lightContent
-            swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
+            // Make rootVC
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()

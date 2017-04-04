@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Unchecked Circle-100" translatesAutoresizingMaskIntoConstraints="NO" id="AVK-EB-Ucu">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Camera" translatesAutoresizingMaskIntoConstraints="NO" id="AVK-EB-Ucu">
                                 <rect key="frame" x="147" y="515" width="80" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="80" id="MXf-oL-ufd"/>
@@ -116,10 +115,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Camera" width="225" height="225"/>
         <image name="Lightning Bolt-96" width="256" height="256"/>
         <image name="SCRPGray" width="256" height="256"/>
         <image name="Switch Camera-100" width="243" height="256"/>
-        <image name="Unchecked Circle-100" width="256" height="256"/>
         <image name="igcPhotos" width="256" height="256"/>
         <image name="igcText" width="256" height="256"/>
     </resources>

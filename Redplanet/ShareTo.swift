@@ -355,8 +355,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         })
     }
     
-    
-    
     // Stylize title
     func configureView() {
         // Change the font and size of nav bar text
@@ -374,10 +372,17 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -411,10 +416,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureView()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
     
     override func viewDidDisappear(_ animated: Bool) {

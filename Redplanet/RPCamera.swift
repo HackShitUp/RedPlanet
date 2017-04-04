@@ -42,6 +42,20 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     @IBOutlet weak var newTextButton: UIButton!
     @IBOutlet weak var homeButton: UIButton!
 
+    @IBAction func showLibraryUI(_ sender: Any) {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
+    }
+    
+    @IBAction func showMainUI(_ sender: Any) {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+    }
+    
+    @IBAction func showTextUI(_ sender: Any) {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
+    }
     
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
@@ -230,22 +244,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     // Leave VC
-    func dismissVC() {
-        if chatCamera == true {
-            _ = self.navigationController?.popViewController(animated: false)
-        } else {
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-        }
-    }
-    
-    // Push to Library
-    func showLibrary() {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
-    }
-    
-    // Push to New Text Post
-    func newTP() {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
+    func showProfileUI() {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .top)
     }
 
     // Function to configure view
@@ -279,7 +280,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
         
         // MARK: - SwiftyCam
-        
         // Set delegate for camera view
         self.cameraDelegate = self
         // Set delegate to record video
@@ -327,28 +327,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.flashButton.isUserInteractionEnabled = true
         self.flashButton.addGestureRecognizer(flashTap)
         
-        // Tap to leave
-        let leaveTap = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
-        leaveTap.numberOfTapsRequired = 1
-        self.homeButton.isUserInteractionEnabled = true
-        self.homeButton.addGestureRecognizer(leaveTap)
-        
-        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(dismissVC))
+        // Tap to show ProfileUI
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProfileUI))
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
-        
-        // Tap to go to library
-        let libTap = UITapGestureRecognizer(target: self, action: #selector(showLibrary))
-        libTap.numberOfTapsRequired = 1
-        self.libraryButton.isUserInteractionEnabled = true
-        self.libraryButton.addGestureRecognizer(libTap)
-        
-        // Tap to crete new text post
-        let tpTap = UITapGestureRecognizer(target: self, action: #selector(newTP))
-        tpTap.numberOfTapsRequired = 1
-        self.newTextButton.isUserInteractionEnabled = true
-        self.newTextButton.addGestureRecognizer(tpTap)
+
         
         // Bring buttons to front
         let buttons = [self.rpUserProPic,
@@ -367,17 +351,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        configureView()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.isStatusBarHidden = false
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // MARK: - SwiftyCam
@@ -395,6 +368,17 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.allowBackgroundAudio = true
         // Add boost
         self.lowLightBoost = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        configureView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {

@@ -148,10 +148,18 @@ open class VideoViewController: UIViewController {
     func dismissVideo() {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // MARK: - MainTabUI
+        // Hide button
+        rpButton.isHidden = true
+    }
 
     override open func viewDidLoad() {
         super.viewDidLoad()
         
+        // Configure statusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
@@ -174,7 +182,13 @@ open class VideoViewController: UIViewController {
         tap.numberOfTapsRequired = 1
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(tap)
-
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainTabUI
+        // Show button
+        rpButton.isHidden = false
     }
 
     // MARK: - Methods
@@ -227,7 +241,7 @@ open class VideoViewController: UIViewController {
     override open func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         
-        self.view.layer.cornerRadius = 10.00
+        self.view.layer.cornerRadius = 8.00
         self.view.clipsToBounds = true
         playerLayer.frame = view.bounds
         rewindDimView.frame = view.bounds

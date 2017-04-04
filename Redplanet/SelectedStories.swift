@@ -122,6 +122,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Configure data
         self.fetchStories(mediaSource: storyURL.last!)
+        
+        // MARK: - MainTabUI
+        // Show button
+        rpButton.isHidden = false
     }
     
     override func viewDidLoad() {

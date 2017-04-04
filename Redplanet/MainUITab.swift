@@ -7,8 +7,6 @@
 //
 
 import UIKit
-
-import UIKit
 import CoreData
 
 import Parse
@@ -17,51 +15,38 @@ import Bolts
 
 import SwipeNavigationController
 
+/*
+ ========= Navigation button that launches to the Library, Camera, and New Text Post (aka: ShareUI) ===========
+ Hide this button in viewWillAppear and show this button when viewWillDisappear is called 
+ in the respective UIViewController's lifecycle hierarchy
+*/
+let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+
 class MainUITab: UITabBarController, UITabBarControllerDelegate {
     
     
-    
-    
-    let shareButton = UIButton(frame: CGRect(x: 0, y: 0, width: 64, height: 64))
-    
-    
-    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        let def = UserDefaults.standard
-        def.set(Int(self.selectedIndex), forKey: "lastTab")
-        def.synchronize()
-        
-        if item.tag == 2 {
+    func showShareUI() {
+        DispatchQueue.main.async {
+            // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // Set delegate
         self.delegate = self
-        self.selectedIndex = 0
-        
-        
-        let def = UserDefaults.standard
-        let lastTab = def.value(forKey: "lastTab") as! Int
-        //        self.selectedIndex = lastTab
-        
-        /*
-         self.tabBar.layer.borderWidth = 0.3
-         self.tabBar.layer.borderColor = UIColor.white.cgColor
-         self.tabBar.clipsToBounds = true
-         */
-        
-        /*
-         var menuButtonFrame = shareButton.frame
-         menuButtonFrame.origin.y = view.bounds.height - menuButtonFrame.height
-         menuButtonFrame.origin.x = view.bounds.width/2 - menuButtonFrame.size.width/2
-         shareButton.frame = menuButtonFrame
-         shareButton.layer.cornerRadius = menuButtonFrame.height/2
-         shareButton.setImage(UIImage(named: "Cam"), for: .normal)
-         view.addSubview(shareButton)
-         */
+
+        // Add button to bottom/center of UITabBar
+        var buttonFrame = rpButton.frame
+        buttonFrame.origin.y = view.bounds.height - buttonFrame.height
+        buttonFrame.origin.x = view.bounds.width/2 - buttonFrame.size.width/2
+        rpButton.frame = buttonFrame
+        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
+        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
+        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        self.view.addSubview(rpButton)
         
         // Create corner radius for topLeft/topRight of UIView
         let shape = CAShapeLayer()
@@ -84,28 +69,11 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         // Set tabBar's tintColor and tabBar's barTintColor
         self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white
-        
-        // If current user is not nil
-        if PFUser.current() != nil {
-            // Set title to user's username
-            //            self.tabBar.items?[4].title = PFUser.current()!.username!.lowercased()
-        }
-        
+
         // Set font
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 10.0)!], for: .normal)
     }
-    
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-    }
-    
     
 }

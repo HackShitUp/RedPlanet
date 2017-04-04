@@ -91,16 +91,14 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
     }
-    
-    
-    
-    
-    
-    // MARK: DZNEmptyDataSet Framework
-    // DataSource Methods
+
+    // MARK: - DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.sharers.count == 0 {
             return true
@@ -122,9 +120,11 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
-    
-    
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,11 +152,12 @@ class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Stylize title
-        configureView()
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {

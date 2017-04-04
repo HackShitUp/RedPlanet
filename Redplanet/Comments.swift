@@ -304,8 +304,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
     }
     
     
@@ -444,6 +447,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Remove observers
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

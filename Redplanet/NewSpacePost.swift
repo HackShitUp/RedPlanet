@@ -900,6 +900,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         // Hide tab bar controller
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {

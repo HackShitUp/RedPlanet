@@ -162,8 +162,11 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainTabUI
+        // Hide button
+        rpButton.isHidden = true
     }
     
     
@@ -212,6 +215,13 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
         
         // Clear tableView
         self.tableView!.tableFooterView = UIView()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainTabUI
+        // Show button
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

@@ -112,8 +112,11 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
     }
     
     
@@ -243,22 +246,29 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title again
         configureView()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = false
+    }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1

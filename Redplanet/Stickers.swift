@@ -71,23 +71,25 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         }
         
         // Show tab bar and navigation bar and configure nav bar
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.view.layer.cornerRadius = 12.00
-        self.navigationController?.view.clipsToBounds = true
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize UINavigationBar
+        configureView()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureView()
-
-        self.view.backgroundColor = UIColor.blue
-        // Do any additional setup after loading the view, typically from a nib.
+        // Configure UICollectionView
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: 93.00, height: 93.00)
@@ -99,8 +101,10 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.view.layer.cornerRadius = 00.00
-        self.navigationController?.view.clipsToBounds = true
+        
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {

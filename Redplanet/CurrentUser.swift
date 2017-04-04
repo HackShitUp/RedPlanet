@@ -48,6 +48,15 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var shareButton: UIButton!
     
+    @IBAction func saved(_ sender: Any) {
+        let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
+        self.navigationController?.pushViewController(savedVC, animated: true)
+    }
+    
+    @IBAction func settings(_ sender: Any) {
+        let settingsVC = self.storyboard?.instantiateViewController(withIdentifier: "settingsVC") as! UserSettings
+        self.navigationController?.pushViewController(settingsVC, animated: true)
+    }
     
     
     // Function to fetch my content

@@ -91,6 +91,11 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Set title
+        configureView()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,9 +116,6 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Design table view
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
-        
-        // Set title
-        configureView()
         
         // Tap to dismiss keyboard
         let swipe = UISwipeGestureRecognizer(target: self, action: #selector(scrollViewWillBeginDragging))

@@ -9,6 +9,13 @@
 import UIKit
 
 class LaunchUI: UIViewController, UITabBarControllerDelegate {
+    
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        print("FIRED")
+//        if self.tabBarController?.tabBar.tag == 2 {
+//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+//        }
+//    }
 
 
     override func viewWillAppear(_ animated: Bool) {

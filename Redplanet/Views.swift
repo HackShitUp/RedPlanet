@@ -52,6 +52,16 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     // Query views
     func queryViews() {
         
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
+        
+        // Configure nav bar && show tab bar (last line)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        
         // Query Views
         let views = PFQuery(className: "Views")
         views.whereKey("forObjectId", equalTo: viewsObject.last!.objectId!)
@@ -100,14 +110,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         }
                     }
                     
-                    
-                    // Configure nav bar && show tab bar (last line)
-                    self.navigationController?.setNavigationBarHidden(false, animated: true)
-                    self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-                    self.navigationController?.navigationBar.shadowImage = nil
-                    self.navigationController?.view?.backgroundColor = UIColor.white
-                    self.navigationController?.tabBarController?.tabBar.isHidden = false
-                    
                 } else {
                     if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
@@ -117,13 +119,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         self.navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
                         self.title = "Views"
                     }
-                    
-                    // Configure nav bar && show tab bar (last line)
-                    self.navigationController?.setNavigationBarHidden(false, animated: true)
-                    self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-                    self.navigationController?.navigationBar.shadowImage = nil
-                    self.navigationController?.view?.backgroundColor = UIColor.white
-                    self.navigationController?.tabBarController?.tabBar.isHidden = true
                 }
                 
                 
@@ -164,6 +159,19 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     }
 
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    override func viewDidAppear(_  animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show NavigationBar
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,23 +208,20 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
-    override func viewDidAppear(_  animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        // Show NavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
     // MARK: - Table view data source

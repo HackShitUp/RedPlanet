@@ -619,15 +619,28 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
-        // Hide tabBarController
+        // Hide tabBarController, and configure statusBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        // MARK: - MainUITab
+        // Hide button
+        rpButton.isHidden = true
     }
     
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureView()
+        // Add observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -639,7 +652,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         queryChats()
         // Stylize title
         configureView()
-
+        
         // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
                                                object: nil,
@@ -655,7 +668,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Hide tabBarController
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-
+        
         // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 60
         
@@ -698,7 +711,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.stickersButton.isUserInteractionEnabled = true
         self.stickersButton.addGestureRecognizer(stickersTap)
         
-
+        
         // Save read receipt
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
@@ -722,16 +735,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 print(error?.localizedDescription as Any)
             }
         })
-
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureView()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
     }
     
     
@@ -752,6 +755,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Remove observers
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        // MARK: - MainUITab
+        // Show button
+        rpButton.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
