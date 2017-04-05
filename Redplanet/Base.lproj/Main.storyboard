@@ -3177,9 +3177,12 @@
                                                     <constraint firstAttribute="height" constant="33" id="QbB-XJ-De1"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="40"/>
-                                                <state key="normal" image="Camera">
+                                                <state key="normal">
                                                     <color key="titleColor" red="0.7019608021" green="0.7019608021" blue="0.7019608021" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="showCamera:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="rD3-3P-Etu"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VvS-Wr-2nb">
                                                 <rect key="frame" x="50" y="3" width="25" height="25"/>
@@ -3188,6 +3191,9 @@
                                                     <constraint firstAttribute="width" constant="25" id="iZW-rM-udh"/>
                                                 </constraints>
                                                 <state key="normal" image="ChatPhotos"/>
+                                                <connections>
+                                                    <action selector="showLibrary:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mp0-Yy-4uz"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qcf-O0-oxy">
                                                 <rect key="frame" x="300" y="3" width="25" height="25"/>
@@ -3196,6 +3202,9 @@
                                                     <constraint firstAttribute="width" constant="25" id="bLV-EO-vGO"/>
                                                 </constraints>
                                                 <state key="normal" image="Moon-96"/>
+                                                <connections>
+                                                    <action selector="showStickers:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mxG-Pl-57o"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3812,9 +3821,9 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="jHB-iE-SFM">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="7xs-Mx-SHw">
-                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search... :p" minimumFontSize="17" clearButtonMode="whileEditing" id="fgu-rS-3cJ">
-                                <rect key="frame" x="16" y="7" width="335" height="30"/>
+                        <barButtonItem key="leftBarButtonItem" id="7xs-Mx-SHw">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search..." minimumFontSize="17" clearButtonMode="whileEditing" id="fgu-rS-3cJ">
+                                <rect key="frame" x="16" y="7" width="340" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
@@ -4361,7 +4370,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="1C44D73C-3833-46A7-A41F-6029D3EBC9E3"/>
+                                <state key="normal" image="79CBED40-F515-478E-8F65-BF1E191D30B9"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6468,12 +6477,11 @@ Powered by https://newsapi.org/
                                     <outlet property="delegate" destination="j9M-IE-AAa" id="lcD-Qq-hpK"/>
                                 </connections>
                             </tableView>
-                            <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zDd-tF-fgs">
-                                <rect key="frame" x="0.0" y="559" width="375" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zDd-tF-fgs">
+                                <rect key="frame" x="0.0" y="558" width="375" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="375" id="OtR-pU-sx0"/>
-                                    <constraint firstAttribute="height" constant="44" id="rMJ-zX-T9n"/>
+                                    <constraint firstAttribute="height" constant="45" id="rMJ-zX-T9n"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -6571,7 +6579,7 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="1C44D73C-3833-46A7-A41F-6029D3EBC9E3" width="265" height="256">
+        <image name="79CBED40-F515-478E-8F65-BF1E191D30B9" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

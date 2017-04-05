@@ -33,6 +33,12 @@ extension UIView {
         rpButton.frame = buttonFrame
         rpButton.setImage(UIImage(named: "Cam"), for: .normal)
         rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        /*
+        rpButton.layer.shadowColor = UIColor.white.cgColor
+        rpButton.layer.shadowOffset = CGSize(width: 0, height: -7)
+        rpButton.layer.shadowRadius = 1
+        rpButton.layer.shadowOpacity = 0.75
+        */
         container!.addSubview(rpButton)
     }
 }

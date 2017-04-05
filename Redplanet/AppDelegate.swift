@@ -30,8 +30,12 @@ PURPLE
 BLUE:
 • UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
 • #00A1FF
+
+GOOD GRAY
+• UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0)
+• #CCCCCC
  
-LIGHT GREY
+SUPER LIGHT GREY
 • UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
 
 YELLOW:
@@ -226,7 +230,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          This is when the app exits.
          */
         
-        print("IDL")
+        print("Re-Opened")
         
         
 //        // Track Who Opens the App

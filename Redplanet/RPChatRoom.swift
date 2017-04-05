@@ -31,7 +31,6 @@ let rpChat = Notification.Name("rpChat")
 
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
-    
     // Variable to hold messageObjects
     var messageObjects = [PFObject]()
     // Keyboard frame
@@ -210,6 +209,61 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.present(alert, animated: true, completion: nil)
     }
     
+    @IBAction func showLibrary(_ sender: Any) {
+        PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
+            switch status{
+            case .authorized:
+                print("Authorized")
+                
+                // Load Photo Library
+                DispatchQueue.main.async(execute: {
+                    self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
+                })
+                
+                break
+            case .denied:
+                print("Denied")
+                let alert = UIAlertController(title: "Photos Access Denied",
+                                              message: "Please allow Redplanet access your Photos.",
+                                              preferredStyle: .alert)
+                
+                let settings = UIAlertAction(title: "Settings",
+                                             style: .default,
+                                             handler: {(alertAction: UIAlertAction!) in
+                                                
+                                                let url = URL(string: UIApplicationOpenSettingsURLString)
+                                                UIApplication.shared.openURL(url!)
+                })
+                
+                let deny = UIAlertAction(title: "Later",
+                                         style: .destructive,
+                                         handler: nil)
+                
+                alert.addAction(settings)
+                alert.addAction(deny)
+                self.present(alert, animated: true, completion: nil)
+                
+                break
+            default:
+                print("Default")
+                
+                break
+            }
+        })
+    }
+    
+    @IBAction func showCamera(_ sender: Any) {
+        chatCamera = true
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+    }
+    
+    // IBAction --> Show Stickers
+    @IBAction func showStickers(_ sender: Any) {
+        let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
+        self.navigationController!.pushViewController(stickersVC, animated: false)
+    }
+    
     // Fetch chats
     func queryChats() {
         let sender = PFQuery(className: "Chats")
@@ -306,53 +360,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
         }
     }
-    
-    
-    
-    // Function to access photos
-    func accessPhotos() {
-        PHPhotoLibrary.requestAuthorization({(status: PHAuthorizationStatus) in
-            switch status{
-            case .authorized:
-                print("Authorized")
-                
-                // Load Photo Library
-                DispatchQueue.main.async(execute: {
-                    self.navigationController!.present(self.imagePicker, animated: true, completion: nil)
-                })
-                
-                break
-            case .denied:
-                print("Denied")
-                let alert = UIAlertController(title: "Photos Access Denied",
-                                              message: "Please allow Redplanet access your Photos.",
-                                              preferredStyle: .alert)
-                
-                let settings = UIAlertAction(title: "Settings",
-                                             style: .default,
-                                             handler: {(alertAction: UIAlertAction!) in
-                                                
-                                                let url = URL(string: UIApplicationOpenSettingsURLString)
-                                                UIApplication.shared.openURL(url!)
-                })
-                
-                let deny = UIAlertAction(title: "Later",
-                                         style: .destructive,
-                                         handler: nil)
-                
-                alert.addAction(settings)
-                alert.addAction(deny)
-                self.present(alert, animated: true, completion: nil)
-                
-                break
-            default:
-                print("Default")
-                
-                break
-            }
-        })
-    }
-    
     
     // Compress video
     func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
@@ -565,21 +572,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
-
-    
-    // Function to push camera
-    func goCamera(sender: UIButton) {
-        chatCamera = true
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-    }
-    
-    
-    // Function to go to stickers
-    func goStickers(sender: UIButton) {
-        let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
-        self.navigationController!.pushViewController(stickersVC, animated: false)
-    }
     
     // Function to refresh
     func refresh() {
@@ -632,46 +624,72 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         rpButton.isHidden = true
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        configureView()
-        // Add observers
+    /*
+     Function to add observers to...
+     (1) Show UIKeyboard
+     (2) Hide UIKeyboard
+     (3) Reload Chats when OneSignal notification was received
+     (4) Send Chat when ScreenShot occurs
+    */
+    func createObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
-        
-        // Query Chats
-        queryChats()
-        // Stylize title
-        configureView()
-        
-        // Send push notification
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
                                                object: nil,
                                                queue: OperationQueue.main) { notification in
                                                 // Send screenshot
                                                 self.sendScreenshot()
         }
-        // Add observer to reload chats
         NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
-        
+    }
+    
+    /*
+     Function to remove observers that...
+     (1) Show UIKeyboard
+     (2) Hide UIKeyboard
+     (3) Send Chat when ScreenShot occurs
+     // DON'T remove this
+     (4) Reload Chats when OneSignal notification was received
+     */
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+        // Query Chats
+        queryChats()
         // Set bool
         chatCamera = false
+        // Add observers
+        self.createObservers()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // MARK: - SVProgressHUD
+        SVProgressHUD.show()
+        SVProgressHUD.setBackgroundColor(UIColor.white)
+        
+        // Add observers
+        self.createObservers()
         
         // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 60
+        self.tableView!.tableFooterView = UIView()
+        
+        // Draw cornerRadius for cameraButton
+        self.cameraButton.layer.borderColor = UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0).cgColor
+        self.cameraButton.layer.borderWidth = 3.50
+        self.cameraButton.layer.cornerRadius = 33/2
+        self.cameraButton.clipsToBounds = true
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -694,24 +712,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-        
-        
-        // Add Photo Library method to photosButton
-        let photosTap = UITapGestureRecognizer(target: self, action: #selector(accessPhotos))
-        photosTap.numberOfTapsRequired = 1
-        self.photosButton.isUserInteractionEnabled = true
-        self.photosButton.addGestureRecognizer(photosTap)
-        // Add camera tap
-        let cameraTap = UITapGestureRecognizer(target: self, action: #selector(goCamera))
-        cameraTap.numberOfTapsRequired = 1
-        self.cameraButton.isUserInteractionEnabled = true
-        self.cameraButton.addGestureRecognizer(cameraTap)
-        // Add stickers tap
-        let stickersTap = UITapGestureRecognizer(target: self, action: #selector(goStickers))
-        stickersTap.numberOfTapsRequired = 1
-        self.stickersButton.isUserInteractionEnabled = true
-        self.stickersButton.addGestureRecognizer(stickersTap)
-        
         
         // Save read receipt
         let sender = PFQuery(className: "Chats")
@@ -754,8 +754,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Resign first responder
         self.newChat.resignFirstResponder()
         // Remove observers
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        self.removeObservers()
         // MARK: - MainUITab
         // Show button
         rpButton.isHidden = false
@@ -850,11 +849,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     /*
-     <mediaType>
+     <mediaType> in Databse Schema
      • ph
      • vi
      • itm
- */
+    */
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         

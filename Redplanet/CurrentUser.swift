@@ -168,10 +168,22 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // MARK: - MainUITab Extension
         /*
-         Overlay UIButton to push to the
+         Overlay UIButton to push to the camera (ShareUI
          */
         self.view.setButton(container: self.view)
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
+
+        // Add gradient shadows w/3 colors: super light, ultra light gray, and white
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = self.shadowView.bounds
+        let white1 = UIColor.white.withAlphaComponent(0.01).cgColor
+        let white2 = UIColor.white.withAlphaComponent(0.10).cgColor
+        let white3 = UIColor.white.withAlphaComponent(0.30).cgColor
+        let white4 = UIColor.white.withAlphaComponent(0.50).cgColor
+        let white = UIColor.white.withAlphaComponent(1.0).cgColor
+        gradientLayer.colors = [white1, white2, white3, white4, white]
+        gradientLayer.locations = [0, 0.10, 0.30, 0.50, 1]
+        self.shadowView.layer.addSublayer(gradientLayer)
     }
     
     override func viewDidLoad() {
