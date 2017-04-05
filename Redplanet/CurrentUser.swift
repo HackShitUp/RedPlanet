@@ -48,12 +48,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var shadowView: UIView!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBAction func showShareUI(_ sender: Any) {
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-    }
-    
     
     @IBAction func saved(_ sender: Any) {
         let savedVC = self.storyboard?.instantiateViewController(withIdentifier: "savedVC") as! SavedPosts
@@ -65,6 +59,13 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
     
+    // Function to show ShareUI
+    func showShareUI() {
+        DispatchQueue.main.async {
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        }
+    }
     
     // Function to fetch my content
     func fetchMine() {
@@ -100,7 +101,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
                 if self.posts.count == 0 {
                     // Add tap method to share something
-                    let shareTap = UITapGestureRecognizer(target: self, action: #selector(self.showCenter))
+                    let shareTap = UITapGestureRecognizer(target: self, action: #selector(self.showShareUI))
                     shareTap.numberOfTapsRequired = 1
                     self.cover.isUserInteractionEnabled = true
                     self.cover.addGestureRecognizer(shareTap)
@@ -131,17 +132,16 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = PFUser.current()!.username!.lowercased()
         }
-        
-        // Configure nav bar, show tab bar, and set statusBar
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.tabBarController?.delegate = self
-        
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
+        // Create corner radiuss
+        self.navigationController?.view.layer.cornerRadius = 8.00
+        self.navigationController?.view.clipsToBounds = true
     }
     
     // Refresh function
@@ -158,9 +158,20 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
-    // MARK: -SwipeNavigationController
-    func showCenter() {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize bar
+        configureView()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
+        
+        // MARK: - MainUITab Extension
+        /*
+         Overlay UIButton to push to the
+         */
+        self.view.setButton(container: self.view)
+        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
     }
     
     override func viewDidLoad() {
@@ -202,31 +213,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewDidAppear(animated)
         // Stylize title
         configureView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Stylize bar
-        configureView()
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
-        
-        // Create corner radiuss
-        self.navigationController?.view.layer.cornerRadius = 8.00
-        self.navigationController?.view.clipsToBounds = true
-        // Design button
-        self.shareButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        
-        
-        // TODO::
-        // Add animations in either RPCamera.swift or CurrentUser.swift to 
-        // give an illusion of the view transitioning
-        // Add shadows to the button only
-        self.shadowView.layer.shadowColor = UIColor.white.cgColor
-        self.shadowView.layer.shadowOffset = CGSize(width: 10, height: 10)
-        self.shadowView.layer.shadowRadius = 10
-        self.shadowView.layer.shadowOpacity = 0.6
     }
     
     override func didReceiveMemoryWarning() {
@@ -320,7 +306,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
         let label:UILabel = UILabel(frame: CGRect(x: 8, y: 305, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping

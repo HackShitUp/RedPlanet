@@ -112,7 +112,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
     }
     
-    
+    @IBAction func toggleFlash(_ sender: Any) {
+        flashEnabled = !flashEnabled
+        
+        if flashEnabled == true {
+            flashButton.setImage(UIImage(named: "Thunder"), for: .normal)
+        } else {
+            flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
+        }
+    }
     
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -148,9 +156,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 }
             }
         }
-        
-        
-        
+
         // Save user's location to server
         if PFUser.current() != nil && PFUser.current()!.value(forKey: "location") != nil {
             PFGeoPoint.geoPointForCurrentLocation(inBackground: {
@@ -165,11 +171,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
     }
     
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("locationManager:\(manager) didFailWithError:\(error)")
     }
-    
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         if status == .authorizedWhenInUse {
@@ -177,7 +181,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             self.triggerLocation()
         }
     }
-    
     
     // Function to trigger location
     func triggerLocation() {
@@ -229,17 +232,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             if self.time >= 10 {
                 self.timer!.invalidate()
             }
-        }
-    }
-    
-    // Function to toggle flash
-    func toggleFlash(sender: Any) {
-        flashEnabled = !flashEnabled
-        
-        if flashEnabled == true {
-            flashButton.setImage(UIImage(named: "Thunder"), for: .normal)
-        } else {
-            flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
         }
     }
     
@@ -320,12 +312,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         swapTap.numberOfTapsRequired = 1
         self.swapCameraButton.isUserInteractionEnabled = true
         self.swapCameraButton.addGestureRecognizer(swapTap)
-        
-        // Tap for flash configuration
-        let flashTap = UITapGestureRecognizer(target: self, action: #selector(toggleFlash))
-        flashTap.numberOfTapsRequired = 1
-        self.flashButton.isUserInteractionEnabled = true
-        self.flashButton.addGestureRecognizer(flashTap)
         
         // Tap to show ProfileUI
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProfileUI))

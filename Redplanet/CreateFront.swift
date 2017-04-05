@@ -139,15 +139,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Activity"
         }
-        
-        // Enable UIBarButtonItems, configure navigation bar, && show tabBar (last line)
-        self.followRequestsButton.isEnabled = true
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Show UIstatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -521,16 +517,11 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
     
     // ScrollView -- Pull To Pop
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if self.tableView!.contentOffset.y <= -140.00 {
-//            refresher.endRefreshing()
-//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-//        } else {
-//            refresh()
-//        }
-        
-        if self.tableView!.contentOffset.y <= -1 {
+        if self.tableView!.contentOffset.y <= -140.00 {
             refresher.endRefreshing()
             self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        } else {
+            refresh()
         }
     }
 

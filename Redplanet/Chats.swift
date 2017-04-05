@@ -269,11 +269,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Chats"
         }
-        
-        // Show tab bar controller and show navigation bar
-        self.navigationController!.tabBarController!.tabBar.isHidden = false
-        self.navigationController!.setNavigationBarHidden(false, animated: true)
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.delegate = self
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()

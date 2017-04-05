@@ -460,12 +460,9 @@ class OtherUser: UITableViewController {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(otherName.last!.uppercased())"
         }
-        
-        // Configure nav bar && hide tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     

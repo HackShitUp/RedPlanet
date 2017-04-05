@@ -17,7 +17,7 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
-class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearchBarDelegate {
+class Discover: UICollectionViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -28,9 +28,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     
     // Refresher
     var refresher: UIRefreshControl!
-    // Search Bar
-    var searchBar = UISearchBar()
     
+    @IBOutlet weak var searchBar: UITextField!
     
     // Function to refresh
     func refresh() {
@@ -121,8 +120,32 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Resign frist responder
+        self.searchBar.resignFirstResponder()
+        
+        // Configure navigationBar, tabBar, and statusBar
+        self.extendedLayoutIncludesOpaqueBars = true
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
         // Show Progress
         SVProgressHUD.show()
@@ -130,21 +153,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
 
         // Fetch public accounts
         fetchDiscover()
-        
-        // Pull to refresh action
-        refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
-        self.collectionView!.addSubview(refresher)
-        
-        // Configure navigationBar and tabBar
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.delegate = self
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
         
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
@@ -155,32 +163,16 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.backgroundColor = UIColor.white
         
-        // SearchbarDelegates
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        self.collectionView!.addSubview(refresher)
+
+        // UITextField (searchBar)
         searchBar.delegate = self
-        searchBar.showsCancelButton = true
         searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        searchBar.frame.size.width = UIScreen.main.bounds.width - 75
-        let searchItem = UIBarButtonItem(customView: searchBar)
-        self.navigationItem.rightBarButtonItem = searchItem
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Clear searchBar text
-        self.searchBar.text! = ""
-        
-        // Resign frist responder
-        self.searchBar.resignFirstResponder()
-        
-        // Configure navigationBar, tabBar, and statusBar
-        self.extendedLayoutIncludesOpaqueBars = true
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.delegate = self
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.navigationItem.titleView = searchBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -193,19 +185,12 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UISearch
     }
 
     
-    
-    // MARK: - SearchBarDelegate
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Show SearchEngine
+    // MARK: - UITextField delegate method
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Show search engine
         self.showSearch()
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // Resign first responder
-        self.searchBar.resignFirstResponder()
-    }
-    
-    
+
     // MARK: - UICollectionViewHeader
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         // Size should be the same size of the headerView's label size:

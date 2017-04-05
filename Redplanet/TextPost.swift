@@ -157,11 +157,9 @@ class TextPost: UITableViewController, UINavigationControllerDelegate {
             self.navigationController?.navigationBar.topItem?.title = "Text Post"
         }
         
-        // Configure nav bar && hide tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = false
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // MARK: - MainTabUI

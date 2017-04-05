@@ -619,9 +619,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
-        // Hide tabBarController, and configure statusBar
+        // Extension: UINavigationBar && hide UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()

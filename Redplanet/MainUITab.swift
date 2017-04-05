@@ -17,13 +17,29 @@ import SwipeNavigationController
 
 /*
  ========= Navigation button that launches to the Library, Camera, and New Text Post (aka: ShareUI) ===========
- Hide this button in viewWillAppear and show this button when viewWillDisappear is called 
+ Hide this button in viewWillAppear and show this button when viewWillDisappear is called
  in the respective UIViewController's lifecycle hierarchy
-*/
+ */
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+
+// EXTENSION
+// Method to configure button
+extension UIView {
+    func setButton(container: UIView?) {
+        // Add button to bottom/center of UITabBar
+        var buttonFrame = rpButton.frame
+        buttonFrame.origin.y = container!.bounds.height - buttonFrame.height
+        buttonFrame.origin.x = container!.bounds.width/2 - buttonFrame.size.width/2
+        rpButton.frame = buttonFrame
+        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
+        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        container!.addSubview(rpButton)
+    }
+}
 
 class MainUITab: UITabBarController, UITabBarControllerDelegate {
     
+    // Function to show camera
     func showShareUI() {
         DispatchQueue.main.async {
             // MARK: - SwipeNavigationController
@@ -37,15 +53,12 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         // Set delegate
         self.delegate = self
 
-        // Add button to bottom/center of UITabBar
-        var buttonFrame = rpButton.frame
-        buttonFrame.origin.y = view.bounds.height - buttonFrame.height
-        buttonFrame.origin.x = view.bounds.width/2 - buttonFrame.size.width/2
-        rpButton.frame = buttonFrame
-        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
+        // MARK: - MainUITab Extension
+        /*
+         Overlay UIButton to push to the
+         */
+        self.view.setButton(container: self.view)
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
-        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        self.view.addSubview(rpButton)
         
         // Create corner radius for topLeft/topRight of UIView
         let shape = CAShapeLayer()

@@ -296,13 +296,9 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Contacts"
         }
-        
-        // Configure nav bar && hide tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     

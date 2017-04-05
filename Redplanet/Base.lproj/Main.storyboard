@@ -3356,6 +3356,9 @@
                                     <constraint firstAttribute="width" constant="35" id="OjY-fH-Mgk"/>
                                 </constraints>
                                 <state key="normal" image="Lightning Bolt-96"/>
+                                <connections>
+                                    <action selector="toggleFlash:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="7X5-Gd-DvY"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Idk-dT-jjl">
                                 <rect key="frame" x="59" y="34" width="25" height="25"/>
@@ -3808,8 +3811,22 @@
                             <outlet property="delegate" destination="GrF-aX-oeE" id="GLI-nF-8LW"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="jHB-iE-SFM"/>
+                    <navigationItem key="navigationItem" id="jHB-iE-SFM">
+                        <barButtonItem key="leftBarButtonItem" title="Item" id="7xs-Mx-SHw">
+                            <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search... :p" minimumFontSize="17" clearButtonMode="whileEditing" id="fgu-rS-3cJ">
+                                <rect key="frame" x="16" y="7" width="335" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchBar" destination="fgu-rS-3cJ" id="JnJ-xe-qXE"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGR-WB-qOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4344,7 +4361,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="B55D6E02-6ADB-4CA8-83CD-222FC4431E68"/>
+                                <state key="normal" image="1C44D73C-3833-46A7-A41F-6029D3EBC9E3"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6459,26 +6476,9 @@ Powered by https://newsapi.org/
                                     <constraint firstAttribute="height" constant="44" id="rMJ-zX-T9n"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H1u-wP-ct4">
-                                <rect key="frame" x="152" y="525" width="70" height="70"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="6fg-7c-KvA"/>
-                                    <constraint firstAttribute="height" constant="70" id="f65-oF-S6A"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="65"/>
-                                <state key="normal" image="Cam">
-                                    <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="showShareUI:" destination="j9M-IE-AAa" eventType="touchUpInside" id="fdm-Sh-Bbg"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="H1u-wP-ct4" secondAttribute="trailing" constant="153" id="1cY-Ni-Hpf"/>
-                            <constraint firstItem="H1u-wP-ct4" firstAttribute="leading" secondItem="IZV-yG-eJt" secondAttribute="leading" constant="152" id="Hfj-Uy-L0m"/>
-                            <constraint firstItem="90d-TO-6ea" firstAttribute="top" secondItem="H1u-wP-ct4" secondAttribute="bottom" constant="8" id="L1c-eA-dy8"/>
                             <constraint firstItem="90d-TO-6ea" firstAttribute="top" secondItem="bz3-jd-NlF" secondAttribute="bottom" id="MRH-4i-YGQ"/>
                             <constraint firstAttribute="trailing" secondItem="bz3-jd-NlF" secondAttribute="trailing" id="Q9w-lL-Gfu"/>
                             <constraint firstItem="90d-TO-6ea" firstAttribute="top" secondItem="zDd-tF-fgs" secondAttribute="bottom" id="TDL-c4-l4I"/>
@@ -6505,7 +6505,6 @@ Powered by https://newsapi.org/
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="shadowView" destination="zDd-tF-fgs" id="6HI-Ag-wBc"/>
-                        <outlet property="shareButton" destination="H1u-wP-ct4" id="dI0-mk-nJq"/>
                         <outlet property="tableView" destination="bz3-jd-NlF" id="1MT-wo-Igr"/>
                     </connections>
                 </viewController>
@@ -6572,9 +6571,7 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="Add User Group Man Man-48" width="24" height="24"/>
-        <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="B55D6E02-6ADB-4CA8-83CD-222FC4431E68" width="265" height="256">
+        <image name="1C44D73C-3833-46A7-A41F-6029D3EBC9E3" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11150,7 +11147,8 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
-        <image name="Cam" width="225" height="225"/>
+        <image name="Add User Group Man Man-48" width="24" height="24"/>
+        <image name="Address Book Filled-50" width="25" height="25"/>
         <image name="Camera" width="250" height="250"/>
         <image name="Chat Filled-50" width="27" height="23"/>
         <image name="ChatPhotos" width="256" height="256"/>
