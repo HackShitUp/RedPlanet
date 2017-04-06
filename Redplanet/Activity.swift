@@ -1,5 +1,5 @@
 //
-//  CreateFront.swift
+//  Activity.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/16/16.
@@ -23,7 +23,7 @@ import DZNEmptyDataSet
 import SwipeNavigationController
 import SDWebImage
 
-class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // NOTIFICATIONs
     // Array to hold my notifications
@@ -134,6 +134,7 @@ class CreateFront: UIViewController, UITableViewDataSource, UITableViewDelegate,
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
+//                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary

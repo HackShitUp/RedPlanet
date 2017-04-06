@@ -34,7 +34,7 @@ extension UIColor {
         return UIColor(red:   .random(),
                        green: .random(),
                        blue:  .random(),
-                       alpha: 0.50)
+                       alpha: 1)
     }
 }
 
@@ -258,10 +258,13 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
         
-        // (1) Configure time
+        let width = self.view.bounds.size.width
+        let height = self.view.bounds.size.height
+        
+        // I CONFIGURE TIME
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mma"
-        let time = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height))
+        let time = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: height))
         time.font = UIFont(name: "Futura-Medium", size: 70)
         time.textColor = UIColor.white
         time.layer.shadowColor = UIColor.black.cgColor
@@ -275,13 +278,43 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
+        // III CREATE RED FILTER
+        let red = UIView()
+        red.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        red.alpha = 0.25
+        red.frame = self.view.bounds
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        red.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let redFilter = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        // (4) "<3 POINTS"
+        let love = UILabel(frame: self.view.bounds)
+//        love.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n"
+        love.text = "DOPE\n❤"
+        love.font = UIFont(name: "AvenirNext-Heavy", size: 30)
+        love.textColor = UIColor.white
+        love.textAlignment = .center
+        love.numberOfLines = 0
+//        let attachment = NSTextAttachment()
+//        attachment.image = UIImage(named: "Like Filled-100")
+//        let attachmentString = NSAttributedString(attachment: attachment)
+//        let theString = NSMutableAttributedString(string: love.text!)
+//        theString.append(attachmentString)
+//        love.attributedText = theString
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        love.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let loveFilter = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        
         // Clear filters
         SNFilter.filterIdentities.removeAll(keepingCapacity: false)
         
         // Append data accordingly
         if cityState.isEmpty {
-        // GEOLOCATION ENABLED
-            let filterAS =  ["nil",
+        // GEOLOCATION DISABLED
+            let filtersA =  ["nil",
                              "nil",
                              "nil",
                              "nil",
@@ -289,29 +322,45 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                              "CICMYKHalftone",
                              "CIPhotoEffectInstant",
                              "CIPhotoEffectChrome"]
-            SNFilter.filterIdentities.append(contentsOf: filterAS)
+            SNFilter.filterIdentities.append(contentsOf: filtersA)
             // Add filter
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: timeStamp!, atZPosition: 0))
-            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Dope")!, atZPosition: 2))
-            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Red")!, atZPosition: 2))
+            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: timeStamp!,
+                                              atZPosition: 0))
+            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: loveFilter!,
+                                              atZPosition: 0))
+            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: redFilter!,
+                                              atZPosition: 0))
+            
         } else {
-        // GEOLOCATION DISABLED
-            // (2) Configure City, State
-            let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height/6))
-            city.font = UIFont(name: "AvenirNextCondensed-Medium", size: 40)
+        // GEOLOCATION ENABLED
+            
+            // II CONFIGURE: "City, State"
+            let city = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: height/3))
+            city.font = UIFont(name: "AvenirNext-Bold", size: 40)
             city.textColor = UIColor.white
-            city.backgroundColor = UIColor.randomColor()
+//            city.backgroundColor = UIColor.randomColor()
+            city.backgroundColor = UIColor.clear
             city.text = "\(cityState.last!)"
             city.textAlignment = .center
             city.lineBreakMode = .byWordWrapping
             city.numberOfLines = 0
+            
+            city.layer.shadowColor = UIColor.randomColor().cgColor
+            city.layer.shadowOffset = CGSize(width: 1, height: 1)
+            city.layer.shadowRadius = 3
+            city.layer.shadowOpacity = 0.5
+            
+            
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            let filterBS = ["nil",
+            let filtersB = ["nil",
                             "nil",
                             "nil",
                             "nil",
@@ -320,13 +369,21 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                             "CICMYKHalftone",
                             "CIPhotoEffectInstant",
                             "CIPhotoEffectChrome"]
-            SNFilter.filterIdentities.append(contentsOf: filterBS)
+            SNFilter.filterIdentities.append(contentsOf: filtersB)
             // Add filter
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: timeStamp!, atZPosition: 0))
-            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: cityStamp!, atZPosition: 0))
-            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Dope")!, atZPosition: 2))
-            self.data[4].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height), image: UIImage(named: "Red")!, atZPosition: 2))
+            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: timeStamp!,
+                                              atZPosition: 0))
+            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: height-height/3, width: width, height: height),
+                                              image: cityStamp!,
+                                              atZPosition: 0))
+            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: loveFilter!,
+                                              atZPosition: 0))
+            self.data[4].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
+                                              image: redFilter!,
+                                              atZPosition: 0))
         }
         
     }// end creating data

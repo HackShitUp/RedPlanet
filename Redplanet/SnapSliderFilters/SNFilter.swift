@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreImage
 
 open class SNFilter: UIImageView {
     /*

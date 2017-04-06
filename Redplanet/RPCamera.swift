@@ -131,6 +131,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         geoLocation.reverseGeocodeLocation(location) {
             (placemarks: [CLPlacemark]?, error: Error?) in
             if error == nil {
+                
+//                print("ALL PLACEMARKS: \(placemarks!)\n\n")
+                
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
                                     
