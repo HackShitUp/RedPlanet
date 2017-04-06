@@ -3753,7 +3753,7 @@
                                         <constraint firstAttribute="height" constant="60" id="JBf-6g-hPi"/>
                                         <constraint firstAttribute="width" constant="375" id="seg-jq-3Ru"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="25"/>
+                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -4370,7 +4370,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="1D856686-46A7-440E-BD57-2026C48F0D36"/>
+                                <state key="normal" image="4A23071F-FF58-4A08-A11F-77BC77D02B05"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6579,7 +6579,7 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="1D856686-46A7-440E-BD57-2026C48F0D36" width="265" height="256">
+        <image name="4A23071F-FF58-4A08-A11F-77BC77D02B05" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11157,7 +11157,7 @@ AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
         </image>
         <image name="Add User Group Man Man-48" width="24" height="24"/>
         <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="Camera" width="375" height="375"/>
+        <image name="Camera" width="412" height="412"/>
         <image name="Chat Filled-50" width="27" height="23"/>
         <image name="ChatPhotos" width="256" height="256"/>
         <image name="Comet-50" width="25" height="25"/>
@@ -11197,8 +11197,8 @@ AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
         <image name="WhiteLike" width="50" height="50"/>
         <image name="WhiteRedo" width="256" height="256"/>
         <image name="iOS Photos-Grey" width="25" height="25"/>
-        <image name="igcPhotos" width="256" height="256"/>
-        <image name="igcText" width="256" height="256"/>
+        <image name="igcPhotos" width="90" height="90"/>
+        <image name="igcText" width="90" height="90"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -23,6 +23,19 @@ var chatCamera: Bool = false
 // Bool to determine camera side
 var isRearCam: Bool?
 
+/*
+ Extension to apply Shadow to icons
+ */
+extension CALayer {
+    func applyShadow(layer: CALayer?) {
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        layer.shadowRadius = 3
+        layer.shadowOpacity = 0.5
+    }
+}
+
+
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
     // MARK: - CoreLocation

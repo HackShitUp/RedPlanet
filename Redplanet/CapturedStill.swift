@@ -291,7 +291,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // (4) "<3 POINTS"
         let love = UILabel(frame: self.view.bounds)
 //        love.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)\n"
-        love.text = "DOPE\n❤"
+        love.text = "DOPE\n❤🦄😍🚀🔥\n👽💸🤖💩🙈"
         love.font = UIFont(name: "AvenirNext-Heavy", size: 30)
         love.textColor = UIColor.white
         love.textAlignment = .center
