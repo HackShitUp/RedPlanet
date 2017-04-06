@@ -189,8 +189,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             PFGeoPoint.geoPointForCurrentLocation(inBackground: {
                 (geoPoint: PFGeoPoint?, error: Error?) in
                 if error == nil {
+                    print("\nFIRED\n")
                     PFUser.current()!.setValue(geoPoint, forKey: "location")
                     PFUser.current()!.saveInBackground()
+                    print("\nSAVED: \(geoPoint)\n")
                 } else {
                     print(error?.localizedDescription as Any)
                 }

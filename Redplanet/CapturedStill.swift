@@ -197,6 +197,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         self.containerSwipeNavigationController?.shouldShowRightViewController = false
         self.containerSwipeNavigationController?.shouldShowLeftViewController = false
         self.containerSwipeNavigationController?.shouldShowBottomViewController = false
+        self.containerSwipeNavigationController?.shouldShowTopViewController = false
         self.containerSwipeNavigationController?.delegate = self
         
         // Hide buttons

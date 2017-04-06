@@ -39,13 +39,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         self.collectionView!.reloadData()
     }
     
-    // Function to show Search
-    func showSearch() {
-        // Push to SearchEngine
-        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController?.pushViewController(searchVC, animated: true)
-    }
-    
     // Fetch Public Users
     func fetchDiscover() {
         
@@ -187,14 +180,15 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     
     // MARK: - UITextField delegate method
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Show search engine
-        self.showSearch()
+        // Push to SearchEngine
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController?.pushViewController(searchVC, animated: true)
     }
 
     // MARK: - UICollectionViewHeader
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 200)
+        return CGSize(width: self.view.frame.size.width, height: 175)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -203,15 +197,12 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Set delegate
         header.delegate = self
-        // Set titles
-//        header.ssTitle.text! = "Selected Stories"
-//        header.ssTitle.numberOfLines = 2
         
-        // Tap title to search
-        let searchTap = UITapGestureRecognizer(target: self, action: #selector(showSearch))
-        searchTap.numberOfTapsRequired = 1
-        header.ssTitle.isUserInteractionEnabled = true
-        header.ssTitle.addGestureRecognizer(searchTap)
+        // Underline "Selected Stories"
+        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
+        let underlineAttributedString = NSAttributedString(string: "\(header.ssTitle.text!)", attributes: underlineAttribute)
+        header.ssTitle.attributedText = underlineAttributedString
+
         
         // Update Stories
         header.updateUI()

@@ -84,12 +84,12 @@ class Home: UIViewController, UINavigationControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Show statusBar, hide navigation bar, show tab bar
+        // Hide navigation bar, show tab bar, and show statusBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
 
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true

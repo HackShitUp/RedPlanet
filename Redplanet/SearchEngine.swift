@@ -87,7 +87,8 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         // MARK: - DZNEmptyDataSet
         self.tableView!.emptyDataSetSource = self
         
-        // Set tableFooterView
+        // Configure UITableView
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
         // Configure UISearchBar
@@ -173,6 +174,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
                     print(error?.localizedDescription as Any)
                 }
             })
+            
         } else {
             // Looking for humans...
             // Search for user

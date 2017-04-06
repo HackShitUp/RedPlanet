@@ -137,7 +137,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // Make corner radius
         let exitImage = UIImage(cgImage: UIImage(named: "Left Filled-100")!.cgImage!, scale: 1.0, orientation: .down)
         self.exitButton.setImage(exitImage, for: .normal)
-        self.exitButton.layer.cornerRadius = 12.5
+//        self.exitButton.layer.cornerRadius = 12.5
         self.exitButton.clipsToBounds = true
 /*
         ZoomInOutAttributesAnimator()
@@ -153,11 +153,12 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         layout.scrollDirection = .horizontal
         layout.animator = LinearCardAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width, height: 576)
+        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: 590)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
+        self.collectionView!.frame = self.view.bounds
         
         // SHOW API
         // publisherLogo
@@ -165,6 +166,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         oneTap.numberOfTapsRequired = 1
         self.publisherLogo.isUserInteractionEnabled = true
         self.publisherLogo.addGestureRecognizer(oneTap)
+        
         // publisherName
         let twoTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
         twoTap.numberOfTapsRequired = 1
@@ -181,6 +183,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
                 for object in objects! {
                     if let file = object.value(forKey: "photo") as? PFFile {
                         self.publisherLogo.layer.cornerRadius = 6.00
+                        self.publisherLogo.layer.borderColor = UIColor.lightGray.cgColor
+                        self.publisherLogo.layer.borderWidth = 0.5
                         self.publisherLogo.clipsToBounds = true
                         // MARK: - SDWebImage
                         self.publisherLogo.sd_setImage(with: URL(string: file.url!), placeholderImage: UIImage())
@@ -217,9 +221,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ssCell", for: indexPath) as! SelectedStoriesCell
         // (1) Set title
-        cell.title.text! = self.titles[indexPath.row]
-        cell.title.sizeToFit()
-        cell.title.numberOfLines = 0
+        cell.title.text! = "\(self.titles[indexPath.row])\n\nBy \(self.authors[indexPath.row])"
+        cell.title.numberOfLines = 4
         // (2) Set Asset Preview
         // MARK: - SDWebImage
         cell.coverPhoto.sd_setShowActivityIndicatorView(true)
@@ -230,10 +233,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         cell.coverPhoto.layer.borderColor = UIColor.lightGray.cgColor
         cell.coverPhoto.layer.borderWidth = 0.50
         cell.coverPhoto.clipsToBounds = true
-        // (3) Set author
-        if self.authors[indexPath.row] != " " {
-            cell.author.text! = "By \(self.authors[indexPath.row])"
-        }
         
         // Set corner radius for view
         cell.contentView.layer.cornerRadius = 8.00

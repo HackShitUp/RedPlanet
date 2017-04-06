@@ -312,6 +312,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             self.containerSwipeNavigationController?.shouldShowRightViewController = false
             self.containerSwipeNavigationController?.shouldShowLeftViewController = false
             self.containerSwipeNavigationController?.shouldShowBottomViewController = false
+            self.containerSwipeNavigationController?.shouldShowTopViewController = false
             self.containerSwipeNavigationController?.delegate = self
 
             // Mute and Volume-On
