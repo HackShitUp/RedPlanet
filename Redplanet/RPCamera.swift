@@ -28,10 +28,10 @@ var isRearCam: Bool?
  */
 extension CALayer {
     func applyShadow(layer: CALayer?) {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 1, height: 1)
-        layer.shadowRadius = 3
-        layer.shadowOpacity = 0.5
+        layer!.shadowColor = UIColor.black.cgColor
+        layer!.shadowOffset = CGSize(width: 1, height: 1)
+        layer!.shadowRadius = 3
+        layer!.shadowOpacity = 0.5
     }
 }
 
@@ -120,9 +120,18 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
         if camera == .rear {
             isRearCam = true
+            self.swapCameraButton.setImage(UIImage(named: "Switch Camera-100"), for: .normal)
         } else if camera == .front {
             isRearCam = false
+            self.swapCameraButton.setImage(nil, for: .normal)
+            self.swapCameraButton.setTitle("😎", for: .normal)
         }
+    }
+    
+    
+    
+    @IBAction func swapCamera(_ sender: Any) {
+        switchCamera()
     }
     
     @IBAction func toggleFlash(_ sender: Any) {
@@ -134,6 +143,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
         }
     }
+    
+    
     
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -322,13 +333,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         holdRecord.minimumPressDuration = 1.50
         self.captureButton.isUserInteractionEnabled = true
         self.captureButton.addGestureRecognizer(holdRecord)
-        
-        // Tap button to swap between cameras
-        let swapTap = UITapGestureRecognizer(target: self, action: #selector(switchCamera))
-        swapTap.numberOfTapsRequired = 1
-        self.swapCameraButton.isUserInteractionEnabled = true
-        self.swapCameraButton.addGestureRecognizer(swapTap)
-        
+
         // Tap to show ProfileUI
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProfileUI))
         proPicTap.numberOfTapsRequired = 1
@@ -344,13 +349,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                        self.homeButton,
                        self.newTextButton] as [Any]
         for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3
-            (b as AnyObject).layer.shadowOpacity = 0.5
+            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.view.bringSubview(toFront: self.captureButton)
         }
+        
+        // Make homeButton circular
+        self.homeButton.layer.cornerRadius = self.homeButton.frame.size.width/2
+        self.homeButton.clipsToBounds = true
     }
     
     override func viewDidLoad() {
