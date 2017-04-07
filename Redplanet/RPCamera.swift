@@ -160,10 +160,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
-                                    
+                
+                    // Save PFGeoPoint
+                    let geoPoint = PFGeoPoint(latitude: pm.location!.coordinate.latitude, longitude: pm.location!.coordinate.longitude)
+                    PFUser.current()!["location"] = geoPoint
+                    PFUser.current()!.saveInBackground()
+                    
                     if cityState.isEmpty {
+                        // Append: "City, Region"
                         cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
-
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()
                     } else {
@@ -183,21 +188,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                 }
             }
         }
-
-        // Save user's location to server
-        if PFUser.current() != nil && PFUser.current()!.value(forKey: "location") != nil {
-            PFGeoPoint.geoPointForCurrentLocation(inBackground: {
-                (geoPoint: PFGeoPoint?, error: Error?) in
-                if error == nil {
-                    print("\nFIRED\n")
-                    PFUser.current()!.setValue(geoPoint, forKey: "location")
-                    PFUser.current()!.saveInBackground()
-                    print("\nSAVED: \(geoPoint)\n")
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -215,7 +205,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     func triggerLocation() {
         // MARK: - CoreLocation
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
     }

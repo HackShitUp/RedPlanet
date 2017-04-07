@@ -347,9 +347,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     }
                     
                     // Add Int to Chat
-                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
-                    UserDefaults.standard.set(score, forKey: "ChatScore")
-                    UserDefaults.standard.synchronize()
+//                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
+//                    UserDefaults.standard.set(score, forKey: "ChatScore")
+//                    UserDefaults.standard.synchronize()
                     // Reload data
                     self.queryChats()
                 } else {

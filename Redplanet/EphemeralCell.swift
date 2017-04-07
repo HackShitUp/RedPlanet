@@ -93,7 +93,6 @@ class EphemeralCell: UITableViewCell {
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
         // Configure style
-        // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
             button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
@@ -126,7 +125,7 @@ class EphemeralCell: UITableViewCell {
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
             SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 15))
+//            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 15))
             SVProgressHUD.show()
             
             // Delete shared and original post

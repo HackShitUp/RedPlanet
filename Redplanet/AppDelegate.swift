@@ -54,9 +54,6 @@ import OneSignal
 import SwipeNavigationController
 import SDWebImage
 
-// Current Username
-var username = [String]()
-
 // User's relationships
 // Followers, Following, Received Follow Requests, and Sent Follow Requests
 var myFollowers = [PFObject]()
@@ -66,7 +63,7 @@ var myRequestedFollowing = [PFObject]()
 var blockedUsers = [PFObject]()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, OSPermissionObserver {
 
     // UIWindow
     var window: UIWindow?
@@ -99,9 +96,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"
-                                                let banner = Banner(title: "",
-                                                                    subtitle: "",
-                                                                    image: nil,
+                                                let banner = Banner(title: "", subtitle: "", image: nil,
                                                                     backgroundColor: UIColor.clear
                                                 )
                                                 
@@ -154,13 +149,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                             
             }, handleNotificationAction: { (result) in
                // Action
-                
             }, settings: [kOSSettingsKeyAutoPrompt : false, kOSSettingsKeyInFocusDisplayOption : false])
         
         
-        // Ask to register for push notifications
-        OneSignal.registerForPushNotifications()
-
+        /*
+         MARK: - OneSignal
+         Call when you want to prompt the user to accept push notifications.
+         Only call once and only if you set kOSSettingsKeyAutoPrompt in AppDelegate to false.
+         */
+        // (1) Add observers
+        OneSignal.add(self as OSPermissionObserver)
+        OneSignal.add(self as OSSubscriptionObserver)
+        // (2) Check for authorization status
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        if status.permissionStatus.status == .authorized {
+        // AUTHORIZED
+            let userID = status.subscriptionStatus.userId
+            print("\nThe userID is: \(userID)\n")
+            
+            // MARK: - Parse --> Save user's apnsId to server
+            if PFUser.current() != nil {
+                PFUser.current()!["apnsId"] = userID
+                PFUser.current()!.saveInBackground()
+            }
+            
+        } else if status.permissionStatus.status == .denied {
+        // DENIED
+            print("Denied")
+            print("isSubscribed: \(status.subscriptionStatus.subscribed)")
+        } else {
+        // UNKNOWN
+            // Prompt for OneSignal's Push Notifications
+            OneSignal.promptForPushNotifications { (enabled: Bool) in
+                if enabled == true {
+                    // Subscribe to OS push notifications
+                    OneSignal.setSubscription(true)
+                } else {
+                    // DON'T subscribe OS push notifications
+                    OneSignal.setSubscription(false)
+                }
+            }
+        }
+        
+        
+    
         // MARK: - HEAP Analytics
         if PFUser.current() != nil {
             // Set App ID
@@ -183,40 +215,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             #endif
         }
         
-        
         // Call Login Function
         // Which also calls queryRelationships()
         login()
         
         return true
     }
+
     
-    // MARK: - Push Notifications
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        // Get user's playerId
-        // this is also the user's "apnsId" in the Parse-Server
-        OneSignal.idsAvailable({ (userId, pushToken) in
-            print("• UserId:%@", userId as Any)
+    
+    // MARK: - OneSignal
+    /*
+     Called when the user changes Notifications Access from "off" --> "on"
+     REQUIRED
+     */
+    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+        if !stateChanges.from.subscribed && stateChanges.to.subscribed {
+            print("Subscribed for OneSignal push notifications!")
             
+            let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+            let userID = status.subscriptionStatus.userId
+            print("THE userID = \(userID)\n\n\n")
+            
+            // MARK: - Parse
+            // Save user's apnsId to server
             if PFUser.current() != nil {
-                PFUser.current()!["apnsId"] = userId
+                PFUser.current()!["apnsId"] = userID
                 PFUser.current()!.saveInBackground()
             }
-            
-            if (pushToken != nil) {
-                print("• PushToken:%@", pushToken ?? "")
+        }
+    }
+    
+    func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
+        if stateChanges.from.status == .notDetermined || stateChanges.from.status == .denied {
+            if stateChanges.to.status == .authorized {
+                print("-AUTHORIZED")
             }
-        })
+        }
+    }
+    /**/
+    
+    
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
+        print("userSubscriptionSetting = \(userSubscriptionSetting)")
+        let userID = status.subscriptionStatus.userId
+        print("HERE\n===userID = \(userID)")
+        let pushToken = status.subscriptionStatus.pushToken
+        print("pushToken = \(pushToken)")
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
         // Set again in Application's data
         UIApplication.shared.registerForRemoteNotifications()
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        
         // Print error
         print(error.localizedDescription)
     }
@@ -224,42 +279,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        
-        
-        /*
-         This is when the app exits.
-         */
-        
-        print("Re-Opened")
-        
-        
-//        // Track Who Opens the App
-//        Heap.track("AppOpen", withProperties:
-//            ["byUserId": "\(PFUser.current()!.objectId!)",
-//                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-//            ])
-
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        
-        /*
-         This is IMMEDIATELY AFTER the app exits.
-         */
-        
-        print("EXITED")
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        
-        /*
-         This is when the app re-opens without ending it
-         */
-        
-        print("Opened?")
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -271,14 +299,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Saves changes in the application's managed object context before the application terminates.
 
         //        self.saveContext()
-        
-        /*
-         This is when the app TERMINATES for good
-         */
-        
-        print("ENDED")
     }
-    
     
     
     // MARK: - Redplanet VIP Functions

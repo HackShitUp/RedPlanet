@@ -300,10 +300,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
         
         // Configure nav bar && show tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // MARK: - MainUITab
@@ -500,7 +497,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
                 // Configure style
-                // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
                 dialogController.buttonStyle = { (button,height,position) in
                     button.setTitleColor(UIColor.white, for: .normal)
                     button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor

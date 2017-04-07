@@ -20,6 +20,7 @@ import DZNEmptyDataSet
 import OneSignal
 import SVProgressHUD
 import SDWebImage
+import SwipeNavigationController
 
 class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
@@ -98,13 +99,9 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             self.title = "Saved"
         }
         
-        // Configure nav bar, show tab bar, and set statusBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.tabBarController?.delegate = self
+        // Configure UINavigationBar via extension
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        // Show UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
@@ -115,6 +112,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         super.viewWillAppear(animated)
         // Stylize title
         configureView()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
     }
     
     

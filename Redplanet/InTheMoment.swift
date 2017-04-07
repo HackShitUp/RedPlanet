@@ -70,7 +70,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
         // Configure style
-        // UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
             button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor

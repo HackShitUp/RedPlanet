@@ -213,7 +213,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
+
+        // Register NIB
         let nib = UINib(nibName: "CurrentUserHeader", bundle: nil)
         tableView?.register(nib, forHeaderFooterViewReuseIdentifier: "CurrentUserHeader")
         

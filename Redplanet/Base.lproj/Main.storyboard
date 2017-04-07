@@ -4364,7 +4364,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="387BBCAF-1FEA-4288-B10F-2887772E0C7D"/>
+                                <state key="normal" image="F4140862-DB8C-498D-9CEA-C7BC7EDA608C"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6573,7 +6573,16 @@ Powered by https://newsapi.org/
         </scene>
     </scenes>
     <resources>
-        <image name="387BBCAF-1FEA-4288-B10F-2887772E0C7D" width="265" height="256">
+        <image name="Add User Group Man Man-48" width="24" height="24"/>
+        <image name="Address Book Filled-50" width="25" height="25"/>
+        <image name="Camera" width="412" height="412"/>
+        <image name="Chat Filled-50" width="27" height="23"/>
+        <image name="ChatPhotos" width="256" height="256"/>
+        <image name="Comet-50" width="25" height="25"/>
+        <image name="Comment-100" width="50" height="50"/>
+        <image name="Download" width="261" height="256"/>
+        <image name="Exit" width="750" height="750"/>
+        <image name="F4140862-DB8C-498D-9CEA-C7BC7EDA608C" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11149,15 +11158,6 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
-        <image name="Add User Group Man Man-48" width="24" height="24"/>
-        <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="Camera" width="412" height="412"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="ChatPhotos" width="256" height="256"/>
-        <image name="Comet-50" width="25" height="25"/>
-        <image name="Comment-100" width="50" height="50"/>
-        <image name="Download" width="261" height="256"/>
-        <image name="Exit" width="750" height="750"/>
         <image name="Gender Neutral User-100" width="256" height="256"/>
         <image name="Left Filled-100" width="50" height="50"/>
         <image name="Left Filled-50" width="25" height="25"/>

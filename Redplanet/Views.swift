@@ -56,10 +56,8 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         // Hide button
         rpButton.isHidden = true
         
-        // Configure nav bar && show tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
+        // Configure nav bar && show tab bar (last line)        
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // Query Views

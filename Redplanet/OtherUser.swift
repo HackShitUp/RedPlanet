@@ -225,13 +225,13 @@ class OtherUser: UITableViewController {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.layer.masksToBounds = true
         }
         // Add Cancel button
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.setTitle("CANCEL", for: [])
             return true
         }
@@ -285,13 +285,13 @@ class OtherUser: UITableViewController {
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.borderColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0).cgColor
-            button.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.layer.masksToBounds = true
         }
         // Add Cancel button
         dialogController.cancelButtonStyle = { (button,height) in
-            button.tintColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+            button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
             button.setTitle("CANCEL", for: [])
             return true
         }

@@ -16,8 +16,9 @@ import Bolts
 
 import SDWebImage
 import MessageUI
+import OneSignal
 
-class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate {
+class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
@@ -51,12 +52,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.title = "Settings"
         }
-        // Configure UINavigationBar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Configure UINavigationBar via extension
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -121,8 +118,60 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         UIApplication.shared.openURL(url!)
     }
     
+    
+    
+    // MARK: - OneSignal
+    /*
+     Called when the user changes Notifications Access from "off" --> "on"
+     REQUIRED
+     */
+    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+        if !stateChanges.from.subscribed && stateChanges.to.subscribed {
+            print("Subscribed for OneSignal push notifications!")
+            
+            let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+            let userID = status.subscriptionStatus.userId
+            print("THE userID = \(userID)\n\n\n")
+            
+            // MARK: - Parse
+            // Save user's apnsId to server
+            if PFUser.current() != nil {
+                PFUser.current()!["apnsId"] = userID
+                PFUser.current()!.saveInBackground()
+            }
+        }
+    }
+    
+    func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
+        if stateChanges.from.status == .notDetermined || stateChanges.from.status == .denied {
+            if stateChanges.to.status == .authorized {
+                print("-AUTHORIZED")
+            }
+        }
+    }
+    /**/
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Stylize title
+        configureView()
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        // Add function method to 'privacy'
+        self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
+        
+        // Set privacy
+        if PFUser.current()!.value(forKey: "private") as! Bool == true {
+            self.privacy.setOn(true, animated: false)
+        } else {
+            self.privacy.setOn(false, animated: false)
+        }
         
         // Add view
         let versionView = UIView()
@@ -136,40 +185,35 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         title.textAlignment = .center
         versionView.addSubview(title)
         self.tableView.tableFooterView = versionView
-
-        // Hide tabBarController
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
-        
-        // Stylize title
-        configureView()
-        
-        // Add function method to 'privacy'
-        self.privacy.addTarget(self, action: #selector(setPrivacy), for: .allEvents)
-        
-        // Set privacy
-        if PFUser.current()!.value(forKey: "private") as! Bool == true {
-            self.privacy.setOn(true, animated: false)
-        } else {
-            self.privacy.setOn(false, animated: false)
-        }
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        // Stylize title
-        configureView()
+        
+        
+        // Check for authorization status
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        if status.permissionStatus.status == .denied {
+            // DENIED
+            print("Denied")
+            print("isSubscribed: \(status.subscriptionStatus.subscribed)")
+            
+            // TODO::
+            // Show alert to enable push notifications
+            
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 
 
@@ -264,22 +308,19 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 PFUser.logOutInBackground(block: {
                     (error: Error?) in
                     if error == nil {
-                    // Remove logged in user from App Memory
-                        UserDefaults.standard.removeObject(forKey: "username")
-                        UserDefaults.standard.synchronize()
-                        DispatchQueue.main.async(execute: {
-                    // Logout
+                        // Remove logged in user from App Memory
+                        DispatchQueue.main.async {
+                            // Logout
                             let logoutToStart = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController() as! UINavigationController
                             self.present(logoutToStart, animated: true, completion: nil)
-                        })
-                    // Clear array
-                        username.removeAll()
+                        }
                     }
                 })
             }
+            
         } else if indexPath.section == 1 {
         // ====================================================================
-        // MEMORY =============================================================
+        // DEVICE =============================================================
         // ====================================================================
             if indexPath.row == 0 {
                 // Clear cache first
@@ -318,7 +359,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 dialogController.show(in: self)
                 
             } else if indexPath.row == 1 {
-                // Show permissions
+            // Show permissions
                 let url = URL(string: UIApplicationOpenSettingsURLString)
                 UIApplication.shared.openURL(url!)
             }
