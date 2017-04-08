@@ -4367,7 +4367,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="F9948C1A-60BC-497A-985E-D61C5699E07E"/>
+                                <state key="normal" image="CE027DD2-A0FE-4EC5-811D-6E326998F2AF"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6578,14 +6578,7 @@ Powered by https://newsapi.org/
     <resources>
         <image name="Add User Group Man Man-48" width="24" height="24"/>
         <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="Camera" width="412" height="412"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="ChatPhotos" width="256" height="256"/>
-        <image name="Comet-50" width="25" height="25"/>
-        <image name="Comment-100" width="124" height="126"/>
-        <image name="Download" width="261" height="256"/>
-        <image name="Exit" width="750" height="750"/>
-        <image name="F9948C1A-60BC-497A-985E-D61C5699E07E" width="265" height="256">
+        <image name="CE027DD2-A0FE-4EC5-811D-6E326998F2AF" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11161,11 +11154,18 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
+        <image name="Camera" width="412" height="412"/>
+        <image name="Chat Filled-50" width="27" height="23"/>
+        <image name="ChatPhotos" width="256" height="256"/>
+        <image name="Comet-50" width="25" height="25"/>
+        <image name="Comment-100" width="50" height="50"/>
+        <image name="Download" width="261" height="256"/>
+        <image name="Exit" width="750" height="750"/>
         <image name="Gender Neutral User-100" width="256" height="256"/>
         <image name="Left Filled-100" width="50" height="50"/>
         <image name="Left Filled-50" width="25" height="25"/>
         <image name="Lightning Bolt-96" width="256" height="256"/>
-        <image name="Like-100" width="41" height="41"/>
+        <image name="Like-100" width="50" height="50"/>
         <image name="Mail" width="48" height="48"/>
         <image name="Moon-96" width="41" height="41"/>
         <image name="More" width="48" height="48"/>
@@ -11177,7 +11177,7 @@ AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
         <image name="Newsfeed(1)" width="24" height="24"/>
         <image name="Number Pad-48" width="24" height="24"/>
         <image name="RedBookmark50png" width="25" height="25"/>
-        <image name="Redo-100" width="124" height="124"/>
+        <image name="Redo-100" width="50" height="50"/>
         <image name="RedplanetLogo" width="256" height="256"/>
         <image name="SLR Camera Filled" width="20" height="20"/>
         <image name="Search-50" width="25" height="25"/>
@@ -11189,9 +11189,9 @@ AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
         <image name="User-96" width="48" height="48"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="VolumeOn" width="290" height="256"/>
-        <image name="WhiteComment" width="124" height="126"/>
-        <image name="WhiteLike" width="138" height="138"/>
-        <image name="WhiteRedo" width="124" height="124"/>
+        <image name="WhiteComment" width="300" height="300"/>
+        <image name="WhiteLike" width="100" height="100"/>
+        <image name="WhiteRedo" width="300" height="300"/>
         <image name="iOS Photos-Grey" width="25" height="25"/>
         <image name="igcPhotos" width="90" height="90"/>
         <image name="igcText" width="90" height="90"/>
