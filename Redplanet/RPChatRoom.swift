@@ -690,6 +690,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.cameraButton.layer.borderWidth = 3.50
         self.cameraButton.layer.cornerRadius = 33/2
         self.cameraButton.clipsToBounds = true
+//        self.cameraButton.setImage(UIImage(named: "Camera"), for: .normal)
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
