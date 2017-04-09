@@ -165,7 +165,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         if status.permissionStatus.status == .authorized {
         // AUTHORIZED
             let userID = status.subscriptionStatus.userId
-            print("\nThe userID is: \(userID)\n")
+            print("\nThe userID is: \(String(describing: userID))\n")
             
             // MARK: - Parse --> Save user's apnsId to server
             if PFUser.current() != nil {
@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             
             let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
             let userID = status.subscriptionStatus.userId
-            print("THE userID = \(userID)\n\n\n")
+            print("THE userID = \(String(describing: userID))\n\n\n")
             
             // MARK: - Parse
             // Save user's apnsId to server
@@ -261,9 +261,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         let userSubscriptionSetting = status.subscriptionStatus.userSubscriptionSetting
         print("userSubscriptionSetting = \(userSubscriptionSetting)")
         let userID = status.subscriptionStatus.userId
-        print("HERE\n===userID = \(userID)")
+        print("HERE\n===userID = \(String(describing: userID))")
         let pushToken = status.subscriptionStatus.pushToken
-        print("pushToken = \(pushToken)")
+        print("pushToken = \(String(describing: pushToken))")
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {

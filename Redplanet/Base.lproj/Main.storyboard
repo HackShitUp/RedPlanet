@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="QsT-i1-5IA">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="QsT-i1-5IA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -4367,7 +4367,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="CE027DD2-A0FE-4EC5-811D-6E326998F2AF"/>
+                                <state key="normal" image="button:Ulw-zq-86o:image"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -6578,7 +6578,45 @@ Powered by https://newsapi.org/
     <resources>
         <image name="Add User Group Man Man-48" width="24" height="24"/>
         <image name="Address Book Filled-50" width="25" height="25"/>
-        <image name="CE027DD2-A0FE-4EC5-811D-6E326998F2AF" width="265" height="256">
+        <image name="Camera" width="412" height="412"/>
+        <image name="Chat Filled-50" width="27" height="23"/>
+        <image name="ChatPhotos" width="256" height="256"/>
+        <image name="Comet-50" width="25" height="25"/>
+        <image name="Comment-100" width="47" height="47"/>
+        <image name="Download" width="261" height="256"/>
+        <image name="Exit" width="750" height="750"/>
+        <image name="Gender Neutral User-100" width="256" height="256"/>
+        <image name="Left Filled-100" width="50" height="50"/>
+        <image name="Left Filled-50" width="25" height="25"/>
+        <image name="Lightning Bolt-96" width="256" height="256"/>
+        <image name="Like-100" width="50" height="50"/>
+        <image name="Mail" width="48" height="48"/>
+        <image name="Moon-96" width="41" height="41"/>
+        <image name="More" width="48" height="48"/>
+        <image name="More-100" width="50" height="50"/>
+        <image name="More-50" width="25" height="25"/>
+        <image name="MoreBlack" width="50" height="50"/>
+        <image name="Name" width="48" height="48"/>
+        <image name="NewChat" width="25" height="25"/>
+        <image name="Newsfeed(1)" width="24" height="24"/>
+        <image name="Number Pad-48" width="24" height="24"/>
+        <image name="RedBookmark50png" width="25" height="25"/>
+        <image name="Redo-100" width="47" height="47"/>
+        <image name="RedplanetLogo" width="256" height="256"/>
+        <image name="SLR Camera Filled" width="20" height="20"/>
+        <image name="Search-50" width="25" height="25"/>
+        <image name="Settings-48" width="24" height="24"/>
+        <image name="ShareOP" width="256" height="256"/>
+        <image name="Smoke Explosion-64" width="32" height="32"/>
+        <image name="Switch Camera-100" width="243" height="256"/>
+        <image name="User-48" width="24" height="24"/>
+        <image name="User-96" width="48" height="48"/>
+        <image name="UserAction" width="25" height="25"/>
+        <image name="VolumeOn" width="290" height="256"/>
+        <image name="WhiteComment" width="47" height="47"/>
+        <image name="WhiteLike" width="50" height="50"/>
+        <image name="WhiteRedo" width="47" height="47"/>
+        <image name="button:Ulw-zq-86o:image" width="265" height="256">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -11154,44 +11192,6 @@ AAQt5AAELewABC3vAAQt9AAELgMABC4HAAQuDgAELhYABC4jAAQuKAAELioABC4sAAQuMQAELjkABC48
 AAQuQQAELkkABC5MAAQuXgAELmEABC5mAAAAAAAABAEAAAAAAAAAQQAAAAAAAAAAAAAAAAAELmg
 </mutableData>
         </image>
-        <image name="Camera" width="412" height="412"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="ChatPhotos" width="256" height="256"/>
-        <image name="Comet-50" width="25" height="25"/>
-        <image name="Comment-100" width="50" height="50"/>
-        <image name="Download" width="261" height="256"/>
-        <image name="Exit" width="750" height="750"/>
-        <image name="Gender Neutral User-100" width="256" height="256"/>
-        <image name="Left Filled-100" width="50" height="50"/>
-        <image name="Left Filled-50" width="25" height="25"/>
-        <image name="Lightning Bolt-96" width="256" height="256"/>
-        <image name="Like-100" width="50" height="50"/>
-        <image name="Mail" width="48" height="48"/>
-        <image name="Moon-96" width="41" height="41"/>
-        <image name="More" width="48" height="48"/>
-        <image name="More-100" width="50" height="50"/>
-        <image name="More-50" width="25" height="25"/>
-        <image name="MoreBlack" width="50" height="50"/>
-        <image name="Name" width="48" height="48"/>
-        <image name="NewChat" width="25" height="25"/>
-        <image name="Newsfeed(1)" width="24" height="24"/>
-        <image name="Number Pad-48" width="24" height="24"/>
-        <image name="RedBookmark50png" width="25" height="25"/>
-        <image name="Redo-100" width="50" height="50"/>
-        <image name="RedplanetLogo" width="256" height="256"/>
-        <image name="SLR Camera Filled" width="20" height="20"/>
-        <image name="Search-50" width="25" height="25"/>
-        <image name="Settings-48" width="24" height="24"/>
-        <image name="ShareOP" width="256" height="256"/>
-        <image name="Smoke Explosion-64" width="32" height="32"/>
-        <image name="Switch Camera-100" width="243" height="256"/>
-        <image name="User-48" width="24" height="24"/>
-        <image name="User-96" width="48" height="48"/>
-        <image name="UserAction" width="25" height="25"/>
-        <image name="VolumeOn" width="290" height="256"/>
-        <image name="WhiteComment" width="300" height="300"/>
-        <image name="WhiteLike" width="100" height="100"/>
-        <image name="WhiteRedo" width="300" height="300"/>
         <image name="iOS Photos-Grey" width="25" height="25"/>
         <image name="igcPhotos" width="90" height="90"/>
         <image name="igcText" width="90" height="90"/>

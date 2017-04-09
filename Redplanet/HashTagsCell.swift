@@ -305,7 +305,7 @@ class HashTagsCell: UITableViewCell {
             // Traverse video url
             let videoUrl = NSURL(string: video.url!)
             // MARK: - Periscope Video View Controller
-            let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+            let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
             self.delegate?.present(videoViewController, animated: true, completion: nil)
         }
     }

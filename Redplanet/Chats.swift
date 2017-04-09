@@ -92,7 +92,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     PFObject.deleteAll(inBackground: objects, block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            print("Deleted all objects: \(objects)")
+                            print("Deleted all objects: \(String(describing: objects))")
                         } else {
                             print(error?.localizedDescription as Any)
                         }
@@ -387,7 +387,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             PFObject.deleteAll(inBackground: objects, block: {
                                 (success: Bool, error: Error?) in
                                 if success {
-                                    print("Deleted all objects: \(objects)")
+                                    print("Deleted all objects: \(String(describing: objects))")
                                 } else {
                                     print(error?.localizedDescription as Any)
                                 }

@@ -51,13 +51,11 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             if saved {
                 
                 UIView.animate(withDuration: 0.5) { () -> Void in
-                    
-                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
                 }
                 
                 UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                    
-                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                    self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi/2))
                 }, completion: nil)
                 
             } else {
@@ -79,7 +77,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["username"] = PFUser.current()!.username!
             newsfeeds["byUser"] = PFUser.current()!
-            newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+            newsfeeds["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
             newsfeeds["contentType"] = "itm"
             newsfeeds["saved"] = false
             newsfeeds.saveInBackground()
@@ -101,7 +99,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats["receiver"] = chatUserObject.last!
             chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
             chats["read"] = false
-            chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData as! Data)
+            chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
             chats["mediaType"] = "itm"
             chats.saveInBackground()
             

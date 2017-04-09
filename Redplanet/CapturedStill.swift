@@ -67,10 +67,10 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         DispatchQueue.main.async {
             // Save photo
             UIView.animate(withDuration: 0.5) { () -> Void in
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI))
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
             }
             UIView.animate(withDuration: 0.5, delay: 0.10, options: UIViewAnimationOptions.curveEaseIn, animations: { () -> Void in
-                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI * 2))
+                self.saveButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi * 2))
             }, completion: nil)
             UIImageWriteToSavedPhotosAlbum(SNUtils.screenShot(self.stillPhoto)!, self, nil, nil)
         }

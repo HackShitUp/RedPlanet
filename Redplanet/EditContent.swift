@@ -462,7 +462,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
 
                 
                 // MARK: - PeriscopeVideoViewController
-                let videoViewController = VideoViewController(videoURL: videoUrl as! URL)
+                let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
                 videoViewController.modalPresentationStyle = .popover
                 videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
                 

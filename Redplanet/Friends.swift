@@ -469,8 +469,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
                 
                 // Make iconicPreview circular with red border color
-                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                eCell.iconicPreview.layer.borderWidth = 3.50
+//                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+//                eCell.iconicPreview.layer.borderWidth = 3.50
+//                eCell.iconicPreview.layer.borderWidth = 2.00
                 
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO

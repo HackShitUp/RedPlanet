@@ -131,7 +131,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             
             let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
             let userID = status.subscriptionStatus.userId
-            print("THE userID = \(userID)\n\n\n")
+            print("THE userID = \(String(describing: userID))\n\n\n")
             
             // MARK: - Parse
             // Save user's apnsId to server
