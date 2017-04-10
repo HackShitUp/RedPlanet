@@ -356,6 +356,7 @@ class HashTagsCell: UITableViewCell {
                         (success: Bool, error: Error?) in
                         if success {
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Deleted")
                             // Refresh
                             NotificationCenter.default.post(name: hashtagNotification, object: nil)
@@ -409,6 +410,7 @@ class HashTagsCell: UITableViewCell {
                         print("Successfully saved report: \(report)")
                         
                         // MARK: - SVProgressHUD
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Reported")
                         // Dismiss
                         dialog.dismiss()

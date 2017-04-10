@@ -107,6 +107,7 @@ class OtherUser: UITableViewController {
                     print("Successfully saved report: \(report)")
                     
                     // MARK: - SVProgressHUD
+                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                     SVProgressHUD.showSuccess(withStatus: "Reported")
                     // Dismiss
                     fromVC!.dismiss()
@@ -246,7 +247,7 @@ class OtherUser: UITableViewController {
         dialogController.addAction(AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
             // MARK: - SVProgressHUD
             SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             // Block User
             self.blockUser(fromVC: dialog)
         }))
@@ -321,7 +322,7 @@ class OtherUser: UITableViewController {
         let block = AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
             // MARK: - SVProgressHUD
             SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             // Block User
             self.blockUser(fromVC: dialog)
         })
@@ -940,10 +941,6 @@ class OtherUser: UITableViewController {
             eCell.iconicPreview.contentMode = .scaleAspectFill
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                
-                // Make iconicPreview circular with red border color
-                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                eCell.iconicPreview.layer.borderWidth = 3.50
                 
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO

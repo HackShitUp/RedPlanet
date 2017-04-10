@@ -309,7 +309,7 @@ class ProPicCell: UITableViewCell {
             
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.show(withStatus: "Deleting")
             
             // (1) Check if object is most recent by querying getFirstObject
@@ -341,6 +341,7 @@ class ProPicCell: UITableViewCell {
                                         print("Deleted current profile photo and saved a new one.")
                                         
                                         // MARK: - SVProgressHUD
+                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                         SVProgressHUD.showSuccess(withStatus: "Deleted")
                                         
                                         // Reload data
@@ -382,6 +383,7 @@ class ProPicCell: UITableViewCell {
                                             print("Successfully deleted profile photo: \(object)")
                                             
                                             // MARK: - SVProgressHUD
+                                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                             SVProgressHUD.showSuccess(withStatus: "Deleted")
                                             
                                             // Current User's Profile Photo DOES EXIST
@@ -440,6 +442,7 @@ class ProPicCell: UITableViewCell {
                         print("Successfully saved report: \(report)")
                         
                         // MARK: - SVProgressHUD
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Reported")
                         // Dismiss
                         dialog.dismiss()

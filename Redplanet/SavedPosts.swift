@@ -406,11 +406,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             eCell.iconicPreview.contentMode = .scaleAspectFill
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                
-                // Make iconicPreview circular with red border color
-                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                eCell.iconicPreview.layer.borderWidth = 3.50
-                
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO
                     // MARK: - SDWebImage
@@ -427,13 +422,13 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                     eCell.iconicPreview.layer.addSublayer(playerLayer)
                 }
                 
-                // (5B) SPACE POST
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
+            // (5B) SPACE POST
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "CSpacePost")
                 
-                // (5C) SHARED POSTS
             } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
+            // (5C) SHARED POSTS
                 eCell.iconicPreview.backgroundColor = UIColor.clear
                 eCell.iconicPreview.image = UIImage(named: "SharedPostIcon")
             }
@@ -865,7 +860,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
             
             // Show Progress
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.setBackgroundColor(UIColor.white)
             SVProgressHUD.show(withStatus: "Removing")
            
@@ -879,6 +874,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                         (success: Bool, error: Error?) in
                         if success {
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Unsaved")
                             
                             // Delete post from table view

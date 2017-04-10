@@ -155,9 +155,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         geoLocation.reverseGeocodeLocation(location) {
             (placemarks: [CLPlacemark]?, error: Error?) in
             if error == nil {
-                
-//                print("ALL PLACEMARKS: \(placemarks!)\n\n")
-                
+
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
                 
@@ -267,9 +265,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowRightViewController = true
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
         self.containerSwipeNavigationController?.shouldShowBottomViewController = true
+        self.containerSwipeNavigationController?.shouldShowTopViewController = true
     }
     
     override func viewWillAppear(_ animated: Bool) {

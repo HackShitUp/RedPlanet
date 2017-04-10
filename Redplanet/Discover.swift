@@ -113,7 +113,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         

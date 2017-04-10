@@ -142,7 +142,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
         // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.clear)
-        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+        SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
 
         // Fetch friends
         fetchFriends()
@@ -210,17 +210,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
     }
     
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // If iOS 9
-        if #available(iOS 9, *) {
-            // Push VC
-            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.parentNavigator.pushViewController(contactsVC, animated: true)
-        } else {
-            // Fallback on earlier versions
-            // Show search
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.parentNavigator.pushViewController(search, animated: true)
-        }
+        // Push VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.parentNavigator.pushViewController(contactsVC, animated: true)
     }
     
     // MARK: - TabBarControllerDelegate method
@@ -467,11 +459,6 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             eCell.iconicPreview.contentMode = .scaleAspectFill
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                
-                // Make iconicPreview circular with red border color
-//                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-//                eCell.iconicPreview.layer.borderWidth = 3.50
-//                eCell.iconicPreview.layer.borderWidth = 2.00
                 
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO

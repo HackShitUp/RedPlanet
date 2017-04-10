@@ -362,7 +362,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         if difference.second! <= 0 {
-            cell.sharedTime.text = "right now"
+            cell.sharedTime.text = "now"
         } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.sharedTime.text = "1 second ago"
@@ -598,7 +598,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             
             // logic what to show : Seconds, minutes, hours, days, or weeks
             if difference.second! <= 0 {
-                cell.sharedTime.text = "right now"
+                cell.sharedTime.text = "now"
             } else if difference.second! > 0 && difference.minute! == 0 {
                 if difference.second! == 1 {
                     cell.time.text = "1 second ago"

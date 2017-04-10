@@ -52,6 +52,7 @@ class ContactsCell: UITableViewCell {
                         // MARK: - SVProgressHUD
                         SVProgressHUD.setBackgroundColor(UIColor.white)
                         SVProgressHUD.setForegroundColor(UIColor.black)
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Requested")
                         
                         // Change button's title and design
@@ -126,6 +127,7 @@ class ContactsCell: UITableViewCell {
                         // MARK: - SVProgressHUD
                         SVProgressHUD.setBackgroundColor(UIColor.white)
                         SVProgressHUD.setForegroundColor(UIColor.black)
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Following")
                         
                         // Change button's title and design
@@ -251,6 +253,7 @@ class ContactsCell: UITableViewCell {
                                     // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
                                     SVProgressHUD.setForegroundColor(UIColor.black)
+                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                     SVProgressHUD.showSuccess(withStatus: "Unfollowed")
                                     
                                     // Set user's friends button
@@ -420,7 +423,7 @@ class ContactsCell: UITableViewCell {
                                     print(error?.localizedDescription as Any)
                                     // MARK: - SVProgressHUD
                                     SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                                    SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
                                     SVProgressHUD.showError(withStatus: "Error")
                                 }
                             })
@@ -429,7 +432,7 @@ class ContactsCell: UITableViewCell {
                             print(error?.localizedDescription as Any)
                             // MARK: - SVProgressHUD
                             SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
                             SVProgressHUD.showError(withStatus: "Error")
                         }
                     })
@@ -518,6 +521,7 @@ class ContactsCell: UITableViewCell {
                             // MARK: - SVProgressHUD
                             SVProgressHUD.setBackgroundColor(UIColor.white)
                             SVProgressHUD.setForegroundColor(UIColor.black)
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Removed")
                             
                             // Send to NotificationCenter
@@ -642,6 +646,7 @@ class ContactsCell: UITableViewCell {
                                         // MARK: - SVProgressHUD
                                         SVProgressHUD.setBackgroundColor(UIColor.white)
                                         SVProgressHUD.setForegroundColor(UIColor.black)
+                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                         SVProgressHUD.showSuccess(withStatus: "Rescinded")
                                         
                                         // Set user's friends button
@@ -794,6 +799,7 @@ class ContactsCell: UITableViewCell {
                                                     // MARK: - SVProgressHUD
                                                     SVProgressHUD.setBackgroundColor(UIColor.white)
                                                     SVProgressHUD.setForegroundColor(UIColor.black)
+                                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                                     SVProgressHUD.showSuccess(withStatus: "Confirmed")
                                                     
                                                     // Change button's title and design
@@ -888,6 +894,7 @@ class ContactsCell: UITableViewCell {
                                         // MARK: - SVProgressHUD
                                         SVProgressHUD.setBackgroundColor(UIColor.white)
                                         SVProgressHUD.setForegroundColor(UIColor.black)
+                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                         SVProgressHUD.showSuccess(withStatus: "Ignored")
                                         
                                         // Delete Notification

@@ -124,8 +124,8 @@ class EphemeralCell: UITableViewCell {
             
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
-//            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 15))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
+            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
             SVProgressHUD.show()
             
             // Delete shared and original post
@@ -152,6 +152,7 @@ class EphemeralCell: UITableViewCell {
                                         object.deleteEventually()
                                     }
                                     // MARK: - SVProgressHUD
+                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                     SVProgressHUD.showSuccess(withStatus: "Deleted")
                                     
                                     // Send FriendsNewsfeeds Notification

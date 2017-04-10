@@ -116,6 +116,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                             (success: Bool, error: Error?) in
                             if success {
                                 // MARK: - SVProgressHUD
+                                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                 SVProgressHUD.showSuccess(withStatus: "Saved")
                             } else {
                                 print(error?.localizedDescription as Any)
@@ -138,7 +139,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
             dialog.dismiss()
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.show(withStatus: "Deleting")
             
             // Shared and og content
@@ -167,6 +168,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                                         object.deleteEventually()
                                     }
                                     // MARK: - SVProgressHUD
+                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                     SVProgressHUD.showSuccess(withStatus: "Deleted")
                                     
                                     // Send FriendsNewsfeeds Notification

@@ -33,6 +33,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // Variable to hold messageObjects
     var messageObjects = [PFObject]()
+    var skipped = [PFObject]()
     // Keyboard frame
     var keyboard = CGRect()
     // Refresher
@@ -283,7 +284,18 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 SVProgressHUD.dismiss()
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
                 for object in objects! {
+                    
+                    // Ephemeral Chat
+//                    let components : NSCalendar.Unit = .hour
+//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+//                    if difference.hour! < 24 {
+//                        self.messageObjects.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
+                    
                     // Append object
                     self.messageObjects.append(object)
                 }
@@ -345,11 +357,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                              ]
                         )
                     }
-                    
+                    /*
                     // Add Int to Chat
-//                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
-//                    UserDefaults.standard.set(score, forKey: "ChatScore")
-//                    UserDefaults.standard.synchronize()
+                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
+                    UserDefaults.standard.set(score, forKey: "ChatScore")
+                    UserDefaults.standard.synchronize()
+                     */
                     // Reload data
                     self.queryChats()
                 } else {
@@ -658,7 +671,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title
@@ -685,12 +697,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView!.estimatedRowHeight = 60
         self.tableView!.tableFooterView = UIView()
         
-        // Draw cornerRadius for cameraButton
+        // Draw cornerRadius for cameraButton and photosButton
         self.cameraButton.layer.borderColor = UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0).cgColor
         self.cameraButton.layer.borderWidth = 3.50
         self.cameraButton.layer.cornerRadius = 33/2
         self.cameraButton.clipsToBounds = true
-//        self.cameraButton.setImage(UIImage(named: "Camera"), for: .normal)
+        
+        self.photosButton.layer.cornerRadius = 6.00
+        self.photosButton.clipsToBounds = true
+        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))

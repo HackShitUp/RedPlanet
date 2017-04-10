@@ -113,6 +113,7 @@ class TimeTextPostCell: UITableViewCell {
                         (success: Bool, error: Error?) in
                         if error == nil {
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Saved")
                         } else {
                             print(error?.localizedDescription as Any)
@@ -134,7 +135,7 @@ class TimeTextPostCell: UITableViewCell {
             dialog.dismiss()
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.show()
             
             // Delete content
@@ -164,6 +165,7 @@ class TimeTextPostCell: UITableViewCell {
                                             object.deleteEventually()
                                         }
                                         // MARK: - SVProgressHUD
+                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                         SVProgressHUD.showSuccess(withStatus: "Deleted")
                                         
                                         // Reload data
@@ -217,6 +219,7 @@ class TimeTextPostCell: UITableViewCell {
                         print("Successfully saved report: \(report)")
                         
                         // MARK: - SVProgressHUD
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Reported")
                         
                         // Dismiss

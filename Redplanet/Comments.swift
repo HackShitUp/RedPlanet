@@ -601,6 +601,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                 report.saveInBackground()
                                                 
                                                 // MARK: - SVProgressHUD
+                                                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                                                 SVProgressHUD.showSuccess(withStatus: "Reported")
                                                 // Dismiss
                                                 dialog.dismiss()

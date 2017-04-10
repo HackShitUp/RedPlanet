@@ -70,7 +70,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             
             // Show Progress
             SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.setBackgroundColor(UIColor.white)
             
             // Delete chats
@@ -364,7 +364,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     
                     // Show Progress
                     SVProgressHUD.show()
-                    SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+                    SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
                     SVProgressHUD.setBackgroundColor(UIColor.white)
                     
                     // Delete chats
@@ -599,7 +599,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     
                     // logic what to show : Seconds, minutes, hours, days, or weeks
                     if difference.second! <= 0 {
-                        cell.time.text = "right now"
+                        cell.time.text = "now"
                     } else if difference.second! > 0 && difference.minute! == 0 {
                         if difference.second! == 1 {
                             cell.time.text = "1 second ago"

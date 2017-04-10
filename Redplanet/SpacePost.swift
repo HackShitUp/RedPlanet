@@ -109,6 +109,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                         (success: Bool, error: Error?) in
                         if error == nil {
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Saved")
                         } else {
                             print(error?.localizedDescription as Any)
@@ -131,7 +132,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             
             // MARK: - SVProgressHUD
             SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.show(withStatus: "Deleting")
             
             // Set content
@@ -152,6 +153,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                         if success {
                             
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Deleted")
                             
                             // Reload data
@@ -250,6 +252,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
                         print("Successfully saved report: \(report)")
                         
                         // SVProgressHUD
+                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                         SVProgressHUD.showSuccess(withStatus: "Reported")
                         // Dismiss
                         dialog.dismiss()

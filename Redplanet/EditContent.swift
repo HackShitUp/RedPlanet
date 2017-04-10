@@ -237,7 +237,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         } else {
             
             // Show Progress
-            SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.setBackgroundColor(UIColor.white)
             SVProgressHUD.show()
             
@@ -252,6 +252,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                         (success: Bool, error: Error?) in
                         if success {
                             // MARK: - SVProgressHUD
+                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                             SVProgressHUD.showSuccess(withStatus: "Saved")
                             // Clear array and append object
                             editObjects.removeAll(keepingCapacity: false)

@@ -235,7 +235,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             
             let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
             let userID = status.subscriptionStatus.userId
-            print("THE userID = \(String(describing: userID))\n\n\n")
+            print("THE userID = \(String(describing: userID))\n\n")
             
             // MARK: - Parse
             // Save user's apnsId to server
@@ -249,7 +249,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
         if stateChanges.from.status == .notDetermined || stateChanges.from.status == .denied {
             if stateChanges.to.status == .authorized {
-                print("-AUTHORIZED")
+                print("-AUTHORIZED-")
             }
         }
     }

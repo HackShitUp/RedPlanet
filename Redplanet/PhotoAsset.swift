@@ -316,7 +316,7 @@ class PhotoAsset: UITableViewController, UINavigationControllerDelegate {
         
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
-            cell.time.text = "right now"
+            cell.time.text = "now"
         }
         
         if difference.second! > 0 && difference.minute! == 0 {

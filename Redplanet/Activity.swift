@@ -18,28 +18,32 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
+import CoreLocation
 import DZNEmptyDataSet
+import OneSignal
+import SVProgressHUD
 import SwipeNavigationController
 import SDWebImage
 
-class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, OSPermissionObserver, OSSubscriptionObserver {
     
-    // NOTIFICATIONs
-    // Array to hold my notifications
+    // DISCOVERIES - Array to hold new people to follow
+    var discoveries = [PFObject]()
+    // NOTIFICATIONS - Array to hold user's notifications < 24 hours
     var activityObjects = [PFObject]()
-    
-    // Skipped objects for Moments
+    // Skipped objects for content that's > 24 hours
     var skipped = [PFObject]()
+    // Page size for pipeline method
+    var page: Int = 50
+    
+    // CoreLocationManager
+    let manager = CLLocationManager()
     
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
     // Refresher
     var refresher: UIRefreshControl!
-
-    // Page size for pipeline method
-    var page: Int = 25
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -52,17 +56,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
 
     @IBOutlet weak var contactsButton: UIBarButtonItem!
     @IBAction func contacts(_ sender: Any) {
-        // If iOS 9
-        if #available(iOS 9, *) {
-            // Push VC
-            let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
-            self.navigationController?.pushViewController(contactsVC, animated: true)
-        } else {
-            // Fallback on earlier versions
-            // Show search
-            let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-            self.navigationController!.pushViewController(search, animated: true)
-        }
+        // Push VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController?.pushViewController(contactsVC, animated: true)
     }
 
     // Query Notifications
@@ -98,7 +94,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                     }
                 }
                 
-                
                 // Set DZN
                 if self.activityObjects.count == 0 {
                     self.tableView!.emptyDataSetDelegate = self
@@ -116,6 +111,10 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             self.tableView!.reloadData()
         })
     }
+    
+    func fetchDiscoveries() {
+    }
+    
 
     // MARK: - UITabBarControllerDelegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -134,7 +133,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
-//                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -161,8 +159,107 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         self.tableView!.reloadData()
     }
     
+    // MARK: - OneSignal
+    /*
+     Called when the user changes Notifications Access from "off" --> "on"
+     REQUIRED
+     */
+    func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
+        if !stateChanges.from.subscribed && stateChanges.to.subscribed {
+            print("Subscribed for OneSignal push notifications!")
+            
+            let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+            let userID = status.subscriptionStatus.userId
+            print("THE userID = \(String(describing: userID))\n\n\n")
+            
+            // MARK: - Parse
+            // Save user's apnsId to server
+            if PFUser.current() != nil {
+                PFUser.current()!["apnsId"] = userID
+                PFUser.current()!.saveInBackground()
+            }
+        }
+    }
+    
+    func onOSPermissionChanged(_ stateChanges: OSPermissionStateChanges!) {
+        if stateChanges.from.status == .notDetermined || stateChanges.from.status == .denied {
+            if stateChanges.to.status == .authorized {
+                print("AUTHORIZED")
+            }
+        }
+    }
+    /**/
+    
+    
+    func showAlert(title: String?) {
+        let alert = UIAlertController(title: "\(title!) Denied",
+                                      message: "Please allow Redplanet to access \(title!) so you can receive updates from people you love.",
+                                      preferredStyle: .alert)
+        let settings = UIAlertAction(title: "Settings",
+                                     style: .default,
+                                     handler: { (alertAction: UIAlertAction!) in
+                                        // Show Settings
+                                        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+        })
+        let later = UIAlertAction(title: "Later",
+                                  style: .default,
+                                  handler: nil)
+        alert.addAction(later)
+        alert.addAction(settings)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
+        
+        // Stylize title
+        configureView()
+        
+        // Set initial query
+        self.queryNotifications()
+        
+        // MARK: - OneSignal
+        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+        if status.permissionStatus.status == .denied {
+            // Show Alert
+            let alert = UIAlertController(title: "Push Notifications Denied",
+                                          message: "Please allow Redplanet to send Push Notifications so you can receive updates from the people you love!",
+                                          preferredStyle: .alert)
+            let settings = UIAlertAction(title: "Settings",
+                                         style: .default,
+                                         handler: { (alertAction: UIAlertAction!) in
+                                            // Show Settings
+                                            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            })
+            let later = UIAlertAction(title: "Later",
+                                      style: .default,
+                                      handler: nil)
+            alert.addAction(later)
+            alert.addAction(settings)
+            self.present(alert, animated: true, completion: nil)
+            
+        } else if CLLocationManager.authorizationStatus() == .denied {
+            // Show Alert
+            let alert = UIAlertController(title: "Location Access Denied",
+                                          message: "Please allow Redplanet to access your Location so you can send cool geo-filters and help us find your friends better!",
+                                          preferredStyle: .alert)
+            let settings = UIAlertAction(title: "Settings",
+                                         style: .default,
+                                         handler: { (alertAction: UIAlertAction!) in
+                                            // Show Settings
+                                            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            })
+            let later = UIAlertAction(title: "Later",
+                                      style: .default,
+                                      handler: nil)
+            alert.addAction(later)
+            alert.addAction(settings)
+            self.present(alert, animated: true, completion: nil)
+        }
+        
         
         // Clean tableView
         self.tableView!.tableFooterView = UIView()
@@ -171,15 +268,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         // Set tabBarController's delegate to self
         // to access menu via tabBar
         self.navigationController?.tabBarController?.delegate = self
-        
-        // Stylize title
-        configureView()
-        
-        // Set initial query
-        self.queryNotifications()
-        
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
 
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -229,7 +317,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             NSFontAttributeName: font!
         ]
         
-        
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
@@ -253,8 +340,16 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
 
     
     // MARK: - UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activityObjects.count
+        if section == 0 {
+            return activityObjects.count
+        } else {
+            return 0
+        }
     }
     
     
@@ -268,10 +363,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         // Initialize and set parent vc
         cell.delegate = self
         
-        // Declare content's object
-        // in Notifications' <forObjectId>
-        cell.contentObject = activityObjects[indexPath.row]
-        
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()
         cell.rpUserProPic.layoutSubviews()
@@ -283,216 +374,210 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        // (1) GET user's object
-        if let user = self.activityObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
+        if indexPath.section == 0 {
             
-            // (1A) Set user's object
-            cell.userObject = user
+            // Declare content's object
+            // in Notifications' <forObjectId>
+            cell.contentObject = activityObjects[indexPath.row]
             
-            // (1B) Set user's fullName
-            cell.rpUsername.setTitle("\(user.value(forKey: "realNameOfUser") as! String)", for: .normal)
-            
-            // (1C) Get and user's profile photo
-            if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
-                // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            // (1) GET and set user's object
+            if let user = self.activityObjects[indexPath.row].value(forKey: "fromUser") as? PFUser {
+                
+                // (1A) Set user's object
+                cell.userObject = user
+                
+                // (1B) Set user's fullName
+                cell.rpUsername.setTitle("\(user.value(forKey: "realNameOfUser") as! String)", for: .normal)
+                
+                // (1C) Get and user's profile photo
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                }
             }
-        }
+            
+            // (3) Set title of activity
+            // START TITLE *****************************************************************************************************
         
-        
-        
-        // (3) Set title of activity
-        // =================================================================================================================
-        // START TITLE =====================================================================================================
-        // =================================================================================================================
+            // -----------------------------------------------------------------------------------------------------------------
+            // ==================== R E L A T I O N S H I P S ------------------------------------------------------------------
+            // -----------------------------------------------------------------------------------------------------------------
+            // (1) Follow Requested
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "follow requested" {
+                cell.activity.setTitle("requested to follow you", for: .normal)
+            }
+            
+            // (2) Followed
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "followed" {
+                cell.activity.setTitle("started following you", for: .normal)
+            }
+            
+            // -------------------------------------------------------------------------------------------------------------
+            // ==================== S P A C E ------------------------------------------------------------------------------
+            // -------------------------------------------------------------------------------------------------------------
+            
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "space" {
+                cell.activity.setTitle("wrote on your Space", for: .normal)
+            }
+            
+            // --------------------------------------------------------------------------------------------------------------
+            // ==================== L I K E ---------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------------------
+            
+            // (1) Text Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like tp" {
+                cell.activity.setTitle("liked your Text Post", for: .normal)
+            }
+            
+            // (2) Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like ph" {
+                cell.activity.setTitle("liked your Photo", for: .normal)
+            }
+            
+            // (3) Profile Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like pp" {
+                cell.activity.setTitle("liked your Profile Photo", for: .normal)
+            }
+            
+            // (4) Space Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sp" {
+                cell.activity.setTitle("liked your Space Post", for: .normal)
+            }
+            
+            // (5) Shared
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sh" {
+                cell.activity.setTitle("liked your Shared Post", for: .normal)
+            }
+            
+            // (6) Moment
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like itm" {
+                cell.activity.setTitle("liked your Moment", for: .normal)
+            }
+            
+            // (7) Video
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like vi" {
+                cell.activity.setTitle("liked your Video", for: .normal)
+            }
+            
+            // (9)  Liked Comment
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "like co" {
+                cell.activity.setTitle("liked your comment", for: .normal)
+            }
+            
+            // ------------------------------------------------------------------------------------------------
+            // ==================== T A G ---------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------
+            
+            // (1) Text Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag tp" {
+                cell.activity.setTitle("tagged you in a Text Post", for: .normal)
+            }
+            
+            // (2) Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag ph" {
+                cell.activity.setTitle("tagged you in a Photo", for: .normal)
+            }
+            
+            // (3) Profile Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag pp" {
+                cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
+            }
+            
+            // (4) Space Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag sp" {
+                cell.activity.setTitle("tagged you in a Space Post", for: .normal)
+            }
+            
+            // (5) SKIP: Shared Post
+            // (6) SKIP: Moment
+            
+            // (7) Video
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag vi" {
+                cell.activity.setTitle("tagged you in a Video", for: .normal)
+            }
+            
+            // (8) Comment
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
+                cell.activity.setTitle("tagged you in a comment", for: .normal)
+            }
 
-        
-        
-        // -----------------------------------------------------------------------------------------------------------------
-        // ==================== R E L A T I O N S H I P S ------------------------------------------------------------------
-        // -----------------------------------------------------------------------------------------------------------------
-        // (1) Follow Requested
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "follow requested" {
-            cell.activity.setTitle("requested to follow you", for: .normal)
-        }
-        
-        // (2) Followed
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "followed" {
-            cell.activity.setTitle("started following you", for: .normal)
-        }
-        
-        
-        
-        
-        // -------------------------------------------------------------------------------------------------------------
-        // ==================== S P A C E ------------------------------------------------------------------------------
-        // -------------------------------------------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------
+            // ==================== C O M M E N T -------------------------------------------------------------------------
+            // ------------------------------------------------------------------------------------------------------------
+            
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
+                cell.activity.setTitle("commented on your post", for: .normal)
+            }
+            
+            // ------------------------------------------------------------------------------------------
+            // ==================== S H A R E D ---------------------------------------------------------
+            // ------------------------------------------------------------------------------------------
+            
+            // (1) Text Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share tp" {
+                cell.activity.setTitle("shared your Text Post", for: .normal)
+            }
+            
+            // (2) Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share ph" {
+                cell.activity.setTitle("shared your Photo", for: .normal)
+            }
+            
+            // (3) Profile Photo
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share pp" {
+                cell.activity.setTitle("shared your Profile Photo", for: .normal)
+            }
+            
+            // (4) Space Post
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sp" {
+                cell.activity.setTitle("shared your Space Post", for: .normal)
+            }
+            
+            // (5) Share
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
+                cell.activity.setTitle("re-shared your Shared Post", for: .normal)
+            }
+            
+            // (6) Moment
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
+                cell.activity.setTitle("shared your Moment", for: .normal)
+            }
+            
+            // (7) Video
+            if activityObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
+                cell.activity.setTitle("shared your Video", for: .normal)
+            }
+            
+            // ===========================================================================================================
+            // END TITLE =================================================================================================
+            // ===========================================================================================================
+            
+            // (4) Set time
+            let from = activityObjects[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+            
+            // logic what to show : Seconds, minutes, hours, days, or weeks
+            // logic what to show : Seconds, minutes, hours, days, or weeks
+            if difference.second! <= 0 {
+                cell.time.text = "now"
+            } else if difference.second! > 0 && difference.minute! == 0 {
+                cell.time.text = "\(difference.second!)s ago"
+            } else if difference.minute! > 0 && difference.hour! == 0 {
+                cell.time.text = "\(difference.minute!)m ago"
+            } else if difference.hour! > 0 && difference.day! == 0 {
+                cell.time.text = "\(difference.hour!)h ago"
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                cell.time.text = "\(difference.day!)d ago"
+            } else if difference.weekOfMonth! > 0 {
+                cell.time.text = "\(difference.weekOfMonth!)w ago"
+            }
 
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "space" {
-            cell.activity.setTitle("wrote on your Space", for: .normal)
-        }
-
-        // --------------------------------------------------------------------------------------------------------------
-        // ==================== L I K E ---------------------------------------------------------------------------------
-        // --------------------------------------------------------------------------------------------------------------
-
-        
-        // (1) Text Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like tp" {
-            cell.activity.setTitle("liked your Text Post", for: .normal)
+        } else {
+            
         }
         
-        // (2) Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like ph" {
-            cell.activity.setTitle("liked your Photo", for: .normal)
-        }
-        
-        // (3) Profile Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like pp" {
-            cell.activity.setTitle("liked your Profile Photo", for: .normal)
-        }
-        
-        // (4) Space Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sp" {
-            cell.activity.setTitle("liked your Space Post", for: .normal)
-        }
-        
-        // (5) Shared
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sh" {
-            cell.activity.setTitle("liked your Shared Post", for: .normal)
-        }
-        
-        // (6) Moment
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like itm" {
-            cell.activity.setTitle("liked your Moment", for: .normal)
-        }
-        
-        // (7) Video
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like vi" {
-            cell.activity.setTitle("liked your Video", for: .normal)
-        }
-        
-        // (9)  Liked Comment
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "like co" {
-            cell.activity.setTitle("liked your comment", for: .normal)
-        }
-        
-        
-        // ------------------------------------------------------------------------------------------------
-        // ==================== T A G ---------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------------------
-        
-        // (1) Text Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag tp" {
-            cell.activity.setTitle("tagged you in a Text Post", for: .normal)
-        }
-
-        // (2) Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag ph" {
-            cell.activity.setTitle("tagged you in a Photo", for: .normal)
-        }
-        
-        // (3) Profile Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag pp" {
-            cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
-        }
-        
-        // (4) Space Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag sp" {
-            cell.activity.setTitle("tagged you in a Space Post", for: .normal)
-        }
-        
-        // (5) SKIP: Shared Post
-        // (6) SKIP: Moment
-        
-        // (7) Video
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag vi" {
-            cell.activity.setTitle("tagged you in a Video", for: .normal)
-        }
-        
-        // (8) Comment
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
-            cell.activity.setTitle("tagged you in a comment", for: .normal)
-        }
-        
-        
-        
-        
-        // ------------------------------------------------------------------------------------------------------------
-        // ==================== C O M M E N T -------------------------------------------------------------------------
-        // ------------------------------------------------------------------------------------------------------------
-        
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
-            cell.activity.setTitle("commented on your post", for: .normal)
-        }
-        
-        
-        // ------------------------------------------------------------------------------------------
-        // ==================== S H A R E D ---------------------------------------------------------
-        // ------------------------------------------------------------------------------------------
-        
-        // (1) Text Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share tp" {
-            cell.activity.setTitle("shared your Text Post", for: .normal)
-        }
-        
-        // (2) Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share ph" {
-            cell.activity.setTitle("shared your Photo", for: .normal)
-        }
-        
-        // (3) Profile Photo
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share pp" {
-            cell.activity.setTitle("shared your Profile Photo", for: .normal)
-        }
-        
-        // (4) Space Post
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sp" {
-            cell.activity.setTitle("shared your Space Post", for: .normal)
-        }
-        
-        // (5) Share
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
-            cell.activity.setTitle("re-shared your Shared Post", for: .normal)
-        }
-        
-        // (6) Moment
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
-            cell.activity.setTitle("shared your Moment", for: .normal)
-        }
-        
-        // (7) Video
-        if activityObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
-            cell.activity.setTitle("shared your Video", for: .normal)
-        }
-        
-        
-        // ===========================================================================================================
-        // END TITLE =================================================================================================
-        // ===========================================================================================================
-        
-        
-        // (4) Set time
-        let from = activityObjects[indexPath.row].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
-        // logic what to show : Seconds, minutes, hours, days, or weeks
-        // logic what to show : Seconds, minutes, hours, days, or weeks
-        if difference.second! <= 0 {
-            cell.time.text = "now"
-        } else if difference.second! > 0 && difference.minute! == 0 {
-            cell.time.text = "\(difference.second!)s ago"
-        } else if difference.minute! > 0 && difference.hour! == 0 {
-            cell.time.text = "\(difference.minute!)m ago"
-        } else if difference.hour! > 0 && difference.day! == 0 {
-            cell.time.text = "\(difference.hour!)h ago"
-        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-            cell.time.text = "\(difference.day!)d ago"
-        } else if difference.weekOfMonth! > 0 {
-            cell.time.text = "\(difference.weekOfMonth!)w ago"
-        }
         
         return cell
     }
@@ -509,7 +594,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         if page <= activityObjects.count + self.skipped.count {
             
             // Increase page size to load more posts
-            page = page + 25
+            page = page + 50
 
             // Fetch Notifications
             queryNotifications()

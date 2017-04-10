@@ -54,6 +54,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // Re-share a post
                 self.reShare()
                 // MARK: - SVProgressHUD
+                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                 SVProgressHUD.showSuccess(withStatus: "Shared")
                 // Pop VC
                 _ = self.navigationController?.popViewController(animated: true)
@@ -61,6 +62,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // Create share a post
                 self.createShare()
                 // MARK: - SVProgressHUD
+                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                 SVProgressHUD.showSuccess(withStatus: "Sent")
                 // Pop VC
                 _ = self.navigationController?.popViewController(animated: true)

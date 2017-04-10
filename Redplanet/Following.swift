@@ -151,7 +151,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
         // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
-        SVProgressHUD.setForegroundColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0))
+        SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
         
         // Fetch Following
         fetchFollowing()
@@ -466,10 +466,6 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             eCell.iconicPreview.contentMode = .scaleAspectFill
             // (5A) MOMENT
             if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" {
-                
-                // Make iconicPreview circular with red border color
-                eCell.iconicPreview.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                eCell.iconicPreview.layer.borderWidth = 3.50
                 
                 if let still = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                     // STILL PHOTO

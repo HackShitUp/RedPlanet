@@ -175,6 +175,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     print("Successfully saved objects: \(me)")
                     
                     // MARK: - SVProgressHUD
+                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                     SVProgressHUD.showSuccess(withStatus: "Saved")
                     // Enable back button
                     self.backButton.isEnabled = true
@@ -380,6 +381,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
                     
                     // MARK: - SVProgressHUD
+                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
                     SVProgressHUD.showSuccess(withStatus: "Success")
                     
                 } else {

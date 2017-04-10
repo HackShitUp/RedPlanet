@@ -287,7 +287,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         
         // logic what to show : Seconds, minutes, hours, days, or weeks
         if difference.second! <= 0 {
-            cell.time.text = "right now"
+            cell.time.text = "now"
         } else if difference.second! > 0 && difference.minute! == 0 {
             if difference.second! == 1 {
                 cell.time.text = "1 second ago"
