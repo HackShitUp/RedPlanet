@@ -228,7 +228,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     /*
      Called when the user changes Notifications Access from "off" --> "on"
      REQUIRED
-     */
+    */
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
         if !stateChanges.from.subscribed && stateChanges.to.subscribed {
             print("Subscribed for OneSignal push notifications!")
