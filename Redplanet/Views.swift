@@ -93,7 +93,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                 
                 // Change the font and size of nav bar text
                 if self.viewers.count != 0 && self.navigationController != nil {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.00) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont
@@ -109,7 +109,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                     }
                     
                 } else {
-                    if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 17.00) {
+                    if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.00) {
                         let navBarAttributesDictionary: [String: AnyObject]? = [
                             NSForegroundColorAttributeName: UIColor.black,
                             NSFontAttributeName: navBarFont

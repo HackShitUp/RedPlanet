@@ -2244,14 +2244,14 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VcO-dI-Yt4">
-                                <rect key="frame" x="337" y="32" width="30" height="30"/>
+                                <rect key="frame" x="337" y="35" width="25" height="25"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Fv5-P2-x8f"/>
-                                    <constraint firstAttribute="width" constant="30" id="aNv-WX-Lld"/>
+                                    <constraint firstAttribute="height" constant="25" id="Fv5-P2-x8f"/>
+                                    <constraint firstAttribute="width" constant="25" id="aNv-WX-Lld"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="21"/>
-                                <state key="normal">
+                                <state key="normal" image="Left Filled-100">
                                     <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -2272,8 +2272,8 @@
                             <constraint firstItem="K9N-Sf-jRy" firstAttribute="leading" secondItem="3Rg-Bq-6CG" secondAttribute="leading" id="Vtc-ps-T7R"/>
                             <constraint firstAttribute="trailing" secondItem="K9N-Sf-jRy" secondAttribute="trailing" id="ZwU-xT-XJQ"/>
                             <constraint firstItem="aX7-Z2-acv" firstAttribute="top" secondItem="3Rg-Bq-6CG" secondAttribute="top" constant="28" id="l3M-i1-9xx"/>
-                            <constraint firstAttribute="trailing" secondItem="VcO-dI-Yt4" secondAttribute="trailing" constant="8" id="skK-Qu-I4e"/>
-                            <constraint firstItem="VcO-dI-Yt4" firstAttribute="top" secondItem="3Rg-Bq-6CG" secondAttribute="top" constant="32" id="woS-Gm-Ofm"/>
+                            <constraint firstAttribute="trailing" secondItem="VcO-dI-Yt4" secondAttribute="trailing" constant="13" id="skK-Qu-I4e"/>
+                            <constraint firstItem="VcO-dI-Yt4" firstAttribute="top" secondItem="3Rg-Bq-6CG" secondAttribute="top" constant="35" id="woS-Gm-Ofm"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Yfn-sr-gBD"/>
@@ -2287,7 +2287,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gwh-Me-zQ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2524.5" y="527.5"/>
+            <point key="canvasLocation" x="2519" y="529"/>
         </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
@@ -2555,7 +2555,7 @@
                                                         <constraint firstAttribute="height" constant="21" id="lnZ-ov-ZKI"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                                    <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxp-5X-Ywn" customClass="KILabel">

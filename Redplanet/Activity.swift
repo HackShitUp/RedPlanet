@@ -94,6 +94,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                     }
                 }
                 
+                // Fetch Discoveries
+                self.fetchDiscoveries()
+                
                 // Set DZN
                 if self.activityObjects.count == 0 {
                     self.tableView!.emptyDataSetDelegate = self
@@ -113,6 +116,49 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     }
     
     func fetchDiscoveries() {
+        let publicAccounts = PFUser.query()!
+        publicAccounts.whereKey("private", equalTo: false)
+        
+        let discoveries = PFUser.query()!
+        discoveries.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+//        let both = PFQuery.orQuery(withSubqueries: [publicAccounts, discoveries])
+        discoveries.order(byDescending: "createdAt")
+        discoveries.includeKey("byUser")
+        discoveries.limit = self.page
+        discoveries.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.discoveries.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    self.discoveries.append(object)
+                }
+//                print("Counter: \(self.discoveries.count)\n")
+                // Reload data
+                self.tableView!.reloadData()
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+//        let both = PFQuery.orQuery(withSubqueries: [publicAccounts, discoveries])
+//        both.order(byDescending: "createdAt")
+//        both.includeKey("byUser")
+//        both.limit = self.page
+//        both.findObjectsInBackground {
+//            (objects: [PFObject]?, error: Error?) in
+//            if error == nil {
+//                // Clear array
+//                self.discoveries.removeAll(keepingCapacity: false)
+//                for object in objects! {
+//                    self.discoveries.append(object)
+//                }
+//                print("Counter: \(self.discoveries.count)\n")
+//                // Reload data
+//                self.tableView!.reloadData()
+//            } else {
+//                print(error?.localizedDescription as Any)
+//            }
+//        }
     }
     
 
@@ -189,25 +235,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         }
     }
     /**/
-    
-    
-    func showAlert(title: String?) {
-        let alert = UIAlertController(title: "\(title!) Denied",
-                                      message: "Please allow Redplanet to access \(title!) so you can receive updates from people you love.",
-                                      preferredStyle: .alert)
-        let settings = UIAlertAction(title: "Settings",
-                                     style: .default,
-                                     handler: { (alertAction: UIAlertAction!) in
-                                        // Show Settings
-                                        UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-        })
-        let later = UIAlertAction(title: "Later",
-                                  style: .default,
-                                  handler: nil)
-        alert.addAction(later)
-        alert.addAction(settings)
-        self.present(alert, animated: true, completion: nil)
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -348,6 +376,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         if section == 0 {
             return activityObjects.count
         } else {
+//            print("Count: \(self.discoveries.count)\n")
+//            return self.discoveries.count
             return 0
         }
     }
@@ -575,7 +605,28 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             }
 
         } else {
+           
+            // Declare content's object
+            // in Notifications' <forObjectId>
+            cell.contentObject = self.discoveries[indexPath.row]
             
+            // (1A) Set user's object
+            cell.userObject = self.discoveries[indexPath.row]
+            
+            // (1B) Set user's fullName
+            cell.rpUsername.setTitle("\(self.discoveries[indexPath.row].value(forKey: "realNameOfUser") as! String)", for: .normal)
+            
+            // (1C) Get and user's profile photo
+            if let proPic = self.discoveries[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                // MARK: - SDWebImage
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            }
+            
+            // (2) Hide time
+            cell.time.isHidden = true
+            
+            // (3) Set bio
+            cell.activity.setTitle("\(self.discoveries[indexPath.row].value(forKey: "bio") as! String)", for: .normal)
         }
         
         
