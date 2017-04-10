@@ -360,7 +360,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         }
     }
     
-    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white

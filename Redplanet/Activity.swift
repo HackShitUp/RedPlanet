@@ -118,14 +118,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     func fetchDiscoveries() {
         let publicAccounts = PFUser.query()!
         publicAccounts.whereKey("private", equalTo: false)
-        
-        let discoveries = PFUser.query()!
-        discoveries.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
-//        let both = PFQuery.orQuery(withSubqueries: [publicAccounts, discoveries])
-        discoveries.order(byDescending: "createdAt")
-        discoveries.includeKey("byUser")
-        discoveries.limit = self.page
-        discoveries.findObjectsInBackground {
+        publicAccounts.order(byAscending: "createdAt")
+        publicAccounts.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
@@ -133,32 +127,12 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                 for object in objects! {
                     self.discoveries.append(object)
                 }
-//                print("Counter: \(self.discoveries.count)\n")
                 // Reload data
                 self.tableView!.reloadData()
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
-//        let both = PFQuery.orQuery(withSubqueries: [publicAccounts, discoveries])
-//        both.order(byDescending: "createdAt")
-//        both.includeKey("byUser")
-//        both.limit = self.page
-//        both.findObjectsInBackground {
-//            (objects: [PFObject]?, error: Error?) in
-//            if error == nil {
-//                // Clear array
-//                self.discoveries.removeAll(keepingCapacity: false)
-//                for object in objects! {
-//                    self.discoveries.append(object)
-//                }
-//                print("Counter: \(self.discoveries.count)\n")
-//                // Reload data
-//                self.tableView!.reloadData()
-//            } else {
-//                print(error?.localizedDescription as Any)
-//            }
-//        }
     }
     
 
@@ -292,6 +266,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         // Clean tableView
         self.tableView!.tableFooterView = UIView()
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView!.estimatedRowHeight = 60
+        self.tableView!.rowHeight = UITableViewAutomaticDimension
+        self.tableView!.setNeedsLayout()
         
         // Set tabBarController's delegate to self
         // to access menu via tabBar
@@ -368,6 +345,32 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
 
     
     // MARK: - UITableViewDataSource
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor.white
+        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        label.textAlignment = .left
+        
+        if section == 0 {
+            label.text = "       ACTIVITY"
+            return label
+        } else {
+            label.text = "       DISCOVER"
+            return label
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 44
+        } else {
+            return 44
+        }
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -376,15 +379,14 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         if section == 0 {
             return activityObjects.count
         } else {
-//            print("Count: \(self.discoveries.count)\n")
-//            return self.discoveries.count
-            return 0
+            print("Count: \(self.discoveries.count)\n")
+            return self.discoveries.count
         }
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -434,12 +436,14 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // -----------------------------------------------------------------------------------------------------------------
             // (1) Follow Requested
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "follow requested" {
-                cell.activity.setTitle("requested to follow you", for: .normal)
+//                cell.activity.setTitle("requested to follow you", for: .normal)
+                cell.activity.text = "requested to follow you"
             }
             
             // (2) Followed
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "followed" {
-                cell.activity.setTitle("started following you", for: .normal)
+//                cell.activity.setTitle("started following you", for: .normal)
+                cell.activity.text = "started following you"
             }
             
             // -------------------------------------------------------------------------------------------------------------
@@ -447,7 +451,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // -------------------------------------------------------------------------------------------------------------
             
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "space" {
-                cell.activity.setTitle("wrote on your Space", for: .normal)
+//                cell.activity.setTitle("wrote on your Space", for: .normal)
+                cell.activity.text = "wrote on your Space"
             }
             
             // --------------------------------------------------------------------------------------------------------------
@@ -456,42 +461,50 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like tp" {
-                cell.activity.setTitle("liked your Text Post", for: .normal)
+//                cell.activity.setTitle("liked your Text Post", for: .normal)
+                cell.activity.text = "liked your Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like ph" {
-                cell.activity.setTitle("liked your Photo", for: .normal)
+//                cell.activity.setTitle("liked your Photo", for: .normal)
+                cell.activity.text = "liked your Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like pp" {
-                cell.activity.setTitle("liked your Profile Photo", for: .normal)
+//                cell.activity.setTitle("liked your Profile Photo", for: .normal)
+                cell.activity.text = "liked your Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sp" {
-                cell.activity.setTitle("liked your Space Post", for: .normal)
+//                cell.activity.setTitle("liked your Space Post", for: .normal)
+                cell.activity.text = "liked your Space Post"
             }
             
             // (5) Shared
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sh" {
-                cell.activity.setTitle("liked your Shared Post", for: .normal)
+//                cell.activity.setTitle("liked your Shared Post", for: .normal)
+                cell.activity.text = "liked your Shared Post"
             }
             
             // (6) Moment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like itm" {
-                cell.activity.setTitle("liked your Moment", for: .normal)
+//                cell.activity.setTitle("liked your Moment", for: .normal)
+                cell.activity.text = "liked your Moment"
             }
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like vi" {
-                cell.activity.setTitle("liked your Video", for: .normal)
+//                cell.activity.setTitle("liked your Video", for: .normal)
+                cell.activity.text = "liked your Video"
             }
             
             // (9)  Liked Comment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like co" {
-                cell.activity.setTitle("liked your comment", for: .normal)
+//                cell.activity.setTitle("liked your comment", for: .normal)
+                cell.activity.text = "liked your Comment"
             }
             
             // ------------------------------------------------------------------------------------------------
@@ -500,22 +513,26 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag tp" {
-                cell.activity.setTitle("tagged you in a Text Post", for: .normal)
+//                cell.activity.setTitle("tagged you in a Text Post", for: .normal)
+                cell.activity.text = "tagged you in a Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag ph" {
-                cell.activity.setTitle("tagged you in a Photo", for: .normal)
+//                cell.activity.setTitle("tagged you in a Photo", for: .normal)
+                cell.activity.text = "tagged you in a Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag pp" {
-                cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
+//                cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
+                cell.activity.text = "tagged you in a Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag sp" {
-                cell.activity.setTitle("tagged you in a Space Post", for: .normal)
+//                cell.activity.setTitle("tagged you in a Space Post", for: .normal)
+                cell.activity.text = "tagged you in a Space Post"
             }
             
             // (5) SKIP: Shared Post
@@ -523,12 +540,14 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag vi" {
-                cell.activity.setTitle("tagged you in a Video", for: .normal)
+//                cell.activity.setTitle("tagged you in a Video", for: .normal)
+                cell.activity.text = "tagged you in a Video"
             }
             
             // (8) Comment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
-                cell.activity.setTitle("tagged you in a comment", for: .normal)
+//                cell.activity.setTitle("tagged you in a comment", for: .normal)
+                cell.activity.text = "tagged you in a comment"
             }
 
             // ------------------------------------------------------------------------------------------------------------
@@ -536,7 +555,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // ------------------------------------------------------------------------------------------------------------
             
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
-                cell.activity.setTitle("commented on your post", for: .normal)
+//                cell.activity.setTitle("commented on your post", for: .normal)
+                cell.activity.text = "commented on your post"
             }
             
             // ------------------------------------------------------------------------------------------
@@ -545,37 +565,44 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share tp" {
-                cell.activity.setTitle("shared your Text Post", for: .normal)
+//                cell.activity.setTitle("shared your Text Post", for: .normal)
+                cell.activity.text = "shared your Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share ph" {
-                cell.activity.setTitle("shared your Photo", for: .normal)
+//                cell.activity.setTitle("shared your Photo", for: .normal)
+                cell.activity.text = "shared your Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share pp" {
-                cell.activity.setTitle("shared your Profile Photo", for: .normal)
+//                cell.activity.setTitle("shared your Profile Photo", for: .normal)
+                cell.activity.text = "shared your Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sp" {
-                cell.activity.setTitle("shared your Space Post", for: .normal)
+//                cell.activity.setTitle("shared your Space Post", for: .normal)
+                cell.activity.text = "shared your Space Post"
             }
             
             // (5) Share
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
-                cell.activity.setTitle("re-shared your Shared Post", for: .normal)
+//                cell.activity.setTitle("re-shared your Shared Post", for: .normal)
+                cell.activity.text = "re-shared your Shared Post"
             }
             
             // (6) Moment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
-                cell.activity.setTitle("shared your Moment", for: .normal)
+//                cell.activity.setTitle("shared your Moment", for: .normal)
+                cell.activity.text = "shared your Moment"
             }
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
-                cell.activity.setTitle("shared your Video", for: .normal)
+//                cell.activity.setTitle("shared your Video", for: .normal)
+                cell.activity.text = "shared your Video"
             }
             
             // ===========================================================================================================
@@ -626,7 +653,13 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             cell.time.isHidden = true
             
             // (3) Set bio
-            cell.activity.setTitle("\(self.discoveries[indexPath.row].value(forKey: "bio") as! String)", for: .normal)
+            if let userBio = self.discoveries[indexPath.row].value(forKey: "bio") as? String {
+//                cell.activity.setTitle(userBio, for: .normal)
+                cell.activity.text = userBio
+            } else {
+//                cell.activity.setTitle("", for: .normal)
+                cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "username") as! String)"
+            }
         }
         
         

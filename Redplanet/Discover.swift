@@ -196,13 +196,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Set delegate
         header.delegate = self
-        
-        // Underline "Selected Stories"
-        let underlineAttribute = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
-        let underlineAttributedString = NSAttributedString(string: "\(header.ssTitle.text!)", attributes: underlineAttribute)
-        header.ssTitle.attributedText = underlineAttributedString
 
-        
         // Update Stories
         header.updateUI()
 

@@ -106,7 +106,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     self.cover.isUserInteractionEnabled = true
                     self.cover.addGestureRecognizer(shareTap)
                     // Add Tap
-                    self.cover.setTitle("💩\nNo Posts Today.", for: .normal)
+                    self.cover.setTitle("💩 No Posts Today", for: .normal)
                     self.tableView.addSubview(self.cover)
                     self.tableView!.allowsSelection = false
                     self.tableView!.isScrollEnabled = false

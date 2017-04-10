@@ -32,9 +32,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     var mediaURLS = [String]()
     var authors = [String]()
     
-    @IBOutlet weak var exitButton: UIButton!
-    @IBOutlet weak var publisherLogo: PFImageView!
-    @IBOutlet weak var publisherName: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBAction func exit(_ sender: Any) {
@@ -115,11 +112,32 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.present(webVC, animated: true, completion: nil)
     }
     
+    // Function to stylize and set title of navigation bar
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.black,
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.title = "\(mediaName.last!)"
+        }
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Show UIstatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Stylize view
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        // Set view
+        configureView()
         // Configure data
         self.fetchStories(mediaSource: storyURL.last!)
         
@@ -134,12 +152,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // MARK: - SVProgressHUD
         SVProgressHUD.show()
         
-        // Make corner radius
-        let exitImage = UIImage(cgImage: UIImage(named: "Left Filled-100")!.cgImage!, scale: 1.0, orientation: .down)
-        self.exitButton.setImage(exitImage, for: .normal)
-//        self.exitButton.layer.cornerRadius = 12.5
-        self.exitButton.clipsToBounds = true
 /*
+        MARK: - AnimatedCollectionViewLayout
         ZoomInOutAttributesAnimator()
         RotateInOutAttributesAnimator()
         LinearCardAttributesAnimator()
@@ -148,54 +162,16 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         PageAttributesAnimator()
         SnapInAttributesAnimator()
 */
-        // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
         layout.animator = LinearCardAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: 590)
+        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: 603)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
         self.collectionView!.frame = self.view.bounds
-        
-        // SHOW API
-        // publisherLogo
-        let oneTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
-        oneTap.numberOfTapsRequired = 1
-        self.publisherLogo.isUserInteractionEnabled = true
-        self.publisherLogo.addGestureRecognizer(oneTap)
-        
-        // publisherName
-        let twoTap = UITapGestureRecognizer(target: self, action: #selector(showAPIUsage))
-        twoTap.numberOfTapsRequired = 1
-        self.publisherName.isUserInteractionEnabled = true
-        self.publisherName.addGestureRecognizer(twoTap)
-        
-        // PUBLISHER
-        // Fetch media's logo
-        let ads = PFQuery(className: "Ads")
-        ads.whereKey("adName", equalTo: mediaName.last!)
-        ads.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    if let file = object.value(forKey: "photo") as? PFFile {
-                        self.publisherLogo.layer.cornerRadius = 6.00
-                        self.publisherLogo.layer.borderColor = UIColor.lightGray.cgColor
-                        self.publisherLogo.layer.borderWidth = 0.5
-                        self.publisherLogo.clipsToBounds = true
-                        // MARK: - SDWebImage
-                        self.publisherLogo.sd_setImage(with: URL(string: file.url!), placeholderImage: UIImage())
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-        // Set publisher's name
-        self.publisherName.text! = mediaName.last!
     }
     
     override func didReceiveMemoryWarning() {

@@ -30,7 +30,7 @@ class ActivityCell: UITableViewCell {
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
-    @IBOutlet weak var activity: UIButton!
+    @IBOutlet weak var activity: UILabel!
     @IBOutlet weak var time: UILabel!
     
     
@@ -47,19 +47,18 @@ class ActivityCell: UITableViewCell {
     }
     
     
-    
-    @IBAction func viewPost(_ sender: Any) {
+    func viewPost() {
         
         // ---------------------------------------------------------------------------------------------------------------
         // -------------------- L I K E ----------------------------------------------------------------------------------
         // ---------------------------------------------------------------------------------------------------------------
         
         // (A) LIKED POST
-        if self.activity.titleLabel!.text!.hasPrefix("liked") {
+        if self.activity.text!.hasPrefix("liked") {
             
             // I
             // TEXT POST
-            if self.activity.titleLabel!.text!.hasSuffix("Text Post") {
+            if self.activity.text!.hasSuffix("Text Post") {
                 // Check TextPosts
                 let texts = PFQuery(className: "Newsfeeds")
                 texts.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -91,7 +90,7 @@ class ActivityCell: UITableViewCell {
             
             // II
             // PHOTO
-            if self.activity.titleLabel!.text!.hasSuffix("your Photo") {
+            if self.activity.text!.hasSuffix("your Photo") {
                 // Check "Photos_Videos"
                 let photos = PFQuery(className: "Newsfeeds")
                 photos.includeKeys(["byUser", "toUser", "pointObject"])
@@ -125,7 +124,7 @@ class ActivityCell: UITableViewCell {
             
             // III
             // PROFILE PHOTO
-            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
+            if self.activity.text!.hasSuffix("Profile Photo") {
                 let profilePhoto = PFQuery(className: "Newsfeeds")
                 profilePhoto.includeKeys(["byUser", "toUser", "pointObject"])
                 profilePhoto.whereKey("objectId", equalTo: self.contentObject!.value(forKey: "forObjectId") as! String)
@@ -158,7 +157,7 @@ class ActivityCell: UITableViewCell {
             
             // IV
             // SHARE
-            if self.activity.titleLabel!.text!.hasSuffix("Shared Post") {
+            if self.activity.text!.hasSuffix("Shared Post") {
                 let share = PFQuery(className: "Newsfeeds")
                 share.includeKeys(["byUser", "toUser", "pointObject"])
                 share.whereKey("contentType", equalTo: "sh")
@@ -191,7 +190,7 @@ class ActivityCell: UITableViewCell {
             
             // V
             // SPACE POST
-            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
+            if self.activity.text!.hasSuffix("Space Post") {
                 let spacePost = PFQuery(className: "Newsfeeds")
                 spacePost.includeKeys(["byUser", "toUser", "pointObject"])
                 spacePost.whereKey("toUser", equalTo: PFUser.current()!)
@@ -224,7 +223,7 @@ class ActivityCell: UITableViewCell {
             
             // VI
             // MOMENT
-            if self.activity.titleLabel!.text!.hasSuffix("Moment") {
+            if self.activity.text!.hasSuffix("Moment") {
                 let moment = PFQuery(className: "Newsfeeds")
                 moment.includeKeys(["byUser", "toUser", "pointObject"])
                 moment.whereKey("byUser", equalTo: PFUser.current()!)
@@ -264,7 +263,7 @@ class ActivityCell: UITableViewCell {
             
             // VII
             // VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("Video") {
+            if self.activity.text!.hasSuffix("Video") {
                 let video = PFQuery(className: "Newsfeeds")
                 video.includeKeys(["byUser", "toUser", "pointObject"])
                 video.whereKey("byUser", equalTo: PFUser.current()!)
@@ -298,7 +297,7 @@ class ActivityCell: UITableViewCell {
         
         
         // (B) LIKED COMMENT
-        if self.activity.titleLabel!.text! == "liked your comment" {
+        if self.activity.text! == "liked your comment" {
             
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
@@ -440,7 +439,7 @@ class ActivityCell: UITableViewCell {
         // -------------------- C O M M E N T ---------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------
         
-        if self.activity.titleLabel!.text! == "commented on your post" {
+        if self.activity.text! == "commented on your post" {
             
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
@@ -567,14 +566,14 @@ class ActivityCell: UITableViewCell {
         // -------------------- S H A R E D ---------------------------------------------------------------------------
         // ------------------------------------------------------------------------------------------------------------
         
-        if self.activity.titleLabel!.text!.hasPrefix("shared your") || self.activity.titleLabel!.text!.hasPrefix("re-shared your") {
+        if self.activity.text!.hasPrefix("shared your") || self.activity.text!.hasPrefix("re-shared your") {
             
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
             self.activity.isEnabled = false
             
             // (1) Text Post
-            if self.activity.titleLabel!.text!.hasSuffix("Text Post") {
+            if self.activity.text!.hasSuffix("Text Post") {
                 // Find Text Post
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -604,7 +603,7 @@ class ActivityCell: UITableViewCell {
             
             
             // (2) Photo
-            if self.activity.titleLabel!.text!.hasSuffix("Photo") {
+            if self.activity.text!.hasSuffix("Photo") {
                 // Find Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -630,7 +629,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // (3) Profile Photo
-            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
+            if self.activity.text!.hasSuffix("Profile Photo") {
                 // Find Profile Photo
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -657,7 +656,7 @@ class ActivityCell: UITableViewCell {
             
             
             // (4) Shared Post
-            if self.activity.titleLabel!.text!.hasSuffix("Shared Post") {
+            if self.activity.text!.hasSuffix("Shared Post") {
                 // Find Shared Post
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -686,7 +685,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // (5) Space Post
-            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
+            if self.activity.text!.hasSuffix("Space Post") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -720,7 +719,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // (6) Moment
-            if self.activity.titleLabel!.text!.hasSuffix("Moment") {
+            if self.activity.text!.hasSuffix("Moment") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -758,7 +757,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // (7) VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("Video") {
+            if self.activity.text!.hasSuffix("Video") {
                 // Find Moment
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -799,14 +798,14 @@ class ActivityCell: UITableViewCell {
         // -------------------- T A G -------------------------------------------------------------------------------------
         // ----------------------------------------------------------------------------------------------------------------
         
-        if self.activity.titleLabel!.text!.hasPrefix("tagged you in a") {
+        if self.activity.text!.hasPrefix("tagged you in a") {
             // Disable buttons
             self.activity.isUserInteractionEnabled = false
             self.activity.isEnabled = false
             
             
             // I Text Post
-            if self.activity.titleLabel!.text!.hasSuffix("Text Post"){
+            if self.activity.text!.hasSuffix("Text Post"){
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -835,7 +834,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // II Photo
-            if self.activity.titleLabel!.text!.hasSuffix("Photo") {
+            if self.activity.text!.hasSuffix("Photo") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -864,7 +863,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // III Profile Photo
-            if self.activity.titleLabel!.text!.hasSuffix("Profile Photo") {
+            if self.activity.text!.hasSuffix("Profile Photo") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -897,7 +896,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // IV Space Post
-            if self.activity.titleLabel!.text!.hasSuffix("Space Post") {
+            if self.activity.text!.hasSuffix("Space Post") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -931,7 +930,7 @@ class ActivityCell: UITableViewCell {
             
             
             // V VIDEO
-            if self.activity.titleLabel!.text!.hasSuffix("Video") {
+            if self.activity.text!.hasSuffix("Video") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -960,7 +959,7 @@ class ActivityCell: UITableViewCell {
             }
             
             // VI Comment
-            if self.activity.titleLabel!.text!.hasSuffix("comment") {
+            if self.activity.text!.hasSuffix("comment") {
                 // Find in Newsfeeds
                 let newsfeeds = PFQuery(className: "Newsfeeds")
                 newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -1051,7 +1050,7 @@ class ActivityCell: UITableViewCell {
         // ---------------------------------------------------------------------------------------------------------------
         
         // requested to follow you
-        if self.activity.titleLabel!.text! == "requested to follow you" {
+        if self.activity.text! == "requested to follow you" {
             // Push VC
             let rRequestsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followRequestsVC") as! FollowRequests
             self.delegate?.navigationController?.pushViewController(rRequestsVC, animated: true)
@@ -1059,7 +1058,7 @@ class ActivityCell: UITableViewCell {
         
         
         // started following you
-        if self.activity.titleLabel!.text! == "started following you" {
+        if self.activity.text! == "started following you" {
             // Append user's object
             otherObject.append(self.userObject!)
             // Append user's username
@@ -1076,7 +1075,7 @@ class ActivityCell: UITableViewCell {
         // --------------------------------------------------------------------------------------------------------------
         // -------------------- S P A C E -------------------------------------------------------------------------------
         // --------------------------------------------------------------------------------------------------------------
-        if self.activity.titleLabel!.text!.hasPrefix("wrote on your Space") {
+        if self.activity.text!.hasPrefix("wrote on your Space") {
             // Space Post
             
             let spacePost = PFQuery(className: "Newsfeeds")
@@ -1117,12 +1116,18 @@ class ActivityCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-
+        
         // Add profile photo tap
         let proPicTap = UITapGestureRecognizer(target: self, action: #selector(goUser))
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
+        
+        // Add viewPost tap
+        let postTap = UITapGestureRecognizer(target: self, action: #selector(viewPost))
+        postTap.numberOfTapsRequired = 1
+        self.activity.isUserInteractionEnabled = true
+        self.activity.addGestureRecognizer(nameTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
