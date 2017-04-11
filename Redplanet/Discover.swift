@@ -54,7 +54,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     // Variable to hold objects to discover
     var discoverObjects = [PFObject]()
     // Set pipeline method
-    var page: Int = 50
+    var page: Int = 100
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -80,15 +80,19 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
         
+        
         // Fetch objects
         let accounts = PFUser.query()!
-        if switchBool == true {
-            accounts.order(byAscending: "createdAt")
-        } else {
-            accounts.order(byDescending: "createdAt")
-        }
-        accounts.whereKey("private", equalTo: switchBool ?? false)
-        accounts.whereKey("proPicExists", equalTo: switchBool ?? true)
+//        accounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+        accounts.whereKey("private", equalTo: true)
+        accounts.whereKey("proPicExists", equalTo: true)
+//        accounts.whereKey("objectId", containedIn: a)
+//        if switchBool == true {
+//            accounts.order(byAscending: "createdAt")
+//        } else {
+//            accounts.order(byDescending: "createdAt")
+//        }
+        accounts.order(byAscending: "createdAt")
         accounts.limit = self.page
         accounts.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
@@ -97,7 +101,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                 SVProgressHUD.dismiss()
                 // Clear arrays
                 self.discoverObjects.removeAll(keepingCapacity: false)
-                
                 let shuffled = objects!.shuffled()
                 
                 for object in shuffled {
@@ -105,8 +108,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                         self.discoverObjects.append(object)
                     }
                 }
-                
+
                 if self.discoverObjects.count == 0 {
+                    print("FIRED HERE AGAIN")
                     // Call viewDidLoad() again
                     self.viewDidLoad()
                     // MARK: - DZNEmptyDataSet
@@ -166,8 +170,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         self.viewDidLoad()
     }
     
-
-    
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         self.collectionView?.setContentOffset(CGPoint.zero, animated: true)
@@ -191,7 +193,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -268,7 +269,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Set delegate
         header.delegate = self
-        header.ssTitle.text = "Selected Stories"
 
         // Update Stories
         header.updateUI()
@@ -299,10 +299,10 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
 
-        // (1) Get username
-        cell.rpUsername.text! = discoverObjects[indexPath.row].value(forKey: "username") as! String
+        // (1) Set username
+        cell.rpUsername.text! = (self.discoverObjects[indexPath.row].value(forKey: "username") as! String).lowercased()
         
-        // (2) Get profile photo
+        // (2) Get and set profile photo
         // Handle optional chaining
         if let proPic = discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
@@ -326,13 +326,12 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
-
     
     
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if self.collectionView!.contentOffset.y >= self.collectionView!.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
+//            loadMore()
         }
     }
     
@@ -341,8 +340,39 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         if page <= self.discoverObjects.count {
             // Increase page size to load more posts
             page = page + 50
-            // Query friends
-            fetchDiscover()
+            
+            // Fetch objects
+            let accounts = PFUser.query()!
+            accounts.whereKey("private", equalTo: switchBool ?? true)
+            accounts.whereKey("proPicExists", equalTo: true)
+            accounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+            accounts.limit = self.page
+            if switchBool == true {
+                accounts.order(byDescending: "createdAt")
+            } else {
+                accounts.order(byAscending: "createdAt")
+            }
+            accounts.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                    for object in objects! {
+                        // Skip blockedUsers and duplicates
+                        if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoverObjects.contains(where: {$0.objectId! == object.objectId!}) {
+                            self.discoverObjects.append(object)
+                        }
+                    }
+                    
+                } else {
+                    if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.dismiss()
+                    }
+                }
+                // Reload data
+                self.collectionView!.reloadData()
+            })
         }
     }
     

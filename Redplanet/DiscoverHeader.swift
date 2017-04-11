@@ -22,7 +22,6 @@ class DiscoverHeader: UICollectionReusableView, UICollectionViewDataSource, UICo
     // Array to hold Selected Stories
     var sStories = [PFObject]()
     
-    @IBOutlet weak var ssTitle: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
     // Function to update UI

@@ -119,7 +119,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         // MARK: - AppDelegate
         appDelegate.queryRelationships()
         let publicAccounts = PFUser.query()!
-        publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+//        publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
         publicAccounts.whereKey("proPicExists", equalTo: true)
         publicAccounts.whereKey("private", equalTo: false)
         publicAccounts.order(byAscending: "createdAt")
