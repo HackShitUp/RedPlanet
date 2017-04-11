@@ -17,6 +17,35 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
+
+/*
+ These extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
+*/
+extension MutableCollection where Indices.Iterator.Element == Index {
+    /// Shuffles the contents of given collection.
+    mutating func shuffle() {
+        let c = count
+        guard c > 1 else { return }
+        
+        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            guard d != 0 else { continue }
+            let i = index(firstUnshuffled, offsetBy: d)
+            swap(&self[firstUnshuffled], &self[i])
+        }
+    }
+}
+extension Sequence {
+    /// Returns an array with the contents of this sequence, shuffled.
+    func shuffled() -> [Iterator.Element] {
+        var result = Array(self)
+        result.shuffle()
+        return result
+    }
+}
+
+
+
 class Discover: UICollectionViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
     
     // AppDelegate
@@ -44,12 +73,14 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
+
         
         // Fetch objects
         let publicAccounts = PFUser.query()!
-        publicAccounts.limit = self.page
         publicAccounts.order(byAscending: "createdAt")
-        publicAccounts.whereKey("private", equalTo: false)
+//        publicAccounts.whereKey("private", equalTo: false)
+        publicAccounts.whereKey("proPicExists", equalTo: true)
+        publicAccounts.limit = self.page
         publicAccounts.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -57,7 +88,10 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                 SVProgressHUD.dismiss()
                 // Clear arrays
                 self.discoverObjects.removeAll(keepingCapacity: false)
-                for object in objects! {
+                
+                let shuffled = objects!.shuffled()
+                
+                for object in shuffled {
                     if !blockedUsers.contains(where: {$0.objectId == object.objectId}) {
                         self.discoverObjects.append(object)
                     }
@@ -66,7 +100,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                 // Check for other users
                 if PFUser.current()!.value(forKey: "location") != nil {
                     // Fetch People Near You
-                    self.discoverGeoCodes()
+//                    self.discoverGeoCodes()
                 }
                 
             } else {
@@ -155,6 +189,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.backgroundColor = UIColor.white
         
+        // Set UITabBarController's Delegate
+        self.navigationController?.tabBarController?.delegate = self
+        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
@@ -225,24 +262,16 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
+
+        // (1) Get username
+        cell.rpUsername.text! = discoverObjects[indexPath.row].value(forKey: "username") as! String
         
-        // Fetch Discover Objects
-        discoverObjects[indexPath.row].fetchIfNeededInBackground(block:  {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // (1) Get username
-                cell.rpUsername.text! = object!["username"] as! String
-                
-                // (2) Get profile photo
-                // Handle optional chaining
-                if let proPic = object!["userProfilePicture"] as? PFFile {
-                    // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
+        // (2) Get profile photo
+        // Handle optional chaining
+        if let proPic = discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+        }
     
         return cell
     }
@@ -259,7 +288,15 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
+
     
+    
+    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if self.collectionView!.contentOffset.y >= self.collectionView!.contentSize.height - self.view.frame.size.height * 2 {
+//            loadMore()
+        }
+    }
     
     func loadMore() {
         // If posts on server are > than shown
@@ -271,14 +308,14 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         }
     }
     
+    
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.collectionView!.contentOffset.y <= -140.00 {
-            refresher.endRefreshing()
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-        } else {
-            // Reload data
-            fetchDiscover()
-        }
+//        if self.collectionView!.contentOffset.y <= -140.00 {
+//            refresher.endRefreshing()
+//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+//        } else {
+//            refresh()
+//        }
     }
 }

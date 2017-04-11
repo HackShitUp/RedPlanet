@@ -100,12 +100,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         
         let cancelAction = UIAlertAction(title: "Try Again",
                                          style: .cancel,
-                                         handler: {(alertAction: UIAlertAction!) in
-                                            
-                                            // Set first responder
-                                            self.rpUsername.becomeFirstResponder()
-                                            
-        })
+                                         handler: nil)
         
         let forgot = UIAlertAction(title: "Forgot Password",
                                    style: .default,

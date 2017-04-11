@@ -116,23 +116,51 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     }
     
     func fetchDiscoveries() {
+        // MARK: - AppDelegate
+        appDelegate.queryRelationships()
         let publicAccounts = PFUser.query()!
-        publicAccounts.whereKey("private", equalTo: false)
-        publicAccounts.order(byAscending: "createdAt")
+        publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+        publicAccounts.whereKey("proPicExists", equalTo: true)
+        publicAccounts.order(byDescending: "createdAt")
+        publicAccounts.limit = self.page
         publicAccounts.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
                 self.discoveries.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    self.discoveries.append(object)
+                    if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.discoveries.append(object)
+                    }
                 }
-                // Reload data
-                self.tableView!.reloadData()
             } else {
                 print(error?.localizedDescription as Any)
             }
+            // Reload data
+            self.tableView!.reloadData()
         }
+ /*
+        let nearAccounts = PFUser.query()!
+        nearAccounts.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+        nearAccounts.order(byAscending: "createdAt")
+        nearAccounts.limit = self.page
+        nearAccounts.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+//                self.discoveries.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.discoveries.append(object)
+                    }
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+            // Reload data
+            self.tableView!.reloadData()
+        }
+*/
     }
     
 
@@ -304,7 +332,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     }
     
     
-    // MARK: DZNEmptyDataSet Framework
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if activityObjects.count == 0 {
             return true
@@ -348,25 +376,29 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.textColor = UIColor.white
-        label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         label.textAlignment = .left
         
         if section == 0 {
-            label.text = "       ACTIVITY"
+            if self.activityObjects.count != 0 {
+                label.text = "      ACTIVITY"
+            } else {
+                label.text = "      💩 NO ACTIVITY"
+            }
             return label
         } else {
-            label.text = "       DISCOVER"
+            label.text = "      DISCOVER"
             return label
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return 44
+            return 35
         } else {
-            return 44
+            return 35
         }
     }
     
@@ -379,7 +411,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         if section == 0 {
             return activityObjects.count
         } else {
-            print("Count: \(self.discoveries.count)\n")
             return self.discoveries.count
         }
     }
@@ -428,6 +459,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                 }
             }
             
+            // (2) Show time
+            cell.time.isHidden = false
+            
             // (3) Set title of activity
             // START TITLE *****************************************************************************************************
         
@@ -436,13 +470,11 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // -----------------------------------------------------------------------------------------------------------------
             // (1) Follow Requested
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "follow requested" {
-//                cell.activity.setTitle("requested to follow you", for: .normal)
                 cell.activity.text = "requested to follow you"
             }
             
             // (2) Followed
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "followed" {
-//                cell.activity.setTitle("started following you", for: .normal)
                 cell.activity.text = "started following you"
             }
             
@@ -451,7 +483,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // -------------------------------------------------------------------------------------------------------------
             
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "space" {
-//                cell.activity.setTitle("wrote on your Space", for: .normal)
                 cell.activity.text = "wrote on your Space"
             }
             
@@ -461,50 +492,42 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like tp" {
-//                cell.activity.setTitle("liked your Text Post", for: .normal)
                 cell.activity.text = "liked your Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like ph" {
-//                cell.activity.setTitle("liked your Photo", for: .normal)
                 cell.activity.text = "liked your Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like pp" {
-//                cell.activity.setTitle("liked your Profile Photo", for: .normal)
                 cell.activity.text = "liked your Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sp" {
-//                cell.activity.setTitle("liked your Space Post", for: .normal)
                 cell.activity.text = "liked your Space Post"
             }
             
             // (5) Shared
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like sh" {
-//                cell.activity.setTitle("liked your Shared Post", for: .normal)
                 cell.activity.text = "liked your Shared Post"
             }
             
             // (6) Moment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like itm" {
-//                cell.activity.setTitle("liked your Moment", for: .normal)
                 cell.activity.text = "liked your Moment"
             }
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like vi" {
-//                cell.activity.setTitle("liked your Video", for: .normal)
                 cell.activity.text = "liked your Video"
             }
             
             // (9)  Liked Comment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "like co" {
-//                cell.activity.setTitle("liked your comment", for: .normal)
-                cell.activity.text = "liked your Comment"
+                cell.activity.text = "liked your comment"
             }
             
             // ------------------------------------------------------------------------------------------------
@@ -513,25 +536,21 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag tp" {
-//                cell.activity.setTitle("tagged you in a Text Post", for: .normal)
                 cell.activity.text = "tagged you in a Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag ph" {
-//                cell.activity.setTitle("tagged you in a Photo", for: .normal)
                 cell.activity.text = "tagged you in a Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag pp" {
-//                cell.activity.setTitle("tagged you in a Profile Photo", for: .normal)
                 cell.activity.text = "tagged you in a Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag sp" {
-//                cell.activity.setTitle("tagged you in a Space Post", for: .normal)
                 cell.activity.text = "tagged you in a Space Post"
             }
             
@@ -540,13 +559,11 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag vi" {
-//                cell.activity.setTitle("tagged you in a Video", for: .normal)
                 cell.activity.text = "tagged you in a Video"
             }
             
             // (8) Comment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "tag co" {
-//                cell.activity.setTitle("tagged you in a comment", for: .normal)
                 cell.activity.text = "tagged you in a comment"
             }
 
@@ -555,7 +572,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // ------------------------------------------------------------------------------------------------------------
             
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
-//                cell.activity.setTitle("commented on your post", for: .normal)
                 cell.activity.text = "commented on your post"
             }
             
@@ -565,43 +581,36 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             
             // (1) Text Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share tp" {
-//                cell.activity.setTitle("shared your Text Post", for: .normal)
                 cell.activity.text = "shared your Text Post"
             }
             
             // (2) Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share ph" {
-//                cell.activity.setTitle("shared your Photo", for: .normal)
                 cell.activity.text = "shared your Photo"
             }
             
             // (3) Profile Photo
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share pp" {
-//                cell.activity.setTitle("shared your Profile Photo", for: .normal)
                 cell.activity.text = "shared your Profile Photo"
             }
             
             // (4) Space Post
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sp" {
-//                cell.activity.setTitle("shared your Space Post", for: .normal)
                 cell.activity.text = "shared your Space Post"
             }
             
             // (5) Share
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
-//                cell.activity.setTitle("re-shared your Shared Post", for: .normal)
                 cell.activity.text = "re-shared your Shared Post"
             }
             
             // (6) Moment
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
-//                cell.activity.setTitle("shared your Moment", for: .normal)
                 cell.activity.text = "shared your Moment"
             }
             
             // (7) Video
             if activityObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
-//                cell.activity.setTitle("shared your Video", for: .normal)
                 cell.activity.text = "shared your Video"
             }
             
@@ -652,18 +661,28 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // (2) Hide time
             cell.time.isHidden = true
             
-            // (3) Set bio
-            if let userBio = self.discoveries[indexPath.row].value(forKey: "bio") as? String {
-//                cell.activity.setTitle(userBio, for: .normal)
-                cell.activity.text = userBio
+            // (3) Set bio or username
+            if self.discoveries[indexPath.row].value(forKey: "userBiography") != nil {
+                cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "userBiography") as! String)"
             } else {
-//                cell.activity.setTitle("", for: .normal)
                 cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "username") as! String)"
             }
+            
         }
         
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 1 {
+            // Append objects
+            otherObject.append(self.discoveries[indexPath.row])
+            otherName.append(self.discoveries[indexPath.row].value(forKey: "username") as! String)
+            // Push VC
+            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherVC, animated: true)
+        }
     }
 
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!

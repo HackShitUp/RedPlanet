@@ -384,14 +384,14 @@ class OtherUser: UITableViewController {
                     
                     if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWER ONLY
-                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
+                        self.cover.setTitle("🔒 Private Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
                         
                     } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                     // CONFIRM FOLLOW REQUEST
-                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
+                        self.cover.setTitle("🔒 Private Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -399,7 +399,7 @@ class OtherUser: UITableViewController {
                     } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("💩\nNo Posts Today", for: .normal)
+                            self.cover.setTitle("💩 No Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -407,7 +407,7 @@ class OtherUser: UITableViewController {
                         
                     } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
                     // FOLLOW REQUESTED
-                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
+                        self.cover.setTitle("🔒 Private Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -415,7 +415,7 @@ class OtherUser: UITableViewController {
                     } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                     // FOLLOWER & FOLLOWING == FOLLOWING
                         if self.posts.count == 0 {
-                            self.cover.setTitle("💩\nNo Posts Today", for: .normal)
+                            self.cover.setTitle("💩 No Posts Today", for: .normal)
                             self.tableView!.addSubview(self.cover)
                             self.tableView!.allowsSelection = false
                             self.tableView!.isScrollEnabled = true
@@ -423,7 +423,7 @@ class OtherUser: UITableViewController {
                         
                     } else {
                     // NOT CONNECTED
-                        self.cover.setTitle("🔒\nPrivate Account", for: .normal)
+                        self.cover.setTitle("🔒 Private Account", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = false
@@ -432,7 +432,7 @@ class OtherUser: UITableViewController {
                 } else {
                     // PUBLIC ACCOUNT
                     if self.posts.count == 0 {
-                        self.cover.setTitle("💩\nNo Posts Today", for: .normal)
+                        self.cover.setTitle("💩 No Posts Today", for: .normal)
                         self.tableView!.addSubview(self.cover)
                         self.tableView!.allowsSelection = false
                         self.tableView!.isScrollEnabled = true

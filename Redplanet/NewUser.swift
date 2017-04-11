@@ -25,6 +25,10 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
     
     // Function to onboard the user
     func saveUser(sender: Any) {
+        if self.rpUserBio.text! == "Introduce yourself!" {
+            self.rpUserBio.text = ""
+        }
+        
         // Convert image to PFFile
         let userPhoto = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
         let parseFile = PFFile(data: userPhoto!)

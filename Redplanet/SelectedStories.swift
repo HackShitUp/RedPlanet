@@ -115,7 +115,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21) {
+        if let navBarFont = UIFont(name: "Avenir-Heavy", size: 21) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
