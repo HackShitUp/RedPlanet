@@ -88,8 +88,6 @@ class RPChatMediaCell: UITableViewCell {
             self.container.isUserInteractionEnabled = true
             self.container.addGestureRecognizer(viewTap)
         }
-        
-        
     }
     
     

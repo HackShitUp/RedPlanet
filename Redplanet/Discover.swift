@@ -13,6 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
@@ -46,7 +47,7 @@ extension Sequence {
 
 
 
-class Discover: UICollectionViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate, UITextFieldDelegate {
+class Discover: UICollectionViewController, UITabBarControllerDelegate, UINavigationControllerDelegate, UISearchBarDelegate, UITextFieldDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -81,7 +82,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Fetch objects
         let accounts = PFUser.query()!
-        accounts.order(byDescending: "createdAt")
+//        if switchBool == true {
+//            accounts.order(byAscending: "createdAt")
+//        } else {
+//            accounts.order(byDescending: "createdAt")
+//        }
         accounts.whereKey("private", equalTo: switchBool ?? false)
         accounts.whereKey("proPicExists", equalTo: switchBool ?? true)
         accounts.limit = self.page
@@ -100,11 +105,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                         self.discoverObjects.append(object)
                     }
                 }
-
-                // Check for other users
-                if PFUser.current()!.value(forKey: "location") != nil {
-                    // Fetch People Near You
-//                    self.discoverGeoCodes()
+                
+                if self.discoverObjects.count == 0 {
+                    // MARK: - DZNEmptyDataSet
+                    self.collectionView!.emptyDataSetSource = self
+                    self.collectionView!.emptyDataSetDelegate = self
                 }
                 
             } else {
@@ -119,31 +124,47 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     }
     
     
-    // Function to fetch geoLocation
-    func discoverGeoCodes() {
-        // Find location
-        let discover = PFUser.query()!
-        discover.limit = self.page
-        discover.order(byAscending: "createdAt")
-        discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
-        discover.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoverObjects.contains(where: {$0.objectId! == object.objectId!}) && (object.objectId! !=  PFUser.current()!.objectId!) {
-                        self.discoverObjects.append(object)
-                    }
-                }
-            } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
-            }
-            // Reload data
-            self.collectionView!.reloadData()
-        })
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.discoverObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
     }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "\n\n💩\nSomething Went Wrong"
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Button title
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Tap To Reload"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    // Delegate method
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Reload data...
+        self.viewDidLoad()
+        self.fetchDiscover()
+    }
+    
 
     
     // MARK: - UITabBarController Delegate Method
@@ -188,12 +209,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
             switchBool = true
         } // Otherwise odd; set to false by default
         
-        print("SwitchBoolean: \(randomInt)\n-\n\(switchBool!)\n\n")
 
         // Fetch public accounts
         fetchDiscover()
-        
-        
         
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
@@ -249,6 +267,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Set delegate
         header.delegate = self
+        header.ssTitle.text = "Selected Stories"
 
         // Update Stories
         header.updateUI()

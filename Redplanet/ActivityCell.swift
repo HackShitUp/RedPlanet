@@ -1127,6 +1127,9 @@ class ActivityCell: UITableViewCell {
         postTap.numberOfTapsRequired = 1
         self.activity.isUserInteractionEnabled = true
         self.activity.addGestureRecognizer(postTap)
+        
+        self.activity.sizeToFit()
+        self.activity.numberOfLines = 0
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -366,7 +366,7 @@ class OtherUser: UITableViewController {
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Set time configs
+                    // Set time constraints
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {

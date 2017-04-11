@@ -83,8 +83,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                 
                 // Append objects
                 for object in objects! {
-                    
-                    // Set time configs
+                    // Set time constraints
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
@@ -99,6 +98,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                 
                 // Set DZN
                 if self.activityObjects.count == 0 {
+                    self.fetchDiscoveries()
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.emptyDataSetSource = self
                 }
@@ -121,8 +121,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         let publicAccounts = PFUser.query()!
         publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
         publicAccounts.whereKey("proPicExists", equalTo: true)
-//        publicAccounts.whereKey("private", equalTo: false)
-        publicAccounts.order(byDescending: "createdAt")
+        publicAccounts.whereKey("private", equalTo: false)
+        publicAccounts.order(byAscending: "createdAt")
         publicAccounts.limit = self.page
         publicAccounts.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -134,13 +134,41 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                         self.discoveries.append(object)
                     }
                 }
+                                
             } else {
                 print(error?.localizedDescription as Any)
             }
             // Reload data
             self.tableView!.reloadData()
         }
-
+    }
+    
+    
+    // Function to fetch geoLocation
+    func discoverGeoCodes() {
+        // Find location
+        let discover = PFUser.query()!
+        discover.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+        discover.limit = self.page
+        discover.order(byAscending: "createdAt")
+        discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+        discover.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoveries.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.discoveries.append(object)
+                    }
+                }
+            } else {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
+            }
+            // Reload data
+            self.tableView!.reloadData()
+        })
     }
     
 
@@ -191,7 +219,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     /*
      Called when the user changes Notifications Access from "off" --> "on"
      REQUIRED
-     */
+    */
     func onOSSubscriptionChanged(_ stateChanges: OSSubscriptionStateChanges!) {
         if !stateChanges.from.subscribed && stateChanges.to.subscribed {
             print("Subscribed for OneSignal push notifications!")
@@ -271,12 +299,12 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         }
         
         
-        // Clean tableView
+        // Configure UITableView
+        self.tableView.layoutIfNeeded()
+        self.tableView.setNeedsLayout()
         self.tableView!.tableFooterView = UIView()
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
-        self.tableView!.estimatedRowHeight = 60
-        self.tableView!.rowHeight = UITableViewAutomaticDimension
-        self.tableView!.setNeedsLayout()
+        self.tableView!.rowHeight = 60.00
         
         // Set tabBarController's delegate to self
         // to access menu via tabBar
@@ -293,13 +321,13 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         super.viewWillAppear(animated)
         // Stylize title
         configureView()
-        // Query notifications
-        queryNotifications()
         // MARK: - NSBadge
         // Set badge for Relationship Requests...
         if myRequestedFollowers.count != 0 {
             followRequestsButton.badge(text: "\(myRequestedFollowers.count)")
         }
+        // Query notifications
+        queryNotifications()
     }
 
     override func didReceiveMemoryWarning() {
@@ -323,7 +351,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🦄\nYou have no new\nNotifications today."
+        let str = "💩\nNo New\nNotifications today."
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
@@ -355,8 +383,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.textColor = UIColor.white
-        label.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        label.backgroundColor = UIColor.white
         label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         label.textAlignment = .left
@@ -375,11 +402,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
-            return 35
-        } else {
-            return 35
-        }
+        return 35
     }
     
     
@@ -394,10 +417,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             return self.discoveries.count
         }
     }
-    
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -641,13 +663,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // (2) Hide time
             cell.time.isHidden = true
             
-            // (3) Set bio or username
-            if self.discoveries[indexPath.row].value(forKey: "userBiography") != nil {
-                cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "userBiography") as! String)"
-            } else {
-                cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "username") as! String)"
-            }
-            
+            // (3) Set username
+            cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "username") as! String)"
         }
         
         
