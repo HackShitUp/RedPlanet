@@ -58,12 +58,17 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     // Refresher
     var refresher: UIRefreshControl!
     
+    // Boolean to determine randomized query; whether function will fetch public/private accounts
+    var switchBool: Bool? = false
+    
     @IBOutlet weak var searchBar: UITextField!
     
     // Function to refresh
     func refresh() {
-        // Query Discover
+        // Fetch Discover
         fetchDiscover()
+        // End refresher
+        refresher.endRefreshing()
         // Reload data
         self.collectionView!.reloadData()
     }
@@ -73,15 +78,14 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
-
         
         // Fetch objects
-        let publicAccounts = PFUser.query()!
-        publicAccounts.order(byAscending: "createdAt")
-//        publicAccounts.whereKey("private", equalTo: false)
-        publicAccounts.whereKey("proPicExists", equalTo: true)
-        publicAccounts.limit = self.page
-        publicAccounts.findObjectsInBackground(block: {
+        let accounts = PFUser.query()!
+        accounts.order(byDescending: "createdAt")
+        accounts.whereKey("private", equalTo: switchBool ?? false)
+        accounts.whereKey("proPicExists", equalTo: switchBool ?? true)
+        accounts.limit = self.page
+        accounts.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // MARK: - SVProgressHUD
@@ -176,9 +180,20 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.clear)
+        
+        // Determine randomized integer
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            switchBool = true
+        } // Otherwise odd; set to false by default
+        
+        print("SwitchBoolean: \(randomInt)\n-\n\(switchBool!)\n\n")
 
         // Fetch public accounts
         fetchDiscover()
+        
+        
         
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
@@ -196,6 +211,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
 
         // UITextField (searchBar)
@@ -224,7 +240,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     // MARK: - UICollectionViewHeader
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         // Size should be the same size of the headerView's label size:
-        return CGSize(width: self.view.frame.size.width, height: 175)
+        return CGSize(width: self.view.frame.size.width, height: 215)
     }
     
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -270,6 +286,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         // Handle optional chaining
         if let proPic = discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
+            cell.rpUserProPic.sd_addActivityIndicator()
+            cell.rpUserProPic.sd_setIndicatorStyle(.gray)
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
         }
     
@@ -294,7 +312,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if self.collectionView!.contentOffset.y >= self.collectionView!.contentSize.height - self.view.frame.size.height * 2 {
-//            loadMore()
+            loadMore()
         }
     }
     
@@ -311,11 +329,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//        if self.collectionView!.contentOffset.y <= -140.00 {
-//            refresher.endRefreshing()
-//            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-//        } else {
-//            refresh()
-//        }
+        if self.collectionView!.contentOffset.y <= -200.00 {
+            refresher.endRefreshing()
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
+        }
     }
 }

@@ -121,6 +121,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         let publicAccounts = PFUser.query()!
         publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
         publicAccounts.whereKey("proPicExists", equalTo: true)
+//        publicAccounts.whereKey("private", equalTo: false)
         publicAccounts.order(byDescending: "createdAt")
         publicAccounts.limit = self.page
         publicAccounts.findObjectsInBackground {
@@ -139,28 +140,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // Reload data
             self.tableView!.reloadData()
         }
- /*
-        let nearAccounts = PFUser.query()!
-        nearAccounts.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
-        nearAccounts.order(byAscending: "createdAt")
-        nearAccounts.limit = self.page
-        nearAccounts.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-//                self.discoveries.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.discoveries.append(object)
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-            // Reload data
-            self.tableView!.reloadData()
-        }
-*/
+
     }
     
 
