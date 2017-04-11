@@ -82,11 +82,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Fetch objects
         let accounts = PFUser.query()!
-//        if switchBool == true {
-//            accounts.order(byAscending: "createdAt")
-//        } else {
-//            accounts.order(byDescending: "createdAt")
-//        }
+        if switchBool == true {
+            accounts.order(byAscending: "createdAt")
+        } else {
+            accounts.order(byDescending: "createdAt")
+        }
         accounts.whereKey("private", equalTo: switchBool ?? false)
         accounts.whereKey("proPicExists", equalTo: switchBool ?? true)
         accounts.limit = self.page
@@ -107,6 +107,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                 }
                 
                 if self.discoverObjects.count == 0 {
+                    // Call viewDidLoad() again
+                    self.viewDidLoad()
                     // MARK: - DZNEmptyDataSet
                     self.collectionView!.emptyDataSetSource = self
                     self.collectionView!.emptyDataSetDelegate = self
@@ -162,7 +164,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         // Reload data...
         self.viewDidLoad()
-        self.fetchDiscover()
     }
     
 

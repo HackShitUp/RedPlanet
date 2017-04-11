@@ -3704,11 +3704,11 @@
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Selected Stories" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-eF-Syw">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="8" width="375" height="36"/>
                                     <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="375" id="BDA-It-q65"/>
-                                        <constraint firstAttribute="height" constant="44" id="btb-aN-MvG"/>
+                                        <constraint firstAttribute="height" constant="36" id="btb-aN-MvG"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -3779,7 +3779,7 @@
                                 <constraint firstAttribute="trailing" secondItem="f3S-eF-Syw" secondAttribute="trailing" id="XoZ-VT-1ju"/>
                                 <constraint firstAttribute="trailing" secondItem="a2P-N5-1Ew" secondAttribute="trailing" id="aG6-iH-5K9"/>
                                 <constraint firstItem="qSh-Em-rgP" firstAttribute="leading" secondItem="5rr-5D-wvn" secondAttribute="leading" id="taj-ci-yYN"/>
-                                <constraint firstItem="f3S-eF-Syw" firstAttribute="top" secondItem="5rr-5D-wvn" secondAttribute="top" id="vS7-0p-s3I"/>
+                                <constraint firstItem="f3S-eF-Syw" firstAttribute="top" secondItem="5rr-5D-wvn" secondAttribute="top" constant="8" id="vS7-0p-s3I"/>
                                 <constraint firstItem="f3S-eF-Syw" firstAttribute="leading" secondItem="5rr-5D-wvn" secondAttribute="leading" id="vem-DK-yIo"/>
                             </constraints>
                             <connections>
