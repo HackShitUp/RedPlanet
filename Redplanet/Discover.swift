@@ -73,10 +73,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         // Reload data
         self.collectionView!.reloadData()
     }
-    
+
     // Fetch Public Users
     func fetchDiscover() {
-        
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
         
@@ -84,15 +83,14 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         // Fetch objects
         let accounts = PFUser.query()!
 //        accounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
-        accounts.whereKey("private", equalTo: true)
+//        accounts.whereKey("private", equalTo: true)
         accounts.whereKey("proPicExists", equalTo: true)
-//        accounts.whereKey("objectId", containedIn: a)
-//        if switchBool == true {
-//            accounts.order(byAscending: "createdAt")
-//        } else {
-//            accounts.order(byDescending: "createdAt")
-//        }
-        accounts.order(byAscending: "createdAt")
+        if switchBool == true {
+            accounts.order(byAscending: "createdAt")
+        } else {
+            accounts.order(byDescending: "createdAt")
+        }
+//        accounts.order(byAscending: "createdAt")
         accounts.limit = self.page
         accounts.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
