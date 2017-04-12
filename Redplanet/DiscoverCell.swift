@@ -17,6 +17,7 @@ class DiscoverCell: UICollectionViewCell {
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
+    @IBOutlet weak var rpFullName: UILabel!
     
     
     override func awakeFromNib() {

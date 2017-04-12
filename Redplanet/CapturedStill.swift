@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import CoreLocation
 
 import Parse
 import ParseUI
@@ -19,9 +20,9 @@ import SwipeNavigationController
 
 // UIImage to hold captured photo
 var stillImages = [UIImage]()
-// User's city and state
-var cityState = [String]()
-
+// Array to hold user's location
+var currentGeoFence = [CLPlacemark]()
+var temperature = [String]()
 
 extension CGFloat {
     static func random() -> CGFloat {
@@ -45,8 +46,6 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
     let tapGesture = UITapGestureRecognizer()
     var data:[SNFilter] = []
-    
-    var label: UILabel!
     
     @IBOutlet weak var undoButton: UIButton!
     @IBOutlet weak var completeButton: UIButton!
@@ -112,11 +111,11 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             
             // Re-enable buttons
             self.continueButton.isUserInteractionEnabled = true
-            // Clear arrray
-            stillImages.removeAll(keepingCapacity: false)
             // Send Notification
             NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-            // Show bottom
+            // Clear arrrays
+            clearArrays()
+            // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             
         } else {
@@ -146,19 +145,16 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                     ]
                 )
             }
-            
-            // Re-enable buttons
-            self.continueButton.isUserInteractionEnabled = true
-            // Make false
-            chatCamera = false
-            // Clear arrray
-            stillImages.removeAll(keepingCapacity: false)
             // Reload data
             NotificationCenter.default.post(name: rpChat, object: nil)
-            // Push to bottom
-            DispatchQueue.main.async {
-                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-            }
+            // Make false
+            chatCamera = false
+            // Clear arrrays
+            clearArrays()
+            // Re-enable buttons
+            self.continueButton.isUserInteractionEnabled = true
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
     }
     
@@ -172,6 +168,53 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
         // Delegate
+    }
+    
+    
+    
+    // MARK: - OpenWeatherMap.org API
+    open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
+        
+        // Clear array
+        temperature.removeAll(keepingCapacity: false)
+        
+        // Call OpenWeatherMap API
+        let wheatherURL = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: wheatherURL!) {
+            (data: Data?, response: URLResponse?, error: Error?) in
+            if error == nil {
+                
+                if let webContent = data {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: webContent, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
+                        
+                        let main = json["main"] as! NSDictionary
+                        let kelvin = main["temp"] as! Double
+                        let farenheit = (kelvin * 1.8) - 459.67
+                        let celsius = kelvin - 273.15
+                        let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+                        
+                        // APPEND Temperature
+                        temperature.append(both)
+                        
+                    } catch {
+                        print("ERROR: Unable to read JSON data.")
+                    }
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+        // Resume query if ended
+        task.resume()
+    }
+    
+    func clearArrays() {
+        stillImages.removeAll(keepingCapacity: false)
+        currentGeoFence.removeAll(keepingCapacity: false)
+        temperature.removeAll(keepingCapacity: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -223,7 +266,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stillImages.removeAll(keepingCapacity: false)
+        clearArrays()
         NotificationCenter.default.removeObserver(textField)
         UIView.setAnimationsEnabled(true)
     }
@@ -258,20 +301,21 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     //MARK: Functions
     fileprivate func createData(_ image: UIImage) {
-        
-        let width = self.view.bounds.size.width
-        let height = self.view.bounds.size.height
-        
-        // I CONFIGURE TIME
+
+        // Configure.. 
+        // Times
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "h:mma"
-        let time = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        // Day
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "EEEE"
+        let dayOfWeek = dayFormatter.string(from: Date())
+        
+        // I TIME STAMP
+        let time = UILabel(frame: self.view.bounds)
         time.font = UIFont(name: "Futura-Medium", size: 70)
         time.textColor = UIColor.white
-        time.layer.shadowColor = UIColor.black.cgColor
-        time.layer.shadowOffset = CGSize(width: 1, height: 1)
-        time.layer.shadowRadius = 3
-        time.layer.shadowOpacity = 0.5
+        time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
         time.textAlignment = .center
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
@@ -279,7 +323,19 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         let timeStamp = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        // III CREATE RED FILTER
+        // II DAY
+        let day = UILabel(frame: self.view.bounds)
+        day.font = UIFont(name: "AvenirNext-Demibold", size: 50)
+        day.textColor = UIColor.white
+        day.layer.applyShadow(layer: day.layer)
+        day.text = "\(dayOfWeek)"
+        day.textAlignment = .center
+        UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+        day.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let dayStamp = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        // II RED FILTER
         let red = UIView()
         red.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         red.alpha = 0.25
@@ -288,103 +344,121 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         red.layer.render(in: UIGraphicsGetCurrentContext()!)
         let redFilter = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
+
         
-        // (4) "<3 POINTS"
-        let love = UILabel(frame: self.view.bounds)
-        love.text = "DOPE\n❤🦄😍🚀🔥\n👽💸🤖💩🙈"
-        love.font = UIFont(name: "AvenirNext-Heavy", size: 30)
-        love.textColor = UIColor.white
-        love.textAlignment = .center
-        love.numberOfLines = 0
-//        let attachment = NSTextAttachment()
-//        attachment.image = UIImage(named: "Like Filled-100")
-//        let attachmentString = NSAttributedString(attachment: attachment)
-//        let theString = NSMutableAttributedString(string: love.text!)
-//        theString.append(attachmentString)
-//        love.attributedText = theString
+        // III "Me, Myself, and I"
+        let me = UIImageView(frame: self.view.bounds)
+        me.contentMode = .scaleAspectFill
+        if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
+            // MARK: - SDWebImage
+            me.sd_setImage(with: URL(string: proPic.url!)!)
+        } else {
+            me.image = UIImage(named: "Gender Neutral User-100")
+        }
+        me.alpha = 0.25
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
-        love.layer.render(in: UIGraphicsGetCurrentContext()!)
-        let loveFilter = UIGraphicsGetImageFromCurrentImageContext()
+        me.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let meFilter = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
         
-        // Clear filters
-        SNFilter.filterIdentities.removeAll(keepingCapacity: false)
+        /*
+         (0) OG Photo
+         (1) Instant
+         (2) Chrome
+         (3) Halftone
+         (4) Noir
+         
+         (5) Red
+         (6) Time
+         (7) Day
+         
+         (8) CITY
+         (9) TEMP
+         (10) ME
+         (11)
+         (12)
+        */
+        
+        var rpFilters = ["nil",
+                         "CIPhotoEffectInstant",
+                         "CIPhotoEffectChrome",
+                         "CIPhotoEffectNoir",
+                         "CICMYKHalftone"]
         
         // Append data accordingly
-        if cityState.isEmpty {
-        // GEOLOCATION DISABLED
-            let filtersA =  ["nil",
-                             "nil",
-                             "nil",
-                             "nil",
-                             "CIPhotoEffectNoir",
-                             "CICMYKHalftone",
-                             "CIPhotoEffectInstant",
-                             "CIPhotoEffectChrome"]
-            SNFilter.filterIdentities.append(contentsOf: filtersA)
-            // Add filter
+        if currentGeoFence.isEmpty || temperature.isEmpty {
+        // =======================================================================
+        // GEOLOCATION DISABLED ==================================================
+        // =======================================================================
+            // Append filters
+            rpFilters.append(contentsOf:
+                            ["nil",
+                            "nil",
+                            "nil",
+                            "nil"])
+            SNFilter.filterIdentities.append(contentsOf: rpFilters)
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: timeStamp!,
-                                              atZPosition: 0))
-            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: loveFilter!,
-                                              atZPosition: 0))
-            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: redFilter!,
-                                              atZPosition: 0))
-            
+            self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
+            self.data[6].addSticker(SNSticker(frame: self.view.bounds, image: timeStamp!, atZPosition: 0))
+            self.data[7].addSticker(SNSticker(frame: self.view.bounds, image: dayStamp!, atZPosition: 0))
+            self.data[8].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         } else {
-        // GEOLOCATION ENABLED
+        // =======================================================================
+        // GEOLOCATION ENABLED ===================================================
+        // =======================================================================
             
-            // II CONFIGURE: "City, State"
-            let city = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: height/3))
+            // IV AREA: "City, State"
+            let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
             city.font = UIFont(name: "AvenirNext-Bold", size: 40)
             city.textColor = UIColor.white
-//            city.backgroundColor = UIColor.randomColor()
             city.backgroundColor = UIColor.clear
-            city.text = "\(cityState.last!)"
+            city.text = "\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)"
             city.textAlignment = .center
             city.lineBreakMode = .byWordWrapping
             city.numberOfLines = 0
-            
             city.layer.shadowColor = UIColor.randomColor().cgColor
             city.layer.shadowOffset = CGSize(width: 1, height: 1)
             city.layer.shadowRadius = 3
             city.layer.shadowOpacity = 0.5
-            
-            
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
             
-            let filtersB = ["nil",
-                            "nil",
-                            "nil",
-                            "nil",
-                            "nil",
-                            "CIPhotoEffectNoir",
-                            "CICMYKHalftone",
-                            "CIPhotoEffectInstant",
-                            "CIPhotoEffectChrome"]
-            SNFilter.filterIdentities.append(contentsOf: filtersB)
-            // Add filter
+            // V TEMERPATURE
+            let temp = UILabel(frame: self.view.bounds)
+            temp.font = UIFont(name: "Futura-Bold", size: 50)
+            temp.textColor = UIColor.white
+            temp.textAlignment = .center
+            temp.numberOfLines = 0
+            temp.text = temperature.last!
+            temp.layer.applyShadow(layer: temp.layer)
+            UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
+            temp.layer.render(in: UIGraphicsGetCurrentContext()!)
+            let tempFilter = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            
+            
+            // Append filters
+            rpFilters.append(contentsOf: ["nil",
+                                          "nil",
+                                          "nil",
+                                          "nil",
+                                          "nil",
+                                          "nil"])
+            SNFilter.filterIdentities.append(contentsOf: rpFilters)
             self.data = SNFilter.generateFilters(SNFilter(frame: self.view.frame, withImage: image), filters: SNFilter.filterIdentities)
-            self.data[1].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: timeStamp!,
-                                              atZPosition: 0))
-            self.data[2].addSticker(SNSticker(frame: CGRect(x: 0, y: height-height/3, width: width, height: height),
-                                              image: cityStamp!,
-                                              atZPosition: 0))
-            self.data[3].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: loveFilter!,
-                                              atZPosition: 0))
-            self.data[4].addSticker(SNSticker(frame: CGRect(x: 0, y: 0, width: width, height: height),
-                                              image: redFilter!,
-                                              atZPosition: 0))
+            self.data[5].addSticker(SNSticker(frame: self.view.bounds, image: redFilter!, atZPosition: 0))
+            self.data[6].addSticker(SNSticker(frame: self.view.bounds, image: timeStamp!, atZPosition: 0))
+            self.data[7].addSticker(SNSticker(frame: self.view.bounds, image: dayStamp!, atZPosition: 0))
+            self.data[8].addSticker(SNSticker(frame: CGRect(x: 0, y: self.view.bounds.height-self.view.bounds.height/3, width: self.view.bounds.width, height: self.view.bounds.height), image: cityStamp!, atZPosition: 0))
+            self.data[9].addSticker(SNSticker(frame: self.view.bounds, image: tempFilter!, atZPosition: 0))
+            self.data[10].addSticker(SNSticker(frame: self.view.bounds, image: meFilter!, atZPosition: 0))
         }
+
+        
+        
         
     }// end creating data
     

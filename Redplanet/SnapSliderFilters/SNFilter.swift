@@ -10,16 +10,6 @@ import UIKit
 import CoreImage
 
 open class SNFilter: UIImageView {
-    /*
-     0 NONE
-     1 Time Stamp
-     2 GeoLocation
-     3 Dope
-     4 Red
-     5 CI Filter
-     6 CI Filter
-     7 CI Filter
-    */
     open static var filterIdentities = [String]()
     open var name:String?
     var stickers = [SNSticker]()
@@ -60,6 +50,37 @@ open class SNFilter: UIImageView {
         self.layer.mask = maskLayer;
     }
     
+    
+    /*
+     } else if name == "CIColorControls" {
+     // (1) CIImage:
+     // UIImage --> CGImage --> CIImage
+     let aCIImage = CIImage(cgImage: filter.image!.cgImage!)
+     // (2) Define Context
+     let context = CIContext(options: nil)
+     // (3) CIFilter
+     let brightnessFilter = CIFilter(name: name)
+     // Set Image
+     brightnessFilter?.setValue(aCIImage, forKey: "inputImage")
+     // Configure Brightness
+     brightnessFilter?.setValue(0.50, forKey: "inputBrightness")
+     // (4) CIImage --> declare and get output image from filter
+     let outputImage = brightnessFilter?.outputImage
+     // (5) CGImage --> get cgImage created from CIContext
+     let imageRef = context.createCGImage(outputImage!, from: outputImage!.extent)
+     // (6) Convert filtered cgImage to UIImage and set orientation
+     var filteredImage: UIImage?
+     if isRearCam! == true {
+     filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.right)
+     } else if isRearCam! == false {
+     filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
+     }
+     // (7) Add filtered image to array
+     filter.image = filteredImage
+     return filter
+     */
+    
+    
     func applyFilter(filterNamed name:String) -> SNFilter {
         
         let filter: SNFilter = self.copy() as! SNFilter
@@ -72,35 +93,6 @@ open class SNFilter: UIImageView {
             // Figure out how to replicate the code 
             // in the next statement
             return filter
-            
-        /*
-        } else if name == "CIColorControls" {
-            // (1) CIImage:
-            // UIImage --> CGImage --> CIImage
-            let aCIImage = CIImage(cgImage: filter.image!.cgImage!)
-            // (2) Define Context
-            let context = CIContext(options: nil)
-            // (3) CIFilter
-            let brightnessFilter = CIFilter(name: name)
-            // Set Image
-            brightnessFilter?.setValue(aCIImage, forKey: "inputImage")
-            // Configure Brightness
-            brightnessFilter?.setValue(0.50, forKey: "inputBrightness")
-            // (4) CIImage --> declare and get output image from filter
-            let outputImage = brightnessFilter?.outputImage
-            // (5) CGImage --> get cgImage created from CIContext
-            let imageRef = context.createCGImage(outputImage!, from: outputImage!.extent)
-            // (6) Convert filtered cgImage to UIImage and set orientation
-            var filteredImage: UIImage?
-            if isRearCam! == true {
-                filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.right)
-            } else if isRearCam! == false {
-                filteredImage = UIImage(cgImage: imageRef!, scale: 1.0, orientation: UIImageOrientation.leftMirrored)
-            }
-            // (7) Add filtered image to array
-            filter.image = filteredImage
-            return filter
-        */  
         } else {
             // Create and apply filter
             // (1) Create Source Image

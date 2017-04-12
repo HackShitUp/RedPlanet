@@ -27,9 +27,10 @@ import SDWebImage
 
 class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, OSPermissionObserver, OSSubscriptionObserver {
     
-    // DISCOVERIES - Array to hold new people to follow
-    var discoveries = [PFObject]()
-    // NOTIFICATIONS - Array to hold user's notifications < 24 hours
+    // DISCOVER - Array to hold new people to follow
+    var discoverObjects = [PFObject]()
+    
+    // ACTIVITY - Array to hold user's notifications < 24 hours
     var activityObjects = [PFObject]()
     // Skipped objects for content that's > 24 hours
     var skipped = [PFObject]()
@@ -61,9 +62,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         self.navigationController?.pushViewController(contactsVC, animated: true)
     }
 
-    // Query Notifications
-    func queryNotifications() {
-        // Fetch your notifications
+    // Fetch Activity
+    func fetchActivity() {
+        // Fetch Current User's Notifications
         let notifications = PFQuery(className: "Notifications")
         notifications.whereKey("toUser", equalTo: PFUser.current()!)
         notifications.whereKey("fromUser", notEqualTo: PFUser.current()!)
@@ -93,12 +94,10 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                     }
                 }
                 
-                // Fetch Discoveries
-                self.fetchDiscoveries()
-                
                 // Set DZN
                 if self.activityObjects.count == 0 {
-                    self.fetchDiscoveries()
+                    // Fetch Discover objects when there are NO notifications!
+                    self.fetchDiscover()
                     self.tableView!.emptyDataSetDelegate = self
                     self.tableView!.emptyDataSetSource = self
                 }
@@ -115,11 +114,11 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         })
     }
     
-    func fetchDiscoveries() {
+    // Discover
+    func fetchDiscover() {
         // MARK: - AppDelegate
         appDelegate.queryRelationships()
         let publicAccounts = PFUser.query()!
-//        publicAccounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
         publicAccounts.whereKey("proPicExists", equalTo: true)
         publicAccounts.whereKey("private", equalTo: false)
         publicAccounts.order(byAscending: "createdAt")
@@ -128,49 +127,21 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
-                self.discoveries.removeAll(keepingCapacity: false)
+                self.discoverObjects.removeAll(keepingCapacity: false)
                 for object in objects! {
                     if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.discoveries.append(object)
+                        self.discoverObjects.append(object)
                     }
                 }
-                                
+                
+                // Reload data
+                self.tableView!.reloadData()
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            // Reload data
-            self.tableView!.reloadData()
         }
     }
-    
-    
-    // Function to fetch geoLocation
-    func discoverGeoCodes() {
-        // Find location
-        let discover = PFUser.query()!
-        discover.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
-        discover.limit = self.page
-        discover.order(byAscending: "createdAt")
-        discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
-        discover.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                for object in objects! {
-                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoveries.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.discoveries.append(object)
-                    }
-                }
-            } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
-            }
-            // Reload data
-            self.tableView!.reloadData()
-        })
-    }
-    
 
     // MARK: - UITabBarControllerDelegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -207,8 +178,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     
     // Refresh function
     func refresh() {
-        // Query notifications
-        queryNotifications()
+        // Fetch Activity
+        fetchActivity()
         // End refresher
         self.refresher.endRefreshing()
         // Reload data
@@ -257,7 +228,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         configureView()
         
         // Set initial query
-        self.queryNotifications()
+        self.fetchActivity()
         
         // MARK: - OneSignal
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
@@ -327,7 +298,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             followRequestsButton.badge(text: "\(myRequestedFollowers.count)")
         }
         // Query notifications
-        queryNotifications()
+        fetchActivity()
     }
 
     override func didReceiveMemoryWarning() {
@@ -342,7 +313,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     
     // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if activityObjects.count == 0 {
+        if activityObjects.count == 0 || discoverObjects.count == 0 {
             return true
         } else {
             return false
@@ -381,40 +352,33 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
 
     
     // MARK: - UITableViewDataSource
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let label = UILabel()
-        label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
-        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        label.textAlignment = .left
-        
-        if section == 0 {
-            if self.activityObjects.count != 0 {
-                label.text = "      ACTIVITY"
-            } else {
-                label.text = "      💩 NO ACTIVITY"
-            }
-            return label
-        } else {
-            label.text = "      DISCOVER"
-            return label
-        }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35
     }
     
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return activityObjects.count
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.backgroundColor = UIColor.white
+        label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
+        label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        label.textAlignment = .left
+        if self.activityObjects.count != 0 {
+            label.text = "      TODAY'S ACTIVITY"
         } else {
-            return self.discoveries.count
+            label.text = "      DISCOVER"
+        }
+        return label
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.activityObjects.count != 0 {
+            return self.activityObjects.count
+        } else {
+            return self.discoverObjects.count
         }
     }
 
@@ -439,7 +403,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
         
-        if indexPath.section == 0 {
+        if self.activityObjects.count != 0 {
             
             // Declare content's object
             // in Notifications' <forObjectId>
@@ -646,16 +610,16 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
            
             // Declare content's object
             // in Notifications' <forObjectId>
-            cell.contentObject = self.discoveries[indexPath.row]
+            cell.contentObject = self.discoverObjects[indexPath.row]
             
             // (1A) Set user's object
-            cell.userObject = self.discoveries[indexPath.row]
+            cell.userObject = self.discoverObjects[indexPath.row]
             
             // (1B) Set user's fullName
-            cell.rpUsername.setTitle("\(self.discoveries[indexPath.row].value(forKey: "realNameOfUser") as! String)", for: .normal)
+            cell.rpUsername.setTitle("\(self.discoverObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)", for: .normal)
             
             // (1C) Get and user's profile photo
-            if let proPic = self.discoveries[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+            if let proPic = self.discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
             }
@@ -664,7 +628,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             cell.time.isHidden = true
             
             // (3) Set username
-            cell.activity.text = "\(self.discoveries[indexPath.row].value(forKey: "username") as! String)"
+            cell.activity.text = "\(self.discoverObjects[indexPath.row].value(forKey: "username") as! String)"
         }
         
         
@@ -674,8 +638,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
             // Append objects
-            otherObject.append(self.discoveries[indexPath.row])
-            otherName.append(self.discoveries[indexPath.row].value(forKey: "username") as! String)
+            otherObject.append(self.discoverObjects[indexPath.row])
+            otherName.append(self.discoverObjects[indexPath.row].value(forKey: "username") as! String)
             // Push VC
             let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
             self.navigationController?.pushViewController(otherVC, animated: true)
@@ -696,8 +660,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             // Increase page size to load more posts
             page = page + 50
 
-            // Fetch Notifications
-            queryNotifications()
+            // Fetch Activity
+            fetchActivity()
         }
     }
     

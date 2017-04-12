@@ -53,8 +53,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     let appDelegate = AppDelegate()
     // Variable to hold objects to discover
     var discoverObjects = [PFObject]()
+    
     // Set pipeline method
-    var page: Int = 100
+    var page: Int = 500
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -74,25 +75,28 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         self.collectionView!.reloadData()
     }
 
-    // Fetch Public Users
+    // Fetch Users and shuffle results
     func fetchDiscover() {
         // Fetch blocked users
         _ = appDelegate.queryRelationships()
+
+        let publicWProPic = PFUser.query()!
+        publicWProPic.whereKey("private", equalTo: false)
+        publicWProPic.whereKey("proPicExists", equalTo: true)
         
+        let privateWProPic = PFUser.query()!
+        privateWProPic.whereKey("private", equalTo: true)
+        privateWProPic.whereKey("proPicExists", equalTo: true)
         
-        // Fetch objects
-        let accounts = PFUser.query()!
-//        accounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
-//        accounts.whereKey("private", equalTo: true)
-        accounts.whereKey("proPicExists", equalTo: true)
+        let both = PFQuery.orQuery(withSubqueries: [publicWProPic, privateWProPic])
         if switchBool == true {
-            accounts.order(byAscending: "createdAt")
+            both.order(byAscending: "createdAt")
         } else {
-            accounts.order(byDescending: "createdAt")
+            both.order(byDescending: "createdAt")
         }
-//        accounts.order(byAscending: "createdAt")
-        accounts.limit = self.page
-        accounts.findObjectsInBackground(block: {
+        both.limit = self.page
+        both.whereKey("objectId", notEqualTo: "mWwx2cy2H7")
+        both.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // MARK: - SVProgressHUD
@@ -106,11 +110,14 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
                         self.discoverObjects.append(object)
                     }
                 }
+                
+                // FETCH nearby users
+                if PFUser.current()!.value(forKey: "location") != nil {
+                    self.discoverGeoCodes()
+                }
+                
 
                 if self.discoverObjects.count == 0 {
-                    print("FIRED HERE AGAIN")
-                    // Call viewDidLoad() again
-                    self.viewDidLoad()
                     // MARK: - DZNEmptyDataSet
                     self.collectionView!.emptyDataSetSource = self
                     self.collectionView!.emptyDataSetDelegate = self
@@ -126,6 +133,35 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
             self.collectionView!.reloadData()
         })
     }
+
+    // Function to fetch geoLocation
+    func discoverGeoCodes() {
+        // Find location
+        let discover = PFUser.query()!
+        discover.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+        discover.limit = self.page
+        discover.order(byAscending: "createdAt")
+        discover.whereKey("location", nearGeoPoint: PFUser.current()!.value(forKey: "location") as! PFGeoPoint, withinMiles: 50)
+        discover.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    if !blockedUsers.contains(where: {$0.objectId == object.objectId}) && !self.discoverObjects.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.discoverObjects.append(object)
+                    }
+                }
+            } else {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
+            }
+            
+            // Reload data
+            self.collectionView!.reloadData()
+        })
+    }
+    
     
     
     // MARK: - DZNEmptyDataSet
@@ -153,7 +189,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Tap To Reload"
-        let font = UIFont(name: "AvenirNext-Demibold", size: 17.0)
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
             NSFontAttributeName: font!
@@ -164,9 +200,19 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
     
     // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        // Reload data...
-        self.viewDidLoad()
+        // Determine randomized integer
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            switchBool = true
+        } else {
+            // Odd
+            switchBool = false
+        }
+        // Fetch public accounts
+        fetchDiscover()
     }
+    
     
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -207,9 +253,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         if randomInt % 2 == 0 {
             // Even
             switchBool = true
-        } // Otherwise odd; set to false by default
+        } else {
+            // Odd
+            switchBool = false
+        }
         
-
         // Fetch public accounts
         fetchDiscover()
         
@@ -227,7 +275,11 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        if switchBool! == true {
+            refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        } else {
+            refresher.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+        }
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
@@ -267,6 +319,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Set delegate
         header.delegate = self
+        header.ssTitle.text = "rp\nSELECTED 🗞 STORIES"
 
         // Update Stories
         header.updateUI()
@@ -302,7 +355,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // (2) Get and set profile photo
         // Handle optional chaining
-        if let proPic = discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+        if let proPic = self.discoverObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
             cell.rpUserProPic.sd_addActivityIndicator()
             cell.rpUserProPic.sd_setIndicatorStyle(.gray)
@@ -314,12 +367,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
 
     // MARK: UICollectionViewDelegate
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        // Append to otherObject
+        // Append to <otherObject> and <otherName>
         otherObject.append(self.discoverObjects[indexPath.row])
-        // Append to otherName
         otherName.append(self.discoverObjects[indexPath.row].value(forKey: "username") as! String)
-        
         // Push to VC
         let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.navigationController?.pushViewController(otherVC, animated: true)
@@ -341,9 +391,9 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
             
             // Fetch objects
             let accounts = PFUser.query()!
+            accounts.whereKey("objectId", notEqualTo: "mWwx2cy2H7")
             accounts.whereKey("private", equalTo: switchBool ?? true)
-            accounts.whereKey("proPicExists", equalTo: true)
-            accounts.whereKey("objectId", notEqualTo: PFUser.current()!.objectId!)
+            accounts.whereKey("proPicExists", equalTo: switchBool ?? true)
             accounts.limit = self.page
             if switchBool == true {
                 accounts.order(byDescending: "createdAt")

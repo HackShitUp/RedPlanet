@@ -124,11 +124,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         } else if camera == .front {
             isRearCam = false
             self.swapCameraButton.setImage(nil, for: .normal)
-            self.swapCameraButton.setTitle("😎", for: .normal)
+            self.swapCameraButton.setTitle("😜", for: .normal)
         }
     }
-    
-    
     
     @IBAction func swapCamera(_ sender: Any) {
         switchCamera()
@@ -164,9 +162,14 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                     PFUser.current()!["location"] = geoPoint
                     PFUser.current()!.saveInBackground()
                     
-                    if cityState.isEmpty {
-                        // Append: "City, Region"
-                        cityState.append("\(pm.locality!), \(pm.administrativeArea!)")
+                    if currentGeoFence.isEmpty {
+                        // Append: CLPlacemark
+                        currentGeoFence.append(pm)
+                        
+                        // Get weather
+                        let capturedPhoto = CapturedStill()
+                        capturedPhoto.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()
                     } else {
