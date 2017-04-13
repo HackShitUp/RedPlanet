@@ -327,6 +327,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             
             // Call relationships function
             _ = queryRelationships()
+            // Check birthday
+            checkBday()
+            
         } else {
             // Login or Sign Up
             let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -425,4 +428,100 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             }
         }
     }// end QueryRelationships()
+    
+    
+    // Function to check birthday
+    func checkBday() {
+        if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
+            // (1) Get user's birthday // MONTH DATE // 6 Characters Total
+            let bEndIndex = usersBirthday.startIndex
+            let bStartIndex = usersBirthday.index(bEndIndex, offsetBy: 6)
+            let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
+            let finalBday = usersBirthday[r]
+            
+            // (2) Change String to Date // Date()
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM dd"
+            let birthDate = dateFormatter.date(from: finalBday)
+            
+            // (3) Set up today's date as string // String
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MMM dd"
+            let todayString = formatter.string(from: date)
+            
+            // (4) Convert todayString to Date()
+            let todayFormat = DateFormatter()
+            todayFormat.dateFormat = "MMM dd"
+            let today = todayFormat.date(from: todayString)
+
+            // Send chat if it DOES NOT YET exist!!!
+            if today == birthDate {
+                let chats = PFQuery(className: "Chats")
+                chats.includeKey("receiver")
+                chats.whereKey("senderUsername", equalTo: "teamrp")
+                chats.whereKey("receiver", equalTo: PFUser.current()!)
+                chats.whereKey("Message", equalTo: "Happy Birthday \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), hope you have a great birthday with the people you love!🎉🎂🎁\n\n❤, Team Redplanet")
+                chats.countObjectsInBackground(block: {
+                    (count: Int32, error: Error?) in
+                    if error == nil {
+                        if count == 0 {
+                            // Send user chat from TeamRP
+                            PFUser.query()!.getObjectInBackground(withId: "NgIJplW03t") {
+                                (object: PFObject?, error: Error?) in
+                                if error == nil {
+                                    let chats = PFObject(className: "Chats")
+                                    chats["sender"] = object!
+                                    chats["senderUsername"] = "teamrp"
+                                    chats["receiver"] = PFUser.current()!
+                                    chats["receiverUsername"] = PFUser.current()!.username!
+                                    chats["read"] = false
+                                    chats["Message"] = "Happy Birthday \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), hope you have a great birthday with the people you love!🎉🎂🎁\n\n❤, Team Redplanet"
+                                    chats.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if success {
+                                            // Set visible banner
+                                            let banner = Banner(title: "HAPPY BIRTHDAY 🎉🎂🎁",
+                                                                subtitle: "from REDPLANET",
+                                                                image: UIImage(named: "RedplanetLogo"),
+                                                                backgroundColor: UIColor.white)
+                                            banner.adjustsStatusBarStyle = false
+                                            banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                            banner.titleLabel.textColor = UIColor.black
+                                            banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                            banner.detailLabel.textColor = UIColor.black
+                                            banner.dismissesOnTap = true
+                                            banner.springiness = .heavy
+                                            banner.alpha = 1
+                                            banner.show(duration: 3.0)
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                    // Set visible banner
+                                    let banner = Banner(title: "HAPPY BIRTHDAY 🎉🎂🎁",
+                                                        subtitle: "from REDPLANET",
+                                                        image: UIImage(named: "RedplanetLogo"),
+                                                        backgroundColor: UIColor.white)
+                                    banner.adjustsStatusBarStyle = false
+                                    banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                    banner.titleLabel.textColor = UIColor.black
+                                    banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                    banner.detailLabel.textColor = UIColor.black
+                                    banner.dismissesOnTap = true
+                                    banner.springiness = .heavy
+                                    banner.alpha = 1
+                                    banner.show(duration: 3.0)
+                                }
+                            }
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+        }
+    }
 }

@@ -26,6 +26,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     var keyboard = CGRect()
     
     @IBAction func backButton(_ sender: AnyObject) {
+        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
@@ -176,6 +177,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     self.textView.resignFirstResponder()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
                     self.textView.text! = "What are you doing?"
+                    // MARK: - SwipeNavigationController
                     self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
                 } else {
                     print(error?.localizedDescription as Any)

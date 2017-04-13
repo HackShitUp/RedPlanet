@@ -135,15 +135,10 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
             self.rpUserBio.text! = ""
             self.rpUserBio.textColor = UIColor.black
         }
-        // TODO::
-        // TEST THIS
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Set first responder
-        self.rpUserBio.becomeFirstResponder()
         
         // Design button's corner radius
         self.continueButton.layer.cornerRadius = 25.00
