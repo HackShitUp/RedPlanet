@@ -25,11 +25,6 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
     // Function to save birthday
     func saveBday(sender: Any) {
 
-        // Push to NewUserVC
-        let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
-        self.navigationController?.pushViewController(userVC, animated: true)
-        
-        /*
         // Save user's birthday
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d yyyy"
@@ -59,7 +54,6 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
                 alert.view.tintColor = UIColor.black
             }
         }
-        */
     }
     
 

@@ -537,6 +537,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         upperBorder.backgroundColor = UIColor.darkGray.cgColor
         upperBorder.frame = CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(self.view.frame.width), height: CGFloat(0.50))
         self.container.layer.addSublayer(upperBorder)
+        
+        // Set maximum birthday
+        self.userBirthday.maximumDate = Date()
 
         // (A) Layout views
         self.rpUserProPic.layoutIfNeeded()

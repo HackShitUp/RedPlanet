@@ -22,6 +22,7 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     @IBOutlet weak var privacyPolicy: UILabel!
     @IBOutlet weak var logInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var welcome: UILabel!
     
     @IBAction func signUp(_ sender: Any) {
         // Push VC
@@ -37,13 +38,16 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
     
     func showPolicy() {
         // MARK: - SafariServices
-        let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: true)
+        let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: false)
         self.present(webVC, animated: true, completion: nil)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set welcome text
+        self.welcome.text = "Welcome to\nRedplanet."
 
         // Design logInButton
         self.logInButton.layer.cornerRadius = 25.00

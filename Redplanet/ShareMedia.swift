@@ -35,9 +35,12 @@ var mediaType: String?
 
 class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, UIPopoverPresentationControllerDelegate, CLImageEditorDelegate, CLImageEditorTransitionDelegate, SwipeNavigationControllerDelegate {
 
+    // Keyboard frame
+    var keyboard = CGRect()
     // Array to hold user's objects for @
     var userObjects = [PFObject]()
     
+    @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var mediaAsset: PFImageView!
     @IBOutlet weak var mediaCaption: UITextView!
     @IBOutlet weak var tableView: UITableView!
@@ -117,20 +120,15 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // Function to zoom
     func zoom(sender: AnyObject) {
-        
         if mediaType == "photo" {
             // Mark: - Agrume
             let agrume = Agrume(image: self.mediaAsset.image!, backgroundBlurStyle: .dark, backgroundColor: .black)
             agrume.showFrom(self)
         } else {
-            
             // Play the Video
             playVideo()
         }
     }
-    
-    
-    
     
     // Play V I D E O
     func playVideo() {
@@ -262,154 +260,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     // MARK: - SwipeNavigationController
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // Hide tableView on load
-        self.tableView!.isHidden = true
-        self.tableView!.allowsSelection = true
-        self.tableView!.delegate = self
-        self.tableView!.dataSource = self
-        
-        // Add tap methods depnding on mediaType
-        if mediaType == "photo" {
-            // Enable edit button
-            editBarButton.isEnabled = true
-            // Tap method to share Photo
-            let shareTap = UITapGestureRecognizer(target: self, action: #selector(sharePhotoData))
-            shareTap.numberOfTapsRequired = 1
-            self.shareButton.isUserInteractionEnabled = true
-            self.shareButton.addGestureRecognizer(shareTap)
-        } else if mediaType == "video" {
-            // Disable edit button
-            editBarButton.isEnabled = false
-            // Tap method to share VIDEO
-            if shareMediaAsset.isEmpty {
-                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareLibVideo))
-                shareTap.numberOfTapsRequired = 1
-                self.shareButton.isUserInteractionEnabled = true
-                self.shareButton.addGestureRecognizer(shareTap)
-            } else {
-                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareVideoData))
-                shareTap.numberOfTapsRequired = 1
-                self.shareButton.isUserInteractionEnabled = true
-                self.shareButton.addGestureRecognizer(shareTap)
-            }
-        }
-        
-        // add delegate for mediaCaption
-        self.mediaCaption.delegate = self
-        
-        // MARK:- SwipeNavigationController
-        self.containerSwipeNavigationController?.delegate = self
-        
-        // (1) Make shareButton circular
-        self.shareButton.layer.cornerRadius = self.shareButton.frame.size.width/2
-        self.shareButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.shareButton.layer.borderWidth = 0.5
-        self.shareButton.clipsToBounds = true
-        
-        // (2) Set image
-        // Set Image Request Options
-        // Cancel pixelation
-        // with Synchronous call
-        let imageOptions = PHImageRequestOptions()
-        imageOptions.deliveryMode = .highQualityFormat
-        imageOptions.resizeMode = .exact
-        imageOptions.isSynchronous = true
-        // Set preferred size
-        let targetSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
-        
-        
-        // Check whether the image was...
-        // (A) Taken
-        // (B) Selected from collection or photo library
-        // Then, set image
-        
-        // PHOTO
-        // PHAsset
-        if shareMediaAsset.count != 0 {
-            PHImageManager.default().requestImage(for: shareMediaAsset.last!,
-                                                  targetSize: targetSize,
-                                                  contentMode: .aspectFill,
-                                                  options: nil) {
-                                                    (img, _) -> Void in
-                                                    // Set image
-                                                    // Selected from library
-                                                    self.mediaAsset.image = img
-            }
-        } else if shareImageAssets.count != 0 {
-            // PHOTO
-            // UIImage
-            // Set image
-            // photo selected from UIImagePickerController
-            self.mediaAsset.image = shareImageAssets.last!
-        } else {
-            // VIDEO
-            // Load Video Preview and Play Video
-            let player = AVPlayer(url: instanceVideoData!)
-            let playerLayer = AVPlayerLayer(player: player)
-            playerLayer.frame = self.mediaAsset.bounds
-            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
-            self.mediaAsset.contentMode = .scaleAspectFit
-            self.mediaAsset.layer.addSublayer(playerLayer)
-        }
-        
-        
-        // (3) Stylize title
-        configureView()
-        
-        // (4) Add tap gesture to zoom in
-        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
-        zoomTap.numberOfTapsRequired = 1
-        self.mediaAsset.isUserInteractionEnabled = true
-        self.mediaAsset.addGestureRecognizer(zoomTap)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Set placeholder depending on mediaType
-        self.mediaCaption.text! = "Say something about this \(mediaType!)..."
-        // Add tap methods depnding on mediaType
-        if mediaType == "photo" {
-            // Enable edit button
-            editBarButton.isEnabled = true
-            // Tap method to share Photo
-            let shareTap = UITapGestureRecognizer(target: self, action: #selector(sharePhotoData))
-            shareTap.numberOfTapsRequired = 1
-            self.shareButton.isUserInteractionEnabled = true
-            self.shareButton.addGestureRecognizer(shareTap)
-        } else if mediaType == "video" {
-            // Disable edit button
-            editBarButton.isEnabled = false
-            // Tap method to share VIDEO
-            if shareMediaAsset.isEmpty {
-                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareLibVideo))
-                shareTap.numberOfTapsRequired = 1
-                self.shareButton.isUserInteractionEnabled = true
-                self.shareButton.addGestureRecognizer(shareTap)
-            } else {
-                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareVideoData))
-                shareTap.numberOfTapsRequired = 1
-                self.shareButton.isUserInteractionEnabled = true
-                self.shareButton.addGestureRecognizer(shareTap)
-            }
-        }
-    }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.mediaCaption.resignFirstResponder()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        PFQuery.clearAllCachedResults()
-        PFFile.clearAllCachedDataInBackground()
-        URLCache.shared.removeAllCachedResponses()
-    }
+    
+    
     
     // Function to share photo data
     func sharePhotoData() {
@@ -437,7 +291,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         newsfeeds.saveInBackground {
             (success: Bool, error: Error?) in
             if success {
-
+                
                 // Define #word
                 for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
                     // #####################
@@ -461,7 +315,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                 print(error?.localizedDescription as Any)
                             }
                         })
-                    // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                        // @@@@@@@@@@@@@@@@@@@@@@@@@@
                     } else if word.hasPrefix("@") {
                         // Cut all symbols
                         word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -542,7 +396,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             }
         }
     }
-
+    
     // Function share library video
     func shareLibVideo() {
         
@@ -590,7 +444,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                         
                         // Check for #'s and @'s
                         for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                        // #####################
+                            // #####################
                             if word.hasPrefix("#") {
                                 // Cut all symbols
                                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -611,7 +465,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                         print(error?.localizedDescription as Any)
                                     }
                                 })
-                            // @@@@@@@@@@@@@@@@@@@@@@@@@@
+                                // @@@@@@@@@@@@@@@@@@@@@@@@@@
                             } else if word.hasPrefix("@") {
                                 // Cut all symbols
                                 word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -817,7 +671,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                                 }
                                                                             }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
                                                                     }// end for loop for words
-
+                                                                    
                                                                 } else {
                                                                     print(error?.localizedDescription as Any)
                                                                 }
@@ -834,8 +688,194 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
     }// end shareVideoData() function
+    
+    
 
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Add tap methods depnding on mediaType
+        if mediaType == "photo" {
+            // Enable edit button
+            editBarButton.isEnabled = true
+            // Tap method to share Photo
+            let shareTap = UITapGestureRecognizer(target: self, action: #selector(sharePhotoData))
+            shareTap.numberOfTapsRequired = 1
+            self.shareButton.isUserInteractionEnabled = true
+            self.shareButton.addGestureRecognizer(shareTap)
+        } else if mediaType == "video" {
+            // Disable edit button
+            editBarButton.isEnabled = false
+            // Tap method to share VIDEO
+            if shareMediaAsset.isEmpty {
+                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareLibVideo))
+                shareTap.numberOfTapsRequired = 1
+                self.shareButton.isUserInteractionEnabled = true
+                self.shareButton.addGestureRecognizer(shareTap)
+            } else {
+                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareVideoData))
+                shareTap.numberOfTapsRequired = 1
+                self.shareButton.isUserInteractionEnabled = true
+                self.shareButton.addGestureRecognizer(shareTap)
+            }
+        }
+        
+        // Add observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Hide tableView on load
+        self.tableView!.isHidden = true
+        self.tableView!.allowsSelection = true
+        self.tableView!.delegate = self
+        self.tableView!.dataSource = self
+
+        
+        // add delegate for mediaCaption
+        self.mediaCaption.delegate = self
+        
+        // MARK:- SwipeNavigationController
+        self.containerSwipeNavigationController?.delegate = self
+        
+        // (1) Set image
+        // Set Image Request Options
+        // Cancel pixelation
+        // with Synchronous call
+        let imageOptions = PHImageRequestOptions()
+        imageOptions.deliveryMode = .highQualityFormat
+        imageOptions.resizeMode = .exact
+        imageOptions.isSynchronous = true
+        // Set preferred size
+        let targetSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+        
+        
+        // Check whether the image was...
+        // (A) Taken
+        // (B) Selected from collection or photo library
+        // Then, set image
+        
+        // PHOTO
+        // PHAsset
+        if shareMediaAsset.count != 0 {
+            PHImageManager.default().requestImage(for: shareMediaAsset.last!,
+                                                  targetSize: targetSize,
+                                                  contentMode: .aspectFill,
+                                                  options: nil) {
+                                                    (img, _) -> Void in
+                                                    // Set image
+                                                    // Selected from library
+                                                    self.mediaAsset.image = img
+            }
+        } else if shareImageAssets.count != 0 {
+            // PHOTO
+            // UIImage
+            // Set image
+            // photo selected from UIImagePickerController
+            self.mediaAsset.image = shareImageAssets.last!
+        } else {
+            // VIDEO
+            // Load Video Preview and Play Video
+            let player = AVPlayer(url: instanceVideoData!)
+            let playerLayer = AVPlayerLayer(player: player)
+            playerLayer.frame = self.mediaAsset.bounds
+            playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+            self.mediaAsset.contentMode = .scaleAspectFit
+            self.mediaAsset.layer.addSublayer(playerLayer)
+        }
+        
+        
+        // (2) Stylize title
+        configureView()
+        
+        // (3) Add tap gesture to zoom in
+        let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
+        zoomTap.numberOfTapsRequired = 1
+        self.mediaAsset.isUserInteractionEnabled = true
+        self.mediaAsset.addGestureRecognizer(zoomTap)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Set placeholder depending on mediaType
+        self.mediaCaption.text! = "Say something about this \(mediaType!)..."
+        // Add tap methods depnding on mediaType
+        if mediaType == "photo" {
+            // Enable edit button
+            editBarButton.isEnabled = true
+            // Tap method to share Photo
+            let shareTap = UITapGestureRecognizer(target: self, action: #selector(sharePhotoData))
+            shareTap.numberOfTapsRequired = 1
+            self.shareButton.isUserInteractionEnabled = true
+            self.shareButton.addGestureRecognizer(shareTap)
+        } else if mediaType == "video" {
+            // Disable edit button
+            editBarButton.isEnabled = false
+            // Tap method to share VIDEO
+            if shareMediaAsset.isEmpty {
+                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareLibVideo))
+                shareTap.numberOfTapsRequired = 1
+                self.shareButton.isUserInteractionEnabled = true
+                self.shareButton.addGestureRecognizer(shareTap)
+            } else {
+                let shareTap = UITapGestureRecognizer(target: self, action: #selector(shareVideoData))
+                shareTap.numberOfTapsRequired = 1
+                self.shareButton.isUserInteractionEnabled = true
+                self.shareButton.addGestureRecognizer(shareTap)
+            }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Resign firest responder
+        self.mediaCaption.resignFirstResponder()
+        // Remove observers
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+    }
+    
+    
+    
+    // MARK: - UIKeyboard Notification
+    func keyboardWillShow(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        // Move UI up
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            if self.menuView.frame.origin.y == self.menuView.frame.origin.y {
+                // Move menuView up
+                self.menuView.frame.origin.y -= self.keyboard.height
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        if self.menuView!.frame.origin.y != self.view.frame.size.height - self.menuView.frame.size.height {
+            // Move menuView down
+            self.menuView.frame.origin.y += self.keyboard.height
+        }
+    }
+    
+    
+
     
     // MARK: - UITextViewDelegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -843,7 +883,6 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             self.mediaCaption.text! = ""
         }
     }
-    
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
@@ -880,13 +919,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                 self.tableView!.isHidden = true
             }
         }
-        
         return true
     }
-    
 
-    
-    
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.userObjects.count

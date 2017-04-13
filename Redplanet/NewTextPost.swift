@@ -22,6 +22,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // Array to hold user objects
     var userObjects = [PFObject]()
+    // Keyboard frame
+    var keyboard = CGRect()
     
     @IBAction func backButton(_ sender: AnyObject) {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
@@ -34,6 +36,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         self.present(activityVC, animated: true, completion: nil)
     }
     
+    @IBOutlet weak var menuView: UIView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var shareButton: UIButton!
     @IBOutlet weak var characterCount: UILabel!
@@ -187,7 +190,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
-//                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
@@ -229,13 +231,17 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Stylize title
         configureView()
         // Set placeholder
-        self.textView.text! = "What are you doing?"
+        self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
         self.textView.textColor = UIColor.darkGray
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true
+        // Add observers
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     override func viewDidLoad() {
@@ -254,8 +260,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         
         // Make shareButton circular
         self.shareButton.layer.cornerRadius = self.shareButton.frame.size.width/2
-        self.shareButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.shareButton.layer.borderWidth = 0.5
         self.shareButton.clipsToBounds = true
         
         // Tap to save
@@ -267,7 +271,11 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        // Resign first responder
         self.textView.resignFirstResponder()
+        // Remove observers
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func didReceiveMemoryWarning() {
@@ -276,17 +284,48 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         PFFile.clearAllCachedDataInBackground()
         URLCache.shared.removeAllCachedResponses()
     }
+
+    
+    // MARK: - UIKeyboard Notification
+    func keyboardWillShow(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        // Move UI up: UITextView, and menuView
+        self.textView.frame.size.height -= self.keyboard.height
+        UIView.animate(withDuration: 0.4) { () -> Void in
+            self.view.setNeedsLayout()
+            self.view.layoutIfNeeded()
+            if self.menuView.frame.origin.y == self.menuView.frame.origin.y {
+                // Move UITextView up
+                self.textView.frame.size.height -= self.keyboard.height
+                // Move menuView up
+                self.menuView.frame.origin.y -= self.keyboard.height
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        // Define keyboard frame size
+        self.keyboard = ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue)!
+        // Move menuView down
+        if self.menuView!.frame.origin.y != self.view.frame.size.height - self.menuView.frame.size.height {
+            self.menuView.frame.origin.y += self.keyboard.height
+        }
+    }
+    
     
     // MARK: - UITextView delegate methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView!.text! == "What are you doing?" {
+        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revoltuionary movements..."{
             self.textView.text! = ""
             self.textView.textColor = UIColor.black
         }
     }
     
-    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        
+        
         // Count characters
         countRemaining()
         
@@ -339,7 +378,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return true
     }
-    
     
     // MARK: - UITableView Data Source methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

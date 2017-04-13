@@ -24,11 +24,6 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
     // Function to save name
     func saveName(sender: Any) {
         
-        // Push VC
-        let birthdayVC = self.storyboard?.instantiateViewController(withIdentifier: "birthdayVC") as! Birthday
-        self.navigationController?.pushViewController(birthdayVC, animated: true)
-        
-        /*
         if self.firstName.text!.isEmpty {
             
             // Invalid first name
@@ -85,7 +80,6 @@ class FullName: UIViewController, UITextFieldDelegate, UINavigationControllerDel
                 }
             }
         }
-        */
     }
     
     override func viewDidLoad() {

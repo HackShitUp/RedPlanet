@@ -191,13 +191,11 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         // Design profile photo's borders and border colors
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
         self.rpUserProPic.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.rpUserProPic.layer.borderWidth = 1.0
+        self.rpUserProPic.layer.borderWidth = 1.00
         self.rpUserProPic.clipsToBounds = true
         
         // Design button corners
-        self.doneButton.layer.cornerRadius = 2.0
-        self.doneButton.clipsToBounds = true
-        self.doneButton.layer.cornerRadius = 15.0
+        self.doneButton.layer.cornerRadius = 25.00
         self.doneButton.clipsToBounds = true
         
         // Set method tap to handle caption

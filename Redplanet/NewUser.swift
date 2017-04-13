@@ -26,11 +26,6 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
     // Function to onboard the user
     func saveUser(sender: Any) {
 
-        // Load Things to Follow interface
-        let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
-        self.navigationController?.pushViewController(onBoardVC, animated: true)
-        
-        /*
         // Convert image to PFFile
         let userPhoto = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
         let parseFile = PFFile(data: userPhoto!)
@@ -90,7 +85,6 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 print(error?.localizedDescription as Any)
             }
         })
-        */
     }
     
 
@@ -136,12 +130,13 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
     }
     
     // MARK: - UITextViewDelegate method
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    func textViewDidBeginEditing(_ textView: UITextView) {
         if self.rpUserBio.text! == "Introduce yourself!" {
             self.rpUserBio.text! = ""
+            self.rpUserBio.textColor = UIColor.black
         }
-        
-        return true
+        // TODO::
+        // TEST THIS
     }
     
     override func viewDidLoad() {
@@ -152,6 +147,9 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         
         // Design button's corner radius
         self.continueButton.layer.cornerRadius = 25.00
+        
+        // Set placeholder color
+        self.rpUserBio.textColor = UIColor.lightGray
         
         // Design pro pic
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
