@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Social
+import AudioToolbox
 
 import Parse
 import ParseUI
@@ -49,6 +50,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Check if textView is empty
         if textView.text!.isEmpty {
             
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            
             let alert = UIAlertController(title: "No Text Post?",
                                           message: "Share your thoughts within 500 characters about anything.",
                                           preferredStyle: .alert)
@@ -60,6 +64,9 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             self.present(alert, animated: true)
             
         } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revoltuionary movements..." {
+            
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             
             let alert = UIAlertController(title: "No Text Post?",
                                           message: "Please share your thoughts within 500 characters.",

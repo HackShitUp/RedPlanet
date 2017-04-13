@@ -56,28 +56,10 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
                 
                 // Save Birthday
                 PFUser.current()!["birthday"] = stringDate
-                PFUser.current()!.saveInBackground {
-                    (success: Bool, error: Error?) in
-                    if success {
-                        // Push to NewUserVC
-                        let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
-                        self.navigationController?.pushViewController(userVC, animated: true)
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        
-                        // Network error
-                        
-                        let alert = UIAlertController(title: "There was an error.",
-                                                      message: "There appears to be poor connection.",
-                                                      preferredStyle: .alert)
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: nil)
-                        alert.addAction(ok)
-                        alert.view.tintColor = UIColor.black
-                    }
-                }
+                PFUser.current()!.saveInBackground()
+                
+                // Dismiss
+                dialog.dismiss()
             }))
         
             dialogController.show(in: self)

@@ -411,7 +411,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 self.present(webVC, animated: true, completion: nil)
 
             } else if indexPath.row == 1 {
-                // LICENSE
+                // LICENSES
                 // Track when user views license
                 Heap.track("ViewedLicense", withProperties:
                     ["byUserId": "\(PFUser.current()!.objectId!)",
