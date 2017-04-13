@@ -196,8 +196,8 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         // Configure style
         dialogController.buttonStyle = { (button,height,position) in
             button.setTitleColor(UIColor.white, for: .normal)
-            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+            button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
             button.layer.masksToBounds = true
         }
         // Add Cancel button

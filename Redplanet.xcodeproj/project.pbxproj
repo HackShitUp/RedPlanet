@@ -56,7 +56,6 @@
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
 		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		7E7723111E5BCDF200066431 /* Licenses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7723101E5BCDF200066431 /* Licenses.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
 		7E7E92DD1E3D08C100E3C8EA /* Following.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E92DC1E3D08C100E3C8EA /* Following.swift */; };
@@ -260,7 +259,6 @@
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
-		7E7723101E5BCDF200066431 /* Licenses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Licenses.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		7E7E92DC1E3D08C100E3C8EA /* Following.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Following.swift; sourceTree = "<group>"; };
@@ -624,16 +622,6 @@
 				7E4CFF9C1DB439680087454E /* SpacePostCell.swift */,
 			);
 			name = SpacePost;
-			sourceTree = "<group>";
-		};
-		7E5A98051DDD2CFA006DA985 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
-				7EA4E4D41E738060000163AD /* BlockedUsers.swift */,
-				7E7723101E5BCDF200066431 /* Licenses.swift */,
-			);
-			name = Settings;
 			sourceTree = "<group>";
 		};
 		7E6A12E21E4D524C00CF108B /* Agrume */ = {
@@ -1242,11 +1230,12 @@
 		7EC5D19F1DB3566D00437219 /* CURRENTUSER */ = {
 			isa = PBXGroup;
 			children = (
+				7EC5D1921DB33CD400437219 /* UserSettings.swift */,
 				7E920BDA1E53AE85005171EE /* SavedPosts.swift */,
+				7EA4E4D41E738060000163AD /* BlockedUsers.swift */,
 				7EC05B181DB5FABF0039B357 /* CurrentUser */,
 				7E3E4FBF1DC2E7F800A7B5FC /* Profile */,
 				7E46EDD61DE4F4400034E434 /* Password */,
-				7E5A98051DDD2CFA006DA985 /* Settings */,
 			);
 			name = CURRENTUSER;
 			sourceTree = "<group>";
@@ -1689,7 +1678,6 @@
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
-				7E7723111E5BCDF200066431 /* Licenses.swift in Sources */,
 				7E98E9491DB75057001B7329 /* CLSpotEffect.m in Sources */,
 				7E43833C1DD9138000337007 /* HashTags.swift in Sources */,
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,

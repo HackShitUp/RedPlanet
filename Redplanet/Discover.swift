@@ -248,19 +248,6 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.clear)
         
-        // Determine randomized integer
-        let randomInt = arc4random()
-        if randomInt % 2 == 0 {
-            // Even
-            switchBool = true
-        } else {
-            // Odd
-            switchBool = false
-        }
-        
-        // Fetch public accounts
-        fetchDiscover()
-        
         // Do any additional setup after loading the view, typically from a nib.
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
@@ -275,11 +262,25 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Pull to refresh action
         refresher = UIRefreshControl()
-        if switchBool! == true {
+
+        
+        // Determine randomized integer that SHUFFLES OBJECTS
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            switchBool = true
             refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
         } else {
+            // Odd
+            switchBool = false
             refresher.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
         }
+        
+        // Fetch public accounts
+        fetchDiscover()
+        
+        // Add UIRefresher
+        refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.collectionView!.addSubview(refresher)
@@ -346,8 +347,8 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         // Make Profile Photo Circular
         cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2.0
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
+        cell.rpUserProPic.layer.borderColor = UIColor.randomColor().cgColor
+        cell.rpUserProPic.layer.borderWidth = 1.50
         cell.rpUserProPic.clipsToBounds = true
 
         // (1) Set username

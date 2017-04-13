@@ -65,149 +65,171 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     @IBAction func moreButton(_ sender: Any) {
-        let alert = UIAlertController(title: nil,
-                                      message: nil,
-                                      preferredStyle: .actionSheet)
-        // (1) View Profile
-        let visit = UIAlertAction(title: "Visit Profile",
-            style: .default,
-            handler: {(alertAciont: UIAlertAction!) in
-                // Appned user's object
-                otherObject.append(chatUserObject.last!)
-                // Append user's username
-                otherName.append(chatUsername.last!)
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
+                                                      message: "Chats")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        // Add photo
+        dialogController.imageHandler = { (imageView) in
+            if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
+                proPic.getDataInBackground(block: {
+                    (data: Data?, error: Error?) in
+                    if error == nil {
+                        imageView.image = UIImage(data: data!)
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            } else {
+                imageView.image = UIImage(named: "Gender Neutral User-100")
+            }
+            imageView.contentMode = .scaleAspectFill
+            return true //must return true, otherwise image won't show.
+        }
+        
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.layer.masksToBounds = true
+        }
+        // Add Cancel button
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        // Visit Profile button
+        dialogController.addAction(AZDialogAction(title: "Visit Profile", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Appned user's object
+            otherObject.append(chatUserObject.last!)
+            // Append user's username
+            otherName.append(chatUsername.last!)
+            // Push VC
+            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherVC, animated: true)
+        }))
+        
+        // Report Button
+        dialogController.addAction(AZDialogAction(title: "Report", handler: { (dialog) -> (Void) in
+            
+            let alert = UIAlertController(title: "Report",
+                                          message: "Please provide your reason for reporting \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
+                preferredStyle: .alert)
+            
+            let report = UIAlertAction(title: "Report", style: .destructive) {
+                [unowned self, alert] (action: UIAlertAction!) in
                 
-                // Push VC
-                let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
-                self.navigationController?.pushViewController(otherVC, animated: true)
-        })
+                let answer = alert.textFields![0]
+                
+                // REPORTED
+                let report = PFObject(className: "Reported")
+                report["byUsername"] = PFUser.current()!.username!
+                report["byUser"] = PFUser.current()!
+                report["toUsername"] = chatUsername.last!
+                report["toUser"] = chatUserObject.last!
+                report["forObjectId"] = chatUserObject.last!.objectId!
+                report["reason"] = answer.text!
+                report.saveInBackground(block: {
+                    (success: Bool, error: Error?) in
+                    if success {
+                        print("Successfully saved report: \(report)")
+                        
+                        let alert = UIAlertController(title: "Successfully Reported",
+                                                      message: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
+                            preferredStyle: .alert)
+                        
+                        let ok = UIAlertAction(title: "ok",
+                                               style: .default,
+                                               handler: nil)
+                        
+                        alert.addAction(ok)
+                        alert.view.tintColor = UIColor.black
+                        dialog.present(alert, animated: true, completion: nil)
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                        // MARK: - SVProgressHUD
+                        SVProgressHUD.showError(withStatus: "Error")
+                    }
+                })
+            }
+            
+            
+            let cancel = UIAlertAction(title: "Cancel",
+                                       style: .cancel,
+                                       handler: nil)
+            
+            
+            alert.addTextField(configurationHandler: nil)
+            alert.addAction(report)
+            alert.addAction(cancel)
+            alert.view.tintColor = UIColor.black
+            dialog.present(alert, animated: true, completion: nil)
+        }))
         
-        // (2) Report
-        let report = UIAlertAction(title: "Report",
-                                  style: .destructive,
-                                  handler: {(alertAction: UIAlertAction!) in
-                                    
-                                    let alert = UIAlertController(title: "Report",
-                                                                  message: "Please provide your reason for reporting \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                        preferredStyle: .alert)
-                                    
-                                    let report = UIAlertAction(title: "Report", style: .destructive) {
-                                        [unowned self, alert] (action: UIAlertAction!) in
-                                        
-                                        let answer = alert.textFields![0]
-                                        
-                                        // REPORTED
-                                        let report = PFObject(className: "Reported")
-                                        report["byUsername"] = PFUser.current()!.username!
-                                        report["byUser"] = PFUser.current()!
-                                        report["toUsername"] = chatUsername.last!
-                                        report["toUser"] = chatUserObject.last!
-                                        report["forObjectId"] = chatUserObject.last!.objectId!
-                                        report["reason"] = answer.text!
-                                        report.saveInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully saved report: \(report)")
-                                                
-                                                let alert = UIAlertController(title: "Successfully Reported",
-                                                                              message: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
-                                                    preferredStyle: .alert)
-                                                
-                                                let ok = UIAlertAction(title: "ok",
-                                                                       style: .default,
-                                                                       handler: nil)
-                                                
-                                                alert.addAction(ok)
-                                                alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.showError(withStatus: "Error")
-                                            }
-                                        })
-                                    }
-                                    
-                                    
-                                    let cancel = UIAlertAction(title: "Cancel",
-                                                               style: .cancel,
-                                                               handler: nil)
-                                    
-                                    
-                                    alert.addTextField(configurationHandler: nil)
-                                    alert.addAction(report)
-                                    alert.addAction(cancel)
-                                    alert.view.tintColor = UIColor.black
-                                    self.present(alert, animated: true, completion: nil)
-                                    
-        })
+        // Block Button
+        dialogController.addAction(AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
+            // (1) Block
+            let block = PFObject(className: "Blocked")
+            block["byUser"] = PFUser.current()!
+            block["byUsername"] = PFUser.current()!.username!
+            block["toUser"] = chatUserObject.last!
+            block["toUsername"] = chatUsername.last!.uppercased()
+            block.saveInBackground()
+            
+            // (2) Delete Follower/Following
+            let follower = PFQuery(className: "FollowMe")
+            follower.whereKey("follower", equalTo: PFUser.current()!)
+            follower.whereKey("following", equalTo: chatUserObject.last!)
+            let following = PFQuery(className: "FollowMe")
+            following.whereKey("follower", equalTo: chatUserObject.last!)
+            following.whereKey("following", equalTo: PFUser.current()!)
+            let follow = PFQuery.orQuery(withSubqueries: [follower, following])
+            follow.findObjectsInBackground(block: {
+                (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    PFObject.deleteAll(inBackground: objects!, block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            // Dismiss
+                            let alert = UIAlertController(title: "Successfully Blocked",
+                                                          message: "\(chatUsername.last!.uppercased()). You can unblock \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
+                                preferredStyle: .alert)
+                            
+                            let ok = UIAlertAction(title: "ok",
+                                                   style: .default,
+                                                   handler: { (alertAction: UIAlertAction!) in
+                                                    _ = self.navigationController?.popViewController(animated: true)
+                            })
+                            
+                            alert.view.tintColor = UIColor.black
+                            alert.addAction(ok)
+                            dialog.present(alert, animated: true, completion: nil)
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - SVProgressHUD
+                            SVProgressHUD.showError(withStatus: "Error")
+                        }
+                    })
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.showError(withStatus: "Error")
+                }
+            })
+
+        }))
         
-        // (3) Block user
-        let block = UIAlertAction(title: "Block",
-                                  style: .default,
-                                  handler: {(alertAction: UIAlertAction!) in
-                                    // (1) Block
-                                    let block = PFObject(className: "Blocked")
-                                    block["byUser"] = PFUser.current()!
-                                    block["byUsername"] = PFUser.current()!.username!
-                                    block["toUser"] = chatUserObject.last!
-                                    block["toUsername"] = chatUsername.last!.uppercased()
-                                    block.saveInBackground()
-                                    
-                                    // (2) Delete Follower/Following
-                                    let follower = PFQuery(className: "FollowMe")
-                                    follower.whereKey("follower", equalTo: PFUser.current()!)
-                                    follower.whereKey("following", equalTo: chatUserObject.last!)
-                                    let following = PFQuery(className: "FollowMe")
-                                    following.whereKey("follower", equalTo: chatUserObject.last!)
-                                    following.whereKey("following", equalTo: PFUser.current()!)
-                                    let follow = PFQuery.orQuery(withSubqueries: [follower, following])
-                                    follow.findObjectsInBackground(block: {
-                                        (objects: [PFObject]?, error: Error?) in
-                                        if error == nil {
-                                            PFObject.deleteAll(inBackground: objects!, block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    // Dismiss
-                                                    let alert = UIAlertController(title: "Successfully Blocked",
-                                                                                  message: "\(chatUsername.last!.uppercased()). You can unblock \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
-                                                        preferredStyle: .alert)
-                                                    
-                                                    let ok = UIAlertAction(title: "ok",
-                                                                           style: .default,
-                                                                           handler: { (alertAction: UIAlertAction!) in
-                                                                            _ = self.navigationController?.popViewController(animated: true)
-                                                    })
-                                                    
-                                                    alert.view.tintColor = UIColor.black
-                                                    alert.addAction(ok)
-                                                    self.present(alert, animated: true, completion: nil)
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.showError(withStatus: "Error")
-                                                }
-                                            })
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.showError(withStatus: "Error")
-                                        }
-                                    })
-        })
         
-        // (4) Cancel
-        let cancel = UIAlertAction(title: "Cancel",
-                                   style: .cancel,
-                                   handler: nil)
-        
-        alert.addAction(visit)
-        alert.addAction(block)
-        alert.addAction(report)
-        alert.addAction(cancel)
-        self.present(alert, animated: true, completion: nil)
+        // Show
+        dialogController.show(in: self)
     }
     
     @IBAction func showLibrary(_ sender: Any) {
@@ -266,7 +288,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     }
     
     // Fetch chats
-    func queryChats() {
+    func fetchChats() {
         let sender = PFQuery(className: "Chats")
         sender.whereKey("sender", equalTo: PFUser.current()!)
         sender.whereKey("receiver", equalTo: chatUserObject.last!)
@@ -286,7 +308,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 self.messageObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    
                     // Ephemeral Chat
 //                    let components : NSCalendar.Unit = .hour
 //                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
@@ -295,8 +316,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
 //                    } else {
 //                        self.skipped.append(object)
 //                    }
-                    
-                    // Append object
                     self.messageObjects.append(object)
                 }
                 // Reload data
@@ -364,11 +383,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     UserDefaults.standard.synchronize()
                      */
                     // Reload data
-                    self.queryChats()
+                    self.fetchChats()
                 } else {
                     print(error?.localizedDescription as Any)
                     // Reload data
-                    self.queryChats()
+                    self.fetchChats()
                 }
             }
         }
@@ -446,6 +465,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     if fileSize <= 1.0 {
                         // MARK: - SVProgressHUD
                         SVProgressHUD.show()
+                        SVProgressHUD.setBackgroundColor(UIColor.clear)
                         // Send Video
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
@@ -476,13 +496,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                     )
                                 }
                                 // Reload data
-                                self.queryChats()
+                                self.fetchChats()
                                 // Dismiss
                                 self.imagePicker.dismiss(animated: true, completion: nil)
                             } else {
                                 print(error?.localizedDescription as Any)
                                 // Reload data
-                                self.queryChats()
+                                self.fetchChats()
                                 // Dismiss
                                 self.imagePicker.dismiss(animated: true, completion: nil)
                             }
@@ -493,7 +513,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         // MARK: - SVProgressHUD
                         SVProgressHUD.showError(withStatus: "Large File Size")
                         // Reload data
-                        self.queryChats()
+                        self.fetchChats()
                         // Dismiss
                         self.imagePicker.dismiss(animated: true, completion: nil)
                     }
@@ -556,7 +576,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 }
 
                 // Reload data
-                self.queryChats()
+                self.fetchChats()
                 
                 // Dismiss view controller
                 self.dismiss(animated: true, completion: nil)
@@ -568,7 +588,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                 
                 // Reload data
-                self.queryChats()
+                self.fetchChats()
                 
                 // Dismiss view controller
                 self.dismiss(animated: true, completion: nil)
@@ -589,7 +609,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // Function to refresh
     func refresh() {
         // Query Chats
-        queryChats()
+        fetchChats()
         
         // End refresher
         self.refresher.endRefreshing()
@@ -653,7 +673,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                 // Send screenshot
                                                 self.sendScreenshot()
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(queryChats), name: rpChat, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchChats), name: rpChat, object: nil)
     }
     
     /*
@@ -676,7 +696,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Stylize title
         configureView()
         // Query Chats
-        queryChats()
+        fetchChats()
         // Set bool
         chatCamera = false
         // Add observers
@@ -1008,8 +1028,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "itm" {
                 // (B) MOMENT
                     mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                    mCell.rpMediaAsset.layer.borderWidth = 3.50
+//                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+//                    mCell.rpMediaAsset.layer.borderWidth = 3.50
                 }
             
                 // MARK: - SDWebImage
@@ -1033,8 +1053,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 } else {
                 // (B) MOMENT
                     mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                    mCell.rpMediaAsset.layer.borderWidth = 3.50
+//                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+//                    mCell.rpMediaAsset.layer.borderWidth = 3.50
                 }
                 
                 // Load Video Preview and Play Video
@@ -1138,7 +1158,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             page = page + 50
             
             // Query chats
-            queryChats()
+            fetchChats()
         }
     }
 

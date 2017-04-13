@@ -25,6 +25,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
     
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBAction func refresh(_ sender: Any) {
         // query relationships
         _ = appDelegate.queryRelationships()
@@ -37,6 +38,9 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func doneButton(_ sender: Any) {
+        // Disable button
+        self.doneButton.isEnabled = false
+        
         // Send user chat from TeamRP
         PFUser.query()!.getObjectInBackground(withId: "NgIJplW03t") {
             (object: PFObject?, error: Error?) in
@@ -51,6 +55,9 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
+                        // Enable button
+                        self.doneButton.isEnabled = true
+                        
                         // Show main interface once succeeded
                         self.showMain()
                         
@@ -62,10 +69,16 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                             ])
                     } else {
                         print(error?.localizedDescription as Any)
+                        // Enable button
+                        self.doneButton.isEnabled = true
+                        // Show main interface if failed
+                        self.showMain()
                     }
                 })
             } else {
                 print(error?.localizedDescription as Any)
+                // Enable button
+                self.doneButton.isEnabled = true
                 // Show main interface if failed
                 self.showMain()
             }
@@ -79,6 +92,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let cameraVC = storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController
         let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
+        swipeNavigationController.topViewController = storyboard.instantiateViewController(withIdentifier: "top") as! UINavigationController
         swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
         swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
         swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab

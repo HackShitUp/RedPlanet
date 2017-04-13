@@ -317,14 +317,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab
             swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
-            // Set status bar
-            UIApplication.shared.isStatusBarHidden = false
-            UIApplication.shared.statusBarStyle = .lightContent
             // Make rootVC
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
-            
             // Call relationships function
             _ = queryRelationships()
             // Check birthday

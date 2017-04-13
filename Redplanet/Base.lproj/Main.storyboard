@@ -511,6 +511,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="doneButton" destination="Gl5-TU-ShM" id="CVA-kb-8nW"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="huQ-g7-VvB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -3639,10 +3642,10 @@
         <scene sceneID="sA8-Aa-G9o">
             <objects>
                 <collectionViewController id="GrF-aX-oeE" customClass="Discover" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="u6d-uY-o5J">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="u6d-uY-o5J">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="oS6-IE-qA5">
                             <size key="itemSize" width="125" height="125"/>
                             <size key="headerReferenceSize" width="50" height="215"/>
@@ -3657,34 +3660,35 @@
                                     <rect key="frame" x="0.0" y="0.0" width="125" height="125"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prY-1c-FMQ">
-                                            <rect key="frame" x="25" y="16" width="75" height="75"/>
-                                            <color key="backgroundColor" red="0.85780423280423279" green="0.85780423280423279" blue="0.85780423280423279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="75" id="Gu3-NV-AbJ"/>
-                                                <constraint firstAttribute="height" constant="75" id="vWR-cr-HWx"/>
-                                            </constraints>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jwq-Df-dqk">
-                                            <rect key="frame" x="8" y="96" width="109" height="21"/>
+                                            <rect key="frame" x="8" y="97" width="109" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="109" id="Xzk-pD-fov"/>
-                                                <constraint firstAttribute="height" constant="21" id="beA-hC-fJm"/>
+                                                <constraint firstAttribute="height" constant="21" id="6Ss-jH-BLE"/>
+                                                <constraint firstAttribute="width" constant="109" id="WNJ-1U-zUl"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12.5"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="prY-1c-FMQ">
+                                            <rect key="frame" x="23" y="14" width="80" height="80"/>
+                                            <color key="backgroundColor" red="0.85780423280423279" green="0.85780423280423279" blue="0.85780423280423279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="80" id="P50-7I-j86"/>
+                                                <constraint firstAttribute="width" constant="80" id="ZUE-9a-4aa"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                 </view>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="prY-1c-FMQ" secondAttribute="trailing" constant="25" id="2bz-Js-8TP"/>
-                                    <constraint firstAttribute="bottom" secondItem="Jwq-Df-dqk" secondAttribute="bottom" constant="8" id="ABg-FA-fFO"/>
-                                    <constraint firstItem="prY-1c-FMQ" firstAttribute="leading" secondItem="rf1-QP-FCq" secondAttribute="leading" constant="25" id="CX7-aO-Kdj"/>
-                                    <constraint firstAttribute="trailing" secondItem="Jwq-Df-dqk" secondAttribute="trailing" constant="8" id="brD-Si-wKn"/>
-                                    <constraint firstItem="Jwq-Df-dqk" firstAttribute="top" secondItem="prY-1c-FMQ" secondAttribute="bottom" constant="5" id="mCT-AU-boE"/>
-                                    <constraint firstItem="Jwq-Df-dqk" firstAttribute="leading" secondItem="rf1-QP-FCq" secondAttribute="leading" constant="8" id="v2y-JD-aXY"/>
-                                    <constraint firstItem="prY-1c-FMQ" firstAttribute="top" secondItem="rf1-QP-FCq" secondAttribute="top" constant="16" id="wgE-fJ-e4R"/>
+                                    <constraint firstAttribute="bottom" secondItem="Jwq-Df-dqk" secondAttribute="bottom" constant="7" id="8KN-vV-rWP"/>
+                                    <constraint firstAttribute="trailing" secondItem="prY-1c-FMQ" secondAttribute="trailing" constant="22" id="9iF-ch-UGA"/>
+                                    <constraint firstItem="Jwq-Df-dqk" firstAttribute="leading" secondItem="rf1-QP-FCq" secondAttribute="leading" constant="8" id="Pig-l0-PA7"/>
+                                    <constraint firstItem="Jwq-Df-dqk" firstAttribute="top" secondItem="prY-1c-FMQ" secondAttribute="bottom" constant="3" id="YZe-oG-aBw"/>
+                                    <constraint firstItem="prY-1c-FMQ" firstAttribute="leading" secondItem="rf1-QP-FCq" secondAttribute="leading" constant="23" id="c4Q-mV-raq"/>
+                                    <constraint firstItem="prY-1c-FMQ" firstAttribute="top" secondItem="rf1-QP-FCq" secondAttribute="top" constant="14" id="jlq-3I-sT7"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jwq-Df-dqk" secondAttribute="trailing" constant="8" id="lCi-ov-W5h"/>
                                 </constraints>
                                 <size key="customSize" width="125" height="125"/>
                                 <connections>
@@ -3699,18 +3703,18 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3S-eF-Syw">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
-                                    <color key="backgroundColor" red="0.0" green="0.57756373429999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="52" id="hKX-1W-Ywi"/>
                                         <constraint firstAttribute="width" constant="375" id="ul0-fe-bUu"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="17"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="a2P-N5-1Ew">
                                     <rect key="frame" x="0.0" y="52" width="375" height="128"/>
-                                    <color key="backgroundColor" red="0.0" green="0.57756373429999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="375" id="V6e-TC-O0Q"/>
                                         <constraint firstAttribute="height" constant="128" id="ffH-oT-45L"/>
@@ -3731,18 +3735,14 @@
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mkh-DZ-xW5">
                                                         <rect key="frame" x="2" y="2" width="121" height="121"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="121" id="AXN-On-meZ"/>
-                                                            <constraint firstAttribute="width" constant="121" id="vL7-D7-ZGw"/>
-                                                        </constraints>
                                                     </imageView>
                                                 </subviews>
                                             </view>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="mkh-DZ-xW5" secondAttribute="bottom" constant="2" id="2th-0a-U4V"/>
-                                                <constraint firstItem="mkh-DZ-xW5" firstAttribute="leading" secondItem="83K-85-KNZ" secondAttribute="leading" constant="2" id="EyE-pU-j3I"/>
-                                                <constraint firstItem="mkh-DZ-xW5" firstAttribute="top" secondItem="83K-85-KNZ" secondAttribute="top" constant="2" id="HdN-SY-k4N"/>
-                                                <constraint firstAttribute="trailing" secondItem="mkh-DZ-xW5" secondAttribute="trailing" constant="2" id="dGs-uN-yaE"/>
+                                                <constraint firstAttribute="bottom" secondItem="mkh-DZ-xW5" secondAttribute="bottom" constant="2" id="2s5-q4-ern"/>
+                                                <constraint firstItem="mkh-DZ-xW5" firstAttribute="top" secondItem="83K-85-KNZ" secondAttribute="top" constant="2" id="Mn2-xa-q5b"/>
+                                                <constraint firstItem="mkh-DZ-xW5" firstAttribute="leading" secondItem="83K-85-KNZ" secondAttribute="leading" constant="2" id="jY8-ZN-3zO"/>
+                                                <constraint firstAttribute="trailing" secondItem="mkh-DZ-xW5" secondAttribute="trailing" constant="2" id="v5Q-g1-Dpn"/>
                                             </constraints>
                                             <connections>
                                                 <outlet property="coverPhoto" destination="mkh-DZ-xW5" id="tlV-UH-cUk"/>
@@ -3757,13 +3757,13 @@
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DISCOVER" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qSh-Em-rgP">
                                     <rect key="frame" x="0.0" y="180" width="375" height="35"/>
-                                    <color key="backgroundColor" red="0.0" green="0.57756373429999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="35" id="0u6-08-fhD"/>
                                         <constraint firstAttribute="width" constant="375" id="npg-r3-kVI"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
-                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="textColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -3797,7 +3797,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </barButtonItem>
@@ -4499,7 +4499,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iX1-gg-538" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2463" y="-2867"/>
+            <point key="canvasLocation" x="-2981" y="-2803"/>
         </scene>
         <!--Settings-->
         <scene sceneID="1MV-Fw-ahe">
@@ -4848,7 +4848,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebB-sR-fjI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2462" y="-1175"/>
+            <point key="canvasLocation" x="-1522" y="-2801"/>
         </scene>
         <!--Password-->
         <scene sceneID="aKt-HR-fDm">
@@ -4947,7 +4947,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KIU-M3-Ns4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1975" y="-2000"/>
+            <point key="canvasLocation" x="-1982" y="-1987"/>
         </scene>
         <!--Profile Edit-->
         <scene sceneID="fyV-TR-hj4">
@@ -5137,7 +5137,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sMw-a0-LXa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1520.5" y="-2867.5"/>
+            <point key="canvasLocation" x="-2462" y="-2802"/>
         </scene>
         <!--New Profile Photo-->
         <scene sceneID="VBf-nk-h1S">
@@ -5211,7 +5211,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d6h-DV-D7u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2460" y="-2000"/>
+            <point key="canvasLocation" x="-2465" y="-1988"/>
         </scene>
         <!--New Password-->
         <scene sceneID="g1H-Uc-Kn9">
@@ -5310,7 +5310,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yGm-8v-5mV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1519" y="-2000"/>
+            <point key="canvasLocation" x="-1521" y="-1988"/>
         </scene>
         <!--Contacts-->
         <scene sceneID="lP8-0m-eUB">
@@ -5511,777 +5511,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3dX-Nl-EhQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1519" y="-1175"/>
-        </scene>
-        <!--Licenses-->
-        <scene sceneID="sQC-YA-doE">
-            <objects>
-                <viewController storyboardIdentifier="licenseVC" id="f54-aC-TEj" customClass="Licenses" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="OQe-PR-ToU"/>
-                        <viewControllerLayoutGuide type="bottom" id="bQ5-N0-HRu"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="hpx-FN-cs8">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5yv-ZL-wYl">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" notEnabled="YES"/>
-                                </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="f4f-XP-QK1"/>
-                                    <constraint firstAttribute="height" constant="603" id="wES-il-wzu"/>
-                                </constraints>
-                                <string key="text">Copyright 2016, Redplanet Media, LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-The following open-source frameworks are being used by Redplanet.
-
-Agrume
-The MIT License (MIT)
-
-Copyright (c) 2015 Jan Gorman
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-AnimatedCollectionViewLayout
-Copyright (c) 2017 Jin Wang
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-
-
-Bolts
-BSD License
-
-For Bolts software
-
-Copyright (c) 2013-present, Facebook, Inc. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
- * Neither the name Facebook nor the names of its contributors may be used to
-   endorse or promote products derived from this software without specific
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-BRYXBanner
-Copyright (c) 2015 Harlan Haskins &lt;harlan@harlanhaskins.com&gt;
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-
-
-CLImageEditor
-The MIT License (MIT)
-
-Copyright (c) 2013 Sho Yakushiji, CALACULU Inc.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-DZNEmptyDataSet
-The MIT License (MIT)
-
-Copyright (c) 2016 Ignacio Romero Zurbuchen iromero@dzen.cl
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-Heap
-Terms of Service
-Welcome to the Web site of Heap Inc., a Delaware corporation ("Heap," "we," or "us"). Your use of this Web site (the "Site" or "Website") and the services made available on the Site is subject to these Terms of Use (these "Terms"). By using any of our Services, you agree to be bound by, and use our Services in compliance with, these Terms of Use. IF YOU DO NOT AGREE TO THESE TERMS OF USE, DO NOT USE OUR SERVICES.
-
- LICENSE TO USE OUR SERVICES
-Subject to these Terms, we grant to you a limited, non-exclusive, non-transferable license to use our Services for your internal use and not for resale or further distribution. Your right to use our Services is limited by all terms and conditions set forth in these Terms.
-
-Except for your pre-existing rights and this license granted to you, we and our licensors retain all right, title and interest in and to our Services, including all related intellectual property rights. Our Services are protected by applicable intellectual property laws, including United States copyright law and international treaties.
-
-Except as otherwise explicitly provided in these Terms or as may be expressly permitted by applicable law, you will not, and will not permit or authorize any third party to: (i) reproduce, modify, translate, enhance, decompile, disassemble, reverse engineer or create derivative works of any of our Services; (ii) rent, lease or sublicense access to any of our Services; or (iii) circumvent or disable any security or technological features or measures of our Services.
-
- ACCESS TO OUR SERVICES
-We do not provide you with the equipment to access our Services. You are responsible for all fees charged by third parties related to your access and use of our Services (e.g., charges by Internet service providers).
-
-We reserve the right to modify or discontinue, temporarily or permanently, all or any portion of our Services without notice. We will not be liable to you or to any third party for any modification, suspension, or discontinuance of all or any portion of our Services.
-
-We also reserve the right, in our sole discretion, to reject, refuse service, or delete any user data, and to restrict, suspend, or terminate your access to our Services at any time, for any or no reason, with or without prior notice, and without liability.
-
- RESTRICTIONS
-You must comply with all applicable laws when using our Services. Except as may be expressly permitted by applicable law, or as Heap may authorize expressly in writing, you will not, and will not permit anyone else to: (i) store, copy, modify, distribute, or resell any of the information; audio, visual, and audiovisual works, or other content made available on our Services (collectively, "Service Content") or compile or collect any Service Content as part of a database or other work; (ii) use any automated tool (e.g., robots, spiders) to access or use our Services or to store, copy, modify, distribute, or resell any Service Content; (iii) rent, lease, or sublicense your access to our Services to another person; (iv) use any Services or Service Content for any purpose except for your own internal use; (v) circumvent or disable any digital rights management, usage rules, or other security features of our Services; (vi) use our Services in a manner that overburdens, or that threatens the integrity, performance, or availability of, our Services; or (vii) remove, alter, or obscure any proprietary notices (including copyright and trademark notices) on any portion of our Services or any Service Content.
-
- RESTRICTED AREAS OF THE SERVICES
-Certain parts of our Services, including account management features, may be password-restricted to registered users or other authorized persons ("Password-Protected Areas"). If you are authorized to gain access to any Password-Protected Areas, you agree that you are entirely responsible for maintaining the confidentiality of your password, and agree to notify us if the password is lost, stolen, disclosed to an unauthorized third party, or otherwise may have been compromised. You agree that you are entirely responsible for any and all activities that occur under your account, whether or not you are the individual who undertakes such activities. You agree to immediately notify us of any unauthorized use of your account or any other breach of security in relation to your password or our Services that is known to you.
-
- CHANGES
-Heap, Inc. reserves the right, at its sole discretion, to modify or replace any part of this Agreement. It is your responsibility to check this Agreement periodically for changes. Your continued use of or access to the Website following the posting of any changes to this Agreement constitutes acceptance of those changes. Heap, Inc. may also, in the future, offer new services and/or features through the Website (including, the release of new tools and resources). Such new features and/or services shall be subject to the terms and conditions of this Agreement.
-
- PRIVACY POLICY
-Our Services are designed to allow you to learn how your customers and individuals (your “Users”) use your product by giving you the ability to collect information based on their interaction with your mobile application, mobile web site or web properties where you have integrated our Services and send communications to them. Heap does this in part using a first party cookie placed on your User’s device from your server. Some information is automatically collected from or about your Users when you use our Services. If you integrate an official Heap iOS or JavaScript library in your product it may by default collect User data including but not limited to: the time of an event, the elements a User has interacted with, metadata and other details about these elements, how a User came to your site, what search engine and search keywords Users may have used to get to your site, information about the device your User is on such as their operating system, and browser, as well as the city/region/country location of Users. In addition, you can choose what other User data you want to collect such as age, IP addresses, user names, real names, email addresses and other custom properties.
-
-You agree to comply with all applicable privacy and data protection regulations. Further, you agree to not use our service to send us sensitive information where unauthorized disclosure could cause material, severe, or catastrophic harm or impact to Heap, any data subjects or relying parties. Sensitive Information includes:
-
-Passwords, authentication/authorization credentials
-Information under strict regulatory or contractual handling requirements (e.g., PCI, HIPAA, and state and federal data security laws) including:
-Credit Card Information including credit card numbers, CIV numbers (three digit codes for Visa and MasterCard, four digit code for American Express) and magnetic stripe information
-Social Security Numbers
-Drivers License Numbers
-Passport Numbers
-Government Issued Identification Numbers
-Financial Account Information
-Health data
-Biometric data
-Personally identifiable information knowingly collected from children under the age of 13 or from online services directed toward children and
-Real time geolocation data which can identify an individual.
-Business secrets deemed highly confidential (e.g., highly-confidential business strategies and communications, sensitive attorney-client privileged and confidential communications).
-We collect, store, and use your User data on our servers to provide you with the ability to better maintain and improve your Services. We may also use data in an aggregated form for our own purposes. Our Services transfer data to servers that store User data in the U.S. and outside the U.S. We only share User information with others under special circumstances as follows:
-
-With third parties who work on our behalf to provide your services;
-To comply with laws or to respond to lawful requests and legal process (provided that Heap will endeavor to notify you if Heap has received a lawful request for your information);
-To protect the rights and property of Heap, our agents, customers, and others including to enforce our agreements, policies, and terms of use;
-In an emergency, including to protect the personal safety of any person; and
-For the purposes of a business deal (or negotiation of a business deal) involving sale or transfer of all or a part of our business or assets (business deals may include, for example, any merger, financing, acquisition, divestiture, or bankruptcy transaction or proceeding).
-We provide you with access to your User data and ability to delete any of your User data. We also take commercially reasonable steps to safeguard User data.
-
-You agree to provide appropriate notices to your Users about, and if required by applicable laws obtain appropriate consent from Users for, your information collection and use practices relating to your use of our Services and your use of cookies for tracking purposes. Appropriate notices may include notice in the form of a privacy policy posted on your site and/or your mobile application.
-
-We may also collect registration and other information about you as our customer through our Site. Our collection and use of information collected about you on our website is governed by our Privacy Policy, available at https://heapanalytics.com/privacy/. Our Privacy Policy does not cover information we collect about your Users on your behalf from your mobile and web properties. It is your obligation to provide your own privacy policy or notice to your users.
-
- LINKS AND THIRD PARTY CONTENT
-Our Services may display, or contain links to, third party products, services, and Web sites. Any opinions, advice, statements, services, offers, or other information that constitutes part of the content expressed, authored, or made available by other users or other third parties on our Services, or which is accessible through or may be located using our Services (collectively, "Third Party Content") are those of the respective authors or producers and not of us or our shareholders, directors, officers, employees, agents, or representatives.
-
-We do not control Third Party Content and do not guarantee the accuracy, integrity or quality of such Third Party Content. We are not responsible for the performance of, we do not endorse, and we are not responsible or liable for, any Third Party Content or any information or materials advertised in any Third Party Content. By using our Services, you may be exposed to content that is offensive, indecent, or objectionable. We are not be responsible or liable, directly or indirectly, for any damage or loss caused to you by your use of or reliance on any goods, services, or information available on or through any third party service or Third Party Content. It is your responsibility to evaluate the information, opinion, advice, or other content available on and through our Services.
-
-You will not use our Services to: (i) upload, post, email, or otherwise transmit any Submission that contains unlawful, harmful, threatening, abusive, harassing, tortious, defamatory, vulgar, obscene, libelous, invasive of another's privacy, hateful, or racially, ethnically or otherwise objectionable; (ii) harm us or third parties in any way; (iii) impersonate any person or entity, or otherwise misrepresent your affiliation with a person or entity; (iv) upload, post, email, or otherwise transmit any Submission that you do not have a right to transmit under any law or under contractual or fiduciary relationships (such as inside information, proprietary and confidential information learned or disclosed as part of employment relationships or under nondisclosure agreements); (v) upload, post, email or otherwise transmit any Submission that infringes any patent, trademark, trade secret, copyright, or other right of any party; (vi) upload, post, email, or otherwise transmit any unsolicited or unauthorized advertising, promotional materials, "junk mail," "spam," "chain letters," "pyramid schemes," or any other forms of solicitation; (vii) upload, post, email, or otherwise transmit any material that contains software viruses or any other computer code, files, or programs designed to interrupt, destroy, or limit the functionality of any computer software or hardware or telecommunications equipment; (viii) interfere with or disrupt the Services or servers or networks connected to the Services, or disobey any requirements, procedures, policies or regulations of networks connected to the Services; (ix) intentionally or unintentionally violate any applicable local, state, national or international law or regulation; (x) "stalk" or otherwise harass another; or (xi) collect or store personal data about other users.
-
- ELECTRONIC COMMUNICATIONS
-When you visit the Website or send e-mails to us, you are communicating with us electronically. You consent to receive communications from us electronically. We will communicate with you by e-mail or by posting notices on this Website. You agree that all agreements, notices, disclosures and other communications that we provide to you electronically satisfy any legal requirement that such communications be in writing.
-
- USE POLICIES
-You are solely responsible for any content and other material that you submit, publish, transmit, or display on, through, or with our Services.
-
- TRADEMARKS
-"Heap," the Heap logo, and any other product or service name or slogan displayed on our Services are trademarks of Heap Inc and its suppliers or licensors, and may not be copied, imitated or used, in whole or in part, without the prior written permission of Heap or the applicable trademark holder. You may not use any metatags or any other "hidden text" utilizing "Heap" or any other name, trademark or product or service name of Heap without our prior written permission. In addition, the look and feel of our Services, including all page headers, custom graphics, button icons and scripts, is the service mark, trademark and/or trade dress of Heap and may not be copied, imitated or used, in whole or in part, without our prior written permission. All other trademarks, registered trademarks, product names and company names or logos mentioned in our Services are the property of their respective owners. Reference to any products, services, processes or other information, by trade name, trademark, manufacturer, supplier, or otherwise does not constitute or imply endorsement, sponsorship, or recommendation thereof by us.
-
- FEEDBACK
-We may provide you with a mechanism to provide feedback, suggestions, and ideas, if you choose, about our Services ("Feedback"). You agree that we may, in our sole discretion, use the Feedback you provide to us in any way, including in future enhancements and modifications to our Services. You hereby grant to us and our assigns a perpetual, worldwide, fully transferable, sublicensable, irrevocable, royalty free license to use, reproduce, modify, create derivative works from, distribute, and display the Feedback in any manner any for any purpose, without in any media, software, or technology of any kind now existing or developed in the future, without any obligation to provide attribution or compensation to you or any third party.
-
- DISCLAIMER OF WARRANTIES
-YOUR USE OF THE SERVICES AND THE SERVICE CONTENT IS AT YOUR SOLE RISK. THE SERVICES AND THE SERVICE CONTENT EACH ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. WE AND OUR SUPPLIERS AND LICENSORS EXPRESSLY DISCLAIM ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE THE ACCURACY, COMPLETENESS, OR USEFULNESS OF THE SERVICES OR ANY SERVICE CONTENT, AND YOU RELY ON THE SERVICES AND SERVICE CONTENT AT YOUR OWN RISK. ANY MATERIAL THAT YOU ACCESS OR OBTAIN THROUGH OUR SERVICES IS DONE AT YOUR OWN DISCRETION AND RISK AND YOU WILL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR COMPUTER OR LOSS OF DATA THAT RESULTS FROM THE DOWNLOAD OF ANY MATERIAL THROUGH OUR SERVICES. NO ADVICE OR INFORMATION, WHETHER ORAL OR WRITTEN, OBTAINED BY YOU FROM US OR THROUGH OR FROM OUR SERVICES WILL CREATE ANY WARRANTY NOT EXPRESSLY STATED IN THIS AGREEMENT. SOME STATES MAY PROHIBIT A DISCLAIMER OF WARRANTIES AND YOU MAY HAVE OTHER RIGHTS THAT VARY FROM STATE TO STATE.
-
- LIMITATION OF LIABILITY
-WE AND OUR SUPPLIERS AND LICENSORS WILL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR EXEMPLARY DAMAGES, INCLUDING BUT NOT LIMITED TO, DAMAGES FOR LOSS OF PROFITS, GOODWILL, USE, DATA, OR OTHER INTANGIBLE LOSSES (EVEN IF WE HAVE BEEN ADVISED OF THE POSSIBILITY OF THESE DAMAGES), RESULTING FROM YOUR USE OF OUR SERVICES AND SERVICE CONTENT. UNDER NO CIRCUMSTANCES WILL THE TOTAL LIABILITY OF US AND OUR SUPPLIERS AND LICENSORS OF ALL KINDS ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICES AND SERVICE CONTENT (INCLUDING BUT NOT LIMITED TO WARRANTY CLAIMS), REGARDLESS OF THE FORUM AND REGARDLESS OF WHETHER ANY ACTION OR CLAIM IS BASED ON CONTRACT, TORT, OR OTHERWISE, EXCEED THE AMOUNTS, IF ANY, THAT YOU HAVE PAID TO US FOR YOUR USE OF THE SERVICES AND SERVICE CONTENT. BECAUSE SOME STATES DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, THE ABOVE LIMITATION MAY NOT APPLY TO YOU.
-
- INDEMNITY
-You will indemnify and hold Heap Inc., our suppliers and licensors, and our respective subsidiaries, affiliates, officers, agents, employees, representatives, and assigns harmless from any costs, damages, expenses, and liability caused by your use of the Services and Service Content, your violation of these Terms, or your violation of any rights of a third party through use of the Services or Service Content.
-
- PUBLICITY
-You agree that Heap, Inc., in its sole discretion, may use your trade names, trademarks, service marks, logos, domain names and other distinctive brand features in presentations, marketing materials, customer lists, financial reports and Web site listings (including links to your website) for the purpose of advertising or publicizing your use of Heap, Inc. products or services.
-
- LEGAL NOTICES
-Enforcement of any dispute relating to these Terms will be governed by the laws of the State of California, excluding its conflict and choice of law principles. For parties residing in the United States, the exclusive jurisdiction and venue for any claims arising out of or related to these Terms or your use of the Services or Service Content will lie in the state and federal courts located in City and County of San Francisco, California, and you irrevocably agree to submit to the jurisdiction of such courts.
-
-For parties residing outside the United States, any dispute arising hereunder shall be submitted to confidential binding arbitration in the County and City of San Francisco, California for the maximum judgment enforceable, except that to the extent Customer has in any manner violated or threatened to violate Heap’s intellectual property rights, Heap may seek injunctive or other appropriate relief in any state or federal court in the State of California. Customer hereby consents to, and waive all defenses of lack of personal jurisdiction and forum non conveniens with respect to venue and jurisdiction in the state and federal courts of California. Arbitration under this Agreement shall be conducted pursuant to the existing International Arbitration Rules at the American Arbitration Association. The arbitrator's award shall be final and binding and may be entered as a judgment in any court of competent jurisdiction. The parties each agree that any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated or representative action. If for any reason a claim is initiated in court rather than in arbitration we each waive any right to a jury trial.
-
-Our failure to enforce any right or provision in these Terms will not constitute a waiver of such right or provision unless acknowledged and agreed to by us in writing. In the event that a court of competent jurisdiction finds any provision of these Terms to be illegal, invalid, or unenforceable, the remaining provisions will remain in full force and effect.
-
-The terms and conditions which by their nature are intended to survive termination of these Terms shall survive, including Restrictions, Disclaimer of Warranties, Feedback, Indemnity, and Limitation of Liability.
-
- OTHER
-If any provision of these Terms shall be deemed unlawful, void or for any reason unenforceable, then that provision shall be deemed severable from these Terms and shall not affect the validity and enforceability of any remaining provisions. Heap, Inc. may assign any or all of its rights hereunder to any party without your consent. You are not permitted to assign any of your rights or obligations hereunder without the prior written consent of Heap, Inc., and any such attempted assignment will be void and unenforceable. These Terms constitute the entire agreement between you and Heap, Inc. regarding your use of the Website, and supersede all prior or contemporaneous communications whether electronic, oral or written between you and Heap, Inc. regarding your use of the Website. The parties confirm that it is their wish that these Terms, as well as any other documents relating to this Terms, including notices, have been and shall be drawn up in the English language only.
-
- CONTACTING US
-If you have any questions or concerns about our Services or these Terms, you may contact us by email at support@heapanalytics.com.
-
-
-
-KILabel
-The MIT License (MIT)
-
-Copyright (c) 2013 Matthew Styles
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-NSBadge
-MIT License
-
-Copyright (c) 2016 Antonio Zaitoun
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-
-Onboard
-Copyright (c) 2014 Michael Amaral
-
-MIT LICENSE
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-
-
-OneSignal
-Modified MIT License
-
-Copyright 2016 OneSignal
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-1. The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-2. All copies of substantial portions of the Software may only be used in connection
-with services provided by OneSignal.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-
-Includes portions from DTTJailbreakDetection:
-    The MIT License (MIT)
-
-    Copyright (c) 2014 Doan Truong Thi
-    
-    Permission is hereby granted, free of charge, to any person obtaining a copy of
-    this software and associated documentation files (the "Software"), to deal in
-    the Software without restriction, including without limitation the rights to
-    use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-    the Software, and to permit persons to whom the Software is furnished to do so,
-    subject to the following conditions:
-    
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-    
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-    
-Includes portions from BSMobileProvision:
-    Copyright (c) 2013, The Blindsight Corporation
-    All rights reserved.
-
-    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-    Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-Parse
-BSD License
-
-For Parse iOS/OSX SDK software
-
-Copyright (c) 2015-present, Parse, LLC. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
- * Neither the name Parse nor the names of its contributors may be used to
-   endorse or promote products derived from this software without specific
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-Parse-Server
-BSD License
-
-For Parse Server software
-
-Copyright (c) 2015-present, Parse, LLC. All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
-
- * Neither the name Parse nor the names of its contributors may be used to
-   endorse or promote products derived from this software without specific
-   prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-
-
-ParseUI
-Copyright (c) 2014, Parse, LLC. All rights reserved.
-
-You are hereby granted a non-exclusive, worldwide, royalty-free license to use,
-copy, modify, and distribute this software in source code or binary form for use
-in connection with the web services and APIs provided by Parse.
-
-As with any software that integrates with the Parse platform, your use of
-this software is subject to the Parse Terms of Service
-[https://www.parse.com/about/terms]. This copyright notice shall be
-included in all copies or substantial portions of the software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-SDWebImage
-Copyright (c) 2009-2017 Olivier Poitrey rs@dailymotion.com
- 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is furnished
-to do so, subject to the following conditions:
- 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
- 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-
-
-SimpleAlert
-The MIT License (MIT)
-
-Copyright (c) 2015 Kyohei Ito
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-
-SnapSliderFilters
-The MIT License (MIT)
-
-Copyright (c) 2016 Paul Jeannot
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-
-SVProgressHUD
-Copyright (c) 2011-2017 Sam Vermette, Tobias Tiemerding and contributors.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-A different license may apply to other resources included in this package, including Freepik Icons. Please consult their respective headers for the terms of their individual licenses.
-
-
-
-SwiftyCam
-Copyright (c) 2016, Andrew Walz.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this
-list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
- this list of conditions and the following disclaimer in the documentation
- and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,
-OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
-OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
-SwipeNavigationController
-The MIT License (MIT)
-
-Copyright (c) 2016
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-SwipeView
-
-Version 1.3.2, April 28th, 2014
-
-Copyright (C) 2010 Charcoal Design
-
-This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
-
-Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
-
-The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-
-Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-
-This notice may not be removed or altered from any source distribution.
-
-
-
-PeriscopeVideoViewController
-The MIT License (MIT)
-
-Copyright (c) 2015 Danil Gontovnik
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-
-Player
-The MIT License (MIT)
-
-Copyright (c) 2014-present patrick piemonte (http://patrickpiemonte.com/)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-RadialTransition_objC
-The MIT License (MIT)
-
-Copyright (c) 2014 Alex Padalko
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-
-News API Terms of Service
-1. Terms
-By accessing the website and data at https://newsapi.org, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.
-
-2. Use License
-Permission is granted to temporarily download one copy of the materials (information or software) on News API's website. This is the grant of a license, not a transfer of title, and under this license you may not:
-
-attempt to decompile or reverse engineer any software contained on News API's website;
-remove any copyright or other proprietary notations from the materials; or
-transfer the materials to another person or "mirror" the materials on any other server.
-This license shall automatically terminate if you violate any of these restrictions and may be terminated by News API at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.
-
-3. Disclaimer
-The materials on News API's website are provided on an 'as is' basis. News API makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
-
-Further, News API does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its website or otherwise relating to such materials or on any sites linked to this site.
-
-4. Limitations
-In no event shall News API or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on News API's website, even if News API or a News API authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.
-
-5. Accuracy of materials
-The materials appearing on News API's website could include technical, typographical, or photographic errors. News API does not warrant that any of the materials on its website are accurate, complete or current. News API may make changes to the materials contained on its website at any time without notice. However News API does not make any commitment to update the materials.
-
-6. Links
-News API has not reviewed all of the sites linked to its website and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by News API of the site. Use of any such linked website is at the user's own risk.
-
-7. Modifications
-News API may revise these terms of service for its website at any time without notice. By using this website you are agreeing to be bound by the then current version of these terms of service.
-
-8. Governing Law
-These terms and conditions are governed by and construed in accordance with the laws of United Kingdom and you irrevocably submit to the exclusive jurisdiction of the courts in that State or location.
-
-Powered by https://newsapi.org/
-</string>
-                                <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="bQ5-N0-HRu" firstAttribute="top" secondItem="5yv-ZL-wYl" secondAttribute="bottom" id="8KD-nq-QL7"/>
-                            <constraint firstAttribute="trailing" secondItem="5yv-ZL-wYl" secondAttribute="trailing" id="diD-dt-arW"/>
-                            <constraint firstItem="5yv-ZL-wYl" firstAttribute="leading" secondItem="hpx-FN-cs8" secondAttribute="leading" id="fMg-69-Jeg"/>
-                            <constraint firstItem="5yv-ZL-wYl" firstAttribute="top" secondItem="OQe-PR-ToU" secondAttribute="bottom" id="rGE-IZ-bPC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Licenses" id="hcT-fm-HJX">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="eE0-23-DHE">
-                            <color key="tintColor" red="0.14901960784313725" green="0.14901960784313725" blue="0.14901960784313725" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="back:" destination="f54-aC-TEj" id="AfY-E1-h1R"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <connections>
-                        <outlet property="textView" destination="5yv-ZL-wYl" id="Ddo-gs-8wF"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2Uk-pj-eZ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1976" y="-1175"/>
+            <point key="canvasLocation" x="-2980" y="-1989"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="pLf-ZB-QPD">

@@ -412,8 +412,18 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
             } else if indexPath.row == 1 {
                 // LICENSE
-                let licenseVC = self.storyboard?.instantiateViewController(withIdentifier: "licenseVC") as! Licenses
-                self.navigationController?.pushViewController(licenseVC, animated: true)
+                // Track when user views license
+                Heap.track("ViewedLicense", withProperties:
+                    ["byUserId": "\(PFUser.current()!.objectId!)",
+                        "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                    ])
+                
+                // MARK: - SafariServices
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/licenses/")!, entersReaderIfAvailable: true)
+                webVC.view.layer.cornerRadius = 8.00
+                webVC.view.clipsToBounds = true
+                self.present(webVC, animated: true, completion: nil)
+                
             } else if indexPath.row == 2 {
                 // TOS
                 // MARK: - SafariServices

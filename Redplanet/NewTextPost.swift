@@ -59,10 +59,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             alert.addAction(ok)
             self.present(alert, animated: true)
             
-        } else if self.textView.text! == "What are you doing?" {
+        } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revoltuionary movements..." {
             
-            let alert = UIAlertController(title: "What ARE you doing?",
-                                          message: "Share your thoughts within 500 characters about anything.",
+            let alert = UIAlertController(title: "No Text Post?",
+                                          message: "Please share your thoughts within 500 characters.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
                                    style: .default,
@@ -233,8 +233,17 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Stylize title
         configureView()
         // Set placeholder
-        self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
         self.textView.textColor = UIColor.darkGray
+        
+        let randomInt = arc4random()
+        if randomInt % 2 == 0 {
+            // Even
+            self.textView.text! = "What are you doing?"
+        } else {
+            // Odd
+            self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
+        }
+        
         
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
@@ -316,16 +325,14 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
     
     // MARK: - UITextView delegate methods
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revoltuionary movements..."{
+        if self.textView!.text! == "What are you doing?" || self.textView!.text! == "Thoughts are preludes to revoltuionary movements..." {
             self.textView.text! = ""
             self.textView.textColor = UIColor.black
         }
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
-        
-        
+
         // Count characters
         countRemaining()
         
