@@ -26,6 +26,11 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
     // Function to onboard the user
     func saveUser(sender: Any) {
 
+        // Load Things to Follow interface
+        let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
+        self.navigationController?.pushViewController(onBoardVC, animated: true)
+        
+        /*
         // Convert image to PFFile
         let userPhoto = UIImageJPEGRepresentation(self.rpUserProPic.image!, 0.5)
         let parseFile = PFFile(data: userPhoto!)
@@ -85,6 +90,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
                 print(error?.localizedDescription as Any)
             }
         })
+        */
     }
     
 

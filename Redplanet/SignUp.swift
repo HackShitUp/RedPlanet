@@ -28,7 +28,12 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
     
     // Sign up
     func signUp() {
-        // November 17th 2015
+        
+        // Push VC
+        let nameVC = self.storyboard?.instantiateViewController(withIdentifier: "fullNameVC") as! FullName
+        self.navigationController?.pushViewController(nameVC, animated: true)
+        
+        /*
         let newRPUserEmailAddress = newEmail.text!.lowercased().replacingOccurrences(of: " ", with: "")
         let newRPUsername = newUsername.text!.lowercased().replacingOccurrences(of: " ", with: "")
         let newRPUserPassword = newPassword.text!.replacingOccurrences(of: " ", with: "")
@@ -132,6 +137,7 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                 }
             })
         }
+        */
     }
     
     
