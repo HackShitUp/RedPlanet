@@ -23,6 +23,8 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
     @IBOutlet weak var loginButton: UIButton!
 
     @IBAction func exit(_ sender: Any) {
+        // Dismiss keyboards
+        dismissKeyboard()
         // Pop VC
         _ = self.navigationController?.popViewController(animated: true)
     }

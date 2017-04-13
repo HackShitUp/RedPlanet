@@ -196,11 +196,8 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             self.title = "New Text Post"
         }
         
-        // Configure nav bar && show tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
+        // Configure UINavigationBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -236,6 +233,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
         // Set placeholder
         self.textView.text! = "Thoughts are preludes to revoltuionary movements..."
         self.textView.textColor = UIColor.darkGray
+        
         // Create corner radiuss
         self.navigationController?.view.layer.cornerRadius = 8.00
         self.navigationController?.view.clipsToBounds = true

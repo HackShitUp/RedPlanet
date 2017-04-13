@@ -857,12 +857,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         // Set first responder
         self.textView.becomeFirstResponder()
-
-        // Design button corners
-        self.postButton.layer.cornerRadius = self.postButton.frame.size.width/2
-        self.postButton.layer.borderColor = UIColor.lightGray.cgColor
-        self.postButton.layer.borderWidth = 0.5
-        self.postButton.clipsToBounds = true
         
         // Hide tableView
         self.tableView.isHidden = true

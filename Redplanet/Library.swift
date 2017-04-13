@@ -140,13 +140,9 @@ class Library: UICollectionViewController, UINavigationControllerDelegate, UIIma
             self.title = "Photos & Videos"
         }
         
-        // Show tab bar and navigation bar and configure nav bar
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        // Configure UINavigationBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
