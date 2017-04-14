@@ -5912,6 +5912,9 @@
                                 <state key="normal" title="Forgot Password?">
                                     <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="forgotPassword:" destination="cHP-XK-1K8" eventType="touchUpInside" id="GsF-eD-Yub"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Prw-bP-2P0">
                                 <rect key="frame" x="60" y="211" width="255" height="50"/>

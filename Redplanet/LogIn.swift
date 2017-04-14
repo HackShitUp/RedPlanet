@@ -29,6 +29,85 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
         _ = self.navigationController?.popViewController(animated: true)
     }
     
+    @IBAction func forgotPassword(_ sender: Any) {
+        let alert = UIAlertController(title: "What's Your Email?",
+                                      message: "Please enter your email to reset your password.",
+                                      preferredStyle: .alert)
+        
+        let done = UIAlertAction(title: "Done",
+                                  style: .cancel) {
+                                    [unowned self, alert] (action: UIAlertAction!) in
+                                    
+                                    let email = alert.textFields![0]
+                                    
+                                    // Send email to reset password
+                                    PFUser.requestPasswordResetForEmail(inBackground: email.text!.lowercased(), block: { (success: Bool, error: Error?) in
+                                        if success {
+
+                                            // MARK: - AZDialogViewController
+                                            let dialogController = AZDialogViewController(title: "Check Your Email!",
+                                                                                          message: "You can reset your password via our link.")
+                                            dialogController.dismissDirection = .bottom
+                                            dialogController.dismissWithOutsideTouch = true
+                                            dialogController.showSeparator = true
+                                            
+                                            // Configure style
+                                            dialogController.buttonStyle = { (button,height,position) in
+                                                button.setTitleColor(UIColor.white, for: .normal)
+                                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                button.layer.masksToBounds = true
+                                            }
+                                            // Add Skip and verify button
+                                            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                                // Dismiss
+                                                dialog.dismiss()
+                                                
+                                            }))
+                                            
+                                            dialogController.show(in: self)
+                                        } else {
+
+                                            // MARK: - AZDialogViewController
+                                            let dialogController = AZDialogViewController(title: "Invalid Email",
+                                                                                          message: "Your email doesn't exist in our database.")
+                                            dialogController.dismissDirection = .bottom
+                                            dialogController.dismissWithOutsideTouch = true
+                                            dialogController.showSeparator = true
+                                            
+                                            // Configure style
+                                            dialogController.buttonStyle = { (button,height,position) in
+                                                button.setTitleColor(UIColor.white, for: .normal)
+                                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                button.layer.masksToBounds = true
+                                            }
+                                            // Add Skip and verify button
+                                            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                                // Dismiss
+                                                dialog.dismiss()
+                                                
+                                            }))
+                                            
+                                            dialogController.show(in: self)
+                                        }
+                                    })
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel",
+                                   style: .destructive,
+                                   handler: nil)
+        
+        
+        // Add textfield
+        alert.addTextField(configurationHandler: nil)
+        alert.addAction(cancel)
+        alert.addAction(done)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    
     // Function to login
     func loginToRP() {
         // Loop thorugh words to check for email vs username
@@ -42,6 +121,7 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
             }
         }
     }
+    
     
     
     // Function to login with Username
@@ -72,6 +152,8 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
         }
     }
     
+    
+    
     // Function to login with Email
     func loginEmail() {
         let user = PFUser.query()!
@@ -92,95 +174,35 @@ class LogIn: UIViewController, UITextFieldDelegate, UINavigationControllerDelega
     }
     
     
+    
     // Function to show error
     func showError() {
-        // Present alert
-        let alert = UIAlertController(title: "Login Failed",
-                                      message: "The username and password do not match!",
-                                      preferredStyle: .alert)
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "Log In Failed",
+                                                      message: "The username and password do not match.")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
         
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Skip and verify button
+        dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+
+        }))
         
-        let cancelAction = UIAlertAction(title: "Try Again",
-                                         style: .cancel,
-                                         handler: nil)
-        
-        let forgot = UIAlertAction(title: "Forgot Password",
-                                   style: .default,
-                                   handler: {(alertAction: UIAlertAction!) in
-                                    
-                                    let alert = UIAlertController(title: "What's Your Email?",
-                                                                  message: "Please enter your email to reset your password.",
-                                                                  preferredStyle: .alert)
-                                    
-                                    
-                                    let email = UIAlertAction(title: "Done",
-                                                              style: .default) {
-                                                                [unowned self, alert] (action: UIAlertAction!) in
-                                                                
-                                                                let email = alert.textFields![0]
-                                                                
-                                                                // Send email to reset password
-                                                                PFUser.requestPasswordResetForEmail(inBackground: email.text!.lowercased(), block: { (success: Bool, error: Error?) in
-                                                                    if success {
-                                                                        
-                                                                        let alert = UIAlertController(title: "Check Your Email!",
-                                                                                                      message: "You can reset your password via our link.",
-                                                                                                      preferredStyle: .alert)
-                                                                        
-                                                                        let ok = UIAlertAction(title: "ok",
-                                                                                               style: .default,
-                                                                                               handler: {(alertAction: UIAlertAction!) in
-                                                                                                // Pop back view controller
-                                                                                                self.dismiss(animated: true, completion: nil)
-                                                                        })
-                                                                        
-                                                                        alert.addAction(ok)
-                                                                        self.present(alert, animated: true, completion: nil)
-                                                                    } else {
-                                                                        
-                                                                        // Invalid email
-                                                                        let alert = UIAlertController(title: "Invalid Email",
-                                                                                                      message: "Your email doesn't exist in our database.",
-                                                                                                      preferredStyle: .alert)
-                                                                        
-                                                                        let ok = UIAlertAction(title: "ok",
-                                                                                               style: .default,
-                                                                                               handler: {(alertAction: UIAlertAction!) in
-                                                                                                self.dismiss(animated: true, completion: nil)
-                                                                        })
-                                                                        
-                                                                        alert.addAction(ok)
-                                                                        self.present(alert, animated: true, completion: nil)
-                                                                        
-                                                                    }
-                                                                })
-                                                                
-                                                                
-                                                                
-                                    }
-                                    
-                                    let cancel = UIAlertAction(title: "Cancel",
-                                                               style: .destructive,
-                                                               handler: nil)
-                                    
-                                    
-                                    // Add textfield
-                                    alert.addTextField(configurationHandler: nil)
-                                    alert.addAction(email)
-                                    alert.addAction(cancel)
-                                    self.present(alert, animated: true, completion: nil)
-                                    
-                                    
-        })
-        
-        alert.addAction(forgot)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: false, completion: nil)
+        dialogController.show(in: self)
     }
     
     
-    
-    
+
     // UITextField Delegates
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
