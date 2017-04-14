@@ -51,7 +51,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 chats["receiver"] = PFUser.current()!
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
-                chats["Message"] = "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us if you have any questions or concerns using Redplanet.🎉🦄😇"
+                chats["Message"] = "🚀👾☄️\nHi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us @teamrp if you have any questions or concerns using Redplanet. If you're having difficulty using Redplanet, head over to https://medium.com/@redplanetmedia to find tutorials.\n❤️, Redplanet"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
@@ -139,12 +139,8 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         }
         
         // Configure nav bar && show tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.view?.backgroundColor = UIColor.white
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        // Show UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()

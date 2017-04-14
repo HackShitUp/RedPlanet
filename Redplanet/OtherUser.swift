@@ -346,6 +346,9 @@ class OtherUser: UITableViewController {
     
     // Function to query other user's content
     func queryContent() {
+        
+        
+        
         // User's Posts
         let byUser = PFQuery(className: "Newsfeeds")
         byUser.whereKey("byUser", equalTo: otherObject.last!)

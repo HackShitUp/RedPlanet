@@ -33,7 +33,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
         // Show Activity
-        let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
+        let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
         if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
             let objectsToShare = [textToShare, myWebsite] as [Any]
             let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -191,20 +191,6 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
-        
-        
-        
-        // Check for authorization status
-        let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
-        if status.permissionStatus.status == .denied {
-            // DENIED
-            print("Denied")
-            print("isSubscribed: \(status.subscriptionStatus.subscribed)")
-            
-            // TODO::
-            // Show alert to enable push notifications
-            
-        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -337,8 +323,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                 
             } else if indexPath.row == 1 {
             // Show permissions
-                let url = URL(string: UIApplicationOpenSettingsURLString)
-                UIApplication.shared.openURL(url!)
+                // Show Settings
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
             }
         } else if indexPath.section == 2 {
         // ====================================================================
@@ -351,7 +337,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                         "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                     ])
                 // Show Activity
-                let textToShare = "🤗 Friend me on Redplanet, my username is @\(PFUser.current()!.username!)"
+                let textToShare = "🤗\nFollow me on Redplanet, my username is @\(PFUser.current()!.username!)"
                 if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
                     let objectsToShare = [textToShare, myWebsite] as [Any]
                     let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)

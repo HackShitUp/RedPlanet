@@ -370,7 +370,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🤔\nNo Comments Yet"
+        let str = "💩\nNo Comments Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
@@ -387,6 +387,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         // Show Progress
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
+        
+        // Set placeholder
+        self.newComment.text = "Share your comment!"
+        self.newComment.textColor = UIColor.lightGray
 
         // Query Comments
         queryComments()
@@ -478,6 +482,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        // Change color
+        self.newComment.textColor = UIColor.black
+        // Change newComment text
         if self.newComment.text! != "Share your comment!" {
             self.newComment.text! = self.newComment.text
         } else {
@@ -574,6 +581,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     dialog.dismiss()
                     // Clear comment box
                     if self.newComment.text == "Share your comment!" {
+                        self.newComment.textColor = UIColor.black
                         self.newComment.text! = ""
                     }
                     // Set username in newComment

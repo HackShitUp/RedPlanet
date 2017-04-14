@@ -42,45 +42,68 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         }
         PFUser.current()!.saveInBackground(block: {
             (success: Bool, error: Error?) in
-            if success {                
-                // Show alert, and load onboarding
-                let alert = UIAlertController(title: "😁\nAlmost Finished",
-                                              message: "We're almost done. But first, a tutorial!",
-                                              preferredStyle: .alert)
+            if success {
                 
-                let ok = UIAlertAction(title: "next",
-                                       style: .default,
-                                       handler: {(alertAction: UIAlertAction!) in
-                                        // Load Onboarding tutorial
-                                        // Perform segueue
-                                        let firstPage = OnboardingContentViewController(title: "Hi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String),", body: "Welcome to Redplanet, a fun way to create organized news feeds!", image: nil, buttonText: nil) { () -> Void in
-                                        }
-                                        let secondPage = OnboardingContentViewController(title: "2 News Feeds", body: "You have 2 news feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
-                                        }
-                                        let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: "continue") { () -> Void in
-                                            
-                                            // Load Things to Follow interface
-                                            let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
-                                            self.navigationController?.pushViewController(onBoardVC, animated: true)
-                                        }
-                                        firstPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                                        firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
-                                        secondPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                                        secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
-                                        lastPage.titleLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
-                                        lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Regular", size: 30)
-                                        lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
-                                        // Set bottom padding for button
-                                        lastPage.bottomPadding = 50
-                                        let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])
-                                        onboardingVC?.shouldFadeTransitions = true
-                                        self.navigationController!.pushViewController(onboardingVC!, animated: true)
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "😅\nAlmost Finished",
+                                                              message: "We're almost done. But first, a tutorial!")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                // Add Skip and verify button
+                dialogController.addAction(AZDialogAction(title: "Continue", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Resign keyboard
+                    self.rpUserBio.resignFirstResponder()
+                    
+                    // Load Onboarding tutorial
+                    // Perform segueue
+                    let firstPage = OnboardingContentViewController(title: "Hi,", body: "Welcome to Redplanet, a fun way to create organized news feeds!", image: nil, buttonText: nil) { () -> Void in
+                    }
+                    let secondPage = OnboardingContentViewController(title: "2 News Feeds", body: "You have 2 news feeds: One for your friends, and one for the people you're following.", image: nil, buttonText: nil) { () -> Void in
+                    }
+                    let lastPage = OnboardingContentViewController(title: "Ephemeral Posts", body: "Everything you share on Redplanet disappears in 24 hours!", image: nil, buttonText: "Continue") { () -> Void in
+                        
+                        // Load Things to Follow interface
+                        let onBoardVC = self.storyboard?.instantiateViewController(withIdentifier: "onBoardVC") as! OnboardFollow
+                        self.navigationController?.pushViewController(onBoardVC, animated: true)
+                    }
+                    
+                    // Set fonts and padding
+                    firstPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+                    firstPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                    firstPage.topPadding = 0
+                    firstPage.underIconPadding = 0
+                    secondPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+                    secondPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                    secondPage.topPadding = 0
+                    secondPage.underIconPadding = 0
+                    lastPage.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 30)
+                    lastPage.bodyLabel.font = UIFont(name: "AvenirNext-Medium", size: 30)
+                    lastPage.topPadding = 0
+                    lastPage.underIconPadding = 0
+                    // Continue button
+                    lastPage.actionButton.titleLabel?.font = UIFont(name: "AvenirNext-Bold", size: 25)
+                    lastPage.bottomPadding = 50
+                    // Show Onboarding
+                    let onboardingVC = OnboardingViewController(backgroundImage: UIImage(named: "WeWelcome"), contents: [firstPage, secondPage, lastPage])
+                    onboardingVC?.view.frame = self.view.bounds
+                    onboardingVC?.view.clipsToBounds = true
+                    onboardingVC?.shouldFadeTransitions = true
+                    self.navigationController!.pushViewController(onboardingVC!, animated: true)
+                }))
+                
+                dialogController.show(in: self)
 
-                })
-                
-                alert.addAction(ok)
-                alert.view.tintColor = UIColor.black
-                self.present(alert, animated: true, completion: nil)
             } else {
                 print(error?.localizedDescription as Any)
             }

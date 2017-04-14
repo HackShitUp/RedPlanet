@@ -221,21 +221,39 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             manager.requestWhenInUseAuthorization()
         case .denied:
         // THIS might get a bit annoying
-            let alert = UIAlertController(title: "Location Access Disabled",
-                                                     message: "To share Moments with location-based filters, and help your friends find you better, please allow Redplanet to access your location!",
-                                                     preferredStyle: .alert)
             
-            let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Location Access Disabled",
+                                                          message: "To share Moments with location-based filters, and help your friends find you better, please allow Redplanet to access your location.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
             
-            let settings = UIAlertAction(title: "Settings", style: .default) { (action) in
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                // Show Settings
                 if let url = NSURL(string:UIApplicationOpenSettingsURLString) {
                     UIApplication.shared.openURL(url as URL)
                 }
+            }))
+            
+            // Cancel
+            dialogController.cancelButtonStyle = { (button,height) in
+                button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.setTitle("LATER", for: [])
+                return true
             }
             
-            alert.addAction(settings)
-            alert.addAction(cancel)
-            self.present(alert, animated: true, completion: nil)
+            dialogController.show(in: self)
             
         default:
             break;

@@ -233,42 +233,74 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
         // MARK: - OneSignal
         let status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
         if status.permissionStatus.status == .denied {
-            // Show Alert
-            let alert = UIAlertController(title: "Push Notifications Denied",
-                                          message: "Please allow Redplanet to send Push Notifications so you can receive updates from the people you love!",
-                                          preferredStyle: .alert)
-            let settings = UIAlertAction(title: "Settings",
-                                         style: .default,
-                                         handler: { (alertAction: UIAlertAction!) in
-                                            // Show Settings
-                                            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-            })
-            let later = UIAlertAction(title: "Later",
-                                      style: .default,
-                                      handler: nil)
-            alert.addAction(later)
-            alert.addAction(settings)
-            self.present(alert, animated: true, completion: nil)
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Push Notifications Denied",
+                                                          message: "Please allow Redplanet to send Push Notifications so you can receive updates from the people you love!")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                // Show Settings
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            }))
+            
+            // Cancel
+            dialogController.cancelButtonStyle = { (button,height) in
+                button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.setTitle("LATER", for: [])
+                return true
+            }
+            
+            dialogController.show(in: self)
+            
+            
             
         } else if CLLocationManager.authorizationStatus() == .denied {
-            // Show Alert
-            let alert = UIAlertController(title: "Location Access Denied",
-                                          message: "Please allow Redplanet to access your Location so you can send cool geo-filters and help us find your friends better!",
-                                          preferredStyle: .alert)
-            let settings = UIAlertAction(title: "Settings",
-                                         style: .default,
-                                         handler: { (alertAction: UIAlertAction!) in
-                                            // Show Settings
-                                            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
-            })
-            let later = UIAlertAction(title: "Later",
-                                      style: .default,
-                                      handler: nil)
-            alert.addAction(later)
-            alert.addAction(settings)
-            self.present(alert, animated: true, completion: nil)
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Location Access Denied",
+                                                          message: "Please allow Redplanet to access your Location so you can send cool geo-filters and help us find your friends better!")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                // Show Settings
+                UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            }))
+            
+            // Cancel
+            dialogController.cancelButtonStyle = { (button,height) in
+                button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.setTitle("LATER", for: [])
+                return true
+            }
+            
+            dialogController.show(in: self)
         }
-        
+    
         
         // Configure UITableView
         self.tableView.layoutIfNeeded()

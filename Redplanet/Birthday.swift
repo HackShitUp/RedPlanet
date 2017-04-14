@@ -20,6 +20,51 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var birthday: UIDatePicker!
     @IBOutlet weak var continueButton: UIButton!
     
+    @IBAction func skipAction(_ sender: Any) {
+        
+        // MARK: - AZDialogViewController
+        let dialogController = AZDialogViewController(title: "🎁\nSkip Birthday?",
+                                                      message: "By skipping you confirm you're of eligible age to use Redplanet.")
+        dialogController.dismissDirection = .bottom
+        dialogController.dismissWithOutsideTouch = true
+        dialogController.showSeparator = true
+        
+        // Configure style
+        dialogController.buttonStyle = { (button,height,position) in
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.layer.masksToBounds = true
+        }
+        // Add Skip and verify button
+        dialogController.addAction(AZDialogAction(title: "Skip and Confirm", handler: { (dialog) -> (Void) in
+            // Save current bday
+            // Save user's birthday
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MMM d yyyy"
+            let stringDate = dateFormatter.string(from: self.birthday.date)
+            
+            // Save Birthday
+            PFUser.current()!["birthday"] = stringDate
+            PFUser.current()!.saveInBackground()
+            
+            // Dismiss
+            dialog.dismiss()
+            
+            // Push to NewUserVC
+            let userVC = self.storyboard?.instantiateViewController(withIdentifier: "newUserVC") as! NewUser
+            self.navigationController?.pushViewController(userVC, animated: true)
+
+        }))
+        // Cancel
+        dialogController.cancelButtonStyle = { (button,height) in
+            button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+            button.setTitle("CANCEL", for: [])
+            return true
+        }
+        
+        dialogController.show(in: self)
+    }
     
     // Function to save birthday
     func saveBday(sender: Any) {
@@ -30,7 +75,7 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
         let ageComponents = calendar.dateComponents([.year], from: self.birthday.date, to: now)
         let age = ageComponents.year!
         
-        if age <= 12 {
+        if age < 12 {
             // Vibrate device
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             
@@ -42,8 +87,8 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
                 button.layer.masksToBounds = true
             }
             // Add ok buttion
@@ -121,8 +166,4 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-
-
 }
