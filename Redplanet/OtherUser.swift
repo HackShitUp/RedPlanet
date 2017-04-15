@@ -86,7 +86,7 @@ class OtherUser: UITableViewController {
     // Function to Report User
     func reportUser(fromVC: AZDialogViewController?) {
         let alert = UIAlertController(title: "Report",
-                                      message: "Please provide your reason for reporting \(otherName.last!.uppercased())",
+                                      message: "Please provide your reason for reporting \(otherName.last!.lowercased())",
             preferredStyle: .alert)
         
         let report = UIAlertAction(title: "Report", style: .destructive) { (action: UIAlertAction!) in
@@ -141,7 +141,7 @@ class OtherUser: UITableViewController {
         block["byUser"] = PFUser.current()!
         block["byUsername"] = PFUser.current()!.username!
         block["toUser"] = otherObject.last!
-        block["toUsername"] = otherName.last!.uppercased()
+        block["toUsername"] = otherName.last!.lowercased()
         block.saveInBackground()
         
         // (2) Delete Follower/Following
@@ -456,13 +456,13 @@ class OtherUser: UITableViewController {
     // Function to stylize and set title of navigation bar
     func configureView() {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
             ]
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(otherName.last!.uppercased())"
+            self.title = "\(otherName.last!.lowercased())"
         }
         // MARK: - UINavigationBar Extension
         // Configure UINavigationBar, and show UITabBar
