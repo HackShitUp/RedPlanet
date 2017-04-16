@@ -355,12 +355,12 @@ open class SwiftyCamViewController: UIViewController {
 			flashView?.backgroundColor = UIColor.white
 			previewLayer.addSubview(flashView!)
 
-			UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
+			UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
 				self.flashView?.alpha = 1.0
 
 			}, completion: { (_) in
 				self.capturePhotoAsyncronously(completionHandler: { (success) in
-					UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
+					UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
 						self.flashView?.alpha = 0.0
 					}, completion: { (_) in
 						self.flashView?.removeFromSuperview()
