@@ -285,7 +285,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         UIApplication.shared.statusBarStyle = .lightContent
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowRightViewController = true
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
@@ -393,7 +392,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        configureView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
