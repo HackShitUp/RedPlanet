@@ -59,9 +59,8 @@
                                 <rect key="frame" x="60" y="274" width="255" height="55"/>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="o4i-TT-tPh" secondAttribute="height" multiplier="343:53" constant="-100.94339622641508" id="YSI-ij-1zd"/>
-                                    <constraint firstAttribute="height" constant="55" id="iMQ-Z5-21u"/>
-                                    <constraint firstAttribute="width" constant="255" id="nfn-te-p5t"/>
+                                    <constraint firstAttribute="height" constant="55" id="BW6-gG-BiE"/>
+                                    <constraint firstAttribute="width" constant="255" id="GmY-RC-Rq9"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="30"/>
                                 <state key="normal" title="Log In">
@@ -86,6 +85,7 @@
                         <constraints>
                             <constraint firstItem="SfH-jn-mH0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="3Um-Bl-A8N"/>
                             <constraint firstItem="66m-Tp-nIe" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="42" id="4bg-hO-h51"/>
+                            <constraint firstItem="o4i-TT-tPh" firstAttribute="top" secondItem="SfH-jn-mH0" secondAttribute="bottom" constant="34" id="6kZ-Y0-eQx"/>
                             <constraint firstAttribute="trailing" secondItem="SfH-jn-mH0" secondAttribute="trailing" constant="16" id="AJ3-35-Mrn"/>
                             <constraint firstItem="SfH-jn-mH0" firstAttribute="top" secondItem="66m-Tp-nIe" secondAttribute="bottom" constant="8" id="CDc-Bd-uwD"/>
                             <constraint firstItem="SfH-jn-mH0" firstAttribute="top" secondItem="66m-Tp-nIe" secondAttribute="bottom" constant="8" id="Da5-MI-Cqr"/>
@@ -93,14 +93,13 @@
                             <constraint firstAttribute="trailing" secondItem="Ywh-Z8-tSI" secondAttribute="trailing" constant="60" id="Izt-Da-fRx"/>
                             <constraint firstItem="bXw-TS-GdN" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="OLN-zB-d5Y"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="bXw-TS-GdN" secondAttribute="bottom" constant="20" id="P8k-mf-jdS"/>
-                            <constraint firstAttribute="trailing" secondItem="o4i-TT-tPh" secondAttribute="trailing" constant="60" id="TYd-CK-EVf"/>
+                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="top" secondItem="o4i-TT-tPh" secondAttribute="bottom" constant="11" id="Tmu-ct-2xA"/>
                             <constraint firstItem="Ywh-Z8-tSI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="60" id="XyH-sj-idw"/>
                             <constraint firstAttribute="trailing" secondItem="bXw-TS-GdN" secondAttribute="trailing" constant="16" id="aU5-j3-2hH"/>
                             <constraint firstItem="bXw-TS-GdN" firstAttribute="top" secondItem="Ywh-Z8-tSI" secondAttribute="bottom" priority="250" constant="204" id="cmT-IA-KGr"/>
-                            <constraint firstItem="o4i-TT-tPh" firstAttribute="top" secondItem="SfH-jn-mH0" secondAttribute="bottom" constant="34" id="dOB-F2-XkV"/>
-                            <constraint firstItem="o4i-TT-tPh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="60" id="hzZ-Sl-N9t"/>
                             <constraint firstAttribute="trailing" secondItem="66m-Tp-nIe" secondAttribute="trailing" priority="750" constant="299" id="rF2-3z-NaD"/>
-                            <constraint firstItem="Ywh-Z8-tSI" firstAttribute="top" secondItem="o4i-TT-tPh" secondAttribute="bottom" constant="11" id="vMM-Wg-arY"/>
+                            <constraint firstAttribute="trailing" secondItem="o4i-TT-tPh" secondAttribute="trailing" constant="60" id="vdI-Oh-VuH"/>
+                            <constraint firstItem="o4i-TT-tPh" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="60" id="wic-Uh-gsO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="YIb-Tn-ho4"/>
