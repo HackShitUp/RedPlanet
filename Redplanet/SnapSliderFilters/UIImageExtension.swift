@@ -11,8 +11,8 @@ import UIKit
 extension UIImage {
     public func resizeWithPercentage(_ percentage: CGFloat) -> UIImage? {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: size.width * percentage, height: size.height * percentage)))
-//        imageView.contentMode = .scaleAspectFit
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
+//        imageView.contentMode = .scaleAspectFill
         imageView.image = self
         UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, scale)
         guard let context = UIGraphicsGetCurrentContext() else { return nil }
@@ -24,8 +24,8 @@ extension UIImage {
     
     public func resizeWithWidth(_ width: CGFloat) -> UIImage? {
         let imageView = UIImageView(frame: CGRect(origin: .zero, size: CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))))
-//        imageView.contentMode = .scaleAspectFit
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
+//        imageView.contentMode = .scaleAspectFill
         imageView.image = self
         UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, false, scale)
         guard let context = UIGraphicsGetCurrentContext() else { return nil }

@@ -353,6 +353,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             self.newChat.text!.removeAll()
             // Send to Chats
             let chat = PFObject(className: "Chats")
+            chat["last_sender"] = PFUser.current()!
             chat["sender"] = PFUser.current()!
             chat["senderUsername"] = PFUser.current()!.username!
             chat["receiver"] = chatUserObject.last!

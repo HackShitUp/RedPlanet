@@ -429,13 +429,29 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         configureView()
         // Query chats
         fetchChats()
+        
+/*
+         let array = ["horse", "cow", "camel", "sheep", "goat"]
+         
+         let defaults = UserDefaults.standard
+         defaults.set(array, forKey: "SavedStringArray")
+         Retrieve array
+         
+         let defaults = UserDefaults.standard
+         let myarray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
+ */
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set design of navigation bar
-        configureView()
+
+        
+        
+        
+        
+//        self.navigationController?.tabBarController?.tabBar.items[3].set
+        
         
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
