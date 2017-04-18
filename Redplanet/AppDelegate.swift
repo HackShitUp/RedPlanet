@@ -316,7 +316,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab
-            swipeNavigationController.setNeedsStatusBarAppearanceUpdate()
             // Make rootVC
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController

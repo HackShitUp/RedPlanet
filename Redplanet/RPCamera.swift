@@ -281,15 +281,23 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // Function to configure view
     func configureView() {
-        UIApplication.shared.isStatusBarHidden = false
+        self.view.layer.cornerRadius = 8.00
+        self.view.clipsToBounds = true
+        
         UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowRightViewController = true
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
         self.containerSwipeNavigationController?.shouldShowBottomViewController = true
         self.containerSwipeNavigationController?.shouldShowTopViewController = true
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -392,6 +400,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // Set statusBar
+        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.isStatusBarHidden = false
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

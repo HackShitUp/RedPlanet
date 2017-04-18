@@ -284,7 +284,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     // IBAction --> Show Stickers
     @IBAction func showStickers(_ sender: Any) {
         let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
-        self.navigationController!.pushViewController(stickersVC, animated: false)
+        self.navigationController!.pushViewController(stickersVC, animated: true)
     }
     
     // Fetch chats

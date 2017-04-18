@@ -18,7 +18,7 @@ import OneSignal
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     
     @IBAction func dismiss(_ sender: Any) {
-        _ = self.navigationController?.popViewController(animated: false)
+        _ = self.navigationController?.popViewController(animated: true)
     }
 
     let stickers = ["Sun.png",
@@ -71,10 +71,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         }
         
         // Show tab bar and navigation bar and configure nav bar
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
         // MARK: - MainUITab
         // Hide button

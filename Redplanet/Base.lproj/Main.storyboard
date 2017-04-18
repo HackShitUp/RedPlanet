@@ -3291,7 +3291,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="Qka-lR-eC9">
-                        <barButtonItem key="leftBarButtonItem" systemItem="stop" id="MZD-jt-2VM">
+                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="MZD-jt-2VM">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="dismiss:" destination="hJv-9K-JPO" id="sKm-Tj-uDm"/>
