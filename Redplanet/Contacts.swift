@@ -163,30 +163,38 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 
                 // Load alert if no friends (following) were found
                 if self.notFollowing.count == 0 {
-                    // Show Alert
-                    let alert = UIAlertController(title: "No Friends on Redplanet",
-                                                  message: "😕\nYour friends aren't on Redplanet!",
-                                                  preferredStyle: .alert)
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "No Friends on Redplanet",
+                                                                  message: "💩\nYour friends aren't on Redplanet!")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
                     
-                    let inviteFriends = UIAlertAction(title: "Invite Friends",
-                                                      style: .default,
-                                                      handler: {(alertAction: UIAlertAction!) in
-                                                        
-                                                        let textToShare = "🦄 Let's be friends on Redplanet! It's a new app that curates your newsfeeds in a fun way."
-                                                        if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
-                                                            let objectsToShare = [textToShare, myWebsite] as [Any]
-                                                            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-                                                            self.present(activityVC, animated: true, completion: nil)
-                                                        }
-                    })
+                    // Add settings button
+                    dialogController.addAction(AZDialogAction(title:  "Invite Friends", handler: { (dialog) -> (Void) in
+                        let textToShare = "🦄 Let's be friends on Redplanet! It's a new app that curates your newsfeeds in a fun way."
+                        if let myWebsite = NSURL(string: "https://redplanetapp.com/download/") {
+                            let objectsToShare = [textToShare, myWebsite] as [Any]
+                            let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+                            dialog.present(activityVC, animated: true, completion: nil)
+                        }
+                    }))
                     
-                    let ok = UIAlertAction(title: "Ok",
-                                           style: .default,
-                                           handler: nil)
+                    // Cancel
+                    dialogController.cancelButtonStyle = { (button,height) in
+                        button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.setTitle("CANCEL", for: [])
+                        return true
+                    }
                     
-                    alert.addAction(inviteFriends)
-                    alert.addAction(ok)
-                    self.present(alert, animated: true, completion: nil)
+                    dialogController.show(in: self)
                 }
                 
                 

@@ -38,6 +38,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     }
     
     @IBAction func doneButton(_ sender: Any) {
+        
         // Disable button
         self.doneButton.isEnabled = false
         
@@ -58,8 +59,6 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                         // Enable button
                         self.doneButton.isEnabled = true
                         
-                        // Show main interface once succeeded
-                        self.showMain()
                         
                         // MARK: - HEAP Analytics
                         // Track who signed up
@@ -67,6 +66,34 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                             ["byUserId": "\(PFUser.current()!.objectId!)",
                                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                             ])
+                        
+                        
+                        
+                        // MARK: - AZDialogViewController
+                        let dialogController = AZDialogViewController(title: "🙈\nPlease Allow Access",
+                                                                      message: "Before you begin using Redplanet, we're going to ask you access for the following...\n• Location\n• Camera\n• Photos\n• Microphone")
+                        dialogController.dismissDirection = .bottom
+                        dialogController.dismissWithOutsideTouch = true
+                        dialogController.showSeparator = true
+                        // Configure style
+                        dialogController.buttonStyle = { (button,height,position) in
+                            button.setTitleColor(UIColor.white, for: .normal)
+                            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                            button.layer.masksToBounds = true
+                        }
+                        
+                        // Add settings button
+                        dialogController.addAction(AZDialogAction(title: "Continue", handler: { (dialog) -> (Void) in
+                            // Dismiss
+                            dialog.dismiss()
+                            // Show main interface once succeeded
+                            self.showMain()
+                        }))
+                        
+                        dialogController.show(in: self)
+
+
                     } else {
                         print(error?.localizedDescription as Any)
                         // Enable button
@@ -193,7 +220,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "onBoardCell", for: indexPath) as! OnBoardFollowCell
         
-        _ = appDelegate.queryRelationships()
+//        _ = appDelegate.queryRelationships()
         
         // LayoutViews
         cell.rpUserProPic.layoutIfNeeded()

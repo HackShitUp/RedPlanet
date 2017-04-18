@@ -20,7 +20,7 @@ import SwipeNavigationController
  Hide this button in viewWillAppear and show this button when viewWillDisappear is called
  in the respective UIViewController's lifecycle hierarchy
  */
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 70, height: 70))
+let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
 
 // EXTENSION
 // Method to configure button

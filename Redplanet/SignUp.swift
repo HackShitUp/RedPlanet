@@ -34,54 +34,104 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
         let newRPUserPassword = newPassword.text!.replacingOccurrences(of: " ", with: "")
         
         if newRPUsername.characters.count < 6 {
-            // Show that Username must be at least 6 characters long
-            let alert = UIAlertController(title: "Invalid Username",
-                                          message: "Username must be between 6-15 characters.",
-                                          preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "ok",
-                                             style: .cancel,
-                                             handler: nil)
-            alert.addAction(cancelAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: false, completion: nil)
+            
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Username",
+                                                          message: "Username must be between 6-15 characters long.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            
+            dialogController.show(in: self)
             
             
         } else if newRPUsername.characters.count > 15 {
-            // Show that Username must be at least 6 characters long
-            let alert = UIAlertController(title: "Invalid Username",
-                                          message: "Username must be between 6-15 characters.",
-                                          preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "ok",
-                                             style: .cancel,
-                                             handler: nil)
-            alert.addAction(cancelAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: false, completion: nil)
+            
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Username",
+                                                          message: "Username must be between 6-15 characters long.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            
+            dialogController.show(in: self)
+
             
         } else if newRPUserEmailAddress.isEmpty {
-            // Show that user's passwords must match && password must be greater than 8 characters long
-            let alert = UIAlertController(title: "Invalid Email",
-                                          message: "Please enter a valid email.",
-                                          preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "ok",
-                                             style: .cancel,
-                                             handler: nil)
-            alert.addAction(cancelAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: false, completion: nil)
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Email",
+                                                          message: "Please enter a valid email.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            
+            dialogController.show(in: self)
             
         } else if newRPUserPassword.characters.count < 8 {
-            // Show that user's passwords must match && password must be greater than 8 characters long
-            let alert = UIAlertController(title: "Invalid Password",
-                                          message: "Your password is either less than at least eight characters or too simple.",
-                                          preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "ok",
-                                             style: .cancel,
-                                             handler: nil)
-            alert.addAction(cancelAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: false, completion: nil)
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Password",
+                                                          message: "Your password must be at least eight characters long.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
             
+            // Add settings button
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            
+            dialogController.show(in: self)
+
+
         } else {
             // Disable button
             self.continueButton.isUserInteractionEnabled = false
@@ -116,19 +166,31 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     self.navigationController?.pushViewController(nameVC, animated: true)
                     
                 } else {
-                    let alert = UIAlertController(title: "Sign up failed.",
-                                                  message: "Your email is invalid or your username is taken.",
-                                                  preferredStyle: .alert)
-                    let tryAgain = UIAlertAction(title: "Try Again",
-                                                 style: .cancel,
-                                                 handler: { (alertAction: UIAlertAction!) in
-                                                    // Enable button
-                                                    self.continueButton.isUserInteractionEnabled = true
-                    })
+                    print("ERROR: \(error?.localizedDescription as Any)")
                     
-                    alert.addAction(tryAgain)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "💩\nSign up failed.",
+                                                                  message: "Your email is invalid or your username is taken.")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
+                    
+                    // Add settings button
+                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                        // Enable button
+                        self.continueButton.isUserInteractionEnabled = true
+                        // Dismiss
+                        dialog.dismiss()
+                    }))
+                    
+                    dialogController.show(in: self)
                 }
             })
         }

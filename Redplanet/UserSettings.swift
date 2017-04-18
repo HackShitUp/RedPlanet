@@ -19,6 +19,9 @@ import MessageUI
 import OneSignal
 
 class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, UINavigationControllerDelegate, OSPermissionObserver, OSSubscriptionObserver {
+    
+    // Refresher
+    var refresher: UIRefreshControl!
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
@@ -173,12 +176,19 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             self.privacy.setOn(false, animated: false)
         }
         
-        // Add view
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        self.tableView!.addSubview(refresher)
+        
+        // Add UITableFooterView
         let versionView = UIView()
         let title = UILabel()
         title.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 60)
         title.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-        title.textColor = UIColor.darkGray
+        title.textColor = UIColor.black
         title.backgroundColor = UIColor.white
         title.numberOfLines = 0
         title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NYC."

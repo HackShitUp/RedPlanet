@@ -167,7 +167,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
                     
                     // Show alert
                     let alert = UIAlertController(title: "Unknown Account",
-                                                  message: "Looks like this account doesn't exist yet.",
+                                                  message: "Looks like this account doesn't exist.",
                                                   preferredStyle: .alert)
                     let ok = UIAlertAction(title: "ok",
                                            style: .default,

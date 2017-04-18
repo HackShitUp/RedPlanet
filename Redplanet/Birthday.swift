@@ -126,17 +126,27 @@ class Birthday: UIViewController, UINavigationControllerDelegate {
                     
                 } else {
                     print(error?.localizedDescription as Any)
+
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "💩\nNetwork Error", message: "There appears to be poor connection.")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
                     
-                    // Network error
+                    // Add settings button
+                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                        // Dismiss
+                        dialog.dismiss()
+                    }))
                     
-                    let alert = UIAlertController(title: "There was an error.",
-                                                  message: "There appears to be poor connection.",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
+                    dialogController.show(in: self)
                 }
             }
         }

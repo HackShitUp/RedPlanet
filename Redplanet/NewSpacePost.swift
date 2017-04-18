@@ -868,7 +868,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.mediaAsset.clipsToBounds = true
         
         // Draw corner radius for photosButton
-        self.photosButton.layer.cornerRadius = 6.00
+        self.photosButton.layer.cornerRadius = 10.00
         self.photosButton.clipsToBounds = true
         
         // Stylize title

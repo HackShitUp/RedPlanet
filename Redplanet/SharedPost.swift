@@ -310,7 +310,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         cell.rpUserProPic.setNeedsLayout()
         
         // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = 6.00
+        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
         cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
         cell.rpUserProPic.layer.borderWidth = 0.5
         cell.rpUserProPic.clipsToBounds = true
