@@ -411,17 +411,16 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // IV AREA: "City, State"
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
             city.font = UIFont(name: "AvenirNext-Bold", size: 40)
-            city.textColor = UIColor.randomColor()
+            city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
             city.text = "\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)"
             city.textAlignment = .center
             city.lineBreakMode = .byWordWrapping
             city.numberOfLines = 0
-//            city.layer.shadowColor = UIColor.randomColor().cgColor
-//            city.layer.shadowOffset = CGSize(width: 1, height: 1)
-//            city.layer.shadowRadius = 3
-//            city.layer.shadowOpacity = 0.5
-            city.layer.applyShadow(layer: city.layer)
+            city.layer.shadowColor = UIColor.randomColor().cgColor
+            city.layer.shadowOffset = CGSize(width: 1, height: 1)
+            city.layer.shadowRadius = 3
+            city.layer.shadowOpacity = 0.5
             UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)
             city.layer.render(in: UIGraphicsGetCurrentContext()!)
             let cityStamp = UIGraphicsGetImageFromCurrentImageContext()
