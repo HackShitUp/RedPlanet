@@ -18,29 +18,42 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
+/*
+ NEW CHATS DATABASE SCHEMA
+ let chatsQueue = PFObject(className: "ChatsQueue")
+ chatsQueue["endUser"] = theSender
+ chatsQueue["endName"] = theSender["username"] as! String
+ chatsQueue["frontUser"] = PFUser.current()!
+ chatsQueue["frontName"] = PFUser.current()!.username!
+ chatsQueue["lastChat"] = self.chatObjects[indexPath.row]
+ chatsQueue["score"] = 1
+ chatsQueue.saveInBackground()
+ */
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // Chat objects
+    // <ChatsQueue>
+    var chatQueues = [String]()
+    // <Chats>
     var chatObjects = [PFObject]()
-    var chatters = [PFObject]()
-    // Refresher
-    var refresher: UIRefreshControl!
-
-    // Page size
-    var page: Int = 500000
-    
-    // Search
+    // Filtered: chatObjects --> User's Objects
+    var userObjects = [PFObject]()
+    // Searched Objects
     var searchObjects = [PFObject]()
-
+    
     // Search Bar
     var searchBar = UISearchBar()
     // Boolean to determine what to show in UITableView
     var searchActive: Bool = false
+    // Refresher
+    var refresher: UIRefreshControl!
+    // Page size
+    var page: Int = 50
     
-    // Bool to show chatscore
-    var showScore: Bool = false
-
+    // MARK: - Handle DZNEmptyDataSet
+    var emptyType: String?
+    
+    
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func editAction(_ sender: Any) {
         
@@ -98,7 +111,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         }
                     })
                     // Reload data
-                    self.fetchChats()
+                    self.fetchQueues()
                     
                 } else {
                     if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -107,7 +120,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     }
                     
                     // Reload data
-                    self.fetchChats()
+                    self.fetchQueues()
                 }
             })
             
@@ -132,184 +145,99 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     // Refresh function
     func refresh() {
         // Reload data
-        fetchChats()
+        fetchQueues()
         // End refresher
         self.refresher.endRefreshing()
     }
     
     // Query Chats
-    func fetchChats() {
-        // SubQueries
-        let sender = PFQuery(className: "Chats")
-        sender.whereKey("sender", equalTo: PFUser.current()!)
-        sender.whereKey("receiver", notEqualTo: PFUser.current()!)
-        
-        let receiver = PFQuery(className: "Chats")
-        receiver.whereKey("receiver", equalTo: PFUser.current()!)
-        receiver.whereKey("sender", notEqualTo: PFUser.current()!)
-
-        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.includeKeys(["receiver", "sender"])
-        chats.limit = self.page
+    func fetchQueues() {
+        let frontChat = PFQuery(className: "ChatsQueue")
+        frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
+        let endChat = PFQuery(className: "ChatsQueue")
+        endChat.whereKey("endUser", equalTo: PFUser.current()!)
+        let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
+        chats.whereKeyExists("lastChat")
+        chats.includeKeys(["lastChat", "frontUser", "endUser"])
         chats.order(byDescending: "createdAt")
-        chats.findObjectsInBackground(block: {
+        chats.limit = self.page
+        chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
                 // Clear array
-                self.chatObjects.removeAll(keepingCapacity: false)
-                
+                self.chatQueues.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    // Append Sender
-                    if (object.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "sender") as! PFUser).objectId!}) {
-                        self.chatObjects.append(object["sender"] as! PFUser)
+                    if let lastChat = object.object(forKey: "lastChat") as? PFObject {
+                        self.chatQueues.append(lastChat.objectId!)
                     }
-                    // Append Receiver
-                    if (object.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && !self.chatObjects.contains(where: {$0.objectId! == (object.object(forKey: "receiver") as! PFUser).objectId!}) {
-                        self.chatObjects.append(object["receiver"] as! PFUser)
-                    }
-                }// end for loop
-                
-                // Initialize DZNEmptyDataset
-                if self.chatObjects.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
-                    self.tableView!.tableFooterView = UIView()
                 }
-                
+                // Fetch chats
+                self.fetchChats()
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                     // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                 }
             }
-            // Reload data
-            self.tableView!.reloadData()
-        })
+        }
     }
     
     
-    
-    // Dismiss keyboard when UITableView is scrolled
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        // Resign first responder status
-        self.searchBar.resignFirstResponder()
-        // Clear text
-        self.searchBar.text! = ""
-        // Set Boolean
-        searchActive = false
-        // Set tableView
-        self.tableView.backgroundView = UIView()
-        // Reload data
-        fetchChats()
-    }
-    
-    
-    
-    
-    // MARK: - UISearchBarDelegate methods
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        // Set boolean
-        searchActive = true
-        
-    }
-    
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        // Search by username
-        let name = PFUser.query()!
-        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-        let realName = PFUser.query()!
-        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-        let user = PFQuery.orQuery(withSubqueries: [name, realName])
-        user.findObjectsInBackground(block: {
+    func fetchChats() {
+        // Query Chats and include pointers
+        let chats = PFQuery(className: "Chats")
+        chats.whereKey("objectId", containedIn: self.chatQueues)
+        chats.whereKeyExists("receiver")
+        chats.whereKeyExists("sender")
+        chats.includeKeys(["receiver", "sender"])
+        chats.order(byDescending: "createdAt")
+        chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear arrays
-                self.searchObjects.removeAll(keepingCapacity: false)
-                
+                self.chatObjects.removeAll(keepingCapacity: false)
+                self.userObjects.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    if self.chatObjects.contains(where: {$0.objectId! == object.objectId!}) {
-                        self.searchObjects.append(object)
+                    if (object.value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                        self.userObjects.append(object.value(forKey: "receiver") as! PFUser)
+                    } else if (object.value(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                        self.userObjects.append(object.value(forKey: "sender") as! PFUser)
                     }
+                    self.chatObjects.append(object)
                 }
-                
-                // Reload data
-                if self.searchObjects.count != 0 {
-                    // Reload data
-                    self.tableView!.reloadData()
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView()
-                } else {
-                    // Set background for tableView
-                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
-                    // Reload data
-                    self.tableView!.reloadData()
+                print(self.userObjects)
+                // MARK: - DZNEmptyDataSet
+                if self.chatObjects.count == 0 {
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
                 }
-                
+
             } else {
                 print(error?.localizedDescription as Any)
             }
+            
+            // Reload data
+            self.tableView.reloadData()
         })
     }
+
+    
+    func showChatRoom() {
+        // Push View controller
+        let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
+        self.navigationController!.pushViewController(chatRoom, animated: true)
+    }
     
     
-    
-    // Stylize title
-    func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.navigationController?.navigationBar.topItem?.title = "Chats"
+    // Function to load more
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= chatObjects.count {
+            // Increase page size to load more posts
+            page = page + 500000
+            // Query friends
+            self.fetchQueues()
         }
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.tabBarController?.delegate = self
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        
-        // Configure UIStatusBar
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    // MARK: DZNEmptyDataSet Framework
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if chatObjects.count == 0 {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🙊\nNo Active Chats"
-        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "Start a conversation by tapping\nthe icon on the top right!"
-        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
     // Function to delete chats
@@ -318,9 +246,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         if sender.state == .began {
             let touchedAt = sender.location(in: self.tableView)
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-
-                let fullName = self.chatObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
-
+                
+                let fullName = self.userObjects[indexPath.row].value(forKey: "realNameOfUser") as! String
+                
                 // MARK: - AZDialogViewController
                 let dialogController = AZDialogViewController(title: "\(fullName)",
                     message: "Delete Chat?\nIt can't be restored once it's forever deleted.")
@@ -329,7 +257,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 dialogController.showSeparator = true
                 // add image
                 dialogController.imageHandler = { (imageView) in
-                    if let proPic = self.chatObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                    if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                         proPic.getDataInBackground(block: {
                             (data: Data?, error: Error?) in
                             if error == nil {
@@ -370,10 +298,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     // Delete chats
                     let sender = PFQuery(className: "Chats")
                     sender.whereKey("sender", equalTo: PFUser.current()!)
-                    sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
+                    sender.whereKey("receiver", equalTo: self.userObjects[indexPath.row])
                     let receiver = PFQuery(className: "Chats")
                     receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                    receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+                    receiver.whereKey("sender", equalTo: self.userObjects[indexPath.row])
                     let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
                     chats.includeKeys(["receiver", "sender"])
                     chats.findObjectsInBackground(block: {
@@ -398,7 +326,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             self.tableView!.deleteRows(at: [indexPath], with: .fade)
                             
                             // Reload data
-                            self.fetchChats()
+                            self.fetchQueues()
                             // Reload data in main thread
                             DispatchQueue.main.async {
                                 self.tableView!.reloadData()
@@ -410,7 +338,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                 SVProgressHUD.dismiss()
                             }
                             // Reload data
-                            self.fetchChats()
+                            self.fetchQueues()
                         }
                     })
                     
@@ -420,7 +348,61 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 dialogController.show(in: self)
             }
         }
+    }
+    
+    // Stylize title
+    func configureView() {
+        // Change the font and size of nav bar text
+        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+            let navBarAttributesDictionary: [String: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+                NSFontAttributeName: navBarFont
+            ]
+            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+            self.navigationController?.navigationBar.topItem?.title = "Chats"
+        }
+        // MARK: - UINavigationBar Extension
+        // Configure UINavigationBar, and show UITabBar
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.tabBarController?.delegate = self
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
         
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+
+    
+    // MARK: DZNEmptyDataSet Framework
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if chatObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "🙊\nNo Active Chats"
+        let font = UIFont(name: "AvenirNext-Medium", size: 30.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "Start a conversation by tapping\nthe icon on the top right!"
+        let font = UIFont(name: "AvenirNext-Medium", size: 17.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -428,30 +410,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Set design of navigation bar
         configureView()
         // Query chats
-        fetchChats()
-        
-/*
-         let array = ["horse", "cow", "camel", "sheep", "goat"]
-         
-         let defaults = UserDefaults.standard
-         defaults.set(array, forKey: "SavedStringArray")
-         Retrieve array
-         
-         let defaults = UserDefaults.standard
-         let myarray = defaults.stringArray(forKey: "SavedStringArray") ?? [String]()
- */
+        fetchQueues()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
-        
-        
-        
-        
-//        self.navigationController?.tabBarController?.tabBar.items[3].set
-        
         
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
@@ -501,6 +464,52 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     }
     
     
+    // MARK: - UISearchBarDelegate methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        // Set boolean
+        searchActive = true
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        // Search by <username> and <realNameOfUser>
+        let name = PFUser.query()!
+        name.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+        let realName = PFUser.query()!
+        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+        let user = PFQuery.orQuery(withSubqueries: [name, realName])
+        user.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                
+                // Clear arrays
+                self.searchObjects.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    if self.userObjects.contains(where: {$0.objectId! == object.objectId!}) {
+                        self.searchObjects.append(object)
+                    }
+                }
+                
+                // Reload data
+                if self.searchObjects.count != 0 {
+                    // Reload data
+                    self.tableView!.reloadData()
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView()
+                } else {
+                    // Set background for tableView
+                    self.tableView!.backgroundView = UIImageView(image: UIImage(named: "NoResults"))
+                    // Reload data
+                    self.tableView!.reloadData()
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        })
+    }
+
     
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
@@ -556,7 +565,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         // Show read receipts by default
         cell.status.isHidden = false
         
-        // If Searched
+        /*
+         IF SEARCHED FOR RECENT CONVERSATIONS
+         */
         if searchActive == true && searchBar.text != "" {
             
             // Hide read receipts
@@ -582,7 +593,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             }
             
         } else {
-            
+        /*
+             CURRENT CHATS
+        */
             // Show read receipets
             cell.status.isHidden = false
             // Show time
@@ -590,137 +603,117 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // Set default font
             cell.rpUsername.font = UIFont(name: "AvenirNext-Medium", size: 17)
             
-            // Order by most recent
-            // Read reciepts
-            let sender = PFQuery(className: "Chats")
-            sender.whereKey("sender", equalTo: PFUser.current()!)
-            sender.whereKey("receiver", equalTo: self.chatObjects[indexPath.row])
             
-            let receiver = PFQuery(className: "Chats")
-            receiver.whereKey("receiver", equalTo: PFUser.current()!)
-            receiver.whereKey("sender", equalTo: self.chatObjects[indexPath.row])
+            // Set time
+            // Set time
+            let from = self.chatObjects[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
             
-            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-            chats.includeKeys(["sender", "receiver"])
-            chats.order(byDescending: "createdAt")
-            chats.getFirstObjectInBackground(block: {
-                (object: PFObject?, error: Error?) in
-                if error == nil {
-                    
-                    // Set time
-                    let from = object!.createdAt!
-                    let now = Date()
-                    let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-                    let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                    
-                    // logic what to show : Seconds, minutes, hours, days, or weeks
-                    if difference.second! <= 0 {
-                        cell.time.text = "now"
-                    } else if difference.second! > 0 && difference.minute! == 0 {
-                        if difference.second! == 1 {
-                            cell.time.text = "1 second ago"
-                        } else {
-                            cell.time.text = "\(difference.second!) seconds ago"
-                        }
-                    } else if difference.minute! > 0 && difference.hour! == 0 {
-                        if difference.minute! == 1 {
-                            cell.time.text = "1 minute ago"
-                        } else {
-                            cell.time.text = "\(difference.minute!) minutes ago"
-                        }
-                    } else if difference.hour! > 0 && difference.day! == 0 {
-                        if difference.hour! == 1 {
-                            cell.time.text = "1 hour ago"
-                        } else {
-                            cell.time.text = "\(difference.hour!) hours ago"
-                        }
-                    } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                        if difference.day! == 1 {
-                            cell.time.text = "1 day ago"
-                        } else {
-                            cell.time.text = "\(difference.day!) days ago"
-                        }
-                    } else if difference.weekOfMonth! > 0 {
-                        let createdDate = DateFormatter()
-                        createdDate.dateFormat = "MMM d, yyyy"
-                        cell.time.text = createdDate.string(from: object!.createdAt!)
-                    }
-                    
-                    // If PFUser.currentUser()! received last message
-                    if (object?.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "sender") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
-                        // Handle optional chaining for OtherUser's Object
-                        // SENDER
-                        if let theSender = object!.object(forKey: "sender") as? PFUser {
-                            
-                            // Set username
-                            cell.rpUsername.text! = theSender["realNameOfUser"] as! String
-                            
-                            // Get and set user's profile photo
-                            // Handle optional chaining
-                            if let proPic = theSender["userProfilePicture"] as? PFFile {
-                                // MARK: - SDWebImage
-                                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                            }
-                            
-                            // Set user's object
-                            cell.userObject = theSender
-                        }
-                        
-                        // Set frame depending on whether the message was read or not
-                        // OtherUser
-                        // READ (TRUE) ==> Gray Square
-                        // NOT READ (FALSE) ==> Red Circle
-                        if object!["read"] as! Bool == true {
-                            cell.status.image = UIImage(named: "RPSpeechBubble")
-                        } else {
-                            cell.status.image = UIImage(named: "RPSpeechBubbleFilled")
-                            cell.rpUsername.font = UIFont(name: "AvenirNext-Demibold", size: 17)
-                        }
-                    }
-                    
-                    
-                    // If PFUser.currentUser()! sent last message
-                    if (object!.object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (object!.object(forKey: "receiver") as! PFUser).objectId! == self.chatObjects[indexPath.row].objectId! {
-                        
-                        if let theReceiver = object!.object(forKey: "receiver") as? PFUser {
-                            // Set username
-                            cell.rpUsername.text! = theReceiver["realNameOfUser"] as! String
-                            
-                            // Get and set user's profile photo
-                            // Handle optional chaining
-                            if let proPic = theReceiver["userProfilePicture"] as? PFFile {
-                                // MARK: - SDWebImage
-                                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
-                            }
-                            
-                            // Set user's object
-                            cell.userObject = theReceiver
-                        }
-                        
-                        // Set frame depending on whether the message was read or not
-                        // OtherUser
-                        // READ (TRUE) ==> Gray Square
-                        // NOT READ (FALSE) ==> Red Circle
-                        if object!["read"] as! Bool == true {
-                            cell.status.image  = UIImage(named: "Sent-100")
-                        } else {
-                            cell.status.image = UIImage(named: "Sent Filled-100")
-                        }
-                    }
-                    
+            // logic what to show : Seconds, minutes, hours, days, or weeks
+            if difference.second! <= 0 {
+                cell.time.text = "now"
+            } else if difference.second! > 0 && difference.minute! == 0 {
+                if difference.second! == 1 {
+                    cell.time.text = "1 second ago"
                 } else {
-                    print(error?.localizedDescription as Any)
-                    
+                    cell.time.text = "\(difference.second!) seconds ago"
                 }
-            })
+            } else if difference.minute! > 0 && difference.hour! == 0 {
+                if difference.minute! == 1 {
+                    cell.time.text = "1 minute ago"
+                } else {
+                    cell.time.text = "\(difference.minute!) minutes ago"
+                }
+            } else if difference.hour! > 0 && difference.day! == 0 {
+                if difference.hour! == 1 {
+                    cell.time.text = "1 hour ago"
+                } else {
+                    cell.time.text = "\(difference.hour!) hours ago"
+                }
+            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+                if difference.day! == 1 {
+                    cell.time.text = "1 day ago"
+                } else {
+                    cell.time.text = "\(difference.day!) days ago"
+                }
+            } else if difference.weekOfMonth! > 0 {
+                let createdDate = DateFormatter()
+                createdDate.dateFormat = "MMM d, yyyy"
+                cell.time.text = createdDate.string(from: self.chatObjects[indexPath.row].createdAt!)
+            }
+
+            // If PFUser.currentUser()! received last message
+            if (self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                // Handle optional chaining for OtherUser's Object and fetch user's data
+                // SENDER
+                if let sender = self.chatObjects[indexPath.row].object(forKey: "sender") as? PFUser {
+                    // Set username
+                    cell.rpUsername.text! = sender.value(forKey: "realNameOfUser") as! String
+                    
+                    // Get and set user's profile photo
+                    // Handle optional chaining
+                    if let proPic = sender.value(forKey: "userProfilePicture") as? PFFile {
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    }
+                    
+                    // Set user's object
+                    cell.userObject = sender
+                }
+                
+                
+                // Set frame depending on whether the message was read or not
+                // OtherUser
+                // READ (TRUE) ==> Gray Square
+                // NOT READ (FALSE) ==> Red Circle
+                if self.chatObjects[indexPath.row].value(forKey: "read") as! Bool == true {
+                    cell.status.image = UIImage(named: "RPSpeechBubble")
+                } else {
+                    cell.status.image = UIImage(named: "RPSpeechBubbleFilled")
+                    cell.rpUsername.font = UIFont(name: "AvenirNext-Demibold", size: 17)
+                }
+            }
+            
+            
+            // If PFUser.currentUser()! sent last message
+            if (self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                // Fetch user's data
+                if let receiver = self.chatObjects[indexPath.row].object(forKey: "receiver") as? PFUser {
+                    // Set username
+                    cell.rpUsername.text! = receiver.value(forKey: "realNameOfUser") as! String
+                    
+                    // Get and set user's profile photo
+                    // Handle optional chaining
+                    if let proPic = receiver.value(forKey: "userProfilePicture") as? PFFile {
+                        // MARK: - SDWebImage
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    }
+                    
+                    // Set user's object
+                    cell.userObject = receiver
+                }
+                
+                // Set frame depending on whether the message was read or not
+                // OtherUser
+                // READ (TRUE) ==> Gray Square
+                // NOT READ (FALSE) ==> Red Circle
+                if self.chatObjects[indexPath.row].value(forUndefinedKey: "read") as! Bool == true {
+                    cell.status.image  = UIImage(named: "Sent-100")
+                } else {
+                    cell.status.image = UIImage(named: "Sent Filled-100")
+                }
+            }
         }
         
         
         return cell
     }
 
-
+    // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
         // If user is searching...
         if searchActive == true && searchBar.text != "" {
             // Append to <chatUserObject>
@@ -729,39 +722,48 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             chatUserObject.append(self.searchObjects[indexPath.row])
             // Append user's username
             chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
-            // Push View controller
-            let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
-            self.navigationController!.pushViewController(chatRoom, animated: true)
         } else {
-            // Append...
-            // (1) User's Object
-            chatUserObject.append(self.chatObjects[indexPath.row])
-            // (2) Username
-            chatUsername.append(self.chatObjects[indexPath.row].value(forKey: "username") as! String)
-            // Push View controller
-            let chatRoom = self.storyboard?.instantiateViewController(withIdentifier: "chatRoom") as! RPChatRoom
-            self.navigationController!.pushViewController(chatRoom, animated: true)
+            /*
+             Append Data
+             • chatUserObject: PFObject
+             • chatUserName: String
+            */
+            // RECEIVER
+            if (self.chatObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                chatUserObject.append(self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser)
+                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser).value(forKey: "username") as! String)
+            } else if (self.chatObjects[indexPath.row].value(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
+            // SENDER
+                chatUserObject.append(self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser)
+                chatUsername.append((self.chatObjects[indexPath.row].object(forKey: "sender") as! PFUser).value(forKey: "username") as! String)
+            }
         }
-    } // end didSelectRowAt method
+        // Push VC
+        self.showChatRoom()
+        
+    }
+
  
 
-    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    // MARK: - UIScrollView Delegate Methods
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign first responder status
+        self.searchBar.resignFirstResponder()
+        // Clear text
+        self.searchBar.text! = ""
+        // Set Boolean
+        searchActive = false
+        // Set tableView
+        self.tableView.backgroundView = UIView()
+        // Reload data
+        fetchQueues()
+    }
+    
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
     }
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= chatObjects.count {
-            // Increase page size to load more posts
-            page = page + 500000
-            // Query friends
-            self.fetchChats()
-        }
-    }
-    
     
     // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

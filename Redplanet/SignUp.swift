@@ -167,30 +167,59 @@ class SignUp: UIViewController, UITextFieldDelegate, UINavigationControllerDeleg
                     
                 } else {
                     print("ERROR: \(error?.localizedDescription as Any)")
-                    
-                    // MARK: - AZDialogViewController
-                    let dialogController = AZDialogViewController(title: "💩\nSign up failed.",
-                                                                  message: "Your email is invalid or your username is taken.")
-                    dialogController.dismissDirection = .bottom
-                    dialogController.dismissWithOutsideTouch = true
-                    dialogController.showSeparator = true
-                    // Configure style
-                    dialogController.buttonStyle = { (button,height,position) in
-                        button.setTitleColor(UIColor.white, for: .normal)
-                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                        button.layer.masksToBounds = true
-                    }
-                    
-                    // Add settings button
-                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
-                        // Enable button
-                        self.continueButton.isUserInteractionEnabled = true
-                        // Dismiss
-                        dialog.dismiss()
-                    }))
-                    
-                    dialogController.show(in: self)
+                    let usernameCount = PFUser.query()!
+                    usernameCount.whereKey("username", equalTo: newRPUsername)
+                    usernameCount.countObjectsInBackground(block: { (count: Int32, error: Error?) in
+                        if count > 0 {
+                            // MARK: - AZDialogViewController
+                            let dialogController = AZDialogViewController(title: "💩\nSign up failed.",
+                                                                          message: "Your email is invalid or your username is taken.")
+                            dialogController.dismissDirection = .bottom
+                            dialogController.dismissWithOutsideTouch = true
+                            dialogController.showSeparator = true
+                            // Configure style
+                            dialogController.buttonStyle = { (button,height,position) in
+                                button.setTitleColor(UIColor.white, for: .normal)
+                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                button.layer.masksToBounds = true
+                            }
+                            
+                            // Add settings button
+                            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                                // Enable button
+                                self.continueButton.isUserInteractionEnabled = true
+                                // Dismiss
+                                dialog.dismiss()
+                            }))
+                            
+                            dialogController.show(in: self)
+                        } else {
+                            // MARK: - AZDialogViewController
+                            let dialogController = AZDialogViewController(title: "💩\nSign up failed.",
+                                                                          message: "Poor connection error.")
+                            dialogController.dismissDirection = .bottom
+                            dialogController.dismissWithOutsideTouch = true
+                            dialogController.showSeparator = true
+                            // Configure style
+                            dialogController.buttonStyle = { (button,height,position) in
+                                button.setTitleColor(UIColor.white, for: .normal)
+                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                button.layer.masksToBounds = true
+                            }
+                            
+                            // Add settings button
+                            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                                // Enable button
+                                self.continueButton.isUserInteractionEnabled = true
+                                // Dismiss
+                                dialog.dismiss()
+                            }))
+                            
+                            dialogController.show(in: self)
+                        }
+                    })
                 }
             })
         }
