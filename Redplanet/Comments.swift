@@ -499,7 +499,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
 
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Options", message: "Comment")
+                let dialogController = AZDialogViewController(title: "Comment", message: "Options")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true

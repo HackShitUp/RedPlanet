@@ -99,6 +99,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats["receiver"] = chatUserObject.last!
             chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
             chats["read"] = false
+            chats["saved"] = false
             chats["videoAsset"] = PFFile(name: "video.mp4", data: smallVideoData! as Data)
             chats["mediaType"] = "itm"
             chats.saveInBackground()

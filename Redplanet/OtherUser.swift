@@ -201,7 +201,8 @@ class OtherUser: UITableViewController {
     func reportOrBlock() {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)")
+        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
+            message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
@@ -261,7 +262,8 @@ class OtherUser: UITableViewController {
     @IBAction func moreAction(_ sender: Any) {
 
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)")
+        let dialogController = AZDialogViewController(title: "\(otherObject.last!.value(forKey: "realNameOfUser") as! String)",
+                                                      message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

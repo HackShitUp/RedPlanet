@@ -65,7 +65,7 @@ class TimeTextPostCell: UITableViewCell {
     func showMore(sender: UIButton) {
 
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Text Post")
+        let dialogController = AZDialogViewController(title: "Text Post", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

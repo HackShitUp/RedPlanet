@@ -283,7 +283,7 @@ class TimeMediaCell: UITableViewCell {
     // Function for moreButton
     func doMore(sender: UIButton) {
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Photo")
+        let dialogController = AZDialogViewController(title: "Photo", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

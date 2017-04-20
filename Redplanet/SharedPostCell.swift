@@ -381,7 +381,7 @@ class SharedPostCell: UITableViewCell {
     func doMore(sender: UIButton) {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Shared Post")
+        let dialogController = AZDialogViewController(title: "Shared Post", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

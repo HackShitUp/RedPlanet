@@ -128,9 +128,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["receiver"] = user
                     chats["senderUsername"] = PFUser.current()!.username!
                     chats["receiverUsername"] = user.value(forKey: "username") as! String
-                    chats["read"] = false
                     chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
                     chats["mediaType"] = "ph"
+                    chats["read"] = false
+                    chats["saved"] = false
                     chats.saveEventually()
                     
                     // MARK: - RPHelpers
@@ -162,9 +163,10 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["senderUsername"] =  PFUser.current()!.username!
                     chats["receiver"] = user
                     chats["receiverUsername"] = user.value(forKey: "username") as! String
-                    chats["read"] = false
                     chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
                     chats["mediaType"] = "vi"
+                    chats["read"] = false
+                    chats["saved"] = false
                     chats.saveEventually()
                     
                     // MARK: - RPHelpers
@@ -196,6 +198,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         chats["senderUsername"] = PFUser.current()!.username!
                         chats["receiverUsername"] = user.value(forKey: "username") as! String
                         chats["read"] = false
+                        chats["saved"] = false
                         chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
                         chats.saveEventually()
                         

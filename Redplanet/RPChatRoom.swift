@@ -311,10 +311,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Ephemeral Chat
                     let components : NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    // Append saved objects
                     if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
-//                        self.messageObjects.append(object)
+                        self.messageObjects.append(object)
                     }
-                    self.messageObjects.append(object)
+//                    self.messageObjects.append(object)
 //                    else {
 //                        self.skipped.append(object)
 //                    }
@@ -355,20 +356,21 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Clear chat
             self.newChat.text!.removeAll()
             // Send to Chats
-            let chat = PFObject(className: "Chats")
-            chat["sender"] = PFUser.current()!
-            chat["senderUsername"] = PFUser.current()!.username!
-            chat["receiver"] = chatUserObject.last!
-            chat["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chat["Message"] = chatText
-            chat["read"] = false
-            chat.saveInBackground {
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["Message"] = chatText
+            chats["read"] = false
+            chats["saved"] = false
+            chats.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
                     
                     // MARK: - RPHelpers
                     let rpHelpers = RPHelpers()
-                    _ = rpHelpers.updateQueue(chatQueue: chat, userObject: chatUserObject.last!)
+                    _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                     
                     /*
                      MARK: - OneSignal
@@ -397,8 +399,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
     }
     
-    /*
-    
+
     // Function to delete chats
     func chatOptions(sender: UILongPressGestureRecognizer) {
         
@@ -407,62 +408,140 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
                 
                 // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Options", message: "Chat")
+                let dialogController = AZDialogViewController(title: "Chat", message: "Options")
                 dialogController.dismissDirection = .bottom
                 dialogController.dismissWithOutsideTouch = true
                 dialogController.showSeparator = true
-                // Add image
-                dialogController.imageHandler = { (imageView) in
-//                    if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                    if let proPic = self.messageObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
-                        proPic.getDataInBackground(block: {
-                            (data: Data?, error: Error?) in
-                            if error == nil {
-                                imageView.image = UIImage(data: data!)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
-                    } else {
-                        imageView.image = UIImage(named: "Gender Neutral User-100")
-                    }
-                    imageView.contentMode = .scaleAspectFill
-                    return true //must return true, otherwise image won't show.
-                }
                 // Configure style
                 dialogController.buttonStyle = { (button,height,position) in
                     button.setTitleColor(UIColor.white, for: .normal)
-                    button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
                     button.layer.masksToBounds = true
-                    button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                }
-                // Add Cancel button
-                dialogController.cancelButtonStyle = { (button,height) in
-                    button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-                    button.setTitle("CANCEL", for: [])
-                    return true
                 }
                 // (1) Delete button
                 let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    
+                    // Delete Chat
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!.deleteInBackground(block: { (success: Bool, error: Error?) in
+                                                            if error == nil {
+                                                                print("Successfully deleted chat: \(object!)")
+                                                                
+                                                                // Delete from messageObjects and UITableView
+                                                                self.messageObjects.remove(at: indexPath.row)
+                                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                                
+                                                                
+                                                                // Update <ChatsQueue> with last object in array
+                                                                let rpHelpers = RPHelpers()
+                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
+                                                                
+                                                                
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                                
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showError(withStatus: "Error")
+                                                            }
+                                                        })
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
                 })
                 // (2) Save button
                 let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    // Query Chats
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!["saved"] = true
+                                                        object!.saveInBackground()
+                                                        
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Saved")
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
                 })
-                // (3) Copy button
-                let copy = AZDialogAction(title: "Copy Text", handler: { (dialog) -> (Void) in
+                // (3) Unsave
+                let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    // Query Chats
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!["saved"] = false
+                                                        object!.saveInBackground()
+                                                        
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Unsaved")
+                                                        
+                                                        // Delete from messageObjects and UITableView
+                                                        self.messageObjects.remove(at: indexPath.row)
+                                                        self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
+                    
                 })
-                // (4) Share Via button (Photo/Video only)
-                let shareVia = AZDialogAction(title: "Share Via...", handler: { (dialog) -> (Void) in
-                })
-                
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                // Sender CAN delete chat
+                if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    dialogController.addAction(delete)
+                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
+                        dialogController.addAction(unsave)
+                    } else {
+                        dialogController.addAction(save)
+                    }
+                } else {
+                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
+                        dialogController.addAction(unsave)
+                    } else {
+                        dialogController.addAction(save)
+                    }
+                }
                 // Show
                 dialogController.show(in: self)
-
             }
         }
-        
     }
-    */
     
     
     // Compress video
@@ -538,9 +617,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         chats["senderUsername"] = PFUser.current()!.username!
                         chats["receiver"] = chatUserObject.last!
                         chats["receiverUsername"] = chatUsername.last!
-                        chats["read"] = false
                         chats["videoAsset"] = PFFile(name: "video.mov", data: compressedData as Data)
                         chats["mediaType"] = "vi"
+                        chats["read"] = false
+                        chats["saved"] = false
                         chats.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
@@ -617,6 +697,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(image, 0.5)!)
         chats["mediaType"] = "ph"
         chats["read"] = false
+        chats["saved"] = false
         chats.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
@@ -783,11 +864,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView!.estimatedRowHeight = 80
         self.tableView!.tableFooterView = UIView()
         
-//        // Add long press method in tableView
-//        let hold = UILongPressGestureRecognizer(target: self, action: #selector(chatOptions))
-//        hold.minimumPressDuration = 0.40
-//        self.tableView.isUserInteractionEnabled = true
-//        self.tableView.addGestureRecognizer(hold)
+        // Add long press method in tableView
+        let hold = UILongPressGestureRecognizer(target: self, action: #selector(chatOptions))
+        hold.minimumPressDuration = 0.40
+        self.tableView.isUserInteractionEnabled = true
+        self.tableView.addGestureRecognizer(hold)
         
         // Draw cornerRadius for cameraButton and photosButton
         self.cameraButton.layer.borderColor = UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0).cgColor

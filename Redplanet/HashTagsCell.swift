@@ -314,7 +314,7 @@ class HashTagsCell: UITableViewCell {
     func doMore() {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "# Post")
+        let dialogController = AZDialogViewController(title: "# Post", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

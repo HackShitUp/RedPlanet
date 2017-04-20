@@ -2060,6 +2060,34 @@
             </objects>
             <point key="canvasLocation" x="1487" y="1612"/>
         </scene>
+        <!--FriendsNF-->
+        <scene sceneID="bsu-u9-cVS">
+            <objects>
+                <tableViewController storyboardIdentifier="friendsNFVC" id="Bfa-ND-KS6" customClass="FriendsNF" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="18Q-Mm-JZk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="friendsNFCell" id="Xag-6F-FnI" customClass="FriendsNFCell" customModule="Redplanet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xag-6F-FnI" id="0se-i7-9cB">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="Bfa-ND-KS6" id="8Oy-jR-97J"/>
+                            <outlet property="delegate" destination="Bfa-ND-KS6" id="MqC-u2-TBZ"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ykh-vf-v2h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1481" y="2714"/>
+        </scene>
         <!--Photo Asset-->
         <scene sceneID="Lef-W9-5fv">
             <objects>

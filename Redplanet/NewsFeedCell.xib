@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="NewsFeedCell" customModule="Redplanet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z6N-7Y-qma" customClass="PFImageView">
+                        <rect key="frame" x="8" y="10" width="55" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="55" id="9G4-r4-OxU"/>
+                            <constraint firstAttribute="width" constant="55" id="Cnf-3U-tfD"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DrM-AN-LeW">
+                        <rect key="frame" x="71" y="44" width="296" height="21"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
+                        <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfx-ll-jdL">
+                        <rect key="frame" x="71" y="10" width="296" height="34"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="34" id="10X-z0-aIS"/>
+                            <constraint firstAttribute="width" constant="296" id="Gbc-6E-sH3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="nfx-ll-jdL" secondAttribute="trailing" constant="8" id="6pw-1O-jo1"/>
+                    <constraint firstItem="z6N-7Y-qma" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="7BI-h7-mRC"/>
+                    <constraint firstAttribute="bottom" secondItem="DrM-AN-LeW" secondAttribute="bottom" constant="9.5" id="N1Z-aI-6Fs"/>
+                    <constraint firstAttribute="bottom" secondItem="z6N-7Y-qma" secondAttribute="bottom" constant="9.5" id="cTA-6i-ggU"/>
+                    <constraint firstItem="nfx-ll-jdL" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="cik-5S-jgN"/>
+                    <constraint firstItem="z6N-7Y-qma" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="h0f-1W-h3y"/>
+                    <constraint firstItem="DrM-AN-LeW" firstAttribute="top" secondItem="nfx-ll-jdL" secondAttribute="bottom" id="mdO-ey-HMa"/>
+                    <constraint firstAttribute="trailing" secondItem="DrM-AN-LeW" secondAttribute="trailing" constant="8" id="smg-5V-TCU"/>
+                    <constraint firstItem="DrM-AN-LeW" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="xDg-aZ-BEG"/>
+                    <constraint firstItem="nfx-ll-jdL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="yuL-bW-HVN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="rpUserProPic" destination="z6N-7Y-qma" id="Jcv-wY-6QN"/>
+                <outlet property="rpUsername" destination="nfx-ll-jdL" id="pJm-6U-dL4"/>
+                <outlet property="time" destination="DrM-AN-LeW" id="ymc-9I-VuM"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="54.5"/>
+        </tableViewCell>
+    </objects>
+</document>

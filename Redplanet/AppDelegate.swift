@@ -472,6 +472,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                     chats["receiver"] = PFUser.current()!
                                     chats["receiverUsername"] = PFUser.current()!.username!
                                     chats["read"] = false
+                                    chats["saved"] = false
                                     chats["Message"] = "Happy Birthday \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), hope you have a great birthday with the people you love!🎉🎂🎁\n\n❤, Team Redplanet"
                                     chats.saveInBackground(block: {
                                         (success: Bool, error: Error?) in

@@ -113,6 +113,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chats["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
             chats["mediaType"] = "itm"
             chats["read"] = false
+            chats["saved"] = false
             chats.saveInBackground()
             
             /*

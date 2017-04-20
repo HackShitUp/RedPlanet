@@ -263,7 +263,7 @@ class ProPicCell: UITableViewCell {
     func doMore(sender: UIButton) {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Profile Photo")
+        let dialogController = AZDialogViewController(title: "Profile Photo", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

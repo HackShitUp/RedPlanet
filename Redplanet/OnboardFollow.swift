@@ -52,6 +52,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                 chats["receiver"] = PFUser.current()!
                 chats["receiverUsername"] = PFUser.current()!.username!
                 chats["read"] = false
+                chats["saved"] = false
                 chats["Message"] = "🚀👾☄️\nHi \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), welcome to the community! Feel free to chat us @teamrp if you have any questions or concerns using Redplanet. If you're having difficulty using Redplanet, head over to https://medium.com/@redplanetmedia to find tutorials.\n❤️, Redplanet"
                 chats.saveInBackground(block: {
                     (success: Bool, error: Error?) in

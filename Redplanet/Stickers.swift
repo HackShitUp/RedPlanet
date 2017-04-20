@@ -139,6 +139,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         chats["photoAsset"] = PFFile(data: UIImagePNGRepresentation(UIImage(named: self.stickers[indexPath.row])!)!)
         chats["mediaType"] = "sti"
         chats["read"] = false
+        chats["saved"] = false
         chats.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {

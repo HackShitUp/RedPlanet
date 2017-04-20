@@ -271,7 +271,7 @@ class TimeVideoCell: UITableViewCell {
     func doMore(sender: UIButton) {
 
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Video")
+        let dialogController = AZDialogViewController(title: "Video", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

@@ -50,7 +50,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func more(_ sender: Any) {
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Space Post")
+        let dialogController = AZDialogViewController(title: "Space Post", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true

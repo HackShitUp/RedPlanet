@@ -65,7 +65,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     func showMore(sender: UIButton) {
         
         // MARK: - AZDialogViewController
-        let dialogController = AZDialogViewController(title: "Options", message: "Moment")
+        let dialogController = AZDialogViewController(title: "Moment", message: "Options")
         dialogController.dismissDirection = .bottom
         dialogController.dismissWithOutsideTouch = true
         dialogController.showSeparator = true
