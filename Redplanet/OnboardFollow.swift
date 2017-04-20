@@ -59,6 +59,9 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
                         // Enable button
                         self.doneButton.isEnabled = true
                         
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.updateQueue(chatQueue: chats, userObject: object!)
                         
                         // MARK: - HEAP Analytics
                         // Track who signed up

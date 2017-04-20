@@ -12,36 +12,7 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
 import SwipeNavigationController
-
-/*
- ========= Navigation button that launches to the Library, Camera, and New Text Post (aka: ShareUI) ===========
- Hide this button in viewWillAppear and show this button when viewWillDisappear is called
- in the respective UIViewController's lifecycle hierarchy
- */
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-
-// EXTENSION
-// Method to configure button
-extension UIView {
-    func setButton(container: UIView?) {
-        // Add button to bottom/center of UITabBar
-        var buttonFrame = rpButton.frame
-        buttonFrame.origin.y = container!.bounds.height - buttonFrame.height
-        buttonFrame.origin.x = container!.bounds.width/2 - buttonFrame.size.width/2
-        rpButton.frame = buttonFrame
-        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
-        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        /*
-        rpButton.layer.shadowColor = UIColor.white.cgColor
-        rpButton.layer.shadowOffset = CGSize(width: 0, height: -7)
-        rpButton.layer.shadowRadius = 1
-        rpButton.layer.shadowOpacity = 0.75
-        */
-        container!.addSubview(rpButton)
-    }
-}
 
 class MainUITab: UITabBarController, UITabBarControllerDelegate {
     

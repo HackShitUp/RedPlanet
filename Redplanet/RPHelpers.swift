@@ -16,6 +16,38 @@ import Parse
 import ParseUI
 import Bolts
 
+
+
+/*
+ ========= Navigation button that launches to the Library, Camera, and New Text Post (aka: ShareUI) ===========
+ Hide this button in viewWillAppear and show this button when viewWillDisappear is called
+ in the respective UIViewController's lifecycle hierarchy
+ */
+let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+
+// EXTENSION
+// Method to configure button
+extension UIView {
+    func setButton(container: UIView?) {
+        // Add button to bottom/center of UITabBar
+        var buttonFrame = rpButton.frame
+        buttonFrame.origin.y = container!.bounds.height - buttonFrame.height
+        buttonFrame.origin.x = container!.bounds.width/2 - buttonFrame.size.width/2
+        rpButton.frame = buttonFrame
+        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
+        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
+        /*
+         rpButton.layer.shadowColor = UIColor.white.cgColor
+         rpButton.layer.shadowOffset = CGSize(width: 0, height: -7)
+         rpButton.layer.shadowRadius = 1
+         rpButton.layer.shadowOpacity = 0.75
+         */
+        container!.addSubview(rpButton)
+    }
+}
+
+
+
 /*
  MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
  */
@@ -41,6 +73,33 @@ extension Sequence {
         return result
     }
 }
+
+
+/*
+ MARK: - String Extension that bolds range of string
+ */
+/*
+ 
+ SHIT DOES NOT WORK!!!
+ 
+extension String {
+    func attributedString(from string: String, nonBoldRange: NSRange?) -> NSAttributedString {
+        let fontSize = UIFont.systemFontSize
+        let attrs = [
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
+            NSForegroundColorAttributeName: UIColor.black
+        ]
+        let nonBoldAttribute = [
+            NSFontAttributeName: UIFont.systemFont(ofSize: fontSize),
+            ]
+        let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
+        if let range = nonBoldRange {
+            attrStr.setAttributes(nonBoldAttribute, range: range)
+        }
+        return attrStr
+    }
+}
+*/
 
 
 /*
@@ -152,6 +211,12 @@ extension UIColor {
 
 
 class RPHelpers: NSObject {
+    
+    
+    
+    
+    
+    
 
     // MARK: - OpenWeatherMap.org API
     open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
@@ -234,49 +299,6 @@ class RPHelpers: NSObject {
     
     // MARK: - OneSignal; Function to send Push Notifications
     open func pushNotification(fromUser: PFUser?, toUser: PFUser?, activityType: String?, postType: String?) {
-//        // Send Push Notification to user
-//        // Handle optional chaining
-//        // Handle optional chaining
-//        if chatUserObject.last!.value(forKey: "apnsId") != nil {
-//            // MARK: - OneSignal
-//            // Send push notification
-//            OneSignal.postNotification(
-//                ["contents":
-//                    ["en": "from \(PFUser.current()!.username!.uppercased())"],
-//                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-//                 "ios_badgeType": "Increase",
-//                 "ios_badgeCount": 1
-//                ]
-//            )
-//        }
-        
-//        switch activityType {
-//        case "Chats":
-//            <#code#>
-//        default:
-//            <#code#>
-//        }
-        
-//        if toUser!.value(forKey: "apnsId") != nil {
-//            
-//            
-//            if activityType == "from" {
-//                
-//            } else if activityType == "Comment" {
-//                
-//            }
-//            
-//            OneSignal.postNotification(
-//                ["contents":
-//                    ["en": "from \(fromUser!.username!.uppercased())"],
-//                 "include_player_ids": ["\(toUser!.value(forKey: "apnsId") as! String)"],
-//                 "ios_badgeType": "Increase",
-//                 "ios_badgeCount": 1
-//                ]
-//            )
-//
-//        }
-        
         
     }
     

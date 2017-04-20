@@ -151,7 +151,6 @@
 		7EC5D1561DB2FE4F00437219 /* RedplanetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1551DB2FE4F00437219 /* RedplanetUITests.swift */; };
 		7EC5D1671DB3197E00437219 /* LoginOrSignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */; };
 		7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1681DB31B2500437219 /* SignUp.swift */; };
-		7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D16C1DB32F3300437219 /* Navigator.swift */; };
 		7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1921DB33CD400437219 /* UserSettings.swift */; };
 		7EC5D1961DB353E000437219 /* Chats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1951DB353E000437219 /* Chats.swift */; };
 		7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1971DB353F300437219 /* ChatsCell.swift */; };
@@ -414,7 +413,6 @@
 		7EC5D1571DB2FE4F00437219 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7EC5D1661DB3197E00437219 /* LoginOrSignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginOrSignUp.swift; sourceTree = "<group>"; };
 		7EC5D1681DB31B2500437219 /* SignUp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
-		7EC5D16C1DB32F3300437219 /* Navigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Navigator.swift; sourceTree = "<group>"; };
 		7EC5D1921DB33CD400437219 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		7EC5D1951DB353E000437219 /* Chats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chats.swift; sourceTree = "<group>"; };
 		7EC5D1971DB353F300437219 /* ChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsCell.swift; sourceTree = "<group>"; };
@@ -1202,7 +1200,6 @@
 			children = (
 				7E99CA071E90E42700661B78 /* MainUITab.swift */,
 				7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */,
-				7EC5D16C1DB32F3300437219 /* Navigator.swift */,
 			);
 			name = TABBAR_NAVIGATION;
 			sourceTree = "<group>";
@@ -1309,8 +1306,8 @@
 		7EDEB9F61EA5684D00EEE4E1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
+				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
 				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
 			);
 			name = Helpers;
@@ -1801,7 +1798,6 @@
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
-				7EC5D16D1DB32F3300437219 /* Navigator.swift in Sources */,
 				7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,

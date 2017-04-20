@@ -323,7 +323,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             // Call relationships function
             _ = queryRelationships()
             // Check birthday
-            checkBday()
+//            checkBday()
             
         } else {
             // Login or Sign Up
@@ -452,6 +452,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
 
             // Send chat if it DOES NOT YET exist!!!
             if today == birthDate {
+                
                 let chats = PFQuery(className: "Chats")
                 chats.includeKey("receiver")
                 chats.whereKey("senderUsername", equalTo: "teamrp")

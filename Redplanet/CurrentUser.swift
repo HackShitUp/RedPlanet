@@ -856,7 +856,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             // MARK: - RPHelpers
             vCell.time.text = difference.getFullTime(difference: difference, date: from)
             
-            
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
             likes.whereKey("forObjectId", equalTo: self.posts[indexPath.row].objectId!)

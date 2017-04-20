@@ -472,7 +472,7 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             
             // (5) HANDLE CAPTION IF IT EXISTS
             if let caption = self.posts[indexPath.row].value(forKey: "textPost") as? String {
-                mCell.textPost.text! = caption
+                mCell.textPost.text = caption
             } else {
                 mCell.textPost.isHidden = true
             }

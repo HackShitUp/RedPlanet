@@ -132,6 +132,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["photoAsset"] = shareObject.last!.value(forKey: "photoAsset") as! PFFile
                     chats["mediaType"] = "ph"
                     chats.saveEventually()
+                    
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                    
                     // MARK: - OneSignal
                     // Send Push Notification
                     if user.value(forKey: "apnsId") != nil {
@@ -161,6 +166,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     chats["videoAsset"] = shareObject.last!.value(forKey: "videoAsset") as! PFFile
                     chats["mediaType"] = "vi"
                     chats.saveEventually()
+                    
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                    
                     // MARK: - OneSignal
                     // Send Push Notification
                     if user.value(forKey: "apnsId") != nil {
@@ -188,6 +198,11 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         chats["read"] = false
                         chats["Message"] = "@\(userObject["username"] as! String) said: \(shareObject.last!.value(forKey: "textPost") as! String)"
                         chats.saveEventually()
+                        
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
                         // MARK: - OneSignal
                         // Send Push Notification
                         if user.value(forKey: "apnsId") != nil {
