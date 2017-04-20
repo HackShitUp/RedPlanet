@@ -1010,8 +1010,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 }
             }
             
-            
-            
             // (3) Set message
             cell.message.text! = messageObjects[indexPath.row].value(forKey: "Message") as! String
             
