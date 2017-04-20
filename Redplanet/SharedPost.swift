@@ -152,8 +152,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             self.navigationController?.navigationBar.topItem?.title = "Shared Post"
         }
         
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
@@ -595,41 +594,9 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.sharedTime.text = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    cell.time.text = "1 second ago"
-                } else {
-                    cell.time.text = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    cell.time.text = "1 minute ago"
-                } else {
-                    cell.time.text = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    cell.time.text = "1 hour ago"
-                } else {
-                    cell.time.text = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    cell.time.text = "1 day ago"
-                } else {
-                    cell.time.text = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                cell.time.text = createdDate.string(from: content.createdAt!)
-            }
-            
-        } // end handling of optional chaining
+            // MARK: - RPHelpers
+            cell.time.text = difference.getFullTime(difference: difference, date: from)   
+        }
         
         
         

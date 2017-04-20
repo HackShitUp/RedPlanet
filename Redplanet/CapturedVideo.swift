@@ -103,6 +103,13 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
             chats["mediaType"] = "itm"
             chats.saveInBackground()
             
+            /*
+             MARK: - RPHelpers
+             Helper to update <ChatsQueue>
+             */
+            let rpHelpers = RPHelpers()
+            _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+            
             // MARK: - HEAP
             Heap.track("SharedMoment", withProperties:
                 ["byUserId": "\(PFUser.current()!.objectId!)",

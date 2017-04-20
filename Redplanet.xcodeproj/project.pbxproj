@@ -11,6 +11,7 @@
 		28FCAF4B5E65BA65AB5D8BF4 /* Pods_RedplanetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */; };
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
 		7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */; };
+		7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A12281EA813CB00663207 /* RPHelpers.swift */; };
 		7E1CBD6F1E409C3200F68A4B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1CBD6E1E409C3200F68A4B /* Player.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
 		7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB91E31A822006B2D8B /* StickersCell.swift */; };
@@ -210,6 +211,7 @@
 		671F731F63BF43A12743B080 /* Pods-RedplanetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.release.xcconfig"; sourceTree = "<group>"; };
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
+		7E1A12281EA813CB00663207 /* RPHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPHelpers.swift; sourceTree = "<group>"; };
 		7E1CBD6E1E409C3200F68A4B /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
 		7E274EB91E31A822006B2D8B /* StickersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StickersCell.swift; sourceTree = "<group>"; };
@@ -1041,7 +1043,6 @@
 		7EA730D61E3B293500CF4D12 /* RP */ = {
 			isa = PBXGroup;
 			children = (
-				7EDEB9F61EA5684D00EEE4E1 /* RPCaptionContainer */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
@@ -1165,6 +1166,7 @@
 				7E4CFF951DB4393A0087454E /* POSTS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
+				7EDEB9F61EA5684D00EEE4E1 /* Helpers */,
 				7EA730D61E3B293500CF4D12 /* RP */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1A41DB356A500437219 /* DISCOVER */,
@@ -1304,13 +1306,14 @@
 			name = INTERACTIONS;
 			sourceTree = "<group>";
 		};
-		7EDEB9F61EA5684D00EEE4E1 /* RPCaptionContainer */ = {
+		7EDEB9F61EA5684D00EEE4E1 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
+				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
 				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
 			);
-			name = RPCaptionContainer;
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		7EE06C281E7B2C2700472200 /* SELECTED_STORIES */ = {
@@ -1808,6 +1811,7 @@
 				7E98E9431DB75057001B7329 /* CLBloomEffect.m in Sources */,
 				7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */,
 				7E98E9651DB75057001B7329 /* UIImage+Utility.m in Sources */,
+				7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */,
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
 				7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */,

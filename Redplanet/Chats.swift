@@ -28,7 +28,10 @@ import SwipeNavigationController
  chatsQueue["lastChat"] = self.chatObjects[indexPath.row]
  chatsQueue["score"] = 1
  chatsQueue.saveInBackground()
- */
+*/
+
+
+
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
@@ -49,9 +52,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var refresher: UIRefreshControl!
     // Page size
     var page: Int = 50
-    
-    // MARK: - Handle DZNEmptyDataSet
-    var emptyType: String?
     
     
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -80,39 +80,36 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         dialogController.addAction(AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // dismiss
             dialog.dismiss()
-            
-            // Show Progress
+
+            // MARK: - SVProgressHUD
             SVProgressHUD.show()
             SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             SVProgressHUD.setBackgroundColor(UIColor.white)
             
-            // Delete chats
-            let sender = PFQuery(className: "Chats")
-            sender.whereKey("sender", equalTo: PFUser.current()!)
-            sender.whereKey("receiver", notEqualTo: PFUser.current()!)
-            let receiver = PFQuery(className: "Chats")
-            receiver.whereKey("receiver", equalTo: PFUser.current()!)
-            receiver.whereKey("sender", notEqualTo: PFUser.current()!)
-            let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+            // Delete <ChatsQueue>
+            let frontChat = PFQuery(className: "ChatsQueue")
+            frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
+            frontChat.whereKey("endUser", notEqualTo: PFUser.current()!)
+            let endChat = PFQuery(className: "ChatsQueue")
+            endChat.whereKey("endUser", equalTo: PFUser.current()!)
+            endChat.whereKey("frontUser", notEqualTo: PFUser.current()!)
+            let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
+            chats.whereKeyExists("lastChat")
             chats.findObjectsInBackground(block: {
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     
-                    // Dismiss progress
+                    // MARK: - SVProgressHUD
                     SVProgressHUD.dismiss()
                     
-                    // Delete all objects
-                    PFObject.deleteAll(inBackground: objects, block: {
-                        (success: Bool, error: Error?) in
-                        if success {
-                            print("Deleted all objects: \(String(describing: objects))")
-                        } else {
-                            print(error?.localizedDescription as Any)
-                        }
-                    })
+                    for object in objects! {
+                        object.remove(forKey: "lastChat")
+                        object.saveInBackground()
+                    }
+                    
                     // Reload data
                     self.fetchQueues()
-                    
+
                 } else {
                     if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                         // MARK: - SVProgressHUD
@@ -121,11 +118,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     
                     // Reload data
                     self.fetchQueues()
+                    
                 }
             })
-            
-            
-            
         }))
         // Show
         dialogController.show(in: self)
@@ -150,7 +145,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         self.refresher.endRefreshing()
     }
     
-    // Query Chats
+    // Query Parse; <ChatsQueue>
     func fetchQueues() {
         let frontChat = PFQuery(className: "ChatsQueue")
         frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
@@ -159,7 +154,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
         chats.whereKeyExists("lastChat")
         chats.includeKeys(["lastChat", "frontUser", "endUser"])
-        chats.order(byDescending: "createdAt")
+        chats.order(byDescending: "updatedAt")
         chats.limit = self.page
         chats.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -182,7 +177,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
     }
     
-    
+    // Query Parse; <Chats>
     func fetchChats() {
         // Query Chats and include pointers
         let chats = PFQuery(className: "Chats")
@@ -205,7 +200,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     }
                     self.chatObjects.append(object)
                 }
-                print(self.userObjects)
                 // MARK: - DZNEmptyDataSet
                 if self.chatObjects.count == 0 {
                     self.tableView.emptyDataSetSource = self
@@ -287,51 +281,42 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 }
                 // Add Delete button
                 dialogController.addAction(AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
-                    
-                    // DELETE CHAT
-                    
-                    // Show Progress
+                    // MARK: - SVProgressHUD
                     SVProgressHUD.show()
                     SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
                     SVProgressHUD.setBackgroundColor(UIColor.white)
                     
-                    // Delete chats
-                    let sender = PFQuery(className: "Chats")
-                    sender.whereKey("sender", equalTo: PFUser.current()!)
-                    sender.whereKey("receiver", equalTo: self.userObjects[indexPath.row])
-                    let receiver = PFQuery(className: "Chats")
-                    receiver.whereKey("receiver", equalTo: PFUser.current()!)
-                    receiver.whereKey("sender", equalTo: self.userObjects[indexPath.row])
-                    let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-                    chats.includeKeys(["receiver", "sender"])
+                    // Delete <ChatsQueue> 
+                    let frontChat = PFQuery(className: "ChatsQueue")
+                    frontChat.whereKey("frontUser", equalTo: PFUser.current()!)
+                    frontChat.whereKey("endUser", equalTo: self.userObjects[indexPath.row])
+                    let endChat = PFQuery(className: "ChatsQueue")
+                    endChat.whereKey("endUser", equalTo: PFUser.current()!)
+                    endChat.whereKey("frontUser", equalTo: self.userObjects[indexPath.row])
+                    let chats = PFQuery.orQuery(withSubqueries: [frontChat, endChat])
+                    chats.whereKeyExists("lastChat")
                     chats.findObjectsInBackground(block: {
                         (objects: [PFObject]?, error: Error?) in
                         if error == nil {
                             
-                            // Dismiss progress
+                            // MARK: - SVProgressHUD
                             SVProgressHUD.dismiss()
                             
-                            // Delete all objects
-                            PFObject.deleteAll(inBackground: objects, block: {
-                                (success: Bool, error: Error?) in
-                                if success {
-                                    print("Deleted all objects: \(String(describing: objects))")
-                                } else {
-                                    print(error?.localizedDescription as Any)
+                            for object in objects! {
+                                object.remove(forKey: "lastChat")
+                                object.saveInBackground()
+                                
+                                // Delete chat from tableview
+                                self.chatObjects.remove(at: indexPath.row)
+                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                
+                                // Reload data
+                                self.fetchQueues()
+                                // Reload data in main thread
+                                DispatchQueue.main.async {
+                                    self.tableView!.reloadData()
                                 }
-                            })
-                            
-                            // Delete chat from tableview
-                            self.chatObjects.remove(at: indexPath.row)
-                            self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                            
-                            // Reload data
-                            self.fetchQueues()
-                            // Reload data in main thread
-                            DispatchQueue.main.async {
-                                self.tableView!.reloadData()
                             }
-                            
                         } else {
                             if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
                                 // MARK: - SVProgressHUD
@@ -361,8 +346,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Chats"
         }
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.delegate = self
         self.navigationController?.tabBarController?.tabBar.isHidden = false
@@ -566,7 +550,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         cell.status.isHidden = false
         
         /*
-         IF SEARCHED FOR RECENT CONVERSATIONS
+         IF SEARCHED FOR CHATS
          */
         if searchActive == true && searchBar.text != "" {
             
@@ -594,7 +578,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             
         } else {
         /*
-             CURRENT CHATS
+        ALL CHATS
         */
             // Show read receipets
             cell.status.isHidden = false
@@ -603,46 +587,13 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // Set default font
             cell.rpUsername.font = UIFont(name: "AvenirNext-Medium", size: 17)
             
-            
-            // Set time
             // Set time
             let from = self.chatObjects[indexPath.row].createdAt!
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.time.text = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                if difference.second! == 1 {
-                    cell.time.text = "1 second ago"
-                } else {
-                    cell.time.text = "\(difference.second!) seconds ago"
-                }
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                if difference.minute! == 1 {
-                    cell.time.text = "1 minute ago"
-                } else {
-                    cell.time.text = "\(difference.minute!) minutes ago"
-                }
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                if difference.hour! == 1 {
-                    cell.time.text = "1 hour ago"
-                } else {
-                    cell.time.text = "\(difference.hour!) hours ago"
-                }
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                if difference.day! == 1 {
-                    cell.time.text = "1 day ago"
-                } else {
-                    cell.time.text = "\(difference.day!) days ago"
-                }
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM d, yyyy"
-                cell.time.text = createdDate.string(from: self.chatObjects[indexPath.row].createdAt!)
-            }
+            // MARK: - RPHelpers
+            cell.time.text = difference.getFullTime(difference: difference, date: from)
 
             // If PFUser.currentUser()! received last message
             if (self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -740,10 +691,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
         // Push VC
         self.showChatRoom()
-        
     }
-
- 
 
     // MARK: - UIScrollView Delegate Methods
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -765,7 +713,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
     }
     
-    // ScrollView -- Pull To Pop
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y <= -140.00 {
             refresher.endRefreshing()

@@ -398,8 +398,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
         
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         

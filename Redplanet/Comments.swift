@@ -710,32 +710,8 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 let now = Date()
                 let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
                 let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-                
-                // logic what to show : Seconds, minutes, hours, days, or weeks
-                if difference.second! <= 0 {
-                    cell.time.text = "now"
-                }
-                
-                if difference.second! > 0 && difference.minute! == 0 {
-                    cell.time.text = "\(difference.second!)s ago"
-                }
-                
-                if difference.minute! > 0 && difference.hour! == 0 {
-                    cell.time.text = "\(difference.minute!)m ago"
-                }
-                
-                if difference.hour! > 0 && difference.day! == 0 {
-                    cell.time.text = "\(difference.hour!)h ago"
-                }
-                
-                if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                    cell.time.text = "\(difference.day!)d ago"
-                }
-                
-                if difference.weekOfMonth! > 0 {
-                    cell.time.text = "\(difference.weekOfMonth!)w ago"
-                }
-                
+                // MARK: - RPHelpers
+                cell.time.text = difference.getShortTime(difference: difference, date: from)
                 
                 // (4) Set count title for likes
                 let likes = PFQuery(className: "Likes")

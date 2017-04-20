@@ -24,21 +24,6 @@ var stillImages = [UIImage]()
 var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
 
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
-    }
-}
-
-extension UIColor {
-    static func randomColor() -> UIColor {
-        return UIColor(red:   .random(),
-                       green: .random(),
-                       blue:  .random(),
-                       alpha: 1)
-    }
-}
-
 class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
     
     // MARK: - SnapSliderFilters
@@ -93,8 +78,8 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         
+        // MOMENT
         if chatCamera == false {
-            // Moment
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["byUser"] = PFUser.current()!
             newsfeeds["username"] = PFUser.current()!.username!
@@ -119,7 +104,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             
         } else {
-            // Chat
+        // CHATS
             let chats = PFObject(className: "Chats")
             chats["sender"] = PFUser.current()!
             chats["senderUsername"] = PFUser.current()!.username!
@@ -130,6 +115,14 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             chats["read"] = false
             chats.saveInBackground()
             
+            /*
+             MARK: - RPHelpers
+             Helper to update <ChatsQueue>
+             */
+            let rpHelpers = RPHelpers()
+            _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+            
+
             // Send Push Notification to user
             // Handle optional chaining
             // Handle optional chaining
@@ -145,6 +138,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
                     ]
                 )
             }
+            
             // Reload data
             NotificationCenter.default.post(name: rpChat, object: nil)
             // Make false
@@ -169,48 +163,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
         // Delegate
     }
-    
-    
-    
-    // MARK: - OpenWeatherMap.org API
-    open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {
         
-        // Clear array
-        temperature.removeAll(keepingCapacity: false)
-        
-        // Call OpenWeatherMap API
-        let wheatherURL = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")
-        
-        let session = URLSession.shared
-        let task = session.dataTask(with: wheatherURL!) {
-            (data: Data?, response: URLResponse?, error: Error?) in
-            if error == nil {
-                
-                if let webContent = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: webContent, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        
-                        let main = json["main"] as! NSDictionary
-                        let kelvin = main["temp"] as! Double
-                        let farenheit = (kelvin * 1.8) - 459.67
-                        let celsius = kelvin - 273.15
-                        let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
-                        
-                        // APPEND Temperature
-                        temperature.append(both)
-                        
-                    } catch {
-                        print("ERROR: Unable to read JSON data.")
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-        // Resume query if ended
-        task.resume()
-    }
-    
     func clearArrays() {
         stillImages.removeAll(keepingCapacity: false)
         currentGeoFence.removeAll(keepingCapacity: false)

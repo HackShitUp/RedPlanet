@@ -123,8 +123,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(mediaName.last!)"
         }
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         // Show UIstatusBar

@@ -143,6 +143,10 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
             (success: Bool, error: Error?) in
             if error == nil {
                 
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                
                 // Handle optional chaining
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
                     // MARK: - OneSignal

@@ -11,32 +11,16 @@ import CoreData
 import AVFoundation
 import SwipeNavigationController
 
-
-
-
-// MARK: - UINavigationBar extension method
-/*
- 'Whitens-out' the UINavigationbar and removes the lower grey line border
- (1) Shows the UINavigationBar
- (2) Set UIImage() instance as background
- (3) Apply UIImage to UINavigationBar
- (4) Makes it NOT translucent
-*/
-extension UINavigationBar {
-    func whitenBar(navigator: UINavigationController?) {
-        navigator?.setNavigationBarHidden(false, animated: false)
-        navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigator?.navigationBar.shadowImage = UIImage()
-        navigator?.navigationBar.isTranslucent = false
-    }
-}
+import Parse
+import ParseUI
+import Bolts
 
 class Home: UIViewController, UINavigationControllerDelegate {
     
     // MARK: - CAPSPageMenu
     // pageMenu Initialization
     var pageMenu : CAPSPageMenu?
-    
+
     override var prefersStatusBarHidden: Bool {
         return false
     }

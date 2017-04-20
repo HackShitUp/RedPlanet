@@ -286,7 +286,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
         self.navigationController!.pushViewController(stickersVC, animated: true)
     }
-    
+
     // Fetch chats
     func fetchChats() {
         let sender = PFQuery(className: "Chats")
@@ -309,14 +309,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 self.skipped.removeAll(keepingCapacity: false)
                 for object in objects! {
                     // Ephemeral Chat
-//                    let components : NSCalendar.Unit = .hour
-//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if difference.hour! < 24 {
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
 //                        self.messageObjects.append(object)
-//                    } else {
+                    }
+                    self.messageObjects.append(object)
+//                    else {
 //                        self.skipped.append(object)
 //                    }
-                    self.messageObjects.append(object)
+//                    self.messageObjects.append(object)
                 }
                 // Reload data
                 self.tableView!.reloadData()
@@ -333,8 +335,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 SVProgressHUD.dismiss()
             }
         })
+        
+        
     }
-    
     
     // Function to send chat
     func sendChat() {
@@ -353,7 +356,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             self.newChat.text!.removeAll()
             // Send to Chats
             let chat = PFObject(className: "Chats")
-            chat["last_sender"] = PFUser.current()!
             chat["sender"] = PFUser.current()!
             chat["senderUsername"] = PFUser.current()!.username!
             chat["receiver"] = chatUserObject.last!
@@ -363,11 +365,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             chat.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
-                    // Send Push Notification to user
-                    // Handle optional chaining
+                    
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.updateQueue(chatQueue: chat, userObject: chatUserObject.last!)
+                    
+                    /*
+                     MARK: - OneSignal
+                     send iOS Push Notification
+                     */
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        // MARK: - OneSignal
-                        // Send push notification
                         OneSignal.postNotification(
                             ["contents":
                                 ["en": "from \(PFUser.current()!.username!.uppercased())"],
@@ -377,14 +384,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                              ]
                         )
                     }
-                    /*
-                    // Add Int to Chat
-                    let score: Int = UserDefaults.standard.integer(forKey: "ChatScore") + 1
-                    UserDefaults.standard.set(score, forKey: "ChatScore")
-                    UserDefaults.standard.synchronize()
-                     */
+                    
                     // Reload data
                     self.fetchChats()
+                    
                 } else {
                     print(error?.localizedDescription as Any)
                     // Reload data
@@ -394,6 +397,74 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
     }
     
+    /*
+    
+    // Function to delete chats
+    func chatOptions(sender: UILongPressGestureRecognizer) {
+        
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Options", message: "Chat")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Add image
+                dialogController.imageHandler = { (imageView) in
+//                    if let proPic = self.userObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                    if let proPic = self.messageObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
+                        proPic.getDataInBackground(block: {
+                            (data: Data?, error: Error?) in
+                            if error == nil {
+                                imageView.image = UIImage(data: data!)
+                            } else {
+                                print(error?.localizedDescription as Any)
+                            }
+                        })
+                    } else {
+                        imageView.image = UIImage(named: "Gender Neutral User-100")
+                    }
+                    imageView.contentMode = .scaleAspectFill
+                    return true //must return true, otherwise image won't show.
+                }
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                    button.layer.masksToBounds = true
+                    button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+                }
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                // (1) Delete button
+                let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                })
+                // (2) Save button
+                let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+                })
+                // (3) Copy button
+                let copy = AZDialogAction(title: "Copy Text", handler: { (dialog) -> (Void) in
+                })
+                // (4) Share Via button (Photo/Video only)
+                let shareVia = AZDialogAction(title: "Share Via...", handler: { (dialog) -> (Void) in
+                })
+                
+                // Show
+                dialogController.show(in: self)
+
+            }
+        }
+        
+    }
+    */
+    
+    
     // Compress video
     func compressVideo(inputURL: URL, outputURL: URL, handler:@escaping (_ exportSession: AVAssetExportSession?)-> Void) {
         let urlAsset = AVURLAsset(url: inputURL, options: nil)
@@ -401,7 +472,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             handler(nil)
             return
         }
-        
         exportSession.outputURL = outputURL
         exportSession.outputFileType = AVFileTypeQuickTimeMovie
         exportSession.shouldOptimizeForNetworkUse = true
@@ -410,14 +480,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
     }
     
-    
-    
     // MARK: - UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
 
         let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
-        
-        
+
         if pickerMedia == kUTTypeImage {
             // Disable editing if it's a photo
             self.imagePicker.allowsEditing = false
@@ -433,8 +500,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             editor?.delegate = self
             self.present(editor!, animated: true, completion: nil)
         }
-        
-        
         
         if pickerMedia == kUTTypeMovie {
             // Enable editing if it's a video
@@ -479,6 +544,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         chats.saveInBackground(block: {
                             (success: Bool, error: Error?) in
                             if success {
+                                
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                                
                                 // Dismiss Progres
                                 SVProgressHUD.dismiss()
                                 // Clear newChat
@@ -527,9 +597,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
         }
     }
-    
-    
-    
+
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
         
@@ -552,6 +620,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.saveInBackground {
             (success: Bool, error: Error?) in
             if error == nil {
+                
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                 
                 // Dismiss Progress
                 SVProgressHUD.dismiss()
@@ -596,12 +668,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
         }
         
-        
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
     
-
     func imageEditorDidCancel(_ editor: CLImageEditor) {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
@@ -611,10 +681,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func refresh() {
         // Query Chats
         fetchChats()
-        
         // End refresher
         self.refresher.endRefreshing()
-        
         // Reload data
         self.tableView!.reloadData()
     }
@@ -711,22 +779,23 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
         
-        // Add observers
-        self.createObservers()
-        
         // Set tableView estimated row height
-        self.tableView!.estimatedRowHeight = 60
+        self.tableView!.estimatedRowHeight = 80
         self.tableView!.tableFooterView = UIView()
+        
+//        // Add long press method in tableView
+//        let hold = UILongPressGestureRecognizer(target: self, action: #selector(chatOptions))
+//        hold.minimumPressDuration = 0.40
+//        self.tableView.isUserInteractionEnabled = true
+//        self.tableView.addGestureRecognizer(hold)
         
         // Draw cornerRadius for cameraButton and photosButton
         self.cameraButton.layer.borderColor = UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0).cgColor
         self.cameraButton.layer.borderWidth = 3.50
         self.cameraButton.layer.cornerRadius = 33/2
         self.cameraButton.clipsToBounds = true
-        
         self.photosButton.layer.cornerRadius = 6.00
         self.photosButton.clipsToBounds = true
-        
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -740,7 +809,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
         
-        // Open photo library
+        // MARK: - UIImagePickerController
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
@@ -774,7 +843,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
         })
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -841,8 +909,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
     }
     
-    
-    
     // MARK: - UITextViewDelegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
         // APNSID
@@ -891,20 +957,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
      • vi
      • itm
     */
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatRoomCell", for: indexPath) as! RPChatRoomCell
         let mCell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatMediaCell", for: indexPath) as! RPChatMediaCell
         
-        
         // Set cell's delegate
         cell.delegate = self
-        
         // Set mCell's delegate
         mCell.delegate = self
         
-        // TEXT POST
+        // Text ONLY
         if self.messageObjects[indexPath.row].value(forKey: "Message") != nil {
             // Set layouts
             cell.rpUserProPic.layoutIfNeeded()
@@ -957,26 +1020,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.time.text = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!)s ago"
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!)m ago"
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!)h ago"
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!)d ago"
-            } else if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!)w ago"
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM dd"
-                cell.time.text = createdDate.string(from: self.messageObjects[indexPath.row].createdAt!)
-            }
-            
+            // MARK: - RPHelpers
+            cell.time.text = "\(difference.getFullTime(difference: difference, date: from))"
             
             return cell
             
@@ -1029,8 +1074,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 } else if self.messageObjects[indexPath.row].value(forKey: "mediaType") as! String == "itm" {
                 // (B) MOMENT
                     mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-//                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-//                    mCell.rpMediaAsset.layer.borderWidth = 3.50
                 }
             
                 // MARK: - SDWebImage
@@ -1054,8 +1097,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 } else {
                 // (B) MOMENT
                     mCell.rpMediaAsset.layer.cornerRadius = mCell.rpMediaAsset.frame.size.width/2
-//                    mCell.rpMediaAsset.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-//                    mCell.rpMediaAsset.layer.borderWidth = 3.50
                 }
                 
                 // Load Video Preview and Play Video
@@ -1069,10 +1110,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 player.play()
             }
             
-            
             // Call Media Cell's awakeFromNib to layout the tap functions
             mCell.awakeFromNib()
-            
             
             // Fetch objects
             // (3) Set usernames depending on who sent what
@@ -1085,23 +1124,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
             
             // (4) Get and set user's profile photos
-            //
             // If RECEIVER == <CurrentUser>     &&      SSENDER == <OtherUser>
-            //
             if (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == chatUserObject.last!.objectId! {
-            
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
                 }
-                
             }
-            //
+            
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
-            //
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! && (self.messageObjects[indexPath.row].object(forKey: "receiver") as! PFUser).objectId! == chatUserObject.last!.objectId! {
-                
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
@@ -1109,59 +1142,39 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 }
             }
             
-            
             // (5) Set time
             let from = self.messageObjects[indexPath.row].createdAt!
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                mCell.time.text = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                mCell.time.text = "\(difference.second!)s ago"
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                mCell.time.text = "\(difference.minute!)m ago"
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                mCell.time.text = "\(difference.hour!)h ago"
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                mCell.time.text = "\(difference.day!)d ago"
-            } else if difference.weekOfMonth! > 0 {
-                mCell.time.text = "\(difference.weekOfMonth!)w ago"
-            } else if difference.weekOfMonth! > 0 {
-                let createdDate = DateFormatter()
-                createdDate.dateFormat = "MMM dd"
-                mCell.time.text = createdDate.string(from: self.messageObjects[indexPath.row].createdAt!)
-            }
-            
+            // MARK: - RPHelpers
+            mCell.time.text = "\(difference.getFullTime(difference: difference, date: from))"
             
             return mCell
         }
-        
-
-    } // end cellForRowAt
+    }
+    
+    // MARK: - UITableView Delegate Methods
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let cell = self.tableView.cellForRow(at: indexPath)
+        cell?.contentView.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+    }
     
     
-    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.messageObjects.count {
+            // Increase page size to load more posts
+            page = page + 50
+            // Query chats
+            fetchChats()
+        }
+    }
+    
+    // MARK: - UIScrollView Delegate Method
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
     }
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= self.messageObjects.count {
-            
-            // Increase page size to load more posts
-            page = page + 50
-            
-            // Query chats
-            fetchChats()
-        }
-    }
-
-
 }

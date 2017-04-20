@@ -304,8 +304,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "Contacts"
         }
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }

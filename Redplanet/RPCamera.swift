@@ -166,9 +166,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                         // Append: CLPlacemark
                         currentGeoFence.append(pm)
                         
-                        // Get weather
-                        let capturedPhoto = CapturedStill()
-                        capturedPhoto.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        // MARK: - RPHelpers; Get weather data
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.getWeather(lat: pm.location!.coordinate.latitude, lon: pm.location!.coordinate.longitude)
+                        
                         
                         // MARK: - CLLocationManager
                         manager.stopUpdatingLocation()

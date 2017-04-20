@@ -28,7 +28,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     var posts = [PFObject]()
     var likes = [PFObject]()
     let ephemeralTypes = ["itm", "sh", "sp"]
-    var timeString: String?
     
     // Refresher
     var refresher: UIRefreshControl!
@@ -186,49 +185,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
-    // Function to calculate time
-    func calculateTime(object: PFObject?) -> String? {
-        // Configure initial setup for time
-        let from = object!.createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-
-        if difference.second! <= 0 {
-            self.timeString = "now"
-        } else if difference.second! > 0 && difference.minute! == 0 {
-            if difference.second! == 1 {
-                self.timeString = "1s ago"
-            } else {
-                self.timeString = "\(difference.second!)s ago"
-            }
-        } else if difference.minute! > 0 && difference.hour! == 0 {
-            if difference.minute! == 1 {
-                self.timeString = "1m ago"
-            } else {
-                self.timeString = "\(difference.minute!)m ago"
-            }
-        } else if difference.hour! > 0 && difference.day! == 0 {
-            if difference.hour! == 1 {
-                self.timeString = "1h ago"
-            } else {
-                self.timeString = "\(difference.hour!)h ago"
-            }
-        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-            if difference.day! == 1 {
-                self.timeString = "1d ago"
-            } else {
-                self.timeString = "\(difference.day!)d ago"
-            }
-        } else if difference.weekOfMonth! > 0 {
-            let createdDate = DateFormatter()
-            createdDate.dateFormat = "MMM d, yyyy"
-            self.timeString = createdDate.string(from: object!.createdAt!)
-        }
-        
-        return timeString!
-    }
-    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -250,6 +206,12 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        // Setup time
+        let from = self.posts[indexPath.row].createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             // ****************************************************************************************************************
@@ -283,7 +245,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             tpCell.textPost.text! = self.posts[indexPath.row].value(forKey: "textPost") as! String
             
             // (5) SET TIME
-            tpCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
+            // MARK: - RPHelpers
+            tpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (6) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -392,7 +355,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             eCell.delegate = self.navigationController
             
             // (4) SET TIME
-            eCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
+            // MARK: - RPHelpers
+            eCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (5) Layout content
             // High level configurations
@@ -482,7 +446,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            mCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
+            // MARK: - RPHelpers
+            mCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")
@@ -619,7 +584,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            ppCell.time.text! = "updated their Profile Photo," + "\(self.calculateTime(object: self.posts[indexPath.row])!)"
+            // MARK: - RPHelpers
+            ppCell.time.text = "updated their Profile Photo \(difference.getFullTime(difference: difference, date: from))"
             
             // (7) FETCH LIKES, COMMENTS, AND SHARES
             let likes = PFQuery(className: "Likes")
@@ -765,7 +731,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             }
             
             // (6) SET TIME
-            vCell.time.text! = self.calculateTime(object: self.posts[indexPath.row])!
+            // MARK: - RPHelpers
+            vCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (7) Fetch likes, comments, and shares
             let likes = PFQuery(className: "Likes")

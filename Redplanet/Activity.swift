@@ -165,8 +165,7 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.navigationBar.topItem?.title = "Activity"
         }
-        // MARK: - UINavigationBar Extension
-        // Configure UINavigationBar, and show UITabBar
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         // Show UIstatusBar
@@ -621,22 +620,8 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             let now = Date()
             let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
             let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-            
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            // logic what to show : Seconds, minutes, hours, days, or weeks
-            if difference.second! <= 0 {
-                cell.time.text = "now"
-            } else if difference.second! > 0 && difference.minute! == 0 {
-                cell.time.text = "\(difference.second!)s ago"
-            } else if difference.minute! > 0 && difference.hour! == 0 {
-                cell.time.text = "\(difference.minute!)m ago"
-            } else if difference.hour! > 0 && difference.day! == 0 {
-                cell.time.text = "\(difference.hour!)h ago"
-            } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-                cell.time.text = "\(difference.day!)d ago"
-            } else if difference.weekOfMonth! > 0 {
-                cell.time.text = "\(difference.weekOfMonth!)w ago"
-            }
+            // MARK: - RPHelpers
+            cell.time.text = difference.getShortTime(difference: difference, date: from)
 
         } else {
            
