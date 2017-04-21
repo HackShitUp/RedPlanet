@@ -253,16 +253,8 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
         
-        // LayoutViews
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2.0
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Set delegate
         cell.delegate = self

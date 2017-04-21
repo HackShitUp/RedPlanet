@@ -169,11 +169,8 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         // Set placeholder color
         self.rpUserBio.textColor = UIColor.lightGray
         
-        // Design pro pic
-        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        self.rpUserProPic.layer.borderWidth = 0.5
-        self.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        self.rpUserProPic.makeCircular(imageView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Function to dismiss keyboard
         let dismissTap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))

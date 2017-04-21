@@ -224,18 +224,11 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "onBoardCell", for: indexPath) as! OnBoardFollowCell
         
-//        _ = appDelegate.queryRelationships()
+        // Query Relationships
+        _ = appDelegate.queryRelationships()
         
-        // LayoutViews
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Give Profile Photo Corner Radius
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
     
         // (1) Set user's object

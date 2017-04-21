@@ -12,14 +12,44 @@ import ParseUI
 import Bolts
 
 class NewsFeedCell: UITableViewCell {
+    
+    // Parent VC
+    var delegate: UINavigationController?
+    
+    // PFObject
+    var postObject: PFObject?
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     
+    
+    // Function to show stories
+    func showStories() {
+        // Save to Views
+        let views = PFObject(className: "Views")
+        views["byUser"] = PFUser.current()!
+        views["username"] = PFUser.current()!.username!
+        views["forObjectId"] = self.postObject!.objectId!
+        views.saveInBackground()
+        
+        // Append object
+        storyForUser.append(self.postObject!)
+        
+        // Push to Timeline
+        let timelineVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
+        self.delegate?.pushViewController(timelineVC, animated: true)
+    }
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        // Add tap method to viewStory
+        let storyTap = UITapGestureRecognizer(target: self, action: #selector(showStories))
+        storyTap.numberOfTapsRequired = 1
+        self.contentView.isUserInteractionEnabled = true
+        self.contentView.addGestureRecognizer(storyTap)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

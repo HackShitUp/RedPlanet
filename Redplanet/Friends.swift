@@ -257,14 +257,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let tpCell = Bundle.main.loadNibNamed("TimeTextPostCell", owner: self, options: nil)?.first as! TimeTextPostCell
             
             // (1) SET USER DATA
-            // (1A) Set rpUserProPic
-            tpCell.rpUserProPic.layoutIfNeeded()
-            tpCell.rpUserProPic.layoutSubviews()
-            tpCell.rpUserProPic.setNeedsLayout()
-            // Make Profile Photo Circular
-            tpCell.rpUserProPic.layer.cornerRadius = tpCell.rpUserProPic.frame.size.width/2
-            tpCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            tpCell.rpUserProPic.layer.borderWidth = 0.5
+            // MARK: - RPHelpers extension
+            tpCell.rpUserProPic.makeCircular(imageView: tpCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -364,14 +359,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let eCell = Bundle.main.loadNibNamed("EphemeralCell", owner: self, options: nil)?.first as! EphemeralCell
             
             // (1) SET USER DATA
-            // (1A) Set rpUserProPic
-            eCell.rpUserProPic.layoutIfNeeded()
-            eCell.rpUserProPic.layoutSubviews()
-            eCell.rpUserProPic.setNeedsLayout()
-            // Make Profile Photo Circular
-            eCell.rpUserProPic.layer.cornerRadius = eCell.rpUserProPic.frame.size.width/2
-            eCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            eCell.rpUserProPic.layer.borderWidth = 0.5
+            // MARK: - RPHelpers extension
+            eCell.rpUserProPic.makeCircular(imageView: eCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -438,14 +428,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let mCell = Bundle.main.loadNibNamed("TimeMediaCell", owner: self, options: nil)?.first as! TimeMediaCell
             
             // (1) SET USER DATA
-            // (1A) Set rpUserProPic
-            mCell.rpUserProPic.layoutIfNeeded()
-            mCell.rpUserProPic.layoutSubviews()
-            mCell.rpUserProPic.setNeedsLayout()
-            // Make Profile Photo Circular
-            mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
-            mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            mCell.rpUserProPic.layer.borderWidth = 0.5
+            // MARK: - RPHelpers extension
+            mCell.rpUserProPic.makeCircular(imageView: mCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
@@ -680,14 +665,9 @@ class Friends: UITableViewController, UINavigationControllerDelegate, UITabBarCo
             let vCell = Bundle.main.loadNibNamed("TimeVideoCell", owner: self, options: nil)?.first as! TimeVideoCell
             
             // (1) SET USER DATA
-            // (1A) Set rpUserProPic
-            vCell.rpUserProPic.layoutIfNeeded()
-            vCell.rpUserProPic.layoutSubviews()
-            vCell.rpUserProPic.setNeedsLayout()
-            // Make Profile Photo Circular
-            vCell.rpUserProPic.layer.cornerRadius = vCell.rpUserProPic.frame.size.width/2
-            vCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            vCell.rpUserProPic.layer.borderWidth = 0.5
+            // MARK: - RPHelpers extension
+            vCell.rpUserProPic.makeCircular(imageView: vCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
                 vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))

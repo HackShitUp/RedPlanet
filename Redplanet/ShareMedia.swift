@@ -933,18 +933,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
-        
-        // LayoutViews for rpUserProPic
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
-        
+
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Fetch user's objects
         // (1) Get and set user's profile photo

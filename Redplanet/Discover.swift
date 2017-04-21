@@ -310,18 +310,10 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        
-        // LayoutViews
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2.0
-        cell.rpUserProPic.layer.borderColor = UIColor.randomColor().cgColor
-        cell.rpUserProPic.layer.borderWidth = 1.50
-        cell.rpUserProPic.clipsToBounds = true
 
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 1.50, borderColor: UIColor.randomColor())
+        
         // (1) Set username
         cell.rpUsername.text! = (self.discoverObjects[indexPath.row].value(forKey: "username") as! String).lowercased()
         

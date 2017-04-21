@@ -1050,17 +1050,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         
         // Text ONLY
         if self.messageObjects[indexPath.row].value(forKey: "Message") != nil {
-            // Set layouts
-            cell.rpUserProPic.layoutIfNeeded()
-            cell.rpUserProPic.layoutSubviews()
-            cell.rpUserProPic.setNeedsLayout()
+            // MARK: - RPHelpers extension
+            cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
-            // Make profile photo circular
-            cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-            cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            cell.rpUserProPic.layer.borderWidth = 0.5
-            cell.rpUserProPic.clipsToBounds = true
-
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 // Set Current user's username
@@ -1113,16 +1105,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Create cell's bounds
             mCell.contentView.frame = mCell.contentView.frame
             
-            // Set layouts
-            mCell.rpUserProPic.layoutIfNeeded()
-            mCell.rpUserProPic.layoutSubviews()
-            mCell.rpUserProPic.setNeedsLayout()
-            
-            // Make profile photo circualr
-            mCell.rpUserProPic.layer.cornerRadius = mCell.rpUserProPic.frame.size.width/2
-            mCell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            mCell.rpUserProPic.layer.borderWidth = 0.5
-            mCell.rpUserProPic.clipsToBounds = true
+            // MARK: - RPHelpers extension
+            mCell.rpUserProPic.makeCircular(imageView: mCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {

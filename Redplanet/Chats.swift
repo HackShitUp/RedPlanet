@@ -532,19 +532,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         
         //set contentView frame and autoresizingMask
         cell.contentView.frame = cell.bounds
-        
+        // Set delegate
         cell.delegate = self
         
-        // Set layout
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
         
-        // Circular profile photos
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Show read receipts by default
         cell.status.isHidden = false

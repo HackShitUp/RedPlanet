@@ -228,17 +228,9 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         // Declare parent VC
         cell.delegate = self
         
-        // layout profile photos
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        cell.rpUserProPic.layoutIfNeeded()
         
-        // Layout
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
-        
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
 
         if searchActive == true && searchBar.text! != "" {
         // SEARCH

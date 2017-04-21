@@ -302,31 +302,12 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         
         // Set bounds
         cell.contentView.frame = cell.contentView.frame
+
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.fromRpUserProPic.makeCircular(imageView: cell.fromRpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
-        // LayoutViews
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Make Profile Photo Circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.rpUserProPic.layer.borderWidth = 0.5
-        cell.rpUserProPic.clipsToBounds = true
-        
-        // LayoutViews
-        cell.fromRpUserProPic.layoutIfNeeded()
-        cell.fromRpUserProPic.layoutSubviews()
-        cell.fromRpUserProPic.setNeedsLayout()
-        
-        // Make Profile Photo Circular
-        cell.fromRpUserProPic.layer.cornerRadius = cell.fromRpUserProPic.frame.size.width/2
-        cell.fromRpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        cell.fromRpUserProPic.layer.borderWidth = 0.5
-        cell.fromRpUserProPic.clipsToBounds = true
-        
-        
-        // Design border fpr shared content
+        // Design border for shared content
         cell.container.layer.borderColor = UIColor.lightGray.cgColor
         cell.container.layer.cornerRadius = 8.00
         cell.container.layer.borderWidth = 0.50

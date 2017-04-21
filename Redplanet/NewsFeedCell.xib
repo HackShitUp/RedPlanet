@@ -17,15 +17,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="74.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z6N-7Y-qma" customClass="PFImageView">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="z6N-7Y-qma" customClass="PFImageView">
                         <rect key="frame" x="8" y="10" width="55" height="55"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="55" id="9G4-r4-OxU"/>
-                            <constraint firstAttribute="width" constant="55" id="Cnf-3U-tfD"/>
+                            <constraint firstAttribute="width" constant="55" id="rWE-0s-HXe"/>
+                            <constraint firstAttribute="height" constant="55" id="x1N-yX-N16"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DrM-AN-LeW">
                         <rect key="frame" x="71" y="44" width="296" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="296" id="cSP-A1-bSY"/>
+                            <constraint firstAttribute="height" constant="21" id="tJr-oZ-9Wm"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="13"/>
                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -33,25 +37,25 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nfx-ll-jdL">
                         <rect key="frame" x="71" y="10" width="296" height="34"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="34" id="10X-z0-aIS"/>
-                            <constraint firstAttribute="width" constant="296" id="Gbc-6E-sH3"/>
+                            <constraint firstAttribute="width" constant="296" id="PgW-QB-uVl"/>
+                            <constraint firstAttribute="height" constant="34" id="se1-ul-p0c"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="21"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="nfx-ll-jdL" secondAttribute="trailing" constant="8" id="6pw-1O-jo1"/>
-                    <constraint firstItem="z6N-7Y-qma" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="7BI-h7-mRC"/>
-                    <constraint firstAttribute="bottom" secondItem="DrM-AN-LeW" secondAttribute="bottom" constant="9.5" id="N1Z-aI-6Fs"/>
-                    <constraint firstAttribute="bottom" secondItem="z6N-7Y-qma" secondAttribute="bottom" constant="9.5" id="cTA-6i-ggU"/>
-                    <constraint firstItem="nfx-ll-jdL" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="cik-5S-jgN"/>
-                    <constraint firstItem="z6N-7Y-qma" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="h0f-1W-h3y"/>
-                    <constraint firstItem="DrM-AN-LeW" firstAttribute="top" secondItem="nfx-ll-jdL" secondAttribute="bottom" id="mdO-ey-HMa"/>
-                    <constraint firstAttribute="trailing" secondItem="DrM-AN-LeW" secondAttribute="trailing" constant="8" id="smg-5V-TCU"/>
-                    <constraint firstItem="DrM-AN-LeW" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="xDg-aZ-BEG"/>
-                    <constraint firstItem="nfx-ll-jdL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="yuL-bW-HVN"/>
+                    <constraint firstItem="nfx-ll-jdL" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="1rg-aC-7YD"/>
+                    <constraint firstItem="z6N-7Y-qma" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="3fH-ve-COq"/>
+                    <constraint firstItem="nfx-ll-jdL" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="6Cn-fd-f0L"/>
+                    <constraint firstAttribute="trailing" secondItem="nfx-ll-jdL" secondAttribute="trailing" constant="8" id="Bsd-ga-rMY"/>
+                    <constraint firstItem="nfx-ll-jdL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ItC-5V-VkH"/>
+                    <constraint firstItem="DrM-AN-LeW" firstAttribute="top" secondItem="nfx-ll-jdL" secondAttribute="bottom" id="MuH-1E-PJR"/>
+                    <constraint firstAttribute="bottom" secondItem="DrM-AN-LeW" secondAttribute="bottom" constant="9.5" id="X26-M9-xUG"/>
+                    <constraint firstAttribute="trailing" secondItem="DrM-AN-LeW" secondAttribute="trailing" constant="8" id="eDh-aY-BTS"/>
+                    <constraint firstItem="z6N-7Y-qma" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="oeR-Nf-EkK"/>
+                    <constraint firstItem="DrM-AN-LeW" firstAttribute="leading" secondItem="z6N-7Y-qma" secondAttribute="trailing" constant="8" id="tD2-Ig-rHz"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

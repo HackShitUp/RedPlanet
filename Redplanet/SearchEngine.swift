@@ -248,17 +248,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
             cell.rpUserProPic.isHidden = false
             cell.rpFullName.isHidden = false
             cell.rpUsername.isHidden = false
-            
-            // Layout views
-            cell.rpUserProPic.layoutSubviews()
-            cell.rpUserProPic.layoutIfNeeded()
-            cell.rpUserProPic.setNeedsLayout()
-            
-            // Make profile photo circular
-            cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-            cell.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-            cell.rpUserProPic.layer.borderWidth = 0.5
-            cell.rpUserProPic.clipsToBounds = true
+
+            // MARK: - RPHelpers extension
+            cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set user's full name
             cell.rpFullName.text! = self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String

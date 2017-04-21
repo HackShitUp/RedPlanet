@@ -177,16 +177,8 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         // Set initial image
         self.rpUserProPic.image = changedProPicImg.last!
         
-        // Set layouts
-        self.rpUserProPic.layoutIfNeeded()
-        self.rpUserProPic.layoutSubviews()
-        self.rpUserProPic.setNeedsLayout()
-        
-        // Load user's current profile picture
-        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        self.rpUserProPic.layer.borderWidth = 0.5
-        self.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        self.rpUserProPic.makeCircular(imageView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Design profile photo's borders and border colors
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2

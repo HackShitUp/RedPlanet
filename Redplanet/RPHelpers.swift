@@ -191,6 +191,22 @@ extension UINavigationBar {
 
 
 /*
+ MARK: - Make UIImageView Circular
+ */
+extension UIImageView {
+    func makeCircular(imageView: UIImageView?, borderWidth: CGFloat?, borderColor: UIColor?) {
+        imageView!.layoutIfNeeded()
+        imageView!.layoutSubviews()
+        imageView!.setNeedsLayout()
+        imageView!.layer.cornerRadius = imageView!.frame.size.width/2
+        imageView!.layer.borderColor = borderColor!.cgColor
+        imageView!.layer.borderWidth = borderWidth!
+        imageView!.clipsToBounds = true
+    }
+}
+
+
+/*
  MARK: - Function to generate random colors
  */
 extension CGFloat {
@@ -211,12 +227,6 @@ extension UIColor {
 
 
 class RPHelpers: NSObject {
-    
-    
-    
-    
-    
-    
 
     // MARK: - OpenWeatherMap.org API
     open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {

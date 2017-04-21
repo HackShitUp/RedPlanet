@@ -56,16 +56,8 @@ class NewChatsCell: UITableViewCell {
         self.contentView.isUserInteractionEnabled = true
         self.contentView.addGestureRecognizer(alertTap)
         
-        // Set layouts
-        rpUserProPic.layoutIfNeeded()
-        rpUserProPic.layoutSubviews()
-        rpUserProPic.setNeedsLayout()
-        
-        // Make pro pic ciruclar
-        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor.lightGray.cgColor
-        self.rpUserProPic.layer.borderWidth = 0.5
-        self.rpUserProPic.clipsToBounds = true
+        // MARK: - RPHelpers extension
+        self.rpUserProPic.makeCircular(imageView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
     }
 

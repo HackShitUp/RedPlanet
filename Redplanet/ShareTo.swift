@@ -514,15 +514,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         cell.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         cell.selectionStyle = .none
 
-        // Layout views
-        cell.rpUserProPic.layoutIfNeeded()
-        cell.rpUserProPic.layoutSubviews()
-        cell.rpUserProPic.setNeedsLayout()
-        
-        // Make profile photo circular
-        cell.rpUserProPic.layer.cornerRadius = cell.rpUserProPic.frame.size.width/2
-        cell.rpUserProPic.clipsToBounds = true
-        
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // SEARCHED
         if self.tableView!.numberOfSections == 1 {

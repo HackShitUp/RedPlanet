@@ -20,7 +20,6 @@ import SDWebImage
 
 class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate {
     
-    
     // AppDelegate Constant
     let appDelegate = AppDelegate()
     
@@ -105,10 +104,8 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
                         self.skipped.append(object!)
                     }
                     
-                    print("POSTS: \(self.posts)\n")
-                    print("POST_Count: \(self.posts.count)\n")
+                    // Reload UITableViewData
                     self.tableView.reloadData()
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }
@@ -121,8 +118,16 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Fetch Friends/Posts
         self.fetchFriends()
-        self.tableView.tableFooterView = UIView()
+        
+        // Configure table view
+        self.tableView.layoutIfNeeded()
+        self.tableView.setNeedsLayout()
+        self.tableView!.estimatedRowHeight = 65.00
+        self.tableView!.rowHeight = 65.00
+        self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView!.tableFooterView = UIView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -145,6 +150,15 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
+        
+        // MARK: - RPHelpers extension
+        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
+        
+        // Set delegate
+        cell.delegate = self.parentNavigator
+        
+        // Set PFObject
+        cell.postObject = self.posts[indexPath.row]
         
         // (1) Get User's Object
         if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {

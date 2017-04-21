@@ -58,9 +58,9 @@ open class Banner: UIView {
     open var preferredStatusBarStyle = UIStatusBarStyle.default
     
     /// Whether or not this banner should adjust the status bar style during its presentation. Defaults to `false`.
-    open var adjustsStatusBarStyle = false
+    open var adjustsStatusBarStyle = true
     
-    /// Wheter the banner should appear at the top or the bottom of the screen. Defaults to `.Top`.
+    /// Whether the banner should appear at the top or the bottom of the screen. Defaults to `.Top`.
     open var position = BannerPosition.top
 
     /// How 'springy' the banner should display. Defaults to `.Slight`
@@ -165,8 +165,12 @@ open class Banner: UIView {
         resetTintColor()
         titleLabel.text = title
         detailLabel.text = subtitle
+        backgroundView.layer.borderColor = UIColor.clear.cgColor
+        backgroundView.layer.borderWidth = 10.00
+        backgroundView.layer.cornerRadius = 6.00
         backgroundView.backgroundColor = backgroundColor
         backgroundView.alpha = 0.95
+        backgroundView.clipsToBounds = true
     }
     
     private func forceUpdates() {

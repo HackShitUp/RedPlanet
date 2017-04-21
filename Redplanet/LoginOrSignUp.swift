@@ -41,7 +41,13 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: false)
         self.present(webVC, animated: true, completion: nil)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Adjust cornerRadius
+        self.view.layer.cornerRadius = 8
+        self.view.clipsToBounds = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,10 +73,8 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         self.privacyPolicy.addGestureRecognizer(policyTap)
     }
 
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 }
