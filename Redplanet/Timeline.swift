@@ -6,8 +6,6 @@
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
-import AnimatedCollectionViewLayout
-
 import UIKit
 import CoreData
 
@@ -15,6 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import AnimatedCollectionViewLayout
+import SwipeNavigationController
 
 var timelineObjects = [PFObject]()
 
@@ -51,19 +51,65 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
     }
     
     
+    // Function to stylize and set title of navigation bar
+    func configureView(title: String?) {
+        if title == "" {
+            // MARK: - RPHelpers
+            self.navigationController?.setNavigationBarHidden(true, animated: false)
+            // Show UIstatusBar
+            UIApplication.shared.isStatusBarHidden = false
+            UIApplication.shared.statusBarStyle = .lightContent
+            self.setNeedsStatusBarAppearanceUpdate()
+        } else {
+            // Change the font and size of nav bar text
+            if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
+                let navBarAttributesDictionary: [String: AnyObject]? = [
+                    NSForegroundColorAttributeName: UIColor.black,
+                    NSFontAttributeName: navBarFont
+                ]
+                navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
+                self.title = "\(title!)"
+            }
+            // MARK: - RPHelpers
+            self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+            // Show UIstatusBar
+            UIApplication.shared.isStatusBarHidden = false
+            UIApplication.shared.statusBarStyle = .default
+            self.setNeedsStatusBarAppearanceUpdate()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Hide UITabBar
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        // Hide rpButton
+        rpButton.isHidden = true
+        
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+        
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
         layout.animator = CubeAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.height)
+        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height - UIApplication.shared.statusBarFrame.height)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.frame = self.view.bounds
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
+        
+        self.collectionView?.setNeedsLayout()
+        self.collectionView?.setNeedsDisplay()
         
         // Fetch stories
         fetchStories()
@@ -72,6 +118,14 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = true
+        // Show rpButton
+        rpButton.isHidden = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -90,37 +144,67 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         return self.posts.count
     }
     
-    // MARK: - UICollectionViewHeader
+    
+//    // MARK: - UICollectionViewHeader
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 //        
-//        return self.view.bounds.size
+//        return self.view.frame.size
 //    }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "timelineCell", for: indexPath) as! TimelineCell
+        
+        // Set delegate
+        cell.delegate = self.navigationController
+        
+        // Set postObject
+        cell.postObject = self.posts[indexPath.row]
+        
+        // Configure view
+        cell.configureView()
+        
+        return cell
+        
+        /*
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
+        // TEXT POST
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            //            let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
-            
+
             let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
+            
+            // Set delegate
+            tpCell.delegate = self
+            
             
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
                 tpCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
+                
+                // (2) Set user's profile photo
+                if let proPic = user["userProfilePicture"] as? PFFile {
+                    // MARK: - SDWebImage
+                    tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    // MARK: - RPHelpers
+                    tpCell.rpUserProPic.makeCircular(imageView: tpCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                }
             }
             
-            // (2) Set time
+            // (3) Set time
             tpCell.time.text = difference.getFullTime(difference: difference, date: from)
+            
+            // (4) Set Text Post
+            tpCell.textPost.text = (self.posts[indexPath.row].value(forKey: "textPost") as! String)
+            
             
             return tpCell
         } else {
-            //            let mCell = Bundle.main.loadNibNamed("MomentPhoto", owner: self, options: nil)?.first as! MomentPhoto
-            
+        // MOMENT PHOTO
             let mCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
@@ -131,12 +215,18 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
             // (2) Set time
             mCell.time.text = difference.getFullTime(difference: difference, date: from)
             
-            // (3) Set time
+            // (3) Set photo
+            if let moment = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                // MARK: - SDWebImage
+                mCell.photoMoment.sd_showActivityIndicatorView()
+                mCell.photoMoment.sd_setIndicatorStyle(.gray)
+                mCell.photoMoment.sd_setImage(with: URL(string: moment.url!)!)
+            }
             
             
             return mCell
         }
-    
+        */
     }
 
 }

@@ -193,6 +193,7 @@
 		7EE697CE1EAADBC2004F4E24 /* SpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697CC1EAADBC2004F4E24 /* SpaceCell.swift */; };
 		7EE697CF1EAADBC2004F4E24 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */; };
 		7EE697D21EAB1D14004F4E24 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D11EAB1D14004F4E24 /* Timeline.swift */; };
+		7EE697D81EAB405D004F4E24 /* TimelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D71EAB405D004F4E24 /* TimelineCell.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -474,6 +475,7 @@
 		7EE697CC1EAADBC2004F4E24 /* SpaceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceCell.swift; sourceTree = "<group>"; };
 		7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
 		7EE697D11EAB1D14004F4E24 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
+		7EE697D71EAB405D004F4E24 /* TimelineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineCell.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -757,6 +759,7 @@
 				7E972FD71EA9388E0047F4D4 /* FriendsNF.swift */,
 				7E972FD91EA938950047F4D4 /* FollowingNF.swift */,
 				7EE697D11EAB1D14004F4E24 /* Timeline.swift */,
+				7EE697D71EAB405D004F4E24 /* TimelineCell.swift */,
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 				7EE697CB1EAADB77004F4E24 /* SharedPost */,
 				7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */,
@@ -1929,6 +1932,7 @@
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */,
 				7EE697D21EAB1D14004F4E24 /* Timeline.swift in Sources */,
+				7EE697D81EAB405D004F4E24 /* TimelineCell.swift in Sources */,
 				7E41C7B81E4056870025129B /* OtherUser.swift in Sources */,
 				7E6A12E81E4D524C00CF108B /* Agrume.swift in Sources */,
 				7EE697C91EAADB70004F4E24 /* SharedCell.swift in Sources */,
