@@ -34,7 +34,7 @@ class NewsFeedCell: UITableViewCell {
         views.saveInBackground()
         
         // Append object
-        storyForUser.append(self.postObject!)
+        timelineObjects.append(self.postObject!)
         
         // Push to Timeline
         let timelineVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline

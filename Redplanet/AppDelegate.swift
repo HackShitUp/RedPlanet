@@ -70,10 +70,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
-        // Power your app with local datastore
+        // Enable LocalDataStore()
         Parse.enableLocalDatastore()
         
-        // Configure Parse Hosted Server MLAB on AWS
+        /*
+         MARK: - Parse
+         • Client Configuration with 
+         • AWS EC2 Instance Server hosted on 
+         • MLAB
+         */
         let configuration = ParseClientConfiguration {
             $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
             $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
@@ -81,8 +86,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         }
         Parse.initialize(with: configuration)
         
-        // OneSignal for custom push notifications
-        // 571bbb3a-3612-4496-b3b4-12623256782a
+        /*
+        MARK: - OneSignal
+        • Used for custom push notifications
+        • APP_ID: 571bbb3a-3612-4496-b3b4-12623256782a
+        */
         OneSignal.initWithLaunchOptions(launchOptions,
                                         appId: "571bbb3a-3612-4496-b3b4-12623256782a",
                                         handleNotificationReceived: { (notification) in
@@ -126,7 +134,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                     banner.hasShadows = false
                                                     banner.alpha = 1
                                                     banner.adjustsStatusBarStyle = true
-//                                                    UIImage(named: "RPSpeechBubble")
                                                     banner.show(duration: 3.0)
                                                 }
                                                 
