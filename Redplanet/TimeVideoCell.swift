@@ -251,7 +251,7 @@ class TimeVideoCell: UITableViewCell {
         shareObject.append(self.postObject!)
         
         // Share to chats
-        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.delegate?.pushViewController(shareToVC, animated: true)
     }
     

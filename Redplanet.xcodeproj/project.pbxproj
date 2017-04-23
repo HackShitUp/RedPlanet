@@ -128,7 +128,7 @@
 		7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955661DC99A98003D9D73 /* InTheMoment.swift */; };
 		7E99CA081E90E42700661B78 /* MainUITab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MainUITab.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
-		7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */; };
+		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
 		7EA39E421E6157A5000AAEBD /* AAPTransitionDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E3D1E6157A5000AAEBD /* AAPTransitionDirector.m */; };
 		7EA39E431E6157A5000AAEBD /* UINavigationController+RadialTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E3F1E6157A5000AAEBD /* UINavigationController+RadialTransaction.m */; };
 		7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E411E6157A5000AAEBD /* UIView+Radial.m */; };
@@ -176,7 +176,7 @@
 		7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90F1DBEB4E70016698F /* RFollowers.swift */; };
 		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
-		7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareTo.swift */; };
+		7ED4A9191DBEBDEB0016698F /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareWith.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
 		7EDEB9F41EA5684400EEE4E1 /* RPCaptionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */; };
 		7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */; };
@@ -194,6 +194,7 @@
 		7EE697CF1EAADBC2004F4E24 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */; };
 		7EE697D21EAB1D14004F4E24 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D11EAB1D14004F4E24 /* Timeline.swift */; };
 		7EE697D81EAB405D004F4E24 /* TimelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D71EAB405D004F4E24 /* TimelineCell.swift */; };
+		7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
 		7EECEE601E3C42EA003FA134 /* TimeTextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */; };
@@ -401,7 +402,7 @@
 		7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
-		7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareToCell.swift; sourceTree = "<group>"; };
+		7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWithCell.swift; sourceTree = "<group>"; };
 		7EA39E3C1E6157A5000AAEBD /* AAPTransitionDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPTransitionDirector.h; sourceTree = "<group>"; };
 		7EA39E3D1E6157A5000AAEBD /* AAPTransitionDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPTransitionDirector.m; sourceTree = "<group>"; };
 		7EA39E3E1E6157A5000AAEBD /* UINavigationController+RadialTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RadialTransaction.h"; sourceTree = "<group>"; };
@@ -459,7 +460,7 @@
 		7ED4A90F1DBEB4E70016698F /* RFollowers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowers.swift; sourceTree = "<group>"; };
 		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
-		7ED4A9181DBEBDEB0016698F /* ShareTo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareTo.swift; sourceTree = "<group>"; };
+		7ED4A9181DBEBDEB0016698F /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionContainer.swift; sourceTree = "<group>"; };
 		7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
@@ -476,6 +477,7 @@
 		7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
 		7EE697D11EAB1D14004F4E24 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
 		7EE697D71EAB405D004F4E24 /* TimelineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineCell.swift; sourceTree = "<group>"; };
+		7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
 		7EECEE5E1E3C42EA003FA134 /* TimeTextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimeTextPostCell.swift; sourceTree = "<group>"; };
@@ -1072,13 +1074,13 @@
 			name = Moments;
 			sourceTree = "<group>";
 		};
-		7EA1C74E1E59835500FBE39B /* ShareTo */ = {
+		7EA1C74E1E59835500FBE39B /* ShareWith */ = {
 			isa = PBXGroup;
 			children = (
-				7ED4A9181DBEBDEB0016698F /* ShareTo.swift */,
-				7EA1C74C1E5954E000FBE39B /* ShareToCell.swift */,
+				7ED4A9181DBEBDEB0016698F /* ShareWith.swift */,
+				7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */,
 			);
-			name = ShareTo;
+			name = ShareWith;
 			sourceTree = "<group>";
 		};
 		7EA39E3B1E6157A5000AAEBD /* RadialTransitionSource */ = {
@@ -1126,6 +1128,7 @@
 		7EA730D61E3B293500CF4D12 /* RP */ = {
 			isa = PBXGroup;
 			children = (
+				7EA1C74E1E59835500FBE39B /* ShareWith */,
 				7E6BA2791DBC8F2700DE364D /* NewTextPost */,
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
@@ -1229,6 +1232,7 @@
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7EA39E3B1E6157A5000AAEBD /* RadialTransitionSource */,
+				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
 				7E4199221E4C668000EFA065 /* SwipeView */,
 				7E43077F1DD021A100AA2413 /* VideoViewController */,
@@ -1383,7 +1387,6 @@
 				7ED4A9161DBEBDDD0016698F /* Likers.swift */,
 				7EC328D21DBF461A00344AFF /* Comments */,
 				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
-				7EA1C74E1E59835500FBE39B /* ShareTo */,
 				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 			);
 			name = INTERACTIONS;
@@ -1460,6 +1463,14 @@
 				7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */,
 			);
 			name = SpacePostCell;
+			sourceTree = "<group>";
+		};
+		7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */ = {
+			isa = PBXGroup;
+			children = (
+				7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */,
+			);
+			name = SegmentedProgressBar;
 			sourceTree = "<group>";
 		};
 		7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */ = {
@@ -1818,7 +1829,7 @@
 				7E972FE71EA95B180047F4D4 /* MomentPhoto.swift in Sources */,
 				7ECE55A91DEA225E00203082 /* DiscoverHeader.swift in Sources */,
 				7E972FD81EA9388E0047F4D4 /* FriendsNF.swift in Sources */,
-				7ED4A9191DBEBDEB0016698F /* ShareTo.swift in Sources */,
+				7ED4A9191DBEBDEB0016698F /* ShareWith.swift in Sources */,
 				7E98E9591DB75057001B7329 /* CLResizeTool.m in Sources */,
 				7E98E9601DB75057001B7329 /* CLTextSettingView.m in Sources */,
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
@@ -1952,6 +1963,7 @@
 				7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
+				7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
@@ -1959,7 +1971,7 @@
 				7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
-				7EA1C74D1E5954E000FBE39B /* ShareToCell.swift in Sources */,
+				7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */,
 				7E972FEB1EA979920047F4D4 /* TextPostCell.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
 				7E98E9631DB75057001B7329 /* CLSplineInterpolator.m in Sources */,

@@ -411,7 +411,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         shareObject.append(itmObject.last!)
         
         // Share to chats
-        let shareToVC = self.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+        let shareToVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.navigationController?.pushViewController(shareToVC, animated: true)
     }
     

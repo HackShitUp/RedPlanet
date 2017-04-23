@@ -41,8 +41,19 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
                     }
                 }
                 
+                
+                
                 // Reload data
                 self.collectionView!.reloadData()
+                
+                // MARK: - SegmentedProgressBar
+                let spb = SegmentedProgressBar(numberOfSegments: 2, duration: 5)
+                spb.frame = CGRect(x: 15, y: 15, width: self.view.frame.width - 30, height: 4)
+                spb.topColor = UIColor.white
+                spb.bottomColor = UIColor.white.withAlphaComponent(0.25)
+                spb.padding = 2
+                self.view.addSubview(spb)
+                spb.startAnimation()
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -107,17 +118,13 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         self.collectionView!.frame = self.view.bounds
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
-        
-        self.collectionView?.setNeedsLayout()
-        self.collectionView?.setNeedsDisplay()
-        
+
         // Fetch stories
         fetchStories()
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {

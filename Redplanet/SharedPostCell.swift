@@ -371,7 +371,7 @@ class SharedPostCell: UITableViewCell {
         shareObject.append(sharedObject.last!)
         
         // Share to chats
-        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareToVC") as! ShareTo
+        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
     }
     

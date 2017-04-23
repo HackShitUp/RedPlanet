@@ -1,5 +1,5 @@
 //
-//  ShareToCell.swift
+//  ShareWithCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 2/18/17.
@@ -13,7 +13,7 @@ import Parse
 import ParseUI
 import Bolts
 
-class ShareToCell: UITableViewCell {
+class ShareWithCell: UITableViewCell {
 
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpFullName: UILabel!

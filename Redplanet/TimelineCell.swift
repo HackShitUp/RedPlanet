@@ -30,14 +30,22 @@ class TimelineCell: UICollectionViewCell, UITableViewDataSource, UITableViewDele
     
     
     @IBOutlet weak var tableView: UITableView!
+    
+    
+    
+    func fetchStories() {
+        
+    }
 
     
     func configureView() {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.tableFooterView = UIView()
+        self.tableView.estimatedRowHeight = self.delegate!.view.frame.size.height
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -50,7 +58,7 @@ class TimelineCell: UICollectionViewCell, UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(667)
+        return UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

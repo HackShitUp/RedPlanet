@@ -1,5 +1,5 @@
 //
-//  ShareTo.swift
+//  ShareWith.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/24/16.
@@ -16,17 +16,18 @@ import Bolts
 import OneSignal
 import SDWebImage
 import SVProgressHUD
-import DZNEmptyDataSet
 
 // Global arrays:
-
 // Holds the shareObject; PFObject to re-share posts
 var shareObject = [PFObject]()
 
-class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
+// Holds array of objects to share created posts
+var createdObject = [PFObject]()
+
+class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
     // Array to hold share objects
-    var shareObjects = [PFObject]()
+    var shareWithObjects = [PFObject]()
     // Array to hold following
     var following = [PFObject]()
     // Array to hold search objects
@@ -49,24 +50,40 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBAction func shareAction(_ sender: Any) {
         // Check if there exists any people to share with...
-        if self.shareObjects.count != 0 {
+        if self.shareWithObjects.count != 0 {
             if shareObject.count != 0 {
                 // Re-share a post
                 self.reShare()
-                // MARK: - SVProgressHUD
-                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                SVProgressHUD.showSuccess(withStatus: "Shared")
-                // Pop VC
-                _ = self.navigationController?.popViewController(animated: true)
             } else {
                 // Create share a post
                 self.createShare()
-                // MARK: - SVProgressHUD
-                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                SVProgressHUD.showSuccess(withStatus: "Sent")
-                // Pop VC
+            }
+            
+            // MARK: - SVProgressHUD
+            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
+            SVProgressHUD.showSuccess(withStatus: "Shared")
+            
+            // Clear arrrays
+            let capturedStill = CapturedStill()
+            capturedStill.clearArrays()
+            
+            // Send Notification
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+            
+            // Pop 3 or 1 VC(s)
+            if self.navigationController?.viewControllers.count == 3 {
+                let viewControllers = self.navigationController!.viewControllers as [UIViewController]
+                _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
+                // MARK: - SwipeNavigationController
+                self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+
+                
+            } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
+            
+            // MARK: - SwipeNavigationController
+            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
     }
     
@@ -80,7 +97,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         SVProgressHUD.setForegroundColor(UIColor.black)
         SVProgressHUD.show(withStatus: "Sharing")
         
-        if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+        if self.shareWithObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
             // Share to Everyone in News Feeds
             let newsfeeds = PFObject(className: "Newsfeeds")
             newsfeeds["byUser"] = PFUser.current()!
@@ -121,7 +138,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             // PHOTO
             // Share with user
             // Send to Chats
-            for user in self.shareObjects {
+            for user in self.shareWithObjects {
                 if user.objectId! != PFUser.current()!.objectId! {
                     let chats = PFObject(className: "Chats")
                     chats["sender"] = PFUser.current()!
@@ -156,7 +173,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             // VIDEO
             // Share with user
             // Send to Chats
-            for user in self.shareObjects {
+            for user in self.shareWithObjects {
                 if user.objectId! != PFUser.current()!.objectId! {
                     let chats = PFObject(className: "Chats")
                     chats["sender"] = PFUser.current()!
@@ -190,7 +207,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         } else {
             // TEXT POST
             if let userObject = shareObject.last!.value(forKey: "byUser") as? PFUser {
-                for user in self.shareObjects {
+                for user in self.shareWithObjects {
                     if user.objectId! != PFUser.current()!.objectId! {
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
@@ -222,11 +239,75 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 }
             }
         }
+        
+        
+        
+        
+        
     }
     
     
     // Function to share creation
     func createShare() {
+        if self.shareWithObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+            // Save to Newsfeeds
+            createdObject.last!.saveInBackground()
+        }
+        
+        
+        for user in self.shareWithObjects {
+            if user.objectId! != PFUser.current()!.objectId! {
+                if createdObject.last!.value(forKey: "contentType") as! String == "itm" {
+
+                    let chats = PFObject(className: "Chats")
+                    chats["sender"] = PFUser.current()!
+                    chats["senderUsername"] = PFUser.current()!.username!
+                    chats["receiver"] = user
+                    chats["receiverUsername"] = user.value(forKey: "username") as! String
+                    chats["mediaType"] = "itm"
+                    chats["read"] = false
+                    chats["saved"] = false
+                    
+                    if createdObject.last!.value(forKey: "photoAsset") != nil {
+                        chats["photoAsset"] = createdObject.last!.value(forKey: "photoAsset") as! PFFile
+                    } else {
+                        chats["videoAsset"] = createdObject.last!.value(forKey: "videoAsset") as! PFFile
+                    }
+                    
+                    chats.saveInBackground()
+                    
+                    /*
+                     MARK: - RPHelpers
+                     Helper to update <ChatsQueue>
+                     */
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                    
+                    
+                    // Send Push Notification to user
+                    // Handle optional chaining
+                    // Handle optional chaining
+                    if user.value(forKey: "apnsId") != nil {
+                        // MARK: - OneSignal
+                        // Send push notification
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                             "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1
+                            ]
+                        )
+                    }
+                    
+                    
+                    
+                } else if createdObject.last!.value(forKey: "contentType") as! String == "tp" {
+                } else if createdObject.last!.value(forKey: "contentType") as! String == "ph" {
+                } else if createdObject.last!.value(forKey: "contentType") as! String == "vi" {
+                }
+            }
+        }
         
     }
     
@@ -267,12 +348,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                         self.following.append(object.object(forKey: "following") as! PFUser)
                     }
                 }
-                
-                // Set DZN if count is 0
-                if self.following.count == 0 {
-                    self.tableView!.emptyDataSetSource = self
-                    self.tableView!.emptyDataSetDelegate = self
-                }
+
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -285,30 +361,6 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         })
     }
 
-    
-    // MARK: DZNEmptyDataSet Framework
-    // DataSource Methods
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if self.following.count == 0 {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    // Title for EmptyDataSet
-    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "🦄\nNo one to share with..."
-        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
-    }
-    
-    
     
     
     // Dismiss keyboard when UITableView is scrolled
@@ -387,13 +439,21 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             self.title = "Share With..."
         }
         
-        // Configure nav bar && show tab bar (last line)
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        // Hide UITabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
-        // MARK: - MainUITab
-        // Hide button
+        // MARK: - RPHelpers; whiten UINavigationBar and roundAllCorners
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.view.roundAllCorners(sender: self.navigationController?.view)
+        
+        // MARK: - RPHelpers
+        // Hide rpButton
         rpButton.isHidden = true
+        
+        // Show UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -443,7 +503,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         // Clear arrays
-        self.shareObjects.removeAll(keepingCapacity: false)
+        self.shareWithObjects.removeAll(keepingCapacity: false)
         shareObject.removeAll(keepingCapacity: false)
     }
 
@@ -482,7 +542,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         let label = UILabel()
         label.textColor = UIColor.white
         label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
+        label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         
         if self.tableView?.numberOfSections == 1 {
@@ -508,7 +568,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareToCell") as! ShareToCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "shareWithCell") as! ShareWithCell
         
         // Set selection tintColor
         cell.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
@@ -535,7 +595,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 cell.rpUserProPic.image = UIImage(named: "ShareOP")
                 cell.rpFullName.text! = "Post"
                 // Configure selected state
-                if self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                if self.shareWithObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                     cell.accessoryType = .checkmark
                 } else {
                     cell.accessoryType = .none
@@ -552,7 +612,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                     cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
                 // (3) Configure selected state
-                if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                if self.shareWithObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
                     cell.accessoryType = .checkmark
                 } else {
                     cell.accessoryType = .none
@@ -568,8 +628,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // SEARCHED
         if self.tableView!.numberOfSections == 1 {
             // Append searched object
-            if !self.shareObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
-                self.shareObjects.append(self.searchObjects[indexPath.row])
+            if !self.shareWithObjects.contains(where: {$0.objectId! == self.searchObjects[indexPath.row].objectId!}) {
+                self.shareWithObjects.append(self.searchObjects[indexPath.row])
             }
             // Resign first responder
             self.searchBar.resignFirstResponder()
@@ -579,15 +639,15 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
                 // Append current user's object
-                if !self.shareObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                    self.shareObjects.append(PFUser.current()!)
+                if !self.shareWithObjects.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                    self.shareWithObjects.append(PFUser.current()!)
                 }
             } else {
                 // Sort Following in ABC-Order
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                 // Append following object
-                if !self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
-                    self.shareObjects.append(abcFollowing[indexPath.row])
+                if !self.shareWithObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {
+                    self.shareWithObjects.append(abcFollowing[indexPath.row])
                 }
             }
         }
@@ -600,8 +660,8 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // SEARCHED
         if self.tableView?.numberOfSections == 1 {
             // Remove Searched User
-            if let index = self.shareObjects.index(of: self.searchObjects[indexPath.row]) {
-                self.shareObjects.remove(at: index)
+            if let index = self.shareWithObjects.index(of: self.searchObjects[indexPath.row]) {
+                self.shareWithObjects.remove(at: index)
             }
             // Reload data
             self.refresh()
@@ -609,16 +669,16 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
         // PUBLIC & FOLLOWING
             if indexPath.section == 0 && indexPath.row == 0 {
                 // Remove: PFUser.current()!
-                if let index = self.shareObjects.index(of: PFUser.current()!) {
-                    self.shareObjects.remove(at: index)
+                if let index = self.shareWithObjects.index(of: PFUser.current()!) {
+                    self.shareWithObjects.remove(at: index)
                 }
 
             } else {
                 // Sort Following
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                 // Remove: Following
-                if let index = self.shareObjects.index(of: abcFollowing[indexPath.row]) {
-                    self.shareObjects.remove(at: index)
+                if let index = self.shareWithObjects.index(of: abcFollowing[indexPath.row]) {
+                    self.shareWithObjects.remove(at: index)
                 }
             }
         }

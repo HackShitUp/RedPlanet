@@ -2271,7 +2271,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Yfn-sr-gBD">
                         <barButtonItem key="leftBarButtonItem" image="Left_50" id="NUW-k5-HzZ">
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="exit:" destination="oHO-sV-rZl" id="icN-v7-63x"/>
                             </connections>
@@ -2290,7 +2290,7 @@
         <scene sceneID="VG7-I6-vLb">
             <objects>
                 <collectionViewController storyboardIdentifier="timelineVC" id="dJj-jz-i59" customClass="Timeline" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="w6w-Cn-CQg">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="w6w-Cn-CQg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2435,16 +2435,16 @@
             </objects>
             <point key="canvasLocation" x="5392" y="-4061"/>
         </scene>
-        <!--Share To-->
+        <!--Share With-->
         <scene sceneID="zOq-a8-cuI">
             <objects>
-                <tableViewController storyboardIdentifier="shareToVC" id="Fd5-Xf-hwZ" customClass="ShareTo" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="shareWithVC" id="Fd5-Xf-hwZ" customClass="ShareWith" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="uUu-ua-urT">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="shareToCell" rowHeight="50" id="mLv-kG-hjr" customClass="ShareToCell" customModule="Redplanet" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="shareWithCell" rowHeight="50" id="mLv-kG-hjr" customClass="ShareWithCell" customModule="Redplanet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mLv-kG-hjr" id="b9a-Ty-y2n">

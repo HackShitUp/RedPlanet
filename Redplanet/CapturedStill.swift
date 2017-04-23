@@ -78,6 +78,42 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Disable button
         self.continueButton.isUserInteractionEnabled = false
         
+        
+        let newsfeeds = PFObject(className: "Newsfeeds")
+        newsfeeds["byUser"] = PFUser.current()!
+        newsfeeds["username"] = PFUser.current()!.username!
+        newsfeeds["contentType"] = "itm"
+        newsfeeds["saved"] = false
+        newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
+
+        if chatCamera == false {
+            createdObject.append(newsfeeds)
+        } else {
+            shareObject.append(newsfeeds)
+        }
+        
+        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+        self.navigationController?.pushViewController(shareWithVC, animated: true)
+        
+        
+//        // MARK: - HEAP
+//        Heap.track("SharedMoment", withProperties:
+//            ["byUserId": "\(PFUser.current()!.objectId!)",
+//                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+//            ])
+//        
+//        // Re-enable buttons
+//        self.continueButton.isUserInteractionEnabled = true
+//        // Send Notification
+//        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+//        // Clear arrrays
+//        clearArrays()
+//        // MARK: - SwipeNavigationController
+//        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+        
+        
+        
+        /*
         // MOMENT
         if chatCamera == false {
             let newsfeeds = PFObject(className: "Newsfeeds")
@@ -151,6 +187,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
+ */
     }
     
     
@@ -165,7 +202,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         // Delegate
     }
         
-    func clearArrays() {
+    open func clearArrays() {
         stillImages.removeAll(keepingCapacity: false)
         currentGeoFence.removeAll(keepingCapacity: false)
         temperature.removeAll(keepingCapacity: false)
