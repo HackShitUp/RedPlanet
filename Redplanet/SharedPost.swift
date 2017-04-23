@@ -328,7 +328,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
             // (B) Get user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
                 // MARK: - SDWebImage
-                cell.fromRpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.fromRpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
             // (C) Set fromUser's object
@@ -412,7 +412,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
                         // (B) Get user's profile photo
                         if let proPic = object!["userProfilePicture"] as? PFFile {
                             // MARK: - SDWebImage
-                            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                         }
                         
                         // (C) Set byUser's object
@@ -584,10 +584,10 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         // Set Like Button
         if self.likes.contains(where: {$0.objectId == PFUser.current()!.objectId! }) {
             cell.likeButton.setTitle("liked", for: .normal)
-            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
         } else {
             cell.likeButton.setTitle("notLiked", for: .normal)
-            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
         }
         
         // Set numberOfLikes

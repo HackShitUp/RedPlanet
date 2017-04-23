@@ -265,7 +265,7 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
                     // (B) Get profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {
                         // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     }
                 } else {
                     print(error?.localizedDescription as Any)
@@ -319,12 +319,12 @@ class VideoAsset: UITableViewController, UINavigationControllerDelegate {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
-            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
         } else {
             // Set button title
             cell.likeButton.setTitle("notLiked", for: .normal)
             // Set button image
-            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
         }
         
         // Set number of likes

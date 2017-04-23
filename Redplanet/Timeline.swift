@@ -153,20 +153,20 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "timelineCell", for: indexPath) as! TimelineCell
+//        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "timelineCell", for: indexPath) as! TimelineCell
+//        
+//        // Set delegate
+//        cell.delegate = self.navigationController
+//        
+//        // Set postObject
+//        cell.postObject = self.posts[indexPath.row]
+//        
+//        // Configure view
+//        cell.configureView()
+//        
+//        return cell
         
-        // Set delegate
-        cell.delegate = self.navigationController
         
-        // Set postObject
-        cell.postObject = self.posts[indexPath.row]
-        
-        // Configure view
-        cell.configureView()
-        
-        return cell
-        
-        /*
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
@@ -189,7 +189,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
                 // (2) Set user's profile photo
                 if let proPic = user["userProfilePicture"] as? PFFile {
                     // MARK: - SDWebImage
-                    tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     // MARK: - RPHelpers
                     tpCell.rpUserProPic.makeCircular(imageView: tpCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
                 }
@@ -226,7 +226,9 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
             
             return mCell
         }
-        */
+
+    
+    
     }
 
 }

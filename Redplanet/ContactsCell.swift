@@ -214,7 +214,7 @@ class ContactsCell: UITableViewCell {
                         }
                     })
                 } else {
-                    imageView.image = UIImage(named: "Gender Neutral User-100")
+                    imageView.image = UIImage(named: "GenderNeutralUser")
                 }
                 imageView.contentMode = .scaleAspectFill
                 return true //must return true, otherwise image won't show.
@@ -344,7 +344,7 @@ class ContactsCell: UITableViewCell {
                         }
                     })
                 } else {
-                    imageView.image = UIImage(named: "Gender Neutral User-100")
+                    imageView.image = UIImage(named: "GenderNeutralUser")
                 }
                 imageView.contentMode = .scaleAspectFill
                 return true //must return true, otherwise image won't show.
@@ -605,7 +605,7 @@ class ContactsCell: UITableViewCell {
                             }
                         })
                     } else {
-                        imageView.image = UIImage(named: "Gender Neutral User-100")
+                        imageView.image = UIImage(named: "GenderNeutralUser")
                     }
                     imageView.contentMode = .scaleAspectFill
                     return true //must return true, otherwise image won't show.
@@ -747,7 +747,7 @@ class ContactsCell: UITableViewCell {
                             }
                         })
                     } else {
-                        imageView.image = UIImage(named: "Gender Neutral User-100")
+                        imageView.image = UIImage(named: "GenderNeutralUser")
                     }
                     imageView.contentMode = .scaleAspectFill
                     return true //must return true, otherwise image won't show.

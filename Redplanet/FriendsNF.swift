@@ -92,24 +92,29 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
             newsfeeds.whereKey("byUser", equalTo: user)
             newsfeeds.includeKeys(["byUser", "pointObject", "toUser"])
             newsfeeds.order(byDescending: "createdAt")
-            newsfeeds.getFirstObjectInBackground(block: {
-                (object: PFObject?, error: Error?) in
+            newsfeeds.limit = 1
+            newsfeeds.findObjectsInBackground {
+                (objects: [PFObject]?, error: Error?) in
                 if error == nil {
-                    // Ephemeral content
-                    let components: NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object!.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object!)
-                    } else {
-                        self.skipped.append(object!)
+                    for object in objects!  {
+                        
+                        // Ephemeral content
+                        let components: NSCalendar.Unit = .hour
+                        let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
                     }
                     
-                    // Reload UITableViewData
+                    // Reload data
                     self.tableView.reloadData()
+                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }
-            })
+            }
         }
     }
 
@@ -141,6 +146,7 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return self.posts.count
     }
 
@@ -164,7 +170,7 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
         if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
             if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
             // (2) Set rpUsername

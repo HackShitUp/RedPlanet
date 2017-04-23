@@ -666,7 +666,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Set default like icon
-        cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+        cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
         
         // Set parent vc
         cell.delegate = self
@@ -684,10 +684,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     // (B) Get and set profile photo
                     if let proPic = user["userProfilePicture"] as? PFFile {
                         // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     } else {
                         // Set default
-                        cell.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                        cell.rpUserProPic.image = UIImage(named: "GenderNeutralUser")
                     }
                 }
                 
@@ -728,11 +728,11 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                     if self.likers.contains(where: {$0.objectId == PFUser.current()!.objectId!}) {
                         // unlike
                         cell.likeButton.setTitle("liked", for: .normal)
-                        cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                        cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     } else {
                         // like
                         cell.likeButton.setTitle("notliked", for: .normal)
-                        cell.likeButton.setTitle("Like-100", for: .normal)
+                        cell.likeButton.setTitle("Like", for: .normal)
                     }
                     
                     

@@ -108,7 +108,7 @@ class TimeMediaCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = false
         self.likeButton.isEnabled = false
         
-        if self.likeButton.image(for: .normal) == UIImage(named: "Like-100") {
+        if self.likeButton.image(for: .normal) == UIImage(named: "Like") {
             
             // LIKE
             let likes = PFObject(className: "Likes")
@@ -125,7 +125,7 @@ class TimeMediaCell: UITableViewCell {
                     self.likeButton.isEnabled = true
                     
                     // Change button image
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     
                     // Reload data
                     self.reloadData()
@@ -185,7 +185,7 @@ class TimeMediaCell: UITableViewCell {
                                 self.likeButton.isEnabled = true
                                 
                                 // Change button image
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                                 
                                 // Reload data
                                 self.reloadData()

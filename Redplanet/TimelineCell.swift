@@ -72,7 +72,7 @@ class TimelineCell: UICollectionViewCell, UITableViewDataSource, UITableViewDele
         
         if let proPic = (self.postObject!.object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
         tpCell.rpUsername.text! = (self.postObject!.object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String

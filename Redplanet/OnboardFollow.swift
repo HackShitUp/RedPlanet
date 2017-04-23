@@ -244,7 +244,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         // (4) Set Pro Pic
         if let proPic = self.followObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         

@@ -61,7 +61,7 @@ class TimeVideoCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = false
         self.likeButton.isEnabled = false
         
-        if self.likeButton.image(for: .normal) == UIImage(named: "Like Filled-100") {
+        if self.likeButton.image(for: .normal) == UIImage(named: "LikeFilled") {
             
             // UNLIKE
             let likes = PFQuery(className: "Likes")
@@ -83,7 +83,7 @@ class TimeVideoCell: UITableViewCell {
                                 
                                 // Change button title and image
                                 self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                                 
                                 // Reload data
                                 self.reloadData()
@@ -159,7 +159,7 @@ class TimeVideoCell: UITableViewCell {
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     
                     // Reload data
                     self.reloadData()

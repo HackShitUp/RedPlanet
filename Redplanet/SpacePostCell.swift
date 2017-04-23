@@ -114,7 +114,7 @@ class SpacePostCell: UITableViewCell {
                                 
                                 // Change button title and image
                                 self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                                 
                                 // Send Notification
                                 NotificationCenter.default.post(name: spaceNotification, object: nil)
@@ -193,7 +193,7 @@ class SpacePostCell: UITableViewCell {
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     
                     // Send Notification
                     NotificationCenter.default.post(name: spaceNotification, object: nil)

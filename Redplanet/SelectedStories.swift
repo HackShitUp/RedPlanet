@@ -107,8 +107,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     func showAPIUsage() {
         // MARK: - SafariServices
         let webVC = SFSafariViewController(url: URL(string: "https://newsapi.org/")!, entersReaderIfAvailable: true)
-        webVC.view.layer.cornerRadius = 8.00
-        webVC.view.clipsToBounds = true
+        // MARK: - RPHelpers
+        webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
     }
     
@@ -219,8 +219,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // MARK: - SafariServices
         let webVC = SFSafariViewController(url: URL(string: self.webURLS[indexPath.row])!, entersReaderIfAvailable: true)
-        webVC.view.layer.cornerRadius = 8.00
-        webVC.view.clipsToBounds = true
+        // MARK: - RPHelpers
+        webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
     }
     

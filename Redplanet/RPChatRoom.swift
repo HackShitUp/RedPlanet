@@ -83,7 +83,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     }
                 })
             } else {
-                imageView.image = UIImage(named: "Gender Neutral User-100")
+                imageView.image = UIImage(named: "GenderNeutralUser")
             }
             imageView.contentMode = .scaleAspectFill
             return true //must return true, otherwise image won't show.
@@ -1070,7 +1070,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             // If SENDER == <CurrentUser>       &&      RECEIVER == <OtherUser>
@@ -1079,7 +1079,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             
@@ -1192,7 +1192,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Get and set profile photo
                 if let proPic = chatUserObject.last!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
-                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             
@@ -1201,7 +1201,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Get and set Profile Photo
                 if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
-                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
             }
             

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -94,7 +94,7 @@
                             <constraint firstAttribute="width" constant="25" id="69q-qh-8rG"/>
                             <constraint firstAttribute="height" constant="25" id="oB0-Kj-aek"/>
                         </constraints>
-                        <state key="normal" image="Like-100"/>
+                        <state key="normal" image="Like"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06n-sX-tPh">
                         <rect key="frame" x="300" y="177" width="25" height="25"/>
@@ -102,7 +102,7 @@
                             <constraint firstAttribute="height" constant="25" id="PYi-Po-313"/>
                             <constraint firstAttribute="width" constant="25" id="VOD-2U-EwS"/>
                         </constraints>
-                        <state key="normal" image="Redo-100"/>
+                        <state key="normal" image="Share"/>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEu-TZ-pQh">
                         <rect key="frame" x="175" y="177" width="25" height="25"/>
@@ -110,7 +110,7 @@
                             <constraint firstAttribute="height" constant="25" id="0WJ-8u-EjC"/>
                             <constraint firstAttribute="width" constant="25" id="ET6-8z-Lsp"/>
                         </constraints>
-                        <state key="normal" image="Comment-100"/>
+                        <state key="normal" image="Comment"/>
                         <connections>
                             <action selector="comments:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="doY-qQ-IiT"/>
                         </connections>
@@ -179,9 +179,9 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Comment-100" width="48" height="48"/>
-        <image name="Like-100" width="51" height="51"/>
+        <image name="Comment" width="48" height="48"/>
+        <image name="Like" width="51" height="51"/>
         <image name="MoreBlack" width="50" height="50"/>
-        <image name="Redo-100" width="48" height="48"/>
+        <image name="Share" width="48" height="48"/>
     </resources>
 </document>

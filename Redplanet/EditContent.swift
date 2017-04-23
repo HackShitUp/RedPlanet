@@ -395,7 +395,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 // (1) Get user's Profile Photo
                 if let proPic = object!["userProfilePicture"] as? PFFile {
                     // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
                 // (2) Set username
                 cell.rpUsername.text! = object!["username"] as! String

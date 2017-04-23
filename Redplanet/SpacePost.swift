@@ -516,7 +516,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // (B) Get and set user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
             // (C) Set byUser's object
@@ -542,7 +542,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         // (C) Set user's profile photo
         if let spaceProPic = toUser.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - SDWebImage
-            cell.spaceProPic.sd_setImage(with: URL(string: spaceProPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            cell.spaceProPic.sd_setImage(with: URL(string: spaceProPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         
@@ -677,12 +677,12 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
             // Set button title
             cell.likeButton.setTitle("liked", for: .normal)
             // Set/ button image
-            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
         } else {
             // Set button title
             cell.likeButton.setTitle("notLiked", for: .normal)
             // Set button image
-            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
         }
         // Set number of likes
         if self.likes.count == 0 {

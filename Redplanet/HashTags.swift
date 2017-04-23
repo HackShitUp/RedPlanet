@@ -304,7 +304,7 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             // (B) Get user's profile photo
             if let proPic = user["userProfilePicture"] as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
             // (C) Set fromUser's object
@@ -432,11 +432,11 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
             if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                 // unlike
                 cell.likeButton.setTitle("liked", for: .normal)
-                cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
             } else {
                 // like
                 cell.likeButton.setTitle("notliked", for: .normal)
-                cell.likeButton.setTitle("Like-100", for: .normal)
+                cell.likeButton.setTitle("Like", for: .normal)
             }
             
             // Set number of likes

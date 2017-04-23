@@ -23,19 +23,6 @@ var chatCamera: Bool = false
 // Bool to determine camera side
 var isRearCam: Bool?
 
-/*
- Extension to apply Shadow to icons
- */
-extension CALayer {
-    func applyShadow(layer: CALayer?) {
-        layer!.shadowColor = UIColor.black.cgColor
-        layer!.shadowOffset = CGSize(width: 1, height: 1)
-        layer!.shadowRadius = 3
-        layer!.shadowOpacity = 0.5
-    }
-}
-
-
 class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
     // MARK: - CoreLocation
@@ -120,7 +107,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didSwitchCameras camera: SwiftyCamViewController.CameraSelection) {
         if camera == .rear {
             isRearCam = true
-            self.swapCameraButton.setImage(UIImage(named: "Switch Camera-100"), for: .normal)
+            self.swapCameraButton.setImage(UIImage(named: "SwapCamera"), for: .normal)
         } else if camera == .front {
             isRearCam = false
             self.swapCameraButton.setImage(nil, for: .normal)
@@ -136,9 +123,9 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         flashEnabled = !flashEnabled
         
         if flashEnabled == true {
-            flashButton.setImage(UIImage(named: "Thunder"), for: .normal)
+            flashButton.setImage(UIImage(named: "FlashOn"), for: .normal)
         } else {
-            flashButton.setImage(UIImage(named: "Lightning Bolt-96"), for: .normal)
+            flashButton.setImage(UIImage(named: "FlashOff"), for: .normal)
         }
     }
     
@@ -316,7 +303,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             self.rpUserProPic.layer.borderWidth = 0.75
             self.rpUserProPic.clipsToBounds = true
             // MARK: - SDWebImage
-            self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
         
         // MARK: - SwiftyCam

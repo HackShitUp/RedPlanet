@@ -269,7 +269,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
             tpCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
@@ -310,9 +310,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     }
                     
                     if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                        tpCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                        tpCell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     } else {
-                        tpCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                        tpCell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                     }
                     
                 } else {
@@ -371,7 +371,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                eCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
             eCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
@@ -440,7 +440,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                mCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
             mCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
@@ -496,9 +496,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     }
                     
                     if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                        mCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                        mCell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     } else {
-                        mCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                        mCell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                     }
                     
                 } else {
@@ -561,7 +561,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             ppCell.smallProPic.layer.borderWidth = 0.5
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                ppCell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
             ppCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
@@ -618,9 +618,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     }
                     
                     if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                        ppCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                        ppCell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     } else {
-                        ppCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                        ppCell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                     }
                     
                 } else {
@@ -677,7 +677,7 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
             
             if let proPic = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                vCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (1B) realNameOfUser for FRIENDS && username for FOLLOWING
             vCell.rpUsername.text! = (self.posts[indexPath.row].object(forKey: "byUser") as! PFUser).value(forKey: "realNameOfUser") as! String
@@ -740,9 +740,9 @@ class Following: UITableViewController, UINavigationControllerDelegate, UITabBar
                     }
                     
                     if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                        vCell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                        vCell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     } else {
-                        vCell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                        vCell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                     }
                     
                 } else {

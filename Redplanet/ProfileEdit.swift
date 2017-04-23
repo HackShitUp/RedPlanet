@@ -378,7 +378,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 (success: Bool, error: Error?) in
                 if success {
                     // Replace current photo
-                    self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                    self.rpUserProPic.image = UIImage(named: "GenderNeutralUser")
                     
                     // MARK: - SVProgressHUD
                     SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
@@ -594,10 +594,10 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // (7) Set user's profile photo
             if let proPic = PFUser.current()!["userProfilePicture"] as? PFFile {
                 // MARK: - SDWebImage
-                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             } else {
                 // Set default
-                self.rpUserProPic.image = UIImage(named: "Gender Neutral User-100")
+                self.rpUserProPic.image = UIImage(named: "GenderNeutralUser")
             }
         }
 

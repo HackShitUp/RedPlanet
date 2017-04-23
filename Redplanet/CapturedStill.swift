@@ -307,7 +307,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // MARK: - SDWebImage
             me.sd_setImage(with: URL(string: proPic.url!)!)
         } else {
-            me.image = UIImage(named: "Gender Neutral User-100")
+            me.image = UIImage(named: "GenderNeutralUser")
         }
         me.alpha = 0.25
         UIGraphicsBeginImageContextWithOptions(self.stillPhoto.frame.size, false, 0.0)

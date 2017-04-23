@@ -323,7 +323,7 @@ class Discover: UICollectionViewController, UITabBarControllerDelegate, UINaviga
             // MARK: - SDWebImage
             cell.rpUserProPic.sd_addActivityIndicator()
             cell.rpUserProPic.sd_setIndicatorStyle(.gray)
-            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
     
         return cell

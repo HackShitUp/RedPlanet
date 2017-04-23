@@ -253,7 +253,7 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // (A) Get profile photo
         if let proPic = proPicObject.last!.value(forKey: "photoAsset") as? PFFile {
             // MARK: - SDWebImage
-            cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+            cell.smallProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: cell.rpUserProPic.image)
         }
         
@@ -287,11 +287,11 @@ class ProfilePhoto: UITableViewController, UINavigationControllerDelegate {
         // (FA) Manipulate likes
         if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
             // liked
-            cell.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
             cell.likeButton.setTitle("liked", for: .normal)
         } else {
             // notliked
-            cell.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+            cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)
             cell.likeButton.setTitle("notLiked", for: .normal)
         }
         

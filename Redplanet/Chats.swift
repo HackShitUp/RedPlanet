@@ -261,7 +261,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             }
                         })
                     } else {
-                        imageView.image = UIImage(named: "Gender Neutral User-100")
+                        imageView.image = UIImage(named: "GenderNeutralUser")
                     }
                     imageView.contentMode = .scaleAspectFill
                     return true //must return true, otherwise image won't show.
@@ -558,7 +558,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // (1) Get Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             
             // Set full name
@@ -600,7 +600,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     // Handle optional chaining
                     if let proPic = sender.value(forKey: "userProfilePicture") as? PFFile {
                         // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     }
                     
                     // Set user's object
@@ -613,9 +613,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // READ (TRUE) ==> Gray Square
                 // NOT READ (FALSE) ==> Red Circle
                 if self.chatObjects[indexPath.row].value(forKey: "read") as! Bool == true {
-                    cell.status.image = UIImage(named: "RPSpeechBubble")
+                    cell.status.image = UIImage(named: "BubbleOpen")
                 } else {
-                    cell.status.image = UIImage(named: "RPSpeechBubbleFilled")
+                    cell.status.image = UIImage(named: "BubbleOpenFilled")
                     cell.rpUsername.font = UIFont(name: "AvenirNext-Demibold", size: 17)
                 }
             }
@@ -632,7 +632,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                     // Handle optional chaining
                     if let proPic = receiver.value(forKey: "userProfilePicture") as? PFFile {
                         // MARK: - SDWebImage
-                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                        cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     }
                     
                     // Set user's object
@@ -644,9 +644,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 // READ (TRUE) ==> Gray Square
                 // NOT READ (FALSE) ==> Red Circle
                 if self.chatObjects[indexPath.row].value(forUndefinedKey: "read") as! Bool == true {
-                    cell.status.image  = UIImage(named: "Sent-100")
+                    cell.status.image  = UIImage(named: "SentOpen")
                 } else {
-                    cell.status.image = UIImage(named: "Sent Filled-100")
+                    cell.status.image = UIImage(named: "SentFilled")
                 }
             }
         }

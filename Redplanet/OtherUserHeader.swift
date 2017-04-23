@@ -828,6 +828,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             self.rpUserProPic.isUserInteractionEnabled = true
             self.rpUserProPic.addGestureRecognizer(zoomTap)
         }
+        
+        
+        // (7) Count best friends
+        
 
     } // end awakeFromNib
 

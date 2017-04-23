@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="QsT-i1-5IA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="QsT-i1-5IA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -136,7 +136,7 @@
                                     <constraint firstAttribute="width" constant="25" id="apy-MU-XfN"/>
                                     <constraint firstAttribute="height" constant="25" id="hXD-uQ-VsK"/>
                                 </constraints>
-                                <state key="normal" image="Left Filled-100">
+                                <state key="normal" image="Left_100">
                                     <color key="titleColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
@@ -367,7 +367,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gender Neutral User-100" translatesAutoresizingMaskIntoConstraints="NO" id="LyN-1g-pMZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="GenderNeutralUser" translatesAutoresizingMaskIntoConstraints="NO" id="LyN-1g-pMZ">
                                 <rect key="frame" x="150" y="28" width="75" height="75"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="75" id="4Dn-8d-SCq"/>
@@ -738,7 +738,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Sy0-rR-rWe">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="Wdf-t2-dX1">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="Wdf-t2-dX1">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="SXa-4s-E1N" id="C44-xb-u5u"/>
@@ -849,7 +849,7 @@
                                     <constraint firstAttribute="width" constant="25" id="UNd-DU-Vg4"/>
                                     <constraint firstAttribute="height" constant="25" id="sNm-Gv-OSb"/>
                                 </constraints>
-                                <state key="normal" image="WhiteRedo"/>
+                                <state key="normal" image="ShareWhite"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-sl-naq">
                                 <rect key="frame" x="329" y="8" width="30" height="30"/>
@@ -1063,7 +1063,7 @@
                                                 <constraint firstAttribute="height" constant="25" id="JkB-mE-Bg9"/>
                                                 <constraint firstAttribute="width" constant="25" id="WaW-M4-eLj"/>
                                             </constraints>
-                                            <state key="normal" image="Like-100"/>
+                                            <state key="normal" image="Like"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yC4-wH-rOD">
                                             <rect key="frame" x="175" y="436" width="25" height="25"/>
@@ -1071,7 +1071,7 @@
                                                 <constraint firstAttribute="height" constant="25" id="WHF-9a-DcB"/>
                                                 <constraint firstAttribute="width" constant="25" id="nfN-zP-oxp"/>
                                             </constraints>
-                                            <state key="normal" image="Comment-100"/>
+                                            <state key="normal" image="Comment"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LRA-ZP-KLI">
                                             <rect key="frame" x="298" y="436" width="25" height="25"/>
@@ -1079,7 +1079,7 @@
                                                 <constraint firstAttribute="width" constant="25" id="Cpo-Tg-5M2"/>
                                                 <constraint firstAttribute="height" constant="25" id="yQ0-1C-JLQ"/>
                                             </constraints>
-                                            <state key="normal" image="Redo-100"/>
+                                            <state key="normal" image="Share"/>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2iU-XD-a10">
                                             <rect key="frame" x="342" y="8" width="25" height="25"/>
@@ -1152,7 +1152,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="B2M-Sd-ewE">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="wIM-gt-y1J">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="wIM-gt-y1J">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="TDP-b8-Amb" id="wb5-cz-UPb"/>
@@ -1186,7 +1186,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="5Oe-mi-bnh">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="DQw-SL-Z8g">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="DQw-SL-Z8g">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="TTn-0S-RI9" id="MLp-kP-gfi"/>
@@ -1302,7 +1302,7 @@
                                     <constraint firstAttribute="height" constant="25" id="7NJ-Oa-RDr"/>
                                     <constraint firstAttribute="width" constant="25" id="NTl-kL-sjA"/>
                                 </constraints>
-                                <state key="normal" image="WhiteRedo">
+                                <state key="normal" image="ShareWhite">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -1456,7 +1456,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="PCU-ZY-G4w">
-                        <barButtonItem key="leftBarButtonItem" image="Smoke Explosion-64" id="xYS-bT-kjC">
+                        <barButtonItem key="leftBarButtonItem" image="Nuke" id="xYS-bT-kjC">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="editAction:" destination="Ac7-BO-mTV" id="5Hf-hU-wa5"/>
@@ -1493,7 +1493,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Zw1-WQ-7Aa">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="dbh-1G-Hc5">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="dbh-1G-Hc5">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="Xwy-jb-WCV" id="P94-tl-JL6"/>
@@ -1553,7 +1553,7 @@
                                     <constraint firstAttribute="height" constant="45" id="GZJ-9Y-q14"/>
                                     <constraint firstAttribute="width" constant="45" id="Yp0-X8-Vjg"/>
                                 </constraints>
-                                <state key="normal" image="igcPhotos"/>
+                                <state key="normal" image="PhotosRoll"/>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2bc-Ob-PQL">
                                 <rect key="frame" x="69" y="108" width="45" height="45"/>
@@ -1605,7 +1605,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Rt5-tw-kaf">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="x6w-3D-Y2p">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="x6w-3D-Y2p">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="9ma-zm-ZgB" id="jgi-jL-kPW"/>
@@ -1750,7 +1750,7 @@
                                                 <constraint firstAttribute="width" constant="25" id="GXK-dJ-Dxv"/>
                                                 <constraint firstAttribute="height" constant="25" id="Y04-LL-0j7"/>
                                             </constraints>
-                                            <state key="normal" image="Like-100">
+                                            <state key="normal" image="Like">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -1760,7 +1760,7 @@
                                                 <constraint firstAttribute="height" constant="25" id="bst-Sh-iwz"/>
                                                 <constraint firstAttribute="width" constant="25" id="d05-rY-6i5"/>
                                             </constraints>
-                                            <state key="normal" image="Comment-100">
+                                            <state key="normal" image="Comment">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
@@ -1773,7 +1773,7 @@
                                                 <constraint firstAttribute="width" constant="25" id="Q0V-Oe-lsm"/>
                                                 <constraint firstAttribute="height" constant="25" id="zKr-Ed-0lr"/>
                                             </constraints>
-                                            <state key="normal" image="Redo-100">
+                                            <state key="normal" image="Share">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -1845,7 +1845,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="diK-ce-E58">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="4eD-Js-dXj">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="4eD-Js-dXj">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="yX7-AQ-n2c" id="p5s-T0-ZXp"/>
@@ -2026,7 +2026,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="H7J-hO-9UD">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="SVK-Jq-3CH">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="SVK-Jq-3CH">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="WWE-KP-oje" id="ufD-zA-x0y"/>
@@ -2104,7 +2104,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="DNv-SR-vKI">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="pBc-qA-oeh">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="pBc-qA-oeh">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="fOh-Tv-j9H" id="5ht-xI-L0R"/>
@@ -2139,7 +2139,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="NFi-6r-jhi">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="vXn-l2-Q7u">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="vXn-l2-Q7u">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="3In-A9-SyY" id="hm3-aC-Imc"/>
@@ -2172,7 +2172,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Da5-73-pFv">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="kBR-QB-PQW">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="kBR-QB-PQW">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="DuC-dA-SsE" id="sMh-bR-4tV"/>
@@ -2270,7 +2270,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Yfn-sr-gBD">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="NUW-k5-HzZ">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="NUW-k5-HzZ">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="exit:" destination="oHO-sV-rZl" id="icN-v7-63x"/>
@@ -2416,7 +2416,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eCk-Ef-d0k">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="xxZ-3J-Csl">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="xxZ-3J-Csl">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="ly8-XK-Wwk" id="qpw-TT-Nf5"/>
@@ -2491,7 +2491,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="cy3-If-yVQ">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="flz-Jn-6YX">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="flz-Jn-6YX">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="Fd5-Xf-hwZ" id="SDQ-Kt-XZK"/>
@@ -2527,7 +2527,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="EKU-gW-Fn7">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="UcN-jO-GmR">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="UcN-jO-GmR">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="3jh-XS-AlP" id="Xlf-8Y-UPh"/>
@@ -2600,7 +2600,7 @@
                                                         <constraint firstAttribute="width" constant="20" id="SZJ-Bv-LE1"/>
                                                         <constraint firstAttribute="height" constant="20" id="WpJ-Hy-KLq"/>
                                                     </constraints>
-                                                    <state key="normal" image="Like-100"/>
+                                                    <state key="normal" image="Like"/>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vho-ax-sG0">
                                                     <rect key="frame" x="297" y="11" width="42" height="21"/>
@@ -2712,7 +2712,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="S2y-W7-4NU">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="gSJ-vY-e7e">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="gSJ-vY-e7e">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="jbX-A4-ine" id="ZBL-C2-drO"/>
@@ -2752,7 +2752,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="UNj-Ib-O9l">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="PYY-hH-dPR">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="PYY-hH-dPR">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="wA3-WK-lJH" id="D9Z-Sz-BvG"/>
@@ -2907,7 +2907,7 @@
                                                 <constraint firstAttribute="height" constant="25" id="VYs-jz-OFY"/>
                                                 <constraint firstAttribute="width" constant="25" id="pIh-Rw-IIy"/>
                                             </constraints>
-                                            <state key="normal" image="Redo-100">
+                                            <state key="normal" image="Share">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -2917,7 +2917,7 @@
                                                 <constraint firstAttribute="width" constant="25" id="Oab-Ly-H1k"/>
                                                 <constraint firstAttribute="height" constant="25" id="u5Q-I6-rHc"/>
                                             </constraints>
-                                            <state key="normal" image="Comment-100">
+                                            <state key="normal" image="Comment">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
@@ -2930,7 +2930,7 @@
                                                 <constraint firstAttribute="width" constant="25" id="FOd-uu-sU6"/>
                                                 <constraint firstAttribute="height" constant="25" id="kpi-tu-hxw"/>
                                             </constraints>
-                                            <state key="normal" image="Like-100">
+                                            <state key="normal" image="Like">
                                                 <color key="titleColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
                                         </button>
@@ -3000,13 +3000,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="hhy-hF-Bqn">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="l4S-Xn-etZ">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="l4S-Xn-etZ">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="yq0-BE-99c" id="GSA-em-BGR"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="More-50" id="hOj-Fe-6yy">
+                        <barButtonItem key="rightBarButtonItem" image="More" id="hOj-Fe-6yy">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="more:" destination="yq0-BE-99c" id="DfH-yO-3Ac"/>
@@ -3235,7 +3235,7 @@
                                                     <constraint firstAttribute="height" constant="25" id="EHV-UH-spU"/>
                                                     <constraint firstAttribute="width" constant="25" id="iZW-rM-udh"/>
                                                 </constraints>
-                                                <state key="normal" image="igcPhotos"/>
+                                                <state key="normal" image="PhotosRoll"/>
                                                 <connections>
                                                     <action selector="showLibrary:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mp0-Yy-4uz"/>
                                                 </connections>
@@ -3246,7 +3246,7 @@
                                                     <constraint firstAttribute="height" constant="25" id="SO8-bm-pp0"/>
                                                     <constraint firstAttribute="width" constant="25" id="bLV-EO-vGO"/>
                                                 </constraints>
-                                                <state key="normal" image="Moon-96"/>
+                                                <state key="normal" image="Moon"/>
                                                 <connections>
                                                     <action selector="showStickers:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mxG-Pl-57o"/>
                                                 </connections>
@@ -3295,13 +3295,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Qau-9R-fyW">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="qLe-bi-syB">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="qLe-bi-syB">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="NoV-Aw-9wH" id="haf-oN-pfO"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="More-50" id="QZR-em-Nuc">
+                        <barButtonItem key="rightBarButtonItem" image="More" id="QZR-em-Nuc">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="moreButton:" destination="NoV-Aw-9wH" id="n6A-W6-AvJ"/>
@@ -3370,7 +3370,7 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="Qka-lR-eC9">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="MZD-jt-2VM">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="MZD-jt-2VM">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="dismiss:" destination="hJv-9K-JPO" id="sKm-Tj-uDm"/>
@@ -3409,7 +3409,7 @@
                                     <constraint firstAttribute="height" constant="35" id="Ab8-vC-otv"/>
                                     <constraint firstAttribute="width" constant="35" id="OjY-fH-Mgk"/>
                                 </constraints>
-                                <state key="normal" image="Lightning Bolt-96"/>
+                                <state key="normal" image="FlashOff"/>
                                 <connections>
                                     <action selector="toggleFlash:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="7X5-Gd-DvY"/>
                                 </connections>
@@ -3420,7 +3420,7 @@
                                     <constraint firstAttribute="height" constant="25" id="6hq-E4-nTJ"/>
                                     <constraint firstAttribute="width" constant="25" id="79L-9T-2Ra"/>
                                 </constraints>
-                                <state key="normal" image="Switch Camera-100"/>
+                                <state key="normal" image="SwapCamera"/>
                                 <connections>
                                     <action selector="swapCamera:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="mYT-EG-Ap3"/>
                                 </connections>
@@ -3440,7 +3440,7 @@
                                     <constraint firstAttribute="width" constant="35" id="Qfk-PC-i4H"/>
                                     <constraint firstAttribute="height" constant="35" id="VVu-Hf-OMU"/>
                                 </constraints>
-                                <state key="normal" image="igcPhotos"/>
+                                <state key="normal" image="PhotosRoll"/>
                                 <connections>
                                     <action selector="showLibraryUI:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="J0K-mu-dQ7"/>
                                 </connections>
@@ -3464,7 +3464,7 @@
                                     <constraint firstAttribute="height" constant="35" id="Myk-Kd-LG2"/>
                                     <constraint firstAttribute="width" constant="35" id="s1E-lb-Fim"/>
                                 </constraints>
-                                <state key="normal" image="igcText"/>
+                                <state key="normal" image="Pen"/>
                                 <connections>
                                     <action selector="showTextUI:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="YOF-b0-IlM"/>
                                 </connections>
@@ -3561,7 +3561,7 @@
                                             <constraint firstAttribute="width" constant="30" id="fCG-sc-Wql"/>
                                             <constraint firstAttribute="height" constant="30" id="kqo-52-Sds"/>
                                         </constraints>
-                                        <state key="normal" image="Download"/>
+                                        <state key="normal" image="SaveWhite"/>
                                         <connections>
                                             <action selector="saveVideo:" destination="rGT-nh-oDq" eventType="touchUpInside" id="SzQ-V3-yRT"/>
                                         </connections>
@@ -3702,7 +3702,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="JdH-db-BaH">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="jc9-TY-Qrm">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="jc9-TY-Qrm">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="yaJ-ah-IQ2" id="VVD-6o-KCB"/>
@@ -3719,7 +3719,7 @@
         <scene sceneID="3nD-Oc-X6H">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="frc-a6-KQI" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chats" image="Chat Filled-50" id="fR1-eB-hJf"/>
+                    <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="fR1-eB-hJf"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="V76-Gb-DFZ">
@@ -4016,13 +4016,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Cgs-Ze-POb">
-                        <barButtonItem key="leftBarButtonItem" image="Add User Group Man Man-48" id="9Jx-RJ-joN">
+                        <barButtonItem key="leftBarButtonItem" image="AddUser" id="9Jx-RJ-joN">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="followRequestsAction:" destination="aSj-NK-ud8" id="pVJ-Px-v5D"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Address Book Filled-50" id="cag-bz-sDk">
+                        <barButtonItem key="rightBarButtonItem" image="Contacts" id="cag-bz-sDk">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="contacts:" destination="aSj-NK-ud8" id="zQf-TU-qio"/>
@@ -4139,7 +4139,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pOW-tm-iP1">
-                        <barButtonItem key="leftBarButtonItem" image="SLR Camera Filled" id="xbu-Oi-JdR">
+                        <barButtonItem key="leftBarButtonItem" image="SLRCamera" id="xbu-Oi-JdR">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="z57-bJ-9iv" id="4fa-by-5F2"/>
@@ -4254,7 +4254,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WOH-1y-po8">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="KcR-Jg-Uju">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="KcR-Jg-Uju">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="Ir1-z0-Hmq" id="ful-FN-R0P"/>
@@ -4329,13 +4329,13 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" id="pPC-un-c5n">
-                        <barButtonItem key="leftBarButtonItem" image="iOS Photos-Grey" id="j3H-Qa-ZRr">
+                        <barButtonItem key="leftBarButtonItem" image="iOSPhotos" id="j3H-Qa-ZRr">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="picker:" destination="ZXI-yA-aQy" id="EBh-fF-7Au"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="SLR Camera Filled" id="Z7T-PK-r49">
+                        <barButtonItem key="rightBarButtonItem" image="SLRCamera" id="Z7T-PK-r49">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="camera:" destination="ZXI-yA-aQy" id="eH0-up-sd9"/>
@@ -4398,7 +4398,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="Xvt-Nt-JeU">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="prp-y8-JNW">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="prp-y8-JNW">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="1Re-0K-tP8" id="JZh-n9-XtK"/>
@@ -4462,7 +4462,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ulw-zq-86o">
                                 <rect key="frame" x="285" y="20" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="igcText"/>
+                                <state key="normal" image="Pen"/>
                                 <connections>
                                     <action selector="draw:" destination="oby-Mu-zdT" eventType="touchUpInside" id="thU-b7-wZo"/>
                                 </connections>
@@ -4489,7 +4489,7 @@
                                     <constraint firstAttribute="width" constant="30" id="f3c-W2-WgM"/>
                                     <constraint firstAttribute="height" constant="30" id="rMB-39-dwT"/>
                                 </constraints>
-                                <state key="normal" image="Download"/>
+                                <state key="normal" image="SaveWhite"/>
                                 <connections>
                                     <action selector="saveButton:" destination="oby-Mu-zdT" eventType="touchUpInside" id="wDY-c9-HDC"/>
                                 </connections>
@@ -4545,7 +4545,7 @@
         <scene sceneID="y6y-X2-aOf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ha0-l4-bqf" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" image="Search-50" id="MUZ-Nz-NN5"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="Search" id="MUZ-Nz-NN5"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Sef-25-fEA">
@@ -4576,7 +4576,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="xqW-dM-xsx">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="iTB-G3-zut">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="iTB-G3-zut">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="frg-Mx-1gp" id="Cby-1i-KjO"/>
@@ -4924,7 +4924,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Settings" id="qgD-yo-oEP">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="lF0-zl-1Jm">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="lF0-zl-1Jm">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="jQC-kq-hWo" id="x8Y-nf-gv5"/>
@@ -5029,7 +5029,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Password" id="SF0-4Y-GDt">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="Fko-R8-5tp">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="Fko-R8-5tp">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="8Xe-ln-q3K" id="1JB-kV-SQz"/>
@@ -5120,7 +5120,7 @@
                                             <constraint firstAttribute="height" constant="30" id="A5y-no-bXS"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User-96" translatesAutoresizingMaskIntoConstraints="NO" id="wsU-Fq-rpt">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="User" translatesAutoresizingMaskIntoConstraints="NO" id="wsU-Fq-rpt">
                                         <rect key="frame" x="8" y="8" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="SXD-yT-MWm"/>
@@ -5206,7 +5206,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="zTR-1k-pvf">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="xi8-YX-J8R">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="xi8-YX-J8R">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="mUy-Mh-bIv" id="T6A-3R-zfO"/>
@@ -5390,7 +5390,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Password" id="ofy-1e-ghx">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="XUM-Jh-deS">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="XUM-Jh-deS">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="ACU-9e-nqW" id="eJr-VA-9mK"/>
@@ -5473,13 +5473,13 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Contacts" id="20w-74-JaD">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="06E-I5-X6i">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="06E-I5-X6i">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="gKi-mj-BSw" id="fhg-eW-PuI"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Number Pad-48" id="IUU-9W-cB1">
+                        <barButtonItem key="rightBarButtonItem" image="NumberPad" id="IUU-9W-cB1">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="phoneNumber:" destination="gKi-mj-BSw" id="S4Y-uP-aHo"/>
@@ -5591,7 +5591,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="NTg-AY-ABx">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="Nr7-ad-m0d">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="Nr7-ad-m0d">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="back:" destination="tco-Vn-Sta" id="4Ph-oF-Ce4"/>
@@ -5634,7 +5634,7 @@
         <scene sceneID="CfS-Ef-186">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cU2-FF-485" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Activity" image="Comet-50" id="X76-jS-IPb"/>
+                    <tabBarItem key="tabBarItem" title="Activity" image="Comet" id="X76-jS-IPb"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BDr-aw-Ghe">
@@ -5664,7 +5664,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="ulj-kV-YK3">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="Lpk-6P-0mS">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="Lpk-6P-0mS">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="1wj-Sa-rRL" id="Jw4-mH-d8b"/>
@@ -5697,7 +5697,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="wYd-HW-obT">
-                        <barButtonItem key="leftBarButtonItem" image="Left Filled-50" id="grP-tj-iva">
+                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="grP-tj-iva">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="aSb-ug-Gko" id="98y-Gw-k7t"/>
@@ -5819,13 +5819,13 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="0AP-uo-lqS">
-                        <barButtonItem key="leftBarButtonItem" image="RedBookmark50png" id="4LG-k9-nUT">
+                        <barButtonItem key="leftBarButtonItem" image="RedBookmark" id="4LG-k9-nUT">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="saved:" destination="j9M-IE-AAa" id="2dk-Lc-KGp"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="Settings-48" id="aId-XC-Xk8">
+                        <barButtonItem key="rightBarButtonItem" image="Settings" id="aId-XC-Xk8">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="settings:" destination="j9M-IE-AAa" id="cY9-5P-QCF"/>
@@ -5846,7 +5846,7 @@
         <scene sceneID="FR5-cB-y2U">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JVq-sj-g2m" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="News Feeds" image="Newsfeed(1)" id="ROj-7G-3ER"/>
+                    <tabBarItem key="tabBarItem" title="News Feeds" image="NewsFeeds" id="ROj-7G-3ER"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gBj-aC-t5z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -5917,7 +5917,7 @@
                                     <constraint firstAttribute="width" constant="25" id="xuc-MQ-NpK"/>
                                     <constraint firstAttribute="height" constant="25" id="yZQ-Kj-UWh"/>
                                 </constraints>
-                                <state key="normal" image="Left Filled-100"/>
+                                <state key="normal" image="Left_100"/>
                                 <connections>
                                     <action selector="exit:" destination="cHP-XK-1K8" eventType="touchUpInside" id="qZa-IZ-pc4"/>
                                 </connections>
@@ -6037,47 +6037,46 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add User Group Man Man-48" width="24" height="24"/>
-        <image name="Address Book Filled-50" width="25" height="25"/>
+        <image name="AddUser" width="24" height="24"/>
         <image name="Camera" width="412" height="412"/>
-        <image name="Chat Filled-50" width="27" height="23"/>
-        <image name="Comet-50" width="25" height="25"/>
-        <image name="Comment-100" width="48" height="48"/>
-        <image name="Download" width="261" height="256"/>
+        <image name="Chats" width="27" height="23"/>
+        <image name="Comet" width="25" height="25"/>
+        <image name="Comment" width="48" height="48"/>
+        <image name="Contacts" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
-        <image name="Gender Neutral User-100" width="256" height="256"/>
-        <image name="Left Filled-100" width="50" height="50"/>
-        <image name="Left Filled-50" width="25" height="25"/>
-        <image name="Lightning Bolt-96" width="256" height="256"/>
-        <image name="Like-100" width="51" height="51"/>
+        <image name="FlashOff" width="256" height="256"/>
+        <image name="GenderNeutralUser" width="256" height="256"/>
+        <image name="Left_100" width="50" height="50"/>
+        <image name="Left_50" width="25" height="25"/>
+        <image name="Like" width="51" height="51"/>
         <image name="Mail" width="48" height="48"/>
-        <image name="Moon-96" width="41" height="41"/>
-        <image name="More" width="48" height="48"/>
-        <image name="More-50" width="25" height="25"/>
+        <image name="Moon" width="41" height="41"/>
+        <image name="More" width="25" height="25"/>
         <image name="MoreBlack" width="50" height="50"/>
         <image name="Name" width="48" height="48"/>
         <image name="NewChat" width="25" height="25"/>
-        <image name="Newsfeed(1)" width="24" height="24"/>
-        <image name="Number Pad-48" width="24" height="24"/>
-        <image name="RedBookmark50png" width="25" height="25"/>
-        <image name="Redo-100" width="48" height="48"/>
+        <image name="NewsFeeds" width="24" height="24"/>
+        <image name="Nuke" width="32" height="32"/>
+        <image name="NumberPad" width="24" height="24"/>
+        <image name="Pen" width="90" height="90"/>
+        <image name="PhotosRoll" width="90" height="90"/>
+        <image name="RedBookmark" width="25" height="25"/>
         <image name="RedplanetLogo" width="256" height="256"/>
-        <image name="SLR Camera Filled" width="20" height="20"/>
-        <image name="Search-50" width="25" height="25"/>
-        <image name="Settings-48" width="24" height="24"/>
+        <image name="SLRCamera" width="17" height="20"/>
+        <image name="SaveWhite" width="261" height="256"/>
+        <image name="Search" width="25" height="25"/>
+        <image name="Settings" width="24" height="24"/>
+        <image name="Share" width="47" height="48"/>
         <image name="ShareOP" width="75" height="75"/>
-        <image name="Smoke Explosion-64" width="32" height="32"/>
-        <image name="Switch Camera-100" width="243" height="256"/>
+        <image name="ShareWhite" width="47" height="48"/>
+        <image name="SwapCamera" width="243" height="256"/>
+        <image name="User" width="48" height="48"/>
         <image name="User-48" width="24" height="24"/>
-        <image name="User-96" width="48" height="48"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="VolumeOn" width="290" height="256"/>
         <image name="WhiteComment" width="48" height="48"/>
         <image name="WhiteLike" width="51" height="51"/>
-        <image name="WhiteRedo" width="48" height="48"/>
-        <image name="iOS Photos-Grey" width="25" height="25"/>
-        <image name="igcPhotos" width="90" height="90"/>
-        <image name="igcText" width="90" height="90"/>
+        <image name="iOSPhotos" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

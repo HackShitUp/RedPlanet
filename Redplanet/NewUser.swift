@@ -33,7 +33,7 @@ class NewUser: UIViewController, UIImagePickerControllerDelegate, UITextViewDele
         // Save user's data
         PFUser.current()!["userProfilePicture"] = parseFile
         PFUser.current()!["userBiography"] = self.rpUserBio.text!
-        if self.rpUserProPic.image == UIImage(named: "Gender Neutral User-100") {
+        if self.rpUserProPic.image == UIImage(named: "GenderNeutralUser") {
             // false
             PFUser.current()!["proPicExists"] = false
         } else {

@@ -524,7 +524,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
             // (2) Set Profile Photo
             if let proPic = self.searchObjects[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                 // MARK: - SDWebImage
-                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
             }
             // (3) Set selected state to none
             cell.accessoryType = .none
@@ -549,7 +549,7 @@ class ShareTo: UITableViewController, UINavigationControllerDelegate, UISearchBa
                 // (2) Set proPic
                 if let proPic  = abcFollowing[indexPath.row].value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
-                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "Gender Neutral User-100"))
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 }
                 // (3) Configure selected state
                 if self.shareObjects.contains(where: {$0.objectId! == abcFollowing[indexPath.row].objectId!}) {

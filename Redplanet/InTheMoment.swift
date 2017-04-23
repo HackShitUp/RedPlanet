@@ -292,7 +292,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                 if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
                     // liked
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLiked"), for: .normal)
                 } else {
                     // notLiked
                     self.likeButton.setTitle("notLiked", for: .normal)
@@ -515,7 +515,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "WhiteLikeFilled"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "WhiteLiked"), for: .normal)
                     
                     // Reload data
                     self.fetchContent()

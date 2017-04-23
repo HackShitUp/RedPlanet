@@ -62,7 +62,7 @@ class CommentsCell: UITableViewCell {
                                 
                                 // Change button title and image
                                 self.likeButton.setTitle("notLiked", for: .normal)
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                                 
                                 // Send Notification
                                 NotificationCenter.default.post(name: commentNotification, object: nil)
@@ -146,7 +146,7 @@ class CommentsCell: UITableViewCell {
                     
                     // Change button title and image
                     self.likeButton.setTitle("liked", for: .normal)
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     
                     // Send Notification
                     NotificationCenter.default.post(name: commentNotification, object: nil)
@@ -288,8 +288,8 @@ class CommentsCell: UITableViewCell {
         comment.urlLinkTapHandler = { label, handle, range in
             // MARK: - SafariServices
             let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: true)
-            webVC.view.layer.cornerRadius = 8.00
-            webVC.view.clipsToBounds = true
+            // MARK: - RPHelpers
+            webVC.view.roundTopCorners(sender: webVC.view)
             self.delegate?.present(webVC, animated: true, completion: nil)
         }
     }

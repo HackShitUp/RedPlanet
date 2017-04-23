@@ -19,15 +19,18 @@ import Bolts
 
 
 /*
- ========= Navigation button that launches to the Library, Camera, and New Text Post (aka: ShareUI) ===========
- Hide this button in viewWillAppear and show this button when viewWillDisappear is called
- in the respective UIViewController's lifecycle hierarchy
- */
+ MARK: - Used to add UIButton to bottom center of UIView
+ • Hide this button in viewWillAppear and show this button when viewWillDisappear is called in the respective UIViewController's lifecycle hierarchy
+*/
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
+/**/
 
-// EXTENSION
-// Method to configure button
+/*
+ MARK: - UIView: Extensions
+*/
 extension UIView {
+    
+    // Function to add rpButton
     func setButton(container: UIView?) {
         // Add button to bottom/center of UITabBar
         var buttonFrame = rpButton.frame
@@ -36,21 +39,43 @@ extension UIView {
         rpButton.frame = buttonFrame
         rpButton.setImage(UIImage(named: "Cam"), for: .normal)
         rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        /*
-         rpButton.layer.shadowColor = UIColor.white.cgColor
-         rpButton.layer.shadowOffset = CGSize(width: 0, height: -7)
-         rpButton.layer.shadowRadius = 1
-         rpButton.layer.shadowOpacity = 0.75
-         */
+        rpButton.layer.applyShadow(layer: rpButton.layer)
         container!.addSubview(rpButton)
+    }
+    
+    // Function to round ALL corners of UIView
+    func roundAllCorners(sender: UIView?) {
+        sender!.layer.cornerRadius = 8.00
+        sender!.clipsToBounds = true
+    }
+    
+    // Function to round TOP corners of UIView
+    func roundTopCorners(sender: UIView?) {
+        let shape = CAShapeLayer()
+        shape.bounds = sender!.frame
+        shape.position = sender!.center
+        shape.path = UIBezierPath(roundedRect: sender!.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
+//        sender!.layer.backgroundColor = UIColor.black.cgColor
+        sender!.layer.mask = shape
+        sender!.clipsToBounds = true
     }
 }
 
-
+/*
+ MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
+*/
+extension CALayer {
+    func applyShadow(layer: CALayer?) {
+        layer!.shadowColor = UIColor.black.cgColor
+        layer!.shadowOffset = CGSize(width: 1, height: 1)
+        layer!.shadowRadius = 3
+        layer!.shadowOpacity = 0.5
+    }
+}
 
 /*
  MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
- */
+*/
 extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of given collection.
     mutating func shuffle() {
@@ -74,10 +99,9 @@ extension Sequence {
     }
 }
 
-
 /*
  MARK: - String Extension that bolds range of string
- */
+*/
 /*
  
  SHIT DOES NOT WORK!!!
@@ -179,7 +203,7 @@ extension DateComponents {
  (2) Set UIImage() instance as background
  (3) Apply UIImage to UINavigationBar
  (4) Makes it NOT translucent
- */
+*/
 extension UINavigationBar {
     func whitenBar(navigator: UINavigationController?) {
         navigator?.setNavigationBarHidden(false, animated: false)

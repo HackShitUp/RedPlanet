@@ -68,7 +68,7 @@ class ProPicCell: UITableViewCell {
         self.likeButton.isEnabled = false
         
         // Like or unlike depending on state
-        if self.likeButton.image(for: .normal) == UIImage(named: "Like Filled-100") {
+        if self.likeButton.image(for: .normal) == UIImage(named: "LikeFilled") {
             // Unlike Profile Photo
             let likes = PFQuery(className: "Likes")
             likes.whereKey("fromUser", equalTo: PFUser.current()!)
@@ -111,7 +111,7 @@ class ProPicCell: UITableViewCell {
                                 self.likeButton.isEnabled = true
                                 
                                 // Change button image
-                                self.likeButton.setImage(UIImage(named: "Like-100"), for: .normal)
+                                self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
                                 
                                 // Reload data
                                 self.reloadData()
@@ -191,7 +191,7 @@ class ProPicCell: UITableViewCell {
                     
                     
                     // Change button image
-                    self.likeButton.setImage(UIImage(named: "Like Filled-100"), for: .normal)
+                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                     
                     // Reload data
                     self.reloadData()
@@ -329,7 +329,7 @@ class ProPicCell: UITableViewCell {
                             if success {
                                 
                                 // Set new profile photo
-                                let proPicData = UIImageJPEGRepresentation(UIImage(named: "Gender Neutral User-100")!, 0.5)
+                                let proPicData = UIImageJPEGRepresentation(UIImage(named: "GenderNeutralUser")!, 0.5)
                                 let parseFile = PFFile(data: proPicData!)
                                 
                                 // User's Profile Photo DOES NOT exist
