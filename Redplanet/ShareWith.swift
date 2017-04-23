@@ -70,20 +70,15 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             // Send Notification
             NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
             
-            // Pop 3 or 1 VC(s)
+            // Pop 3 VC's and push to bot || pop 1 VC
             if self.navigationController?.viewControllers.count == 3 {
                 let viewControllers = self.navigationController!.viewControllers as [UIViewController]
                 _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: true)
                 // MARK: - SwipeNavigationController
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-
-                
             } else {
                 _ = self.navigationController?.popViewController(animated: true)
             }
-            
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
     }
     
