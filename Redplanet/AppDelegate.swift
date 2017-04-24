@@ -107,8 +107,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 let banner = Banner(title: "", subtitle: "", image: nil,
                                                                     backgroundColor: UIColor.clear
                                                 )
-                                                
-                                                banner.dismissesOnTap = true
                                                 banner.show(duration: 0.0)
                                                 
                                                 

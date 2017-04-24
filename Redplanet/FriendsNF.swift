@@ -64,7 +64,6 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear arrays
-                self.posts.removeAll(keepingCapacity: false)
                 self.friends.removeAll(keepingCapacity: false)
                 self.friends.append(PFUser.current()!)
                 
@@ -87,34 +86,34 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
     
     // FETCH POSTS
     func fetchFirstPosts() {
-        for user in self.friends {
-            let newsfeeds = PFQuery(className: "Newsfeeds")
-            newsfeeds.whereKey("byUser", equalTo: user)
-            newsfeeds.includeKeys(["byUser", "pointObject", "toUser"])
-            newsfeeds.order(byDescending: "createdAt")
-            newsfeeds.limit = 1
-            newsfeeds.findObjectsInBackground {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    for object in objects!  {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("byUser", containedIn: self.friends)
+        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
+        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear arrays
+                self.posts.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
+                
+                for object in objects! {
+                    // Ephemeral content
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+                        self.posts.append(object)
                         
-                        // Ephemeral content
-                        let components: NSCalendar.Unit = .hour
-                        let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
+                    } else {
+                        self.skipped.append(object)
                     }
-                    
-                    // Reload data
-                    self.tableView.reloadData()
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
                 }
+            } else {
+                print(error?.localizedDescription as Any)
             }
+            
+            // Reload data
+            self.tableView!.reloadData()
         }
     }
 
@@ -124,7 +123,7 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
         super.viewDidLoad()
 
         // Fetch Friends/Posts
-        self.fetchFriends()
+        _ = fetchFriends()
         
         // Configure table view
         self.tableView.layoutIfNeeded()
@@ -133,6 +132,13 @@ class FriendsNF: UITableViewController, UINavigationControllerDelegate, UITabBar
         self.tableView!.rowHeight = 65.00
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
+        
+        // Pull to refresh action
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        refresher.tintColor = UIColor.white
+//        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView!.addSubview(refresher)
     }
 
     override func didReceiveMemoryWarning() {

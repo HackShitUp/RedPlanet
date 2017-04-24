@@ -623,28 +623,10 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-        // logic what to show : Seconds, minutes, hours, days, or weeks
-        if difference.second! <= 0 {
-            cell.time.text = "now"
-        } else if difference.second! > 0 && difference.minute! == 0 {
-            if difference.second! == 1 {
-                cell.time.text = "1s ago"
-            } else {
-                cell.time.text = "\(difference.second!)s ago"
-            }
-        } else if difference.minute! > 0 && difference.hour! == 0 {
-            if difference.minute! == 1 {
-                cell.time.text = "1m ago"
-            } else {
-                cell.time.text = "\(difference.minute!)m ago"
-            }
-        } else if difference.hour! > 0 && difference.day! == 0 {
-            if difference.hour! == 1 {
-                cell.time.text = "1h ago"
-            } else {
-                cell.time.text = "\(difference.hour!)h ago"
-            }
-        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        // MARK: - RPHelpers
+        cell.time.text = difference.getShortTime(difference: difference, date: from)
+        // Enable/Disable button depending on saved Boolean and time
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 cell.time.text = "1d ago"
             } else {

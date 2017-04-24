@@ -90,6 +90,59 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         }
     }
     
+    
+    
+    
+    
+//    public func panRecognized(recognizer:UIPanGestureRecognizer)
+//    {
+//        if recognizer.state == .Began && tableView.contentOffset.y == 0
+//        {
+//            recognizer.setTranslation(CGPointZero, inView : tableView)
+//            
+//            isTrackingPanLocation = true
+//        }
+//        else if recognizer.state != .Ended && recognizer.state != .Cancelled &&
+//            recognizer.state != .Failed && isTrackingPanLocation
+//        {
+//            let panOffset = recognizer.translationInView(tableView)
+//            
+//            // determine offset of the pan from the start here.
+//            // When offset is far enough from table view top edge -
+//            // dismiss your view controller. Additionally you can
+//            // determine if pan goes in the wrong direction and
+//            // then reset flag isTrackingPanLocation to false
+//            
+//            let eligiblePanOffset = panOffset.y > 200
+//            if eligiblePanOffset
+//            {
+//                recognizer.enabled = false
+//                recognizer.enabled = true
+//                self.dismissViewControllerAnimated(true, completion: nil)
+//            }
+//            
+//            if panOffset.y < 0
+//            {
+//                isTrackingPanLocation = false
+//            }
+//        }
+//        else
+//        {
+//            isTrackingPanLocation = false
+//        }
+//    }
+//    
+//    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
+//                                  shouldRecognizeSimultaneouslyWithGestureRecognizer 
+//        otherGestureRecognizer : UIGestureRecognizer)->Bool
+//    {
+//        return true
+//    }
+
+    
+    
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide UITabBar
@@ -121,6 +174,10 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 
         // Fetch stories
         fetchStories()
+        
+//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "panRecognized:")
+//        panGestureRecognizer.delegate = self
+//        self.view.addGestureRecognizer(panGestureRecognizer)
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")

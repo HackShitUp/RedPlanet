@@ -615,7 +615,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 if self.chatObjects[indexPath.row].value(forKey: "read") as! Bool == true {
                     cell.status.image = UIImage(named: "BubbleOpen")
                 } else {
-                    cell.status.image = UIImage(named: "BubbleOpenFilled")
+                    cell.status.image = UIImage(named: "BubbleFilled")
                     cell.rpUsername.font = UIFont(name: "AvenirNext-Demibold", size: 17)
                 }
             }

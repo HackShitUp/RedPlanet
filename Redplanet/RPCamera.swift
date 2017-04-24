@@ -28,55 +28,58 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     // MARK: - CoreLocation
     let manager = CLLocationManager()
     let geoLocation = CLGeocoder()
-    
-    // Timer for recording videos
-    var time: Float = 0.0
-    var timer: Timer?
+
+    // MARK: - SegmentedProgressBar
+    var spb: SegmentedProgressBar!
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var captureButton: SwiftyCamButton!
     @IBOutlet weak var swapCameraButton: UIButton!
     @IBOutlet weak var flashButton: UIButton!
-    @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var newTextButton: UIButton!
     @IBOutlet weak var homeButton: UIButton!
 
+    // MARK: - SwipeNavigationController
     @IBAction func showLibraryUI(_ sender: Any) {
-        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
     }
     
+    // MARK: - SwipeNavigationController
     @IBAction func showMainUI(_ sender: Any) {
-        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
     }
     
+    // MARK: - SwipeNavigationController
     @IBAction func showTextUI(_ sender: Any) {
-        // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.showEmbeddedView(position: .right)
+    }
+    
+    // MARK: - SwipeNavigationController
+    func showProfileUI() {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .top)
     }
     
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
-        DispatchQueue.main.async {
-            stillImages.append(photo)
-            let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
-            self.navigationController?.pushViewController(stillVC, animated: false)
-        }
+        stillImages.append(photo)
+        let stillVC = self.storyboard?.instantiateViewController(withIdentifier: "stillVC") as! CapturedStill
+        self.navigationController?.pushViewController(stillVC, animated: false)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
-        DispatchQueue.main.async {
-            self.libraryButton.isHidden = true
-            self.homeButton.isHidden = true
-            self.newTextButton.isHidden = true
-            self.rpUserProPic.isHidden = true
-            self.progressView.setProgress(0, animated: false)
-            self.progressView.isHidden = false
-            self.view.bringSubview(toFront: self.progressView)
-            self.timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: false)
-        }
+        self.libraryButton.isHidden = true
+        self.homeButton.isHidden = true
+        self.newTextButton.isHidden = true
+        self.rpUserProPic.isHidden = true
+        
+        // MARK: - SegmentedProgressBar
+        spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
+        spb.frame = CGRect(x: 8, y: UIApplication.shared.statusBarFrame.height, width: self.view.frame.width - 16, height: 4)
+        spb.topColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        spb.padding = 5
+        self.view.addSubview(spb)
+        spb.startAnimation()
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
@@ -84,16 +87,15 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.homeButton.isHidden = false
         self.newTextButton.isHidden = false
         self.rpUserProPic.isHidden = false
-        self.progressView.isHidden = true
-        timer?.invalidate()
+        // MARK: - SegmentedProgressBar
+        self.spb.isPaused = true
+        self.spb.removeFromSuperview()
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishProcessVideoAt url: URL) {
-        DispatchQueue.main.async {
-            capturedURLS.append(url)
-            let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
-            self.navigationController?.pushViewController(capturedVideoVC, animated: false)
-        }
+        capturedURLS.append(url)
+        let capturedVideoVC = self.storyboard?.instantiateViewController(withIdentifier: "capturedVideoVC") as! CapturedVideo
+        self.navigationController?.pushViewController(capturedVideoVC, animated: false)
     }
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFocusAtPoint point: CGPoint) {
@@ -130,20 +132,16 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     
-    
     // MARK: - CoreLocation Delegate Methods
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
-
         // MARK: - CLGeocoder
         // Reverse engineer coordinates, and get address
         geoLocation.reverseGeocodeLocation(location) {
             (placemarks: [CLPlacemark]?, error: Error?) in
             if error == nil {
-
                 if placemarks!.count > 0 {
                     let pm = placemarks![0]
-                
                     // Save PFGeoPoint
                     let geoPoint = PFGeoPoint(latitude: pm.location!.coordinate.latitude, longitude: pm.location!.coordinate.longitude)
                     PFUser.current()!["location"] = geoPoint
@@ -246,25 +244,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         default:
             break;
         }
-    }
-    
-    
-    // Function to countdown timer when recording video
-    func countDown() {
-        // Edit
-        DispatchQueue.main.async {
-            self.time += 1
-            self.progressView.setProgress(10/self.time, animated: true)
-            if self.time >= 10 {
-                self.timer!.invalidate()
-            }
-        }
-    }
-    
-    // Leave VC
-    func showProfileUI() {
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .top)
     }
 
     // Function to configure view

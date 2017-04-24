@@ -263,7 +263,8 @@ open class AZDialogViewController: UIViewController {
             button.layer.borderColor = button.tintColor.cgColor
             button.layer.borderWidth = 1.5
             button.layer.cornerRadius = buttonHeight/2
-            button.titleLabel?.font = UIFont(name: fontName, size: buttonHeight * 0.35)
+//            button.titleLabel?.font = UIFont(name: fontName, size: buttonHeight * 0.35)
+            button.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: buttonHeight * 0.35)      // MODIFIED
             self.buttonStyle?(button,buttonHeight,i)
             button.tag = i
             button.addTarget(self, action: #selector(AZDialogViewController.handleAction(_:)), for: .touchUpInside)

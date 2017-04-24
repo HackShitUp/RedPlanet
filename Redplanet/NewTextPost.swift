@@ -52,44 +52,88 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
             // Vibrate device
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nNo Text Post?",
+                                                          message: "Share your thoughts within 500 characters about anything.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
             
-            let alert = UIAlertController(title: "No Text Post?",
-                                          message: "Share your thoughts within 500 characters about anything.",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            alert.view.tintColor = UIColor.black
-            alert.addAction(ok)
-            self.present(alert, animated: true)
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                
+            }))
+            
+            dialogController.show(in: self)
+            
             
         } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revoltuionary movements..." {
             
             // Vibrate device
             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nNo Text Post?",
+                                                          message: "Share your thoughts within 500 characters about anything.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
             
-            let alert = UIAlertController(title: "No Text Post?",
-                                          message: "Please share your thoughts within 500 characters.",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                
+            }))
             
-            alert.view.tintColor = UIColor.black
-            alert.addAction(ok)
-            self.present(alert, animated: true)
+            dialogController.show(in: self)
+            
             
         } else if self.textView.text.characters.count > 500 {
             
-            let alert = UIAlertController(title: "Exceeded Character Count",
-                                          message: "For better experience, your thoughts should be concisely shared within 500 characters.",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            alert.addAction(ok)
-            self.present(alert, animated: true)
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nExceeded Character Count",
+                message: "For better experience, your thoughts should be concisely shared within 500 characters.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
             
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                
+            }))
+            
+            dialogController.show(in: self)
+
         } else {
             
             // Disable button

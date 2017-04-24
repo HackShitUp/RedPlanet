@@ -485,27 +485,10 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        if difference.second! <= 0 {
-            self.time.text = "now"
-        } else if difference.second! > 0 && difference.minute! == 0 {
-            if difference.second! == 1 {
-                self.time.text = "1 second ago"
-            } else {
-                self.time.text = "\(difference.second!) seconds ago"
-            }
-        } else if difference.minute! > 0 && difference.hour! == 0 {
-            if difference.minute! == 1 {
-                self.time.text = "1 minute ago"
-            } else {
-                self.time.text = "\(difference.minute!) minutes ago"
-            }
-        } else if difference.hour! > 0 && difference.day! == 0 {
-            if difference.hour! == 1 {
-                self.time.text = "1 hour ago"
-            } else {
-                self.time.text = "\(difference.hour!) hours ago"
-            }
-        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
+        // MARK: - RPHelpers
+        self.time.text = difference.getFullTime(difference: difference, date: from)
+        // Enable/Disable button depending on "saved" Boolean and time reference
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if difference.day! == 1 {
                 self.time.text = "1 day ago"
             } else {

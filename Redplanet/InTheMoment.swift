@@ -24,7 +24,10 @@ var itmObject = [PFObject]()
 // Define Notification
 let itmNotification = Notification.Name("itmNotification")
 
-class InTheMoment: UIViewController, UINavigationControllerDelegate {
+class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
+    
+    // MARK: - SegmentedProgressPar
+    var spb: SegmentedProgressBar!
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -43,7 +46,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
     @IBOutlet weak var shareButton: UIButton!
     
     // Functiont to go back
-    func goBack(sender: UIGestureRecognizer) {
+    func goBack() {
         // Remove last objects
         itmObject.removeLast()
         // POP VC
@@ -223,32 +226,11 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        if difference.second! <= 0 {
-            self.time.text = "now"
-        } else if difference.second! > 0 && difference.minute! == 0 {
-            if difference.second! == 1 {
-                self.time.text = "1 second ago"
-            } else {
-                self.time.text = "\(difference.second!) seconds ago"
-            }
-        } else if difference.minute! > 0 && difference.hour! == 0 {
-            if difference.minute! == 1 {
-                self.time.text = "1 minute ago"
-            } else {
-                self.time.text = "\(difference.minute!) minutes ago"
-            }
-        } else if difference.hour! > 0 && difference.day! == 0 {
-            if difference.hour! == 1 {
-                self.time.text = "1 hour ago"
-            } else {
-                self.time.text = "\(difference.hour!) hours ago"
-            }
-        } else if difference.day! > 0 && difference.weekOfMonth! == 0 {
-            if difference.day! == 1 {
-                self.time.text = "1 day ago"
-            } else {
-                self.time.text = "\(difference.day!) days ago"
-            }
+        
+        // MARK: - RPHelpers
+        self.time.text = difference.getFullTime(difference: difference, date: from)
+        // Manipulate button enabling depending on saved boolean and time
+        if difference.day! > 0 && difference.weekOfMonth! == 0 {
             if itmObject.last!.value(forKey: "saved") as! Bool == true {
                 self.likeButton.isUserInteractionEnabled = false
                 self.numberOfLikes.isUserInteractionEnabled = false
@@ -270,7 +252,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                 self.numberOfShares.isUserInteractionEnabled = false
             }
         }
-        
         
         // (4) Fetch likes
         let likes = PFQuery(className: "Likes")
@@ -532,8 +513,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
                     })
                     
                     
-                    
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }
@@ -585,6 +564,18 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         let shareToVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.navigationController?.pushViewController(shareToVC, animated: true)
     }
+    
+    
+    // MARK: - SegmentedProgressBar Delegate method
+    func segmentedProgressBarFinished() {
+        // Pop VC
+        goBack()
+    }
+    
+    func segmentedProgressBarChangedIndex(index: Int) {
+        print("True.")
+    }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -635,14 +626,14 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
         
+        // MARK: - RadialTransitionSwipe
+        self.navigationController?.enableRadialSwipe()
+        
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
         tapOut.numberOfTapsRequired = 1
         self.itmMedia.isUserInteractionEnabled = true
         self.itmMedia.addGestureRecognizer(tapOut)
-        
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
         
         // (1) Add more tap method
         let moreTap = UITapGestureRecognizer(target: self, action: #selector(showMore))
@@ -697,25 +688,35 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate {
         longTap.minimumPressDuration = 0.15
         self.itmMedia.isUserInteractionEnabled = true
         self.itmMedia.addGestureRecognizer(longTap)
+        
+        // MARK: - SegmentedProgressBar
+        self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
+        self.spb.frame = CGRect(x: 15, y: 15, width: self.view.frame.width - 30, height: 4)
+        self.spb.topColor = UIColor.white
+        self.spb.bottomColor = UIColor.white.withAlphaComponent(0.25)
+        self.spb.padding = 2
+        self.spb.delegate = self
+        self.view.addSubview(spb)
+        self.spb.startAnimation()
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
+        // Hie UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Show Status Bar
+        // MARK: - SegmentedProgressBar
+        spb.removeFromSuperview()
+        // Show UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // MARK: - MainUITab
-        // Show button
+        // MARK: - RPHelpers; show rpButton
         rpButton.isHidden = false
     }
 
