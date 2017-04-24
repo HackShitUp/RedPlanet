@@ -16,9 +16,12 @@ import Bolts
 import AnimatedCollectionViewLayout
 import SwipeNavigationController
 
+// Array to hold timelineObjects
 var timelineObjects = [PFObject]()
 
 class Timeline: UICollectionViewController, UINavigationControllerDelegate {
+    
+    // Array to hold posts/likes
     var posts = [PFObject]()
     var likes = [PFObject]()
     
@@ -40,9 +43,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
                         self.posts.append(object)
                     }
                 }
-                
-                
-                
+
                 // Reload data
                 self.collectionView!.reloadData()
                 
@@ -140,7 +141,10 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 //    }
 
     
-    
+
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -149,13 +153,14 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         // Hide rpButton
         rpButton.isHidden = true
-        
-        UIApplication.shared.isStatusBarHidden = true
-        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Hide UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
         
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
@@ -163,15 +168,15 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = CubeAttributesAnimator()
+        layout.animator = PageAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: self.view.bounds.size.height - UIApplication.shared.statusBarFrame.height)
+        layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.frame = self.view.bounds
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
-
+        
         // Fetch stories
         fetchStories()
         
@@ -204,16 +209,12 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        print("POSTS: \(self.posts.count)")
         return self.posts.count
     }
     
-    
-//    // MARK: - UICollectionViewHeader
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        
-//        return self.view.frame.size
-//    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self.view.frame.size
+    }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -231,6 +232,9 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 //        return cell
         
         
+        
+        
+        
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
@@ -239,12 +243,12 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         
         // TEXT POST
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-
             let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
+            
+            print("CV FRAME: \(tpCell.contentView.frame)")
             
             // Set delegate
             tpCell.delegate = self
-            
             
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
@@ -265,11 +269,13 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
             // (4) Set Text Post
             tpCell.textPost.text = (self.posts[indexPath.row].value(forKey: "textPost") as! String)
             
-            
             return tpCell
+
         } else {
         // MOMENT PHOTO
             let mCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
+            
+            print("CV FRAME: \(mCell.contentView.frame)")
             
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
@@ -286,13 +292,11 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
                 mCell.photoMoment.sd_setIndicatorStyle(.gray)
                 mCell.photoMoment.sd_setImage(with: URL(string: moment.url!)!)
             }
-            
-            
+
             return mCell
         }
 
     
     
     }
-
 }

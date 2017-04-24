@@ -18,21 +18,6 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
-/*
- NEW CHATS DATABASE SCHEMA
- let chatsQueue = PFObject(className: "ChatsQueue")
- chatsQueue["endUser"] = theSender
- chatsQueue["endName"] = theSender["username"] as! String
- chatsQueue["frontUser"] = PFUser.current()!
- chatsQueue["frontName"] = PFUser.current()!.username!
- chatsQueue["lastChat"] = self.chatObjects[indexPath.row]
- chatsQueue["score"] = 1
- chatsQueue.saveInBackground()
-*/
-
-
-
-
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // <ChatsQueue>
@@ -52,7 +37,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     var refresher: UIRefreshControl!
     // Page size
     var page: Int = 50
-    
     
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBAction func editAction(_ sender: Any) {

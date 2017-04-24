@@ -289,7 +289,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
                     self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
                 }
                 
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
@@ -611,10 +610,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
                        self.time,
                        self.moreButton] as [Any]
         for b in buttons {
-            (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-            (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-            (b as AnyObject).layer.shadowRadius = 3.5
-            (b as AnyObject).layer.shadowOpacity = 0.6
+            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
         }
     }
@@ -688,6 +684,16 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         longTap.minimumPressDuration = 0.15
         self.itmMedia.isUserInteractionEnabled = true
         self.itmMedia.addGestureRecognizer(longTap)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Hide UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
+        
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
         
         // MARK: - SegmentedProgressBar
         self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 5)
@@ -698,15 +704,6 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         self.spb.delegate = self
         self.view.addSubview(spb)
         self.spb.startAnimation()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // MARK: - SwipeNavigationController
-        self.containerSwipeNavigationController?.shouldShowCenterViewController = false
-        // Hie UIStatusBar
-        UIApplication.shared.isStatusBarHidden = true
-        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

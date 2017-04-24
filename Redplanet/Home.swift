@@ -37,11 +37,6 @@ class Home: UIViewController, UINavigationControllerDelegate {
         friends.title = "F R I E N D S"
         controllerArray.append(friends)
         
-//        let friends = self.storyboard!.instantiateViewController(withIdentifier: "friendsNFVC") as! FriendsNF
-//        friends.parentNavigator = self.navigationController
-//        friends.title = "F R I E N D S"
-//        controllerArray.append(friends)
-        
         // FOLLOWING
 //        let following = self.storyboard?.instantiateViewController(withIdentifier: "followingVC") as! Following
 //        following.parentNavigator = self.navigationController

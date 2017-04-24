@@ -26,14 +26,8 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        // Set delegate
-        self.delegate = self
 
-        // MARK: - MainUITab Extension
-        /*
-         Overlay UIButton to push to the
-         */
+        // MARK: - RPHelpers; add rpButton to center bottom of UIView
         self.view.setButton(container: self.view)
         rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
         

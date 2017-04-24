@@ -240,11 +240,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                          "ios_badgeType": "Increase",
                          "ios_badgeCount": 1])
                 }
-                
             }
         }
     }
-    
     
     // Function to refresh
     func refresh() {
@@ -450,7 +448,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         SDImageCache.shared().clearDisk()
     }
 
-    // MARK: - Table view data source
+    // MARK: - UITableView DataSource Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         if searchActive == true && searchBar.text! != "" {
             return 1
@@ -470,7 +468,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             }
         }
     }
-    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
@@ -557,7 +554,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         return cell
     }
     
-    
+    // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // SEARCHED
         if self.tableView!.numberOfSections == 1 {
@@ -621,24 +618,16 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         self.tableView?.cellForRow(at: indexPath)?.accessoryType = (self.tableView?.cellForRow(at: indexPath)?.isSelected)! ? .checkmark : .none
     }
     
-    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    // MARK: - UIScrollView Delegate Method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
+            // If posts on server are > than shown
+            if page <= self.following.count {
+                // Increase page size to load more posts
+                page = page + 50
+                // Query friends
+                queryFollowing()
+            }
         }
     }
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= self.following.count {
-            
-            // Increase page size to load more posts
-            page = page + 50
-            
-            // Query friends
-            queryFollowing()
-        }
-    }
-    
-    
 }

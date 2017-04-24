@@ -1462,7 +1462,7 @@
                                 <action selector="editAction:" destination="Ac7-BO-mTV" id="5Hf-hU-wa5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="NewChat" id="0Lw-Dv-lX4">
+                        <barButtonItem key="rightBarButtonItem" image="UserAction" id="0Lw-Dv-lX4">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="newChat:" destination="Ac7-BO-mTV" id="5PM-Em-nlZ"/>
@@ -1499,7 +1499,7 @@
                                 <action selector="backButton:" destination="Xwy-jb-WCV" id="P94-tl-JL6"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="UserAction" id="NMD-J2-SCr">
+                        <barButtonItem key="rightBarButtonItem" image="More" id="NMD-J2-SCr">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
                                 <action selector="moreAction:" destination="Xwy-jb-WCV" id="yLk-Ks-DG7"/>
@@ -2290,7 +2290,7 @@
         <scene sceneID="VG7-I6-vLb">
             <objects>
                 <collectionViewController storyboardIdentifier="timelineVC" id="dJj-jz-i59" customClass="Timeline" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="w6w-Cn-CQg">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" id="w6w-Cn-CQg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2307,27 +2307,8 @@
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Otw-5G-hNP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="375" id="5ki-zi-Mul"/>
-                                                <constraint firstAttribute="height" constant="667" id="XFV-2D-qB1"/>
-                                            </constraints>
-                                        </tableView>
-                                    </subviews>
                                 </view>
-                                <constraints>
-                                    <constraint firstItem="Otw-5G-hNP" firstAttribute="leading" secondItem="IYF-wR-7Gy" secondAttribute="leading" id="JNw-ej-6gH"/>
-                                    <constraint firstItem="Otw-5G-hNP" firstAttribute="top" secondItem="IYF-wR-7Gy" secondAttribute="top" id="OXw-3H-oT5"/>
-                                    <constraint firstAttribute="bottom" secondItem="Otw-5G-hNP" secondAttribute="bottom" id="Uaa-HJ-3oA"/>
-                                    <constraint firstAttribute="trailing" secondItem="Otw-5G-hNP" secondAttribute="trailing" id="aU2-X0-daw"/>
-                                </constraints>
                                 <size key="customSize" width="375" height="667"/>
-                                <connections>
-                                    <outlet property="tableView" destination="Otw-5G-hNP" id="AHF-b9-v4x"/>
-                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -2338,6 +2319,7 @@
                     <navigationItem key="navigationItem" id="XZp-fk-dnL"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6ab-Zt-xTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -6042,7 +6024,6 @@
         <image name="More" width="25" height="25"/>
         <image name="MoreBlack" width="50" height="50"/>
         <image name="Name" width="48" height="48"/>
-        <image name="NewChat" width="25" height="25"/>
         <image name="NewsFeeds" width="24" height="24"/>
         <image name="Nuke" width="32" height="32"/>
         <image name="NumberPad" width="24" height="24"/>

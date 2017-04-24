@@ -29,6 +29,14 @@ var chatUsername = [String]()
 // Add Notification to reload data
 let rpChat = Notification.Name("rpChat")
 
+
+/*
+ <mediaType> in Databse Schema
+ • ph
+ • vi
+ • itm
+ */
+
 class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
     
     // Variable to hold messageObjects
@@ -286,262 +294,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
         self.navigationController!.pushViewController(stickersVC, animated: true)
     }
-
-    // Fetch chats
-    func fetchChats() {
-        let sender = PFQuery(className: "Chats")
-        sender.whereKey("sender", equalTo: PFUser.current()!)
-        sender.whereKey("receiver", equalTo: chatUserObject.last!)
-        let receiver = PFQuery(className: "Chats")
-        receiver.whereKey("receiver", equalTo: PFUser.current()!)
-        receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.includeKeys(["receiver", "sender"])
-        chats.order(byAscending: "createdAt")
-        chats.limit = self.page
-        chats.findObjectsInBackground(block: {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                // Clear arrays
-                self.messageObjects.removeAll(keepingCapacity: false)
-                self.skipped.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    // Ephemeral Chat
-                    let components : NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    // Append saved objects
-                    if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
-                        self.messageObjects.append(object)
-                    }
-//                    self.messageObjects.append(object)
-//                    else {
-//                        self.skipped.append(object)
-//                    }
-//                    self.messageObjects.append(object)
-                }
-                // Reload data
-                self.tableView!.reloadData()
-                // Scroll to bottom via main thread
-                DispatchQueue.main.async(execute: {
-                    if self.messageObjects.count > 0 {
-                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                        self.tableView.setContentOffset(bot, animated: false)
-                    }
-                })
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-            }
-        })
-        
-        
-    }
     
-    // Function to send chat
-    func sendChat() {
-        if self.newChat.text!.isEmpty {
-            // Resign first responder
-            self.newChat.resignFirstResponder()
-        } else {
-            // Track when chat was sent
-            Heap.track("SentChat", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                ])
-            // Clear text to prevent sending again and set constant before sending for better UX
-            let chatText = self.newChat.text!
-            // Clear chat
-            self.newChat.text!.removeAll()
-            // Send to Chats
-            let chats = PFObject(className: "Chats")
-            chats["sender"] = PFUser.current()!
-            chats["senderUsername"] = PFUser.current()!.username!
-            chats["receiver"] = chatUserObject.last!
-            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
-            chats["Message"] = chatText
-            chats["read"] = false
-            chats["saved"] = false
-            chats.saveInBackground {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                    
-                    /*
-                     MARK: - OneSignal
-                     send iOS Push Notification
-                     */
-                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                             "ios_badgeType": "Increase",
-                             "ios_badgeCount": 1,
-                             ]
-                        )
-                    }
-                    
-                    // Reload data
-                    self.fetchChats()
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                    // Reload data
-                    self.fetchChats()
-                }
-            }
-        }
-    }
-    
-
-    // Function to delete chats
-    func chatOptions(sender: UILongPressGestureRecognizer) {
-        
-        if sender.state == .began {
-            let touchedAt = sender.location(in: self.tableView)
-            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
-                
-                // MARK: - AZDialogViewController
-                let dialogController = AZDialogViewController(title: "Chat", message: "Options")
-                dialogController.dismissDirection = .bottom
-                dialogController.dismissWithOutsideTouch = true
-                dialogController.showSeparator = true
-                // Configure style
-                dialogController.buttonStyle = { (button,height,position) in
-                    button.setTitleColor(UIColor.white, for: .normal)
-                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                    button.layer.masksToBounds = true
-                }
-                // (1) Delete button
-                let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
-                    // Dismiss
-                    dialog.dismiss()
-                    
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
-                    
-                    // Delete Chat
-                    let chats = PFQuery(className: "Chats")
-                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
-                                                block: { (object: PFObject?, error: Error?) in
-                                                    if error == nil {
-                                                        object!.deleteInBackground(block: { (success: Bool, error: Error?) in
-                                                            if error == nil {
-                                                                print("Successfully deleted chat: \(object!)")
-                                                                
-                                                                // Delete from messageObjects and UITableView
-                                                                self.messageObjects.remove(at: indexPath.row)
-                                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                                
-                                                                
-                                                                // Update <ChatsQueue> with last object in array
-                                                                let rpHelpers = RPHelpers()
-                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
-                                                                
-                                                                
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
-                                                                
-                                                            } else {
-                                                                print(error?.localizedDescription as Any)
-                                                                
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showError(withStatus: "Error")
-                                                            }
-                                                        })
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                    })
-                })
-                // (2) Save button
-                let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
-                    // Dismiss
-                    dialog.dismiss()
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
-                    // Query Chats
-                    let chats = PFQuery(className: "Chats")
-                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
-                                                block: { (object: PFObject?, error: Error?) in
-                                                    if error == nil {
-                                                        object!["saved"] = true
-                                                        object!.saveInBackground()
-                                                        
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Saved")
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                    })
-                })
-                // (3) Unsave
-                let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
-                    // Dismiss
-                    dialog.dismiss()
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
-                    // Query Chats
-                    let chats = PFQuery(className: "Chats")
-                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
-                                                block: { (object: PFObject?, error: Error?) in
-                                                    if error == nil {
-                                                        object!["saved"] = false
-                                                        object!.saveInBackground()
-                                                        
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Unsaved")
-                                                        
-                                                        // Delete from messageObjects and UITableView
-                                                        self.messageObjects.remove(at: indexPath.row)
-                                                        self.tableView!.deleteRows(at: [indexPath], with: .fade)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
-                                                    }
-                    })
-                    
-                })
-                // Add Cancel button
-                dialogController.cancelButtonStyle = { (button,height) in
-                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
-                    button.setTitle("CANCEL", for: [])
-                    return true
-                }
-                // Sender CAN delete chat
-                if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                    dialogController.addAction(delete)
-                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
-                        dialogController.addAction(unsave)
-                    } else {
-                        dialogController.addAction(save)
-                    }
-                } else {
-                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
-                        dialogController.addAction(unsave)
-                    } else {
-                        dialogController.addAction(save)
-                    }
-                }
-                // Show
-                dialogController.show(in: self)
-            }
-        }
-    }
     
     
     // Compress video
@@ -561,9 +314,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - UIImagePickercontroller Delegate Method
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-
+        
         let pickerMedia = info[UIImagePickerControllerMediaType] as! NSString
-
+        
         if pickerMedia == kUTTypeImage {
             // Disable editing if it's a photo
             self.imagePicker.allowsEditing = false
@@ -586,7 +339,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             
             // Traverse to URL
             let video = info[UIImagePickerControllerMediaURL] as! URL
-
+            
             // Compress Video data
             let compressedURL = NSURL.fileURL(withPath: NSTemporaryDirectory() + NSUUID().uuidString + ".mp4")
             self.compressVideo(inputURL: video, outputURL: compressedURL) { (exportSession) in
@@ -677,17 +430,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             }
         }
     }
-
+    
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        
-        // Show Progress
+        // MARK: - SVProgressHUD
         SVProgressHUD.show()
         SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Disable done button
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
-    
+        
         // Send to Chats
         let chats = PFObject(className: "Chats")
         chats["sender"] = PFUser.current()!
@@ -706,7 +458,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 let rpHelpers = RPHelpers()
                 _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                 
-                // Dismiss Progress
+                // MARK: - SVProgressHUD
                 SVProgressHUD.dismiss()
                 
                 // Re-enable done button
@@ -728,7 +480,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         ]
                     )
                 }
-
+                
                 // Reload data
                 self.fetchChats()
                 
@@ -737,7 +489,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
             } else {
                 print(error?.localizedDescription as Any)
-                
                 // Re-enable done button
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
                 
@@ -748,7 +499,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 self.dismiss(animated: true, completion: nil)
             }
         }
-        
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
     }
@@ -756,6 +506,258 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     func imageEditorDidCancel(_ editor: CLImageEditor) {
         // Dismiss view controller
         editor.dismiss(animated: true, completion: { _ in })
+    }
+    
+    // Function to delete chats
+    func chatOptions(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Chat", message: "Options")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                // (1) Delete button
+                let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    
+                    // Delete Chat
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!.deleteInBackground(block: { (success: Bool, error: Error?) in
+                                                            if error == nil {
+                                                                print("Successfully deleted chat: \(object!)")
+                                                                
+                                                                // Delete from messageObjects and UITableView
+                                                                self.messageObjects.remove(at: indexPath.row)
+                                                                self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                                
+                                                                // Update <ChatsQueue> with last object in array
+                                                                let rpHelpers = RPHelpers()
+                                                                _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
+                                                                
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                                
+                                                            } else {
+                                                                print(error?.localizedDescription as Any)
+                                                                // MARK: - SVProgressHUD
+                                                                SVProgressHUD.showError(withStatus: "Error")
+                                                            }
+                                                        })
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
+                })
+                // (2) Save button
+                let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    // Query Chats
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!["saved"] = true
+                                                        object!.saveInBackground()
+                                                        
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Saved")
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
+                })
+                // (3) Unsave
+                let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.show()
+                    // Query Chats
+                    let chats = PFQuery(className: "Chats")
+                    chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
+                                                block: { (object: PFObject?, error: Error?) in
+                                                    if error == nil {
+                                                        object!["saved"] = false
+                                                        object!.saveInBackground()
+                                                        
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showSuccess(withStatus: "Unsaved")
+                                                        
+                                                        // Delete from messageObjects and UITableView
+                                                        self.messageObjects.remove(at: indexPath.row)
+                                                        self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                                                        
+                                                    } else {
+                                                        print(error?.localizedDescription as Any)
+                                                        // MARK: - SVProgressHUD
+                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                    }
+                    })
+                    
+                })
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                // Sender CAN delete chat
+                if (self.messageObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    dialogController.addAction(delete)
+                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
+                        dialogController.addAction(unsave)
+                    } else {
+                        dialogController.addAction(save)
+                    }
+                } else {
+                    if self.messageObjects[indexPath.row].value(forKey: "saved") as! Bool == true {
+                        dialogController.addAction(unsave)
+                    } else {
+                        dialogController.addAction(save)
+                    }
+                }
+                // Show
+                dialogController.show(in: self)
+            }
+        }
+    }
+
+
+    // Fetch chats
+    func fetchChats() {
+        let sender = PFQuery(className: "Chats")
+        sender.whereKey("sender", equalTo: PFUser.current()!)
+        sender.whereKey("receiver", equalTo: chatUserObject.last!)
+        let receiver = PFQuery(className: "Chats")
+        receiver.whereKey("receiver", equalTo: PFUser.current()!)
+        receiver.whereKey("sender", equalTo: chatUserObject.last!)
+        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
+        chats.includeKeys(["receiver", "sender"])
+        chats.order(byAscending: "createdAt")
+        chats.limit = self.page
+        chats.findObjectsInBackground(block: {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                // Clear arrays
+                self.messageObjects.removeAll(keepingCapacity: false)
+                self.skipped.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    // Ephemeral Chat
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    // Append saved objects
+                    if difference.hour! < 24 || object.value(forKey: "saved") as! Bool == true {
+                        self.messageObjects.append(object)
+                    } else {
+                        self.skipped.append(object)
+                    }
+                }
+                
+                // Save Read Receipt for last chat
+                if self.messageObjects.count != 0 {
+                    self.messageObjects.last!["read"] = true
+                    self.messageObjects.last!.saveInBackground()
+                }
+                
+                // Reload data
+                self.tableView!.reloadData()
+                // Scroll to bottom via main thread
+                DispatchQueue.main.async(execute: {
+                    if self.messageObjects.count > 0 {
+                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
+                        self.tableView.setContentOffset(bot, animated: false)
+                    }
+                })
+            } else {
+                print(error?.localizedDescription as Any)
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+            }
+        })
+    }
+    
+    // Function to send chat
+    func sendChat() {
+        if self.newChat.text!.isEmpty {
+            // Resign first responder
+            self.newChat.resignFirstResponder()
+        } else {
+            // Track when chat was sent
+            Heap.track("SentChat", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
+                ])
+            // Clear text to prevent sending again and set constant before sending for better UX
+            let chatText = self.newChat.text!
+            // Clear chat
+            self.newChat.text!.removeAll()
+            // Send to Chats
+            let chats = PFObject(className: "Chats")
+            chats["sender"] = PFUser.current()!
+            chats["senderUsername"] = PFUser.current()!.username!
+            chats["receiver"] = chatUserObject.last!
+            chats["receiverUsername"] = chatUserObject.last!.value(forKey: "username") as! String
+            chats["Message"] = chatText
+            chats["read"] = false
+            chats["saved"] = false
+            chats.saveInBackground {
+                (success: Bool, error: Error?) in
+                if error == nil {
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
+                    
+                    /*
+                     MARK: - OneSignal
+                     send iOS Push Notification
+                     */
+                    if chatUserObject.last!.value(forKey: "apnsId") != nil {
+                        OneSignal.postNotification(
+                            ["contents":
+                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
+                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                             "ios_badgeType": "Increase",
+                             "ios_badgeCount": 1,
+                             ]
+                        )
+                    }
+                    
+                    // Reload data
+                    self.fetchChats()
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // Reload data
+                    self.fetchChats()
+                }
+            }
+        }
     }
     
     // Function to refresh
@@ -768,14 +770,26 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView!.reloadData()
     }
     
+    
+    // Function to load more
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.messageObjects.count + self.skipped.count {
+            // Increase page size to load more posts
+            page = page + 50
+            // Query chats
+            fetchChats()
+        }
+    }
+    
     // Function to send screenshot
     func sendScreenshot() {
         // Send push notification
-        if chatUserObject.last!.value(forKey: "apnsId") != nil {
+        if let apnsId = chatUserObject.last!.value(forKey: "apnsId") as? String {
             OneSignal.postNotification(
                 ["contents":
                     ["en": "\(PFUser.current()!.username!.uppercased()) screenshot the conversation"],
-                 "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
+                 "include_player_ids": ["\(apnsId)"],
                  "ios_badgeType": "Increase",
                  "ios_badgeCount": 1
                 ]
@@ -805,40 +819,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // MARK: - MainUITab
         // Hide button
         rpButton.isHidden = true
-    }
-    
-    /*
-     Function to add observers to...
-     (1) Show UIKeyboard
-     (2) Hide UIKeyboard
-     (3) Reload Chats when OneSignal notification was received
-     (4) Send Chat when ScreenShot occurs
-    */
-    func createObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
-                                               object: nil,
-                                               queue: OperationQueue.main) { notification in
-                                                // Send screenshot
-                                                self.sendScreenshot()
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(fetchChats), name: rpChat, object: nil)
-    }
-    
-    /*
-     Function to remove observers that...
-     (1) Show UIKeyboard
-     (2) Hide UIKeyboard
-     (3) Send Chat when ScreenShot occurs
-     // DON'T remove this
-     (4) Reload Chats when OneSignal notification was received
-     */
-    func removeObservers() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
-        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -899,30 +879,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         imagePicker.videoQuality = UIImagePickerControllerQualityType.typeHigh
         imagePicker.navigationBar.tintColor = UIColor.black
         imagePicker.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
-        
-        // Save read receipt
-        let sender = PFQuery(className: "Chats")
-        sender.whereKey("sender", equalTo: PFUser.current()!)
-        sender.whereKey("receiver", equalTo: chatUserObject.last!)
-        let receiver = PFQuery(className: "Chats")
-        receiver.whereKey("receiver", equalTo: PFUser.current()!)
-        receiver.whereKey("sender", equalTo: chatUserObject.last!)
-        let chats = PFQuery.orQuery(withSubqueries: [sender, receiver])
-        chats.includeKeys(["sender", "receiver"])
-        chats.order(byDescending: "createdAt")
-        chats.getFirstObjectInBackground(block: {
-            (object: PFObject?, error: Error?) in
-            if error == nil {
-                // Get user's first object
-                // And set bool value for read receipt
-                if (object!.object(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
-                    object!["read"] = true
-                    object!.saveInBackground()
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -953,6 +909,27 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+    
+    
+    // MARK: - UIKeyboard Notification Observers
+    func createObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
+                                               object: nil,
+                                               queue: OperationQueue.main) { notification in
+                                                // Send screenshot
+                                                self.sendScreenshot()
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(fetchChats), name: rpChat, object: nil)
+    }
+    
+    func removeObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
+        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
     }
     
     
@@ -990,7 +967,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         }
     }
     
-    // MARK: - UITextViewDelegate Method
+    // MARK: - UITextView Delegate Methods
     func textViewDidBeginEditing(_ textView: UITextView) {
         // APNSID
         if chatUserObject.last!.value(forKey: "apnsId") != nil {
@@ -1006,21 +983,14 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             )
         }
     }
-    // Send chat if text starts a new line
+    
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
-            // Send chat
             self.sendChat()
             return false
         } else {
             return true
         }
-    }
-    
-    // MARK: - UIScrollViewDelegate
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        // Resign chat
-        self.newChat.resignFirstResponder()
     }
 
     // MARK: - UITableViewDataSource and Delegate methods
@@ -1032,12 +1002,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         return UITableViewAutomaticDimension
     }
     
-    /*
-     <mediaType> in Databse Schema
-     • ph
-     • vi
-     • itm
-    */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "rpChatRoomCell", for: indexPath) as! RPChatRoomCell
@@ -1223,21 +1187,16 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         cell?.contentView.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
     }
     
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= self.messageObjects.count {
-            // Increase page size to load more posts
-            page = page + 50
-            // Query chats
-            fetchChats()
-        }
-    }
-    
-    // MARK: - UIScrollView Delegate Method
+    // MARK: - UIScrollView Delegate Methods
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
     }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // Resign chat
+        self.newChat.resignFirstResponder()
+    }
+    
 }

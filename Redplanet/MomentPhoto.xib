@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -19,13 +19,9 @@
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ltu-lZ-e6d" customClass="PFImageView">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="667" id="CvU-YC-hBx"/>
-                            <constraint firstAttribute="width" constant="375" id="MnL-u8-DMz"/>
-                        </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Swr-et-n3X">
-                        <rect key="frame" x="329" y="14" width="30" height="30"/>
+                        <rect key="frame" x="329" y="20" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="516-47-pPb"/>
                             <constraint firstAttribute="height" constant="30" id="DIR-cA-5Kg"/>
@@ -35,20 +31,20 @@
                         </state>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="giP-Zw-90P">
-                        <rect key="frame" x="16" y="16" width="305" height="25"/>
+                        <rect key="frame" x="16" y="20" width="305" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="305" id="HYk-0S-ooZ"/>
-                            <constraint firstAttribute="height" constant="25" id="eBn-1p-Xm3"/>
+                            <constraint firstAttribute="height" constant="30" id="eBn-1p-Xm3"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
-                        <state key="normal" title="Username">
+                        <state key="normal">
                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         </state>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jP2-RD-YfI">
-                        <rect key="frame" x="16" y="41" width="305" height="21"/>
+                        <rect key="frame" x="16" y="50" width="305" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="7aA-vg-Tna"/>
+                            <constraint firstAttribute="height" constant="18" id="7aA-vg-Tna"/>
                             <constraint firstAttribute="width" constant="305" id="VkK-A7-6s0"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="12"/>
@@ -58,19 +54,19 @@
                 </subviews>
             </view>
             <constraints>
+                <constraint firstItem="ltu-lZ-e6d" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="089-GU-jEO"/>
+                <constraint firstAttribute="bottom" secondItem="ltu-lZ-e6d" secondAttribute="bottom" id="402-d3-Pdi"/>
                 <constraint firstItem="giP-Zw-90P" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="8Ns-wb-ybl"/>
-                <constraint firstAttribute="trailing" secondItem="ltu-lZ-e6d" secondAttribute="trailing" id="Etb-HT-vBl"/>
-                <constraint firstItem="ltu-lZ-e6d" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Fy1-nh-2f7"/>
                 <constraint firstItem="jP2-RD-YfI" firstAttribute="top" secondItem="giP-Zw-90P" secondAttribute="bottom" id="Khc-t1-snR"/>
                 <constraint firstItem="Swr-et-n3X" firstAttribute="leading" secondItem="giP-Zw-90P" secondAttribute="trailing" constant="8" id="QI3-Ge-vFH"/>
-                <constraint firstAttribute="bottom" secondItem="ltu-lZ-e6d" secondAttribute="bottom" id="RP1-RX-4LJ"/>
                 <constraint firstItem="Swr-et-n3X" firstAttribute="leading" secondItem="giP-Zw-90P" secondAttribute="trailing" constant="8" id="bMi-dQ-BSa"/>
-                <constraint firstItem="Swr-et-n3X" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="14" id="dHB-bj-MYC"/>
+                <constraint firstItem="Swr-et-n3X" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="dHB-bj-MYC"/>
                 <constraint firstAttribute="trailing" secondItem="jP2-RD-YfI" secondAttribute="trailing" constant="54" id="dwt-H8-wns"/>
-                <constraint firstItem="giP-Zw-90P" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="16" id="fu2-0n-AcB"/>
+                <constraint firstItem="giP-Zw-90P" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="20" id="fu2-0n-AcB"/>
                 <constraint firstAttribute="trailing" secondItem="Swr-et-n3X" secondAttribute="trailing" constant="16" id="l0Y-Wh-W9H"/>
                 <constraint firstItem="jP2-RD-YfI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="rML-MM-T9w"/>
-                <constraint firstItem="ltu-lZ-e6d" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="vDi-Ih-3V2"/>
+                <constraint firstItem="ltu-lZ-e6d" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="xMM-Ub-rgz"/>
+                <constraint firstAttribute="trailing" secondItem="ltu-lZ-e6d" secondAttribute="trailing" id="yPB-h3-QEf"/>
             </constraints>
             <connections>
                 <outlet property="moreButton" destination="Swr-et-n3X" id="NmO-TI-fZh"/>
@@ -82,6 +78,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="More" width="48" height="48"/>
+        <image name="More" width="25" height="25"/>
     </resources>
 </document>
