@@ -4013,7 +4013,7 @@
         <!--New Text Post-->
         <scene sceneID="yYO-cS-sPc">
             <objects>
-                <viewController storyboardIdentifier="newTextPost" id="z57-bJ-9iv" customClass="NewTextPost" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newTextPostVC" id="z57-bJ-9iv" customClass="NewTextPost" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="J5G-Fc-ysO"/>
                         <viewControllerLayoutGuide type="bottom" id="9Ce-j5-vv4"/>
