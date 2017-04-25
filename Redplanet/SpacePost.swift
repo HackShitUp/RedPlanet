@@ -42,9 +42,7 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: Any) {
         // Remove last object
         spaceObject.removeLast()
-        // POP VC
-        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
-        })
+        // TODO: POPVC
     }
     
     
@@ -416,9 +414,6 @@ class SpacePost: UITableViewController, UINavigationControllerDelegate {
         
         // Fetch interactions
         fetchInteractions()
-        
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
         
         // Set estimated row height
         self.extendedLayoutIncludesOpaqueBars = true

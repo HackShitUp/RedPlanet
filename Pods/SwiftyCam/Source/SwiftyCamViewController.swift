@@ -264,6 +264,17 @@ open class SwiftyCamViewController: UIViewController {
 		}
 	}
 
+    // MARK: ViewDidLayoutSubviews
+    
+    /// ViewDidLayoutSubviews() Implementation
+    
+    
+    override open func viewDidLayoutSubviews() {
+        previewLayer.frame = view.bounds
+        
+        super.viewDidLayoutSubviews()
+    }
+    
 	// MARK: ViewDidAppear
 
 	/// ViewDidAppear(_ animated:) Implementation
@@ -288,20 +299,23 @@ open class SwiftyCamViewController: UIViewController {
 				// Begin Session
 				self.session.startRunning()
 				self.isSessionRunning = self.session.isRunning
+                
+                // Preview layer video orientation can be set only after the connection is created
+                DispatchQueue.main.async {
+                    self.previewLayer.videoPreviewLayer.connection?.videoOrientation = self.getPreviewLayerOrientation()
+                }
+                
 			case .notAuthorized:
 				// Prompt to App Settings
 				self.promptToAppSettings()
 			case .configurationFailed:
 				// Unknown Error
-                /*
 				DispatchQueue.main.async(execute: { [unowned self] in
 					let message = NSLocalizedString("Unable to capture media", comment: "Alert message when something goes wrong during capture session configuration")
 					let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
 					alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
 					self.present(alertController, animated: true, completion: nil)
 				})
-                 */
-                print("Configuration failed!")
 			}
 		}
 	}
@@ -355,12 +369,12 @@ open class SwiftyCamViewController: UIViewController {
 			flashView?.backgroundColor = UIColor.white
 			previewLayer.addSubview(flashView!)
 
-			UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
+			UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
 				self.flashView?.alpha = 1.0
 
 			}, completion: { (_) in
 				self.capturePhotoAsyncronously(completionHandler: { (success) in
-					UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
+					UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
 						self.flashView?.alpha = 0.0
 					}, completion: { (_) in
 						self.flashView?.removeFromSuperview()
@@ -475,6 +489,11 @@ open class SwiftyCamViewController: UIViewController {
 			print("[SwiftyCam]: Switching between cameras while recording video is not supported")
 			return
 		}
+        
+        guard session.isRunning == true else {
+            return
+        }
+        
 		switch currentCamera {
 		case .front:
 			currentCamera = .rear
@@ -679,6 +698,20 @@ open class SwiftyCamViewController: UIViewController {
 			self.deviceOrientation = UIDevice.current.orientation
 		}
 	}
+    
+    fileprivate func getPreviewLayerOrientation() -> AVCaptureVideoOrientation {
+        // Depends on layout orientation, not device orientation
+        switch UIApplication.shared.statusBarOrientation {
+        case .portrait, .unknown:
+            return AVCaptureVideoOrientation.portrait
+        case .landscapeLeft:
+            return AVCaptureVideoOrientation.landscapeLeft
+        case .landscapeRight:
+            return AVCaptureVideoOrientation.landscapeRight
+        case .portraitUpsideDown:
+            return AVCaptureVideoOrientation.portraitUpsideDown
+        }
+    }
 
 	fileprivate func getVideoOrientation() -> AVCaptureVideoOrientation {
 		guard shouldUseDeviceOrientation, let deviceOrientation = self.deviceOrientation else { return previewLayer!.videoPreviewLayer.connection.videoOrientation }
@@ -758,9 +791,9 @@ open class SwiftyCamViewController: UIViewController {
 		// prompt User with UIAlertView
 
 		DispatchQueue.main.async(execute: { [unowned self] in
-			let message = NSLocalizedString("Please allow Repdlanet to access the camera for you to share Moments with your friends!", comment: "Alert message when the user has denied access to the camera")
-			let alertController = UIAlertController(title: "Camera Access Denied", message: message, preferredStyle: .alert)
-			alertController.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Alert OK button"), style: .cancel, handler: nil))
+			let message = NSLocalizedString("AVCam doesn't have permission to use the camera, please change privacy settings", comment: "Alert message when the user has denied access to the camera")
+			let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
+			alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
 			alertController.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: "Alert button to open Settings"), style: .default, handler: { action in
 				if #available(iOS 10.0, *) {
 					UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)

@@ -129,9 +129,6 @@
 		7E99CA081E90E42700661B78 /* MainUITab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MainUITab.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
-		7EA39E421E6157A5000AAEBD /* AAPTransitionDirector.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E3D1E6157A5000AAEBD /* AAPTransitionDirector.m */; };
-		7EA39E431E6157A5000AAEBD /* UINavigationController+RadialTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E3F1E6157A5000AAEBD /* UINavigationController+RadialTransaction.m */; };
-		7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EA39E411E6157A5000AAEBD /* UIView+Radial.m */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
 		7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC91DB6A1B900A466D9 /* NewUser.swift */; };
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
@@ -177,6 +174,7 @@
 		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
 		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
 		7ED4A9191DBEBDEB0016698F /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareWith.swift */; };
+		7ED4E7581EAF4B2100E9CA01 /* RCMantleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4E7571EAF4B2100E9CA01 /* RCMantleViewController.swift */; };
 		7EDBEEFF1E2209A90093D8BB /* RPCamera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */; };
 		7EDEB9F41EA5684400EEE4E1 /* RPCaptionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */; };
 		7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */; };
@@ -403,12 +401,6 @@
 		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
 		7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWithCell.swift; sourceTree = "<group>"; };
-		7EA39E3C1E6157A5000AAEBD /* AAPTransitionDirector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPTransitionDirector.h; sourceTree = "<group>"; };
-		7EA39E3D1E6157A5000AAEBD /* AAPTransitionDirector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPTransitionDirector.m; sourceTree = "<group>"; };
-		7EA39E3E1E6157A5000AAEBD /* UINavigationController+RadialTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+RadialTransaction.h"; sourceTree = "<group>"; };
-		7EA39E3F1E6157A5000AAEBD /* UINavigationController+RadialTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+RadialTransaction.m"; sourceTree = "<group>"; };
-		7EA39E401E6157A5000AAEBD /* UIView+Radial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Radial.h"; sourceTree = "<group>"; };
-		7EA39E411E6157A5000AAEBD /* UIView+Radial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Radial.m"; sourceTree = "<group>"; };
 		7EA45CC71DB6A1A600A466D9 /* Birthday.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Birthday.swift; sourceTree = "<group>"; };
 		7EA45CC91DB6A1B900A466D9 /* NewUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
@@ -461,6 +453,7 @@
 		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
 		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
 		7ED4A9181DBEBDEB0016698F /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
+		7ED4E7571EAF4B2100E9CA01 /* RCMantleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCMantleViewController.swift; sourceTree = "<group>"; };
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionContainer.swift; sourceTree = "<group>"; };
 		7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
@@ -1083,19 +1076,6 @@
 			name = ShareWith;
 			sourceTree = "<group>";
 		};
-		7EA39E3B1E6157A5000AAEBD /* RadialTransitionSource */ = {
-			isa = PBXGroup;
-			children = (
-				7EA39E3C1E6157A5000AAEBD /* AAPTransitionDirector.h */,
-				7EA39E3D1E6157A5000AAEBD /* AAPTransitionDirector.m */,
-				7EA39E3E1E6157A5000AAEBD /* UINavigationController+RadialTransaction.h */,
-				7EA39E3F1E6157A5000AAEBD /* UINavigationController+RadialTransaction.m */,
-				7EA39E401E6157A5000AAEBD /* UIView+Radial.h */,
-				7EA39E411E6157A5000AAEBD /* UIView+Radial.m */,
-			);
-			path = RadialTransitionSource;
-			sourceTree = "<group>";
-		};
 		7EA45CCF1DB6A1F800A466D9 /* OnBoardFollow */ = {
 			isa = PBXGroup;
 			children = (
@@ -1231,7 +1211,7 @@
 				7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
-				7EA39E3B1E6157A5000AAEBD /* RadialTransitionSource */,
+				7EE35EAD1EAFFA9B00C14FAD /* RCMantleViewController */,
 				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
 				7E4199221E4C668000EFA065 /* SwipeView */,
@@ -1409,6 +1389,14 @@
 				7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */,
 			);
 			name = SELECTED_STORIES;
+			sourceTree = "<group>";
+		};
+		7EE35EAD1EAFFA9B00C14FAD /* RCMantleViewController */ = {
+			isa = PBXGroup;
+			children = (
+				7ED4E7571EAF4B2100E9CA01 /* RCMantleViewController.swift */,
+			);
+			name = RCMantleViewController;
 			sourceTree = "<group>";
 		};
 		7EE697BA1EAAC200004F4E24 /* PhotoCell */ = {
@@ -1869,6 +1857,7 @@
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7EA913221E25CD510046F940 /* MomentVideo.swift in Sources */,
+				7ED4E7581EAF4B2100E9CA01 /* RCMantleViewController.swift in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
 				7E98E95F1DB75057001B7329 /* CLTextLabel.m in Sources */,
@@ -1909,7 +1898,6 @@
 				7EC05B061DB5E37C0039B357 /* Home.swift in Sources */,
 				7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */,
 				7E98E9521DB75057001B7329 /* CLColorPickerView.m in Sources */,
-				7EA39E431E6157A5000AAEBD /* UINavigationController+RadialTransaction.m in Sources */,
 				7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */,
 				7E4CFF9D1DB439680087454E /* SpacePostCell.swift in Sources */,
 				7EFFCE1E1DC6CA320067D332 /* CustomTabBar.swift in Sources */,
@@ -1968,7 +1956,6 @@
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
-				7EA39E441E6157A5000AAEBD /* UIView+Radial.m in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
 				7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */,
@@ -1989,7 +1976,6 @@
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,
-				7EA39E421E6157A5000AAEBD /* AAPTransitionDirector.m in Sources */,
 				7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */,
 				7E9955671DC99A98003D9D73 /* InTheMoment.swift in Sources */,
 			);

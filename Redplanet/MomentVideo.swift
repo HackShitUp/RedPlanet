@@ -409,9 +409,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     func goBack(sender: UIGestureRecognizer) {
         // Remove last objects
         itmObject.removeLast()
-        // POP VC
-        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
-        })
+        // TODO: POPVC
     }
     
     
@@ -652,9 +650,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         super.viewDidLoad()
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
-        
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
         
         // Tap to Pop VC
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))

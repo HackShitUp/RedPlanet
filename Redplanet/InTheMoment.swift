@@ -26,6 +26,10 @@ let itmNotification = Notification.Name("itmNotification")
 
 class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
+    var delegate: RCMantleViewDelegate!
+    
+    
+    
     // MARK: - SegmentedProgressPar
     var spb: SegmentedProgressBar!
     
@@ -49,9 +53,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
     func goBack() {
         // Remove last objects
         itmObject.removeLast()
-        // POP VC
-        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
-        })
+        // TODO: POPVC
     }
     
     // Functiont to share to other platforms
@@ -611,10 +613,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(fetchContent), name: itmNotification, object: nil)
-        
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
-        
+
         // Tap out implementation
         let tapOut = UITapGestureRecognizer(target: self, action: #selector(goBack))
         tapOut.numberOfTapsRequired = 1

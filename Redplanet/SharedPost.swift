@@ -42,9 +42,7 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     @IBAction func backButton(_ sender: Any) {
         // Remove last
         sharedObject.removeLast()
-        // POP VC
-        self.navigationController?.radialPopViewController(withDuration: 0.2, withStartFrame: CGRect(x: CGFloat(self.view.frame.size.width/2), y: CGFloat(self.view.frame.size.height), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {() -> Void in
-        })
+        // TODO: POPVC
     }
     
     @IBAction func refresh(_ sender: Any) {
@@ -194,8 +192,6 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
         backSwipe.direction = .right
         self.view.isUserInteractionEnabled = true
         self.view.addGestureRecognizer(backSwipe)
-        // MARK: - RadialTransitionSwipe
-        self.navigationController?.enableRadialSwipe()
     }
     
     override func viewDidAppear(_ animated: Bool) {

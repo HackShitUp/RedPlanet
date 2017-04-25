@@ -20,7 +20,7 @@ PODS:
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
   - SVProgressHUD (2.1.2)
-  - SwiftyCam (2.2.1)
+  - SwiftyCam (2.2.2)
   - SwipeNavigationController (2.0.2)
 
 DEPENDENCIES:
@@ -50,7 +50,7 @@ SPEC CHECKSUMS:
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftyCam: 966b67eeab2dfcfd0077eaa3c5a6bd69e1748af0
+  SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
 PODFILE CHECKSUM: cdf89cf99bbdbb0c84c31de7d3ed73a716f79e39

@@ -48,18 +48,23 @@ class EphemeralCell: UITableViewCell {
             // Append content object
             itmObject.append(self.postObject!)
             
+            // MARK: - RCMantleViewController
+            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
+            let nav = UINavigationController(rootViewController: mantleViewController)
+            
             // PHOTO
             if self.postObject!.value(forKey: "photoAsset") != nil {
                 // Push VC
                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                self.delegate?.radialPushViewController(itmVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-                })
+                itmVC.delegate = mantleViewController
+                mantleViewController.configureView(vc: mantleViewController, popOverVC: itmVC)
+                self.delegate?.present(nav, animated: false, completion: nil)
+                
             } else {
             // VIDEO
                 // Push VC
                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                self.delegate?.radialPushViewController(momentVideoVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-                })
+                // TODO: POPVC
             }
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sh" {
@@ -68,8 +73,7 @@ class EphemeralCell: UITableViewCell {
             sharedObject.append(self.postObject!)
             // Push VC
             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-            self.delegate?.radialPushViewController(sharedPostVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-            })
+            // TODO: POPVC
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sp" {
         // SPACE POST
@@ -79,8 +83,7 @@ class EphemeralCell: UITableViewCell {
             otherName.append(self.postObject!.value(forKey: "toUsername") as! String)
             // Push VC
             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-            self.delegate?.radialPushViewController(spacePostVC, withStartFrame: CGRect(x: CGFloat(self.contentView.frame.size.width), y: CGFloat(0), width: CGFloat(0), height: CGFloat(0)), comlititionBlock: {
-            })
+            // TODO: POPVC
         }
     }
     
@@ -114,7 +117,39 @@ class EphemeralCell: UITableViewCell {
             viewsObject.append(self.postObject!)
             // Push VC
             let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            self.delegate?.pushViewController(viewsVC, animated: true)
+//            self.delegate?.pushViewController(viewsVC, animated: true)
+            
+            
+            
+            
+            // Create the MantleViewController from the Storyboard using the
+            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
+            // Create your modal controller with your storyboard ID
+//            let popUpViewController = storyboard!.instantiateViewController(withIdentifier: "PopUpViewController") as! PopUpViewController
+            // Set it's delegate to be able to call 'delegate.dismissView(animated: Bool)'
+            viewsVC.delegate = mantleViewController as! RCMantleViewDelegate
+            
+            // Configuration
+            mantleViewController.bottomDismissible = true
+            mantleViewController.topDismissable = true
+            mantleViewController.draggableToSides = true
+            mantleViewController.appearFromTop = true
+            // appearOffset moves the popup closer to the edge so that it appears quicker
+            mantleViewController.appearOffset = CGFloat(202)
+            
+            // Initialize Mantle
+            mantleViewController.setUpScrollView()
+            // Add your modal to Mantle
+            mantleViewController.addToScrollViewNewController(viewsVC)
+            // Present the modal through the MantleViewController
+            self.delegate?.present(mantleViewController, animated: false, completion: nil)
+//            self.delegate?.pushViewController(mantleViewController, animated: false)
+
+            
+            
+            
+            
+            
         })
         
         // (2) DELETE

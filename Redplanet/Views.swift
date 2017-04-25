@@ -21,9 +21,9 @@ import DZNEmptyDataSet
 // Array to hold views
 var viewsObject = [PFObject]()
 
-
-class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
+    var delegate: RCMantleViewDelegate!
     
     // Array to hold objects
     var viewers = [PFObject]()
@@ -34,24 +34,30 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
     @IBAction func backButton(_ sender: Any) {
         // Remove last array
         viewsObject.removeLast()
-        
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    
     @IBAction func refresh(_ sender: Any) {
         // Query views
         queryViews()
-        
         // Reload data
         self.tableView!.reloadData()
     }
     
+    // Function to load more
+    func loadMore() {
+        // If posts on server are > than shown
+        if page <= self.viewers.count {
+            // Increase page size to load more posts
+            page = page + 50
+            // Query friends
+            queryViews()
+        }
+    }
     
     // Query views
     func queryViews() {
-        
         // MARK: - MainUITab
         // Hide button
         rpButton.isHidden = true
@@ -118,9 +124,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
                         self.title = "Views"
                     }
                 }
-                
-                
-                
+
             } else {
                 print(error?.localizedDescription as Any)
                 
@@ -133,10 +137,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         }
     }
     
-    
-    
-    // MARK: DZNEmptyDataSet Framework
-    // DataSource Methods
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.viewers.count == 0 {
             return true
@@ -155,8 +156,6 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         ]
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
-
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -171,9 +170,27 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
+    // MARK: - UIGestureRecognizer Delegate Methods
+    func tapDismiss(sender: UITapGestureRecognizer){
+//        delegate.dismissView(true)
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view == self.view {
+            return false
+        }
+        return true
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDismiss))
+        tap.delegate = self
+        self.view.addGestureRecognizer(tap)
+        
         
         // MARK: - HEAP
         // Track who viewed views
@@ -228,17 +245,15 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return self.viewers.count
     }
     
-    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
@@ -255,9 +270,7 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
 
         return cell
     }
-    
-    
-    
+
     // MARK: - UITableview delegate method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Append user's object
@@ -270,26 +283,10 @@ class Views: UITableViewController, UINavigationControllerDelegate, DZNEmptyData
         self.navigationController?.pushViewController(otherVC, animated: true)
     }
 
-    
-    
-    // Uncomment below lines to query faster by limiting query and loading more on scroll!!!
+    // MARK: - UIScrollView Delegate Method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
             loadMore()
         }
     }
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if page <= self.viewers.count {
-            
-            // Increase page size to load more posts
-            page = page + 50
-            
-            // Query friends
-            queryViews()
-        }
-    }
-
-
 }

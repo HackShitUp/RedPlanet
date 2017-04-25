@@ -2325,6 +2325,24 @@
             </objects>
             <point key="canvasLocation" x="2002" y="3508"/>
         </scene>
+        <!--Mantle View Controller-->
+        <scene sceneID="Gu8-aP-fck">
+            <objects>
+                <viewController storyboardIdentifier="vc" id="F29-FR-vZZ" customClass="RCMantleViewController" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4Sa-mn-15u"/>
+                        <viewControllerLayoutGuide type="bottom" id="mf4-xy-NoW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="I2x-g6-OQW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oGY-JE-5fI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1481" y="3508"/>
+        </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
             <objects>
