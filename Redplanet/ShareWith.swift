@@ -121,20 +121,15 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             notifications["forObjectId"] = shareObject.last!.objectId!
             notifications.saveEventually()
             
-            // Optional Chaining: Handle APNSID
+            // MARK: - RPHelpers; Optional Chaining: Handle APNSID
             if let ogUser = shareObject.last!.value(forKey: "byUser") as? PFUser {
                 if ogUser.value(forKey: "apnsId") != nil {
-                    // MARK: - OneSignal
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "\(PFUser.current()!.username!.uppercased()) shared your post"],
-                         "include_player_ids": ["\(ogUser.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.pushNotification(toUser: ogUser, activityType: "shared your post")
+                    
                 }
             }
+            
         }
     }
     
@@ -231,14 +226,10 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                     break
                 }
                 
-                
-                // MARK: - OneSignal
+                // MARK: - RPHelpers; send push notification
                 if user.value(forKey: "apnsId") != nil {
-                    OneSignal.postNotification(
-                        ["contents": ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1])
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.pushNotification(toUser: user, activityType: "from")
                 }
             }
         }

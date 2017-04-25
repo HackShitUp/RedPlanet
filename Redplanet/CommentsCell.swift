@@ -162,22 +162,13 @@ class CommentsCell: UITableViewCell {
                                     }
                     })
                     
-                    // Send push notification
+                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                     if let user = self.commentObject!.value(forKey: "byUser") as? PFUser {
                         if user.value(forKey: "apnsId") != nil {
-                            // MARK: - OneSignal
-                            // Send push notification
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "\(PFUser.current()!.username!.uppercased()) liked your comment"],
-                                 "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
-                                ]
-                            )
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.pushNotification(toUser: user, activityType: "liked your comment")
                         }
                     }
-                    
                     
                 } else {
                     print(error?.localizedDescription as Any)

@@ -196,19 +196,12 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                                         notifications["forObjectId"] = newsfeeds.objectId!
                                         notifications.saveInBackground()
                                         
-                                        // If user's apnsId is not nil
+                                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                         if object["apnsId"] != nil {
-                                            // MARK: - OneSignal
-                                            // Send push notification
-                                            OneSignal.postNotification(
-                                                ["contents":
-                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
-                                                 "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                 "ios_badgeType": "Increase",
-                                                 "ios_badgeCount": 1
-                                                ]
-                                            )
+                                            let rpHelpers = RPHelpers()
+                                            _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Text Post.")
                                         }
+                                        
                                     }
                                 } else {
                                     print(error?.localizedDescription as Any)

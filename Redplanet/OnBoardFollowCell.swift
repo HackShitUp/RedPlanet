@@ -47,18 +47,11 @@ class OnBoardFollowCell: UITableViewCell {
             follow.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    // Handle optional chaining for user's apnsId
+                    
+                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                     if self.userObject!.value(forKey: "apnsId") != nil {
-                        // MARK: - OneSignal
-                        // Send push notificaiton
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "\(PFUser.current()!.username!.uppercased()) started following you."],
-                             "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                             "ios_badgeType": "Increase",
-                             "ios_badgeCount": 1
-                            ]
-                        )
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                     }
                     
                     // Change button's title and design

@@ -188,17 +188,10 @@ class TimeVideoCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification and handle nil
                             if self.userObject!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Video")
                             }
                             
                         } else {

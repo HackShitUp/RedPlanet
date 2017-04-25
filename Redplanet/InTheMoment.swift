@@ -468,20 +468,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // Handle optional chaining
+                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                             if let user = itmObject.last!.value(forKey: "byUser") as? PFUser {
-                                // MARK: - OneSignal
-                                // Send push notification
-                                if user.value(forKey: "apnsId") != nil {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Moment"],
-                                         "include_player_ids": ["\(user.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                }
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: user, activityType: "liked your Moment")
                             }
                             
                         } else {

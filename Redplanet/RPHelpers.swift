@@ -332,11 +332,24 @@ class RPHelpers: NSObject {
     
     
     // MARK: - OneSignal; Function to send Push Notifications
-    open func pushNotification(fromUser: PFUser?, toUser: PFUser?, activityType: String?, postType: String?) {
+    open func pushNotification(toUser: PFObject?, activityType: String?) {
+        // Initialize sentence
+        var sentence: String?
         
+        if activityType == "from" {
+            sentence = "from \(PFUser.current()!.username!.uppercased())"
+        } else {
+            sentence = "\(PFUser.current()!.username!.uppercased()) \(String(describing: activityType))"
+        }
+        
+        // MARK: - OneSignal
+        OneSignal.postNotification(
+            ["contents": ["en": "\(sentence!)"],
+             "include_player_ids": ["\(toUser!.value(forKey: "apnsId") as! String)"],
+             "ios_badgeType": "Increase",
+             "ios_badgeCount": 1
+            ]
+        )
     }
-
-    
-    
-    
+   
 }

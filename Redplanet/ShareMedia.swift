@@ -344,19 +344,13 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                         (success: Bool, error: Error?) in
                                         if success {
                                             
-                                            // If user's apnsId is not nil
+                                            // MARK: - RPHelpers; send push notification if user's apnsId is not nil
                                             if object["apnsId"] != nil {
-                                                // MARK: - OneSignal
-                                                // Send push notification
-                                                OneSignal.postNotification(
-                                                    ["contents":
-                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                     "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                     "ios_badgeType": "Increase",
-                                                     "ios_badgeCount": 1
-                                                    ]
-                                                )
+                                                // MARK: - RPHelpers; send push notification
+                                                let rpHelpers = RPHelpers()
+                                                _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
                                             }
+                                            
                                         } else {
                                             print(error?.localizedDescription as Any)
                                         }
@@ -494,19 +488,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                 (success: Bool, error: Error?) in
                                                 if success {
                                                     
-                                                    // If user's apnsId is not nil
+                                                    // MARK: - RPHelpers; send push notification if user's apnsId is not nil
                                                     if object["apnsId"] != nil {
-                                                        // MARK: - OneSignal
-                                                        // Send push notification
-                                                        OneSignal.postNotification(
-                                                            ["contents":
-                                                                ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                             "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                             "ios_badgeType": "Increase",
-                                                             "ios_badgeCount": 1
-                                                            ]
-                                                        )
+                                                        let rpHelpers = RPHelpers()
+                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
                                                     }
+                                                    
                                                 } else {
                                                     print(error?.localizedDescription as Any)
                                                 }
@@ -647,19 +634,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                                             (success: Bool, error: Error?) in
                                                                                             if success {
                                                                                                 
-                                                                                                // If user's apnsId is not nil
+                                                                                                // MARK: - RPHelpers; send push notification
                                                                                                 if object["apnsId"] != nil {
-                                                                                                    // MARK: - OneSignal
-                                                                                                    // Send push notification
-                                                                                                    OneSignal.postNotification(
-                                                                                                        ["contents":
-                                                                                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                                                                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                                                                                         "ios_badgeType": "Increase",
-                                                                                                         "ios_badgeCount": 1
-                                                                                                        ]
-                                                                                                    )
+                                                                                                    let rpHelpers = RPHelpers()
+                                                                                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
                                                                                                 }
+                                                                                                
                                                                                             } else {
                                                                                                 print(error?.localizedDescription as Any)
                                                                                             }

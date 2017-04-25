@@ -167,19 +167,11 @@ class SpacePostCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification after handling nil
                             if self.toUserObject!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Space Post"],
-                                     "include_player_ids": ["\(self.toUserObject!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: self.toUserObject!, activityType: "liked your Space Post")
                             }
-
                             
                         } else {
                             print(error?.localizedDescription as Any)

@@ -81,16 +81,10 @@ class ContactsCell: UITableViewCell {
                                 self.followButton.isUserInteractionEnabled = true
                                 self.followButton.isEnabled = true
                                 
-                                // Send push notificaiton
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if self.userObject!.value(forKey: "apnsId") != nil {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) sent you a follow request"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "sent you a follow request")
                                 }
                                 
                             } else {
@@ -156,16 +150,10 @@ class ContactsCell: UITableViewCell {
                                 self.followButton.isUserInteractionEnabled = true
                                 self.followButton.isEnabled = true
                                 
-                                // MARK: - OneSignal
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if self.userObject!.value(forKey: "apnsId") != nil {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                 }
                                 
                             } else {
@@ -404,16 +392,10 @@ class ContactsCell: UITableViewCell {
                                     self.followButton.isUserInteractionEnabled = true
                                     self.followButton.isEnabled = true
                                     
-                                    // Send push notificaiton
+                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     if self.userObject!.value(forKey: "apnsId") != nil {
-                                        OneSignal.postNotification(
-                                            ["contents":
-                                                ["en": "\(PFUser.current()!.username!.uppercased()) sent you a follow request"],
-                                             "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                             "ios_badgeType": "Increase",
-                                             "ios_badgeCount": 1
-                                            ]
-                                        )
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "sent you a follow request")
                                     }
                                     
                                     // Send to NotificationCenter
@@ -471,16 +453,10 @@ class ContactsCell: UITableViewCell {
                                     self.followButton.isUserInteractionEnabled = true
                                     self.followButton.isEnabled = true
                                     
-                                    // MARK: - OneSignal
+                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     if self.userObject!.value(forKey: "apnsId") != nil {
-                                        OneSignal.postNotification(
-                                            ["contents":
-                                                ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                             "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                             "ios_badgeType": "Increase",
-                                             "ios_badgeCount": 1
-                                            ]
-                                        )
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                     }
                                     
                                 } else {
@@ -824,17 +800,13 @@ class ContactsCell: UITableViewCell {
                                                     notify.saveInBackground(block: {
                                                         (success: Bool, error: Error?) in
                                                         if success {
-                                                            // MARK: - OneSignal
+                                                            
+                                                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                                             if self.userObject!.value(forKey: "apnsId") != nil {
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                                                     "ios_badgeType": "Increase",
-                                                                     "ios_badgeCount": 1
-                                                                    ]
-                                                                )
+                                                                let rpHelpers = RPHelpers()
+                                                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "started following you")
                                                             }
+                                                            
                                                         } else {
                                                             print(error?.localizedDescription as Any)
                                                             // MARK: - SVProgressHUD

@@ -388,17 +388,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                 self.newChat.text!.removeAll()
                                 // Handle optional chaining
                                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                                    // MARK: - OneSignal
-                                    // Send Push Notification to user
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                                 }
+                                
                                 // Reload data
                                 self.fetchChats()
                                 // Dismiss
@@ -467,18 +460,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Clear newChat
                 self.newChat.text!.removeAll()
                 
-                // Handle optional chaining
+                // MARK: - RPHelpers; send push notification if user's apnsID is NOT nil
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                    // MARK: - OneSignal
-                    // Send Push Notification to user
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
+                    let rpHelpers = RPHelpers()
+                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                 }
                 
                 // Reload data
@@ -729,23 +714,13 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             chats.saveInBackground {
                 (success: Bool, error: Error?) in
                 if error == nil {
+                    
                     // MARK: - RPHelpers
                     let rpHelpers = RPHelpers()
                     _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                    
-                    /*
-                     MARK: - OneSignal
-                     send iOS Push Notification
-                     */
+                    // Send push notification if user's apnsId is NOT nil
                     if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                        OneSignal.postNotification(
-                            ["contents":
-                                ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                             "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                             "ios_badgeType": "Increase",
-                             "ios_badgeCount": 1,
-                             ]
-                        )
+                        _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                     }
                     
                     // Reload data

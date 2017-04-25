@@ -364,7 +364,6 @@ class TimeTextPostCell: UITableViewCell {
                 if success {
                     print("Successfully saved like \(likes)")
                     
-                    
                     // Re-enable buttons
                     self.likeButton.isUserInteractionEnabled = true
                     self.likeButton.isEnabled = true
@@ -386,8 +385,7 @@ class TimeTextPostCell: UITableViewCell {
                                     }
                     })
                     
-                    
-                    // Save to notification
+                    // Save to <Notifications>
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
                     notifications["from"] = PFUser.current()!.username!
@@ -400,26 +398,16 @@ class TimeTextPostCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification and handle nil
                             if self.userObject!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Text Post"],
-                                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Text Post")
                             }
-                            
+
                         } else {
                             print(error?.localizedDescription as Any)
                         }
                     })
-                    
-                    
-                    
                 } else {
                     print(error?.localizedDescription as Any)
                 }

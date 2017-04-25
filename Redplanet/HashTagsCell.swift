@@ -217,40 +217,17 @@ class HashTagsCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification if user's object is NOT nil
                             if self.userObject!.value(forKey: "apnsId") != nil {
+                                let rpHelpers = RPHelpers()
                                 if self.contentObject!.value(forKey: "contentType") as! String == "ph" {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Photo")
                                 } else if self.contentObject!.value(forKey: "contentType") as! String == "vi" {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Video")
                                 } else {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) liked your Text Post"],
-                                         "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Text Post")
                                 }
                             }
-                            
-                            
                             
                         } else {
                             print(error?.localizedDescription as Any)

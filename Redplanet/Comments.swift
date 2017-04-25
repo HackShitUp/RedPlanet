@@ -215,52 +215,33 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                     if success {
                                                         print("Successfully saved tag in notifications: \(notifications)")
                                                         
-                                                        // Handle optional chaining
+                                                        // MARK: - RPHelpers; send push notification if user's apnsId is not nil
                                                         if object.value(forKey: "apnsId") != nil {
-                                                            // Send push notification
-                                                            OneSignal.postNotification(
-                                                                ["contents":
-                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a comment"],
-                                                                 "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
-                                                                 "ios_badgeType": "Increase",
-                                                                 "ios_badgeCount": 1
-                                                                ]
-                                                            )
+                                                            let rpHelpers = RPHelpers()
+                                                            _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a comment")
                                                         }
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
                                                     }
                                                 })
-                                                
                                             }
                                         } else {
                                             print(error?.localizedDescription as Any)
                                         }
                                     })
-                                    
                                 }
                             }
                             
                             
                             // Handle optional chaining for user object
                             if let user = commentsObject.last!.value(forKey: "byUser") as? PFUser {
-                                // Handle optional chaining for user's apnsId
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if user.value(forKey: "apnsId") != nil {
-                                    // MARK: - OneSignal
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) commented on your post"],
-                                         "include_player_ids": ["\(user["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                    
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: user, activityType: "commented on your post")
                                 }
                             }
-
                             
                         } else {
                             print(error?.localizedDescription as Any)

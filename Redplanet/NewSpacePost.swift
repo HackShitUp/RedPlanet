@@ -166,18 +166,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                                 if success {
                                                     print("Successfully saved tag in notifications: \(notifications)")
                                                     
-                                                    
-                                                    // Handle optional chaining
+                                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                                     if object.value(forKey: "apnsId") != nil {
-                                                        // Send push notification
-                                                        OneSignal.postNotification(
-                                                            ["contents":
-                                                                ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
-                                                             "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
-                                                             "ios_badgeType": "Increase",
-                                                             "ios_badgeCount": 1
-                                                            ]
-                                                        )
+                                                        let rpHelpers = RPHelpers()
+                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
                                                     }
                                                     
                                                 } else {
@@ -197,15 +189,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         // MARK: - SVProgressHUD
                         SVProgressHUD.dismiss()
                         
-                        // Send push notification
+                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared on your Space"],
-                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
-                                ])
+                            let rpHelpers = RPHelpers()
+                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         }
                         
                         // Send Notification to otherUser's Profile
@@ -295,25 +282,16 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                                 if success {
                                                     print("Successfully saved tag in notifications: \(notifications)")
                                                     
-                                                    
-                                                    // Handle optional chaining
+                                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                                     if object.value(forKey: "apnsId") != nil {
-                                                        // Send push notification
-                                                        OneSignal.postNotification(
-                                                            ["contents":
-                                                                ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
-                                                             "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
-                                                             "ios_badgeType": "Increase",
-                                                             "ios_badgeCount": 1
-                                                            ]
-                                                        )
+                                                        let rpHelpers = RPHelpers()
+                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
                                                     }
                                                     
                                                 } else {
                                                     print(error?.localizedDescription as Any)
                                                 }
                                             })
-                                            
                                         }
                                     } else {
                                         print(error?.localizedDescription as Any)
@@ -326,15 +304,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         // MARK: - SVProgressHUD
                         SVProgressHUD.dismiss()
                         
-                        // Send push notification
+                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
-                            OneSignal.postNotification(
-                                ["contents":
-                                    ["en": "\(PFUser.current()!.username!.uppercased()) shared on your Space"],
-                                 "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                 "ios_badgeType": "Increase",
-                                 "ios_badgeCount": 1
-                                ])
+                            let rpHelpers = RPHelpers()
+                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                         }
                         
                         // Send Notification to otherUser's Profile
@@ -443,18 +416,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                                         if success {
                                                             print("Successfully saved tag in notifications: \(notifications)")
                                                             
-                                                            
-                                                            // Handle optional chaining
+                                                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                                             if object.value(forKey: "apnsId") != nil {
-                                                                // Send push notification
-                                                                OneSignal.postNotification(
-                                                                    ["contents":
-                                                                        ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a space post"],
-                                                                     "include_player_ids": ["\(object.value(forKey: "apnsId") as! String)"],
-                                                                     "ios_badgeType": "Increase",
-                                                                     "ios_badgeCount": 1
-                                                                    ]
-                                                                )
+                                                                let rpHelpers = RPHelpers()
+                                                                _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
                                                             }
                                                             
                                                         } else {
@@ -474,15 +439,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                 // MARK: - SVProgressHUD
                                 SVProgressHUD.dismiss()
                                 
-                                // Send push notification
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if otherObject.last!.value(forKey: "apnsId") != nil {
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) shared on your Space"],
-                                         "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ])
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
                                 }
                                 
                                 // Send Notification to otherUser's Profile

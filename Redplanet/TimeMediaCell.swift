@@ -65,38 +65,17 @@ class TimeMediaCell: UITableViewCell {
     
     // Function to send push notification
     func sendPush() {
-        // MARK: - OneSignal
-        // Send push notification
+        // MARK: - RPHelpers; handle nil and send push notification
         if self.userObject!.value(forKey: "apnsId") != nil {
-            
+            let rpHelpers = RPHelpers()
             if self.postObject!.value(forKey: "contentType") as! String == "ph" {
-                OneSignal.postNotification(
-                    ["contents":
-                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Photo"],
-                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                     "ios_badgeType": "Increase",
-                     "ios_badgeCount": 1
-                    ]
-                )
+                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Photo")
+                
             } else if self.postObject!.value(forKey: "contentType") as! String == "pp" {
-                OneSignal.postNotification(
-                    ["contents":
-                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
-                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                     "ios_badgeType": "Increase",
-                     "ios_badgeCount": 1
-                    ]
-                )
+                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Profile Photo")
                 
             } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
-                OneSignal.postNotification(
-                    ["contents":
-                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Video"],
-                     "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                     "ios_badgeType": "Increase",
-                     "ios_badgeCount": 1
-                    ]
-                )
+                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "liked your Video")
             }
         }
     }

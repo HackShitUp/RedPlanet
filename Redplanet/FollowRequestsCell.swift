@@ -271,24 +271,13 @@ class FollowRequestsCell: UICollectionViewCell {
                                                         // Change title: "CONFIRMED"
                                                         self.relationState.isHidden = false
                                                         self.relationState.setTitle("Confirmed", for: .normal)
-                                                        
-                                                        // Post Notification
-                                                        // NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                        
-                                                        // Send Push Notification
-                                                        // Handle optional chaining for user's apnsId
+
+                                                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                                         if self.userObject!.value(forKey: "apnsId") != nil {
-                                                            // MARK: - OneSignal
-                                                            // Send push notificaiton
-                                                            OneSignal.postNotification(
-                                                                ["contents":
-                                                                    ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
-                                                                 "include_player_ids": ["\(self.userObject!.value(forKey: "apnsId") as! String)"],
-                                                                 "ios_badgeType": "Increase",
-                                                                 "ios_badgeCount": 1
-                                                                ]
-                                                            )
+                                                            let rpHelpers = RPHelpers()
+                                                            _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "confirmed your follow request")
                                                         }
+                                                        
                                                     } else {
                                                         print(error?.localizedDescription as Any)
                                                     }

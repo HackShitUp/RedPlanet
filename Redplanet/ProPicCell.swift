@@ -166,19 +166,11 @@ class ProPicCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification
                             if otherObject.last!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Profile Photo"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "liked your Profile Photo")
                             }
-                            
                             
                         } else {
                             print(error?.localizedDescription as Any)

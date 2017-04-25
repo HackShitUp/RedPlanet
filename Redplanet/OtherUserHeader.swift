@@ -145,18 +145,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             self.followButton.isUserInteractionEnabled = true
                             self.followButton.isEnabled = true
                             
-                            // Handle optional chaining for user's apnsId
+                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                             if otherObject.last!.value(forKey: "apnsId") != nil {
-                                // MARK: - OneSignal
-                                // Send push notificaiton
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
                             }
                             
                         } else {
@@ -210,18 +202,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                             self.followButton.isUserInteractionEnabled = true
                             self.followButton.isEnabled = true
                             
-                            // Handle optional chaining for user's apnsId
+                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                             if otherObject.last!.value(forKey: "apnsId") != nil {
-                                // MARK: - OneSignal
-                                // Send push notificaiton
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                     "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -370,19 +354,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                 if success {
                                     print("Successfully sent notification: \(notifications)")
                                     
-                                    // Send push notification
-                                    // Handle optional chaining for user's apnsId
+                                    // MARK: - RPHelpers; send push notification if user's apnsId
                                     if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        // MARK: - OneSignal
-                                        // Send push notificaiton
-                                        OneSignal.postNotification(
-                                            ["contents":
-                                                ["en": "\(PFUser.current()!.username!.uppercased()) requested to follow you"],
-                                             "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                             "ios_badgeType": "Increase",
-                                             "ios_badgeCount": 1
-                                            ]
-                                        )
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "requested to follow you.")
                                     }
                                     
                                 } else {
@@ -423,18 +398,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                 if success {
                                     print("Successfully sent notification: \(notifications)")
                                     
-                                    // Handle optional chaining for user's apnsId
+                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        // MARK: - OneSignal
-                                        // Send push notificaiton
-                                        OneSignal.postNotification(
-                                            ["contents":
-                                                ["en": "\(PFUser.current()!.username!.uppercased()) started following you"],
-                                             "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                             "ios_badgeType": "Increase",
-                                             "ios_badgeCount": 1
-                                            ]
-                                        )
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "started following you.")
                                     }
                                     
                                 } else {
@@ -531,19 +498,10 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                                     self.relationType.isHidden = false
                                     self.relationType.setTitle("Follower", for: .normal)
                                     
-                                    // Send push notification
-                                    // Handle optional chaining for user's apnsId
+                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     if otherObject.last!.value(forKey: "apnsId") != nil {
-                                        // MARK: - OneSignal
-                                        // Send push notificaiton
-                                        OneSignal.postNotification(
-                                            ["contents":
-                                                ["en": "\(PFUser.current()!.username!.uppercased()) confirmed your follow request"],
-                                             "include_player_ids": ["\(otherObject.last!.value(forKey: "apnsId") as! String)"],
-                                             "ios_badgeType": "Increase",
-                                             "ios_badgeCount": 1
-                                            ]
-                                        )
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "confirmed your follow request")
                                     }
                                     
                                 } else {

@@ -304,7 +304,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         
         // I TIME STAMP
         let time = UILabel(frame: self.view.bounds)
-        time.font = UIFont(name: "Futura-Medium", size: 70)
+        time.font = UIFont(name: "Futura-Medium", size: 65)
         time.textColor = UIColor.white
         time.layer.applyShadow(layer: time.layer)
         time.text = "\(timeFormatter.string(from: NSDate() as Date))"
@@ -401,7 +401,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             
             // IV AREA: "City, State"
             let city = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height/3))
-            city.font = UIFont(name: "AvenirNext-Bold", size: 40)
+            city.font = UIFont(name: "Noteworthy-Bold", size: 40)
             city.textColor = UIColor.white
             city.backgroundColor = UIColor.clear
             city.text = "\(currentGeoFence.last!.locality!), \(currentGeoFence.last!.administrativeArea!)"

@@ -128,62 +128,19 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             
                             print("Successfully sent notification: \(notifications)")
                             
-                            // If user's apnsId is not nil
+                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                             if object["apnsId"] != nil {
-                                // MARK: - OneSignal
-                                
+                                let rpHelpers = RPHelpers()
                                 if editObjects.last!.value(forKey: "contentType") as! String == "tp" {
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Text Post."],
-                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Text Post")
                                 } else if editObjects.last!.value(forKey: "contentType") as! String == "ph" {
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Photo."],
-                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Photo")
                                 } else if editObjects.last!.value(forKey: "contentType") as! String == "pp" {
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Profile Photo."],
-                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
+                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Profile Photo")
                                 } else if editObjects.last!.value(forKey: "contentType") as! String == "vi" {
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Video."],
-                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                    
+                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
                                 } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" {
-                                    // Send push notification
-                                    OneSignal.postNotification(
-                                        ["contents":
-                                            ["en": "\(PFUser.current()!.username!.uppercased()) tagged you in a Space Post."],
-                                         "include_player_ids": ["\(object["apnsId"] as! String)"],
-                                         "ios_badgeType": "Increase",
-                                         "ios_badgeCount": 1
-                                        ]
-                                    )
-                                    
+                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
                                 }
                             }
                             

@@ -146,20 +146,11 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
                 
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
+                // Update ChatQueue
                 _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
-                
-                // Handle optional chaining
+                // Send push notification
                 if chatUserObject.last!.value(forKey: "apnsId") != nil {
-                    // MARK: - OneSignal
-                    // Send Push Notification to user
-                    OneSignal.postNotification(
-                        ["contents":
-                            ["en": "from \(PFUser.current()!.username!.uppercased())"],
-                         "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
-                         "ios_badgeType": "Increase",
-                         "ios_badgeCount": 1
-                        ]
-                    )
+                    _ = rpHelpers.pushNotification(toUser: chatUserObject.last!, activityType: "from")
                 }
                 
                 // Reload data for Chats

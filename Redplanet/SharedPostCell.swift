@@ -285,21 +285,12 @@ class SharedPostCell: UITableViewCell {
                         if success {
                             print("Successfully saved notificaiton: \(notifications)")
                             
-                            // MARK: - OneSignal
-                            // Send push notification
+                            // MARK: - RPHelpers; send push notification if apnsId isn't nil
                             if self.fromUserObject!.value(forKey: "apnsId") != nil {
-                                OneSignal.postNotification(
-                                    ["contents":
-                                        ["en": "\(PFUser.current()!.username!.uppercased()) liked your Shared Post"],
-                                     "include_player_ids": ["\(self.byUserObject!.value(forKey: "apnsId") as! String)"],
-                                     "ios_badgeType": "Increase",
-                                     "ios_badgeCount": 1
-                                    ]
-                                )
+                                let rpHelpers = RPHelpers()
+                                _ = rpHelpers.pushNotification(toUser: self.byUserObject!, activityType: "liked your Shared Post")
                             }
-                            
-                            
-                            
+
                         } else {
                             print(error?.localizedDescription as Any)
                         }

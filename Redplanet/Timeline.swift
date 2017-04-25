@@ -231,10 +231,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 //        
 //        return cell
         
-        
-        
-        
-        
+
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
