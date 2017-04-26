@@ -1,26 +1,25 @@
 //
-//  RCMantleViewController.swift
-//  Mantle
+//  RPPopUpVC.swift
+//  Redplanet
 //
-//  Created by Ricardo Canales on 11/11/15.
-//  Copyright © 2015 canalesb. All rights reserved.
+//  Created by Joshua Choi on 4/25/17.
+//  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
 import UIKit
 
-
 // Declare this protocol outside the class
-public protocol RCMantleViewDelegate {
+public protocol RPPopUpVCDelegate {
     // This method allows a child to tell the parent view controller
     // to change to a different child view
     func dismissView(_ animated: Bool)
 }
 
-extension RCMantleViewController {
-    func configureView(vc: RCMantleViewController?, popOverVC: UIViewController?) {
-        vc?.bottomDismissible = true
+extension RPPopUpVC {
+    func configureView(vc: RPPopUpVC?, popOverVC: UIViewController?) {
+//        vc?.bottomDismissible = true
         vc?.topDismissable = true
-        vc?.draggableToSides = true
+//        vc?.draggableToSides = true
         vc?.appearFromTop = false
         vc?.appearOffset = CGFloat(202)
         vc?.setUpScrollView()
@@ -28,8 +27,7 @@ extension RCMantleViewController {
     }
 }
 
-
-open class RCMantleViewController: UIViewController, RCMantleViewDelegate, UIScrollViewDelegate {
+open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate {
     
     open var scrollView: UIScrollView!
     fileprivate var contentView: UIView!

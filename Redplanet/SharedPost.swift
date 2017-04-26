@@ -28,6 +28,9 @@ let sharedPostNotification = Notification.Name("sharedPostNotification")
 
 class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
+    // MARK: - RPPopUpVCDelegate
+    var delegate: RPPopUpVCDelegate!
+    
     // String variable to create textpost
     var layoutText: String?
     
@@ -41,8 +44,11 @@ class SharedPost: UITableViewController, UINavigationControllerDelegate {
     
     @IBAction func backButton(_ sender: Any) {
         // Remove last
-        sharedObject.removeLast()
-        // TODO: POPVC
+        sharedObject.removeAll(keepingCapacity: false)
+//        // Dismiss VC
+//        self.navigationController?.dismiss(animated: true, completion: nil)
+        // Pop VC
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     @IBAction func refresh(_ sender: Any) {

@@ -43,37 +43,48 @@ class EphemeralCell: UITableViewCell {
         views["forObjectId"] = self.postObject!.objectId!
         views.saveInBackground()
         
+        
+        
+        // MARK: - RPPopUpViewController
+        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
+        let navigator = UINavigationController(rootViewController: rpPopUpVC)
+        let backgroundPhoto = self.delegate?.view.takeScreenshot()
+        navigator.view.backgroundColor = UIColor(patternImage: backgroundPhoto!)
+        
+        // Determine post type
         if self.postObject!.value(forKey: "contentType") as! String == "itm" {
         // MOMENT
-            // Append content object
+            // Append postObject (PFObject)
             itmObject.append(self.postObject!)
-            
-            // MARK: - RCMantleViewController
-            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
-            let nav = UINavigationController(rootViewController: mantleViewController)
             
             // PHOTO
             if self.postObject!.value(forKey: "photoAsset") != nil {
-                // Push VC
+                // Present VC
                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                itmVC.delegate = mantleViewController
-                mantleViewController.configureView(vc: mantleViewController, popOverVC: itmVC)
-                self.delegate?.present(nav, animated: false, completion: nil)
+//                itmVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
+                rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: itmVC)
+                navigator.view.backgroundColor = UIColor.clear
+                self.delegate?.present(navigator, animated: false, completion: nil)
                 
             } else {
             // VIDEO
-                // Push VC
+                // Present VC
                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                // TODO: POPVC
+//                momentVideoVC.delegate = rpPopUpVC as? RPPopUpVCDelegate
+                rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: momentVideoVC)
+                self.delegate?.present(navigator, animated: false, completion: nil)
             }
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sh" {
         // SHARED POST
             // Append object
             sharedObject.append(self.postObject!)
-            // Push VC
+            // Present VC
             let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-            // TODO: POPVC
+//            sharedPostVC.delegate = rpPopUpVC
+//            rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: sharedPostVC)
+//            self.delegate?.present(navigator, animated: false, completion: nil)
+            _ = self.delegate?.pushViewController(sharedPostVC, animated: true)
             
         } else if self.postObject!.value(forKey: "contentType") as! String == "sp" {
         // SPACE POST
@@ -109,47 +120,36 @@ class EphemeralCell: UITableViewCell {
             return true
         }
         
+        // MARK: - RPPopUpViewController
+        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
+        let navigator = UINavigationController(rootViewController: rpPopUpVC)
+        
         // (1) VIEWS
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
             // Append object
             viewsObject.append(self.postObject!)
-            // Push VC
-            let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-//            self.delegate?.pushViewController(viewsVC, animated: true)
             
+            let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+//            viewsVC.delegate = rpPopUpVC
+//            rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: viewsVC)
+//            self.delegate?.present(navigator, animated: true, completion: nil)
             
             
             
             // Create the MantleViewController from the Storyboard using the
-            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
+//            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
             // Create your modal controller with your storyboard ID
-//            let popUpViewController = storyboard!.instantiateViewController(withIdentifier: "PopUpViewController") as! PopUpViewController
+            //            let popUpViewController = storyboard!.instantiateViewController(withIdentifier: "PopUpViewController") as! PopUpViewController
             // Set it's delegate to be able to call 'delegate.dismissView(animated: Bool)'
-            viewsVC.delegate = mantleViewController as! RCMantleViewDelegate
+//            viewsVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
             
-            // Configuration
-            mantleViewController.bottomDismissible = true
-            mantleViewController.topDismissable = true
-            mantleViewController.draggableToSides = true
-            mantleViewController.appearFromTop = true
-            // appearOffset moves the popup closer to the edge so that it appears quicker
-            mantleViewController.appearOffset = CGFloat(202)
-            
-            // Initialize Mantle
-            mantleViewController.setUpScrollView()
-            // Add your modal to Mantle
-            mantleViewController.addToScrollViewNewController(viewsVC)
+            rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: viewsVC)
             // Present the modal through the MantleViewController
-            self.delegate?.present(mantleViewController, animated: false, completion: nil)
-//            self.delegate?.pushViewController(mantleViewController, animated: false)
-
-            
-            
-            
-            
-            
+//            self.delegate?.present(navigator, animated: false, completion: nil)
+            rpPopUpVC.draggableToSides = false
+            self.delegate?.present(rpPopUpVC, animated: false, completion: nil)
         })
         
         // (2) DELETE
@@ -239,10 +239,4 @@ class EphemeralCell: UITableViewCell {
         self.contentView.isUserInteractionEnabled = true
         self.contentView.addGestureRecognizer(holdOptions)
     }
-    
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
 }

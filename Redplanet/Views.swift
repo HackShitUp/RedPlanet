@@ -23,7 +23,8 @@ var viewsObject = [PFObject]()
 
 class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    var delegate: RCMantleViewDelegate!
+    // MARK: - RPPopUpViewDelegate
+    var delegate: RPPopUpVCDelegate!
     
     // Array to hold objects
     var viewers = [PFObject]()
@@ -170,27 +171,9 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
         // Show NavigationBar
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
-    
-    // MARK: - UIGestureRecognizer Delegate Methods
-    func tapDismiss(sender: UITapGestureRecognizer){
-//        delegate.dismissView(true)
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if touch.view == self.view {
-            return false
-        }
-        return true
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDismiss))
-        tap.delegate = self
-        self.view.addGestureRecognizer(tap)
-        
         
         // MARK: - HEAP
         // Track who viewed views

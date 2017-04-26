@@ -26,10 +26,9 @@ let itmNotification = Notification.Name("itmNotification")
 
 class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
-    var delegate: RCMantleViewDelegate!
-    
-    
-    
+    // MARK: - RPPopUpVC Delegate
+    var delegate: RPPopUpVCDelegate!
+
     // MARK: - SegmentedProgressPar
     var spb: SegmentedProgressBar!
     
@@ -52,8 +51,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
     // Functiont to go back
     func goBack() {
         // Remove last objects
-        itmObject.removeLast()
-        // TODO: POPVC
+        itmObject.removeAll(keepingCapacity: false)
+        // Dismiss VC
+        _ = self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     // Functiont to share to other platforms
@@ -182,8 +182,9 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
                                     // Send MyProfile Notification
                                     NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                     
-                                    // Pop VC
-                                    _ = self.navigationController?.popViewController(animated: true)
+                                    // Dismiss VC
+                                    self.navigationController?.dismiss(animated: true, completion: nil)
+                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
                                     // MARK: - SVProgressHUD
@@ -575,6 +576,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.view.backgroundColor = UIColor.clear
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         
         // MARK: - MainUITab
@@ -691,6 +693,7 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         self.spb.bottomColor = UIColor.white.withAlphaComponent(0.25)
         self.spb.padding = 2
         self.spb.delegate = self
+        self.spb.layer.applyShadow(layer: self.spb.layer)
         self.view.addSubview(spb)
         self.spb.startAnimation()
     }

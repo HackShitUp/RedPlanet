@@ -29,7 +29,10 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     var comments = [PFObject]()
     var shares = [PFObject]()
     
-    // Initialize player
+    // MARK: - RPPopUpVCDelegate
+    var delegate: RPPopUpVCDelegate!
+
+    // MARK: - Player; Initialize Player
     var player: Player!
 
     @IBOutlet weak var rpUsername: UIButton!

@@ -61,6 +61,29 @@ extension UIView {
     }
 }
 
+
+
+extension UIView {
+    
+    func takeScreenshot() -> UIImage {
+        
+        // Begin context
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
+        
+        // Draw view in that context
+        drawHierarchy(in: self.bounds, afterScreenUpdates: true)
+        
+        // And finally, get image
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image!
+    }
+}
+
+
+
+
 /*
  MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
 */

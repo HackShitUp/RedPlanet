@@ -2325,10 +2325,10 @@
             </objects>
             <point key="canvasLocation" x="2002" y="3508"/>
         </scene>
-        <!--Mantle View Controller-->
+        <!--Pop UpVC-->
         <scene sceneID="Gu8-aP-fck">
             <objects>
-                <viewController storyboardIdentifier="vc" id="F29-FR-vZZ" customClass="RCMantleViewController" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="rpPopUpVC" id="F29-FR-vZZ" customClass="RPPopUpVC" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4Sa-mn-15u"/>
                         <viewControllerLayoutGuide type="bottom" id="mf4-xy-NoW"/>
