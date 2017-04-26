@@ -23,7 +23,6 @@ class NewsFeedCell: UITableViewCell {
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
     
-    
     // Function to show stories
     func showStories() {
         // Save to Views
@@ -36,11 +35,12 @@ class NewsFeedCell: UITableViewCell {
         // Append object
         timelineObjects.append(self.postObject!)
         
-        // Push to Timeline
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
         let timelineVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
-        self.delegate?.pushViewController(timelineVC, animated: true)
+        rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: timelineVC)
+        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
     }
-    
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -19,7 +19,10 @@ import SwipeNavigationController
 // Array to hold timelineObjects
 var timelineObjects = [PFObject]()
 
-class Timeline: UICollectionViewController, UINavigationControllerDelegate {
+class Timeline: UICollectionViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
+    
+    // MARK: - SegmentedProgressBar
+    var spb: SegmentedProgressBar!
     
     // Array to hold posts/likes
     var posts = [PFObject]()
@@ -43,113 +46,46 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
                         self.posts.append(object)
                     }
                 }
+                
+                // MARK: - SegmentedProgressBar
+                self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
+                self.spb.frame = CGRect(x: 15, y: 15, width: self.view.frame.width - 30, height: 4)
+                self.spb.topColor = UIColor.white
+                self.spb.layer.applyShadow(layer: self.spb.layer)
+                self.spb.padding = 2
+                self.spb.delegate = self
+                self.view.addSubview(self.spb)
+                self.spb.startAnimation()
 
                 // Reload data
                 self.collectionView!.reloadData()
-                
-                // MARK: - SegmentedProgressBar
-                let spb = SegmentedProgressBar(numberOfSegments: 2, duration: 5)
-                spb.frame = CGRect(x: 15, y: 15, width: self.view.frame.width - 30, height: 4)
-                spb.topColor = UIColor.white
-                spb.bottomColor = UIColor.white.withAlphaComponent(0.25)
-                spb.padding = 2
-                self.view.addSubview(spb)
-                spb.startAnimation()
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
     }
-    
-    
-    // Function to stylize and set title of navigation bar
-    func configureView(title: String?) {
-        if title == "" {
-            // MARK: - RPHelpers
-            self.navigationController?.setNavigationBarHidden(true, animated: false)
-            // Show UIstatusBar
-            UIApplication.shared.isStatusBarHidden = false
-            UIApplication.shared.statusBarStyle = .lightContent
-            self.setNeedsStatusBarAppearanceUpdate()
-        } else {
-            // Change the font and size of nav bar text
-            if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.00) {
-                let navBarAttributesDictionary: [String: AnyObject]? = [
-                    NSForegroundColorAttributeName: UIColor.black,
-                    NSFontAttributeName: navBarFont
-                ]
-                navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-                self.title = "\(title!)"
-            }
-            // MARK: - RPHelpers
-            self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-            // Show UIstatusBar
-            UIApplication.shared.isStatusBarHidden = false
-            UIApplication.shared.statusBarStyle = .default
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
-    
-    
-    
-    
-    
-//    public func panRecognized(recognizer:UIPanGestureRecognizer)
-//    {
-//        if recognizer.state == .Began && tableView.contentOffset.y == 0
-//        {
-//            recognizer.setTranslation(CGPointZero, inView : tableView)
-//            
-//            isTrackingPanLocation = true
-//        }
-//        else if recognizer.state != .Ended && recognizer.state != .Cancelled &&
-//            recognizer.state != .Failed && isTrackingPanLocation
-//        {
-//            let panOffset = recognizer.translationInView(tableView)
-//            
-//            // determine offset of the pan from the start here.
-//            // When offset is far enough from table view top edge -
-//            // dismiss your view controller. Additionally you can
-//            // determine if pan goes in the wrong direction and
-//            // then reset flag isTrackingPanLocation to false
-//            
-//            let eligiblePanOffset = panOffset.y > 200
-//            if eligiblePanOffset
-//            {
-//                recognizer.enabled = false
-//                recognizer.enabled = true
-//                self.dismissViewControllerAnimated(true, completion: nil)
-//            }
-//            
-//            if panOffset.y < 0
-//            {
-//                isTrackingPanLocation = false
-//            }
-//        }
-//        else
-//        {
-//            isTrackingPanLocation = false
-//        }
-//    }
-//    
-//    public func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
-//                                  shouldRecognizeSimultaneouslyWithGestureRecognizer 
-//        otherGestureRecognizer : UIGestureRecognizer)->Bool
-//    {
-//        return true
-//    }
 
     
+    // MARK: - SegmentedProgressBar Delegate Methods
+    func segmentedProgressBarChangedIndex(index: Int) {
+        let indexPath = IndexPath(item: index, section: 0)
+        self.collectionView!.scrollToItem(at: indexPath, at: .right, animated: true)
+    }
+    
+    func segmentedProgressBarFinished() {
+        // Dismiss VC
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
 
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Hide UITabBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         // Hide rpButton
         rpButton.isHidden = true
@@ -168,7 +104,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = PageAttributesAnimator()
+        layout.animator = CubeAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -179,11 +115,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         
         // Fetch stories
         fetchStories()
-        
-//        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: "panRecognized:")
-//        panGestureRecognizer.delegate = self
-//        self.view.addGestureRecognizer(panGestureRecognizer)
-        
+
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
@@ -217,20 +149,6 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-//        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "timelineCell", for: indexPath) as! TimelineCell
-//        
-//        // Set delegate
-//        cell.delegate = self.navigationController
-//        
-//        // Set postObject
-//        cell.postObject = self.posts[indexPath.row]
-//        
-//        // Configure view
-//        cell.configureView()
-//        
-//        return cell
-        
 
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
@@ -241,8 +159,6 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         // TEXT POST
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
-            
-            print("CV FRAME: \(tpCell.contentView.frame)")
             
             // Set delegate
             tpCell.delegate = self
@@ -272,8 +188,6 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
         // MOMENT PHOTO
             let mCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
-            print("CV FRAME: \(mCell.contentView.frame)")
-            
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
                 mCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
@@ -292,8 +206,29 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate {
 
             return mCell
         }
-
-    
-    
     }
+    
+    
+    // MARK: - UIScrollView Delegate Method
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
+            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
+            
+            print("IndexPath: \n\(indexPath)\n")
+            
+            let before = indexPath![0]
+            let after = indexPath![1]
+
+//            if after > before {
+//                self.spb.skip()
+//            }
+//            
+//            if after < before {
+//                self.spb.rewind()
+//                self.spb.rewind()
+//            }
+            
+        }
+    }
+    
 }

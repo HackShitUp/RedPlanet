@@ -48,8 +48,8 @@ class EphemeralCell: UITableViewCell {
         // MARK: - RPPopUpViewController
         let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
         let navigator = UINavigationController(rootViewController: rpPopUpVC)
-        let backgroundPhoto = self.delegate?.view.takeScreenshot()
-        navigator.view.backgroundColor = UIColor(patternImage: backgroundPhoto!)
+        
+        navigator.view.backgroundColor = UIColor.clear
         
         // Determine post type
         if self.postObject!.value(forKey: "contentType") as! String == "itm" {
@@ -61,16 +61,13 @@ class EphemeralCell: UITableViewCell {
             if self.postObject!.value(forKey: "photoAsset") != nil {
                 // Present VC
                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-//                itmVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
                 rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: itmVC)
-                navigator.view.backgroundColor = UIColor.clear
                 self.delegate?.present(navigator, animated: false, completion: nil)
                 
             } else {
             // VIDEO
                 // Present VC
                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-//                momentVideoVC.delegate = rpPopUpVC as? RPPopUpVCDelegate
                 rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: momentVideoVC)
                 self.delegate?.present(navigator, animated: false, completion: nil)
             }

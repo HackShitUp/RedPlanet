@@ -59,11 +59,8 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             self.title = "Edit"
         }
         
-        // Configure nav bar && show tab bar (last line)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.isTranslucent = false
+        // MARK: - RPHelpers
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
@@ -442,7 +439,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         
         // Stylize title
         configureView()
-        
         
         // Set first responder
         self.textPost.becomeFirstResponder()

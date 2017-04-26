@@ -25,9 +25,6 @@ var itmObject = [PFObject]()
 let itmNotification = Notification.Name("itmNotification")
 
 class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
-    
-    // MARK: - RPPopUpVC Delegate
-    var delegate: RPPopUpVCDelegate!
 
     // MARK: - SegmentedProgressPar
     var spb: SegmentedProgressBar!
@@ -696,6 +693,10 @@ class InTheMoment: UIViewController, UINavigationControllerDelegate, SegmentedPr
         self.spb.layer.applyShadow(layer: self.spb.layer)
         self.view.addSubview(spb)
         self.spb.startAnimation()
+        
+        
+        self.view.backgroundColor = UIColor.clear
+        
     }
 
     override func viewWillDisappear(_ animated: Bool) {

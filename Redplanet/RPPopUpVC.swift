@@ -198,6 +198,13 @@ open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate 
         
         // Finally adding the controller in the list of controllers
         controllers.append(controller)
+     
+        // Make view background clear
+        controller.view.backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.clear
+        scrollView.backgroundColor = UIColor.clear
+        self.view.backgroundColor = UIColor.clear
+        self.view.isOpaque = false
     }
     
     open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
