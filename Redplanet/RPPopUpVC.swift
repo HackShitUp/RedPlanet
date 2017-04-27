@@ -16,7 +16,7 @@ public protocol RPPopUpVCDelegate {
 }
 
 extension RPPopUpVC {
-    func configureView(vc: RPPopUpVC?, popOverVC: UIViewController?) {
+    func setupView(vc: RPPopUpVC?, popOverVC: UIViewController?) {
 //        vc?.bottomDismissible = true
         vc?.topDismissable = true
 //        vc?.draggableToSides = true

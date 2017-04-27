@@ -61,14 +61,14 @@ class EphemeralCell: UITableViewCell {
             if self.postObject!.value(forKey: "photoAsset") != nil {
                 // Present VC
                 let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: itmVC)
+                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: itmVC)
                 self.delegate?.present(navigator, animated: false, completion: nil)
                 
             } else {
             // VIDEO
                 // Present VC
                 let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: momentVideoVC)
+                rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: momentVideoVC)
                 self.delegate?.present(navigator, animated: false, completion: nil)
             }
             
@@ -142,7 +142,7 @@ class EphemeralCell: UITableViewCell {
             // Set it's delegate to be able to call 'delegate.dismissView(animated: Bool)'
 //            viewsVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
             
-            rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: viewsVC)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewsVC)
             // Present the modal through the MantleViewController
 //            self.delegate?.present(navigator, animated: false, completion: nil)
             rpPopUpVC.draggableToSides = false
