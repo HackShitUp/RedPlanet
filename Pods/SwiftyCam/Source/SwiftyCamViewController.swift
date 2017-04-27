@@ -12,8 +12,7 @@ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE A
 BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
 GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
 LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
+*/
 
 import UIKit
 import AVFoundation
@@ -110,9 +109,9 @@ open class SwiftyCamViewController: UIViewController {
 
 	public var pinchToZoom                       = true
 
-	/// Sets the maximum zoom scale allowed during Pinch gesture
+	/// Sets the maximum zoom scale allowed during gestures gesture
 
-	public var maxZoomScale				         = CGFloat(4.0)
+	public var maxZoomScale				         = CGFloat.greatestFiniteMagnitude
   
 	/// Sets whether Tap to Focus and Tap to Adjust Exposure is enabled for the capture session
 
@@ -131,6 +130,14 @@ open class SwiftyCamViewController: UIViewController {
 	/// Sets whether a double tap to switch cameras is supported
 
 	public var doubleTapCameraSwitch            = true
+    
+    /// Sets whether swipe vertically to zoom is supported
+    
+    public var swipeToZoom                     = true
+    
+    /// Sets whether swipe vertically gestures should be inverted
+    
+    public var swipeToZoomInverted             = false
 
 	/// Set default launch camera
 
@@ -210,13 +217,16 @@ open class SwiftyCamViewController: UIViewController {
 	/// UIView for front facing flash
 
 	fileprivate var flashView                    : UIView?
+    
+    /// Pan Translation
+    
+    fileprivate var previousPanTranslation       : CGFloat = 0.0
 
 	/// Last changed orientation
 
 	fileprivate var deviceOrientation            : UIDeviceOrientation?
 
 	/// Disable view autorotation for forced portrait recorindg
-
 
 	override open var shouldAutorotate: Bool {
 		return false
@@ -228,7 +238,7 @@ open class SwiftyCamViewController: UIViewController {
 
 	override open func viewDidLoad() {
 		super.viewDidLoad()
-		previewLayer = PreviewView(frame: self.view.frame)
+		previewLayer = PreviewView(frame: view.bounds)
 
 		// Add Gesture Recognizers
 
@@ -992,7 +1002,7 @@ extension SwiftyCamViewController {
 
 	@objc fileprivate func zoomGesture(pinch: UIPinchGestureRecognizer) {
 		guard pinchToZoom == true && self.currentCamera == .rear else {
-			//ignore pinch if pinchToZoom is set to false
+			//ignore pinch 
 			return
 		}
 		do {
@@ -1060,6 +1070,48 @@ extension SwiftyCamViewController {
 		}
 		switchCamera()
 	}
+    
+    @objc private func panGesture(pan: UIPanGestureRecognizer) {
+        
+        guard swipeToZoom == true && self.currentCamera == .rear else {
+            //ignore pan
+            return
+        }
+        let currentTranslation    = pan.translation(in: view).y
+        let translationDifference = currentTranslation - previousPanTranslation
+        
+        do {
+            let captureDevice = AVCaptureDevice.devices().first as? AVCaptureDevice
+            try captureDevice?.lockForConfiguration()
+            
+            let currentZoom = captureDevice?.videoZoomFactor ?? 0.0
+            
+            if swipeToZoomInverted == true {
+                zoomScale = min(maxZoomScale, max(1.0, min(currentZoom - (translationDifference / 75),  captureDevice!.activeFormat.videoMaxZoomFactor)))
+            } else {
+                zoomScale = min(maxZoomScale, max(1.0, min(currentZoom + (translationDifference / 75),  captureDevice!.activeFormat.videoMaxZoomFactor)))
+
+            }
+            
+            captureDevice?.videoZoomFactor = zoomScale
+            
+            // Call Delegate function with current zoom scale
+            DispatchQueue.main.async {
+                self.cameraDelegate?.swiftyCam(self, didChangeZoomLevel: self.zoomScale)
+            }
+            
+            captureDevice?.unlockForConfiguration()
+            
+        } catch {
+            print("[SwiftyCam]: Error locking configuration")
+        }
+        
+        if pan.state == .ended || pan.state == .failed || pan.state == .cancelled {
+            previousPanTranslation = 0.0
+        } else {
+            previousPanTranslation = currentTranslation
+        }
+    }
 
 	/**
 	Add pinch gesture recognizer and double tap gesture recognizer to currentView
@@ -1082,6 +1134,10 @@ extension SwiftyCamViewController {
 		doubleTapGesture.numberOfTapsRequired = 2
 		doubleTapGesture.delegate = self
 		view.addGestureRecognizer(doubleTapGesture)
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGesture(pan:)))
+        panGesture.delegate = self
+        view.addGestureRecognizer(panGesture)
 	}
 }
 

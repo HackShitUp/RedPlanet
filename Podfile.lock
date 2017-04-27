@@ -8,8 +8,7 @@ PODS:
   - Bolts/Tasks (1.8.4)
   - DZNEmptyDataSet (1.8.1)
   - Heap (4.0.0)
-  - KILabel (1.0.0)
-  - NextGrowingTextView (0.8.5)
+  - KILabel (1.0.1)
   - Onboard (2.3.1)
   - OneSignal (2.5.2)
   - Parse (1.14.4):
@@ -21,7 +20,7 @@ PODS:
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
   - SVProgressHUD (2.1.2)
-  - SwiftyCam (2.2.2)
+  - SwiftyCam (2.3.0)
   - SwipeNavigationController (2.0.2)
 
 DEPENDENCIES:
@@ -30,7 +29,6 @@ DEPENDENCIES:
   - DZNEmptyDataSet
   - Heap
   - KILabel
-  - NextGrowingTextView
   - Onboard
   - OneSignal
   - Parse
@@ -45,17 +43,16 @@ SPEC CHECKSUMS:
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
-  KILabel: 84049969642d4ac1061ebe38ad4c0da37fed108b
-  NextGrowingTextView: 3cc930a03c5979071244af42bcc81360d7453323
+  KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
-  SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
+  SwiftyCam: be1f832a32b12810e86e23a87caccadd855226ea
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: 4da47e500bfe4262d8b35153b95adc92e303df57
+PODFILE CHECKSUM: eaf73ff2f409880b91a93022c57be421c3746cba
 
 COCOAPODS: 1.2.1

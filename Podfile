@@ -10,7 +10,6 @@ target 'Redplanet' do
 	pod 'DZNEmptyDataSet'
 	pod ‘Heap’
 	pod 'KILabel'
-	pod 'NextGrowingTextView'
 	pod 'Onboard'
 	pod ‘OneSignal’
 	pod ‘Parse’
