@@ -24,6 +24,9 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
+    // Used for skipping/rewinding segments
+    var lastOffSet: CGPoint?
+    
     // Array to hold posts/likes
     var posts = [PFObject]()
     var likes = [PFObject]()
@@ -206,29 +209,23 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
 
             return mCell
         }
+        
     }
     
     
     // MARK: - UIScrollView Delegate Method
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
-            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
-            
-            print("IndexPath: \n\(indexPath)\n")
-            
-            let before = indexPath![0]
-            let after = indexPath![1]
-
-//            if after > before {
-//                self.spb.skip()
-//            }
-//            
-//            if after < before {
-//                self.spb.rewind()
-//                self.spb.rewind()
-//            }
-            
-        }
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.lastOffSet = scrollView.contentOffset
     }
     
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // Scrolled to the right; skip
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            self.spb.skip()
+        } else {
+        // Scrolled to the left; rewind
+            self.spb.rewind()
+        }
+    }
+   
 }
