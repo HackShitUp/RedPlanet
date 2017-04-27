@@ -52,7 +52,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
                 
                 // MARK: - SegmentedProgressBar
                 self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
-                self.spb.frame = CGRect(x: 15, y: 15, width: self.view.frame.width - 30, height: 4)
+                self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 4)
                 self.spb.topColor = UIColor.white
                 self.spb.layer.applyShadow(layer: self.spb.layer)
                 self.spb.padding = 2
