@@ -270,7 +270,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title
-        configureView()
+        self.configureView()
         
         // Authorization
         authorizeLocation()
