@@ -109,7 +109,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         layout.scrollDirection = .horizontal
         layout.animator = CubeAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = self.view.bounds.size
+        layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.frame = self.view.bounds
@@ -122,6 +122,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
+        self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -147,9 +148,15 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         return self.posts.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return self.view.frame.size
-    }
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        if #available(iOS 10.0, *) {
+//            return UICollectionViewFlowLayoutAutomaticSize
+//        } else {
+//            // Fallback on earlier versions
+//            return self.view.bounds.size
+//        }
+//        return CGSize(width: 375, height: 800)
+//    }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
@@ -187,7 +194,42 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             
             return tpCell
 
+        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+            let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
+            
+            // (1) Get user's object
+            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+                // Set user's fullName; "realNameOfUser"
+                pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
+                // Set user's profile photo 
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    pCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    // MARK: - RPHelpers
+                    pCell.rpUserProPic.makeCircular(imageView: pCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                }
+            }
+            
+            // (2) Set time
+            pCell.time.text = difference.getFullTime(difference: difference, date: from)
+            
+            // (3) Set photo
+            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                // MARK: - SDWebImage
+                pCell.photo.sd_showActivityIndicatorView()
+                pCell.photo.sd_setIndicatorStyle(.gray)
+                pCell.photo.sd_setImage(with: URL(string: photo.url!)!)
+            }
+            
+            // (4) Set caption
+            if let textPost = self.posts[indexPath.row].value(forKey: "textPost") as? String {
+                pCell.caption.text = textPost
+            }
+            
+            return pCell
+            
         } else {
+        
         // MOMENT PHOTO
             let mCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             

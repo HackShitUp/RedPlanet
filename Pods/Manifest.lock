@@ -9,6 +9,7 @@ PODS:
   - DZNEmptyDataSet (1.8.1)
   - Heap (4.0.0)
   - KILabel (1.0.0)
+  - NextGrowingTextView (0.8.5)
   - Onboard (2.3.1)
   - OneSignal (2.5.2)
   - Parse (1.14.4):
@@ -28,7 +29,8 @@ DEPENDENCIES:
   - Bolts
   - DZNEmptyDataSet
   - Heap
-  - KILabel (= 1.0.0)
+  - KILabel
+  - NextGrowingTextView
   - Onboard
   - OneSignal
   - Parse
@@ -44,6 +46,7 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
   KILabel: 84049969642d4ac1061ebe38ad4c0da37fed108b
+  NextGrowingTextView: 3cc930a03c5979071244af42bcc81360d7453323
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e
@@ -53,6 +56,6 @@ SPEC CHECKSUMS:
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: cdf89cf99bbdbb0c84c31de7d3ed73a716f79e39
+PODFILE CHECKSUM: 4da47e500bfe4262d8b35153b95adc92e303df57
 
 COCOAPODS: 1.2.1

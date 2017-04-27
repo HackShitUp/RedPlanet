@@ -9,7 +9,6 @@
 import UIKit
 import CoreData
 import CoreLocation
-
 import Parse
 import ParseUI
 import Bolts
@@ -25,6 +24,10 @@ var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
 
 class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
+    
+    
+    
+
     
     // MARK: - SnapSliderFilters
     let filterView = SNSlider(frame: UIScreen.main.bounds)

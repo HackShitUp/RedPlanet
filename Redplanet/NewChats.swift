@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import CoreData
+
+import DZNEmptyDataSet
 
 import Parse
 import ParseUI
@@ -17,7 +18,7 @@ import SDWebImage
 import SVProgressHUD
 
 
-class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate {
+class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate
     let appDelegate = AppDelegate()
@@ -153,7 +154,47 @@ class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControll
         SDImageCache.shared().clearDisk()
     }
     
+    // MARK: DZNEmptyDataSet Framework
     
+    // DataSource Methods
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.following.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    // Title for EmptyDataSet
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "💩\nNo Followings Yet"
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Find Friends"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Push VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController?.pushViewController(contactsVC, animated: true)
+    }
+    
+
     // MARK: - UISearchBarDelegate Methods
     // Begin searching
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

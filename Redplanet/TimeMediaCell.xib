@@ -193,6 +193,6 @@
         <image name="Comment" width="48" height="48"/>
         <image name="Like" width="51" height="51"/>
         <image name="MoreBlack" width="50" height="50"/>
-        <image name="Share" width="48" height="48"/>
+        <image name="Share" width="47" height="48"/>
     </resources>
 </document>
