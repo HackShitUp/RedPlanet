@@ -1,5 +1,5 @@
 //
-//  RPVideoPlayer.swift
+//  RPVideoPlayerView.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 4/27/17.
@@ -10,13 +10,10 @@ import AVFoundation
 import AVKit
 import UIKit
 
-open class RPVideoPlayer: UIView {
-    
-    
-    // MARK: - Vars
-    
+open class RPVideoPlayerView: UIView {
+
+    // MARK: - Variables
     fileprivate var videoURL: URL!
-    
     fileprivate var asset: AVURLAsset!
     fileprivate var playerItem: AVPlayerItem!
     fileprivate var player: AVPlayer!
@@ -24,9 +21,7 @@ open class RPVideoPlayer: UIView {
     fileprivate var assetGenerator: AVAssetImageGenerator!
     
     fileprivate var longPressGestureRecognizer: UILongPressGestureRecognizer!
-    
     fileprivate var previousLocationX: CGFloat = 0.0
-    
     fileprivate let rewindDimView = UIVisualEffectView()
     fileprivate let rewindContentView = UIView()
     open let rewindTimelineView = TimelineView()
@@ -53,7 +48,7 @@ open class RPVideoPlayer: UIView {
      **/
     
     // MARK: - Object Life Cycle
-    // (1) Initialize RPVideoPlayer
+    // (1) Initialize RPVideoPlayerView
     override public init (frame : CGRect) {
         super.init(frame : frame)
     }
@@ -63,6 +58,7 @@ open class RPVideoPlayer: UIView {
     }
     // (3) Deinitialize/release object when no longer needed
     deinit {
+        print("De-Initialized")
         player = nil
     }
     

@@ -31,7 +31,6 @@
 		7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E41C7BB1E4057000025129B /* OtherUserHeader.swift */; };
 		7E43077B1DD01F6800AA2413 /* VideoAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43077A1DD01F6800AA2413 /* VideoAsset.swift */; };
 		7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307801DD021A100AA2413 /* TimelineView.swift */; };
-		7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4307811DD021A100AA2413 /* VideoViewController.swift */; };
 		7E43833C1DD9138000337007 /* HashTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833B1DD9138000337007 /* HashTags.swift */; };
 		7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E43833D1DD9138F00337007 /* HashTagsCell.swift */; };
 		7E4CFF8E1DB438FD0087454E /* TextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4CFF8D1DB438FD0087454E /* TextPost.swift */; };
@@ -254,7 +253,6 @@
 		7E41C7BB1E4057000025129B /* OtherUserHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserHeader.swift; sourceTree = "<group>"; };
 		7E43077A1DD01F6800AA2413 /* VideoAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoAsset.swift; sourceTree = "<group>"; };
 		7E4307801DD021A100AA2413 /* TimelineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
-		7E4307811DD021A100AA2413 /* VideoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		7E43833B1DD9138000337007 /* HashTags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTags.swift; sourceTree = "<group>"; };
 		7E43833D1DD9138F00337007 /* HashTagsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HashTagsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7E44F8AC1E0D177C0018B1E7 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
@@ -624,7 +622,6 @@
 			isa = PBXGroup;
 			children = (
 				7E4307801DD021A100AA2413 /* TimelineView.swift */,
-				7E4307811DD021A100AA2413 /* VideoViewController.swift */,
 				7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */,
 			);
 			name = RPVideoPlayer;
@@ -1889,7 +1886,6 @@
 				7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */,
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EE697CE1EAADBC2004F4E24 /* SpaceCell.swift in Sources */,
-				7E4307831DD021A100AA2413 /* VideoViewController.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,

@@ -481,13 +481,20 @@ class TimeVideoCell: UITableViewCell {
         views["username"] = PFUser.current()!.username!
         views["forObjectId"] = self.postObject!.objectId!
         views.saveInBackground()
-        // FETCH VIDEO
+        // Fetch Video
         if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
             // Traverse video url
-            let videoUrl = NSURL(string: video.url!)
-            // MARK: - Periscope Video View Controller
-            let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
-            self.delegate?.present(videoViewController, animated: true, completion: nil)
+            let videoUrl = URL(string: video.url!)
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - RPVideoPlayerView
+            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: instanceVideoData!)
+            rpVideoPlayer.playbackLoops = true
+            viewController.view.addSubview(rpVideoPlayer)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.present(rpPopUpVC, animated: true, completion: nil)
         }
     }
     

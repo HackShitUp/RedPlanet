@@ -25,7 +25,7 @@ var capturedURLS = [URL]()
 class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeViewDelegate, SwipeViewDataSource {
     
     // MARK: - RPVideoPlayer
-    var rpVideoPlayer: RPVideoPlayer!
+    var rpVideoPlayer: RPVideoPlayerView!
     
     // MARK: - SwipeView
     @IBOutlet weak var swipeView: SwipeView!
@@ -284,8 +284,8 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
         // Execute code if url array is NOT empty
         if !capturedURLS.isEmpty {
             
-            // MARK: - RPPlayerLayer
-            rpVideoPlayer = RPVideoPlayer(frame: self.view.bounds)
+            // MARK: - RPVideoPlayerView
+            rpVideoPlayer = RPVideoPlayerView(frame: self.view.bounds)
             rpVideoPlayer.setupVideo(videoURL: capturedURLS.last!)
             rpVideoPlayer.playbackLoops = true
             self.view.addSubview(rpVideoPlayer)

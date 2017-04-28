@@ -403,12 +403,11 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         // Fetch video data
         if let video = editObjects.last!.value(forKey: "videoAsset") as? PFFile {
             let videoUrl = URL(string: video.url!)
-            
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
             let viewController = UIViewController()
-            // MARK: - RPVideoPlayer
-            let rpVideoPlayer = RPVideoPlayer(frame: viewController.view.bounds)
+            // MARK: - RPVideoPlayerView
+            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
             rpVideoPlayer.setupVideo(videoURL: videoUrl!)
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)

@@ -30,7 +30,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate {
     var shares = [PFObject]()
     
     // MARK: - RPVideoPlayer
-    var rpVideoPlayer: RPVideoPlayer!
+    var rpVideoPlayer: RPVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -440,8 +440,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate {
         // (1) Load moment
         if let momentVideo = itmObject.last!.value(forKey: "videoAsset") as? PFFile {
             
-            // MARK: - RPVideoPlayer
-            rpVideoPlayer = RPVideoPlayer(frame: self.view.bounds)
+            // MARK: - RPVideoPlayerView
+            rpVideoPlayer = RPVideoPlayerView(frame: self.view.bounds)
             rpVideoPlayer.setupVideo(videoURL: URL(string: momentVideo.url!)!)
             self.view.addSubview(rpVideoPlayer)
             
@@ -692,9 +692,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.rpVideoPlayer.pause()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()

@@ -42,10 +42,17 @@ class RPChatMediaCell: UITableViewCell {
     func playVideo() {
         if let video = mediaObject!.value(forKey: "videoAsset") as? PFFile {
             // Traverse video url
-            let videoUrl = NSURL(string: video.url!)
-            // MARK: - Periscope Video View Controller
-            let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
-            self.delegate?.present(videoViewController, animated: true, completion: nil)
+            let videoUrl = URL(string: video.url!)
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - RPVideoPlayerView
+            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
+            rpVideoPlayer.playbackLoops = true
+            viewController.view.addSubview(rpVideoPlayer)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
         }
     }
     

@@ -19,16 +19,12 @@ import OneSignal
 import SVProgressHUD
 
 class SpacePostCell: UITableViewCell {
-    
     // Initialize parent VC
     var delegate: UIViewController?
-    
     // Set byUser's object
     var byUserObject: PFObject?
-    
     // Set toUser's Object
     var toUserObject: PFObject?
-    
     
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
@@ -48,7 +44,6 @@ class SpacePostCell: UITableViewCell {
     @IBAction func comment(_ sender: Any) {
         // Append object
         commentsObject.append(spaceObject.last!)
-        
         // Push VC
         let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
         self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
@@ -58,7 +53,6 @@ class SpacePostCell: UITableViewCell {
     func showLikes(seder: UIButton) {
         // Append object
         likeObject.append(spaceObject.last!)
-        
         // Push VC
         let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
         self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
@@ -238,14 +232,20 @@ class SpacePostCell: UITableViewCell {
     
     // Function to play video
     func playVideo() {
-        
         // Fetch video data
         if let video = spaceObject.last!.value(forKey: "videoAsset") as? PFFile {
             // Traverse video url
-            let videoUrl = NSURL(string: video.url!)
-            // MARK: - Periscope Video View Controller
-            let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
-            self.delegate?.present(videoViewController, animated: true, completion: nil)
+            let videoUrl = URL(string: video.url!)
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - RPVideoPlayerView
+            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: instanceVideoData!)
+            rpVideoPlayer.playbackLoops = true
+            viewController.view.addSubview(rpVideoPlayer)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
         }
     }
     
@@ -253,7 +253,6 @@ class SpacePostCell: UITableViewCell {
     // Function to layout taps
     func layoutTaps() {
         if spaceObject.last!.value(forKey: "photoAsset") != nil {
-            
             // Tap to zoom
             let zoomTap = UITapGestureRecognizer(target: self, action: #selector(zoom))
             zoomTap.numberOfTapsRequired = 1
@@ -267,8 +266,6 @@ class SpacePostCell: UITableViewCell {
             playTap.numberOfTapsRequired = 1
             self.mediaAsset.isUserInteractionEnabled = true
             self.mediaAsset.addGestureRecognizer(playTap)
-            
-            
         }
     }
     

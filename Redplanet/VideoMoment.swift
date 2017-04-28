@@ -27,8 +27,8 @@ class VideoMoment: UICollectionViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     func addVideo(videoURL: URL?) {
-        // MARK: - RPVideoPlayer
-        let rpVideoPlayer = RPVideoPlayer(frame: self.contentView.bounds)
+        // MARK: - RPVideoPlayerView
+        let rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
         rpVideoPlayer.setupVideo(videoURL: videoURL!)
         self.contentView.addSubview(rpVideoPlayer)
 

@@ -139,67 +139,50 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         videoOptions.isNetworkAccessAllowed = true
         videoOptions.version = .current
         
-        
+        // URL
         if shareMediaAsset.isEmpty {
-            // URL
-            // MARK: - VideoViewController
-            let videoViewController = VideoViewController(videoURL: instanceVideoData!)
-            videoViewController.modalPresentationStyle = .popover
-            videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
             
-            
-            
-            let popOverVC = videoViewController.popoverPresentationController
-            popOverVC?.permittedArrowDirections = .any
-            popOverVC?.delegate = self
-            popOverVC?.sourceView = self.mediaAsset
-            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-            
-            
-            self.present(videoViewController, animated: true, completion: nil)
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - RPVideoPlayerView
+            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: instanceVideoData!)
+            rpVideoPlayer.playbackLoops = true
+            viewController.view.addSubview(rpVideoPlayer)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.present(rpPopUpVC, animated: true, completion: nil)
             
         } else {
             // PHASSET
             PHCachingImageManager().requestAVAsset(forVideo: shareMediaAsset.last!,
                                                    options: videoOptions,
                                                    resultHandler: {(asset: AVAsset?, audioMix: AVAudioMix?, info: [AnyHashable : Any]?) -> Void in
-                                                    
                                                     /* This result handler is performed on a random thread but
                                                      we want to do some UI work so let's switch to the main thread */
-                                                    
                                                     DispatchQueue.main.async(execute: {
                                                         
                                                         /* Did we get the URL to the video? */
                                                         if let asset = asset as? AVURLAsset{
-                                                            
-                                                            
-                                                            // MARK: - VideoViewController
-                                                            let videoViewController = VideoViewController(videoURL: asset.url)
-                                                            videoViewController.modalPresentationStyle = .popover
-                                                            videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-                                                            
-                                                            
-                                                            
-                                                            let popOverVC = videoViewController.popoverPresentationController
-                                                            popOverVC?.permittedArrowDirections = .any
-                                                            popOverVC?.delegate = self
-                                                            popOverVC?.sourceView = self.mediaAsset
-                                                            popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-                                                            
-                                                            
-                                                            self.present(videoViewController, animated: true, completion: nil)
-                                                            
+
+                                                            // MARK: - RPPopUpVC
+                                                            let rpPopUpVC = RPPopUpVC()
+                                                            let viewController = UIViewController()
+                                                            // MARK: - RPVideoPlayerView
+                                                            let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
+                                                            rpVideoPlayer.setupVideo(videoURL: asset.url)
+                                                            rpVideoPlayer.playbackLoops = true
+                                                            viewController.view.addSubview(rpVideoPlayer)
+                                                            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+                                                            self.present(rpPopUpVC, animated: true, completion: nil)
                                                             
                                                         } else {
                                                             // Did not get the AVAssetUrl
                                                             print("This is not a URL asset. Cannot play")
                                                         }
-                                                        
                                                     })
             })
-
         }
-        
     }
 
     // MARK: - UIModalPresentationControllerDelegate
