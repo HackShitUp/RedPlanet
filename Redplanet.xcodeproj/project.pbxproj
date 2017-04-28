@@ -67,6 +67,9 @@
 		7E8B558C1E4EF67F004D3F31 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55841E4EF67F004D3F31 /* SNTextField.swift */; };
 		7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55851E4EF67F004D3F31 /* SNUtils.swift */; };
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
+		7E8E54071EB29CAE00292B8C /* VideoMoment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E54051EB29CAE00292B8C /* VideoMoment.swift */; };
+		7E8E54081EB29CAE00292B8C /* VideoMoment.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* VideoMoment.xib */; };
+		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
 		7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E920BDA1E53AE85005171EE /* SavedPosts.swift */; };
 		7E972FD81EA9388E0047F4D4 /* FriendsNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E972FD71EA9388E0047F4D4 /* FriendsNF.swift */; };
 		7E972FDA1EA938950047F4D4 /* FollowingNF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E972FD91EA938950047F4D4 /* FollowingNF.swift */; };
@@ -291,6 +294,9 @@
 		7E8B55841E4EF67F004D3F31 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E8B55851E4EF67F004D3F31 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		7E8E54051EB29CAE00292B8C /* VideoMoment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoMoment.swift; sourceTree = "<group>"; };
+		7E8E54061EB29CAE00292B8C /* VideoMoment.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoMoment.xib; sourceTree = "<group>"; };
+		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
 		7E920BDA1E53AE85005171EE /* SavedPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedPosts.swift; sourceTree = "<group>"; };
 		7E972FD71EA9388E0047F4D4 /* FriendsNF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsNF.swift; sourceTree = "<group>"; };
 		7E972FD91EA938950047F4D4 /* FollowingNF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingNF.swift; sourceTree = "<group>"; };
@@ -622,6 +628,7 @@
 				7E1CBD6E1E409C3200F68A4B /* Player.swift */,
 				7E4307801DD021A100AA2413 /* TimelineView.swift */,
 				7E4307811DD021A100AA2413 /* VideoViewController.swift */,
+				7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */,
 			);
 			path = VideoViewController;
 			sourceTree = "<group>";
@@ -747,6 +754,15 @@
 			path = SnapSliderFilters;
 			sourceTree = "<group>";
 		};
+		7E8E54091EB29CF100292B8C /* MomentVideo */ = {
+			isa = PBXGroup;
+			children = (
+				7E8E54051EB29CAE00292B8C /* VideoMoment.swift */,
+				7E8E54061EB29CAE00292B8C /* VideoMoment.xib */,
+			);
+			name = MomentVideo;
+			sourceTree = "<group>";
+		};
 		7E972FE31EA9555E0047F4D4 /* NEWSFEEDS2.0 */ = {
 			isa = PBXGroup;
 			children = (
@@ -761,6 +777,7 @@
 				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
 				7EE697C41EAAC440004F4E24 /* VideoCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
+				7E8E54091EB29CF100292B8C /* MomentVideo */,
 				7E972FED1EA97D810047F4D4 /* TextPost */,
 			);
 			name = NEWSFEEDS2.0;
@@ -1636,6 +1653,7 @@
 				7EE697CA1EAADB70004F4E24 /* SharedCell.xib in Resources */,
 				7E972FEC1EA979920047F4D4 /* TextPostCell.xib in Resources */,
 				7EE697C31EAAC43C004F4E24 /* VideoCell.xib in Resources */,
+				7E8E54081EB29CAE00292B8C /* VideoMoment.xib in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
 				7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */,
 				7EECEE611E3C42EA003FA134 /* TimeTextPostCell.xib in Resources */,
@@ -1862,6 +1880,7 @@
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E1CBD6F1E409C3200F68A4B /* Player.swift in Sources */,
+				7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
 				7E35A3B31E4167610007EB99 /* ProPicCell.swift in Sources */,
@@ -1943,6 +1962,7 @@
 				7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */,
 				7E5A98041DDCFFFA006DA985 /* FullName.swift in Sources */,
 				7E989A261DE4F17E000215A1 /* NewPassword.swift in Sources */,
+				7E8E54071EB29CAE00292B8C /* VideoMoment.swift in Sources */,
 				7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,

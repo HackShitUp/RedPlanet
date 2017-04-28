@@ -9,6 +9,8 @@
 import UIKit
 import CoreData
 
+import AVFoundation
+import AVKit
 import Parse
 import ParseUI
 import Bolts
@@ -107,7 +109,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = CubeAttributesAnimator()
+        layout.animator = PageAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -115,12 +117,14 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         self.collectionView!.frame = self.view.bounds
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
+        self.collectionView!.backgroundColor = UIColor.black
         
         // Fetch stories
         fetchStories()
 
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
+        self.collectionView?.register(UINib(nibName: "VideoMoment", bundle: nil), forCellWithReuseIdentifier: "VideoMoment")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
         self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
     }
@@ -186,7 +190,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
                 }
             }
             
-            // (3) Set time
+            // (3) MARK: - RPHelpers; Set time
             tpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (4) Set Text Post
@@ -210,7 +214,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
                 }
             }
             
-            // (2) Set time
+            // (2) MARK: - RPHelpers; Set time
             pCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
@@ -228,28 +232,50 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             
             return pCell
             
-        } else {
-        
+        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.row].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
-            let mCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
+            let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-                mCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
+                mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
-            // (2) Set time
-            mCell.time.text = difference.getFullTime(difference: difference, date: from)
+            // (2) MARK: - RPHelpers; Set time
+            mpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let moment = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
-                mCell.photoMoment.sd_showActivityIndicatorView()
-                mCell.photoMoment.sd_setIndicatorStyle(.gray)
-                mCell.photoMoment.sd_setImage(with: URL(string: moment.url!)!)
+                mpCell.photoMoment.sd_showActivityIndicatorView()
+                mpCell.photoMoment.sd_setIndicatorStyle(.gray)
+                mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
             }
 
-            return mCell
+            return mpCell
+            
+        } else {
+            
+//            if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.row].value(forKey: "videoAsset") != nil
+            
+        // MOMENT VIDEO CELL
+        let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
+            
+            // (1) Set user's full name; "realNameOfUser"
+            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
+            }
+            
+            // (2) MARK: - RPHelpers; Set time
+            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
+            
+            // (3) Set video
+            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // Update video
+                mvCell.addVideo(videoURL: URL(string: video.url!)!)
+            }
+            
+            return mvCell
         }
         
     }
