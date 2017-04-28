@@ -22,7 +22,7 @@ import SwipeNavigationController
 // Define Notification
 let momentVideoNotification = Notification.Name("momentVideo")
 
-class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDelegate {
+class MomentVideo: UIViewController, UINavigationControllerDelegate {
     
     // Array to hold likes, comments, and shares
     var likes = [PFObject]()
@@ -203,6 +203,14 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     SVProgressHUD.showError(withStatus: "Error")
                 }
             })
+        }))
+        
+        // (2) SAVE
+        dialogController.addAction(AZDialogAction(title: "Share Via...", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Share Video Via...
+            self.shareVia()
         }))
         
         // Show
@@ -515,7 +523,6 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                     self.likes.append(object["fromUser"] as! PFUser)
                 }
                 
-                
                 // (B) Manipulate likes
                 if self.likes.contains(where: { $0.objectId == PFUser.current()!.objectId! }) {
                     // liked
@@ -685,7 +692,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-//        self.player.stop()
+        self.rpVideoPlayer.pause()
     }
 
     override func didReceiveMemoryWarning() {

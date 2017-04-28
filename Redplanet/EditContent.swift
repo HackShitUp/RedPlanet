@@ -412,15 +412,11 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                 let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
                 videoViewController.modalPresentationStyle = .popover
                 videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-                
-                
                 let popOverVC = videoViewController.popoverPresentationController
                 popOverVC?.permittedArrowDirections = .any
                 popOverVC?.delegate = self
                 popOverVC?.sourceView = self.mediaAsset
                 popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-                
-                
                 self.present(videoViewController, animated: true, completion: nil)
             }
             
