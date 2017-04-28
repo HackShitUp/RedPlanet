@@ -39,7 +39,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     func fetchStories() {
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: timelineObjects.last!.value(forKey: "byUser") as! PFUser)
-        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
+//        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
