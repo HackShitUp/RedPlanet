@@ -487,31 +487,26 @@ class TimeVideoCell: UITableViewCell {
             let videoUrl = URL(string: video.url!)
             // MARK: - RPPopUpVC
             let rpPopUpVC = RPPopUpVC()
+            // UIViewController
             let viewController = UIViewController()
+            
             // MARK: - RPVideoPlayerView
             let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
             rpVideoPlayer.setupVideo(videoURL: videoUrl!)
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
+            
+            let navigator = UINavigationController(rootViewController: rpPopUpVC)
+            navigator.setNavigationBarHidden(true, animated: false)
+            self.delegate?.present(navigator, animated: true, completion: nil)
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        // LayoutViews
-        self.videoPreview.layoutIfNeeded()
-        self.videoPreview.layoutSubviews()
-        self.videoPreview.setNeedsLayout()
-        
-        // Make Vide Preview Circular
-        self.videoPreview.layer.cornerRadius = self.videoPreview.frame.size.width/2
-        self.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
-        self.videoPreview.layer.borderWidth = 3.50
-        self.videoPreview.clipsToBounds = true
-        
-        
+        // MARK: - RPHelpers; makeCircular()
+        self.videoPreview.makeCircular(imageView: self.videoPreview, borderWidth: 3.50, borderColor: UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
     }
 
     override func awakeFromNib() {

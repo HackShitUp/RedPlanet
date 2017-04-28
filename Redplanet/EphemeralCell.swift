@@ -42,13 +42,10 @@ class EphemeralCell: UITableViewCell {
         views["username"] = PFUser.current()!.username!
         views["forObjectId"] = self.postObject!.objectId!
         views.saveInBackground()
-        
-        
-        
-        // MARK: - RPPopUpViewController
-        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
+
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
         let navigator = UINavigationController(rootViewController: rpPopUpVC)
-        
         navigator.view.backgroundColor = UIColor.clear
         
         // Determine post type
@@ -117,8 +114,8 @@ class EphemeralCell: UITableViewCell {
             return true
         }
         
-        // MARK: - RPPopUpViewController
-        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
+        // MARK: - RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
         let navigator = UINavigationController(rootViewController: rpPopUpVC)
         
         // (1) VIEWS
@@ -141,7 +138,7 @@ class EphemeralCell: UITableViewCell {
             //            let popUpViewController = storyboard!.instantiateViewController(withIdentifier: "PopUpViewController") as! PopUpViewController
             // Set it's delegate to be able to call 'delegate.dismissView(animated: Bool)'
 //            viewsVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
-            
+            viewsVC.view.backgroundColor = UIColor.white
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewsVC)
             // Present the modal through the MantleViewController
 //            self.delegate?.present(navigator, animated: false, completion: nil)

@@ -15,6 +15,9 @@ import ParseUI
 import Bolts
 
 class VideoMoment: UICollectionViewCell {
+    
+    // MARK: - RPVideoPlayerView
+    var rpVideoPlayer: RPVideoPlayerView!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -28,10 +31,11 @@ class VideoMoment: UICollectionViewCell {
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
-        let rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
+        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
         rpVideoPlayer.setupVideo(videoURL: videoURL!)
         self.contentView.addSubview(rpVideoPlayer)
-
+        rpVideoPlayer.play()
+        
         // Bring buttons to front
         let buttons = [self.rpUsername, self.time, self.moreButton,
                        self.numberOfLikes, self.likeButton,
@@ -48,5 +52,4 @@ class VideoMoment: UICollectionViewCell {
         super.awakeFromNib()
 
     }
-
 }

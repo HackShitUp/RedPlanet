@@ -36,7 +36,7 @@ class NewsFeedCell: UITableViewCell {
         timelineObjects.append(self.postObject!)
         
         // MARK: - RPPopUpVC
-        let rpPopUpVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rpPopUpVC") as! RPPopUpVC
+        let rpPopUpVC = RPPopUpVC()
         let timelineVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: timelineVC)
         self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)

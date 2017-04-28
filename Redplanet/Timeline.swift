@@ -26,6 +26,9 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
+    // MARK: - RPVideoPlayerView
+    var rpVideoPlayer: RPVideoPlayerView!
+    
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     
@@ -36,6 +39,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     func fetchStories() {
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: timelineObjects.last!.value(forKey: "byUser") as! PFUser)
+        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
@@ -260,44 +264,9 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             
             // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
-//
-//            // (1) Set user's full name; "realNameOfUser"
-//            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
-//                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
-//            }
-//            
-//            // (2) MARK: - RPHelpers; Set time
-//            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-//            // (3) Set video
-//            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-//                // Update video
-//                mvCell.addVideo(videoURL: URL(string: video.url!)!)
-//            }
-            
-            return mvCell
-        }
-        
-    }
-    
-    
-    
-    // Bind cell data here...
-    func updateCell(indexPath: IndexPath) {
-        
-        
-        // Configure initial setup for time
-        let from = self.posts[indexPath.item].createdAt!
-        let now = Date()
-        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
-        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
-        
-        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
-            // MOMENT VIDEO CELL
-            let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
-            
+
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
                 mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -305,13 +274,16 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             mvCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set video
-            if let video = self.posts[indexPath.item].value(forKey: "videoAsset") as? PFFile {
-                // Update video
+            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+                // Add Video
                 mvCell.addVideo(videoURL: URL(string: video.url!)!)
             }
+            
+            return mvCell
         }
+        
     }
-    
+
     
     // MARK: - UIScrollView Delegate Method
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -323,14 +295,19 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb.skip()
         } else {
-        // Scrolled to the left; rewind
+            // Scrolled to the left; rewind
             self.spb.rewind()
         }
+
         
-        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
-            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
-            updateCell(indexPath: indexPath!)
+        for cell in self.collectionView!.visibleCells {
+            let indexPath = self.collectionView!.indexPath(for: cell)
+            /*
+             Updating Cell --> Play/Pause Video depending on view state...
+            */
         }
     }
    
+    
+    
 }

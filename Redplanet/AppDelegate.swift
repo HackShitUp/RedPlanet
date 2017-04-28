@@ -78,7 +78,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
          • Client Configuration with 
          • AWS EC2 Instance Server hosted on 
          • MLAB
-         */
+        */
         let configuration = ParseClientConfiguration {
             $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"
             $0.clientKey = "f3YjXEEzQYU8jJq7ZQIASlqxSgDr0ZmpfYUMFPuS"
