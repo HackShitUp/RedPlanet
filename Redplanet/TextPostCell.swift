@@ -40,6 +40,13 @@ class TextPostCell: UICollectionViewCell {
 
     }
     
+    
+    
+    
+    func updateUI() {
+        
+    }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()

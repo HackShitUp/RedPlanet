@@ -54,6 +54,10 @@ class LoginOrSignUp: UIViewController, UITextFieldDelegate, UINavigationControll
         
         // Set welcome text
         self.welcome.text = "Welcome to\nRedplanet"
+        
+        // Design logo
+        self.logo.layer.cornerRadius = 8.00
+        self.logo.clipsToBounds = true
 
         // Design logInButton
         self.logInButton.layer.cornerRadius = 25.00

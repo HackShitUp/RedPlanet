@@ -50,6 +50,7 @@
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */; };
 		7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */; };
+		7E6F36B01EB3FA9000136163 /* Stories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F36AF1EB3FA9000136163 /* Stories.swift */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
@@ -191,8 +192,6 @@
 		7EE697CA1EAADB70004F4E24 /* SharedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697C81EAADB70004F4E24 /* SharedCell.xib */; };
 		7EE697CE1EAADBC2004F4E24 /* SpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697CC1EAADBC2004F4E24 /* SpaceCell.swift */; };
 		7EE697CF1EAADBC2004F4E24 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */; };
-		7EE697D21EAB1D14004F4E24 /* Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D11EAB1D14004F4E24 /* Timeline.swift */; };
-		7EE697D81EAB405D004F4E24 /* TimelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697D71EAB405D004F4E24 /* TimelineCell.swift */; };
 		7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */; };
 		7EECEE591E3C3CDC003FA134 /* EphemeralCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */; };
 		7EECEE5A1E3C3CDC003FA134 /* EphemeralCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */; };
@@ -277,6 +276,7 @@
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
 		7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
 		7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
+		7E6F36AF1EB3FA9000136163 /* Stories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stories.swift; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -470,8 +470,6 @@
 		7EE697C81EAADB70004F4E24 /* SharedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharedCell.xib; sourceTree = "<group>"; };
 		7EE697CC1EAADBC2004F4E24 /* SpaceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceCell.swift; sourceTree = "<group>"; };
 		7EE697CD1EAADBC2004F4E24 /* SpaceCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
-		7EE697D11EAB1D14004F4E24 /* Timeline.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timeline.swift; sourceTree = "<group>"; };
-		7EE697D71EAB405D004F4E24 /* TimelineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimelineCell.swift; sourceTree = "<group>"; };
 		7EE940BD1EAC821A00C45AAE /* SegmentedProgressBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SegmentedProgressBar.swift; sourceTree = "<group>"; };
 		7EECEE571E3C3CDC003FA134 /* EphemeralCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EphemeralCell.swift; sourceTree = "<group>"; };
 		7EECEE581E3C3CDC003FA134 /* EphemeralCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EphemeralCell.xib; sourceTree = "<group>"; };
@@ -766,14 +764,13 @@
 			name = RPPopUpVC;
 			sourceTree = "<group>";
 		};
-		7E972FE31EA9555E0047F4D4 /* NEWSFEEDS2.0 */ = {
+		7E972FE31EA9555E0047F4D4 /* Stories */ = {
 			isa = PBXGroup;
 			children = (
 				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
 				7E972FD71EA9388E0047F4D4 /* FriendsNF.swift */,
 				7E972FD91EA938950047F4D4 /* FollowingNF.swift */,
-				7EE697D11EAB1D14004F4E24 /* Timeline.swift */,
-				7EE697D71EAB405D004F4E24 /* TimelineCell.swift */,
+				7E6F36AF1EB3FA9000136163 /* Stories.swift */,
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 				7EE697CB1EAADB77004F4E24 /* SharedPost */,
 				7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */,
@@ -783,7 +780,7 @@
 				7E8E54091EB29CF100292B8C /* MomentVideo */,
 				7E972FED1EA97D810047F4D4 /* TextPost */,
 			);
-			name = NEWSFEEDS2.0;
+			name = Stories;
 			sourceTree = "<group>";
 		};
 		7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */ = {
@@ -1252,7 +1249,7 @@
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
-				7E972FE31EA9555E0047F4D4 /* NEWSFEEDS2.0 */,
+				7E972FE31EA9555E0047F4D4 /* Stories */,
 				7EA730D61E3B293500CF4D12 /* RPShare */,
 				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
 				7EC5D1A41DB356A500437219 /* DISCOVER */,
@@ -1876,6 +1873,7 @@
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
+				7E6F36B01EB3FA9000136163 /* Stories.swift in Sources */,
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
 				7E4CFF921DB4390E0087454E /* ProfilePhoto.swift in Sources */,
 				7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */,
@@ -1942,8 +1940,6 @@
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */,
-				7EE697D21EAB1D14004F4E24 /* Timeline.swift in Sources */,
-				7EE697D81EAB405D004F4E24 /* TimelineCell.swift in Sources */,
 				7E41C7B81E4056870025129B /* OtherUser.swift in Sources */,
 				7E6A12E81E4D524C00CF108B /* Agrume.swift in Sources */,
 				7EE697C91EAADB70004F4E24 /* SharedCell.swift in Sources */,

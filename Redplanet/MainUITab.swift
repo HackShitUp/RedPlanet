@@ -50,7 +50,7 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         
         // Set tabBar's tintColor and tabBar's barTintColor
-        self.tabBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white
 
         // Set font

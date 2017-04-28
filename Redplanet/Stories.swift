@@ -1,8 +1,8 @@
 //
-//  Timeline.swift
+//  Stories.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 4/22/17.
+//  Created by Joshua Choi on 4/28/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -18,10 +18,10 @@ import Bolts
 import AnimatedCollectionViewLayout
 import SwipeNavigationController
 
-// Array to hold timelineObjects
-var timelineObjects = [PFObject]()
+// Array to hold storyObjects
+var storyObjects = [PFObject]()
 
-class Timeline: UICollectionViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
+class Stories: UICollectionViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -32,32 +32,37 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     
-    // Array to hold posts/likes
-    var posts = [PFObject]()
+    // Array to hold storyPosts/likes
+    var storyPosts = [PFObject]()
     var likes = [PFObject]()
     
     func fetchStories() {
+        
+        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb"]
+        
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: timelineObjects.last!.value(forKey: "byUser") as! PFUser)
-//        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
+        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+        //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
+        newsfeeds.whereKey("objectId", containedIn: keys)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
-                self.posts.removeAll(keepingCapacity: false)
+                self.storyPosts.removeAll(keepingCapacity: false)
                 for object in objects! {
                     // Ephemeral content
-                    let components: NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
-                    }
+//                    let components: NSCalendar.Unit = .hour
+//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+//                    if difference.hour! < 24 {
+//                        self.storyPosts.append(object)
+//                    }
+                    self.storyPosts.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
-                self.spb = SegmentedProgressBar(numberOfSegments: self.posts.count, duration: 10)
+                self.spb = SegmentedProgressBar(numberOfSegments: self.storyPosts.count, duration: 10)
                 self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 4)
                 self.spb.topColor = UIColor.white
                 self.spb.layer.applyShadow(layer: self.spb.layer)
@@ -65,7 +70,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
                 self.spb.delegate = self
                 self.view.addSubview(self.spb)
                 self.spb.startAnimation()
-
+                
                 // Reload data
                 self.collectionView!.reloadData()
                 
@@ -74,7 +79,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             }
         }
     }
-
+    
     
     // MARK: - SegmentedProgressBar Delegate Methods
     func segmentedProgressBarChangedIndex(index: Int) {
@@ -86,26 +91,26 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         // Dismiss VC
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // MARK: - RPButton
+        rpButton.isHidden = true
+        
         // Hide UITabBar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
-        // Hide rpButton
-        rpButton.isHidden = true
+        // Hide UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Hide UIStatusBar
-        UIApplication.shared.isStatusBarHidden = true
-        self.setNeedsStatusBarAppearanceUpdate()
         
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
@@ -125,7 +130,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         
         // Fetch stories
         fetchStories()
-
+        
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "VideoMoment", bundle: nil), forCellWithReuseIdentifier: "VideoMoment")
@@ -153,36 +158,37 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.posts.count
+        return self.storyPosts.count
     }
     
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if #available(iOS 10.0, *) {
-//            return UICollectionViewFlowLayoutAutomaticSize
-//        } else {
-//            // Fallback on earlier versions
-//            return self.view.bounds.size
-//        }
-//        return CGSize(width: 375, height: 800)
-//    }
-
+    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    //        if #available(iOS 10.0, *) {
+    //            return UICollectionViewFlowLayoutAutomaticSize
+    //        } else {
+    //            // Fallback on earlier versions
+    //            return self.view.bounds.size
+    //        }
+    //        return CGSize(width: 375, height: 800)
+    //    }
+    
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
+        
         // Configure initial setup for time
-        let from = self.posts[indexPath.item].createdAt!
+        let from = self.storyPosts[indexPath.item].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         // TEXT POST
-        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
+        if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
             let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
             
             // Set delegate
             tpCell.delegate = self
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 tpCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
                 
                 // (2) Set user's profile photo
@@ -198,18 +204,18 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             tpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (4) Set Text Post
-            tpCell.textPost.text = (self.posts[indexPath.item].value(forKey: "textPost") as! String)
+            tpCell.textPost.text = (self.storyPosts[indexPath.item].value(forKey: "textPost") as! String)
             
             return tpCell
-
-        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+            
+        } else if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
-            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 // Set user's fullName; "realNameOfUser"
                 pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                // Set user's profile photo 
+                // Set user's profile photo
                 if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
                     // MARK: - SDWebImage
                     pCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
@@ -222,7 +228,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             pCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.storyPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 pCell.photo.sd_showActivityIndicatorView()
                 pCell.photo.sd_setIndicatorStyle(.gray)
@@ -230,18 +236,18 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             }
             
             // (4) Set caption
-            if let textPost = self.posts[indexPath.item].value(forKey: "textPost") as? String {
+            if let textPost = self.storyPosts[indexPath.item].value(forKey: "textPost") as? String {
                 pCell.caption.text = textPost
             }
             
             return pCell
             
-        } else if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "photoAsset") != nil {
-        // MOMENT PHOTO
+        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.item].value(forKey: "photoAsset") != nil {
+            // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -249,24 +255,24 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             mpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let photo = self.posts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.storyPosts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 mpCell.photoMoment.sd_showActivityIndicatorView()
                 mpCell.photoMoment.sd_setIndicatorStyle(.gray)
                 mpCell.photoMoment.sd_setImage(with: URL(string: photo.url!)!)
             }
-
+            
             return mpCell
             
         } else {
             
-//            if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.row].value(forKey: "videoAsset") != nil
+            //            if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.row].value(forKey: "videoAsset") != nil
             
             // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
-
+            
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.storyPosts[indexPath.row].value(forKey: "byUser") as? PFUser {
                 mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -274,23 +280,29 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             mvCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set video
-            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+            if let video = self.storyPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // Add Video
                 mvCell.addVideo(videoURL: URL(string: video.url!)!)
             }
             
             return mvCell
         }
-        
     }
-
+    
     
     // MARK: - UIScrollView Delegate Method
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.lastOffSet = scrollView.contentOffset
     }
     
+    
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+//        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
+//            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
+//            print("IndexPath: \n\(indexPath!.item)\n")
+//        }
+        
         // Scrolled to the right; skip
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             self.spb.skip()
@@ -298,16 +310,8 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             // Scrolled to the left; rewind
             self.spb.rewind()
         }
-
-        
-        for cell in self.collectionView!.visibleCells {
-            let indexPath = self.collectionView!.indexPath(for: cell)
-            /*
-             Updating Cell --> Play/Pause Video depending on view state...
-            */
-        }
     }
-   
+    
     
     
 }

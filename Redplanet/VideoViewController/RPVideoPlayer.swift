@@ -16,7 +16,10 @@ open class RPVideoPlayerView: UIView {
     fileprivate var videoURL: URL!
     fileprivate var asset: AVURLAsset!
     fileprivate var playerItem: AVPlayerItem!
-    fileprivate var player: AVPlayer!
+    
+//    fileprivate var player: AVPlayer!
+    open var player: AVPlayer!
+    
     fileprivate var playerLayer: AVPlayerLayer!
     fileprivate var assetGenerator: AVAssetImageGenerator!
     

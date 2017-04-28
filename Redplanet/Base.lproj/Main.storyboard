@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="RedplanetLogo" translatesAutoresizingMaskIntoConstraints="NO" id="66m-Tp-nIe">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="RPLogo" translatesAutoresizingMaskIntoConstraints="NO" id="66m-Tp-nIe">
                                 <rect key="frame" x="16" y="42" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="7Ji-Co-xIM"/>
@@ -2325,6 +2325,31 @@
             </objects>
             <point key="canvasLocation" x="2002" y="3508"/>
         </scene>
+        <!--Stories-->
+        <scene sceneID="Hcw-u0-oGN">
+            <objects>
+                <collectionViewController storyboardIdentifier="storiesVC" id="2iN-2H-fLa" customClass="Stories" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="LiO-ln-byZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="3OS-N1-Y4A">
+                            <size key="itemSize" width="375" height="667"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells/>
+                        <connections>
+                            <outlet property="dataSource" destination="2iN-2H-fLa" id="f4t-hx-VZN"/>
+                            <outlet property="delegate" destination="2iN-2H-fLa" id="uof-58-jgF"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LR2-Z8-ml9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2519" y="2714"/>
+        </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
             <objects>
@@ -3685,11 +3710,13 @@
             </objects>
             <point key="canvasLocation" x="2002" y="529"/>
         </scene>
-        <!--Chats-->
+        <!--Navigator-->
         <scene sceneID="3nD-Oc-X6H">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="frc-a6-KQI" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="fR1-eB-hJf"/>
+                    <tabBarItem key="tabBarItem" title="" image="Chats" id="fR1-eB-hJf">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="V76-Gb-DFZ">
@@ -4511,11 +4538,13 @@
             </objects>
             <point key="canvasLocation" x="-81" y="-2865"/>
         </scene>
-        <!--Discover-->
+        <!--Navigation Controller-->
         <scene sceneID="y6y-X2-aOf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ha0-l4-bqf" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Discover" image="Search" id="MUZ-Nz-NN5"/>
+                    <tabBarItem key="tabBarItem" title="" image="Search" id="MUZ-Nz-NN5">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Sef-25-fEA">
@@ -5600,11 +5629,13 @@
             </objects>
             <point key="canvasLocation" x="401" y="529"/>
         </scene>
-        <!--Activity-->
+        <!--Navigator-->
         <scene sceneID="CfS-Ef-186">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cU2-FF-485" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Activity" image="Comet" id="X76-jS-IPb"/>
+                    <tabBarItem key="tabBarItem" title="" image="Comet" id="X76-jS-IPb">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BDr-aw-Ghe">
@@ -5812,11 +5843,13 @@
             </objects>
             <point key="canvasLocation" x="-1979.5" y="-2800.5"/>
         </scene>
-        <!--News Feeds-->
+        <!--Navigation Controller-->
         <scene sceneID="FR5-cB-y2U">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JVq-sj-g2m" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="News Feeds" image="NewsFeeds" id="ROj-7G-3ER"/>
+                    <tabBarItem key="tabBarItem" title="" image="NewsFeeds" id="ROj-7G-3ER">
+                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
+                    </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gBj-aC-t5z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -6029,6 +6062,7 @@
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>
+        <image name="RPLogo" width="300" height="300"/>
         <image name="RedBookmark" width="25" height="25"/>
         <image name="RedplanetLogo" width="256" height="256"/>
         <image name="SLRCamera" width="17" height="20"/>

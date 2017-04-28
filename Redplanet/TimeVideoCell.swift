@@ -489,14 +489,12 @@ class TimeVideoCell: UITableViewCell {
             let rpPopUpVC = RPPopUpVC()
             // UIViewController
             let viewController = UIViewController()
-            
             // MARK: - RPVideoPlayerView
             let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
             rpVideoPlayer.setupVideo(videoURL: videoUrl!)
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            
             let navigator = UINavigationController(rootViewController: rpPopUpVC)
             navigator.setNavigationBarHidden(true, animated: false)
             self.delegate?.present(navigator, animated: true, completion: nil)

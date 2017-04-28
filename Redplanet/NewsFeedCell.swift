@@ -26,19 +26,19 @@ class NewsFeedCell: UITableViewCell {
     // Function to show stories
     func showStories() {
         // Save to Views
-        let views = PFObject(className: "Views")
-        views["byUser"] = PFUser.current()!
-        views["username"] = PFUser.current()!.username!
-        views["forObjectId"] = self.postObject!.objectId!
-        views.saveInBackground()
+//        let views = PFObject(className: "Views")
+//        views["byUser"] = PFUser.current()!
+//        views["username"] = PFUser.current()!.username!
+//        views["forObjectId"] = self.postObject!.objectId!
+//        views.saveInBackground()
         
         // Append object
-        timelineObjects.append(self.postObject!)
+        storyObjects.append(self.postObject!)
         
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
-        let timelineVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "timelineVC") as! Timeline
-        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: timelineVC)
+        let storiesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storiesVC") as! Stories
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storiesVC)
         self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
     }
     
