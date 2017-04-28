@@ -29,7 +29,7 @@ class VideoMoment: UICollectionViewCell {
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayer
         let rpVideoPlayer = RPVideoPlayer(frame: self.contentView.bounds)
-        rpVideoPlayer.setupInitialView(videoURL: videoURL!)
+        rpVideoPlayer.setupVideo(videoURL: videoURL!)
         self.contentView.addSubview(rpVideoPlayer)
 
         // Bring buttons to front

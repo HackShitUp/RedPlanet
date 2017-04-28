@@ -53,26 +53,6 @@ open class RPVideoPlayer: UIView {
      */
 
     
-    
-//    public init(videoURL: URL) {
-//        super.init(nibName: nil, bundle: nil)
-//        
-//        self.videoURL = videoURL
-//        
-//        asset = AVURLAsset(url: videoURL)
-//        playerItem = AVPlayerItem(asset: asset)
-//        player = AVPlayer(playerItem: playerItem)
-//        playerLayer = AVPlayerLayer(player: player)
-//        
-//        assetGenerator = AVAssetImageGenerator(asset: asset)
-//        assetGenerator.maximumSize = CGSize(width: CGFloat.greatestFiniteMagnitude, height: rewindPreviewMaxHeight * UIScreen.main.scale)
-//    }
-    
-//    required public init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-    
-    
     override public init (frame : CGRect) {
         super.init(frame : frame)
     }
@@ -81,8 +61,13 @@ open class RPVideoPlayer: UIView {
         super.init(coder: aDecoder)
     }
     
+    deinit {
+        self.removeVideoObserver()
+        self.player.pause()
+    }
     
-    public func setupInitialView(videoURL: URL) {
+
+    public func setupVideo(videoURL: URL) {
         // Do what you want.
         self.videoURL = videoURL
         
@@ -99,9 +84,85 @@ open class RPVideoPlayer: UIView {
         awakeFromNib()
         layoutSubviews()
     }
-
     
-    // MARK: -
+    public func removeSetup() {
+        self.removeVideoObserver()
+        self.player.pause()
+    }
+
+    // MARK: - Methods
+    /// Playback automatically loops continuously when true.
+    open var playbackLoops: Bool {
+        get {
+            return (self.player.actionAtItemEnd == .none) as Bool
+        }
+        set {
+            if newValue == true {
+                self.player.actionAtItemEnd = .none
+            } else {
+                self.player.actionAtItemEnd = .pause
+            }
+        }
+    }
+    
+    
+    /// Mutes audio playback when true.
+    open var muted: Bool {
+        get {
+            return self.player.isMuted
+        }
+        set {
+            self.player.isMuted = newValue
+        }
+    }
+    
+    /// Resumes playback
+    open func play() {
+        player.play()
+    }
+    
+    /// Pauses playback
+    open func pause() {
+        player.pause()
+    }
+    
+    open func longPressed(_ gesture: UILongPressGestureRecognizer) {
+        let location = gesture.location(in: gesture.view!)
+        rewindTimelineView.zoom = (location.y - rewindTimelineView.center.y - 10.0) / 30.0
+        
+        if gesture.state == .began {
+            player.pause()
+            rewindTimelineView.initialTime = CMTimeGetSeconds(playerItem.currentTime())
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
+                self.rewindDimView.effect = UIBlurEffect(style: .dark)
+                self.rewindContentView.alpha = 1.0
+            }, completion: nil)
+        } else if gesture.state == .changed {
+            rewindTimelineView.rewindByDistance(previousLocationX - location.x)
+        } else {
+            player.play()
+            
+            let newTime = CMTime(seconds: rewindTimelineView.currentTime, preferredTimescale: playerItem.currentTime().timescale)
+            playerItem.seek(to: newTime)
+            
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
+                self.rewindDimView.effect = nil
+                self.rewindContentView.alpha = 0.0
+            }, completion: nil)
+        }
+        
+        if previousLocationX != location.x {
+            previousLocationX = location.x
+        }
+    }
+    
+    
+    func removeVideoObserver() {
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+    }
+    
+    
+    // MARK: - UIView Lifecycle
     override open func didMoveToSuperview() {
         super.didMoveToSuperview()
         
@@ -159,91 +220,33 @@ open class RPVideoPlayer: UIView {
         rewindPreviewImageView.contentMode = .scaleAspectFit
         rewindPreviewImageView.layer.mask = CAShapeLayer()
         rewindContentView.addSubview(rewindPreviewImageView)
+        
+        
+        // update new playerItem settings
+        if playbackLoops == true {
+            self.player.actionAtItemEnd = .none
+        } else {
+            self.player.actionAtItemEnd = .pause
+        }
 
     }
-    
     
     override open func awakeFromNib() {
         super.awakeFromNib()
         
-        
-        // Play
+        // Play video if autoplays
         if autoplays {
             play()
         }
         
+        // Add observer
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
+            DispatchQueue.main.async {
+                self.player?.seek(to: kCMTimeZero)
+                self.player?.play()
+            }
+        })
     }
-    
-    
-//    // Function to leave view controller
-//    func dismissVideo() {
-//        self.dismiss(animated: true, completion: nil)
-//    }
-//    
-//    override open func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        // MARK: - MainTabUI
-//        // Hide button
-//        rpButton.isHidden = true
-//    }
-    
-//    override open func viewDidLoad() {
-//        super.viewDidLoad()
-//        
-//        if autoplays {
-//            play()
-//        }
-//    }
-    
-//    override open func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        // MARK: - MainTabUI
-//        // Show button
-//        rpButton.isHidden = false
-//    }
-    
-    // MARK: - Methods
-    /// Resumes playback
-    open func play() {
-        player.play()
-    }
-    
-    /// Pauses playback
-    open func pause() {
-        player.pause()
-    }
-    
-    open func longPressed(_ gesture: UILongPressGestureRecognizer) {
-        let location = gesture.location(in: gesture.view!)
-        rewindTimelineView.zoom = (location.y - rewindTimelineView.center.y - 10.0) / 30.0
-        
-        if gesture.state == .began {
-            player.pause()
-            rewindTimelineView.initialTime = CMTimeGetSeconds(playerItem.currentTime())
-            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
-                self.rewindDimView.effect = UIBlurEffect(style: .dark)
-                self.rewindContentView.alpha = 1.0
-            }, completion: nil)
-        } else if gesture.state == .changed {
-            rewindTimelineView.rewindByDistance(previousLocationX - location.x)
-        } else {
-            player.play()
-            
-            let newTime = CMTime(seconds: rewindTimelineView.currentTime, preferredTimescale: playerItem.currentTime().timescale)
-            playerItem.seek(to: newTime)
-            
-            UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
-                self.rewindDimView.effect = nil
-                self.rewindContentView.alpha = 0.0
-            }, completion: nil)
-        }
-        
-        if previousLocationX != location.x {
-            previousLocationX = location.x
-        }
-    }
-    
-    // MARK: - Layout
     
     override open func layoutSubviews() {
         super.layoutSubviews()
@@ -266,5 +269,30 @@ open class RPVideoPlayer: UIView {
         rewindPreviewShadowLayer.shadowPath = path
         (rewindPreviewImageView.layer.mask as! CAShapeLayer).path = path
     }
+    
+    
 
 }
+//
+//
+//
+//// MARK: - NSNotifications
+//
+//extension RPVideoPlayer {
+//    
+//    // AVPlayerItem
+//    
+//    internal func playerItemDidPlayToEndTime(_ aNotification: Notification) {
+//        if self.playbackLoops == true {
+//            self.player.seek(to: kCMTimeZero)
+//        } else {
+//            self.player.seek(to: kCMTimeZero, completionHandler: { _ in
+//                self.pause()
+//            })
+//        }
+//    }
+//    
+////    internal func playerItemFailedToPlayToEndTime(_ aNotification: Notification) {
+////        self.playbackState = .failed
+////    }
+//}

@@ -29,11 +29,8 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     var comments = [PFObject]()
     var shares = [PFObject]()
     
-    // MARK: - RPPopUpVCDelegate
-    var delegate: RPPopUpVCDelegate!
-
-    // MARK: - Player; Initialize Player
-    var player: Player!
+    // MARK: - RPVideoPlayer
+    var rpVideoPlayer: RPVideoPlayer!
 
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -48,6 +45,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     // Function to shareVia
     func shareVia() {
+        /*
         // INSTANCEVIDEODATA
         let textToShare = "@\(PFUser.current()!.username!)'s Video on Redplanet.\nhttps://redplanetapp.com/download/"
         let url = URL(string: (itmObject.last!.value(forKey: "videoAsset") as! PFFile).url!)
@@ -61,6 +59,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.setValue("Video", forKey: "subject")
         self.present(activityVC, animated: true, completion: nil)
+        */
     }
     
     
@@ -433,17 +432,10 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         // (1) Load moment
         if let momentVideo = itmObject.last!.value(forKey: "videoAsset") as? PFFile {
             
-            // MARK: Player
-            self.player = Player()
-            self.player.delegate = self
-            self.player.view.frame = self.view.bounds
-            self.addChildViewController(self.player)
-            self.view.addSubview(self.player.view)
-            self.player.didMove(toParentViewController: self)
-            self.player.url = URL(string: momentVideo.url!)
-            self.player.fillMode = "AVLayerVideoGravityResizeAspect"
-            self.player.playbackLoops = true
-            self.player.playFromBeginning()
+            // MARK: - RPVideoPlayer
+            rpVideoPlayer = RPVideoPlayer(frame: self.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: URL(string: momentVideo.url!)!)
+            self.view.addSubview(rpVideoPlayer)
             
             // Store buttons in an array
             let buttons = [self.likeButton,
@@ -462,7 +454,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
                 (b as AnyObject).layer.shadowRadius = 3
                 (b as AnyObject).layer.shadowOpacity = 0.6
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-                self.player.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+                self.rpVideoPlayer.bringSubview(toFront: (b as AnyObject) as! UIView)
             }
         }
         
@@ -671,12 +663,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
         moreTap.numberOfTapsRequired = 1
         self.moreButton.isUserInteractionEnabled = true
         self.moreButton.addGestureRecognizer(moreTap)
-        
-        // Long press to share
-        let longTap = UILongPressGestureRecognizer(target: self, action: #selector(shareVia))
-        longTap.minimumPressDuration = 0.15
-        self.view.isUserInteractionEnabled = true
-        self.view.addGestureRecognizer(longTap)
+    
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -698,7 +685,7 @@ class MomentVideo: UIViewController, UINavigationControllerDelegate, PlayerDeleg
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.player.stop()
+//        self.player.stop()
     }
 
     override func didReceiveMemoryWarning() {

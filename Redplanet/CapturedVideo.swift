@@ -22,10 +22,10 @@ import SwipeNavigationController
 // Video URL
 var capturedURLS = [URL]()
 
-class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, PlayerDelegate, SwipeViewDelegate, SwipeViewDataSource {
+class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeViewDelegate, SwipeViewDataSource {
     
-    // MARK: - Player
-    var player: Player!
+    // MARK: - RPVideoPlayer
+    var rpVideoPlayer: RPVideoPlayer!
     
     // MARK: - SwipeView
     @IBOutlet weak var swipeView: SwipeView!
@@ -143,14 +143,14 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
     // Function to mute and turn volume on
     func setMute() {
         // MUTE
-        if self.player.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
-            self.player.muted = true
+        if self.rpVideoPlayer.muted == false && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOn") {
+            self.rpVideoPlayer.muted = true
             DispatchQueue.main.async {
-                self.muteButton.setImage(UIImage(named: "Mute"), for: .normal)
+                self.muteButton.setImage(UIImage(named: "VolumeOff"), for: .normal)
             }
-        } else if self.player.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "Mute") {
-            // VOLUME ON
-            self.player.muted = false
+        } else if self.rpVideoPlayer.muted == true && self.muteButton.image(for: .normal) == UIImage(named: "VolumeOff") {
+        // VOLUME ON
+            self.rpVideoPlayer.muted = false
             DispatchQueue.main.async {
                 self.muteButton.setImage(UIImage(named: "VolumeOn"), for: .normal)
             }
@@ -284,17 +284,11 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
         // Execute code if url array is NOT empty
         if !capturedURLS.isEmpty {
             
-            // MARK: - Player
-            self.player = Player()
-            self.player.delegate = self
-            self.player.view.frame = self.view.bounds
-            self.addChildViewController(self.player)
-            self.view.addSubview(self.player.view)
-            self.player.didMove(toParentViewController: self)
-            self.player.url = capturedURLS.last!
-            self.player.fillMode = "AVLayerVideoGravityResizeAspect"
-            self.player.playFromBeginning()
-            self.player.playbackLoops = true
+            // MARK: - RPPlayerLayer
+            rpVideoPlayer = RPVideoPlayer(frame: self.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: capturedURLS.last!)
+            rpVideoPlayer.playbackLoops = true
+            self.view.addSubview(rpVideoPlayer)
             
             // MARK: - SwipeView
             self.swipeView.delegate = self
@@ -330,6 +324,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
                 (b as AnyObject).layer.shadowOpacity = 0.5
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
+                self.swipeView.bringSubview(toFront: rpVideoPlayer)
             }
         }
     }
@@ -338,6 +333,8 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, Player
         super.viewWillDisappear(animated)
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        rpVideoPlayer?.removeSetup()
     }
     
     override func didReceiveMemoryWarning() {
