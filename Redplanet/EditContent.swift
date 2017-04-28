@@ -400,27 +400,21 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     // Function to play video
     func playVideo(sender: AnyObject) {
-        DispatchQueue.main.async(execute: {
+        // Fetch video data
+        if let video = editObjects.last!.value(forKey: "videoAsset") as? PFFile {
+            let videoUrl = URL(string: video.url!)
             
-            // Fetch video data
-            if let video = editObjects.last!.value(forKey: "videoAsset") as? PFFile {
-                
-                let videoUrl = NSURL(string: video.url!)
-
-                
-                // MARK: - PeriscopeVideoViewController
-                let videoViewController = VideoViewController(videoURL: videoUrl! as URL)
-                videoViewController.modalPresentationStyle = .popover
-                videoViewController.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-                let popOverVC = videoViewController.popoverPresentationController
-                popOverVC?.permittedArrowDirections = .any
-                popOverVC?.delegate = self
-                popOverVC?.sourceView = self.mediaAsset
-                popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-                self.present(videoViewController, animated: true, completion: nil)
-            }
-            
-        })
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
+            let viewController = UIViewController()
+            // MARK: - RPVideoPlayer
+            let rpVideoPlayer = RPVideoPlayer(frame: viewController.view.bounds)
+            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
+            rpVideoPlayer.playbackLoops = true
+            viewController.view.addSubview(rpVideoPlayer)
+            rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
+            self.present(rpPopUpVC, animated: true, completion: nil)
+        }
     }
     
     

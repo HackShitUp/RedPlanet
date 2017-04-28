@@ -333,8 +333,6 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
         super.viewWillDisappear(animated)
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        rpVideoPlayer?.removeSetup()
     }
     
     override func didReceiveMemoryWarning() {

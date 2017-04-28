@@ -165,20 +165,20 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         // Configure initial setup for time
-        let from = self.posts[indexPath.row].createdAt!
+        let from = self.posts[indexPath.item].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         // TEXT POST
-        if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
             let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
             
             // Set delegate
             tpCell.delegate = self
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 tpCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
                 
                 // (2) Set user's profile photo
@@ -194,7 +194,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             tpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (4) Set Text Post
-            tpCell.textPost.text = (self.posts[indexPath.row].value(forKey: "textPost") as! String)
+            tpCell.textPost.text = (self.posts[indexPath.item].value(forKey: "textPost") as! String)
             
             return tpCell
 
@@ -202,7 +202,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 // Set user's fullName; "realNameOfUser"
                 pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
                 // Set user's profile photo 
@@ -226,18 +226,18 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             }
             
             // (4) Set caption
-            if let textPost = self.posts[indexPath.row].value(forKey: "textPost") as? String {
+            if let textPost = self.posts[indexPath.item].value(forKey: "textPost") as? String {
                 pCell.caption.text = textPost
             }
             
             return pCell
             
-        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.row].value(forKey: "photoAsset") != nil {
+        } else if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "photoAsset") != nil {
         // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -245,7 +245,7 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             mpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.posts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 mpCell.photoMoment.sd_showActivityIndicatorView()
                 mpCell.photoMoment.sd_setIndicatorStyle(.gray)
@@ -258,11 +258,46 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             
 //            if self.posts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.row].value(forKey: "videoAsset") != nil
             
-        // MOMENT VIDEO CELL
-        let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
+            // MOMENT VIDEO CELL
+            let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
+//
+//            // (1) Set user's full name; "realNameOfUser"
+//            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+//                mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
+//            }
+//            
+//            // (2) MARK: - RPHelpers; Set time
+//            mvCell.time.text = difference.getFullTime(difference: difference, date: from)
+            
+//            // (3) Set video
+//            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+//                // Update video
+//                mvCell.addVideo(videoURL: URL(string: video.url!)!)
+//            }
+            
+            return mvCell
+        }
+        
+    }
+    
+    
+    
+    // Bind cell data here...
+    func updateCell(indexPath: IndexPath) {
+        
+        
+        // Configure initial setup for time
+        let from = self.posts[indexPath.item].createdAt!
+        let now = Date()
+        let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+        let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        
+        if self.posts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.posts[indexPath.item].value(forKey: "videoAsset") != nil {
+            // MOMENT VIDEO CELL
+            let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.posts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.posts[indexPath.item].value(forKey: "byUser") as? PFUser {
                 mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -270,14 +305,11 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
             mvCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set video
-            if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+            if let video = self.posts[indexPath.item].value(forKey: "videoAsset") as? PFFile {
                 // Update video
                 mvCell.addVideo(videoURL: URL(string: video.url!)!)
             }
-            
-            return mvCell
         }
-        
     }
     
     
@@ -293,6 +325,11 @@ class Timeline: UICollectionViewController, UINavigationControllerDelegate, Segm
         } else {
         // Scrolled to the left; rewind
             self.spb.rewind()
+        }
+        
+        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
+            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
+            updateCell(indexPath: indexPath!)
         }
     }
    

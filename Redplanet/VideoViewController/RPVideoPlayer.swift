@@ -50,23 +50,23 @@ open class RPVideoPlayer: UIView {
      Returns an initialized VideoViewController object
      
      - Parameter videoURL: Local URL to the video asset
-     */
-
+     **/
     
+    // MARK: - Object Life Cycle
+    // (1) Initialize RPVideoPlayer
     override public init (frame : CGRect) {
         super.init(frame : frame)
     }
-    
+    // (2) Handle nil
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+    // (3) Deinitialize/release object when no longer needed
     deinit {
-        self.removeVideoObserver()
-        self.player.pause()
+        player = nil
     }
     
-
+    // Initialization function to SETUP video
     public func setupVideo(videoURL: URL) {
         // Do what you want.
         self.videoURL = videoURL
@@ -85,13 +85,14 @@ open class RPVideoPlayer: UIView {
         layoutSubviews()
     }
     
-    public func removeSetup() {
-        self.removeVideoObserver()
-        self.player.pause()
+    // Function to loop video
+    func loopVideo(_ notification: Notification) {
+        self.player?.seek(to: kCMTimeZero)
+        self.player?.play()
     }
 
     // MARK: - Methods
-    /// Playback automatically loops continuously when true.
+    // Playback automatically loops continuously when true.
     open var playbackLoops: Bool {
         get {
             return (self.player.actionAtItemEnd == .none) as Bool
@@ -105,7 +106,6 @@ open class RPVideoPlayer: UIView {
         }
     }
     
-    
     /// Mutes audio playback when true.
     open var muted: Bool {
         get {
@@ -116,16 +116,17 @@ open class RPVideoPlayer: UIView {
         }
     }
     
-    /// Resumes playback
+    // Resumes playback
     open func play() {
         player.play()
     }
     
-    /// Pauses playback
+    // Pauses playback
     open func pause() {
         player.pause()
     }
     
+    // MARK: - UIGestureRecognizer
     open func longPressed(_ gesture: UILongPressGestureRecognizer) {
         let location = gesture.location(in: gesture.view!)
         rewindTimelineView.zoom = (location.y - rewindTimelineView.center.y - 10.0) / 30.0
@@ -155,12 +156,6 @@ open class RPVideoPlayer: UIView {
             previousLocationX = location.x
         }
     }
-    
-    
-    func removeVideoObserver() {
-        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
-    }
-    
     
     // MARK: - UIView Lifecycle
     override open func didMoveToSuperview() {
@@ -234,18 +229,17 @@ open class RPVideoPlayer: UIView {
     override open func awakeFromNib() {
         super.awakeFromNib()
         
+        // Configure looping for AVPlayer
+        self.player.actionAtItemEnd = .none
+        
+        // Add observer to handle looping of video
+        NotificationCenter.default.addObserver(self, selector: #selector(loopVideo),
+                                               name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+        
         // Play video if autoplays
         if autoplays {
             play()
         }
-        
-        // Add observer
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem, queue: nil, using: { (_) in
-            DispatchQueue.main.async {
-                self.player?.seek(to: kCMTimeZero)
-                self.player?.play()
-            }
-        })
     }
     
     override open func layoutSubviews() {
@@ -271,28 +265,5 @@ open class RPVideoPlayer: UIView {
     }
     
     
-
+    
 }
-//
-//
-//
-//// MARK: - NSNotifications
-//
-//extension RPVideoPlayer {
-//    
-//    // AVPlayerItem
-//    
-//    internal func playerItemDidPlayToEndTime(_ aNotification: Notification) {
-//        if self.playbackLoops == true {
-//            self.player.seek(to: kCMTimeZero)
-//        } else {
-//            self.player.seek(to: kCMTimeZero, completionHandler: { _ in
-//                self.pause()
-//            })
-//        }
-//    }
-//    
-////    internal func playerItemFailedToPlayToEndTime(_ aNotification: Notification) {
-////        self.playbackState = .failed
-////    }
-//}
