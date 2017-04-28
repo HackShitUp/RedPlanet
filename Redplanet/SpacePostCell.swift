@@ -241,7 +241,7 @@ class SpacePostCell: UITableViewCell {
             let viewController = UIViewController()
             // MARK: - RPVideoPlayerView
             let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
-            rpVideoPlayer.setupVideo(videoURL: instanceVideoData!)
+            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)

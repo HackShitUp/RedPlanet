@@ -6,7 +6,6 @@
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
-
 import UIKit
 import CoreData
 import CoreLocation
@@ -16,14 +15,12 @@ import Parse
 import ParseUI
 import Bolts
 
-
-
 /*
  MARK: - Used to add UIButton to bottom center of UIView
- • Hide this button in viewWillAppear and show this button when viewWillDisappear is called in the respective UIViewController's lifecycle hierarchy
+ Hide rpButton in viewWillAppear and
+ show rpButton in viewWillDisappear
 */
 let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-/**/
 
 /*
  MARK: - UIView: Extensions
@@ -61,28 +58,35 @@ extension UIView {
     }
 }
 
-
-
-extension UIView {
-    
-    func takeScreenshot() -> UIImage {
-        
-        // Begin context
-        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, UIScreen.main.scale)
-        
-        // Draw view in that context
-        drawHierarchy(in: self.bounds, afterScreenUpdates: true)
-        
-        // And finally, get image
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return image!
+/*
+ MARK: - Make UIImageView Circular
+*/
+extension UIImageView {
+    func makeCircular(imageView: UIImageView?, borderWidth: CGFloat?, borderColor: UIColor?) {
+        imageView!.layoutIfNeeded()
+        imageView!.layoutSubviews()
+        imageView!.setNeedsLayout()
+        imageView!.layer.cornerRadius = imageView!.frame.size.width/2
+        imageView!.layer.borderColor = borderColor!.cgColor
+        imageView!.layer.borderWidth = borderWidth!
+        imageView!.clipsToBounds = true
     }
 }
 
-
-
+// MARK: - UINavigationBar design configuration
+/*
+ 'Whitens-out' the UINavigationbar and removes the lower grey line border
+ • Shows the UINavigationBar; Set UIImage() instance as background
+ • Apply UIImage to UINavigationBar; Makes it NOT translucent
+*/
+extension UINavigationBar {
+    func whitenBar(navigator: UINavigationController?) {
+        navigator?.setNavigationBarHidden(false, animated: false)
+        navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigator?.navigationBar.shadowImage = UIImage()
+        navigator?.navigationBar.isTranslucent = false
+    }
+}
 
 /*
  MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
@@ -93,6 +97,24 @@ extension CALayer {
         layer!.shadowOffset = CGSize(width: 1, height: 1)
         layer!.shadowRadius = 3
         layer!.shadowOpacity = 0.5
+    }
+}
+
+/*
+ MARK: - Function to generate random colors
+*/
+extension CGFloat {
+    static func random() -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UInt32.max)
+    }
+}
+
+extension UIColor {
+    static func randomColor() -> UIColor {
+        return UIColor(red:   .random(),
+                       green: .random(),
+                       blue:  .random(),
+                       alpha: 1)
     }
 }
 
@@ -123,37 +145,10 @@ extension Sequence {
 }
 
 /*
- MARK: - String Extension that bolds range of string
-*/
-/*
- 
- SHIT DOES NOT WORK!!!
- 
-extension String {
-    func attributedString(from string: String, nonBoldRange: NSRange?) -> NSAttributedString {
-        let fontSize = UIFont.systemFontSize
-        let attrs = [
-            NSFontAttributeName: UIFont.boldSystemFont(ofSize: fontSize),
-            NSForegroundColorAttributeName: UIColor.black
-        ]
-        let nonBoldAttribute = [
-            NSFontAttributeName: UIFont.systemFont(ofSize: fontSize),
-            ]
-        let attrStr = NSMutableAttributedString(string: string, attributes: attrs)
-        if let range = nonBoldRange {
-            attrStr.setAttributes(nonBoldAttribute, range: range)
-        }
-        return attrStr
-    }
-}
-*/
-
-
-/*
  MARK: - DateComponents Time Display
  • getFullTime() = calculate time with full text
  • getShortTime() = calculate time with shortened text
- */
+*/
 extension DateComponents {
     
     // Get Full Time
@@ -219,60 +214,8 @@ extension DateComponents {
 }
 
 
-// MARK: - UINavigationBar design configuration
-/*
- 'Whitens-out' the UINavigationbar and removes the lower grey line border
- (1) Shows the UINavigationBar
- (2) Set UIImage() instance as background
- (3) Apply UIImage to UINavigationBar
- (4) Makes it NOT translucent
-*/
-extension UINavigationBar {
-    func whitenBar(navigator: UINavigationController?) {
-        navigator?.setNavigationBarHidden(false, animated: false)
-        navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigator?.navigationBar.shadowImage = UIImage()
-        navigator?.navigationBar.isTranslucent = false
-    }
-}
 
-
-/*
- MARK: - Make UIImageView Circular
- */
-extension UIImageView {
-    func makeCircular(imageView: UIImageView?, borderWidth: CGFloat?, borderColor: UIColor?) {
-        imageView!.layoutIfNeeded()
-        imageView!.layoutSubviews()
-        imageView!.setNeedsLayout()
-        imageView!.layer.cornerRadius = imageView!.frame.size.width/2
-        imageView!.layer.borderColor = borderColor!.cgColor
-        imageView!.layer.borderWidth = borderWidth!
-        imageView!.clipsToBounds = true
-    }
-}
-
-
-/*
- MARK: - Function to generate random colors
- */
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
-    }
-}
-
-extension UIColor {
-    static func randomColor() -> UIColor {
-        return UIColor(red:   .random(),
-                       green: .random(),
-                       blue:  .random(),
-                       alpha: 1)
-    }
-}
-
-
-
+// MARK: - RPHelpers Class
 class RPHelpers: NSObject {
 
     // MARK: - OpenWeatherMap.org API

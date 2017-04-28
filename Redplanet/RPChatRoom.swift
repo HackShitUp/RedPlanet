@@ -664,8 +664,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     }
                 }
                 
-                // Save Read Receipt for last chat
-                if self.messageObjects.count != 0 {
+                // Save Read Receipt for lastChat IF the receiver is the current user
+                if self.messageObjects.count != 0 && (self.messageObjects.last!.value(forKey: "receiver") as! PFUser).objectId! == PFUser.current()!.objectId! {
                     self.messageObjects.last!["read"] = true
                     self.messageObjects.last!.saveInBackground()
                 }

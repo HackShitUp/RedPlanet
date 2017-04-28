@@ -7,9 +7,7 @@
 //
 
 import UIKit
-
 open class SNUtils {
-    
     open static let screenSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
     
     // Allow you to take a screenshot of the screen
@@ -24,5 +22,4 @@ open class SNUtils {
         UIGraphicsEndImageContext()
         return image
     }
-    
 }

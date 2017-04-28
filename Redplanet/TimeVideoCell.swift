@@ -490,11 +490,11 @@ class TimeVideoCell: UITableViewCell {
             let viewController = UIViewController()
             // MARK: - RPVideoPlayerView
             let rpVideoPlayer = RPVideoPlayerView(frame: viewController.view.bounds)
-            rpVideoPlayer.setupVideo(videoURL: instanceVideoData!)
+            rpVideoPlayer.setupVideo(videoURL: videoUrl!)
             rpVideoPlayer.playbackLoops = true
             viewController.view.addSubview(rpVideoPlayer)
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewController)
-            self.present(rpPopUpVC, animated: true, completion: nil)
+            self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
         }
     }
     
@@ -510,6 +510,8 @@ class TimeVideoCell: UITableViewCell {
         self.videoPreview.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
         self.videoPreview.layer.borderWidth = 3.50
         self.videoPreview.clipsToBounds = true
+        
+        
     }
 
     override func awakeFromNib() {
