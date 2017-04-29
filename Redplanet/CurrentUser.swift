@@ -370,6 +370,10 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        return cell
+        
+        /*
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
@@ -906,7 +910,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             return vCell // return TimeVideoCell.swift
         }
+    */
     } // end cellForRowAt
+ 
     
     
     // MARK: - UIScrollViewDelegate method

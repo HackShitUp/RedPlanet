@@ -211,7 +211,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             // Clear array and append object
                             editObjects.removeAll(keepingCapacity: false)
                             editObjects.append(object!)
-                            
+                            /*
                             // Refresh data if successfull
                             if object!.value(forKey: "contentType") as! String == "tp" {
                                 // Text Post
@@ -243,7 +243,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                                 spaceObject.append(object!)
                                 NotificationCenter.default.post(name: spaceNotification, object: nil)
                             }
-                            
+                            */
                         } else {
                             print(error?.localizedDescription as Any)
                             // MARK: - SVProgressHUD

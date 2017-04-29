@@ -133,7 +133,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
-        self.collectionView?.register(UINib(nibName: "VideoMoment", bundle: nil), forCellWithReuseIdentifier: "VideoMoment")
+        self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
         self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
     }
@@ -269,7 +269,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
             //            if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.row].value(forKey: "videoAsset") != nil
             
             // MOMENT VIDEO CELL
-            let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "VideoMoment", for: indexPath) as! VideoMoment
+            let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             
             // (1) Set user's full name; "realNameOfUser"
             if let user = self.storyPosts[indexPath.row].value(forKey: "byUser") as? PFUser {

@@ -721,6 +721,7 @@ class OtherUser: UITableViewController {
         return UITableViewAutomaticDimension
     }
     
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
@@ -1259,7 +1260,7 @@ class OtherUser: UITableViewController {
             return vCell // return TimeVideoCell.swift
         }
     } // end cellForRowAt
-    
+    */
     
     // MARK: - UIScrollViewDelegate method
     // MARK: - RP Pipeline method

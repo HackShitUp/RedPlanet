@@ -204,7 +204,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-    
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Setup time
@@ -793,7 +793,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
             return vCell // return TimeVideoCell.swift
         }
     }//end cellForRowAt
-    
+    */
     
     // Mark: UITableviewDelegate methods
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

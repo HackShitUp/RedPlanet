@@ -68,12 +68,11 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                 (object: PFObject?, error: Error?) in
                 if error == nil {
                     
-                    // Append object
-                    proPicObject.append(object!)
-                    
-                    // Push VC
-                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+//                    // Append object
+//                    proPicObject.append(object!)
+//                    // Push VC
+//                    let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+//                    self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                     
                 } else {
                     print(error?.localizedDescription as Any)

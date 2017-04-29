@@ -19,6 +19,8 @@ class NewsFeedCell: UITableViewCell {
     // PFObject
     var postObject: PFObject?
 
+    @IBOutlet weak var textPreview: UILabel!
+    @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!

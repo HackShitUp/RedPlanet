@@ -47,6 +47,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     @IBOutlet weak var newComment: UITextView!
     
     @IBAction func backButton(_ sender: AnyObject) {
+        /*
         // Reload view depending on content type
         if commentsObject.last!.value(forKey: "contentType") as! String == "tp" {
             // Send Notification to Text Post
@@ -66,7 +67,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             
         } else if commentsObject.last!.value(forKey: "contentType") as! String == "sp" {
             // Send Notification to Space Post
-            NotificationCenter.default.post(name: spaceNotification, object: nil)
+            NotificationCenter.default.post(name: otherNotification, object: nil)
             
         } else if commentsObject.last!.value(forKey: "contentType") as! String == "itm" {
             // Send Notification to ITM
@@ -76,7 +77,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
             // Send Notification to Text Post
             NotificationCenter.default.post(name: videoNotification, object: nil)
         }
-        
+        */
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }

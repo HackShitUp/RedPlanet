@@ -71,11 +71,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append text post object
-                                textPostObject.append(object)
-                                // Push VC
-                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+//                                // Append text post object
+//                                textPostObject.append(object)
+//                                // Push VC
+//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -104,11 +104,11 @@ class ActivityCell: UITableViewCell {
                             
                             // Check Photos
                             for object in objects! {
-                                // Append object
-                                photoAssetObject.append(object)
-                                // Push VC
-                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                self.delegate?.navigationController!.pushViewController(photoVC, animated: true)
+//                                // Append object
+//                                photoAssetObject.append(object)
+//                                // Push VC
+//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+//                                self.delegate?.navigationController!.pushViewController(photoVC, animated: true)
                             }
                             
                         } else {
@@ -136,14 +136,14 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append necessary data for ProfilePhoto
-                                proPicObject.append(object)
-                                // Append other object
-                                otherObject.append(PFUser.current()!)
-                                otherName.append(PFUser.current()!.username!)
-                                // Push ProfilePhoto view controller
-                                let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                self.delegate!.navigationController!.pushViewController(proPicVC, animated: true)
+//                                // Append necessary data for ProfilePhoto
+//                                proPicObject.append(object)
+//                                // Append other object
+//                                otherObject.append(PFUser.current()!)
+//                                otherName.append(PFUser.current()!.username!)
+//                                // Push ProfilePhoto view controller
+//                                let proPicVC = self.delegate!.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+//                                self.delegate!.navigationController!.pushViewController(proPicVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -170,11 +170,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                sharedObject.append(object)
-                                // Push VC
-                                let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-                                self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
+//                                // Append object
+//                                sharedObject.append(object)
+//                                // Push VC
+//                                let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+//                                self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
                             }
                             
                         } else {
@@ -204,11 +204,13 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
+                                /*
                                 // Append object
                                 spaceObject.append(object)
                                 // Push VC
                                 let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                                 self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                                 */
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -237,19 +239,19 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                itmObject.append(object)
-                                // PHOTO
-                                if object.value(forKey: "photoAsset") != nil {
-                                    // Push to VC
-                                    let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
-                                    self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
-                                } else {
-                                    // VIDEO
-                                    // Push VC
-                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
-                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
-                                }
+//                                // Append object
+//                                itmObject.append(object)
+//                                // PHOTO
+//                                if object.value(forKey: "photoAsset") != nil {
+//                                    // Push to VC
+//                                    let itmVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "itmVC") as! InTheMoment
+//                                    self.delegate?.navigationController?.pushViewController(itmVC, animated: true)
+//                                } else {
+//                                    // VIDEO
+//                                    // Push VC
+//                                    let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
+//                                    self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
+//                                }
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -277,11 +279,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                videoObject.append(object)
-                                // Push VC
-                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+//                                // Append object
+//                                videoObject.append(object)
+//                                // Push VC
+//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                             }
                             
                         } else {
@@ -327,7 +329,7 @@ class ActivityCell: UITableViewCell {
                                     
                                     // PUSH VC
                                     for object in objects! {
-                                        
+                                        /*
                                         // I TEXT POST
                                         if object.value(forKey: "contentType") as! String  == "tp" {
                                             // Append object
@@ -410,7 +412,7 @@ class ActivityCell: UITableViewCell {
                                             let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                                             self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                                         }
-                                        
+                                        */
                                     }
                                     
                                     
@@ -460,7 +462,7 @@ class ActivityCell: UITableViewCell {
                         
                         // PUSH VC
                         for object in objects! {
-                            
+                            /*
                             // I TEXT POST
                             if object.value(forKey: "contentType") as! String  == "tp" {
                                 // Append object
@@ -543,7 +545,7 @@ class ActivityCell: UITableViewCell {
                                 let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                                 self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                             }
-                            
+                            */
                         }
                         
                         
@@ -586,11 +588,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                textPostObject.append(object)
-                                // Push to VC
-                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+//                                // Append object
+//                                textPostObject.append(object)
+//                                // Push to VC
+//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -616,11 +618,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                photoAssetObject.append(object)
-                                // Push to VC
-                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+//                                // Append object
+//                                photoAssetObject.append(object)
+//                                // Push to VC
+//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+//                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -642,11 +644,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                proPicObject.append(object)
-                                // Push to VC
-                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+//                                // Append object
+//                                proPicObject.append(object)
+//                                // Push to VC
+//                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+//                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -669,11 +671,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                sharedObject.append(object)
-                                // Push to VC
-                                let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
-                                self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
+//                                // Append object
+//                                sharedObject.append(object)
+//                                // Push to VC
+//                                let sharedPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharedPostVC") as! SharedPost
+//                                self.delegate?.navigationController?.pushViewController(sharedPostVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -698,15 +700,15 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                spaceObject.append(object)
-                                // Append otherObject
-                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                // Append otherName
-                                otherName.append(object.value(forKey: "toUsername") as! String)
-                                // Push to VC
-                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+//                                // Append object
+//                                spaceObject.append(object)
+//                                // Append otherObject
+//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
+//                                // Append otherName
+//                                otherName.append(object.value(forKey: "toUsername") as! String)
+//                                // Push to VC
+//                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+//                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                             }
                             
                         } else {
@@ -732,6 +734,7 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
+                                /*
                                 // Append object
                                 itmObject.append(object)
                                 // PHOTO
@@ -745,6 +748,7 @@ class ActivityCell: UITableViewCell {
                                     let momentVideoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "momentVideoVC") as! MomentVideo
                                     self.delegate?.navigationController?.pushViewController(momentVideoVC, animated: true)
                                 }
+                                */
                             }
                             
                         } else {
@@ -771,12 +775,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                videoObject.append(object)
-                                
-                                // Push to VC
-                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+//                                // Append object
+//                                videoObject.append(object)
+//                                // Push to VC
+//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                             }
                             
                         } else {
@@ -818,11 +821,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                textPostObject.append(object)
-                                // Push VC
-                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
-                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
+//                                // Append object
+//                                textPostObject.append(object)
+//                                // Push VC
+//                                let textPostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "textPostVC") as! TextPost
+//                                self.delegate?.navigationController?.pushViewController(textPostVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -847,11 +850,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                photoAssetObject.append(object)
-                                // Push VC
-                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
-                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
+//                                // Append object
+//                                photoAssetObject.append(object)
+//                                // Push VC
+//                                let photoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "photoAssetVC") as! PhotoAsset
+//                                self.delegate?.navigationController?.pushViewController(photoVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -876,15 +879,15 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                proPicObject.append(object)
-                                // Append to otherObject
-                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                // Append to otherName
-                                otherName.append(object.value(forKey: "toUsername") as! String)
-                                // Push VC
-                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
-                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
+//                                // Append object
+//                                proPicObject.append(object)
+//                                // Append to otherObject
+//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
+//                                // Append to otherName
+//                                otherName.append(object.value(forKey: "toUsername") as! String)
+//                                // Push VC
+//                                let proPicVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "profilePhotoVC") as! ProfilePhoto
+//                                self.delegate?.navigationController?.pushViewController(proPicVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -909,15 +912,15 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                spaceObject.append(object)
-                                // Append to otherObject
-                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
-                                // Append to otherName
-                                otherName.append(object.value(forKey: "toUsername") as! String)
-                                // Push VC
-                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
-                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+//                                // Append object
+//                                spaceObject.append(object)
+//                                // Append to otherObject
+//                                otherObject.append(object.object(forKey: "toUser") as! PFUser)
+//                                // Append to otherName
+//                                otherName.append(object.value(forKey: "toUsername") as! String)
+//                                // Push VC
+//                                let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
+//                                self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -943,11 +946,11 @@ class ActivityCell: UITableViewCell {
                             self.activity.isEnabled = true
                             
                             for object in objects! {
-                                // Append object
-                                videoObject.append(object)
-                                // Push VC
-                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
-                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
+//                                // Append object
+//                                videoObject.append(object)
+//                                // Push VC
+//                                let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
+//                                self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -969,6 +972,7 @@ class ActivityCell: UITableViewCell {
                         if error == nil {
                             // Find Content
                             for object in objects! {
+                                /*
                                 // TEXT POST
                                 if object.value(forKey: "contentType") as! String == "tp" {
                                     // Append object
@@ -1030,6 +1034,7 @@ class ActivityCell: UITableViewCell {
                                     let videoVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "videoVC") as! VideoAsset
                                     self.delegate?.navigationController?.pushViewController(videoVC, animated: true)
                                 }
+                                */
                             }
                         } else {
                             print(error?.localizedDescription as Any)
@@ -1085,18 +1090,17 @@ class ActivityCell: UITableViewCell {
                     (objects: [PFObject]?, error: Error?) in
                     if error == nil {
                         for object in objects! {
+                            /*
                             // Append object
                             spaceObject.append(object)
-                            
                             // Append to otherObject
                             otherObject.append(PFUser.current()!)
-                            
                             // Append to otherName
                             otherName.append(PFUser.current()!.username!)
-                            
                             // Push VC
                             let spacePostVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "spacePostVC") as! SpacePost
                             self.delegate?.navigationController?.pushViewController(spacePostVC, animated: true)
+                             */
                         }
                     } else {
                         print(error?.localizedDescription as Any)

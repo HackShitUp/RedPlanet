@@ -263,7 +263,8 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-    
+
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "hashtagsCell", for: indexPath) as! HashTagsCell
 
@@ -505,4 +506,5 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
         return cell
     }// end cellForRowAt method
+     */
 }
