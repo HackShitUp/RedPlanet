@@ -138,18 +138,18 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
+                    
+                    // Configure time to check for "Ephemeral" content
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    
                     // (1) MAP the current array, <posts>
                     let users = self.posts.map {$0.object(forKey: "byUser") as! PFUser}
                     // (2) Check if posts array does NOT contain user's object
-                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
-                        // Ephemeral content
-                        let components : NSCalendar.Unit = .hour
-                        let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                        if difference.hour! < 24 {
-                            self.posts.append(object)
-                        } else {
-                            self.skipped.append(object)
-                        }
+                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 {
+                        self.posts.append(object)
+                    } else {
+                        self.skipped.append(object)
                     }
                 }
                 
