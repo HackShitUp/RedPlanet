@@ -83,15 +83,14 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-//                    // Set time constraints
-//                    let components : NSCalendar.Unit = .hour
-//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if difference.hour! < 24 {
-//                        self.stories.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
-                    self.stories.append(object)
+                    // Set time constraints
+                    let components : NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+                        self.stories.append(object)
+                    } else {
+                        self.skipped.append(object)
+                    }
                 }
                 
                 if self.stories.count == 0 {

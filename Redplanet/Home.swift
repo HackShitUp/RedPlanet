@@ -276,6 +276,15 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     
     
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if self.navigationController?.tabBarController?.selectedIndex == 0 {
+            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+        }
+    }
+    
+    
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
