@@ -176,11 +176,10 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             self.privacy.setOn(false, animated: false)
         }
         
-        
         // Pull to refresh action
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        refresher.tintColor = UIColor.white
+        refresher.tintColor = UIColor.clear
         self.tableView!.addSubview(refresher)
         
         // Add UITableFooterView

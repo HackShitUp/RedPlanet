@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import CoreData
 
+import AVFoundation
+import AVKit
 import DZNEmptyDataSet
 
 import Parse
@@ -19,19 +22,18 @@ import SVProgressHUD
 import SDWebImage
 
 
-class Home: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, TwicketSegmentedControlDelegate {
+class Home: UITableViewController, UINavigationControllerDelegate, UITabBarControllerDelegate, TwicketSegmentedControlDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate Constant
     let appDelegate = AppDelegate()
     
     // Array to hold friends (MUTUAL FOLLOWING)
     var friends = [PFObject]()
+    // Array to hold following
+    var following = [PFObject]()
     // Array to hold posts/skipped
     var posts = [PFObject]()
     var skipped = [PFObject]()
-    
-    // Hold likers
-    var likes = [PFObject]()
     
     // Pipeline method
     var page: Int = 50
@@ -41,11 +43,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // Function to refresh data
     func refresh() {
-        fetchFriends()
         self.refresher.endRefreshing()
+        self.tableView!.reloadData()
     }
     
-    // FETCH MUTUAL
+    // QUERY: FRIENDS (MUTUAL)
     func fetchFriends() {
         // MARK: - AppDelegate
         _ = appDelegate.queryRelationships()
@@ -68,7 +70,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                     }
                 }
                 
-                self.fetchFirstPosts()
+                self.fetchFirstPosts(forGroup: self.friends)
                 
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
@@ -79,10 +81,43 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         })
     }
     
+    // QUERY: FOLLOWING
+    func fetchFollowing() {
+        // MARK: - AppDelegate
+        _ = appDelegate.queryRelationships()
+        
+        let following = PFQuery(className: "FollowMe")
+        following.includeKeys(["follower", "following"])
+        following.whereKey("follower", equalTo: PFUser.current()!)
+        following.whereKey("isFollowing", equalTo: true)
+        following.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // MARK: - SVProgressHUD
+                SVProgressHUD.dismiss()
+                // Clear array
+                self.following.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    if !myFollowers.contains(where: {$0.objectId! == (object.object(forKey: "following") as! PFUser).objectId!}) {
+                        self.following.append(object.object(forKey: "following") as! PFUser)
+                    }
+                }
+                
+                self.fetchFirstPosts(forGroup: self.following)
+                
+            } else {
+                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
+                    // MARK: - SVProgressHUD
+                    SVProgressHUD.dismiss()
+                }
+            }
+        }
+    }
+    
     // FETCH POSTS
-    func fetchFirstPosts() {
+    func fetchFirstPosts(forGroup: [PFObject]) {
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", containedIn: self.friends)
+        newsfeeds.whereKey("byUser", containedIn: forGroup)
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.findObjectsInBackground {
@@ -93,30 +128,84 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    // Ephemeral content
-                    let components : NSCalendar.Unit = .hour
-                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
-                        self.posts.append(object)
-                        
-                    } else {
-                        self.skipped.append(object)
-                    }
+//                    // Ephemeral content
+//                    let components : NSCalendar.Unit = .hour
+//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+//                    if difference.hour! < 24 {
+//                        self.posts.append(object)
+//                    } else {
+//                        self.skipped.append(object)
+//                    }
+                    self.posts.append(object)
                 }
+                
+                
+                if self.posts.count == 0 {
+                    // MARK: - DZNEmptyDataSet
+                    self.tableView!.emptyDataSetSource = self
+                    self.tableView!.emptyDataSetDelegate = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.tableView!.reloadData()
         }
     }
     
     
+    
+    // MARK: - TwicketSegmentedControl
     func didSelect(_ segmentIndex: Int) {
-        
+        if segmentIndex == 0 {
+            fetchFriends() // Fetch Friends' Stories
+        } else if segmentIndex == 1 {
+            fetchFollowing() // Fetch Following's Stories
+        }
     }
     
+    
+    // MARK: DZNEmptyDataSet Framework
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.posts.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let str = "💩\nYour Feed Is Empty Today."
+        let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!
+        ]
+        
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Find Friends"
+        let font = UIFont(name: "AvenirNext-Demibold", size: 15.00)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // Push VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController?.pushViewController(contactsVC, animated: true)
+    }
+
+    
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -124,6 +213,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // MARK: - TwicketSegmentedControl
         let frame = CGRect(x: 5, y: view.frame.height / 2 - 20, width: view.frame.width - 10, height: 40)
         let segmentedControl = TwicketSegmentedControl(frame: frame)
         segmentedControl.delegate = self
@@ -135,13 +225,18 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0.00, blue: 0.31, alpha: 1)
         segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 15)!
         self.navigationController?.navigationBar.topItem?.titleView = segmentedControl
+        
+        // Fetch Friends' or Following's Stories depending on index
+        if segmentedControl.selectedSegmentIndex == 0 {
+            fetchFriends()
+        } else {
+            fetchFollowing()
+        }
+        
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
-        
-        // Fetch Friends/Posts
-        _ = fetchFriends()
-        
-        // Configure table view
+        // Configure UITableView
         self.tableView.layoutIfNeeded()
         self.tableView.setNeedsLayout()
         self.tableView!.estimatedRowHeight = 65
@@ -153,14 +248,20 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
-        //        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
+    
+    
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -168,7 +269,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return self.posts.count
     }
     
@@ -202,25 +302,20 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         }
         
         // (3) Set time
-        // Configure initial setup for time
         let from = self.posts[indexPath.row].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+        // MARK: - RPHelpers
         cell.time.text = difference.getFullTime(difference: difference, date: from)
-        
-        
-        
-        
+
         // (4) Set mediaPreview or textPreview
         cell.textPreview.isHidden = true
         cell.mediaPreview.isHidden = true
         
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
-            cell.textPreview.text = self.posts[indexPath.row].value(forKey: "textPost") as! String
+            cell.textPreview.text = "\(self.posts[indexPath.row].value(forKey: "textPost") as! String)"
             cell.textPreview.isHidden = false
-            
-            
         } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
             cell.mediaPreview.image = UIImage(named: "SharedPostIcon")
             cell.mediaPreview.isHidden = false
@@ -228,27 +323,31 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
             cell.mediaPreview.image = UIImage(named: "CSpacePost")
             cell.mediaPreview.isHidden = false
         } else {
-            
             if let photo = self.posts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+                // MARK: - SDWebImage
                 cell.mediaPreview.sd_setImage(with: URL(string: photo.url!)!)
-                cell.mediaPreview.isHidden = false
             } else if let video = self.posts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                cell.mediaPreview.isHidden = false
-                let rpVideoPlayer = RPVideoPlayerView()
-                rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
-                cell.mediaPreview.addSubview(rpVideoPlayer)
-                rpVideoPlayer.muted = true
-                rpVideoPlayer.autoplays = true
-                rpVideoPlayer.playbackLoops = true
-                rpVideoPlayer.play()
+                // MARK: - AVPlayer
+                let player = AVPlayer(url: URL(string: video.url!)!)
+                let playerLayer = AVPlayerLayer(player: player)
+                playerLayer.frame = cell.mediaPreview.bounds
+                playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+                cell.mediaPreview.contentMode = .scaleAspectFit
+                cell.mediaPreview.layer.addSublayer(playerLayer)
+                player.isMuted = true
+                player.play()
             }
+            cell.mediaPreview.isHidden = false
         }
-        
+        // MARK: - RPHelpers
         cell.textPreview.roundAllCorners(sender: cell.textPreview)
         cell.mediaPreview.roundAllCorners(sender: cell.mediaPreview)
         
         return cell
     }
-
-
+    
+    // MARK: - UITableView Delegate Methods
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+    }
 }

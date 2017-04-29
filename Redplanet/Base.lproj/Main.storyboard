@@ -2181,7 +2181,7 @@
                                                     <constraint firstAttribute="height" constant="25" id="SO8-bm-pp0"/>
                                                     <constraint firstAttribute="width" constant="25" id="bLV-EO-vGO"/>
                                                 </constraints>
-                                                <state key="normal" image="Moon"/>
+                                                <state key="normal" image="Stickers"/>
                                                 <connections>
                                                     <action selector="showStickers:" destination="NoV-Aw-9wH" eventType="touchUpInside" id="mxG-Pl-57o"/>
                                                 </connections>
@@ -2618,13 +2618,11 @@
             </objects>
             <point key="canvasLocation" x="2002" y="529"/>
         </scene>
-        <!--Navigator-->
+        <!--Chats-->
         <scene sceneID="3nD-Oc-X6H">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="frc-a6-KQI" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="Chats" id="fR1-eB-hJf">
-                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Chats" image="Chats" id="fR1-eB-hJf"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="V76-Gb-DFZ">
@@ -3446,13 +3444,11 @@
             </objects>
             <point key="canvasLocation" x="-81" y="-2865"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Discover-->
         <scene sceneID="y6y-X2-aOf">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ha0-l4-bqf" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="Search" id="MUZ-Nz-NN5">
-                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Discover" image="Search" id="MUZ-Nz-NN5"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Sef-25-fEA">
@@ -4537,13 +4533,11 @@
             </objects>
             <point key="canvasLocation" x="401" y="529"/>
         </scene>
-        <!--Navigator-->
+        <!--Activity-->
         <scene sceneID="CfS-Ef-186">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cU2-FF-485" customClass="Navigator" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="Comet" id="X76-jS-IPb">
-                        <inset key="imageInsets" minX="0.0" minY="5" maxX="0.0" maxY="-5"/>
-                    </tabBarItem>
+                    <tabBarItem key="tabBarItem" title="Activity" image="Comet" id="X76-jS-IPb"/>
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="BDr-aw-Ghe">
@@ -4959,11 +4953,10 @@
         <image name="Left_50" width="25" height="25"/>
         <image name="Like" width="51" height="51"/>
         <image name="Mail" width="48" height="48"/>
-        <image name="Moon" width="41" height="41"/>
         <image name="More" width="25" height="25"/>
         <image name="MoreBlack" width="50" height="50"/>
         <image name="Name" width="48" height="48"/>
-        <image name="NewsFeeds" width="24" height="24"/>
+        <image name="NewsFeeds" width="25" height="25"/>
         <image name="Nuke" width="32" height="32"/>
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
@@ -4976,6 +4969,7 @@
         <image name="Settings" width="24" height="24"/>
         <image name="Share" width="47" height="48"/>
         <image name="ShareOP" width="75" height="75"/>
+        <image name="Stickers" width="77" height="77"/>
         <image name="SwapCamera" width="243" height="256"/>
         <image name="User" width="48" height="48"/>
         <image name="User-48" width="24" height="24"/>

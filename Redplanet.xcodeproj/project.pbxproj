@@ -564,6 +564,14 @@
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
+				7EE697CB1EAADB77004F4E24 /* SharedPost */,
+				7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */,
+				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
+				7EE697C41EAAC440004F4E24 /* VideoCell */,
+				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
+				7E8E54091EB29CF100292B8C /* MomentVideo */,
+				7E972FED1EA97D810047F4D4 /* TextPost */,
 			);
 			name = POSTS;
 			sourceTree = "<group>";
@@ -663,17 +671,9 @@
 		7E972FE31EA9555E0047F4D4 /* STORIES */ = {
 			isa = PBXGroup;
 			children = (
-				7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */,
-				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
+				7E80352D1EB4102700C9BA63 /* Home.swift */,
 				7E6F36AF1EB3FA9000136163 /* Stories.swift */,
-				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
-				7EE697CB1EAADB77004F4E24 /* SharedPost */,
-				7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */,
-				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
-				7EE697C41EAAC440004F4E24 /* VideoCell */,
-				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
-				7E8E54091EB29CF100292B8C /* MomentVideo */,
-				7E972FED1EA97D810047F4D4 /* TextPost */,
+				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
 			);
 			name = STORIES;
 			sourceTree = "<group>";
@@ -1043,14 +1043,6 @@
 				7EDEB9FA1EA5CD7700EEE4E1 /* Banner.swift */,
 			);
 			name = BRYXBanner;
-			sourceTree = "<group>";
-		};
-		7EC05B0D1DB5EE460039B357 /* NEWS_FEEDS */ = {
-			isa = PBXGroup;
-			children = (
-				7E80352D1EB4102700C9BA63 /* Home.swift */,
-			);
-			name = NEWS_FEEDS;
 			sourceTree = "<group>";
 		};
 		7EC05B181DB5FABF0039B357 /* CurrentUser */ = {

@@ -14,7 +14,7 @@ import Bolts
 class NewsFeedCell: UITableViewCell {
     
     // Parent VC
-    var delegate: UINavigationController?
+    var delegate: UIViewController?
     
     // PFObject
     var postObject: PFObject?

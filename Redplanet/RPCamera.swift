@@ -248,14 +248,17 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
 
     // Function to configure view
     func configureView() {
-        self.view.layer.cornerRadius = 8.00
-        self.view.clipsToBounds = true
-        
+        // Configure UIStatusBar
         UIApplication.shared.statusBarStyle = .lightContent
         UIApplication.shared.isStatusBarHidden = false
         self.setNeedsStatusBarAppearanceUpdate()
         
+        // Hide UINavigationBar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        // MRK: - RPHelpers
+        self.view.roundAllCorners(sender: self.view)
+        
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowRightViewController = true
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
@@ -309,6 +312,12 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             isRearCam = true
         }
         
+        // MARK: - RPHelpers
+        self.homeButton.roundAllCorners(sender: self.homeButton)
+        
+        // MARK: - RPHelpers
+        self.homeButton.roundAllCorners(sender: self.homeButton)
+        
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
         captureTap.numberOfTapsRequired = 1
@@ -336,14 +345,11 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
                        self.homeButton,
                        self.newTextButton] as [Any]
         for b in buttons {
+            // MARK: - RPHelpers
             (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
             self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
             self.view.bringSubview(toFront: self.captureButton)
         }
-        
-        // Make homeButton circular
-        self.homeButton.layer.cornerRadius = self.homeButton.frame.size.width/2
-        self.homeButton.clipsToBounds = true
     }
     
     override func viewDidLoad() {

@@ -38,12 +38,14 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     func fetchStories() {
         
-        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb"]
+        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
-        //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
+        
+//        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
         newsfeeds.whereKey("objectId", containedIn: keys)
+        
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
@@ -62,7 +64,11 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                 }
                 
                 // MARK: - SegmentedProgressBar
-                self.spb = SegmentedProgressBar(numberOfSegments: self.storyPosts.count, duration: 10)
+                if self.storyPosts.count == 0 {
+                    self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
+                } else {
+                    self.spb = SegmentedProgressBar(numberOfSegments: self.storyPosts.count, duration: 10)
+                }
                 self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 4)
                 self.spb.topColor = UIColor.white
                 self.spb.layer.applyShadow(layer: self.spb.layer)
@@ -161,16 +167,10 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         return self.storyPosts.count
     }
     
-    //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    //        if #available(iOS 10.0, *) {
-    //            return UICollectionViewFlowLayoutAutomaticSize
-    //        } else {
-    //            // Fallback on earlier versions
-    //            return self.view.bounds.size
-    //        }
-    //        return CGSize(width: 375, height: 800)
-    //    }
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: 375, height: 800)
+    }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         

@@ -192,19 +192,19 @@ extension DateComponents {
         if difference!.second! <= 0 {
             return "now"
         } else if difference!.second! > 0 && difference!.minute! == 0 {
-            return "\(difference!.second!)s ago"
+            return "\(difference!.second!)s"
             
         } else if difference!.minute! > 0 && difference!.hour! == 0 {
-            return "\(difference!.minute!)m ago"
+            return "\(difference!.minute!)m"
             
         } else if difference!.hour! > 0 && difference!.day! == 0 {
             if difference!.hour! == 1 {
                 return "1hr ago"
             }
-            return "\(difference!.hour!)hrs ago"
+            return "\(difference!.hour!)h"
         } else if difference!.day! > 0 && difference!.weekOfMonth! == 0 {
 
-            return "\(difference!.day!)d ago"
+            return "\(difference!.day!)d"
         }
         
         let createdDate = DateFormatter()
