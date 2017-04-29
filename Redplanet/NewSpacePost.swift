@@ -54,11 +54,12 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     @IBAction func editAction(_ sender: Any) {
         // If photo exists
         if self.mediaAsset.image != nil {
-            // Show CLImageEditor
+            // MARK: - CLImageEditor
             let editor = CLImageEditor(image: self.mediaAsset.image!)
             editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
             editor?.delegate = self
-            // Present CLImageEditor
+            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+            tool?.title = "Emoji"
             self.present(editor!, animated: true, completion: nil)
         }
     }
@@ -544,10 +545,12 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             // Dismiss view controller
             self.dismiss(animated: true, completion: nil)
             
-            // CLImageEditor
+            // MARK: - CLImageEditor
             let editor = CLImageEditor(image: self.mediaAsset.image!)
             editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
             editor?.delegate = self
+            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+            tool?.title = "Emoji"
             self.present(editor!, animated: true, completion: nil)
         }
         

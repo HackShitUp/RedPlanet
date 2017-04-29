@@ -101,10 +101,12 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
 
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBAction func editPhoto(_ sender: AnyObject) {
-        // Present CLImageEditor
+        // MARK: - CLImageEditor; Modified "CLEmoticonTool" title
         let editor = CLImageEditor(image: self.mediaAsset.image!)
         editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
+        let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+        tool?.title = "Emoji"
         self.present(editor!, animated: true, completion: nil)
     }
     

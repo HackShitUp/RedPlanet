@@ -34,10 +34,12 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
     }
     
     @IBAction func edit(_ sender: AnyObject) {
-        // CLImageEditor
+        // MARK: - CLImageEditor
         let editor = CLImageEditor(image: self.rpUserProPic.image!)
         editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
         editor?.delegate = self
+        let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+        tool?.title = "Emoji"
         self.present(editor!, animated: true, completion: nil)
     }
     

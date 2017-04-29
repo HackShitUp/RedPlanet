@@ -326,10 +326,12 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // Dismiss
             self.imagePicker.dismiss(animated: true, completion: nil)
             
-            // CLImageEditor
+            // MARK: - CLImageEditor
             let editor = CLImageEditor(image: image)
             editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
             editor?.delegate = self
+            let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+            tool?.title = "Emoji"
             self.present(editor!, animated: true, completion: nil)
         }
         

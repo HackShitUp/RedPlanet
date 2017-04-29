@@ -1796,7 +1796,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="4Ah-DF-j6r"/>
                                                         <constraint firstAttribute="height" constant="14" id="tZB-8V-AtW"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12.989999771118164"/>
                                                     <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -2856,7 +2856,7 @@
                                                         <constraint firstAttribute="height" constant="22" id="WMT-38-ve6"/>
                                                         <constraint firstAttribute="width" constant="73" id="hGb-yf-juh"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12.989999771118164"/>
                                                     <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>

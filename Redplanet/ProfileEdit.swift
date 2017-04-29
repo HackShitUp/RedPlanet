@@ -450,10 +450,11 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     self.dismiss(animated: true, completion: nil)
                     
                     // MARK: - CLImageEditor
-                    // Show Editing Options
                     let editor = CLImageEditor(image: self.rpUserProPic.image!)
                     editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
                     editor?.delegate = self
+                    let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+                    tool?.title = "Emoji"
                     self.present(editor!, animated: true, completion: nil)
                 }
             } else {
