@@ -35,16 +35,26 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     var posts = [PFObject]()
     var skipped = [PFObject]()
     
-    // Pipeline method
+    // PFQuery Limit - Pipeline method
     var page: Int = 50
     
-    // Refresher
+    // UIRefreshControl
     var refresher: UIRefreshControl!
+    
+    // MARK: - TwicketSegmentedControl
+    var segmentedControl: TwicketSegmentedControl!
     
     // Function to refresh data
     func refresh() {
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            fetchFriends()
+        case 1:
+            fetchFollowing()
+        default:
+            break
+        }
         self.refresher.endRefreshing()
-        self.tableView!.reloadData()
     }
     
     // QUERY: FRIENDS (MUTUAL)
@@ -128,20 +138,23 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.skipped.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-//                    // Ephemeral content
-//                    let components : NSCalendar.Unit = .hour
-//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if difference.hour! < 24 {
-//                        self.posts.append(object)
-//                    } else {
-//                        self.skipped.append(object)
-//                    }
-                    self.posts.append(object)
+                    // (1) MAP the current array, <posts>
+                    let users = self.posts.map {$0.object(forKey: "byUser") as! PFUser}
+                    // (2) Check if posts array does NOT contain user's object
+                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
+                        // Ephemeral content
+                        let components : NSCalendar.Unit = .hour
+                        let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                        if difference.hour! < 24 {
+                            self.posts.append(object)
+                        } else {
+                            self.skipped.append(object)
+                        }
+                    }
                 }
                 
-                
+                // MARK: - DZNEmptyDataSet
                 if self.posts.count == 0 {
-                    // MARK: - DZNEmptyDataSet
                     self.tableView!.emptyDataSetSource = self
                     self.tableView!.emptyDataSetDelegate = self
                 }
@@ -215,7 +228,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         
         // MARK: - TwicketSegmentedControl
         let frame = CGRect(x: 5, y: view.frame.height / 2 - 20, width: view.frame.width - 10, height: 40)
-        let segmentedControl = TwicketSegmentedControl(frame: frame)
+        segmentedControl = TwicketSegmentedControl(frame: frame)
         segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
         segmentedControl.setSegmentItems(["FRIENDS", "FOLLOWING"])
