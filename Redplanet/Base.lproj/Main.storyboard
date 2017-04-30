@@ -2641,9 +2641,8 @@
         <!--Discover-->
         <scene sceneID="sA8-Aa-G9o">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rGR-WB-qOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <collectionViewController id="GrF-aX-oeE" customClass="Discover" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="u6d-uY-o5J">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="u6d-uY-o5J">
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -2767,6 +2766,7 @@
                         <outlet property="searchBar" destination="fgu-rS-3cJ" id="JnJ-xe-qXE"/>
                     </connections>
                 </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rGR-WB-qOB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1486.5" y="528.5"/>
         </scene>
@@ -2789,28 +2789,77 @@
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NoC-zV-vDO">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="175"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="kCd-Uy-A4u">
+                                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="kCd-Uy-A4u">
                                                 <size key="itemSize" width="125" height="175"/>
                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                                 <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             </collectionViewFlowLayout>
                                             <cells>
-                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="GUv-Tw-uVt">
+                                                <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="storyCell" id="GUv-Tw-uVt" customClass="StoryCell" customModule="Redplanet" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="125" height="175"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                                         <rect key="frame" x="0.0" y="0.0" width="125" height="175"/>
                                                         <autoresizingMask key="autoresizingMask"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-45-UuW">
+                                                                <rect key="frame" x="8" y="8" width="109" height="41"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="109" id="Kbd-lI-6DV"/>
+                                                                    <constraint firstAttribute="height" constant="41" id="qwi-qp-HyS"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a story of a boy who went to cry wolf" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFq-5f-3b0">
+                                                                <rect key="frame" x="8" y="85" width="109" height="82"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="109" id="BkH-cR-oQj"/>
+                                                                    <constraint firstAttribute="height" constant="82" id="LbA-vv-Qhb"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" name="AvenirNext-Heavy" family="Avenir Next" pointSize="15"/>
+                                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V2G-vQ-4pW">
+                                                                <rect key="frame" x="2" y="2" width="120" height="170"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="120" id="8nd-5r-iOi"/>
+                                                                    <constraint firstAttribute="height" constant="170" id="dgg-5y-B3O"/>
+                                                                </constraints>
+                                                            </imageView>
+                                                        </subviews>
                                                     </view>
+                                                    <constraints>
+                                                        <constraint firstItem="Gt7-45-UuW" firstAttribute="leading" secondItem="GUv-Tw-uVt" secondAttribute="leading" constant="8" id="3Ds-Re-RIQ"/>
+                                                        <constraint firstAttribute="trailing" secondItem="vFq-5f-3b0" secondAttribute="trailing" constant="8" id="RVN-jF-Idg"/>
+                                                        <constraint firstItem="V2G-vQ-4pW" firstAttribute="leading" secondItem="GUv-Tw-uVt" secondAttribute="leading" constant="2" id="U8t-6d-Jg4"/>
+                                                        <constraint firstItem="V2G-vQ-4pW" firstAttribute="top" secondItem="GUv-Tw-uVt" secondAttribute="top" constant="2" id="WU3-EE-86M"/>
+                                                        <constraint firstItem="Gt7-45-UuW" firstAttribute="top" secondItem="GUv-Tw-uVt" secondAttribute="top" constant="8" id="XFr-5m-yVJ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="vFq-5f-3b0" secondAttribute="bottom" constant="8" id="aO5-jo-8dP"/>
+                                                        <constraint firstItem="vFq-5f-3b0" firstAttribute="leading" secondItem="GUv-Tw-uVt" secondAttribute="leading" constant="8" id="cg3-9O-ODa"/>
+                                                        <constraint firstAttribute="trailing" secondItem="V2G-vQ-4pW" secondAttribute="trailing" constant="3" id="jJ1-IE-TLx"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Gt7-45-UuW" secondAttribute="trailing" constant="8" id="sWG-fH-NKD"/>
+                                                        <constraint firstAttribute="bottom" secondItem="V2G-vQ-4pW" secondAttribute="bottom" constant="3" id="yAR-ex-cnR"/>
+                                                    </constraints>
                                                     <size key="customSize" width="125" height="175"/>
+                                                    <connections>
+                                                        <outlet property="publisherName" destination="Gt7-45-UuW" id="Yro-H4-S7O"/>
+                                                        <outlet property="storyCover" destination="V2G-vQ-4pW" id="tli-qQ-TL5"/>
+                                                        <outlet property="storyTitle" destination="vFq-5f-3b0" id="qjR-B3-Phi"/>
+                                                    </connections>
                                                 </collectionViewCell>
                                             </cells>
                                         </collectionView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="collectionView" destination="NoC-zV-vDO" id="md1-NV-3UQ"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="exploreCell" rowHeight="125" id="v5O-3N-AUW" customClass="ExploreCell" customModule="Redplanet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="203" width="375" height="125"/>
@@ -3492,7 +3541,6 @@
         <!--Discover-->
         <scene sceneID="y6y-X2-aOf">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="1lK-gO-mTP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ha0-l4-bqf" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Discover" image="Search" id="MUZ-Nz-NN5"/>
                     <toolbarItems/>
@@ -3506,6 +3554,7 @@
                         <segue destination="GrF-aX-oeE" kind="relationship" relationship="rootViewController" id="JeH-dB-Ktr"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1lK-gO-mTP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="900" y="528"/>
         </scene>

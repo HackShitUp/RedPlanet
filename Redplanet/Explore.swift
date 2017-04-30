@@ -15,90 +15,12 @@ import Bolts
 
 class Explore: UITableViewController {
     
-    
-    var coverPhotos = [String]()
-    var coverTitles = [String]()
-    
-    
-    func fetchStories() {
-        let ads = PFQuery(className: "Ads")
-        ads.order(byDescending: "createdAt")
-        ads.findObjectsInBackground {
-            (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                self.coverPhotos.removeAll(keepingCapacity: false)
-                self.coverTitles.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    self.fetchStory(mediaSource: object.value(forKey: "URL") as! String)
-                }
-                
-                print("TITLES:\(self.coverTitles)\n")
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-    }
-    
-    
-    
-    // NYTIMES, WSJ, BUZZFEED, MTV, MASHABLE
-    func fetchStory(mediaSource: String?) {
-        let url = URL(string: mediaSource!)
-        let session = URLSession.shared
-        let task = session.dataTask(with: url!) {
-            (data: Data?, response: URLResponse?, error: Error?) in
-            if error == nil {
-
-                if let webContent = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: webContent, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        
-                        // Optional Chaining: JSON Data
-                        if let items = json.value(forKey: "articles") as? Array<Any> {
-                            if let first = items[0] as? AnyObject {
-                                if let imageURL = first.value(forKey: "urlToImage") as? String {
-                                    self.coverPhotos.append(imageURL)
-                                }
-                                let title = first.value(forKey: "title") as! String
-                                self.coverTitles.append(title)
-                            }
-                            print("titles: \(self.coverTitles)\n")
-                        }
-                        
-                        // Reload data in the main thread
-                        DispatchQueue.main.async {
-                            self.tableView!.reloadData()
-                        }
-                    } catch {
-                        print("ERROR: Unable to read JSON data.")
-                        // MARK: - SVProgressHUD
-//                        SVProgressHUD.dismiss()
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-//                SVProgressHUD.dismiss()
-            }
-        }
-        // Resume query if ended
-        task.resume()
-    }
-
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.fetchStories()
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
     }
 
     override func didReceiveMemoryWarning() {
@@ -106,8 +28,9 @@ class Explore: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    // MARK: - Table view data source
+    
 
+    // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 3
@@ -116,16 +39,30 @@ class Explore: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 && indexPath.row == 0 {
+            return 175
+        } else {
+            return 125
+        }
     }
-    */
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.section == 0 && indexPath.row == 0 {
+            let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "exploreHeaderCell", for: indexPath) as! ExploreHeaderCell
+            
+            ehCell.fetchStories()
+            
+            return ehCell
+        } else {
+            let eCell = self.tableView.dequeueReusableCell(withIdentifier: "exploreCell", for: indexPath) as! ExploreCell
+            
+            return eCell
+        }
+
+    }
 
     /*
     // Override to support conditional editing of the table view.
