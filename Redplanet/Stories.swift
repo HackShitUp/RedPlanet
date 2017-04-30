@@ -38,13 +38,13 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     func fetchStories() {
         
-        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
+//        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
         newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         
 //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
-        newsfeeds.whereKey("objectId", containedIn: keys)
+//        newsfeeds.whereKey("objectId", containedIn: keys)
         
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -55,12 +55,12 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                 self.storyPosts.removeAll(keepingCapacity: false)
                 for object in objects! {
                     // Ephemeral content
-//                    let components: NSCalendar.Unit = .hour
-//                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-//                    if difference.hour! < 24 {
-//                        self.storyPosts.append(object)
-//                    }
-                    self.storyPosts.append(object)
+                    let components: NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+                        self.storyPosts.append(object)
+                    }
+//                    self.storyPosts.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
@@ -134,7 +134,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         self.collectionView!.isPagingEnabled = true
         self.collectionView!.backgroundColor = UIColor.black
         
-        // Fetch stories
+        // Fetch Stories
         fetchStories()
         
         // Register NIBS

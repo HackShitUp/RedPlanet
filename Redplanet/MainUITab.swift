@@ -52,10 +52,15 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         // Set tabBar's tintColor and tabBar's barTintColor
         self.tabBar.tintColor = UIColor.black
         self.tabBar.barTintColor = UIColor.white
+        
+        // Remove border
+        self.tabBar.backgroundImage = UIImage()
+        self.tabBar.shadowImage = UIImage()
+        self.tabBar.isTranslucent = false
 
         // Set font
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
-                                         size: 10.0)!], for: .normal)
+                                         size: 11)!], for: .normal)
     }
 }

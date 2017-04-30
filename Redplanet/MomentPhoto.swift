@@ -25,7 +25,10 @@ class MomentPhoto: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+        // Apply shadows
+        self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
+        self.time.layer.applyShadow(layer: self.time.layer)
+        self.moreButton.layer.applyShadow(layer: self.moreButton.layer)
     }
 
 }

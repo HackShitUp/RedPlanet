@@ -50,11 +50,9 @@ class OtherUser: UITableViewController {
         // Remove last
         otherObject.removeLast()
         otherName.removeLast()
-        
         // Pop view controller
         _ = _ = self.navigationController?.popViewController(animated: true)
     }
-    
     
     // Function to show Chat
     func showChat() {
@@ -85,7 +83,6 @@ class OtherUser: UITableViewController {
             preferredStyle: .alert)
         
         let report = UIAlertAction(title: "Report", style: .destructive) { (action: UIAlertAction!) in
-            
             let answer = alert.textFields![0]
             
             // REPORTED
@@ -117,11 +114,9 @@ class OtherUser: UITableViewController {
             })
         }
         
-        
         let cancel = UIAlertAction(title: "Cancel",
                                    style: .cancel,
                                    handler: nil)
-        
         
         alert.addTextField(configurationHandler: nil)
         alert.addAction(report)
@@ -191,7 +186,6 @@ class OtherUser: UITableViewController {
         })
     }
     
-    
     // Function to Report/Block:
     func reportOrBlock() {
         
@@ -252,8 +246,6 @@ class OtherUser: UITableViewController {
         dialogController.show(in: self)
     }
     
-    
-
     @IBAction func moreAction(_ sender: Any) {
 
         // MARK: - AZDialogViewController
@@ -338,9 +330,7 @@ class OtherUser: UITableViewController {
             dialogController.show(in: self)
         }
     }
-    
-    
-    
+
     // Function to query other user's content
     func queryContent() {
         // User's Posts
@@ -463,8 +453,6 @@ class OtherUser: UITableViewController {
         self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
     
-    
-    
     // Function to refresh
     func refresh() {
         // Query Content
@@ -474,6 +462,8 @@ class OtherUser: UITableViewController {
         // Reload data
         self.tableView!.reloadData()
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -542,7 +532,9 @@ class OtherUser: UITableViewController {
         SDImageCache.shared().clearDisk()
     }
     
-    // MARK: - UITableViewHeader Section View
+    
+    
+    // MARK: - UITableView Data Source Methods
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
         // created a constant that stores a registered header
@@ -658,10 +650,7 @@ class OtherUser: UITableViewController {
         return header
     }
     
-    
-    // header height
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
         let label:UILabel = UILabel(frame: CGRect(x: 8, y: 356, width: 359, height: CGFloat.greatestFiniteMagnitude))
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -693,10 +682,6 @@ class OtherUser: UITableViewController {
         return CGFloat(425 + label.frame.size.height)
     }
     
-    
-    
-    
-    // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -712,7 +697,6 @@ class OtherUser: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
-    
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
@@ -784,27 +768,25 @@ class OtherUser: UITableViewController {
         return cell
     }
     
-    // MARK: - UIScrollViewDelegate method
-    // MARK: - RP Pipeline method
+    
+    // MARK: - UITableView Delegate Method
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+    }
+    
+    // MARK: - UIScrollView Delegate Method
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
-            loadMore()
+            // If posts on server are > than shown
+            if self.page <= self.stories.count + self.skipped.count {
+                // Increase page size to load more posts
+                page = page + 50
+                // Query content
+                self.queryContent()
+            }
         }
     }
-    
-    
-    func loadMore() {
-        // If posts on server are > than shown
-        if self.page <= self.stories.count + self.skipped.count {
-            // Increase page size to load more posts
-            page = page + 50
-            // Query content
-            self.queryContent()
-        }
-    }
-    
-    
-    // ScrollView -- Pull To Pop
+
     override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if self.tableView!.contentOffset.y <= -140.00 {
             refresher.endRefreshing()

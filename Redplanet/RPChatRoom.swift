@@ -788,6 +788,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Extension: UINavigationBar && hide UITabBar
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
@@ -874,9 +875,17 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.newChat.resignFirstResponder()
         // Remove observers
         self.removeObservers()
+        // Set isTranslucent to FALSE
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
         // MARK: - MainUITab
         // Show button
         rpButton.isHidden = false
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // Set isTranslucent to FALSE
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
 
     override func didReceiveMemoryWarning() {

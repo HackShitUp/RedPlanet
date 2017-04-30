@@ -145,10 +145,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.refresher.endRefreshing()
     }
     
-    // MARK: - UITabBarController Delegate Method
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -227,6 +224,13 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+    
+    
+    
+    // MARK: - UITabBarController Delegate Method
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
     
@@ -430,6 +434,11 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         return cell
     }
  
+    // MARK: - UITableView Delegate Methods
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+    }
+    
     
     
     // MARK: - UIScrollView Delegate Method

@@ -189,14 +189,17 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "💩\nYour Feed Is Empty Today."
+        var str: String?
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            str = "💩\nYour Friensd'\nFeed Is Empty Today."
+        } else {
+            str = "💩\nYour Following\nFeed Is Empty Today."
+        }
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!
-        ]
-        
-        return NSAttributedString(string: str, attributes: attributeDictionary)
+            NSFontAttributeName: font!]
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
     
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
@@ -232,11 +235,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         segmentedControl.delegate = self
         segmentedControl.isSliderShadowHidden = false
         segmentedControl.setSegmentItems(["FRIENDS", "FOLLOWING"])
-        segmentedControl.defaultTextColor = UIColor.darkGray
+        segmentedControl.defaultTextColor = UIColor.black
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
         segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0.00, blue: 0.31, alpha: 1)
-        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 15)!
+        segmentedControl.font = UIFont(name: "AvenirNext-Bold", size: 12)!
         self.navigationController?.navigationBar.topItem?.titleView = segmentedControl
         
         // Fetch Friends' or Following's Stories depending on index
@@ -249,6 +252,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
+        // Set UITabBarController Delegate
+        self.tabBarController?.delegate = self
+        
         // Configure UITableView
         self.tableView.layoutIfNeeded()
         self.tableView.setNeedsLayout()
@@ -257,7 +263,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         self.tableView!.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
         
-        // Pull to refresh action
+        // UIRefreshControl - Pull to refresh
         refresher = UIRefreshControl()
         refresher.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         refresher.tintColor = UIColor.white
@@ -279,7 +285,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UITabBarController Delegate Method
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if self.navigationController?.tabBarController?.selectedIndex == 0 {
-            self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            DispatchQueue.main.async {
+                self.tableView!.setContentOffset(CGPoint.zero, animated: true)
+            }
         }
     }
     
@@ -372,4 +380,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
         self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
     }
+    
+    
+    
 }

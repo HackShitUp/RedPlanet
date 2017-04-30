@@ -144,7 +144,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
     
     
     
-    // MARK: DZNEmptyDataSet Framework
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.stories.count == 0 {
             return true
@@ -153,7 +153,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         }
     }
 
-    
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         return UIImage(named: "Stickers")
     }
@@ -169,7 +168,6 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
-    // Button title
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
         // Title for button
         let str = "Share Something"
@@ -182,13 +180,12 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
-    // Delegate method
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
         self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
     
-    // MARK: - Table view data source
+    // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
@@ -277,9 +274,11 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         return cell
     }
  
+    // Mark: UITableView Delegate Methods
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+    }
     
-    
-    // Mark: UITableviewDelegate methods
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
@@ -334,6 +333,7 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         
         return [unsave]
     }
+
     
-    
+        
 }
