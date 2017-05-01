@@ -35,62 +35,44 @@ class EHeaderCell: UITableViewCell, UICollectionViewDataSource, UICollectionView
                 for object in objects! {
                     // (1) Append Source URLS
                     self.sourceObjects.append(object)
+                    // (2) Append publisherNames, and articles
+                    URLSession.shared.dataTask(with: URL(string: object.value(forKey: "URL") as! String)!,
+                                               completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+                                                if error != nil {
+                                                    print(error?.localizedDescription as Any)
+                                                    return
+                                                }
+                                                
+                                                do  {
+                                                    
+                                                    // Traverse JSON data to "Mutable Containers"
+                                                    let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+                                                    
+                                                    // (1) Get Source (publisherNames) --> remove "-" and capitalize first word
+                                                    let source = ((json as AnyObject).value(forKey: "source") as! String).replacingOccurrences(of: "-", with: " ")
+                                                    self.publisherNames.append(source.localizedCapitalized)
+                                                    // (2) Get First Article for each source
+                                                    let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
+                                                    let firstSource = items![0]
+                                                    self.articles.append(firstSource as AnyObject)
+                                                    
+                                                    // Reload data in main thread
+                                                    DispatchQueue.main.async {
+                                                        self.collectionView.reloadData()
+                                                    }
+                                                    
+                                                } catch let error {
+                                                    print(error.localizedDescription as Any)
+                                                }
+                    }) .resume()
                 }
-                
-                // Fetch Articles with Completion Handler to return data when called asyncrhonously...
-                self.fetchArticles(forObjects: self.sourceObjects, completion: { (articleObjects, publisherNames) in
-//                    print("Publisher Names: \(publisherNames)")
-//                    print("ARTICLE OBJECTS: \(articleObjects)")
-                    self.collectionView.reloadData()
-                })
-                
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
         }
     }
-    
-    
-    func fetchArticles(forObjects: [PFObject], completion: @escaping([AnyObject], [String]) -> Void) {
-        
-        for object in forObjects {
-            // (2) Append publisherNames, and articles
-            URLSession.shared.dataTask(with: URL(string: object.value(forKey: "URL") as! String)!,
-                                       completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
-                                        if error != nil {
-                                            print(error?.localizedDescription as Any)
-                                            return
-                                        }
-                                        
-                                        do  {
-                                            
-                                            // Traverse JSON data to "Mutable Containers"
-                                            let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
-                                            
-                                            // (1) Get Source (publisherNames) --> remove "-" and capitalize first word
-                                            let source = ((json as AnyObject).value(forKey: "source") as! String).replacingOccurrences(of: "-", with: " ")
-                                            self.publisherNames.append(source.localizedCapitalized)
-                                            
-                                            print("PublisherName: \(source.localizedCapitalized)\n")
-                                            
-                                            // (2) Get First Article for each source
-                                            let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
-                                            let firstSource = items![0]
-                                            self.articles.append(firstSource as AnyObject)
-                                            
-                                            
-                                            completion(self.articles, self.publisherNames)
-                                            
-                                        } catch let error {
-                                            print(error.localizedDescription as Any)
-                                        }
-            }) .resume()
-        }
-    }
-    
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.articles.count
     }

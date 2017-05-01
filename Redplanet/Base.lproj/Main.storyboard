@@ -1473,18 +1473,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iva-Jl-87v">
-                                                    <rect key="frame" x="0.0" y="78" width="375" height="375"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="375" id="Nle-YH-LPt"/>
-                                                        <constraint firstAttribute="height" constant="375" id="fiz-da-oHi"/>
-                                                    </constraints>
-                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xzr-qy-Wp3">
-                                                    <rect key="frame" x="8" y="461" width="359" height="148"/>
+                                                    <rect key="frame" x="8" y="78" width="359" height="168"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="148" id="W1R-Ij-htn"/>
-                                                        <constraint firstAttribute="width" constant="359" id="gTw-f9-6tf"/>
+                                                        <constraint firstAttribute="height" constant="168" id="Uak-Rg-Itk"/>
+                                                        <constraint firstAttribute="width" constant="359" id="jpA-MB-p8L"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="21"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1508,34 +1501,42 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xav-02-e10">
-                                                    <rect key="frame" x="20" y="617" width="335" height="30"/>
+                                                    <rect key="frame" x="8" y="254" width="359" height="30"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="335" id="ddo-BP-fZl"/>
-                                                        <constraint firstAttribute="height" constant="30" id="opV-l2-94K"/>
+                                                        <constraint firstAttribute="height" constant="30" id="ZWG-9M-6IQ"/>
+                                                        <constraint firstAttribute="width" constant="359" id="bcs-51-ihb"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iva-Jl-87v">
+                                                    <rect key="frame" x="0.0" y="292" width="375" height="375"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="375" id="RsE-bu-EEX"/>
+                                                        <constraint firstAttribute="width" constant="375" id="Vt4-kA-yY1"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="iva-Jl-87v" secondAttribute="bottom" id="00E-oo-wV8"/>
+                                            <constraint firstItem="Xzr-qy-Wp3" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" constant="8" id="2Gj-BR-9D3"/>
                                             <constraint firstItem="8vR-U7-Hha" firstAttribute="top" secondItem="egG-ra-6yp" secondAttribute="top" constant="30" id="3yJ-Va-nva"/>
-                                            <constraint firstAttribute="trailing" secondItem="xav-02-e10" secondAttribute="trailing" constant="20" id="8UP-r7-YWj"/>
-                                            <constraint firstAttribute="trailing" secondItem="iva-Jl-87v" secondAttribute="trailing" id="FRs-99-smD"/>
+                                            <constraint firstItem="xav-02-e10" firstAttribute="top" secondItem="Xzr-qy-Wp3" secondAttribute="bottom" constant="8" id="84v-TM-xRh"/>
                                             <constraint firstItem="8vR-U7-Hha" firstAttribute="leading" secondItem="cSq-1M-W9U" secondAttribute="trailing" constant="8" id="FST-Ch-0v9"/>
                                             <constraint firstItem="8vR-U7-Hha" firstAttribute="leading" secondItem="cSq-1M-W9U" secondAttribute="trailing" constant="8" id="JiR-Jn-4ed"/>
-                                            <constraint firstItem="Xzr-qy-Wp3" firstAttribute="top" secondItem="iva-Jl-87v" secondAttribute="bottom" constant="8" id="Nhz-kF-uGU"/>
-                                            <constraint firstItem="Xzr-qy-Wp3" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" constant="8" id="ZdY-L0-wvl"/>
-                                            <constraint firstItem="xav-02-e10" firstAttribute="top" secondItem="Xzr-qy-Wp3" secondAttribute="bottom" constant="8" id="bQF-1S-olw"/>
-                                            <constraint firstAttribute="trailing" secondItem="Xzr-qy-Wp3" secondAttribute="trailing" constant="8" id="cW1-wG-hQj"/>
+                                            <constraint firstAttribute="trailing" secondItem="iva-Jl-87v" secondAttribute="trailing" id="RBg-gE-euH"/>
+                                            <constraint firstItem="Xzr-qy-Wp3" firstAttribute="top" secondItem="8vR-U7-Hha" secondAttribute="bottom" constant="8" id="T6A-HD-5tI"/>
+                                            <constraint firstItem="iva-Jl-87v" firstAttribute="top" secondItem="xav-02-e10" secondAttribute="bottom" constant="8" id="bls-PW-T2q"/>
+                                            <constraint firstItem="xav-02-e10" firstAttribute="top" secondItem="Xzr-qy-Wp3" secondAttribute="bottom" constant="8" id="fzy-Cn-puM"/>
                                             <constraint firstAttribute="trailing" secondItem="8vR-U7-Hha" secondAttribute="trailing" constant="8" id="gty-Jn-VLL"/>
-                                            <constraint firstAttribute="bottom" secondItem="xav-02-e10" secondAttribute="bottom" constant="20" id="jRh-Lx-kYL"/>
-                                            <constraint firstItem="iva-Jl-87v" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" id="jyM-Zs-ZZw"/>
+                                            <constraint firstAttribute="trailing" secondItem="Xzr-qy-Wp3" secondAttribute="trailing" constant="8" id="k5Z-Os-DeV"/>
                                             <constraint firstItem="cSq-1M-W9U" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" constant="11" id="kWP-Ii-ncC"/>
-                                            <constraint firstItem="iva-Jl-87v" firstAttribute="top" secondItem="8vR-U7-Hha" secondAttribute="bottom" constant="8" id="qnS-ia-xLA"/>
+                                            <constraint firstItem="xav-02-e10" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" constant="8" id="py8-NB-BPo"/>
+                                            <constraint firstAttribute="trailing" secondItem="xav-02-e10" secondAttribute="trailing" constant="8" id="qhv-v4-2Gc"/>
                                             <constraint firstItem="cSq-1M-W9U" firstAttribute="top" secondItem="egG-ra-6yp" secondAttribute="top" constant="30" id="uzz-JD-mgs"/>
-                                            <constraint firstItem="xav-02-e10" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" constant="20" id="zmm-CT-n4G"/>
+                                            <constraint firstItem="iva-Jl-87v" firstAttribute="leading" secondItem="egG-ra-6yp" secondAttribute="leading" id="zON-zm-ydt"/>
                                         </constraints>
                                         <size key="customSize" width="375" height="667"/>
                                         <connections>

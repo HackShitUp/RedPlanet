@@ -66,7 +66,9 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
                                         for item in items! {
                                             self.titles.append((item as AnyObject).value(forKey: "title") as! String)
                                             self.coverURLS.append((item as AnyObject).value(forKey: "urlToImage") as! String)
-//                                            self.authors.append((item as AnyObject).value(forKey: "author") as! String)
+                                            if let author = (item as AnyObject).value(forKey: "author") as? String {
+                                                self.authors.append(author)
+                                            }
                                         }
                                         
                                         // Update UICollectionView in Main Thread
@@ -124,7 +126,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         layout.scrollDirection = .horizontal
         layout.animator = ZoomInOutAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: self.view.bounds.size.width, height: 603)
+        layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView!.collectionViewLayout = layout
@@ -169,9 +171,13 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // (2) Set cover photo
         // MARK: - SDWebImage
         cell.coverPhoto.sd_setImage(with: URL(string: self.coverURLS[indexPath.item])!)
+//        cell.coverPhoto.image?.getColors { colors in
+//            cell.contentView.backgroundColor = colors.backgroundColor
+//            cell.title.textColor = colors.primaryColor
+//        }
         
         // (3) Set author
-//        cell.author.text = self.authors[indexPath.item]
+        cell.author.text = "By \(self.authors[indexPath.item])"
         
         return cell
     }
