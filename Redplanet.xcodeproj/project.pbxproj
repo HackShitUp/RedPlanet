@@ -45,8 +45,6 @@
 		7E73E4781E2031F70076BC93 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34D1E061F6100DDEA49 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E73E47A1E2031F70076BC93 /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E5DA34E1E061F6100DDEA49 /* UserNotificationsUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7E79483E1EB5BD9D002DD324 /* Explore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E79483D1EB5BD9D002DD324 /* Explore.swift */; };
-		7E7948401EB5C477002DD324 /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E79483F1EB5C477002DD324 /* ExploreCell.swift */; };
-		7E7948441EB5C6D7002DD324 /* ExploreHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7948431EB5C6D7002DD324 /* ExploreHeaderCell.swift */; };
 		7E7E38BA1DD533C100DEC27B /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38B91DD533C100DEC27B /* ContactsCell.swift */; };
 		7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7E38BB1DD533CB00DEC27B /* Contacts.swift */; };
 		7E80352E1EB4102700C9BA63 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E80352D1EB4102700C9BA63 /* Home.swift */; };
@@ -60,6 +58,7 @@
 		7E8B558C1E4EF67F004D3F31 /* SNTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55841E4EF67F004D3F31 /* SNTextField.swift */; };
 		7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55851E4EF67F004D3F31 /* SNUtils.swift */; };
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
+		7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8CF1111EB666E20012C4FB /* ExploreCell.swift */; };
 		7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E54051EB29CAE00292B8C /* MomentVideo.swift */; };
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
 		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
@@ -153,7 +152,9 @@
 		7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1A71DB357C100437219 /* SearchCell.swift */; };
 		7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1B71DB36EE900437219 /* ActivityCell.swift */; };
 		7EC5D1BD1DB3766200437219 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1BC1DB3766200437219 /* Activity.swift */; };
-		7EC769071EB5CBA300507911 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC769061EB5CBA300507911 /* StoryCell.swift */; };
+		7EC7690B1EB6655B00507911 /* FeaturedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690A1EB6655B00507911 /* FeaturedCell.swift */; };
+		7EC7690D1EB6657A00507911 /* EHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690C1EB6657A00507911 /* EHeaderCell.swift */; };
+		7EC7690F1EB6658100507911 /* EGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC7690E1EB6658100507911 /* EGenericCell.swift */; };
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
@@ -248,8 +249,6 @@
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		7E79483D1EB5BD9D002DD324 /* Explore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Explore.swift; sourceTree = "<group>"; };
-		7E79483F1EB5C477002DD324 /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
-		7E7948431EB5C6D7002DD324 /* ExploreHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreHeaderCell.swift; sourceTree = "<group>"; };
 		7E7E38B91DD533C100DEC27B /* ContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		7E7E38BB1DD533CB00DEC27B /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		7E80352D1EB4102700C9BA63 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -264,6 +263,7 @@
 		7E8B55841E4EF67F004D3F31 /* SNTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNTextField.swift; sourceTree = "<group>"; };
 		7E8B55851E4EF67F004D3F31 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
+		7E8CF1111EB666E20012C4FB /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
 		7E8E54051EB29CAE00292B8C /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
 		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
@@ -412,7 +412,9 @@
 		7EC5D1B71DB36EE900437219 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Redplanet.entitlements; sourceTree = "<group>"; };
 		7EC5D1BC1DB3766200437219 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
-		7EC769061EB5CBA300507911 /* StoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
+		7EC7690A1EB6655B00507911 /* FeaturedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeaturedCell.swift; sourceTree = "<group>"; };
+		7EC7690C1EB6657A00507911 /* EHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EHeaderCell.swift; sourceTree = "<group>"; };
+		7EC7690E1EB6658100507911 /* EGenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EGenericCell.swift; sourceTree = "<group>"; };
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
@@ -630,9 +632,8 @@
 			isa = PBXGroup;
 			children = (
 				7E79483D1EB5BD9D002DD324 /* Explore.swift */,
-				7E7948431EB5C6D7002DD324 /* ExploreHeaderCell.swift */,
-				7EC769061EB5CBA300507911 /* StoryCell.swift */,
-				7E79483F1EB5C477002DD324 /* ExploreCell.swift */,
+				7EC769111EB6659200507911 /* UICollectionViewCells */,
+				7EC769101EB6658700507911 /* UITableViewCells */,
 			);
 			name = EXPLORE;
 			sourceTree = "<group>";
@@ -1234,6 +1235,24 @@
 			name = ACTIVITY;
 			sourceTree = "<group>";
 		};
+		7EC769101EB6658700507911 /* UITableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				7EC7690C1EB6657A00507911 /* EHeaderCell.swift */,
+				7EC7690E1EB6658100507911 /* EGenericCell.swift */,
+			);
+			name = UITableViewCells;
+			sourceTree = "<group>";
+		};
+		7EC769111EB6659200507911 /* UICollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				7EC7690A1EB6655B00507911 /* FeaturedCell.swift */,
+				7E8CF1111EB666E20012C4FB /* ExploreCell.swift */,
+			);
+			name = UICollectionViewCells;
+			sourceTree = "<group>";
+		};
 		7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */ = {
 			isa = PBXGroup;
 			children = (
@@ -1694,7 +1713,6 @@
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
 				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
-				7E7948441EB5C6D7002DD324 /* ExploreHeaderCell.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
 				7EBDCB261E72251000E319A0 /* Library.swift in Sources */,
@@ -1702,6 +1720,7 @@
 				7E43833E1DD9138F00337007 /* HashTagsCell.swift in Sources */,
 				7EECEE681E3C7B6D003FA134 /* UserCell.swift in Sources */,
 				7EC5D1BD1DB3766200437219 /* Activity.swift in Sources */,
+				7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */,
 				7EE697B81EAAC1FB004F4E24 /* PhotoCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
@@ -1715,12 +1734,14 @@
 				7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */,
 				7E98E9461DB75057001B7329 /* CLHueEffect.m in Sources */,
 				7E98E94E1DB75057001B7329 /* CLImageToolBase.m in Sources */,
+				7EC7690B1EB6655B00507911 /* FeaturedCell.swift in Sources */,
 				7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */,
 				7E98E94B1DB75057001B7329 /* CLEffectTool.m in Sources */,
 				7E4307821DD021A100AA2413 /* TimelineView.swift in Sources */,
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
+				7EC7690D1EB6657A00507911 /* EHeaderCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,
 				7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */,
@@ -1735,9 +1756,7 @@
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
-				7E7948401EB5C477002DD324 /* ExploreCell.swift in Sources */,
 				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
-				7EC769071EB5CBA300507911 /* StoryCell.swift in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */,
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,
@@ -1805,6 +1824,7 @@
 				7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */,
 				7EE940BE1EAC821A00C45AAE /* SegmentedProgressBar.swift in Sources */,
 				7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */,
+				7EC7690F1EB6658100507911 /* EGenericCell.swift in Sources */,
 				7E99555F1DC9756F003D9D73 /* FollowRequestsHeader.swift in Sources */,
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,

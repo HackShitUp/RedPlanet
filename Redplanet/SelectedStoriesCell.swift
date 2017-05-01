@@ -14,6 +14,9 @@ import ParseUI
 import Bolts
 
 class SelectedStoriesCell: UICollectionViewCell {
+    @IBOutlet weak var publisherLogo: PFImageView!
+    @IBOutlet weak var publisherName: UILabel!
     @IBOutlet weak var coverPhoto: PFImageView!
     @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var author: UILabel!
 }

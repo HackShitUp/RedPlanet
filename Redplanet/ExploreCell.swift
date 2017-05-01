@@ -7,18 +7,11 @@
 //
 
 import UIKit
+import Parse
+import ParseUI
+import Bolts
 
-class ExploreCell: UITableViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
+class ExploreCell: UICollectionViewCell {
+    @IBOutlet weak var rpUserProPic: PFImageView!
+    @IBOutlet weak var rpUsername: UILabel!
 }

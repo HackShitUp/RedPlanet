@@ -1,5 +1,5 @@
 //
-//  StoryCell.swift
+//  FeaturedCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 4/30/17.
@@ -11,8 +11,8 @@ import Parse
 import ParseUI
 import Bolts
 
-class StoryCell: UICollectionViewCell {
-    @IBOutlet weak var publisherName: UILabel!
+class FeaturedCell: UICollectionViewCell {
     @IBOutlet weak var storyCover: PFImageView!
+    @IBOutlet weak var publisherName: UILabel!
     @IBOutlet weak var storyTitle: UILabel!
 }

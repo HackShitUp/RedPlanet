@@ -20,89 +20,66 @@ import SDWebImage
 import SVProgressHUD
 import SwipeNavigationController
 
-// Array to hold news URL
-var storyURL = [String]()
-var mediaName = [String]()
 
 class SelectedStories: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+
+    // Variables to hold data
+    var publisherName = String()
+    var logoURL = String()
+    var sourceURL = String()
     
-    // Arrays to hold data
+    // Array to hold articles
+    var articleObjects = [AnyObject]()
+    
     var titles = [String]()
-    var webURLS = [String]()
-    var mediaURLS = [String]()
+    var coverURLS = [String]()
     var authors = [String]()
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     @IBAction func exit(_ sender: Any) {
-        storyURL.removeAll(keepingCapacity: false)
-        mediaName.removeAll(keepingCapacity: false)
         _ = self.navigationController?.popViewController(animated: true)
     }
     
     // NYTIMES, WSJ, BUZZFEED, MTV, MASHABLE
     func fetchStories(mediaSource: String?) {
-        let url = URL(string: mediaSource!)
-        let session = URLSession.shared
-        let task = session.dataTask(with: url!) {
-            (data: Data?, response: URLResponse?, error: Error?) in
-            if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
-                // Clear arrays
-                self.titles.removeAll(keepingCapacity: false)
-                self.webURLS.removeAll(keepingCapacity: false)
-                self.mediaURLS.removeAll(keepingCapacity: false)
-                self.authors.removeAll(keepingCapacity: false)
-                
-                
-                if let webContent = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: webContent, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        
-                        // Optional Chaining: JSON Data
-                        if let items = json.value(forKey: "articles") as? Array<Any> {
-                            for item in items {
-                                // GET TITLE
-                                let title = (item as AnyObject).value(forKey: "title") as! String
-                                self.titles.append(title)
-                                // GET STORY URL
-                                let url = (item as AnyObject).value(forKey: "url") as! String
-                                self.webURLS.append(url)
-                                // GET MEDIA
-                                if let imageURL = (item as AnyObject).value(forKey: "urlToImage") as? String {
-                                    self.mediaURLS.append(imageURL)
-                                }
-                                // GET AUTHOR
-                                if let writer = (item as AnyObject).value(forKey: "author") as? String {
-                                    self.authors.append(writer)
-                                } else {
-                                    self.authors.append(" ")
-                                }
-                            }
-                        }
-                        // Reload data in the main thread
-                        DispatchQueue.main.async {
-                            self.collectionView!.reloadData()
-                        }
-                    } catch {
-                        print("ERROR: Unable to read JSON data.")
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-            }
-        }
-        // Resume query if ended
-        task.resume()
+        // Clear arrays
+        self.titles.removeAll(keepingCapacity: false)
+        self.coverURLS.removeAll(keepingCapacity: false)
+        self.authors.removeAll(keepingCapacity: false)
+        
+        // (2) Append publisherNames, and articles
+        URLSession.shared.dataTask(with: URL(string: mediaSource!)!,
+                                   completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+                                    if error != nil {
+                                        print(error?.localizedDescription as Any)
+                                        return
+                                    }
+                                    
+                                    do  {
+                                        
+                                        // Traverse JSON data to "Mutable Containers"
+                                        let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+
+                                        // Get First Article for each source
+                                        let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
+                                        for item in items! {
+                                            self.titles.append((item as AnyObject).value(forKey: "title") as! String)
+                                            self.coverURLS.append((item as AnyObject).value(forKey: "urlToImage") as! String)
+//                                            self.authors.append((item as AnyObject).value(forKey: "author") as! String)
+                                        }
+                                        
+                                        // Update UICollectionView in Main Thread
+                                        DispatchQueue.main.async {
+                                            self.collectionView.reloadData()
+                                        }
+                                        
+                                    } catch let error {
+                                        print(error.localizedDescription as Any)
+                                    }
+        }) .resume()
     }
-    
-    
+
     // Function to show API
     func showAPIUsage() {
         // MARK: - SafariServices
@@ -112,44 +89,26 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.present(webVC, animated: true, completion: nil)
     }
     
-    // Function to stylize and set title of navigation bar
-    func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "Avenir-Heavy", size: 21) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "\(mediaName.last!)"
-        }
-        // MARK: - RPHelpers
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
-        // Show UIstatusBar
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
-    }
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Set view
-        configureView()
-        // Configure data
-        self.fetchStories(mediaSource: storyURL.last!)
-        
         // MARK: - MainTabUI
         // Show button
         rpButton.isHidden = false
+        
+        // Fetch Stories
+        self.fetchStories(mediaSource: self.sourceURL)
+        
+        // Hide UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // MARK: - SVProgressHUD
-        SVProgressHUD.show()
+//        SVProgressHUD.show()
         
 /*
         MARK: - AnimatedCollectionViewLayout
@@ -163,7 +122,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
 */
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = LinearCardAttributesAnimator()
+        layout.animator = ZoomInOutAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: self.view.bounds.size.width, height: 603)
         layout.minimumInteritemSpacing = 0
@@ -195,30 +154,31 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ssCell", for: indexPath) as! SelectedStoriesCell
-        // (1) Set title
-        cell.title.text! = "\(self.titles[indexPath.row])\n\nBy \(self.authors[indexPath.row])"
-        cell.title.numberOfLines = 4
-        // (2) Set Asset Preview
-        // MARK: - SDWebImage
-        cell.coverPhoto.sd_setShowActivityIndicatorView(true)
-        cell.coverPhoto.sd_setIndicatorStyle(.gray)
-        cell.coverPhoto.sd_setImage(with: URL(string: mediaURLS[indexPath.row]), placeholderImage: UIImage())
-        // Set corner radius
-        cell.coverPhoto.layer.cornerRadius = 2.00
-        cell.coverPhoto.layer.borderColor = UIColor.lightGray.cgColor
-        cell.coverPhoto.layer.borderWidth = 0.50
-        cell.coverPhoto.clipsToBounds = true
         
-        // Set corner radius for view
-        cell.contentView.layer.cornerRadius = 8.00
-        cell.contentView.clipsToBounds = true
+        
+        cell.publisherName.text = self.publisherName
+        
+        // MARK: - SDWebImage
+        cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL)!)
+        // MARK: - RPHelpers
+        cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
+
+        // (1) Set title
+        cell.title.text = self.titles[indexPath.item]
+        
+        // (2) Set cover photo
+        // MARK: - SDWebImage
+        cell.coverPhoto.sd_setImage(with: URL(string: self.coverURLS[indexPath.item])!)
+        
+        // (3) Set author
+//        cell.author.text = self.authors[indexPath.item]
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // MARK: - SafariServices
-        let webVC = SFSafariViewController(url: URL(string: self.webURLS[indexPath.row])!, entersReaderIfAvailable: true)
+        let webVC = SFSafariViewController(url: URL(string: self.articleObjects[indexPath.row].value(forKey: "url") as! String)!, entersReaderIfAvailable: false)
         // MARK: - RPHelpers
         webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)

@@ -13,22 +13,65 @@ import Parse
 import ParseUI
 import Bolts
 
-class Explore: UITableViewController {
+import SDWebImage
+
+class Explore: UITableViewController, UITextFieldDelegate {
+    
+    @IBOutlet weak var searchBar: UITextField!
+    // UIRefreshControl
+    var refresher: UIRefreshControl!
+
+    
+    func refresh() {
+        self.refresher.endRefreshing()
+    }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
+        // Configure UITextField
+        self.searchBar.delegate = self
+        self.searchBar.font = UIFont(name: "AvenirNext-Medium", size: 17)
+        self.searchBar.placeholder = "Search..."
+        self.searchBar.leftViewMode = .always
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "Search")
+        self.searchBar.leftView = imageView
+        self.searchBar.addSubview(imageView)
+        self.searchBar.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        
+        // Configure UIRefreshControl
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        self.tableView.addSubview(refresher)
+
+        // Configure UITableView
+        self.tableView.tableFooterView = UIView()
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        
+        // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
-
     
+    // MARK: - UITextField Delegate Methods
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Push to SearchEngine
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        self.navigationController?.pushViewController(searchVC, animated: true)
+    }
 
     // MARK: - UITableView Data Source Methods
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -51,62 +94,33 @@ class Explore: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if indexPath.section == 0 && indexPath.row == 0 {
-            let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "exploreHeaderCell", for: indexPath) as! ExploreHeaderCell
-            
+            let ehCell = self.tableView.dequeueReusableCell(withIdentifier: "eHeaderCell", for: indexPath) as! EHeaderCell
             ehCell.fetchStories()
-            
+            ehCell.delegate = self
             return ehCell
-        } else {
-            let eCell = self.tableView.dequeueReusableCell(withIdentifier: "exploreCell", for: indexPath) as! ExploreCell
-            
-            return eCell
         }
-
+        
+        
+        let eCell = self.tableView.dequeueReusableCell(withIdentifier: "eGenericCell", for: indexPath) as! EGenericCell
+        
+        
+        if indexPath.section == 1 && indexPath.row == 0 {
+            eCell.fetchType = "randoms"
+            eCell.fetchPeople({ (_: [PFObject]) in
+                eCell.collectionView.reloadData()
+            })
+        } else if indexPath.section == 2 && indexPath.row == 0 {
+            eCell.fetchType = "geoCodes"
+            eCell.fetchGeocodes()
+        } else {
+            print("?")
+        }
+        
+//        eCell.collectionView.reloadData()
+        
+        return eCell
+        
+        
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
