@@ -23,17 +23,13 @@ import SwipeNavigationController
 
 class SelectedStories: UIViewController, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
 
-    // Variables to hold data
+    // MARK: - Class Variables
     var publisherName = String()
     var logoURL = String()
     var sourceURL = String()
     
     // Array to hold articles
     var articleObjects = [AnyObject]()
-    
-    var titles = [String]()
-    var coverURLS = [String]()
-    var authors = [String]()
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -44,11 +40,9 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     // NYTIMES, WSJ, BUZZFEED, MTV, MASHABLE
     func fetchStories(mediaSource: String?) {
         // Clear arrays
-        self.titles.removeAll(keepingCapacity: false)
-        self.coverURLS.removeAll(keepingCapacity: false)
-        self.authors.removeAll(keepingCapacity: false)
+        self.articleObjects.removeAll(keepingCapacity: false)
         
-        // (2) Append publisherNames, and articles
+        // (1) Append publisherNames, and articles
         URLSession.shared.dataTask(with: URL(string: mediaSource!)!,
                                    completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
                                     if error != nil {
@@ -57,18 +51,13 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
                                     }
                                     
                                     do  {
-                                        
                                         // Traverse JSON data to "Mutable Containers"
                                         let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
 
                                         // Get First Article for each source
                                         let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
                                         for item in items! {
-                                            self.titles.append((item as AnyObject).value(forKey: "title") as! String)
-                                            self.coverURLS.append((item as AnyObject).value(forKey: "urlToImage") as! String)
-                                            if let author = (item as AnyObject).value(forKey: "author") as? String {
-                                                self.authors.append(author)
-                                            }
+                                            self.articleObjects.append(item as AnyObject)
                                         }
                                         
                                         // Update UICollectionView in Main Thread
@@ -109,22 +98,10 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: - SVProgressHUD
-//        SVProgressHUD.show()
-        
-/*
-        MARK: - AnimatedCollectionViewLayout
-        ZoomInOutAttributesAnimator()
-        RotateInOutAttributesAnimator()
-        LinearCardAttributesAnimator()
-        CubeAttributesAnimator()
-        CrossFadeAttributesAnimator()
-        PageAttributesAnimator()
-        SnapInAttributesAnimator()
-*/
+        // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = ZoomInOutAttributesAnimator()
+        layout.animator = CubeAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -132,6 +109,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         self.collectionView!.collectionViewLayout = layout
         self.collectionView!.isPagingEnabled = true
         self.collectionView!.frame = self.view.bounds
+        self.collectionView!.backgroundColor = UIColor.white
     }
     
     override func didReceiveMemoryWarning() {
@@ -151,33 +129,39 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.titles.count
+        return self.articleObjects.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ssCell", for: indexPath) as! SelectedStoriesCell
         
-        
+        // CONFIGURE PUBLISHER PROPERTIES
+        // Set publisher name
         cell.publisherName.text = self.publisherName
-        
         // MARK: - SDWebImage
         cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL)!)
+        cell.publisherLogo.image?.getColors { colors in
+            cell.publisherName.textColor = colors.primaryColor
+        }
         // MARK: - RPHelpers
         cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
 
+        // CONFIGURE STORY
         // (1) Set title
-        cell.title.text = self.titles[indexPath.item]
-        
+        cell.title.text = "\(self.articleObjects[indexPath.item].value(forKey: "title") as! String)"
         // (2) Set cover photo
         // MARK: - SDWebImage
-        cell.coverPhoto.sd_setImage(with: URL(string: self.coverURLS[indexPath.item])!)
-//        cell.coverPhoto.image?.getColors { colors in
-//            cell.contentView.backgroundColor = colors.backgroundColor
-//            cell.title.textColor = colors.primaryColor
-//        }
-        
+        if let urlToImage = self.articleObjects[indexPath.item].value(forKey: "urlToImage") as? String {
+            cell.coverPhoto.sd_setImage(with: URL(string: urlToImage)!)
+        }
         // (3) Set author
-        cell.author.text = "By \(self.authors[indexPath.item])"
+        if let author = self.articleObjects[indexPath.item].value(forKey: "author") as? String {
+            cell.author.text = "By \(author)"
+        }
+        // (4) Set Description
+        if let description = self.articleObjects[indexPath.item].value(forKey: "description") as? String {
+            cell.storyDescription.text = "\(description)"
+        }
         
         return cell
     }
@@ -189,7 +173,4 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
     }
-    
-    
-    
 }

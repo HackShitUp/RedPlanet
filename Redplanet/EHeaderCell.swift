@@ -33,29 +33,26 @@ class EHeaderCell: UITableViewCell, UICollectionViewDataSource, UICollectionView
                 self.publisherNames.removeAll(keepingCapacity: false)
                 self.articles.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    // (1) Append Source URLS
-                    self.sourceObjects.append(object)
-                    // (2) Append publisherNames, and articles
+                    // (1) Append publisherNames, and articles
                     URLSession.shared.dataTask(with: URL(string: object.value(forKey: "URL") as! String)!,
                                                completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
                                                 if error != nil {
                                                     print(error?.localizedDescription as Any)
                                                     return
                                                 }
-                                                
                                                 do  {
-                                                    
                                                     // Traverse JSON data to "Mutable Containers"
                                                     let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
-                                                    
-                                                    // (1) Get Source (publisherNames) --> remove "-" and capitalize first word
+                                                    // (2) Get Source (publisherNames) --> remove "-" and capitalize first word
                                                     let source = ((json as AnyObject).value(forKey: "source") as! String).replacingOccurrences(of: "-", with: " ")
                                                     self.publisherNames.append(source.localizedCapitalized)
-                                                    // (2) Get First Article for each source
+                                                    // (3) Get First Article for each source
                                                     let items = (json as AnyObject).value(forKey: "articles") as? Array<Any>
                                                     let firstSource = items![0]
                                                     self.articles.append(firstSource as AnyObject)
-                                                    
+                                                    // (4) Append source object
+                                                    self.sourceObjects.append(object)
+
                                                     // Reload data in main thread
                                                     DispatchQueue.main.async {
                                                         self.collectionView.reloadData()
@@ -66,7 +63,6 @@ class EHeaderCell: UITableViewCell, UICollectionViewDataSource, UICollectionView
                                                 }
                     }) .resume()
                 }
-                
             } else {
                 print(error?.localizedDescription as Any)
             }
