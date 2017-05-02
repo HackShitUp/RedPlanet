@@ -21,7 +21,6 @@ import Bolts
 import CoreLocation
 import DZNEmptyDataSet
 import OneSignal
-import SVProgressHUD
 import SwipeNavigationController
 import SDWebImage
 
@@ -75,9 +74,6 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-                
                 // Clear array
                 self.activityObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
@@ -104,8 +100,9 @@ class Activity: UIViewController, UITableViewDataSource, UITableViewDelegate, UI
                 
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             }
             

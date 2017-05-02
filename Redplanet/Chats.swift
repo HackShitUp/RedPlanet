@@ -15,7 +15,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import SDWebImage
-import SVProgressHUD
 import SwipeNavigationController
 
 class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
@@ -64,11 +63,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         dialogController.addAction(AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // dismiss
             dialog.dismiss()
-
-            // MARK: - SVProgressHUD
-            SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-            SVProgressHUD.setBackgroundColor(UIColor.white)
             
             // Delete <ChatsQueue>
             let frontChat = PFQuery(className: "ChatsQueue")
@@ -83,21 +77,23 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 (objects: [PFObject]?, error: Error?) in
                 if error == nil {
                     
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                    
                     for object in objects! {
                         object.remove(forKey: "lastChat")
                         object.saveInBackground()
                     }
+                    
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Deleted All Chats")
                     
                     // Reload data
                     self.fetchQueues()
 
                 } else {
                     if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error")
                     }
                     
                     // Reload data
@@ -154,8 +150,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 self.fetchChats()
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             }
         }
@@ -265,10 +262,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                 }
                 // Add Delete button
                 dialogController.addAction(AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
-                    SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-                    SVProgressHUD.setBackgroundColor(UIColor.white)
                     
                     // Delete <ChatsQueue> 
                     let frontChat = PFQuery(className: "ChatsQueue")
@@ -283,9 +276,6 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                         (objects: [PFObject]?, error: Error?) in
                         if error == nil {
                             
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.dismiss()
-                            
                             for object in objects! {
                                 object.remove(forKey: "lastChat")
                                 object.saveInBackground()
@@ -296,6 +286,11 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                                 
                                 // Reload data
                                 self.fetchQueues()
+                                
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showSuccess(withTitle: "Deleted Chat")
+                                
                                 // Reload data in main thread
                                 DispatchQueue.main.async {
                                     self.tableView!.reloadData()
@@ -303,8 +298,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
                             }
                         } else {
                             if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.dismiss()
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Network Error")
                             }
                             // Reload data
                             self.fetchQueues()

@@ -16,7 +16,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")

@@ -18,7 +18,6 @@ import Bolts
 
 import OneSignal
 import SwipeNavigationController
-import SVProgressHUD
 
 // Array to hold photo or video from library; PHAsset
 var shareMediaAsset = [PHAsset]()

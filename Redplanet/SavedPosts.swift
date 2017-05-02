@@ -18,7 +18,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import OneSignal
-import SVProgressHUD
 import SDWebImage
 import SwipeNavigationController
 
@@ -288,11 +287,10 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
         // Swipe to Delete Messages
         let unsave = UITableViewRowAction(style: .normal, title: "Unsave") {
             (action: UITableViewRowAction, indexPath: IndexPath) -> Void in
-            
-            // Show Progress
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.show(withStatus: "Removing")
+
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Unsaving...")
            
             // Fetch
             let newsfeeds = PFQuery(className: "Newsfeeds")
@@ -303,9 +301,8 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                     object!.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                            SVProgressHUD.showSuccess(withStatus: "Unsaved")
+                            // MARK: - RPHelpers
+                            rpHelpers.showSuccess(withTitle: "Unsaved")
                             
                             // Delete post from table view
                             self.stories.remove(at: indexPath.row)
@@ -313,14 +310,14 @@ class SavedPosts: UITableViewController, UINavigationControllerDelegate, UITabBa
                             
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // MARK: - RPHelpers
+                            rpHelpers.showError(withTitle: "Network Error")
                         }
                     })
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
             

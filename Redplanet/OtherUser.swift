@@ -15,7 +15,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
 import SDWebImage
 
 // Global variable to hold other user's object
@@ -98,16 +97,18 @@ class OtherUser: UITableViewController {
                 if success {
                     print("Successfully saved report: \(report)")
                     
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                    SVProgressHUD.showSuccess(withStatus: "Reported")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Successfully Reported")
+                    
                     // Dismiss
                     fromVC!.dismiss()
                     
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                     // Dismiss
                     fromVC!.dismiss()
                 }
@@ -148,9 +149,6 @@ class OtherUser: UITableViewController {
                 PFObject.deleteAll(inBackground: objects!, block: {
                     (success: Bool, error: Error?) in
                     if success {
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
-                        
                         // Dismiss
                         let alert = UIAlertController(title: "Successfully Blocked",
                                                       message: "\(otherName.last!.uppercased()). You can unblock \(otherObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
@@ -170,16 +168,18 @@ class OtherUser: UITableViewController {
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error")
                         // Dismiss
                         fromVC!.dismiss()
                     }
                 })
             } else {
                 print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-                SVProgressHUD.showError(withStatus: "Error")
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
                 // Dismiss
                 fromVC!.dismiss()
             }
@@ -235,9 +235,6 @@ class OtherUser: UITableViewController {
         
         // (2) BLOCK
         dialogController.addAction(AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
-            // MARK: - SVProgressHUD
-            SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             // Block User
             self.blockUser(fromVC: dialog)
         }))
@@ -309,9 +306,6 @@ class OtherUser: UITableViewController {
         
         // (4) BLOCK
         let block = AZDialogAction(title: "Block", handler: { (dialog) -> (Void) in
-            // MARK: - SVProgressHUD
-            SVProgressHUD.show()
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
             // Block User
             self.blockUser(fromVC: dialog)
         })

@@ -13,8 +13,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
-
 class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var phoneNumber: UITextField!
@@ -48,10 +46,6 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
                     "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
                 ])
             
-            // Show Progress
-            SVProgressHUD.show()
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            
             // Remove non-integers
             var number = self.phoneNumber.text!
             number = number.trimmingCharacters(in: CharacterSet.punctuationCharacters)
@@ -62,9 +56,9 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
             PFUser.current()!.saveInBackground(block: {
                 (success: Bool, error: Error?) in
                 if success {
-                    
-                    // Dismiss Progress
-                    SVProgressHUD.dismiss()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Successfully Saved Number")
                     
                     // Post Notification
                     NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -74,12 +68,9 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
                     
                 } else {
                     print(error?.localizedDescription as Any)
-                    
-                    // Dismiss Progress
-                    SVProgressHUD.dismiss()
-                    
-                    // Pop VC
-                    _ = self.navigationController?.popViewController(animated: false)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "NetworkError")
                 }
             })
         }

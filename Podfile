@@ -16,7 +16,6 @@ target 'Redplanet' do
 	pod ‘Parse’
 	pod ‘ParseUI’
 	pod ‘SDWebImage’
-	pod 'SVProgressHUD'
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'
 

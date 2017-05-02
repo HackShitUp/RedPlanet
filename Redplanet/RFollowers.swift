@@ -14,9 +14,7 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 import DZNEmptyDataSet
-
 
 // Array to hold who's followers to fetch
 var forFollowers = [PFObject]()
@@ -66,9 +64,6 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
-                
                 // Clear arrays
                 self.followers.removeAll(keepingCapacity: false)
                 
@@ -88,9 +83,9 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
                 
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Dismiss Progress
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             
             
@@ -161,13 +156,8 @@ class RFollowers: UITableViewController, UINavigationControllerDelegate, DZNEmpt
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // Stylize title
         configureView()
-
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Query followers
         queryFollowers()

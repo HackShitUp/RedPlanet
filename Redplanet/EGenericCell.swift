@@ -94,8 +94,9 @@ class EGenericCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewD
                 
             } else {
                 if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-//                    SVProgressHUD.dismiss()
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             }
         })

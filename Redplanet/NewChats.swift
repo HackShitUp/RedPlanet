@@ -15,8 +15,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
-
 
 class NewChats: UITableViewController, UISearchBarDelegate, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     

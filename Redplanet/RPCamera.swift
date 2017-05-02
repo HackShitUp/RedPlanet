@@ -13,7 +13,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
 import SwiftyCam
 import SwipeNavigationController
 import SDWebImage

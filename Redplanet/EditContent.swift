@@ -16,7 +16,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 import OneSignal
 
 // Array 
@@ -160,7 +159,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         
         if self.textPost.text!.isEmpty && editObjects.last!.value(forKey: "contentType") as! String == "tp" {
             
-            let alert = UIAlertController(title: "Changes Failed",
+            let alert = UIAlertController(title: "Edit Failed",
                                           message: "You cannot save changes with no text.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "ok",
@@ -175,7 +174,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
             
         } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && (editObjects.last!.value(forKey: "photoAsset") == nil || editObjects.last!.value(forKey: "videoAsset") == nil) && self.textPost.text!.isEmpty {
             
-            let alert = UIAlertController(title: "Changes Failed",
+            let alert = UIAlertController(title: "Edit Failed",
                                           message: "You cannot save changes with no text.",
                                           preferredStyle: .alert)
             
@@ -190,11 +189,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         
         } else {
             
-            // Show Progress
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.show()
-            
             // Fetch object
             let newsfeeds = PFQuery(className: "Newsfeeds")
             newsfeeds.getObjectInBackground(withId: editObjects.last!.objectId!, block: {
@@ -205,9 +199,11 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                     object!.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                            SVProgressHUD.showSuccess(withStatus: "Saved")
+
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showSuccess(withTitle: "Edit Saved")
+                            
                             // Clear array and append object
                             editObjects.removeAll(keepingCapacity: false)
                             editObjects.append(object!)
@@ -246,16 +242,18 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             */
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showError(withTitle: "Network Error")
                         }
                         
                     })
 
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
 

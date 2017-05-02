@@ -20,7 +20,6 @@ import Bolts
 
 import NotificationBannerSwift
 import OneSignal
-import SVProgressHUD
 import SDWebImage
 
 // Global variable to hold user's object and username for chats
@@ -373,9 +372,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Handle File Size
                     let fileSize = Double(compressedData.length / 1048576)
                     if fileSize <= 1.0 {
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.show()
-                        SVProgressHUD.setBackgroundColor(UIColor.clear)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showProgress(withTitle: "Sending")
+                        
                         // Send Video
                         let chats = PFObject(className: "Chats")
                         chats["sender"] = PFUser.current()!
@@ -394,8 +394,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                 let rpHelpers = RPHelpers()
                                 _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                                 
-                                // Dismiss Progres
-                                SVProgressHUD.dismiss()
                                 // Clear newChat
                                 self.newChat.text!.removeAll()
                                 // Handle optional chaining
@@ -441,9 +439,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.showProgress(withTitle: "Sending...")
         
         // Disable done button
         editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = false
@@ -466,8 +464,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 let rpHelpers = RPHelpers()
                 _ = rpHelpers.updateQueue(chatQueue: chats, userObject: chatUserObject.last!)
                 
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                rpHelpers.showProgress(withTitle: "Sent")
                 
                 // Re-enable done button
                 editor.navigationController?.navigationBar.topItem?.leftBarButtonItem?.isEnabled = true
@@ -676,8 +674,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         chats.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 // Clear arrays
                 self.messageObjects.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
@@ -710,8 +706,9 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 })
             } else {
                 print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         })
     }
@@ -840,10 +837,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Set tableView estimated row height
         self.tableView!.estimatedRowHeight = 80

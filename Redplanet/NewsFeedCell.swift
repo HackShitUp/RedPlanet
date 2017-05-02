@@ -12,8 +12,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
-
 class NewsFeedCell: UITableViewCell {
     
     // Parent VC
@@ -107,12 +105,6 @@ class NewsFeedCell: UITableViewCell {
             // Dismiss
             dialog.dismiss()
             
-            // MARK: - SVProgressHUD
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-            SVProgressHUD.show()
-            
             // Delete shared and original post
             let content = PFQuery(className: "Newsfeeds")
             content.whereKey("byUser", equalTo: PFUser.current()!)
@@ -136,9 +128,9 @@ class NewsFeedCell: UITableViewCell {
                                     for object in objects! {
                                         object.deleteEventually()
                                     }
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                    SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                    // MARK: - RPHelpers
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.showSuccess(withTitle: "Deleted")
                                     
                                     // Send FriendsNewsfeeds Notification
                                     NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
@@ -149,20 +141,23 @@ class NewsFeedCell: UITableViewCell {
                                     _ = self.delegate?.navigationController?.popViewController(animated: true)
                                 } else {
                                     print(error?.localizedDescription as Any)
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.showError(withStatus: "Error")
+                                    // MARK: - RPHelpers
+                                    let rpHelpers = RPHelpers()
+                                    rpHelpers.showError(withTitle: "Network Error")
                                 }
                             })
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showError(withTitle: "Network Error")
                         }
                     })
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
         })

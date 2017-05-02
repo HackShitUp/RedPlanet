@@ -16,7 +16,6 @@ import Bolts
 
 import KILabel
 import OneSignal
-import SVProgressHUD
 
 class HashTagsCell: UITableViewCell {
     
@@ -320,10 +319,10 @@ class HashTagsCell: UITableViewCell {
         let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
-            // MARK: - SVProgressHUD
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor.black)
-            SVProgressHUD.show(withStatus: "Deleting")
+            
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Deleting...")
             
             let content = PFQuery(className: "Newsfeeds")
             content.whereKey("byUser", equalTo: PFUser.current()!)
@@ -339,9 +338,10 @@ class HashTagsCell: UITableViewCell {
                     PFObject.deleteAll(inBackground: objects, block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                            SVProgressHUD.showSuccess(withStatus: "Deleted")
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showSuccess(withTitle: "Deleted")
+                            
                             // Refresh
                             NotificationCenter.default.post(name: hashtagNotification, object: nil)
                             // Pop view controller
@@ -352,8 +352,9 @@ class HashTagsCell: UITableViewCell {
                     })
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
         })
@@ -392,10 +393,10 @@ class HashTagsCell: UITableViewCell {
                     (success: Bool, error: Error?) in
                     if success {
                         print("Successfully saved report: \(report)")
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Successfully Reported")
                         
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                        SVProgressHUD.showSuccess(withStatus: "Reported")
                         // Dismiss
                         dialog.dismiss()
                         

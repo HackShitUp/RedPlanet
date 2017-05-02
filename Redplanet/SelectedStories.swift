@@ -17,7 +17,6 @@ import Bolts
 
 import AnimatedCollectionViewLayout
 import SDWebImage
-import SVProgressHUD
 import SwipeNavigationController
 
 

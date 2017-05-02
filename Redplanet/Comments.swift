@@ -15,7 +15,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import SDWebImage
-import SVProgressHUD
 import OneSignal
 
 // Array to hold comments
@@ -117,8 +116,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         comments.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 
                 // Clear array
                 self.comments.removeAll(keepingCapacity: false)
@@ -137,9 +134,9 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                 
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             
             
@@ -366,10 +363,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
-        
         // Set placeholder
         self.newComment.text = "Share your comment!"
         self.newComment.textColor = UIColor.lightGray
@@ -590,9 +583,10 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
                                                 report["reason"] = "Inappropriate comment."
                                                 report.saveInBackground()
                                                 
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                                SVProgressHUD.showSuccess(withStatus: "Reported")
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showSuccess(withTitle: "Successfully Reported")
+                                                
                                                 // Dismiss
                                                 dialog.dismiss()
                     })

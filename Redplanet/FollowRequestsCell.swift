@@ -15,10 +15,8 @@ import Bolts
 
 import KILabel
 import OneSignal
-import SVProgressHUD
 
 class FollowRequestsCell: UICollectionViewCell {
-    
     
     // Variable to determine whether current user sent a friend or follow request
     var friendFollow: String?
@@ -97,11 +95,6 @@ class FollowRequestsCell: UICollectionViewCell {
                                                 if success {
                                                     print("Successfully sent follow notification: \(notifications)")
                                                     
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                                    SVProgressHUD.showSuccess(withStatus: "Sent")
-                                                    
                                                     // Handle optional chaining for user's apnsId
                                                     if self.userObject!.value(forKey: "apnsId") != nil {
                                                         // MARK: - OneSignal
@@ -118,19 +111,11 @@ class FollowRequestsCell: UICollectionViewCell {
                                                     
                                                 } else {
                                                     print(error?.localizedDescription as Any)
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                                    SVProgressHUD.showError(withStatus: "Error")
                                                 }
                                             })
                                             
                                         } else {
                                             print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.setForegroundColor(UIColor.black)
-                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
                                     
@@ -160,12 +145,7 @@ class FollowRequestsCell: UICollectionViewCell {
                                                 (success: Bool, error: Error?) in
                                                 if success {
                                                     print("Successfully sent notification: \(notifications)")
-                                                    
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                                    SVProgressHUD.showSuccess(withStatus: "Sent")
-                                                    
+         
                                                     // Handle optional chaining for user's apnsId
                                                     if self.userObject!.value(forKey: "apnsId") != nil {
                                                         // MARK: - OneSignal
@@ -181,18 +161,10 @@ class FollowRequestsCell: UICollectionViewCell {
                                                     }
                                                 } else {
                                                     print(error?.localizedDescription as Any)
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                                    SVProgressHUD.showError(withStatus: "Error")
                                                 }
                                             })
                                         } else {
                                             print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.setForegroundColor(UIColor.black)
-                                            SVProgressHUD.showError(withStatus: "Error")
                                         }
                                     })
                                 }

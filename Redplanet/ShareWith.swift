@@ -15,7 +15,6 @@ import Bolts
 
 import OneSignal
 import SDWebImage
-import SVProgressHUD
 
 // Global arrays:
 // Holds the shareObject; PFObject to re-share posts
@@ -56,10 +55,10 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             
             // Disable button
             self.shareButton.isEnabled = false
-            // MARK: - SVProgressHUD
-            SVProgressHUD.setBackgroundColor(UIColor.white)
-            SVProgressHUD.setForegroundColor(UIColor.black)
-            SVProgressHUD.show(withStatus: "Sharing")
+
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Sharing With \(shareWithObjects.count) People...")
             
             if shareObject.count != 0 {
                 // Re-share a post
@@ -72,10 +71,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
             }
             // Share post with friends
             self.shareWithFriends()
-            
-            // MARK: - SVProgressHUD
-            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-            SVProgressHUD.showSuccess(withStatus: "Shared")
+
+            // MARK: - RPHelpers
+            rpHelpers.showSuccess(withTitle: "Successfully Sent")
             
             // Clear arrrays
             let capturedStill = CapturedStill()
@@ -259,9 +257,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         following.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 
@@ -275,9 +270,9 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Dismiss progress
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "NetworkError")
             }
             // Reload data
             self.tableView!.reloadData()
@@ -387,10 +382,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
-        
         // Fetch Following
         queryFollowing()
         

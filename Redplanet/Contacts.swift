@@ -15,13 +15,8 @@ import Parse
 import ParseUI
 import Bolts
 
-
-
-import SVProgressHUD
 import DZNEmptyDataSet
 import OneSignal
-
-
 
 // Global boolean to check whether user has entered his or her number
 var numberExists = false
@@ -225,10 +220,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     // Function to check whether user has number
     func checkNumber() {
         if PFUser.current()!["phoneNumber"] != nil {
-            
-            // Dismiss Progress
-            SVProgressHUD.dismiss()
-            
+
             // Set boolean that number DOES EXIST
             numberExists = true
             
@@ -239,10 +231,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             self.tableView!.tableFooterView = UIView()
             
         } else {
-            
-            // Dismiss Progress
-            SVProgressHUD.dismiss()
-            
             // Set boolean that number DOES NOT EXIST
             numberExists = false
             
@@ -323,10 +311,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             ["byUserId": "\(PFUser.current()!.objectId!)",
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
-        
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Check whether current user has entered his/her number
         checkNumber()

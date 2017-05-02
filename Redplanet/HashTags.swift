@@ -18,7 +18,6 @@ import Bolts
 
 import DZNEmptyDataSet
 import OneSignal
-import SVProgressHUD
 import SDWebImage
 
 // Array to hold hashtag objects
@@ -150,10 +149,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
     
         // Get hashtags
         let queryHashtag = PFQuery(className: "Hashtags")
@@ -162,8 +157,6 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
         queryHashtag.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 // Clear array
                 self.hashtagStrings.removeAll(keepingCapacity: false)
                 
@@ -180,8 +173,9 @@ class HashTags: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDel
                 self.fetchHashtags()
             } else {
                 print(error?.localizedDescription as Any)
-                // Dismiss
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         })
         

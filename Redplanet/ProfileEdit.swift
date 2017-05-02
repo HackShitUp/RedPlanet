@@ -12,8 +12,6 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
-import SVProgressHUD
 import SDWebImage
 
 // Array to hold profile photo's caption
@@ -137,9 +135,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 profilePhotoCaption.append(" ")
             }
 
-            // Show Progress
-            SVProgressHUD.show()
-            SVProgressHUD.setBackgroundColor(UIColor.white)
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Updating Profile...")
             
             // (A) Current User's Birthday
             let dateFormatter = DateFormatter()
@@ -173,23 +171,22 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                 (success: Bool, error: Error?) in
                 if success {
                     print("Successfully saved objects: \(me)")
+
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Saved")
                     
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                    SVProgressHUD.showSuccess(withStatus: "Saved")
                     // Enable back button
                     self.backButton.isEnabled = true
-                    
-                    
                     
                     
                     // ================================================================================================
                     // II) NEW PROFILE PHOTO ==========================================================================
                     // ================================================================================================
                     if isNewProPic == true {
-                        // Show Progress
-                        SVProgressHUD.show()
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showProgress(withTitle: "Updating Profile...")
                         
                         // New Profile Photo
                         let newsfeeds = PFObject(className: "Newsfeeds")
@@ -209,8 +206,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.showError(withStatus: "Error")
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Network Error")
                                 // Re-enable backButton
                                 self.backButton.isEnabled = true
                             }
@@ -221,9 +219,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     // =====================================================================================================
                     if isNewProPic == false && didChangeCaption == true {
                         
-                        // Show Progress
-                        SVProgressHUD.show()
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showProgress(withTitle: "Updating Profile Photo Caption...")
                         
                         // Change caption
                         // Find in <Newsfeeds>
@@ -242,16 +240,18 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                     (success: Bool, error: Error?) in
                                     if error == nil {
                                         
-                                        // Dismiss Progress
-                                        SVProgressHUD.dismiss()
+                                        // MARK: - RPHelpers
+                                        let rpHelpers = RPHelpers()
+                                        rpHelpers.showSuccess(withTitle: "Updated Profile Photo Caption")
                                         
                                         // Show showDialogAlert
                                         self.showDialogAlert()
                                         
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.showError(withStatus: "Error")
+                                        // MARK: - RPHelpers
+                                        let rpHelpers = RPHelpers()
+                                        rpHelpers.showError(withTitle: "Network Error")
                                         // Re-enable backButton
                                         self.backButton.isEnabled = true
                                     }
@@ -259,26 +259,22 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.showError(withStatus: "Error")
+                                // MARK: - RPHelpers
+                                let rpHelpers = RPHelpers()
+                                rpHelpers.showError(withTitle: "Network Error")
                                 // Re-enable backButton
                                 self.backButton.isEnabled = true
                             }
                         })
                     } // end CAPTION UPDATE
                     
-                    
-                    
-                    // NON-Profile Photo Related Update 
-                    // Updated user's credentials or bio...
-                    // Dismiss Progress
-                    SVProgressHUD.dismiss()
                     // Show Alert
                     self.showDialogAlert()
                 } else {
-                    print("ERROR HERE: \(error?.localizedDescription as Any)")
-                    // Dismiss Progress
-                    SVProgressHUD.dismiss()
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                     // Re-enable backButton
                     self.backButton.isEnabled = true
                 }
@@ -368,9 +364,9 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Dismiss
             dialog.dismiss()
             
-            // MARK: - SVProgressHUD
-            SVProgressHUD.show()
-            SVProgressHUD.setBackgroundColor(UIColor.white)
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Deleting...")
             
             // Set boolean and save
             PFUser.current()!["proPicExists"] = false
@@ -380,14 +376,15 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
                     // Replace current photo
                     self.rpUserProPic.image = UIImage(named: "GenderNeutralUser")
                     
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                    SVProgressHUD.showSuccess(withStatus: "Success")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showSuccess(withTitle: "Deleted Profile Photo")
                     
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
                 }
             })
             

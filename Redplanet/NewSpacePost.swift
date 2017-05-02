@@ -19,9 +19,7 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 import OneSignal
-
 
 class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate,UITableViewDataSource, UITableViewDelegate, CLImageEditorDelegate {
     
@@ -68,9 +66,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     func postSpace(sender: UIButton) {
         // (1) PHOTO or VIDEO
         if self.mediaAsset.image != nil {
-            // Show Progress
-            SVProgressHUD.show()
-            SVProgressHUD.setBackgroundColor(UIColor.white)
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showProgress(withTitle: "Sharing...")
             if spaceMediaType == "photo" {
             // PHOTO
                 self.sharePhoto()
@@ -103,9 +101,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
     
     // Function to share text post
     func shareText() {
-        // Show Progress
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
+        // MARK: - RPHelpers
+        let rpHelpers = RPHelpers()
+        rpHelpers.showProgress(withTitle: "Sharing...")
         // (1) Save Space Post to Newsfeeds
         let space = PFObject(className: "Newsfeeds")
         space["byUser"] = PFUser.current()!
@@ -120,9 +118,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             if success {
                 print("Successfully shared Space Post: \(space)")
                 
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
-                
                 // (2) Send Notification
                 let notifications = PFObject(className: "Notifications")
                 notifications["fromUser"] = PFUser.current()!
@@ -135,6 +130,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if error == nil {
                         print("Sent Notification: \(notifications)")
+                        
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Shared")
                         
                         // Check for user mentions...
                         // Loop through words to check for @ prefixes
@@ -187,9 +186,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                             }
                         }
                         
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
-                        
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
                             let rpHelpers = RPHelpers()
@@ -208,9 +204,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 })
                 
             } else {
-                print("ERROR: \(error?.localizedDescription as Any)")
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         }
     }
@@ -236,8 +233,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             if success {
                 print("Successfully shared Space Post: \(space)")
                 
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showSuccess(withTitle: "Shared")
                 
                 // (2) Send Notification
                 let notifications = PFObject(className: "Notifications")
@@ -302,9 +300,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                             }
                         }
                         
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
-                        
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
                             let rpHelpers = RPHelpers()
@@ -323,9 +318,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 })
                 
             } else {
-                print("ERROR: \(error?.localizedDescription as Any)")
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         }
     }
@@ -369,9 +365,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if success {
                         print("Successfully shared Space Post: \(space)")
-                        
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
+
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Shared")
                         
                         // Send Notification
                         let notifications = PFObject(className: "Notifications")
@@ -437,9 +434,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                                     }
                                 }
                                 
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.dismiss()
-                                
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if otherObject.last!.value(forKey: "apnsId") != nil {
                                     let rpHelpers = RPHelpers()
@@ -458,9 +452,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         })
                         
                     } else {
-                        print("ERROR: \(error?.localizedDescription as Any)")
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.dismiss()
+                        print(error?.localizedDescription as Any)
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showError(withTitle: "Network Error")
                     }
                 }
             case .failed:

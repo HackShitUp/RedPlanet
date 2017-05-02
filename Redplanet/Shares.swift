@@ -14,7 +14,6 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 import DZNEmptyDataSet
 
 class Shares: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {

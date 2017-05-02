@@ -14,9 +14,7 @@ import ParseUI
 import Bolts
 
 import SDWebImage
-import SVProgressHUD
 import DZNEmptyDataSet
-
 
 // Array to hold views
 var viewsObject = [PFObject]()
@@ -76,8 +74,6 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
         views.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 
                 // Clear array
                 self.viewers.removeAll(keepingCapacity: false)
@@ -128,9 +124,9 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
 
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Dismiss progress
-                SVProgressHUD.dismiss()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             
             // Reload data
@@ -184,10 +180,6 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
         
         // Query views & configure title
         queryViews()
-        
-        // MARK: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.white)
         
         // Extend layouts
         self.extendedLayoutIncludesOpaqueBars = true

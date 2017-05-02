@@ -13,10 +13,6 @@ import Parse
 import ParseUI
 import Bolts
 
-
-import SVProgressHUD
-
-
 // Array to hold changed profile photo
 var changedProPicImg = [UIImage]()
 

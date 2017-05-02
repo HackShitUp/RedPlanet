@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import CoreLocation
 
+import NotificationBannerSwift
 import OneSignal
 import Parse
 import ParseUI
@@ -211,6 +212,30 @@ extension DateComponents {
 
 // MARK: - RPHelpers Class
 class RPHelpers: NSObject {
+    
+    // MARK: - NotificationBanner; used to show statusbar success/error
+    func showProgress(withTitle: String?) {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        banner.show()
+    }
+    func showSuccess(withTitle: String?) {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        banner.show()
+    }
+    
+    func showError(withTitle: String?) {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        banner.show()
+    }
 
     // MARK: - OpenWeatherMap.org API
     open func getWeather(lat: CLLocationDegrees, lon: CLLocationDegrees) {

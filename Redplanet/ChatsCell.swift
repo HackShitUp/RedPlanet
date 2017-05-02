@@ -13,8 +13,6 @@ import Parse
 import ParseUI
 import Bolts
 
-import SVProgressHUD
-
 class ChatsCell: UITableViewCell {
     
     var delegate: UIViewController?
