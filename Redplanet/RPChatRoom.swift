@@ -147,18 +147,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     (success: Bool, error: Error?) in
                     if success {
                         print("Successfully saved report: \(report)")
-                        
-                        let alert = UIAlertController(title: "Successfully Reported",
-                                                      message: "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)",
-                            preferredStyle: .alert)
-                        
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: nil)
-                        
-                        alert.addAction(ok)
-                        alert.view.tintColor = UIColor.black
-                        dialog.present(alert, animated: true, completion: nil)
+
+                        // MARK: - RPHelpers
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.showSuccess(withTitle: "Successfully Reproted \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)")
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -208,21 +200,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     PFObject.deleteAll(inBackground: objects!, block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            // Dismiss
-                            let alert = UIAlertController(title: "Successfully Blocked",
-                                                          message: "\(chatUsername.last!.uppercased()). You can unblock \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
-                                preferredStyle: .alert)
                             
-                            let ok = UIAlertAction(title: "ok",
-                                                   style: .default,
-                                                   handler: { (alertAction: UIAlertAction!) in
-                                                    _ = self.navigationController?.popViewController(animated: true)
-                            })
-                            
-                            alert.view.tintColor = UIColor.black
-                            alert.addAction(ok)
-                            dialog.present(alert, animated: true, completion: nil)
-                            
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showSuccess(withTitle: "Successfully Blocked \(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)")
+
                         } else {
                             print(error?.localizedDescription as Any)
                             // MARK: - NotificationBannerSwift
@@ -262,27 +244,35 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 
                 break
             case .denied:
-                print("Denied")
-                let alert = UIAlertController(title: "Photos Access Denied",
-                                              message: "Please allow Redplanet access your Photos.",
-                                              preferredStyle: .alert)
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Photos Access Denied",
+                                                              message: "Please allow Redplanet access your Photos.")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
                 
-                let settings = UIAlertAction(title: "Settings",
-                                             style: .default,
-                                             handler: {(alertAction: UIAlertAction!) in
-                                                
-                                                let url = URL(string: UIApplicationOpenSettingsURLString)
-                                                UIApplication.shared.openURL(url!)
-                })
+                // Add settings button
+                dialogController.addAction(AZDialogAction(title: "Settings", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Show Settings
+                    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+                }))
                 
-                let deny = UIAlertAction(title: "Later",
-                                         style: .destructive,
-                                         handler: nil)
-                
-                alert.addAction(settings)
-                alert.addAction(deny)
-                self.present(alert, animated: true, completion: nil)
-                
+                // Cancel
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                dialogController.show(in: self)
                 break
             default:
                 print("Default")

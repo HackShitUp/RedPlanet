@@ -149,22 +149,28 @@ class OtherUser: UITableViewController {
                 PFObject.deleteAll(inBackground: objects!, block: {
                     (success: Bool, error: Error?) in
                     if success {
-                        // Dismiss
-                        let alert = UIAlertController(title: "Successfully Blocked",
-                                                      message: "\(otherName.last!.uppercased()). You can unblock \(otherObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.",
-                            preferredStyle: .alert)
-                        
-                        let ok = UIAlertAction(title: "ok",
-                                               style: .default,
-                                               handler: { (alertAction: UIAlertAction!) in
-                                                // Dismiss and Pop
-                                                fromVC!.dismiss()
-                                                _ = self.navigationController?.popViewController(animated: true)
-                        })
-                        
-                        alert.view.tintColor = UIColor.black
-                        alert.addAction(ok)
-                        fromVC!.present(alert, animated: true, completion: nil)
+                        // MARK: - AZDialogViewController
+                        let dialogController = AZDialogViewController(title: "💩\nSuccessfully Blocked \(otherName.last!.uppercased())",
+                                                                      message: "You can unblock \(otherObject.last!.value(forKey: "realNameOfUser") as! String) in Settings.")
+                        dialogController.dismissDirection = .bottom
+                        dialogController.dismissWithOutsideTouch = true
+                        dialogController.showSeparator = true
+                        // Configure style
+                        dialogController.buttonStyle = { (button,height,position) in
+                            button.setTitleColor(UIColor.white, for: .normal)
+                            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                            button.layer.masksToBounds = true
+                        }
+                        // Add Skip and verify button
+                        dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                            // Dismiss AZDialog
+                            dialog.dismiss()
+                            // Dismiss and Pop
+                            fromVC!.dismiss()
+                            _ = self.navigationController?.popViewController(animated: true)
+                        }))
+                        dialogController.show(in: self)
                         
                     } else {
                         print(error?.localizedDescription as Any)
@@ -324,6 +330,16 @@ class OtherUser: UITableViewController {
             dialogController.show(in: self)
         }
     }
+    
+    // Function to refresh
+    func refresh() {
+        // Query Content
+        queryContent()
+        // End refresher
+        self.refresher.endRefreshing()
+        // Reload data
+        self.tableView!.reloadData()
+    }
 
     // Function to query other user's content
     func queryContent() {
@@ -446,27 +462,16 @@ class OtherUser: UITableViewController {
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         // Configure UIStatusBar
-//        UIApplication.shared.isStatusBarHidden = false
-//        UIApplication.shared.statusBarStyle = .default
-//        self.setNeedsStatusBarAppearanceUpdate()
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
-    // Function to refresh
-    func refresh() {
-        // Query Content
-        queryContent()
-        // End refresher
-        self.refresher.endRefreshing()
-        // Reload data
-        self.tableView!.reloadData()
+    override var prefersStatusBarHidden: Bool {
+        return false
     }
     
-    
-//    override var prefersStatusBarHidden: Bool {
-//        return false
-//    }
-    
-    
+    // MARK: - UIView Lifecycle Hierarchy
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title again

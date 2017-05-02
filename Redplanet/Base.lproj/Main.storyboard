@@ -1347,7 +1347,7 @@
                             </connections>
                         </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="pq6-Jm-NtL">
-                            <rect key="frame" x="75" y="8" width="225" height="29"/>
+                            <rect key="frame" x="75" y="7.5" width="225" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
                                 <segment title="FOLLOW"/>
@@ -2219,7 +2219,7 @@
                                         <rect key="frame" x="0.0" y="47" width="375" height="35"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1R8-fR-g1h">
-                                                <rect key="frame" x="172" y="0.0" width="33" height="33"/>
+                                                <rect key="frame" x="171" y="0.0" width="33" height="33"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="33" id="7OH-ot-H0g"/>
                                                     <constraint firstAttribute="height" constant="33" id="QbB-XJ-De1"/>

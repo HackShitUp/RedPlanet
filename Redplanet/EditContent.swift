@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import AVFoundation
 import AVKit
+import AudioToolbox
 
 import Parse
 import ParseUI
@@ -158,35 +159,51 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     func saveChanges(sender: UIButton) {
         
         if self.textPost.text!.isEmpty && editObjects.last!.value(forKey: "contentType") as! String == "tp" {
-            
-            let alert = UIAlertController(title: "Edit Failed",
-                                          message: "You cannot save changes with no text.",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            
-            alert.view.tintColor = UIColor.black
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
-            
-            
+            // MARK: - AudioToolBox; Vibrate Device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nEdit Failed",
+                                                          message: "You can't save changes with no text.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+
         } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" && (editObjects.last!.value(forKey: "photoAsset") == nil || editObjects.last!.value(forKey: "videoAsset") == nil) && self.textPost.text!.isEmpty {
-            
-            let alert = UIAlertController(title: "Edit Failed",
-                                          message: "You cannot save changes with no text.",
-                                          preferredStyle: .alert)
-            
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            
-            alert.view.tintColor = UIColor.black
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
-        
+            // MARK: - AudioToolBox; Vibrate Device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nEdit Failed",
+                                                          message: "You can't save changes with no text.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+
         } else {
             
             // Fetch object

@@ -12,7 +12,7 @@ import ParseUI
 import Bolts
 import SDWebImage
 
-class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate {
+class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate {
     
     // PFObject; used to determine post type
     var postObject: PFObject?
@@ -36,6 +36,7 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
         super.awakeFromNib()
     }
     
+    // MARK: - UITableView Data Source Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
@@ -53,6 +54,13 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
         ppCell.superDelegate = self.parentDelegate
         
         return ppCell
+    }
+    
+    // MARK: - UIScrollView Delegate Methods
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if self.tableView!.contentOffset.y <= -100 {
+            self.parentDelegate?.dismiss(animated: true, completion: nil)
+        }
     }
     
     

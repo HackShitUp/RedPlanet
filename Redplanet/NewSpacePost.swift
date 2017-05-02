@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import AVFoundation
 import AVKit
+import AudioToolbox
 import MobileCoreServices
 import Photos
 import PhotosUI
@@ -79,18 +80,29 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
         } else {
             // Check if text is empty
             if self.textView!.text!.isEmpty || self.textView!.text! == "" && mediaAsset.image == nil {
+                // MARK: - AudioToolBox; Vibrate Device
+                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                 
-                let alert = UIAlertController(title: "Space Post Failed",
-                                              message: "Please say something about this Space Post.",
-                                              preferredStyle: .alert)
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "💩\nSpace Post Failed",
+                                                              message: "Please say something about this Space Post.")
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                // Add Skip and verify button
+                dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                }))
                 
-                let ok = UIAlertAction(title: "ok",
-                                       style: .default,
-                                       handler: nil)
-                
-                alert.view.tintColor = UIColor.black
-                alert.addAction(ok)
-                self.present(alert, animated: true, completion: nil)
+                dialogController.show(in: self)
                 
             } else {
                 // TEXT POST

@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AudioToolbox
 
 import Parse
 import ParseUI
@@ -88,43 +89,80 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         if rpUsername.text!.isEmpty {
         // NO USERNAME
-            let alert = UIAlertController(title: "Invalid Username",
-                                          message: "Please enter your username to save changes.",
-                                          preferredStyle: .alert)
+            // MARK: - AudioToolBox; Vibrate Device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Username",
+                                                          message: "Please enter your username to save changes.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
             
         } else if rpEmail.text!.isEmpty {
         // NO EMAIL
-            let alert = UIAlertController(title: "Invalid Email",
-                                          message: "Please enter your email to save changes.",
-                                          preferredStyle: .alert)
+            // MARK: - AudioToolBox; Vibrate Device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Email",
+                                                          message: "Please enter your email to save changes.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
             
         } else if self.rpName.text!.isEmpty {
         // NO NAME
-            let alert = UIAlertController(title: "Please Enter Your Full Name",
-                                          message: "Help your friends find you better!",
-                                          preferredStyle: .alert)
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
             
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Please Enter Your Full Name",
+                                                          message: "This helps your friends find you better.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
             
-            alert.addAction(ok)
-            self.present(alert, animated: true, completion: nil)
-            
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+
         } else {
         // CLEAR
             // Disable back button

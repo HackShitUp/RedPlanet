@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import AudioToolbox
 
 import Parse
 import ParseUI
@@ -41,47 +42,80 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                         PFUser.requestPasswordResetForEmail(inBackground: email.text!, block: {
                                             (success: Bool, error: Error?) in
                                             if success {
-                                                let alert = UIAlertController(title: "Reset Password Requested",
-                                                                              message: "We've sent you an email to reset your password.",
-                                                                              preferredStyle: .alert)
+                                                // MARK: - AZDialogViewController
+                                                let dialogController = AZDialogViewController(title: "Reset Password Requested",
+                                                                                              message: "We've sent you an email to reset your password.")
+                                                dialogController.dismissDirection = .bottom
+                                                dialogController.dismissWithOutsideTouch = true
+                                                dialogController.showSeparator = true
                                                 
-                                                let ok = UIAlertAction(title: "ok",
-                                                                       style: .default,
-                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        // Pop back view controller
-                                                                        _ = self.navigationController?.popViewController(animated: true)
-                                                })
-                                                alert.addAction(ok)
-                                                alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
-                                                
+                                                // Configure style
+                                                dialogController.buttonStyle = { (button,height,position) in
+                                                    button.setTitleColor(UIColor.white, for: .normal)
+                                                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                    button.layer.masksToBounds = true
+                                                }
+                                                // Add Skip and verify button
+                                                dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                                    // Dismiss
+                                                    dialog.dismiss()
+                                                    
+                                                }))
+                                                dialogController.show(in: self)
                                             } else {
                                                 print(error?.localizedDescription as Any)
-                                                let alert = UIAlertController(title: "Invalid Email",
-                                                                              message: "This email doesn't exist in our database.",
-                                                                              preferredStyle: .alert)
-                                                let ok = UIAlertAction(title: "ok",
-                                                                       style: .default,
-                                                                       handler: {(alertAction: UIAlertAction!) in
-                                                                        self.dismiss(animated: true, completion: nil)
-                                                })
-                                                alert.addAction(ok)
-                                                alert.view.tintColor = UIColor.black
-                                                self.present(alert, animated: true, completion: nil)
+                                                // MARK: - AudioToolBox; Vibrate device
+                                                AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                                                
+                                                // MARK: - AZDialogViewController
+                                                let dialogController = AZDialogViewController(title: "💩\nInvalid Email",
+                                                                                              message: "This email doesn't exist in our database.")
+                                                dialogController.dismissDirection = .bottom
+                                                dialogController.dismissWithOutsideTouch = true
+                                                dialogController.showSeparator = true
+                                                
+                                                // Configure style
+                                                dialogController.buttonStyle = { (button,height,position) in
+                                                    button.setTitleColor(UIColor.white, for: .normal)
+                                                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                    button.layer.masksToBounds = true
+                                                }
+                                                // Add Skip and verify button
+                                                dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                                    // Dismiss
+                                                    dialog.dismiss()
+                                                    
+                                                }))
+                                                dialogController.show(in: self)
                                             }
-                                            
                                         })
                                     } else {
-                                        let alert = UIAlertController(title: "Incorrect Email",
-                                                                      message: "This isn't the right email associated with your account!",
-                                                                      preferredStyle: .alert)
+                                        // MARK: - AudioToolBox; Vibrate device
+                                        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                                         
-                                        let ok = UIAlertAction(title: "ok",
-                                                               style: .default,
-                                                               handler: nil)
-                                        alert.addAction(ok)
-                                        alert.view.tintColor = UIColor.black
-                                        self.present(alert, animated: true, completion: nil)
+                                        // MARK: - AZDialogViewController
+                                        let dialogController = AZDialogViewController(title: "💩\nIncorrect Email",
+                                                                                      message: "This isn't the right email associated with your account!")
+                                        dialogController.dismissDirection = .bottom
+                                        dialogController.dismissWithOutsideTouch = true
+                                        dialogController.showSeparator = true
+                                        
+                                        // Configure style
+                                        dialogController.buttonStyle = { (button,height,position) in
+                                            button.setTitleColor(UIColor.white, for: .normal)
+                                            button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                            button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                            button.layer.masksToBounds = true
+                                        }
+                                        // Add Skip and verify button
+                                        dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                            // Dismiss
+                                            dialog.dismiss()
+                                            
+                                        }))
+                                        dialogController.show(in: self)
                                     }
 
         })
@@ -102,17 +136,29 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
     @IBAction func nextAction(_ sender: Any) {
         // Re set userEmail
         if userPassword.text!.isEmpty {
-            let alert = UIAlertController(title: "Invalid Password",
-                                          message: "Please enter your password to continue.",
-                                          preferredStyle: .alert)
-            let ok = UIAlertAction(title: "ok",
-                                   style: .cancel,
-                                   handler: nil)
+            // Vibrate device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Password",
+                                                          message: "Please enter your password to continue.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
             
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-            
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+                
+            }))
+            dialogController.show(in: self)
         } else {
             // Login as work around to check for user's password
             PFUser.logInWithUsername(inBackground: PFUser.current()!.username!,
@@ -126,23 +172,33 @@ class ResetPassword: UIViewController, UINavigationControllerDelegate, UITextFie
                                         } else {
                                             print(error?.localizedDescription as Any)
                                             
-                                            // Incorrect Password
-                                            let alert = UIAlertController(title: "Incorrect Password",
-                                                                          message: "This is not the correct password associated with your account.",
-                                                                          preferredStyle: .alert)
+                                            // MARK: - AudioToolBox; Vibrate Device
+                                            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                                             
-                                            let ok = UIAlertAction(title: "ok",
-                                                                   style: .cancel,
-                                                                   handler: nil)
+                                            // MARK: - AZDialogViewController
+                                            let dialogController = AZDialogViewController(title: "💩\nIncorrect Password",
+                                                                                          message: "This is not the correct password associated with your account.")
+                                            dialogController.dismissDirection = .bottom
+                                            dialogController.dismissWithOutsideTouch = true
+                                            dialogController.showSeparator = true
                                             
-                                            alert.addAction(ok)
-                                            alert.view.tintColor = UIColor.black
-                                            self.present(alert, animated: true, completion: nil)
+                                            // Configure style
+                                            dialogController.buttonStyle = { (button,height,position) in
+                                                button.setTitleColor(UIColor.white, for: .normal)
+                                                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                                                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                                                button.layer.masksToBounds = true
+                                            }
+                                            // Add Skip and verify button
+                                            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                                                // Dismiss
+                                                dialog.dismiss()
+                                                
+                                            }))
+                                            dialogController.show(in: self)
                                         }
             }
         }
-           
-
     }
 
     override func viewDidLoad() {

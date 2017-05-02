@@ -67,49 +67,57 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     // Function to set privacy
     func setPrivacy(sender: UISwitch) {
 
+        // Private Account
         if sender.isOn {
-            // Private account
-            // (1) Friends request must be confirmed
-            // (2) Follow requests must be confirmed
-            let alert = UIAlertController(title: "Private Account",
-                                          message: "\n• Follow requests must be confirmed.\n• Only your followers can view your posts now.",
-                                          preferredStyle: .alert)
-            
-            
-            let okAction = UIAlertAction(title: "ok",
-                                         style: .default,
-                                         handler: { (UIAlertAction) -> Void in
-                                            // Save objects in parse
-                                            let user = PFUser.current()
-                                            user!["private"] = true
-                                            user!.saveEventually()
-            })
-            
-            
-            alert.addAction(okAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
-            
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Private Account",
+                                                          message: "\n• Follow requests must be confirmed.\n• Only your followers can view your posts now.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // MARK: - Parse
+                let user = PFUser.current()
+                user!["private"] = true
+                user!.saveEventually()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
+
         } else {
-            // Public account
-            // (1) Friends Requests must be confirmed
-            // (2) Follow requests do not have to be confirmed
-            
-            let alert = UIAlertController(title: "Public Account",
-                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile will also be part of the EXPLORE page in the second bottom tab.",
-                                          preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "ok",
-                                         style: .default,
-                                         handler: { (UIAlertAction) -> Void in
-                                            // Save object in parse
-                                            let user = PFUser.current()
-                                            user!["private"] = false
-                                            user!.saveEventually()
-            })
-            
-            alert.addAction(okAction)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
+        // Public account
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "Public Account",
+                                                          message: "\n• Anyone can now follow you and see your posts.\n• Your profile will also be part of the EXPLORE page in the second bottom tab.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Ok Action
+            dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                // MARK: - Parse
+                let user = PFUser.current()
+                user!["private"] = false
+                user!.saveEventually()
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
         }
         
     }
@@ -361,15 +369,25 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     mail.setMessageBody("🚀🦄🚀\nBe Brutally Honest\n\n3 Things I Like About Redplanet\n1.)\n2.)\n3.)\n\n3 Things I Don't Like About Redplanet\n1.)\n2.)\n3.)\n", isHTML: false)
                     present(mail, animated: true)
                 } else {
-                    let alert = UIAlertController(title: "Something Went Wrong",
-                                                  message: "Configure your email to this device to send us feedback!",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "Something Went Wrong",
+                                                                  message: "Configure your email to this device to send us feedback!")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
+                    // Ok Action
+                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                        // Dismiss
+                        dialog.dismiss()
+                    }))
+                    dialogController.show(in: self)
                 }
             } else {
                 if MFMailComposeViewController.canSendMail() {
@@ -380,15 +398,25 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     mail.setMessageBody("🦄\nI'd Like to Verify My Account!\n\n\n1.) My Email is: \n2.) My Number is: \n3.) My Username on Redplanet is: \(PFUser.current()!.username!)\n\n\nI'd like to verify my account because:", isHTML: false)
                     present(mail, animated: true)
                 } else {
-                    let alert = UIAlertController(title: "Something Went Wrong",
-                                                  message: "Configure your email to this device to send us feedback!",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.present(alert, animated: true, completion: nil)
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "Something Went Wrong",
+                                                                  message: "Configure your email to this device to send us feedback!")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
+                    // Ok Action
+                    dialogController.addAction(AZDialogAction(title: "OK", handler: { (dialog) -> (Void) in
+                        // Dismiss
+                        dialog.dismiss()
+                    }))
+                    dialogController.show(in: self)
                 }
             }
             

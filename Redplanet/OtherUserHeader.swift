@@ -6,9 +6,10 @@
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
-import UIKit
+import AudioToolbox
 import CoreData
 import SafariServices
+import UIKit
 
 import Parse
 import ParseUI
@@ -715,21 +716,33 @@ class OtherUserHeader: UITableViewHeaderFooterView {
                     }
                 } else {
                     print(error?.localizedDescription as Any)
+                    // MARK: - AudioToolBox; Vibrate Device
+                    AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                     
-                    // Show alert
-                    let alert = UIAlertController(title: "Unknown Account",
-                                                  message: "Looks like this account doesn't exist.",
-                                                  preferredStyle: .alert)
-                    let ok = UIAlertAction(title: "ok",
-                                           style: .default,
-                                           handler: nil)
+                    // MARK: - AZDialogViewController
+                    let dialogController = AZDialogViewController(title: "💩\nUnknown Account",
+                                                                  message: "Looks like this account doesn't exist.")
+                    dialogController.dismissDirection = .bottom
+                    dialogController.dismissWithOutsideTouch = true
+                    dialogController.showSeparator = true
                     
-                    alert.addAction(ok)
-                    alert.view.tintColor = UIColor.black
-                    self.delegate?.present(alert, animated: true)
+                    // Configure style
+                    dialogController.buttonStyle = { (button,height,position) in
+                        button.setTitleColor(UIColor.white, for: .normal)
+                        button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                        button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                        button.layer.masksToBounds = true
+                    }
+                    // Add Skip and verify button
+                    dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                        // Dismiss
+                        dialog.dismiss()
+                        // Pop VC
+                        self.delegate?.navigationController?.popViewController(animated: true)
+                    }))
+                    dialogController.show(in: self.delegate!)
                 }
             })
-            
         }
         
         
