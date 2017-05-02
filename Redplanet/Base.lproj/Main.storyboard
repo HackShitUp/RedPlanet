@@ -1188,13 +1188,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="0mX-1H-CQa">
                             <size key="itemSize" width="375" height="105"/>
-                            <size key="headerReferenceSize" width="375" height="40"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="followRequestsCell" id="SJp-tb-iEj" customClass="FollowRequestsCell" customModule="Redplanet" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="40" width="375" height="105"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="105"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="105"/>
@@ -1307,32 +1307,6 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="followRequestsHeader" id="tci-lZ-sR0" customClass="FollowRequestsHeader" customModule="Redplanet" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
-                            <autoresizingMask key="autoresizingMask"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FOLLOW REQUESTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Mw-fg-wCo">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
-                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="GYf-b7-C8i"/>
-                                        <constraint firstAttribute="width" constant="375" id="Tky-z6-R1L"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                            </subviews>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="4Mw-fg-wCo" secondAttribute="bottom" id="EzC-Tu-92m"/>
-                                <constraint firstItem="4Mw-fg-wCo" firstAttribute="top" secondItem="tci-lZ-sR0" secondAttribute="top" id="fRY-Fu-E2C"/>
-                                <constraint firstItem="4Mw-fg-wCo" firstAttribute="leading" secondItem="tci-lZ-sR0" secondAttribute="leading" id="uxa-aJ-Z3Q"/>
-                                <constraint firstAttribute="trailing" secondItem="4Mw-fg-wCo" secondAttribute="trailing" id="xbQ-Bx-zqt"/>
-                            </constraints>
-                            <connections>
-                                <outlet property="title" destination="4Mw-fg-wCo" id="mu5-ge-BP7"/>
-                            </connections>
-                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="WWE-KP-oje" id="T52-G3-CL7"/>
                             <outlet property="delegate" destination="WWE-KP-oje" id="Ife-yS-L62"/>
@@ -1346,18 +1320,6 @@
                                 <action selector="backButton:" destination="WWE-KP-oje" id="ufD-zA-x0y"/>
                             </connections>
                         </barButtonItem>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="pq6-Jm-NtL">
-                            <rect key="frame" x="75" y="7.5" width="225" height="29"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="FOLLOW"/>
-                                <segment title="SENT"/>
-                            </segments>
-                            <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="toggleSource:" destination="WWE-KP-oje" eventType="valueChanged" id="HVa-ia-EoH"/>
-                            </connections>
-                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="DUn-qC-9Bw">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
@@ -1366,9 +1328,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <connections>
-                        <outlet property="followSent" destination="pq6-Jm-NtL" id="eYn-Ps-nrw"/>
-                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NqE-2h-gdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

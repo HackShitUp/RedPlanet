@@ -19,25 +19,16 @@ import DZNEmptyDataSet
 // Define Notification Identifier
 let requestsNotification = Notification.Name("FollowRequests")
 
-class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
+class FollowRequests: UICollectionViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, TwicketSegmentedControlDelegate {
     
     // Array to hold followers, and following
     var nFollowers = [PFObject]()
     // Users you sent requests to
     var sentTo = [PFObject]()
-
-    @IBOutlet weak var followSent: UISegmentedControl!
-    @IBAction func toggleSource(_ sender: Any) {
-        if self.followSent.selectedSegmentIndex == 0 {
-            // Followers
-            fetchFollowers()
-        } else {
-            // Following
-            fetchSent()
-        }
-    }
     
+    // MARK: - TwicketSegmentedControl
+    var segmentedControl: TwicketSegmentedControl!
+
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
@@ -45,7 +36,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     
     @IBAction func refresh(_ sender: Any) {
         // Reload data
-        if self.followSent.selectedSegmentIndex == 0 {
+        if self.segmentedControl.selectedSegmentIndex == 0 {
             // Followers
             fetchFollowers()
         } else {
@@ -83,7 +74,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.collectionView!.reloadData()
         }
@@ -92,7 +82,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     
     // Query following
     func fetchSent() {
-        
         // Fetch Sent Follow Requests
         let follow = PFQuery(className: "FollowMe")
         follow.includeKeys(["following", "follower"])
@@ -102,7 +91,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         follow.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
                 // Clear array
                 self.sentTo.removeAll(keepingCapacity: false)
                 
@@ -115,17 +103,26 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
                     self.collectionView!.emptyDataSetSource = self
                     self.collectionView!.emptyDataSetDelegate = self
                 }
-                
-                
+
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
             // Reload data
             self.collectionView!.reloadData()
         })
     }
 
+    
+    // MARK: - TwicketSegmentedControl
+    func didSelect(_ segmentIndex: Int) {
+        if segmentIndex == 0 {
+            // Followers
+            fetchFollowers()
+        } else {
+            // Following
+            fetchSent()
+        }
+    }
 
     // MARK: DZNEmptyDataSet Framework
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
@@ -140,7 +137,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         
-        if self.followSent.selectedSegmentIndex == 0 {
+        if self.segmentedControl.selectedSegmentIndex == 0 {
             str = "🦄\nNo Follow Requests"
         } else {
             str = "🦄\nYou haven't requested to Follow anyone recently."
@@ -152,22 +149,27 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
             NSFontAttributeName: font!
         ]
         
-        
         return NSAttributedString(string: str!, attributes: attributeDictionary)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Add style font for UISegmentedControl
-        let style = NSDictionary(object: UIFont(name: "AvenirNext-Demibold", size: 12.00) as Any, forKey: NSFontAttributeName as NSCopying)
-        self.followSent.setTitleTextAttributes(style as! [NSObject: Any], for: .normal)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set initial query
-        if self.followSent.selectedSegmentIndex == 0 {
+        // MARK: - TwicketSegmentedControl
+        let frame = CGRect(x: 5, y: view.frame.height / 2 - 20, width: view.frame.width - 10, height: 40)
+        segmentedControl = TwicketSegmentedControl(frame: frame)
+        segmentedControl.delegate = self
+        segmentedControl.isSliderShadowHidden = false
+        segmentedControl.setSegmentItems(["REQUESTED", "SENT"])
+        segmentedControl.defaultTextColor = UIColor.black
+        segmentedControl.highlightTextColor = UIColor.white
+        segmentedControl.segmentsBackgroundColor = UIColor.white
+        segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0.00, blue: 0.31, alpha: 1)
+        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 12)!
+        self.navigationItem.titleView = segmentedControl
+        
+        // Set initial queries
+        if self.segmentedControl.selectedSegmentIndex == 0 {
             // Followers
             fetchFollowers()
         } else {
@@ -192,7 +194,14 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         backSwipe.direction = .right
         self.view.addGestureRecognizer(backSwipe)
         self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
-
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
 
     override func didReceiveMemoryWarning() {
@@ -204,35 +213,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         SDImageCache.shared().clearDisk()
     }
 
-    
-    // MARK: - UICollectionReusableView Data source method
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        // width X 40
-        return CGSize(width: self.view.frame.size.width, height: 40)
-    }
-    
-    
-    
-    // MARK: UICollectionViewHeader
-    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header = self.collectionView!.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "followRequestsHeader", for: indexPath) as! FollowRequestsHeader
-        
-        // Set title
-        if self.followSent.selectedSegmentIndex == 0 {
-            header.title.text! = "FOLLOW REQUESTS"
-        } else {
-            header.title.text! = "SENT FOLLOW REQUESTS"
-        }
-        
-        // Underline header's title
-        let titleStyle = [NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue]
-        let underlineAttributedString = NSAttributedString(string: "\(header.title.text!)", attributes: titleStyle)
-        header.title.attributedText = underlineAttributedString
-        
-        return header
-    }
-
-
     // MARK: UICollectionViewDataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -240,7 +220,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if self.followSent.selectedSegmentIndex == 0 {
+        if self.segmentedControl.selectedSegmentIndex == 0 {
             return nFollowers.count
         } else {
             return sentTo.count
@@ -259,7 +239,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         // Set delegate
         cell.delegate = self
     
-        if self.followSent.selectedSegmentIndex == 0 {
+        if self.segmentedControl.selectedSegmentIndex == 0 {
         // FOLLOWER REQUESTED
             
             // (1) Set user's fullName
