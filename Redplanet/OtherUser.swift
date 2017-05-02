@@ -51,7 +51,7 @@ class OtherUser: UITableViewController {
         otherObject.removeLast()
         otherName.removeLast()
         // Pop view controller
-        _ = _ = self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     // Function to show Chat
@@ -451,6 +451,10 @@ class OtherUser: UITableViewController {
         // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = false
+        // Configure UIStatusBar
+//        UIApplication.shared.isStatusBarHidden = false
+//        UIApplication.shared.statusBarStyle = .default
+//        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     // Function to refresh
@@ -463,6 +467,10 @@ class OtherUser: UITableViewController {
         self.tableView!.reloadData()
     }
     
+    
+//    override var prefersStatusBarHidden: Bool {
+//        return false
+//    }
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -507,7 +515,7 @@ class OtherUser: UITableViewController {
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+//        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
         
         // Pull to refresh action
         refresher = UIRefreshControl()

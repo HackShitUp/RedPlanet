@@ -20,26 +20,26 @@
                                                             Like a rolling stone ?
 
 RED:
-• UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+• UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
 • #FF0050
 
 PURPLE
-• UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+• UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
 • #BD0FE1
 
 BLUE:
-• UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+• UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
 • #00A1FF
 
 GOOD GRAY
-• UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0)
+• UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
 • #CCCCCC
  
 SUPER LIGHT GREY
-• UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+• UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
 
 YELLOW:
-• UIColor(red:1.00, green:0.86, blue:0.00, alpha:1.0)
+• UIColor(red: 1, green: 0.86, blue: 0, alpha: 1)
  */
 
 import UIKit
@@ -50,6 +50,7 @@ import Parse
 import ParseUI
 import Bolts
 
+ import NotificationBannerSwift
 import OneSignal
 import SwipeNavigationController
 import SDWebImage
@@ -104,11 +105,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"
-                                                let banner = Banner(title: "", subtitle: "", image: nil,
-                                                                    backgroundColor: UIColor.clear
-                                                )
-                                                banner.show(duration: 0.0)
                                                 
+                                                // Just do nothing smh...
+//                                                // MARK: - NotitficationBanner
+//                                                let banner = NotificationBanner(title: "", subtitle: "", style: .success)
+//                                                banner.backgroundColor = UIColor.clear
+//                                                banner.show()
+                                                print("FIRED HERE?")
                                                 
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {
@@ -120,37 +123,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 } else if fullMessage!.hasSuffix("is typing...") {
                                                     // SHOW that the user is typing
                                                     // Set visible banner
-                                                    let banner = Banner(title: nil,
-                                                        subtitle: "💭 \(fullMessage!)",
-                                                        image: nil,
-                                                        backgroundColor: UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0))
-                                                    banner.adjustsStatusBarStyle = false
-                                                    banner.detailLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                    banner.detailLabel.textColor = UIColor.white
-                                                    banner.dismissesOnTap = true
-                                                    banner.springiness = .heavy
-                                                    banner.hasShadows = false
-                                                    banner.alpha = 1
-                                                    banner.adjustsStatusBarStyle = true
-                                                    banner.show(duration: 3.0)
+                                                    // MARK: - NotitficationBanner
+                                                    let banner = NotificationBanner(title: "", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "ChatsPurple")))
+                                                    banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                                    banner.subtitleLabel?.textColor = UIColor.white
+                                                    banner.roundAllCorners(sender: banner)
+                                                    banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                                                    banner.show()
                                                 }
                                                 
                                             } else {
-                                                // Set visible banner
-                                                let banner = Banner(title: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String):",
-                                                    subtitle: "\(fullMessage!)",
-                                                    image: UIImage(named: "RedplanetLogo"),
-                                                    backgroundColor: UIColor.white
-                                                )
-                                                banner.adjustsStatusBarStyle = false
-                                                banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                                banner.titleLabel.textColor = UIColor.black
-                                                banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                                banner.detailLabel.textColor = UIColor.black
-                                                banner.dismissesOnTap = true
-                                                banner.springiness = .heavy
-                                                banner.alpha = 1
-                                                banner.show(duration: 3.0)
+                                                // MARK: - NotitficationBanner
+                                                let banner = NotificationBanner(title: "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String):", subtitle: "\(fullMessage!)", leftView: UIImageView(image: UIImage(named: "RPLogo")))
+                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+                                                banner.titleLabel?.textColor = UIColor.black
+                                                banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 15)
+                                                banner.subtitleLabel?.textColor = UIColor.black
+                                                banner.roundAllCorners(sender: banner)
+                                                banner.backgroundColor = UIColor.white
+                                                banner.show()
                                             }
                                             
                                             
@@ -485,19 +476,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                         (success: Bool, error: Error?) in
                                         if success {
                                             // Set visible banner
-                                            let banner = Banner(title: "HAPPY BIRTHDAY 🎉🎂🎁",
-                                                                subtitle: "from REDPLANET",
-                                                                image: UIImage(named: "RedplanetLogo"),
-                                                                backgroundColor: UIColor.white)
-                                            banner.adjustsStatusBarStyle = false
-                                            banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                            banner.titleLabel.textColor = UIColor.black
-                                            banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                            banner.detailLabel.textColor = UIColor.black
-                                            banner.dismissesOnTap = true
-                                            banner.springiness = .heavy
-                                            banner.alpha = 1
-                                            banner.show(duration: 3.0)
+                                            
                                         } else {
                                             print(error?.localizedDescription as Any)
                                         }
@@ -505,19 +484,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                 } else {
                                     print(error?.localizedDescription as Any)
                                     // Set visible banner
-                                    let banner = Banner(title: "HAPPY BIRTHDAY 🎉🎂🎁",
-                                                        subtitle: "from REDPLANET",
-                                                        image: UIImage(named: "RedplanetLogo"),
-                                                        backgroundColor: UIColor.white)
-                                    banner.adjustsStatusBarStyle = false
-                                    banner.titleLabel.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-                                    banner.titleLabel.textColor = UIColor.black
-                                    banner.detailLabel.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                    banner.detailLabel.textColor = UIColor.black
-                                    banner.dismissesOnTap = true
-                                    banner.springiness = .heavy
-                                    banner.alpha = 1
-                                    banner.show(duration: 3.0)
+                                    
                                 }
                             }
                         }

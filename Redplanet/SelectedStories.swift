@@ -41,15 +41,13 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     func fetchStories(mediaSource: String?) {
         // Clear arrays
         self.articleObjects.removeAll(keepingCapacity: false)
-        
-        // (1) Append publisherNames, and articles
+        // Fetch request to url...
         URLSession.shared.dataTask(with: URL(string: mediaSource!)!,
                                    completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
                                     if error != nil {
                                         print(error?.localizedDescription as Any)
                                         return
                                     }
-                                    
                                     do  {
                                         // Traverse JSON data to "Mutable Containers"
                                         let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))

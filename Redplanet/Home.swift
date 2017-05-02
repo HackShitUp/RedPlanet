@@ -17,8 +17,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import NotificationBannerSwift
 import OneSignal
-import SVProgressHUD
 import SDWebImage
 
 
@@ -83,10 +83,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.fetchFirstPosts(forGroup: self.friends)
                 
             } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
+                // MARK: - NotificationBannerSwift
+                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                banner.show()
             }
         })
     }
@@ -103,8 +104,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         following.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 for object in objects! {
@@ -116,10 +115,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.fetchFirstPosts(forGroup: self.following)
                 
             } else {
-                if (error?.localizedDescription.hasPrefix("The Internet connection appears to be offline."))! || (error?.localizedDescription.hasPrefix("NetworkConnection failed."))! {
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.dismiss()
-                }
+                // MARK: - NotificationBannerSwift
+                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                banner.show()
             }
         }
     }
@@ -161,6 +161,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - NotificationBannerSwift
+                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                banner.show()
             }
             // Reload data
             self.tableView!.reloadData()
@@ -224,6 +229,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .lightContent
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLoad() {
@@ -313,7 +322,8 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
         
         // Set delegate
-        cell.delegate = self.navigationController
+//        cell.delegate = self.navigationController
+        cell.delegate = self
         
         // Set PFObject
         cell.postObject = self.posts[indexPath.row]

@@ -17,17 +17,17 @@ public protocol RPPopUpVCDelegate {
 
 extension RPPopUpVC {
     func setupView(vc: RPPopUpVC?, popOverVC: UIViewController?) {
-//        vc?.bottomDismissible = true
         vc?.topDismissable = true
-//        vc?.draggableToSides = true
+        vc?.draggableToSides = false
         vc?.appearFromTop = false
+        vc?.bottomDismissible = false
         vc?.appearOffset = CGFloat(202)
         vc?.setUpScrollView()
         vc?.addToScrollViewNewController(popOverVC!)
     }
 }
 
-open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate {
+open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationControllerDelegate, RPPopUpVCDelegate {
     
     open var scrollView: UIScrollView!
     fileprivate var contentView: UIView!
@@ -91,8 +91,38 @@ open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate 
         initScrollView()
     }
     
+    
+    
+    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        //
+        print("fired?")
+    }
+    
+    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        //
+    }
+    
+    
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override open func viewDidAppear(_ animated: Bool) {
+        accomodateScrollView()
+        scrollView.isHidden = false
+        moveToView(mainView)
+    }
+    
     override open func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    override open func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
     }
     
     // Creates the ScrollView and the ContentView (UIView), don't move
@@ -139,12 +169,6 @@ open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate 
         
     }
     
-    override open func viewDidAppear(_ animated: Bool) {
-        accomodateScrollView()
-        scrollView.isHidden = false
-        moveToView(mainView)
-    }
-    
     fileprivate func accomodateScrollView(){
         var xPos: CGFloat = 0
         var yPos: CGFloat = appearOffset
@@ -159,7 +183,7 @@ open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate 
     
     open func addToScrollViewNewController(_ controller: UIViewController) {
         controller.willMove(toParentViewController: self)
-        
+
         contentView.addSubview(controller.view)
         
         controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -200,11 +224,11 @@ open class RPPopUpVC: UIViewController, RPPopUpVCDelegate, UIScrollViewDelegate 
         controllers.append(controller)
      
         // Make view background clear
-        controller.view.backgroundColor = UIColor.clear
-        contentView.backgroundColor = UIColor.clear
-        scrollView.backgroundColor = UIColor.clear
-        self.view.backgroundColor = UIColor.clear
-        self.view.isOpaque = false
+//        controller.view.backgroundColor = UIColor.clear
+        contentView.backgroundColor = UIColor.randomColor()
+//        scrollView.backgroundColor = UIColor.clear
+//        self.view.backgroundColor = UIColor.clear
+//        self.view.isOpaque = false
     }
     
     open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {

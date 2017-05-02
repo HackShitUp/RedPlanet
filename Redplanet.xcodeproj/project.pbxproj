@@ -10,6 +10,8 @@
 		090B69CFA86151527653FBDE /* Pods_RedplanetUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */; };
 		28FCAF4B5E65BA65AB5D8BF4 /* Pods_RedplanetTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 948DDFD2318807DDD3AFAC99 /* Pods_RedplanetTests.framework */; };
 		7BC0FD79203DB36C618D224E /* Pods_Redplanet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */; };
+		7E01A5201EB81C8100CD7FBF /* StoryScrollCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */; };
+		7E01A5211EB81C8100CD7FBF /* StoryScrollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */; };
 		7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */; };
 		7E1A12291EA813CB00663207 /* RPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E1A12281EA813CB00663207 /* RPHelpers.swift */; };
 		7E274EB81E31A80B006B2D8B /* Stickers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E274EB71E31A80B006B2D8B /* Stickers.swift */; };
@@ -64,6 +66,8 @@
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
 		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
 		7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E920BDA1E53AE85005171EE /* SavedPosts.swift */; };
+		7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */; };
+		7E9457F21EB7FF4700035C08 /* ProfilePhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9457F01EB7FF4700035C08 /* ProfilePhotoCell.xib */; };
 		7E972FDF1EA93E8B0047F4D4 /* NewsFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E972FDD1EA93E8B0047F4D4 /* NewsFeedCell.swift */; };
 		7E972FE01EA93E8B0047F4D4 /* NewsFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E972FDE1EA93E8B0047F4D4 /* NewsFeedCell.xib */; };
 		7E972FE71EA95B180047F4D4 /* MomentPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E972FE51EA95B170047F4D4 /* MomentPhoto.swift */; };
@@ -167,12 +171,9 @@
 		7EDEB9F41EA5684400EEE4E1 /* RPCaptionContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */; };
 		7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */; };
 		7EDEB9F91EA5A3AA00EEE4E1 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */; };
-		7EDEB9FB1EA5CD7700EEE4E1 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDEB9FA1EA5CD7700EEE4E1 /* Banner.swift */; };
 		7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */; };
 		7EE697B81EAAC1FB004F4E24 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697B61EAAC1FB004F4E24 /* PhotoCell.swift */; };
 		7EE697B91EAAC1FB004F4E24 /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697B71EAAC1FB004F4E24 /* PhotoCell.xib */; };
-		7EE697BD1EAAC218004F4E24 /* ProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697BB1EAAC218004F4E24 /* ProfilePhotoCell.swift */; };
-		7EE697BE1EAAC218004F4E24 /* ProfilePhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697BC1EAAC218004F4E24 /* ProfilePhotoCell.xib */; };
 		7EE697C21EAAC43C004F4E24 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697C01EAAC43C004F4E24 /* VideoCell.swift */; };
 		7EE697C31EAAC43C004F4E24 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EE697C11EAAC43C004F4E24 /* VideoCell.xib */; };
 		7EE697C91EAADB70004F4E24 /* SharedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE697C71EAADB70004F4E24 /* SharedCell.swift */; };
@@ -209,6 +210,8 @@
 		636456C61CF2B3F8852F3B93 /* Pods-RedplanetTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.debug.xcconfig"; sourceTree = "<group>"; };
 		671F731F63BF43A12743B080 /* Pods-RedplanetTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RedplanetTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RedplanetTests/Pods-RedplanetTests.release.xcconfig"; sourceTree = "<group>"; };
 		70901069A60AD8E3A59AFD66 /* Pods_Redplanet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Redplanet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryScrollCell.swift; sourceTree = "<group>"; };
+		7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryScrollCell.xib; sourceTree = "<group>"; };
 		7E0C05AC1E9EBDD3004C22F9 /* LogIn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogIn.swift; sourceTree = "<group>"; };
 		7E1A12281EA813CB00663207 /* RPHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPHelpers.swift; sourceTree = "<group>"; };
 		7E274EB71E31A80B006B2D8B /* Stickers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stickers.swift; sourceTree = "<group>"; };
@@ -270,6 +273,8 @@
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
 		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
 		7E920BDA1E53AE85005171EE /* SavedPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedPosts.swift; sourceTree = "<group>"; };
+		7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotoCell.swift; sourceTree = "<group>"; };
+		7E9457F01EB7FF4700035C08 /* ProfilePhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilePhotoCell.xib; sourceTree = "<group>"; };
 		7E972FDD1EA93E8B0047F4D4 /* NewsFeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedCell.swift; sourceTree = "<group>"; };
 		7E972FDE1EA93E8B0047F4D4 /* NewsFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewsFeedCell.xib; sourceTree = "<group>"; };
 		7E972FE51EA95B170047F4D4 /* MomentPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentPhoto.swift; sourceTree = "<group>"; };
@@ -427,12 +432,9 @@
 		7EDBEEFE1E2209A90093D8BB /* RPCamera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCamera.swift; sourceTree = "<group>"; };
 		7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPCaptionContainer.swift; sourceTree = "<group>"; };
 		7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPTextView.swift; sourceTree = "<group>"; };
-		7EDEB9FA1EA5CD7700EEE4E1 /* Banner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPPopUpVC.swift; sourceTree = "<group>"; };
 		7EE697B61EAAC1FB004F4E24 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 		7EE697B71EAAC1FB004F4E24 /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
-		7EE697BB1EAAC218004F4E24 /* ProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotoCell.swift; sourceTree = "<group>"; };
-		7EE697BC1EAAC218004F4E24 /* ProfilePhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilePhotoCell.xib; sourceTree = "<group>"; };
 		7EE697C01EAAC43C004F4E24 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		7EE697C11EAAC43C004F4E24 /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		7EE697C71EAADB70004F4E24 /* SharedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedCell.swift; sourceTree = "<group>"; };
@@ -497,6 +499,15 @@
 				A99E219E3A2EF61A619242FB /* Pods_RedplanetUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */ = {
+			isa = PBXGroup;
+			children = (
+				7E01A51E1EB81C8100CD7FBF /* StoryScrollCell.swift */,
+				7E01A51F1EB81C8100CD7FBF /* StoryScrollCell.xib */,
+			);
+			name = StoryScrollCell;
 			sourceTree = "<group>";
 		};
 		7E274EBB1E31A828006B2D8B /* Stickers */ = {
@@ -568,9 +579,9 @@
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 				7EE697CB1EAADB77004F4E24 /* SharedPost */,
-				7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */,
 				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
 				7EE697C41EAAC440004F4E24 /* VideoCell */,
 				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
@@ -679,14 +690,24 @@
 			name = RPPopUpVC;
 			sourceTree = "<group>";
 		};
-		7E972FE31EA9555E0047F4D4 /* STORIES */ = {
+		7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */ = {
+			isa = PBXGroup;
+			children = (
+				7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */,
+				7E9457F01EB7FF4700035C08 /* ProfilePhotoCell.xib */,
+			);
+			name = ProfilePhotoCell;
+			sourceTree = "<group>";
+		};
+		7E972FE31EA9555E0047F4D4 /* HOME */ = {
 			isa = PBXGroup;
 			children = (
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
-				7E6F36AF1EB3FA9000136163 /* Stories.swift */,
 				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
+				7E6F36AF1EB3FA9000136163 /* Stories.swift */,
+				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 			);
-			name = STORIES;
+			name = HOME;
 			sourceTree = "<group>";
 		};
 		7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */ = {
@@ -1048,14 +1069,6 @@
 			path = AZDialogViewController;
 			sourceTree = "<group>";
 		};
-		7EC05AE51DB5B7B00039B357 /* BRYXBanner */ = {
-			isa = PBXGroup;
-			children = (
-				7EDEB9FA1EA5CD7700EEE4E1 /* Banner.swift */,
-			);
-			name = BRYXBanner;
-			sourceTree = "<group>";
-		};
 		7EC05B181DB5FABF0039B357 /* CurrentUser */ = {
 			isa = PBXGroup;
 			children = (
@@ -1102,7 +1115,6 @@
 			children = (
 				7E6A12E21E4D524C00CF108B /* Agrume */,
 				7EC005761E8CD95A00405530 /* AZDialogViewController */,
-				7EC05AE51DB5B7B00039B357 /* BRYXBanner */,
 				7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
@@ -1130,7 +1142,7 @@
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
 				7EA730D61E3B293500CF4D12 /* RPShare */,
-				7E972FE31EA9555E0047F4D4 /* STORIES */,
+				7E972FE31EA9555E0047F4D4 /* HOME */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
 				7E3F0EDF1DC0630E006BF522 /* FOLLOWREQUESTS */,
 				7EC5D1B41DB36EB800437219 /* ACTIVITY */,
@@ -1312,15 +1324,6 @@
 				7EE697B71EAAC1FB004F4E24 /* PhotoCell.xib */,
 			);
 			name = PhotoCell;
-			sourceTree = "<group>";
-		};
-		7EE697BF1EAAC21C004F4E24 /* ProfilePhotoCell */ = {
-			isa = PBXGroup;
-			children = (
-				7EE697BB1EAAC218004F4E24 /* ProfilePhotoCell.swift */,
-				7EE697BC1EAAC218004F4E24 /* ProfilePhotoCell.xib */,
-			);
-			name = ProfilePhotoCell;
 			sourceTree = "<group>";
 		};
 		7EE697C41EAAC440004F4E24 /* VideoCell */ = {
@@ -1535,6 +1538,7 @@
 			files = (
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
 				7E972FE01EA93E8B0047F4D4 /* NewsFeedCell.xib in Resources */,
+				7E01A5211EB81C8100CD7FBF /* StoryScrollCell.xib in Resources */,
 				7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */,
 				7EE697B91EAAC1FB004F4E24 /* PhotoCell.xib in Resources */,
 				7EC5D1401DB2FE4F00437219 /* LaunchScreen.storyboard in Resources */,
@@ -1542,9 +1546,9 @@
 				7EECEE691E3C7B6D003FA134 /* UserCell.xib in Resources */,
 				7E98E93B1DB75057001B7329 /* CLImageEditor.bundle in Resources */,
 				7E41C7A51E4006380025129B /* CurrentUserHeader.xib in Resources */,
-				7EE697BE1EAAC218004F4E24 /* ProfilePhotoCell.xib in Resources */,
 				7EE697CA1EAADB70004F4E24 /* SharedCell.xib in Resources */,
 				7E972FEC1EA979920047F4D4 /* TextPostCell.xib in Resources */,
+				7E9457F21EB7FF4700035C08 /* ProfilePhotoCell.xib in Resources */,
 				7EE697C31EAAC43C004F4E24 /* VideoCell.xib in Resources */,
 				7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */,
 				7EC5D13D1DB2FE4F00437219 /* Assets.xcassets in Resources */,
@@ -1809,11 +1813,11 @@
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
 				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */,
-				7EDEB9FB1EA5CD7700EEE4E1 /* Banner.swift in Sources */,
 				7E8B558B1E4EF67F004D3F31 /* SNSticker.swift in Sources */,
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,
 				7EC5D1A81DB357C100437219 /* SearchCell.swift in Sources */,
 				7E3066471E90F7D800CDEABD /* CurrentUser.swift in Sources */,
+				7E01A5201EB81C8100CD7FBF /* StoryScrollCell.swift in Sources */,
 				7E41C7B81E4056870025129B /* OtherUser.swift in Sources */,
 				7E6A12E81E4D524C00CF108B /* Agrume.swift in Sources */,
 				7EE697C91EAADB70004F4E24 /* SharedCell.swift in Sources */,
@@ -1852,8 +1856,8 @@
 				7E0C05AD1E9EBDD3004C22F9 /* LogIn.swift in Sources */,
 				7E80DAAB1EB420D7003F0067 /* Palette.swift in Sources */,
 				7E80DAAD1EB420D7003F0067 /* UIViewShadowExtension.swift in Sources */,
-				7EE697BD1EAAC218004F4E24 /* ProfilePhotoCell.swift in Sources */,
 				7E80352E1EB4102700C9BA63 /* Home.swift in Sources */,
+				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
 				7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */,
 				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,
@@ -2029,7 +2033,7 @@
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanet.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2051,7 +2055,7 @@
 				INFOPLIST_FILE = Redplanet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.redplanet.redplanet;
+				PRODUCT_BUNDLE_IDENTIFIER = com.redplanetapp.redplanet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";

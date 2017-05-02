@@ -18,6 +18,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import NotificationBannerSwift
 import OneSignal
 import SVProgressHUD
 import SDWebImage
@@ -162,8 +163,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // MARK: - NotificationBannerSwift
+                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                        banner.show()
                     }
                 })
             }
@@ -222,14 +226,20 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                             
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // MARK: - NotificationBannerSwift
+                            let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                            banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                            banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                            banner.show()
                         }
                     })
                 } else {
                     print(error?.localizedDescription as Any)
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.showError(withStatus: "Error")
+                    // MARK: - NotificationBannerSwift
+                    let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                    banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                    banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                    banner.show()
                 }
             })
 
@@ -409,8 +419,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     }
                     
                     if fileSize > 1.0 {
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.showError(withStatus: "Large File Size")
+                        // MARK: - NotificationBannerSwift
+                        let banner = StatusBarNotificationBanner(title: "File Size is Too Large", style: .success)
+                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                        banner.show()
                         // Reload data
                         self.fetchChats()
                         // Dismiss
@@ -517,9 +530,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                     // Dismiss
                     dialog.dismiss()
                     
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
-                    
                     // Delete Chat
                     let chats = PFQuery(className: "Chats")
                     chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
@@ -537,19 +547,28 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                                 let rpHelpers = RPHelpers()
                                                                 _ = rpHelpers.updateQueue(chatQueue: self.messageObjects.last!, userObject: chatUserObject.last!)
                                                                 
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showSuccess(withStatus: "Deleted")
+                                                                // MARK: - NotificationBannerSwift
+                                                                let banner = StatusBarNotificationBanner(title: "Deleted", style: .success)
+                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                                banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                                                                banner.show()
                                                                 
                                                             } else {
                                                                 print(error?.localizedDescription as Any)
-                                                                // MARK: - SVProgressHUD
-                                                                SVProgressHUD.showError(withStatus: "Error")
+                                                                // MARK: - NotificationBannerSwift
+                                                                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                                                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                                                                banner.show()
                                                             }
                                                         })
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                        // MARK: - NotificationBannerSwift
+                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                                                        banner.show()
                                                     }
                     })
                 })
@@ -557,8 +576,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 let save = AZDialogAction(title: "Save", handler: { (dialog) -> (Void) in
                     // Dismiss
                     dialog.dismiss()
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
                     // Query Chats
                     let chats = PFQuery(className: "Chats")
                     chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
@@ -566,14 +583,20 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                     if error == nil {
                                                         object!["saved"] = true
                                                         object!.saveInBackground()
-                                                        
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Saved")
+
+                                                        // MARK: - NotificationBannerSwift
+                                                        let banner = StatusBarNotificationBanner(title: "Saved", style: .success)
+                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                        banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                                                        banner.show()
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                        // MARK: - NotificationBannerSwift
+                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                                                        banner.show()
                                                     }
                     })
                 })
@@ -581,8 +604,6 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 let unsave = AZDialogAction(title: "Unsave", handler: { (dialog) -> (Void) in
                     // Dismiss
                     dialog.dismiss()
-                    // MARK: - SVProgressHUD
-                    SVProgressHUD.show()
                     // Query Chats
                     let chats = PFQuery(className: "Chats")
                     chats.getObjectInBackground(withId: self.messageObjects[indexPath.row].objectId!,
@@ -591,8 +612,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                         object!["saved"] = false
                                                         object!.saveInBackground()
                                                         
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showSuccess(withStatus: "Unsaved")
+                                                        // MARK: - NotificationBannerSwift
+                                                        let banner = StatusBarNotificationBanner(title: "Unsaved", style: .success)
+                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                        banner.backgroundColor = UIColor(red:0.00, green:0.63, blue:1.00, alpha:1.0)
+                                                        banner.show()
                                                         
                                                         // Delete from messageObjects and UITableView
                                                         self.messageObjects.remove(at: indexPath.row)
@@ -600,8 +624,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                                                         
                                                     } else {
                                                         print(error?.localizedDescription as Any)
-                                                        // MARK: - SVProgressHUD
-                                                        SVProgressHUD.showError(withStatus: "Error")
+                                                        // MARK: - NotificationBannerSwift
+                                                        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                                                        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                                        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                                                        banner.show()
                                                     }
                     })
                     

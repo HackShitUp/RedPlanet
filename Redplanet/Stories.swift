@@ -107,12 +107,13 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         // MARK: - RPButton
         rpButton.isHidden = true
         
-        // Hide UITabBar
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
         // Hide UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
+        
+        // Hide UITabBar
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
     }
     
     override func viewDidLoad() {
@@ -142,6 +143,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
         self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
         self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
+        self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -264,8 +266,19 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
             
             return mpCell
             
-        } else {
+        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "pp" {
             
+            let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
+            
+            // Set PFObject
+            scrollCell.postObject = self.storyPosts[indexPath.item]
+            // Set parentDelegate
+            scrollCell.parentDelegate = self
+            
+            return scrollCell
+        
+        } else {
+    
             //            if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.row].value(forKey: "videoAsset") != nil
             
             // MOMENT VIDEO CELL

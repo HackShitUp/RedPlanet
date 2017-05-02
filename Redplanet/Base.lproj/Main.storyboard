@@ -824,7 +824,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gok-15-Q2v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4046" y="-2301"/>
+            <point key="canvasLocation" x="4088" y="-2346"/>
         </scene>
         <!--New Space Post-->
         <scene sceneID="JLb-kO-b6Q">
@@ -1586,6 +1586,24 @@
             </objects>
             <point key="canvasLocation" x="2518.5" y="527.5"/>
         </scene>
+        <!--Pop UpVC-->
+        <scene sceneID="k1H-TO-TbD">
+            <objects>
+                <viewController storyboardIdentifier="rpPopUpVC" id="KvX-bn-Dtp" customClass="RPPopUpVC" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4ys-87-XXi"/>
+                        <viewControllerLayoutGuide type="bottom" id="yml-wM-A2o"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="snl-C2-t0g">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r7g-MY-7QK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1487" y="2422"/>
+        </scene>
         <!--Stories-->
         <scene sceneID="Hcw-u0-oGN">
             <objects>
@@ -1609,7 +1627,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LR2-Z8-ml9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2519" y="2714"/>
+            <point key="canvasLocation" x="2002" y="2422"/>
         </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
@@ -2201,7 +2219,7 @@
                                         <rect key="frame" x="0.0" y="47" width="375" height="35"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1R8-fR-g1h">
-                                                <rect key="frame" x="171.5" y="0.0" width="33" height="33"/>
+                                                <rect key="frame" x="172" y="0.0" width="33" height="33"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="33" id="7OH-ot-H0g"/>
                                                     <constraint firstAttribute="height" constant="33" id="QbB-XJ-De1"/>
@@ -4636,7 +4654,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9b-N0-z9J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4477" y="-2300"/>
+            <point key="canvasLocation" x="4518" y="-2346"/>
         </scene>
         <!--Following-->
         <scene sceneID="pPg-QP-SW5">
@@ -4669,7 +4687,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xyl-ST-BLt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4920" y="-2301"/>
+            <point key="canvasLocation" x="4949" y="-2347"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ovB-e4-hXB">
@@ -4859,7 +4877,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" text="Log In" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0xe-gm-wHL">
-                                <rect key="frame" x="151.5" y="32" width="72" height="25"/>
+                                <rect key="frame" x="152" y="32" width="72" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="2yh-e5-9kV"/>
                                     <constraint firstAttribute="width" constant="72" id="Bq8-Za-odG"/>

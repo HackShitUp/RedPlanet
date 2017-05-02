@@ -13,8 +13,8 @@ import Parse
 import ParseUI
 import Bolts
 
+import NotificationBannerSwift
 import OneSignal
-import SVProgressHUD
 
 class ContactsCell: UITableViewCell {
     
@@ -23,6 +23,25 @@ class ContactsCell: UITableViewCell {
     
     // User's object
     var userObject: PFObject?
+    
+    // Function to show status bar success
+    func showSuccess(withTitle: String?) {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: withTitle!, style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        banner.show()
+    }
+    
+    // Function to show status bar error
+    func showError() {
+        // MARK: - NotificationBannerSwift
+        let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+        banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+        banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        banner.show()
+    }
+    
 
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var followButton: UIButton!
@@ -49,11 +68,8 @@ class ContactsCell: UITableViewCell {
                     (success: Bool, error: Error?) in
                     if success {
                         
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                        SVProgressHUD.showSuccess(withStatus: "Requested")
+                        // Show Success
+                        self.showSuccess(withTitle: "Requested")
                         
                         // Change button's title and design
                         self.followButton.setTitle("Requested", for: .normal)
@@ -89,19 +105,15 @@ class ContactsCell: UITableViewCell {
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                SVProgressHUD.showError(withStatus: "Error")
+                                // Show Error
+                                self.showError()
                             }
                         })
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // Show Error
+                        self.showError()
                     }
                 })
                 
@@ -117,12 +129,9 @@ class ContactsCell: UITableViewCell {
                 follow.saveInBackground(block: {
                     (success: Bool, error: Error?) in
                     if success {
-                        
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                        SVProgressHUD.showSuccess(withStatus: "Following")
+
+                        // Show Success
+                        self.showSuccess(withTitle: "Following")
                         
                         // Change button's title and design
                         self.followButton.setTitle("Following", for: .normal)
@@ -158,19 +167,15 @@ class ContactsCell: UITableViewCell {
                                 
                             } else {
                                 print(error?.localizedDescription as Any)
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                SVProgressHUD.showError(withStatus: "Error")
+                                // Show Error
+                                self.showError()
                             }
                         })
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // Show Error
+                        self.showError()
                     }
                 })
             }
@@ -238,11 +243,8 @@ class ContactsCell: UITableViewCell {
                                 (success: Bool, error: Error?) in
                                 if success {
                                     
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                    SVProgressHUD.showSuccess(withStatus: "Unfollowed")
+                                    // Show Success
+                                    self.showSuccess(withTitle: "Unfollowed")
                                     
                                     // Set user's friends button
                                     self.followButton.setTitle("Follow", for: .normal)
@@ -273,29 +275,23 @@ class ContactsCell: UITableViewCell {
                                             }
                                         } else {
                                             print(error?.localizedDescription as Any)
-                                            // MARK: - SVProgressHUD
-                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                            SVProgressHUD.setForegroundColor(UIColor.black)
-                                            SVProgressHUD.showError(withStatus: "Error")
+                                            // Show Error
+                                            self.showError()
                                         }
                                     })
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                    SVProgressHUD.showError(withStatus: "Error")
+                                    // Show Error
+                                    self.showError()
                                 }
                             })
                         }
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // Show Error
+                        self.showError()
                     }
                 })
 
@@ -403,19 +399,15 @@ class ContactsCell: UITableViewCell {
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-                                    SVProgressHUD.showError(withStatus: "Error")
+                                    // Show Error
+                                    self.showError()
                                 }
                             })
                             
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // Show Error
+                            self.showError()
                         }
                     })
                 } else {
@@ -461,19 +453,15 @@ class ContactsCell: UITableViewCell {
                                     
                                 } else {
                                     print(error?.localizedDescription as Any)
-                                    // MARK: - SVProgressHUD
-                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                    SVProgressHUD.showError(withStatus: "Error")
+                                    // Show Error
+                                    self.showError()
                                 }
                             })
                             
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor.black)
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // Show Error
+                            self.showError()
                         }
                     })
                 }
@@ -494,11 +482,8 @@ class ContactsCell: UITableViewCell {
                     if error == nil {
                         for object in objects! {
                             object.deleteEventually()
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor.black)
-                            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                            SVProgressHUD.showSuccess(withStatus: "Removed")
+                            // Show Success
+                            self.showSuccess(withTitle: "Removed")
                             
                             // Send to NotificationCenter
                             NotificationCenter.default.post(name: contactsNotification, object: nil)
@@ -521,19 +506,15 @@ class ContactsCell: UITableViewCell {
                                 }
                             } else {
                                 print(error?.localizedDescription as Any)
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                SVProgressHUD.showError(withStatus: "Error")
+                                // Show Error
+                                self.showError()
                             }
                         })
                         
                     } else {
                         print(error?.localizedDescription as Any)
-                        // MARK: - SVProgressHUD
-                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                        SVProgressHUD.setForegroundColor(UIColor.black)
-                        SVProgressHUD.showError(withStatus: "Error")
+                        // Show Error
+                        self.showError()
                     }
                 })
             })
@@ -619,11 +600,8 @@ class ContactsCell: UITableViewCell {
                                     (success: Bool, error: Error?) in
                                     if success {
                                         
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        SVProgressHUD.setForegroundColor(UIColor.black)
-                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                        SVProgressHUD.showSuccess(withStatus: "Rescinded")
+                                        // Show Success
+                                        self.showSuccess(withTitle: "Rescinded Follow Request")
                                         
                                         // Set user's friends button
                                         self.followButton.setTitle("Follow", for: .normal)
@@ -656,36 +634,28 @@ class ContactsCell: UITableViewCell {
                                                             
                                                         } else {
                                                             print(error?.localizedDescription as Any)
-                                                            // MARK: - SVProgressHUD
-                                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                            SVProgressHUD.setForegroundColor(UIColor.black)
-                                                            SVProgressHUD.showError(withStatus: "Error")
+                                                            // Show Error
+                                                            self.showError()
                                                         }
                                                     })
                                                 }
                                             } else {
                                                 print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                                SVProgressHUD.showError(withStatus: "Error")
+                                                // Show Error
+                                                self.showError()
                                             }
                                         })
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        SVProgressHUD.setForegroundColor(UIColor.black)
-                                        SVProgressHUD.showError(withStatus: "Error")
+                                        // Show Error
+                                        self.showError()
                                     }
                                 })
                             }
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor.black)
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // Show Error
+                            self.showError()
                         }
                     })
                 }))
@@ -772,11 +742,8 @@ class ContactsCell: UITableViewCell {
                                                 for object in objects! {
                                                     object.deleteEventually()
                                                     
-                                                    // MARK: - SVProgressHUD
-                                                    SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                    SVProgressHUD.setForegroundColor(UIColor.black)
-                                                    SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                                    SVProgressHUD.showSuccess(withStatus: "Confirmed")
+                                                    // Show Success
+                                                    self.showSuccess(withTitle: "Confirmed")
                                                     
                                                     // Change button's title and design
                                                     self.followButton.setTitle("Follower", for: .normal)
@@ -809,38 +776,30 @@ class ContactsCell: UITableViewCell {
                                                             
                                                         } else {
                                                             print(error?.localizedDescription as Any)
-                                                            // MARK: - SVProgressHUD
-                                                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                            SVProgressHUD.setForegroundColor(UIColor.black)
-                                                            SVProgressHUD.showError(withStatus: "Error")
+                                                            // Show Error
+                                                            self.showError()
                                                         }
                                                     })
                                                     
                                                 }
                                             } else {
                                                 print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                                SVProgressHUD.showError(withStatus: "Error")
+                                                // Show Error
+                                                self.showError()
                                             }
                                         })
                                         
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        SVProgressHUD.setForegroundColor(UIColor.black)
-                                        SVProgressHUD.showError(withStatus: "Error")
+                                        // Show Error
+                                        self.showError()
                                     }
                                 })
                             }
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor.black)
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // Show Error
+                            self.showError()
                         }
                     })
                 }))
@@ -862,12 +821,9 @@ class ContactsCell: UITableViewCell {
                                 object.deleteInBackground(block: {
                                     (success: Bool, error: Error?) in
                                     if error == nil {
-                                        
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        SVProgressHUD.setForegroundColor(UIColor.black)
-                                        SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-                                        SVProgressHUD.showSuccess(withStatus: "Ignored")
+
+                                        // Show Success
+                                        self.showSuccess(withTitle: "Ignored Follow Request")
                                         
                                         // Delete Notification
                                         let notifications = PFQuery(className: "Notifications")
@@ -895,27 +851,21 @@ class ContactsCell: UITableViewCell {
                                                 }
                                             } else {
                                                 print(error?.localizedDescription as Any)
-                                                // MARK: - SVProgressHUD
-                                                SVProgressHUD.setBackgroundColor(UIColor.white)
-                                                SVProgressHUD.setForegroundColor(UIColor.black)
-                                                SVProgressHUD.showError(withStatus: "Error")
+                                                // Show Error
+                                                self.showError()
                                             }
                                         })
                                     } else {
                                         print(error?.localizedDescription as Any)
-                                        // MARK: - SVProgressHUD
-                                        SVProgressHUD.setBackgroundColor(UIColor.white)
-                                        SVProgressHUD.setForegroundColor(UIColor.black)
-                                        SVProgressHUD.showError(withStatus: "Error")
+                                        // Show Error
+                                        self.showError()
                                     }
                                 })
                             }
                         } else {
                             print(error?.localizedDescription as Any)
-                            // MARK: - SVProgressHUD
-                            SVProgressHUD.setBackgroundColor(UIColor.white)
-                            SVProgressHUD.setForegroundColor(UIColor.black)
-                            SVProgressHUD.showError(withStatus: "Error")
+                            // Show Error
+                            self.showError()
                         }
                     })
                 }))

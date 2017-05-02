@@ -14,8 +14,8 @@ import ParseUI
 import Bolts
 
 import DZNEmptyDataSet
+import NotificationBannerSwift
 import SDWebImage
-import SVProgressHUD
 
 class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetDelegate, DZNEmptyDataSetSource {
     
@@ -39,8 +39,6 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         blocked.findObjectsInBackground(block: {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
                 
                 // Clear array
                 self.blockedUsers.removeAll(keepingCapacity: false)
@@ -58,8 +56,11 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                 
             } else {
                 print(error?.localizedDescription as Any)
-                // MARK: - SVProgressHUD
-                SVProgressHUD.dismiss()
+                // MARK: - NotificationBannerSwift
+                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
+                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+                banner.show()
             }
             // Reload data
             self.tableView!.reloadData()
@@ -84,10 +85,6 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         
         // Stylize title
         configureView()
-        
-        // Mark: - SVProgressHUD
-        SVProgressHUD.show()
-        SVProgressHUD.setBackgroundColor(UIColor.clear)
 
         // Fetch blocked users
         fetchBlocked()
@@ -203,10 +200,11 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
             // dismiss
             dialog.dismiss()
             
-            // MARK: - SVProgressHUD
-            SVProgressHUD.setFont(UIFont(name: "AvenirNext-Demibold", size: 12))
-            SVProgressHUD.show(withStatus: "Unblocking")
-            SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
+            // MARK: - NotificationBannerSwift
+            let banner = StatusBarNotificationBanner(title: "Unblocking...", style: .success)
+            banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+            banner.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+            banner.show()
             
             // Remove
             let blocked = PFQuery(className: "Blocked")
@@ -219,9 +217,13 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
                         object.deleteInBackground(block: {
                             (success: Bool, error: Error?) in
                             if error == nil {
-                                // MARK: - SVProgressHUD
-                                SVProgressHUD.showSuccess(withStatus: "Unblocked")
-                                SVProgressHUD.setForegroundColor(UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0))
+                                
+                                // MARK: - NotificationBannerSwift
+                                let banner = StatusBarNotificationBanner(title: "Unblocked!", style: .success)
+                                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
+                                banner.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+                                banner.show()
+                                
                                 // Reload data
                                 self.refresh(sender: self)
                             } else {

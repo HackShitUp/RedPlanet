@@ -44,7 +44,7 @@ class NewsFeedCell: UITableViewCell {
         let rpPopUpVC = RPPopUpVC()
         let storiesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storiesVC") as! Stories
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storiesVC)
-        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true, completion: nil)
+        self.delegate?.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
     }
     
     

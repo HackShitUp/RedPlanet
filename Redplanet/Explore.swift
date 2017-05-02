@@ -113,7 +113,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
             eCell.fetchType = "geoCodes"
             eCell.fetchGeocodes()
         } else {
-            print("?")
+//            print("?")
         }
         
 //        eCell.collectionView.reloadData()

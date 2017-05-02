@@ -122,17 +122,7 @@ class EGenericCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewD
         self.collectionView!.dataSource = self
     }
     
-    
-    
-    func setCollectionViewDataSourceDelegate
-        <D: protocol<UICollectionViewDataSource, UICollectionViewDelegate>>
-        (dataSourceDelegate: D, forRow row: Int) {
-        
-        collectionView.delegate = dataSourceDelegate
-        collectionView.dataSource = dataSourceDelegate
-        collectionView.tag = row
-        collectionView.reloadData()
-    }
+
     
     
     
@@ -140,10 +130,10 @@ class EGenericCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewD
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if self.fetchType == "randoms" {
-            print("Randoms Count: \(self.randoms.count)")
+//            print("Randoms Count: \(self.randoms.count)")
             return randoms.count
         } else {
-            print("Geo_Codes Count: \(self.geoCodes.count)")
+//            print("Geo_Codes Count: \(self.geoCodes.count)")
             return geoCodes.count
         }
     }
