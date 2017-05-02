@@ -101,7 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                             let fullMessage = payload?.body
 
                                             // Banner for notification
-                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.uppercased())") {
+                                            if fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") {
                                                 // If PFUser.currentUser()! caused
                                                 // Sent notification
                                                 // Set "invisible banner"

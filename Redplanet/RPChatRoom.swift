@@ -789,7 +789,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         if let apnsId = chatUserObject.last!.value(forKey: "apnsId") as? String {
             OneSignal.postNotification(
                 ["contents":
-                    ["en": "\(PFUser.current()!.username!.uppercased()) screenshot the conversation"],
+                    ["en": "\(PFUser.current()!.username!.lowercased()) screenshot the conversation"],
                  "include_player_ids": ["\(apnsId)"],
                  "ios_badgeType": "Increase",
                  "ios_badgeCount": 1
@@ -981,7 +981,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             // MARK: - OneSignal
             OneSignal.postNotification(
                 ["contents":
-                    ["en": "\(PFUser.current()!.username!.uppercased()) is typing..."],
+                    ["en": "\(PFUser.current()!.username!.lowercased()) is typing..."],
                  "include_player_ids": ["\(chatUserObject.last!.value(forKey: "apnsId") as! String)"],
                  "ios_badgeType": "Increase",
                  "ios_badgeCount": 1,

@@ -24,7 +24,6 @@ PODS:
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
   - SnapKit (3.2.0)
-  - SVProgressHUD (2.1.2)
   - SwiftyCam (2.2.2)
   - SwipeNavigationController (2.0.2)
 
@@ -40,7 +39,6 @@ DEPENDENCIES:
   - Parse
   - ParseUI
   - SDWebImage
-  - SVProgressHUD
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
 
@@ -58,10 +56,9 @@ SPEC CHECKSUMS:
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
-  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: aae8fb63bd28694d1f1d5b46fd18d2b56d23e674
+PODFILE CHECKSUM: bab1e8f2cf422454753273c9f940b4eb38eb384a
 
 COCOAPODS: 1.2.1

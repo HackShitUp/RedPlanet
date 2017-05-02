@@ -231,7 +231,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         super.viewWillAppear(animated)
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .lightContent
+        UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
     }
     

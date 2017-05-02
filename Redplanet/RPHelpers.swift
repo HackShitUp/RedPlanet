@@ -243,33 +243,31 @@ class RPHelpers: NSObject {
         temperature.removeAll(keepingCapacity: false)
         
         // MARK: - OpenWeatherMap API
-        let wheatherURL = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")
-        let session = URLSession.shared
-        let task = session.dataTask(with: wheatherURL!) {
-            (data: Data?, response: URLResponse?, error: Error?) in
-            if error == nil {
-                if let webContent = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: webContent, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
-                        
-                        let main = json["main"] as! NSDictionary
-                        let kelvin = main["temp"] as! Double
-                        let farenheit = (kelvin * 1.8) - 459.67
-                        let celsius = kelvin - 273.15
-                        let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
-                        
-                        // Append Temperature
-                        temperature.append(both)
-                    } catch {
-                        print("ERROR: Unable to read JSON data.")
-                    }
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-        // Resume query if ended
-        task.resume()
+        URLSession.shared.dataTask(with: URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(lon)&appid=0abf9dff54ea3ccb6561c3574557594c")!,
+                                   completionHandler: { (data: Data?, response: URLResponse?, error: Error?) in
+                                    if error != nil {
+                                        print(error?.localizedDescription as Any)
+                                        self.showError(withTitle: "Network Error")
+                                        return
+                                    }
+                                    do  {
+                                        // Traverse JSON data to "Mutable Containers"
+                                        let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
+                                        
+                                        let main = (json as AnyObject).value(forKey: "main") as! NSDictionary
+                                        let kelvin = main["temp"] as! Double
+                                        let farenheit = (kelvin * 1.8) - 459.67
+                                        let celsius = kelvin - 273.15
+                                        let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+                                        
+                                        // Append Temperature as String
+                                        temperature.append(both)
+                                        
+                                    } catch let error {
+                                        print(error.localizedDescription as Any)
+                                        self.showError(withTitle: "Network Error")
+                                    }
+        }) .resume()
     }
     
     // MARK: - Parse; Function to update <ChatsQueue>
@@ -322,9 +320,9 @@ class RPHelpers: NSObject {
         var sentence: String?
         
         if activityType == "from" {
-            sentence = "from \(PFUser.current()!.username!.uppercased())"
+            sentence = "from \(PFUser.current()!.username!.lowercased())"
         } else {
-            sentence = "\(PFUser.current()!.username!.uppercased()) \(activityType!)"
+            sentence = "\(PFUser.current()!.username!.lowercased())) \(activityType!)"
         }
         
         // MARK: - OneSignal
