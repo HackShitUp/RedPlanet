@@ -137,7 +137,6 @@
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
-		7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */; };
 		7EC328CF1DBF460700344AFF /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC328CE1DBF460700344AFF /* Comments.swift */; };
 		7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC328D01DBF461500344AFF /* CommentsCell.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
@@ -392,7 +391,6 @@
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
-		7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CAPSPageMenu.swift; sourceTree = "<group>"; };
 		7EC328CE1DBF460700344AFF /* Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		7EC328D01DBF461500344AFF /* CommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CommentsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -708,14 +706,6 @@
 				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 			);
 			name = HOME;
-			sourceTree = "<group>";
-		};
-		7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */ = {
-			isa = PBXGroup;
-			children = (
-				7EC05B031DB5DC6D0039B357 /* CAPSPageMenu.swift */,
-			);
-			name = CAPSPageMenu;
 			sourceTree = "<group>";
 		};
 		7E972FED1EA97D810047F4D4 /* TextPost */ = {
@@ -1115,7 +1105,6 @@
 			children = (
 				7E6A12E21E4D524C00CF108B /* Agrume */,
 				7EC005761E8CD95A00405530 /* AZDialogViewController */,
-				7E972FE41EA9556C0047F4D4 /* CAPSPageMenu */,
 				7E98E8CB1DB75057001B7329 /* CLImageEditor */,
 				7E9DA1891E14DA900001E8C0 /* NSBadge */,
 				7EE940BF1EAC822400C45AAE /* SegmentedProgressBar */,
@@ -1811,7 +1800,6 @@
 				7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */,
 				7E6A12EC1E4D524C00CF108B /* UIViewExtensions.swift in Sources */,
 				7E98E95B1DB75057001B7329 /* CLStickerTool.m in Sources */,
-				7EC05B041DB5DC6D0039B357 /* CAPSPageMenu.swift in Sources */,
 				7E8B55881E4EF67F004D3F31 /* SNFilter.swift in Sources */,
 				7E8B558B1E4EF67F004D3F31 /* SNSticker.swift in Sources */,
 				7EC5D1691DB31B2500437219 /* SignUp.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 import CoreData
 
 import Parse
@@ -26,18 +27,27 @@ class CurrentUserNumber: UIViewController, UITextFieldDelegate {
     @IBAction func saveAction(_ sender: Any) {
         // Save phone number
         if phoneNumber.text!.isEmpty || self.phoneNumber.text! == "" || self.phoneNumber.text!.characters.count != 10 {
-            // Dismiss
-            let alert = UIAlertController(title: "Invalid Number",
-                                          message: "Please enter your phone number to find your friends.",
-                                          preferredStyle: .alert)
-            
-            let ok = UIAlertAction(title: "ok",
-                                   style: .default,
-                                   handler: nil)
-            
-            alert.addAction(ok)
-            alert.view.tintColor = UIColor.black
-            self.present(alert, animated: true, completion: nil)
+            // MARK: - AudioToolBox; Vibrate Device
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            // MARK: - AZDialogViewController
+            let dialogController = AZDialogViewController(title: "💩\nInvalid Number",
+                                                          message: "Please enter your phone number to find your friends.")
+            dialogController.dismissDirection = .bottom
+            dialogController.dismissWithOutsideTouch = true
+            dialogController.showSeparator = true
+            // Configure style
+            dialogController.buttonStyle = { (button,height,position) in
+                button.setTitleColor(UIColor.white, for: .normal)
+                button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                button.layer.masksToBounds = true
+            }
+            // Add Skip and verify button
+            dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
+                // Dismiss
+                dialog.dismiss()
+            }))
+            dialogController.show(in: self)
             
         } else {
             // Track when number was saved
