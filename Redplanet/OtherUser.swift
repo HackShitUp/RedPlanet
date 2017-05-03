@@ -559,7 +559,7 @@ class OtherUser: UITableViewController {
         header.frame = header.frame
         
         // MARK: - RPHelpers extension
-        header.rpUserProPic.makeCircular(imageView: header.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        header.rpUserProPic.makeCircular(forView: header.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // (1) Get user's profile photo
         if let proPic = otherObject.last!.value(forKey: "userProfilePicture") as? PFFile {
@@ -711,7 +711,7 @@ class OtherUser: UITableViewController {
         let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
         
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
         
         // Set delegate
         cell.delegate = self

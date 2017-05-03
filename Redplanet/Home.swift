@@ -322,7 +322,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
         
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
         
         // Set delegate
 //        cell.delegate = self.navigationController

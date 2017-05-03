@@ -55,11 +55,11 @@ class ProfilePhotoCell: UITableViewCell {
                 // MARK: - SDWebImage
                 self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 // MARK: - RPHelpers
-                self.rpUserProPic.makeCircular(imageView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
                 // MARK: - SDWebImage
                 self.largeProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                 // MARK: - RPHelpers
-                self.largeProPic.makeCircular(imageView: self.largeProPic, borderWidth: 3.50, borderColor: UIColor.darkGray)
+                self.largeProPic.makeCircular(forView: self.largeProPic, borderWidth: 3.50, borderColor: UIColor.darkGray)
             }
         }
         

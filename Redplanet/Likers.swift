@@ -291,7 +291,7 @@ class Likers: UITableViewController, UINavigationControllerDelegate, DZNEmptyDat
         let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
 
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // If Searched
         if searchActive == true && searchBar.text != "" {

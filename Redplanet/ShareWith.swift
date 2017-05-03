@@ -488,7 +488,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         cell.selectionStyle = .none
 
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // SEARCHED
         if self.tableView!.numberOfSections == 1 {

@@ -52,6 +52,7 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
             let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
             
             tpCell.postObject = self.postObject!
+            tpCell.updateView(postObject: self.postObject!)
             
             return tpCell
             

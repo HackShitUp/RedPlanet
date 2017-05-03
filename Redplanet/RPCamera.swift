@@ -312,10 +312,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         }
         
         // MARK: - RPHelpers
-        self.homeButton.roundAllCorners(sender: self.homeButton)
-        
-        // MARK: - RPHelpers
-        self.homeButton.roundAllCorners(sender: self.homeButton)
+        self.homeButton.makeCircular(forView: self.homeButton, borderWidth: 3, borderColor: UIColor.red)
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))

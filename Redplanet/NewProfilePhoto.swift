@@ -176,7 +176,7 @@ class NewProfilePhoto: UIViewController, UITextViewDelegate, UINavigationControl
         self.rpUserProPic.image = changedProPicImg.last!
         
         // MARK: - RPHelpers extension
-        self.rpUserProPic.makeCircular(imageView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Design profile photo's borders and border colors
         self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2

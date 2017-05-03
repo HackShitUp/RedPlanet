@@ -639,7 +639,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         let cell = self.tableView!.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
         
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Set default like icon
         cell.likeButton.setImage(UIImage(named: "Like"), for: .normal)

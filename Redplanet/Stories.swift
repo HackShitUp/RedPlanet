@@ -203,7 +203,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                     // MARK: - SDWebImage
                     pCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
                     // MARK: - RPHelpers
-                    pCell.rpUserProPic.makeCircular(imageView: pCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                    pCell.rpUserProPic.makeCircular(forView: pCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
                 }
             }
             

@@ -1011,7 +1011,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         // Text ONLY
         if self.messageObjects[indexPath.row].value(forKey: "Message") != nil {
             // MARK: - RPHelpers extension
-            cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
@@ -1066,7 +1066,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             mCell.contentView.frame = mCell.contentView.frame
             
             // MARK: - RPHelpers extension
-            mCell.rpUserProPic.makeCircular(imageView: mCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+            mCell.rpUserProPic.makeCircular(forView: mCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
             
             // (1) Set usernames depending on who sent what
             if (self.messageObjects[indexPath.row].object(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {

@@ -228,7 +228,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         cell.contentView.frame = cell.bounds
         
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
         // Set delegate
         cell.delegate = self

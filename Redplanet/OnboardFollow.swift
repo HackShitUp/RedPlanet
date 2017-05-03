@@ -228,7 +228,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         _ = appDelegate.queryRelationships()
         
         // MARK: - RPHelpers extension
-        cell.rpUserProPic.makeCircular(imageView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
         
     
         // (1) Set user's object
