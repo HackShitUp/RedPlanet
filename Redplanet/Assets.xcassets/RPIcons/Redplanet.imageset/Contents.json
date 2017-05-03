@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "RedplanetLogo.png",
+      "filename" : "Redplanet.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "RedplanetLogo-1.png",
+      "filename" : "Redplanet-1.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "RedplanetLogo-2.png",
+      "filename" : "Redplanet-2.png",
       "scale" : "3x"
     }
   ],

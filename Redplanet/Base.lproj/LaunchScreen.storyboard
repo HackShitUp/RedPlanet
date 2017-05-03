@@ -55,6 +55,13 @@
                                     <constraint firstAttribute="width" constant="35" id="rLo-7k-QMJ"/>
                                 </constraints>
                             </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Redplanet" translatesAutoresizingMaskIntoConstraints="NO" id="KSn-bD-wTf">
+                                <rect key="frame" x="172" y="616" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="V11-cv-fOh"/>
+                                    <constraint firstAttribute="width" constant="30" id="svs-6l-eIr"/>
+                                </constraints>
+                            </imageView>
                             <view alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hvl-yi-PIY">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -85,12 +92,14 @@
                             <constraint firstItem="q49-Xk-buC" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="16" id="Nhl-Sh-ibY"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="AVK-EB-Ucu" secondAttribute="bottom" constant="72" id="SDF-9z-cnR"/>
                             <constraint firstItem="bS3-VZ-CGJ" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="16" id="W6g-yp-sBi"/>
+                            <constraint firstAttribute="bottom" secondItem="KSn-bD-wTf" secondAttribute="bottom" constant="21" id="XH7-M2-WDi"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="q49-Xk-buC" secondAttribute="bottom" constant="16" id="ZQL-Zy-qM0"/>
                             <constraint firstItem="FOr-qa-p2m" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="a2g-up-RZZ"/>
                             <constraint firstAttribute="trailing" secondItem="Dzx-Ir-gEt" secondAttribute="trailing" constant="16" id="hpa-m6-NTL"/>
                             <constraint firstItem="Hvl-yi-PIY" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="k9t-PE-DMz"/>
                             <constraint firstAttribute="trailing" secondItem="Hvl-yi-PIY" secondAttribute="trailing" id="pXn-9w-EVT"/>
                             <constraint firstItem="5k8-M1-ZUO" firstAttribute="leading" secondItem="bS3-VZ-CGJ" secondAttribute="trailing" constant="8" id="rfV-sl-JSf"/>
+                            <constraint firstItem="KSn-bD-wTf" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="t2T-FU-sX1"/>
                             <constraint firstItem="Hvl-yi-PIY" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="yZM-DB-yxS"/>
                             <constraint firstItem="5k8-M1-ZUO" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="13" id="zkq-62-SB1"/>
                         </constraints>
@@ -109,6 +118,7 @@
         <image name="FlashOff" width="256" height="256"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>
+        <image name="Redplanet" width="74" height="74"/>
         <image name="SwapCamera" width="243" height="256"/>
     </resources>
 </document>

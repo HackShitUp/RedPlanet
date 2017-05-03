@@ -2384,13 +2384,12 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nia-WD-2bb">
                                 <rect key="frame" x="172" y="619" width="30" height="30"/>
-                                <color key="backgroundColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="5q9-MN-Kmv"/>
                                     <constraint firstAttribute="height" constant="30" id="q0d-6s-y4b"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="25"/>
-                                <state key="normal" image="RPLogo"/>
+                                <state key="normal" image="Redplanet"/>
                                 <connections>
                                     <action selector="showMainUI:" destination="uTy-8V-6Fg" eventType="touchUpInside" id="vGq-bi-7Mg"/>
                                 </connections>
@@ -4992,8 +4991,9 @@
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>
-        <image name="RPLogo" width="300" height="300"/>
+        <image name="RPLogo" width="768" height="768"/>
         <image name="RedBookmark" width="25" height="25"/>
+        <image name="Redplanet" width="74" height="74"/>
         <image name="SLRCamera" width="17" height="20"/>
         <image name="SaveWhite" width="261" height="256"/>
         <image name="Search" width="25" height="25"/>
