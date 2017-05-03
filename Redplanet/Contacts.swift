@@ -24,8 +24,7 @@ var numberExists = false
 // Define Notification
 let contactsNotification = Notification.Name("contacts")
 
-// Set for iOS 9 +
-@available(iOS 9, *)
+
 class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // Array to hold contacts
@@ -152,10 +151,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                         self.notFollowing.append(object)
                     }
                 }
-                
-                
-                
-                
+
                 // Load alert if no friends (following) were found
                 if self.notFollowing.count == 0 {
                     // MARK: - AZDialogViewController
@@ -188,7 +184,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                         button.setTitle("CANCEL", for: [])
                         return true
                     }
-                    
                     dialogController.show(in: self)
                 }
                 
@@ -319,6 +314,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
         self.tableView!.emptyDataSetDelegate = self
         self.tableView!.emptyDataSetSource = self
         self.tableView!.tableFooterView = UIView()
+        self.tableView!.separatorColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
         
         // Add to NSNotificationCenter reload method
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: contactsNotification, object: nil)

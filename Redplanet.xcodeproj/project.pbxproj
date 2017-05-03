@@ -61,7 +61,6 @@
 		7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55851E4EF67F004D3F31 /* SNUtils.swift */; };
 		7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */; };
 		7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8CF1111EB666E20012C4FB /* ExploreCell.swift */; };
-		7E8CF1161EB72B780012C4FB /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8CF1151EB72B780012C4FB /* UIImageColors.swift */; };
 		7E8E54071EB29CAE00292B8C /* MomentVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E54051EB29CAE00292B8C /* MomentVideo.swift */; };
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
 		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
@@ -266,7 +265,6 @@
 		7E8B55851E4EF67F004D3F31 /* SNUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SNUtils.swift; sourceTree = "<group>"; };
 		7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		7E8CF1111EB666E20012C4FB /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
-		7E8CF1151EB72B780012C4FB /* UIImageColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageColors.swift; sourceTree = "<group>"; };
 		7E8E54051EB29CAE00292B8C /* MomentVideo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentVideo.swift; sourceTree = "<group>"; };
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
 		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
@@ -658,14 +656,6 @@
 				7E8B55861E4EF67F004D3F31 /* UIImageExtension.swift */,
 			);
 			path = SnapSliderFilters;
-			sourceTree = "<group>";
-		};
-		7E8CF1171EB72B7F0012C4FB /* UIImageColors */ = {
-			isa = PBXGroup;
-			children = (
-				7E8CF1151EB72B780012C4FB /* UIImageColors.swift */,
-			);
-			name = UIImageColors;
 			sourceTree = "<group>";
 		};
 		7E8E54091EB29CF100292B8C /* MomentVideo */ = {
@@ -1108,7 +1098,6 @@
 				7E8B557E1E4EF67F004D3F31 /* SnapSliderFilters */,
 				7E4199221E4C668000EFA065 /* SwipeView */,
 				7E8035381EB4113B00C9BA63 /* TwicketSegmentedControl */,
-				7E8CF1171EB72B7F0012C4FB /* UIImageColors */,
 				7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */,
 				7EC5D1BA1DB36F0300437219 /* Redplanet.entitlements */,
 				7EC5D1361DB2FE4F00437219 /* Main.storyboard */,
@@ -1847,7 +1836,6 @@
 				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,
 				7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
-				7E8CF1161EB72B780012C4FB /* UIImageColors.swift in Sources */,
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,

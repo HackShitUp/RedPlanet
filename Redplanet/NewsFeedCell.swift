@@ -68,40 +68,22 @@ class NewsFeedCell: UITableViewCell {
             return true
         }
         
-        // MARK: - RPPopUpVC
-        let rpPopUpVC = RPPopUpVC()
-        let navigator = UINavigationController(rootViewController: rpPopUpVC)
-        
         // (1) VIEWS
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
             // Append object
             viewsObject.append(self.postObject!)
-            
+
+            // MARK: - RPPopUpVC
+            let rpPopUpVC = RPPopUpVC()
             let viewsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
-            //            viewsVC.delegate = rpPopUpVC
-            //            rpPopUpVC.configureView(vc: rpPopUpVC, popOverVC: viewsVC)
-            //            self.delegate?.present(navigator, animated: true, completion: nil)
-            
-            
-            
-            // Create the MantleViewController from the Storyboard using the
-            //            let mantleViewController = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "vc") as! RCMantleViewController
-            // Create your modal controller with your storyboard ID
-            //            let popUpViewController = storyboard!.instantiateViewController(withIdentifier: "PopUpViewController") as! PopUpViewController
-            // Set it's delegate to be able to call 'delegate.dismissView(animated: Bool)'
-            //            viewsVC.delegate = rpPopUpVC as! RPPopUpVCDelegate
-            viewsVC.view.backgroundColor = UIColor.white
             rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: viewsVC)
-            // Present the modal through the MantleViewController
-            //            self.delegate?.present(navigator, animated: false, completion: nil)
-            rpPopUpVC.draggableToSides = false
-            self.delegate?.present(rpPopUpVC, animated: false, completion: nil)
+            dialogController.present(UINavigationController(rootViewController: rpPopUpVC), animated: true)
         })
         
         // (2) DELETE
-        let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+        let delete = AZDialogAction(title: "Delete Recent Post", handler: { (dialog) -> (Void) in
             // Dismiss
             dialog.dismiss()
             

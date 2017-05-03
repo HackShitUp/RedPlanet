@@ -460,6 +460,8 @@ class OtherUser: UITableViewController {
         }
         // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.view.roundAllCorners(sender: self.navigationController?.view)
+        // Show UITabBar
         self.navigationController?.tabBarController?.tabBar.isHidden = false
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false

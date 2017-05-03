@@ -136,10 +136,9 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // Set publisher name
         cell.publisherName.text = self.publisherName
         // MARK: - SDWebImage
+        cell.publisherLogo.sd_setIndicatorStyle(.gray)
+        cell.publisherLogo.sd_showActivityIndicatorView()
         cell.publisherLogo.sd_setImage(with: URL(string: self.logoURL)!)
-        cell.publisherLogo.image?.getColors { colors in
-            cell.publisherName.textColor = colors.primaryColor
-        }
         // MARK: - RPHelpers
         cell.publisherLogo.roundAllCorners(sender: cell.publisherLogo)
 

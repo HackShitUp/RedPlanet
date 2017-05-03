@@ -367,13 +367,13 @@ class FollowRequestsCell: UICollectionViewCell {
             // Configure style
             dialogController.buttonStyle = { (button,height,position) in
                 button.setTitleColor(UIColor.white, for: .normal)
-                button.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-                button.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
+                button.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
                 button.layer.masksToBounds = true
             }
             // Add Cancel button
             dialogController.cancelButtonStyle = { (button,height) in
-                button.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+                button.tintColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
                 button.setTitle("CANCEL", for: [])
                 return true
             }
@@ -465,18 +465,18 @@ class FollowRequestsCell: UICollectionViewCell {
         self.relationState.isHidden = true
         
         // Stylize buttons
-        self.confirmButton.setTitle("confirm", for: .normal)
-        self.confirmButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        self.confirmButton.setTitle("Confirm", for: .normal)
+        self.confirmButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
         self.confirmButton.layer.cornerRadius = 22.00
-        self.confirmButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        self.confirmButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
         self.confirmButton.layer.borderWidth = 1.50
         self.confirmButton.clipsToBounds = true
         
         // Stylize buttons
-        self.ignoreButton.setTitle("ignore", for: .normal)
-        self.ignoreButton.setTitleColor(UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0), for: .normal)
+        self.ignoreButton.setTitle("Ignore", for: .normal)
+        self.ignoreButton.setTitleColor(UIColor(red: 1, green: 0, blue: 0.31, alpha: 1), for: .normal)
         self.ignoreButton.layer.cornerRadius = 22.00
-        self.ignoreButton.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
+        self.ignoreButton.layer.borderColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1).cgColor
         self.ignoreButton.layer.borderWidth = 1.50
         self.ignoreButton.clipsToBounds = true
         

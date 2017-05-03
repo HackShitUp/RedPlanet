@@ -322,7 +322,7 @@ class RPHelpers: NSObject {
         if activityType == "from" {
             sentence = "from \(PFUser.current()!.username!.lowercased())"
         } else {
-            sentence = "\(PFUser.current()!.username!.lowercased())) \(activityType!)"
+            sentence = "\(PFUser.current()!.username!.lowercased()) \(activityType!)"
         }
         
         // MARK: - OneSignal

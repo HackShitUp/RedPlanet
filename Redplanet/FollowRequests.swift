@@ -133,21 +133,15 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         }
     }
     
-    // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
-        
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            str = "🦄\nNo Follow Requests"
+            str = "💩\nNo Follow Requests"
         } else {
-            str = "🦄\nYou haven't requested to Follow anyone recently."
+            str = "💩\nYou haven't requested to Follow anyone recently."
         }
-        
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
-        let attributeDictionary: [String: AnyObject]? = [
-            NSForegroundColorAttributeName: UIColor.black,
-            NSFontAttributeName: font!
-        ]
+        let attributeDictionary: [String: AnyObject]? = [NSForegroundColorAttributeName: UIColor.black, NSFontAttributeName: font!]
         
         return NSAttributedString(string: str!, attributes: attributeDictionary)
     }
