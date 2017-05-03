@@ -31,12 +31,22 @@ class MomentVideo: UICollectionViewCell {
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
-        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
-        rpVideoPlayer.setupVideo(videoURL: videoURL!)
-        self.contentView.addSubview(rpVideoPlayer)
-        rpVideoPlayer.autoplays = false
-        rpVideoPlayer.play()
-//        rpVideoPlayer.pause()
+//        rpVideoPlayer = RPVideoPlayerView(frame: self.contentView.bounds)
+//        rpVideoPlayer.setupVideo(videoURL: videoURL!)
+//        self.contentView.addSubview(rpVideoPlayer)
+//        rpVideoPlayer.autoplays = false
+//        rpVideoPlayer.play()
+        
+        // MARK: - AVPlayer
+        let player = AVPlayer(url: videoURL!)
+        let playerLayer = AVPlayerLayer(player: player)
+        playerLayer.frame = self.contentView.bounds
+        playerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        self.contentView.contentMode = .scaleAspectFit
+        self.contentView.layer.addSublayer(playerLayer)
+        player.isMuted = false
+        player.play()
+
         
         // Bring buttons to front
         let buttons = [self.rpUsername, self.time, self.moreButton,

@@ -229,10 +229,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Configure UIStatusBar
-        UIApplication.shared.isStatusBarHidden = false
-        UIApplication.shared.statusBarStyle = .default
-        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidLoad() {
@@ -280,6 +276,14 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         self.tableView!.addSubview(refresher)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         PFQuery.clearAllCachedResults()
@@ -299,7 +303,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
             }
         }
     }
-    
     
     
     // MARK: - Table view data source

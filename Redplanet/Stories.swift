@@ -38,13 +38,13 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     func fetchStories() {
         
-//        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
+        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+//        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         
 //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
-//        newsfeeds.whereKey("objectId", containedIn: keys)
+        newsfeeds.whereKey("objectId", containedIn: keys)
         
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
@@ -58,9 +58,9 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-                        self.storyPosts.append(object)
+//                        self.storyPosts.append(object)
                     }
-//                    self.storyPosts.append(object)
+                    self.storyPosts.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
@@ -125,7 +125,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = PageAttributesAnimator()
+        layout.animator = ParallaxAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -171,8 +171,17 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSize(width: 375, height: 800)
+        return self.view.bounds.size
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -182,35 +191,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-        // TEXT POST
-        if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
-            let tpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "TextPostCell", for: indexPath) as! TextPostCell
-            
-            // Set delegate
-            tpCell.delegate = self
-            
-            // (1) Set user's full name; "realNameOfUser"
-            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
-                tpCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
-                
-                // (2) Set user's profile photo
-                if let proPic = user["userProfilePicture"] as? PFFile {
-                    // MARK: - SDWebImage
-                    tpCell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
-                    // MARK: - RPHelpers
-                    tpCell.rpUserProPic.makeCircular(imageView: tpCell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
-                }
-            }
-            
-            // (3) MARK: - RPHelpers; Set time
-            tpCell.time.text = difference.getFullTime(difference: difference, date: from)
-            
-            // (4) Set Text Post
-            tpCell.textPost.text = (self.storyPosts[indexPath.item].value(forKey: "textPost") as! String)
-            
-            return tpCell
-            
-        } else if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+       if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
@@ -266,7 +247,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
             
             return mpCell
             
-        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "pp" {
+        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "pp" || self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
             
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
@@ -311,10 +292,10 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-//        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
-//            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
-//            print("IndexPath: \n\(indexPath!.item)\n")
-//        }
+        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
+            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
+            print("IndexPath: \n\(indexPath!.item)\n")
+        }
         
         // Scrolled to the right; skip
         if self.lastOffSet!.x < scrollView.contentOffset.x {

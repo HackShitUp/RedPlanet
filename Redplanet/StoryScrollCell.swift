@@ -46,14 +46,25 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // SCROLL-ABLE CELLS: Text Post, Profile Photo, Video???
         
-        let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
-
-        ppCell.innerPostObject = self.postObject!
-        ppCell.updateView(postObject: self.postObject!)
-        ppCell.superDelegate = self.parentDelegate
-        
-        return ppCell
+        if self.postObject!.value(forKey: "contentType") as! String == "tp" {
+            let tpCell = Bundle.main.loadNibNamed("TextPostCell", owner: self, options: nil)?.first as! TextPostCell
+            
+            tpCell.postObject = self.postObject!
+            
+            return tpCell
+            
+        } else {
+            
+            let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell
+            
+            ppCell.innerPostObject = self.postObject!
+            ppCell.updateView(postObject: self.postObject!)
+            ppCell.superDelegate = self.parentDelegate
+            
+            return ppCell
+        }
     }
     
     // MARK: - UIScrollView Delegate Methods

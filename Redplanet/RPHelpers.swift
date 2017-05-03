@@ -16,201 +16,6 @@ import Parse
 import ParseUI
 import Bolts
 
-/*
- MARK: - Used to add UIButton to bottom center of UIView
- Hide rpButton in viewWillAppear and
- show rpButton in viewWillDisappear
-*/
-let rpButton = UIButton(frame: CGRect(x: 0, y: 0, width: 75, height: 75))
-
-/*
- MARK: - UIView: Extensions
-*/
-extension UIView {
-    
-    // Function to add rpButton
-    func setButton(container: UIView?) {
-        // Add button to bottom/center of UITabBar
-        var buttonFrame = rpButton.frame
-        buttonFrame.origin.y = container!.bounds.height - buttonFrame.height
-        buttonFrame.origin.x = container!.bounds.width/2 - buttonFrame.size.width/2
-        rpButton.frame = buttonFrame
-        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
-        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-//        rpButton.layer.applyShadow(layer: rpButton.layer)
-        container!.addSubview(rpButton)
-    }
-    
-    // Function to round ALL corners of UIView
-    func roundAllCorners(sender: UIView?) {
-        sender!.layer.cornerRadius = 8.00
-        sender!.clipsToBounds = true
-    }
-    
-    // Function to round TOP corners of UIView
-    func roundTopCorners(sender: UIView?) {
-        let shape = CAShapeLayer()
-        shape.bounds = sender!.frame
-        shape.position = sender!.center
-        shape.path = UIBezierPath(roundedRect: sender!.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
-//        sender!.layer.backgroundColor = UIColor.black.cgColor
-        sender!.layer.mask = shape
-        sender!.clipsToBounds = true
-    }
-}
-
-/*
- MARK: - Make UIImageView Circular
-*/
-extension UIImageView {
-    func makeCircular(imageView: UIImageView?, borderWidth: CGFloat?, borderColor: UIColor?) {
-        imageView!.layoutIfNeeded()
-        imageView!.layoutSubviews()
-        imageView!.setNeedsLayout()
-        imageView!.layer.cornerRadius = imageView!.frame.size.width/2
-        imageView!.layer.borderColor = borderColor!.cgColor
-        imageView!.layer.borderWidth = borderWidth!
-        imageView!.clipsToBounds = true
-    }
-}
-
-// MARK: - UINavigationBar design configuration
-/*
- 'Whitens-out' the UINavigationbar and removes the lower grey line border
- • Shows the UINavigationBar; Set UIImage() instance as background
- • Apply UIImage to UINavigationBar; Makes it NOT translucent
-*/
-extension UINavigationBar {
-    func whitenBar(navigator: UINavigationController?) {
-        navigator?.setNavigationBarHidden(false, animated: false)
-        navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigator?.navigationBar.shadowImage = UIImage()
-        navigator?.navigationBar.isTranslucent = false
-    }
-}
-
-/*
- MARK: - CALayer; Extension used to apply generic shadow to Interface Objects
-*/
-extension CALayer {
-    func applyShadow(layer: CALayer?) {
-        layer!.shadowColor = UIColor.black.cgColor
-        layer!.shadowOffset = CGSize(width: 1, height: 1)
-        layer!.shadowRadius = 3
-        layer!.shadowOpacity = 0.5
-    }
-}
-
-/*
- MARK: - Function to generate random colors
-*/
-extension CGFloat {
-    static func random() -> CGFloat {
-        return CGFloat(arc4random()) / CGFloat(UInt32.max)
-    }
-}
-
-extension UIColor {
-    static func randomColor() -> UIColor {
-        return UIColor(red:   .random(),
-                       green: .random(),
-                       blue:  .random(),
-                       alpha: 1)
-    }
-}
-
-/*
- MARK: - Extensions add a shuffle() method to any mutable collection and a shuffled() method to any sequence
-*/
-extension MutableCollection where Indices.Iterator.Element == Index {
-    /// Shuffles the contents of given collection.
-    mutating func shuffle() {
-        let c = count
-        guard c > 1 else { return }
-        
-        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
-            guard d != 0 else { continue }
-            let i = index(firstUnshuffled, offsetBy: d)
-            swap(&self[firstUnshuffled], &self[i])
-        }
-    }
-}
-extension Sequence {
-    /// Returns an array with the contents of this sequence, shuffled.
-    func shuffled() -> [Iterator.Element] {
-        var result = Array(self)
-        result.shuffle()
-        return result
-    }
-}
-
-/*
- MARK: - DateComponents Time Display
- • getFullTime() = calculate time with full text
- • getShortTime() = calculate time with shortened text
-*/
-extension DateComponents {
-    
-    // Get Full Time
-    func getFullTime(difference: DateComponents?, date: Date?) -> String {
-        // logic what to show : Seconds, minutes, hours, days, or weeks
-        if difference!.second! <= 0 {
-            return "now"
-        } else if difference!.second! > 0 && difference!.minute! == 0 {
-            if difference!.second! == 1 {
-                return "1 second ago"
-            }
-            return "\(difference!.second!) seconds ago"
-            
-        } else if difference!.minute! > 0 && difference!.hour! == 0 {
-            if difference!.minute! == 1 {
-                return "1 minute ago"
-            }
-            return "\(difference!.minute!) minutes ago"
-            
-        } else if difference!.hour! > 0 && difference!.day! == 0 {
-            if difference!.hour! == 1 {
-                return "1 hour ago"
-            }
-            return "\(difference!.hour!) hours ago"
-        } else if difference!.day! > 0 && difference!.weekOfMonth! == 0 {
-            if difference!.day! == 1 {
-                return "1 day ago"
-            }
-            
-            return "\(difference!.day!) days ago"
-        }
-        
-        let createdDate = DateFormatter()
-        createdDate.dateFormat = "MMM dd"
-        return createdDate.string(from: date!)
-    }
-    
-    // Get Time w/Shortened Text
-    func getShortTime(difference: DateComponents?, date: Date?) -> String {
-        // logic what to show : Seconds, minutes, hours, days, or weeks
-        if difference!.second! <= 0 {
-            return "now"
-        } else if difference!.second! > 0 && difference!.minute! == 0 {
-            return "\(difference!.second!)s"
-        } else if difference!.minute! > 0 && difference!.hour! == 0 {
-            return "\(difference!.minute!)m"
-        } else if difference!.hour! > 0 && difference!.day! == 0 {
-            return "\(difference!.hour!)h"
-        } else if difference!.day! > 0 && difference!.weekOfMonth! == 0 {
-            return "\(difference!.day!)d"
-        }
-        
-        let createdDate = DateFormatter()
-        createdDate.dateFormat = "MMM dd"
-        return createdDate.string(from: date!)
-    }
-}
-
-
-
-// MARK: - RPHelpers Class
 class RPHelpers: NSObject {
     
     // MARK: - NotificationBanner; used to show statusbar success/error
@@ -269,6 +74,73 @@ class RPHelpers: NSObject {
                                     }
         }) .resume()
     }
+    
+    
+    // MARK: -  Parse; Function to like object and save notification
+    open func likeObject(forObject: PFObject?, notificationType: String?, activeButton: UIButton?) {
+        let likes = PFObject(className: "Likes")
+        likes["fromUser"] = PFUser.current()!
+        likes["from"] = PFUser.current()!.username!
+        likes["toUser"] = forObject!.value(forKey: "byUser") as! PFUser
+        likes["to"] = (forObject!.value(forKey: "byUser") as! PFUser).username!
+        likes["forObjectId"] = forObject!.objectId!
+        likes.saveInBackground { (success: Bool, error: Error?) in
+            if success {
+                print("Successfully saved object: \(likes)")
+                
+                // Save to Notification in Background
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = forObject!.value(forKey: "byUser") as! PFUser
+                notifications["to"] = (forObject!.value(forKey: "byUser") as! PFUser).username!
+                notifications["forObjectId"] = forObject!.objectId!
+                notifications["type"] = notificationType!
+                notifications.saveInBackground()
+                
+                // TODO:: Change UIButton State
+                
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
+    // MARK: - Parse; Function to unlike object and remove notification
+    open func unlikeObject(forObject: PFObject?) {
+        let likes = PFQuery(className: "Likes")
+        likes.whereKey("objectId", equalTo: forObject!.objectId!)
+        likes.whereKey("fromUser", equalTo: PFUser.current()!)
+        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                for object in objects! {
+                    object.deleteInBackground()
+                    
+                    // TODO:: Change UIButton state
+                    
+                    // Remove from Notifications
+                    let notifications = PFQuery(className: "Notifications")
+                    notifications.whereKey("objectId", equalTo: forObject!.objectId!)
+                    notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                    notifications.findObjectsInBackground(block: {
+                        (objects: [PFObject]?, error: Error?) in
+                        if error == nil {
+                            for object in objects! {
+                                object.deleteInBackground()
+                            }
+                        } else {
+                            print(error?.localizedDescription as Any)
+                        }
+                    })
+                }
+                
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+        }
+    }
+    
     
     // MARK: - Parse; Function to update <ChatsQueue>
     open func updateQueue(chatQueue: PFObject?, userObject: PFObject?) {
