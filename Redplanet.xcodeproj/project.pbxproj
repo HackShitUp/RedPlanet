@@ -40,7 +40,6 @@
 		7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */; };
 		7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */; };
 		7E6CF2751E7CC494005ED856 /* SelectedStoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */; };
-		7E6F36B01EB3FA9000136163 /* Stories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E6F36AF1EB3FA9000136163 /* Stories.swift */; };
 		7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C41DBD5E6400F03E0C /* NewChats.swift */; };
 		7E7037C71DBD5E7100F03E0C /* NewChatsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */; };
 		7E7037CE1DBD7F9D00F03E0C /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7037CD1DBD7F9D00F03E0C /* Views.swift */; };
@@ -65,6 +64,8 @@
 		7E8E54081EB29CAE00292B8C /* MomentVideo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E8E54061EB29CAE00292B8C /* MomentVideo.xib */; };
 		7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */; };
 		7E920BDB1E53AE85005171EE /* SavedPosts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E920BDA1E53AE85005171EE /* SavedPosts.swift */; };
+		7E9351DD1EBAE2E70045DA48 /* Stories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9351DC1EBAE2E60045DA48 /* Stories.swift */; };
+		7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9351DE1EBAE9430045DA48 /* Reactions.swift */; };
 		7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */; };
 		7E9457F21EB7FF4700035C08 /* ProfilePhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E9457F01EB7FF4700035C08 /* ProfilePhotoCell.xib */; };
 		7E972FDF1EA93E8B0047F4D4 /* NewsFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E972FDD1EA93E8B0047F4D4 /* NewsFeedCell.swift */; };
@@ -246,7 +247,6 @@
 		7E6BA2771DBC8F2100DE364D /* NewTextPost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewTextPost.swift; sourceTree = "<group>"; };
 		7E6CF2721E7CC28C005ED856 /* SelectedStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStories.swift; sourceTree = "<group>"; };
 		7E6CF2741E7CC494005ED856 /* SelectedStoriesCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedStoriesCell.swift; sourceTree = "<group>"; };
-		7E6F36AF1EB3FA9000136163 /* Stories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stories.swift; sourceTree = "<group>"; };
 		7E7037C41DBD5E6400F03E0C /* NewChats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChats.swift; sourceTree = "<group>"; };
 		7E7037C61DBD5E7100F03E0C /* NewChatsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatsCell.swift; sourceTree = "<group>"; };
 		7E7037CD1DBD7F9D00F03E0C /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -270,6 +270,8 @@
 		7E8E54061EB29CAE00292B8C /* MomentVideo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentVideo.xib; sourceTree = "<group>"; };
 		7E8E540A1EB2ACD800292B8C /* RPVideoPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPVideoPlayer.swift; sourceTree = "<group>"; };
 		7E920BDA1E53AE85005171EE /* SavedPosts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedPosts.swift; sourceTree = "<group>"; };
+		7E9351DC1EBAE2E60045DA48 /* Stories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stories.swift; sourceTree = "<group>"; };
+		7E9351DE1EBAE9430045DA48 /* Reactions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reactions.swift; sourceTree = "<group>"; };
 		7E9457EF1EB7FF4700035C08 /* ProfilePhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePhotoCell.swift; sourceTree = "<group>"; };
 		7E9457F01EB7FF4700035C08 /* ProfilePhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfilePhotoCell.xib; sourceTree = "<group>"; };
 		7E972FDD1EA93E8B0047F4D4 /* NewsFeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsFeedCell.swift; sourceTree = "<group>"; };
@@ -574,14 +576,14 @@
 			isa = PBXGroup;
 			children = (
 				7E6113D41DD157C2001CE98C /* EditContent.swift */,
+				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
+				7E8E54091EB29CF100292B8C /* MomentVideo */,
+				7E972FED1EA97D810047F4D4 /* TextPost */,
 				7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */,
 				7EE697D01EAADBCA004F4E24 /* SpacePostCell */,
 				7EE697CB1EAADB77004F4E24 /* SharedPost */,
 				7EE697BA1EAAC200004F4E24 /* PhotoCell */,
 				7EE697C41EAAC440004F4E24 /* VideoCell */,
-				7E972FEE1EA97D890047F4D4 /* MomentPhoto */,
-				7E8E54091EB29CF100292B8C /* MomentVideo */,
-				7E972FED1EA97D810047F4D4 /* TextPost */,
 			);
 			name = POSTS;
 			sourceTree = "<group>";
@@ -689,8 +691,9 @@
 		7E972FE31EA9555E0047F4D4 /* HOME */ = {
 			isa = PBXGroup;
 			children = (
-				7E6F36AF1EB3FA9000136163 /* Stories.swift */,
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
+				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
+				7E9351DC1EBAE2E60045DA48 /* Stories.swift */,
 				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
 				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 			);
@@ -1019,7 +1022,7 @@
 			name = RPCamera;
 			sourceTree = "<group>";
 		};
-		7EA730D61E3B293500CF4D12 /* RPShare */ = {
+		7EA730D61E3B293500CF4D12 /* RPShareUI */ = {
 			isa = PBXGroup;
 			children = (
 				7EA1C74E1E59835500FBE39B /* ShareWith */,
@@ -1027,7 +1030,7 @@
 				7EA45CD51DB6BD8100A466D9 /* RPCamera */,
 				7EA45CD41DB6BD7B00A466D9 /* Photos&Videos */,
 			);
-			name = RPShare;
+			name = RPShareUI;
 			sourceTree = "<group>";
 		};
 		7EAB4EB01DB4608300059DB1 /* RPChatRoom */ = {
@@ -1118,7 +1121,7 @@
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
 				7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */,
-				7EA730D61E3B293500CF4D12 /* RPShare */,
+				7EA730D61E3B293500CF4D12 /* RPShareUI */,
 				7E972FE31EA9555E0047F4D4 /* HOME */,
 				7EC5D1A41DB356A500437219 /* EXPLORE */,
 				7E3F0EDF1DC0630E006BF522 /* FOLLOWREQUESTS */,
@@ -1743,8 +1746,8 @@
 				7E6A12EA1E4D524C00CF108B /* AgrumeServiceLocator.swift in Sources */,
 				7E4065F81DC56589001E0C9C /* ShareMedia.swift in Sources */,
 				7EF2B7C61E23276800D08FC2 /* CapturedVideo.swift in Sources */,
-				7E6F36B01EB3FA9000136163 /* Stories.swift in Sources */,
 				7E6CF2731E7CC28C005ED856 /* SelectedStories.swift in Sources */,
+				7E9351DF1EBAE9430045DA48 /* Reactions.swift in Sources */,
 				7E8B558E1E4EF67F004D3F31 /* UIImageExtension.swift in Sources */,
 				7E4CFFAA1DB45DB30087454E /* RPChatRoom.swift in Sources */,
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
@@ -1801,6 +1804,7 @@
 				7EE697C91EAADB70004F4E24 /* SharedCell.swift in Sources */,
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
+				7E9351DD1EBAE2E70045DA48 /* Stories.swift in Sources */,
 				7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */,
 				7E98E9411DB75057001B7329 /* CLClippingTool.m in Sources */,
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,

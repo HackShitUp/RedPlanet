@@ -2,7 +2,7 @@
 //  Stories.swift
 //  Redplanet
 //
-//  Created by Joshua Choi on 4/28/17.
+//  Created by Joshua Choi on 5/4/17.
 //  Copyright © 2017 Redplanet Media, LLC. All rights reserved.
 //
 
@@ -21,7 +21,7 @@ import SwipeNavigationController
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
-class Stories: UICollectionViewController, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
+class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -36,14 +36,19 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     var storyPosts = [PFObject]()
     var likes = [PFObject]()
     
+    let scrollSets = ["tp", "pp", "sh", "sp", "vi"]
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var reactView: UIView!
+    
     func fetchStories() {
         
-        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE"]
+        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE", "qvz1ATrnSO"]
         
         let newsfeeds = PFQuery(className: "Newsfeeds")
-//        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+        //        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
         
-//        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
+        //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
         newsfeeds.whereKey("objectId", containedIn: keys)
         
         newsfeeds.order(byDescending: "createdAt")
@@ -58,7 +63,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-//                        self.storyPosts.append(object)
+                        //                        self.storyPosts.append(object)
                     }
                     self.storyPosts.append(object)
                 }
@@ -122,7 +127,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
         
-        // MARK: - AnimatedCollectionViewLayout
+        // MARK: - AnimatedCollectionViewLayout; configure UICollectionView
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
         layout.animator = ParallaxAttributesAnimator()
@@ -130,10 +135,14 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
-        self.collectionView!.frame = self.view.bounds
-        self.collectionView!.collectionViewLayout = layout
-        self.collectionView!.isPagingEnabled = true
-        self.collectionView!.backgroundColor = UIColor.black
+        // Configure UICollectionView
+        collectionView!.dataSource = self
+        collectionView!.delegate = self
+        collectionView!.isPagingEnabled = true
+        collectionView!.collectionViewLayout = layout
+        collectionView!.frame = self.view.bounds
+        collectionView!.backgroundColor = UIColor.black
+        collectionView!.showsHorizontalScrollIndicator = false
         
         // Fetch Stories
         fetchStories()
@@ -161,11 +170,11 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
     
     
     // MARK: UICollectionViewDataSource
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.storyPosts.count
     }
     
@@ -174,16 +183,28 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         return self.view.bounds.size
     }
     
-    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        print("Ended Displaying Cell: \(indexPath[1])")
+//        if self.collectionView.cellForItem(at: indexPath) == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+//            let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//            cell.rpVideoPlayer?.pause()
+//        }
+        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+        cell.rpVideoPlayer?.pause()
     }
     
-    override func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        //
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        print("Will Display Cell: \(indexPath[1])")
+//        if self.collectionView.cellForItem(at: indexPath) == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+//            let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//            cell.rpVideoPlayer?.play()
+//        }
+        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+        cell.rpVideoPlayer?.play()
     }
     
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // Configure initial setup for time
         let from = self.storyPosts[indexPath.item].createdAt!
@@ -191,7 +212,18 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
-       if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+        // Text Posts, Profile Photo
+        if self.scrollSets.contains(self.storyPosts[indexPath.item].value(forKey: "contentType") as! String) {
+            let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
+            
+            // Set PFObject
+            scrollCell.postObject = self.storyPosts[indexPath.item]
+            // Set parentDelegate
+            scrollCell.parentDelegate = self
+            
+            return scrollCell
+            
+        } else if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
@@ -247,20 +279,7 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
             
             return mpCell
             
-        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "pp" || self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "tp" {
-            
-            let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
-            
-            // Set PFObject
-            scrollCell.postObject = self.storyPosts[indexPath.item]
-            // Set parentDelegate
-            scrollCell.parentDelegate = self
-            
-            return scrollCell
-        
         } else {
-    
-            //            if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.row].value(forKey: "videoAsset") != nil
             
             // MOMENT VIDEO CELL
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
@@ -279,23 +298,18 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
                 mvCell.addVideo(videoURL: URL(string: video.url!)!)
             }
             
+            
             return mvCell
         }
     }
     
     
     // MARK: - UIScrollView Delegate Method
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.lastOffSet = scrollView.contentOffset
     }
-    
-    
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        for cell:  UICollectionViewCell in self.collectionView!.visibleCells {
-            let indexPath: IndexPath? = self.collectionView?.indexPath(for: cell)
-            print("IndexPath: \n\(indexPath!.item)\n")
-        }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         // Scrolled to the right; skip
         if self.lastOffSet!.x < scrollView.contentOffset.x {
@@ -304,8 +318,15 @@ class Stories: UICollectionViewController, UINavigationControllerDelegate, Segme
             // Scrolled to the left; rewind
             self.spb.rewind()
         }
+
+        var visibleRect = CGRect()
+        visibleRect.origin = self.collectionView!.contentOffset
+        visibleRect.size = self.collectionView!.bounds.size
+        let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
+        let indexPath: IndexPath? = collectionView?.indexPathForItem(at: visiblePoint)
+        print("SCROLLED TO: \(indexPath![1])")
+
     }
-    
-    
+
     
 }

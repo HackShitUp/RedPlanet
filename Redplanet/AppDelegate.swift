@@ -102,16 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
 
                                             // Banner for notification
                                             if fullMessage!.hasPrefix("\(PFUser.current()!.username!.lowercased())") {
-                                                // If PFUser.currentUser()! caused
-                                                // Sent notification
-                                                // Set "invisible banner"
-                                                
-                                                // Just do nothing smh...
-//                                                // MARK: - NotitficationBanner
-//                                                let banner = NotificationBanner(title: "", subtitle: "", style: .success)
-//                                                banner.backgroundColor = UIColor.clear
-//                                                banner.show()
-                                                print("FIRED HERE?")
+                                                // If PFUser.currentUser()! sent notification to self, do nothing
+                                                print("Received notification for the current user...")
                                                 
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {

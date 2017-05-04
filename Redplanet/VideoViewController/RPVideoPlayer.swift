@@ -62,6 +62,7 @@ open class RPVideoPlayerView: UIView {
     // (3) Deinitialize/release object when no longer needed
     deinit {
         print("De-Initialized")
+        NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
         player = nil
     }
     
@@ -87,7 +88,7 @@ open class RPVideoPlayerView: UIView {
     // Function to loop video
     func loopVideo(_ notification: Notification) {
         self.player?.seek(to: kCMTimeZero)
-//        self.player?.play()
+        self.player?.play()
     }
 
     // MARK: - Methods
@@ -229,15 +230,15 @@ open class RPVideoPlayerView: UIView {
         super.awakeFromNib()
         
         // Configure looping for AVPlayer
-        self.player.actionAtItemEnd = .none
+//        self.player.actionAtItemEnd = .none
         
         // Add observer to handle looping of video
-//        NotificationCenter.default.addObserver(self, selector: #selector(loopVideo),
-//                                               name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
+        NotificationCenter.default.addObserver(self, selector: #selector(loopVideo),
+                                               name: .AVPlayerItemDidPlayToEndTime, object: self.player.currentItem)
         
         // Play video if autoplays
         if autoplays {
-//            play()
+            play()
         }
     }
     

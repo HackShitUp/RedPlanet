@@ -686,6 +686,107 @@
             </objects>
             <point key="canvasLocation" x="1461.5" y="-576.5"/>
         </scene>
+        <!--Stories-->
+        <scene sceneID="p5p-q3-hC4">
+            <objects>
+                <viewController storyboardIdentifier="storiesVC" id="1sA-x6-afa" customClass="Stories" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PSv-mO-Zhd"/>
+                        <viewControllerLayoutGuide type="bottom" id="OPO-Zt-gd7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="raY-8d-gom">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kGM-Jb-BsL">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="667" id="CRi-Oz-vcZ"/>
+                                    <constraint firstAttribute="width" constant="375" id="ytI-9t-RV4"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="syM-tm-41s">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="9Ml-AY-T6x">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                        <size key="customSize" width="375" height="667"/>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <view alpha="0.25" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="phO-qS-rKe">
+                                <rect key="frame" x="0.0" y="597" width="375" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bt3-hM-Jwa">
+                                        <rect key="frame" x="50" y="44" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="WhiteLike"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aB-Q9-Edg">
+                                        <rect key="frame" x="175" y="44" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="WhiteComment"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I4n-2h-G4k">
+                                        <rect key="frame" x="0.0" y="6" width="125" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                        <state key="normal" title="likes">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyW-uf-1oB">
+                                        <rect key="frame" x="125" y="6" width="125" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                        <state key="normal" title="comments">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2gC-JG-cQv">
+                                        <rect key="frame" x="250" y="6" width="125" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                                        <state key="normal" title="shares">
+                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eL-Lf-VIq">
+                                        <rect key="frame" x="300" y="44" width="25" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="ShareWhite"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.85281623010610086" green="0.85281623010610086" blue="0.85281623010610086" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kGM-Jb-BsL" firstAttribute="leading" secondItem="raY-8d-gom" secondAttribute="leading" id="FAi-vJ-KUc"/>
+                            <constraint firstAttribute="trailing" secondItem="kGM-Jb-BsL" secondAttribute="trailing" id="OFQ-Ud-9hP"/>
+                            <constraint firstItem="kGM-Jb-BsL" firstAttribute="top" secondItem="raY-8d-gom" secondAttribute="top" id="QQP-75-eaR"/>
+                            <constraint firstItem="OPO-Zt-gd7" firstAttribute="top" secondItem="kGM-Jb-BsL" secondAttribute="bottom" id="SFv-jz-FDH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="kGM-Jb-BsL" id="udd-sm-Ptd"/>
+                        <outlet property="reactView" destination="phO-qS-rKe" id="Kn1-NS-Svx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2d7-MS-XMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1941.5" y="-935.5"/>
+        </scene>
         <!--Chats-->
         <scene sceneID="IlI-vH-jan">
             <objects>
@@ -1544,31 +1645,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gwh-Me-zQ7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2518.5" y="527.5"/>
-        </scene>
-        <!--Stories-->
-        <scene sceneID="Hcw-u0-oGN">
-            <objects>
-                <collectionViewController storyboardIdentifier="storiesVC" id="2iN-2H-fLa" customClass="Stories" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="LiO-ln-byZ">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="3OS-N1-Y4A">
-                            <size key="itemSize" width="375" height="667"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells/>
-                        <connections>
-                            <outlet property="dataSource" destination="2iN-2H-fLa" id="f4t-hx-VZN"/>
-                            <outlet property="delegate" destination="2iN-2H-fLa" id="uof-58-jgF"/>
-                        </connections>
-                    </collectionView>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="LR2-Z8-ml9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2002" y="-577"/>
         </scene>
         <!--Edit Content-->
         <scene sceneID="5WR-JW-KiL">
@@ -5000,12 +5076,15 @@
         <image name="Settings" width="24" height="24"/>
         <image name="Share" width="47" height="48"/>
         <image name="ShareOP" width="75" height="75"/>
+        <image name="ShareWhite" width="47" height="48"/>
         <image name="Stickers" width="77" height="77"/>
         <image name="SwapCamera" width="243" height="256"/>
         <image name="User" width="48" height="48"/>
         <image name="User-48" width="24" height="24"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="VolumeOn" width="290" height="256"/>
+        <image name="WhiteComment" width="48" height="48"/>
+        <image name="WhiteLike" width="51" height="51"/>
         <image name="iOSPhotos" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

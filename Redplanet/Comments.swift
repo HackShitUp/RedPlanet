@@ -336,9 +336,7 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
     
     
     
-    // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.comments.count == 0 {
             return true
@@ -347,7 +345,6 @@ class Comments: UIViewController, UINavigationControllerDelegate, UITableViewDat
         }
     }
     
-    // Title for EmptyDataSet
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let str = "💩\nNo Comments Yet"
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)

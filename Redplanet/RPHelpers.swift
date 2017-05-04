@@ -77,25 +77,21 @@ class RPHelpers: NSObject {
 
     // MARK: -  Parse; Function to like object and save notification
     open func likeObject(forObject: PFObject?, notificationType: String?, activeButton: UIButton?) {
+        // Disable button
+        activeButton!.isUserInteractionEnabled = false
+        
         let likes = PFObject(className: "Likes")
         likes["fromUser"] = PFUser.current()!
         likes["from"] = PFUser.current()!.username!
         likes["toUser"] = forObject!.value(forKey: "byUser") as! PFUser
         likes["to"] = (forObject!.value(forKey: "byUser") as! PFUser).username!
         likes["forObjectId"] = forObject!.objectId!
-        likes.saveInBackground { (success: Bool, error: Error?) in
+        likes.saveInBackground(block: { (success: Bool, error: Error?) in
             if success {
                 print("Successfully saved object: \(likes)")
                 
-                // Save to Notification in Background
-                let notifications = PFObject(className: "Notifications")
-                notifications["fromUser"] = PFUser.current()!
-                notifications["from"] = PFUser.current()!.username!
-                notifications["toUser"] = forObject!.value(forKey: "byUser") as! PFUser
-                notifications["to"] = (forObject!.value(forKey: "byUser") as! PFUser).username!
-                notifications["forObjectId"] = forObject!.objectId!
-                notifications["type"] = notificationType!
-                notifications.saveInBackground()
+                // Re-enable button
+                activeButton!.isUserInteractionEnabled = true
                 
                 // Change button
                 activeButton!.setImage(UIImage(named: "LikeFilled"), for: .normal)
@@ -109,22 +105,49 @@ class RPHelpers: NSObject {
                                 }
                 })
                 
+                // Save to Notification in Background
+                let notifications = PFObject(className: "Notifications")
+                notifications["fromUser"] = PFUser.current()!
+                notifications["from"] = PFUser.current()!.username!
+                notifications["toUser"] = forObject!.value(forKey: "byUser") as! PFUser
+                notifications["to"] = (forObject!.value(forKey: "byUser") as! PFUser).username!
+                notifications["forObjectId"] = forObject!.objectId!
+                notifications["type"] = notificationType!
+                notifications.saveInBackground()
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
-        }
+        })
     }
     
     // MARK: - Parse; Function to unlike object and remove notification
     open func unlikeObject(forObject: PFObject?, activeButton: UIButton?) {
+        // Disable button
+        activeButton!.isUserInteractionEnabled = false
+        
         let likes = PFQuery(className: "Likes")
         likes.whereKey("forObjectId", equalTo: forObject!.objectId!)
         likes.whereKey("fromUser", equalTo: PFUser.current()!)
-        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
+        likes.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 for object in objects! {
                     object.deleteInBackground()
+                    
+                    // Re-enable button
+                    activeButton!.isUserInteractionEnabled = true
+                    
+                    // Set Button Image
+                    activeButton!.setImage(UIImage(named: "Like"), for: .normal)
+                    
+                    // Animate like button
+                    UIView.animate(withDuration: 0.6 ,
+                                   animations: { activeButton!.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
+                                   completion: { finish in
+                                    UIView.animate(withDuration: 0.5) {
+                                        activeButton!.transform = CGAffineTransform.identity
+                                    }
+                    })
                     
                     // Remove from Notifications
                     let notifications = PFQuery(className: "Notifications")
@@ -140,23 +163,16 @@ class RPHelpers: NSObject {
                             print(error?.localizedDescription as Any)
                         }
                     })
-                    
-                    // Set Button Image
-                    activeButton!.setImage(UIImage(named: "Like"), for: .normal)
-                    
-                    // Animate like button
-                    UIView.animate(withDuration: 0.6 ,
-                                   animations: { activeButton!.transform = CGAffineTransform(scaleX: 0.6, y: 0.6) },
-                                   completion: { finish in
-                                    UIView.animate(withDuration: 0.5) {
-                                        activeButton!.transform = CGAffineTransform.identity
-                                    }
-                    })
                 }
             } else {
                 print(error?.localizedDescription as Any)
             }
-        }
+        })
+    }
+    
+    // MARK: - Parse; Function to set likes, comments, and shares for PFObject
+    func setInteractions(forObject: PFObject?, activeButton: UIButton?) {
+        
     }
     
     

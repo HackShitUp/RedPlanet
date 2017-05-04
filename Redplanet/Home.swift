@@ -146,7 +146,8 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                     // (1) MAP the current array, <posts>
                     let users = self.posts.map {$0.object(forKey: "byUser") as! PFUser}
                     // (2) Check if posts array does NOT contain user's object
-                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) && difference.hour! < 24 {
+                    if !users.contains(where: { $0.objectId! == (object.object(forKey: "byUser") as! PFUser).objectId!}) {
+//                        && difference.hour! < 24 {
                         self.posts.append(object)
                     } else {
                         self.skipped.append(object)
@@ -196,7 +197,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            str = "💩\nYour Friensd'\nFeed Is Empty Today."
+            str = "💩\nYour Friends'\nFeed Is Empty Today."
         } else {
             str = "💩\nYour Following\nFeed Is Empty Today."
         }
