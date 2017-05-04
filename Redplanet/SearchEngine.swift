@@ -16,11 +16,8 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 
-class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate, DZNEmptyDataSetSource {
-    
-    // SearchBar
-    let searchBar = UISearchBar()
-    
+class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITextFieldDelegate, DZNEmptyDataSetSource {
+
     // App Delegate
     let appDelegate = AppDelegate()
     
@@ -30,15 +27,14 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     // Arrays to hold hashtag searches
     var searchHashes = [String]()
     
+    @IBOutlet weak var searchBar: UITextField!
     @IBAction func backButton(_ sender: AnyObject) {
         self.searchHashes.removeAll(keepingCapacity: false)
         self.searchObjects.removeAll(keepingCapacity: false)
-        // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    
-    // MARK: DZNEmptyDataSet Framework
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if self.searchObjects.isEmpty || self.searchHashes.isEmpty || self.searchBar.text == "" {
             return true
@@ -49,7 +45,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         var str: String?
-        
         if self.searchBar.text == "" {
             str = "Search for people to follow or prefix '#' to search for Hashtags..."
         } else if self.searchObjects.isEmpty || self.searchHashes.isEmpty {
@@ -68,7 +63,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
@@ -93,11 +87,10 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
         
         // Configure UISearchBar
         searchBar.delegate = self
-        searchBar.showsCancelButton = true
+        searchBar.frame = CGRect(x: 58, y: 7, width: self.view.frame.size.width - 68, height: 30)
         searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
-        searchBar.frame.size.width = UIScreen.main.bounds.width - 75
-        let searchItem = UIBarButtonItem(customView: searchBar)
-        self.navigationItem.rightBarButtonItem = searchItem
+        searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
+        searchBar.textColor = UIColor.black
         
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
@@ -130,83 +123,80 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     }
     
     
-    // MARK: - UISearchBar Delegate Method
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        // Pop view controller
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-        // Track Who Searched the App
-        Heap.track("Searched", withProperties:
-            ["byUserId": "\(PFUser.current()!.objectId!)",
-                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
-                "SearchedFor": "\(self.searchBar.text!)"
-            ])
-        
-        // Change tableView background
-        self.tableView!.backgroundView = UIView()
-        
-        if searchBar.text!.hasPrefix("#") {
-            // Looking for hashtags...
-            let hashtags = PFQuery(className: "Hashtags")
-            hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
-            hashtags.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    // Clear array
-                    self.searchHashes.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        // Hashtag
-                        if self.searchHashes.contains(object["userHash"] as! String) {
-                            // Skip appending object
-                        } else {
-                            self.searchHashes.append(object["userHash"] as! String)
-                        }
-                    }
-                    
-                    // Reload data
-                    self.tableView!.reloadData()
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+    // MARK: - UITextField
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if string == "\n" {
             
-        } else {
-            // Looking for humans...
-            // Search for user
-            let theUsername = PFUser.query()!
-            theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
-            let realName = PFUser.query()!
-            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
-            let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-            search.findObjectsInBackground(block: {
-                (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    
-                    // USERNAME: Clear arrays
-                    self.searchObjects.removeAll(keepingCapacity: false)
-                    
-                    for object in objects! {
-                        if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
-                            self.searchObjects.append(object)
+            // Track Who Searched the App
+            Heap.track("Searched", withProperties:
+                ["byUserId": "\(PFUser.current()!.objectId!)",
+                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)",
+                    "SearchedFor": "\(self.searchBar.text!)"
+                ])
+            
+            // Change tableView background
+            self.tableView!.backgroundView = UIView()
+            
+            if searchBar.text!.hasPrefix("#") {
+                // Looking for hashtags...
+                let hashtags = PFQuery(className: "Hashtags")
+                hashtags.whereKey("userHash", matchesRegex: "(?i)" + self.searchBar.text!.lowercased())
+                hashtags.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        // Clear array
+                        self.searchHashes.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            // Hashtag
+                            if self.searchHashes.contains(object["userHash"] as! String) {
+                                // Skip appending object
+                            } else {
+                                self.searchHashes.append(object["userHash"] as! String)
+                            }
                         }
+                        
+                        // Reload data
+                        self.tableView!.reloadData()
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
                     }
-                    
-                    // Reload data
-                    self.tableView!.reloadData()
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
+                })
+                
+            } else {
+                // Looking for humans...
+                // Search for user
+                let theUsername = PFUser.query()!
+                theUsername.whereKey("username", matchesRegex: "(?i)" + self.searchBar.text!)
+                let realName = PFUser.query()!
+                realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + self.searchBar.text!)
+                let search = PFQuery.orQuery(withSubqueries: [theUsername, realName])
+                search.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        
+                        // USERNAME: Clear arrays
+                        self.searchObjects.removeAll(keepingCapacity: false)
+                        
+                        for object in objects! {
+                            if !blockedUsers.contains(where: {$0.objectId! == object.objectId!}) {
+                                self.searchObjects.append(object)
+                            }
+                        }
+                        
+                        // Reload data
+                        self.tableView!.reloadData()
+                        
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
         }
+        
+        return true
     }
-    
-    
 
     // MARK: - Table view data source
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -220,7 +210,6 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UISea
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "searchCell", for: indexPath) as! SearchCell

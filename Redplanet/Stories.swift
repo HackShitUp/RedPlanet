@@ -21,6 +21,24 @@ import SwipeNavigationController
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
+
+
+
+
+
+
+/*
+ Playing video when scrolled to index
+ (1) Instantiate global video player here?
+ (2) Play video when cell is completely visible
+ (3) Pause video when cell disappears?
+ */
+
+
+
+
+
+
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
     // MARK: - SegmentedProgressBar
@@ -184,23 +202,22 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        print("Ended Displaying Cell: \(indexPath[1])")
-//        if self.collectionView.cellForItem(at: indexPath) == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-//            let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
+//        if self.collectionView?.cellForItem(at: indexPath) == cell {
 //            cell.rpVideoPlayer?.pause()
+//        } else {
+//            print("Ended Cell Type: \(cell)")
 //        }
-        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-        cell.rpVideoPlayer?.pause()
+//        print("Ending displaying of cell: \(cell)\n")
+        
+        if cell == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
+            self.rpVideoPlayer?.pause()
+        }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        print("Will Display Cell: \(indexPath[1])")
-//        if self.collectionView.cellForItem(at: indexPath) == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
-//            let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-//            cell.rpVideoPlayer?.play()
-//        }
-        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-        cell.rpVideoPlayer?.play()
+//        print("CELL: \(cell)\n")
     }
     
     
@@ -294,8 +311,15 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             
             // (3) Set video
             if let video = self.storyPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
-                // Add Video
-                mvCell.addVideo(videoURL: URL(string: video.url!)!)
+                // MARK: - RPVideoPlayerView
+                self.rpVideoPlayer = RPVideoPlayerView(frame: mvCell.contentView.bounds)
+                self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
+                mvCell.contentView.addSubview(rpVideoPlayer)
+                self.rpVideoPlayer.autoplays = false
+                self.rpVideoPlayer.playbackLoops = false
+                self.rpVideoPlayer?.pause()
+                // Update view???
+                mvCell.updateView()
             }
             
             
@@ -311,20 +335,30 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
-        // Scrolled to the right; skip
-        if self.lastOffSet!.x < scrollView.contentOffset.x {
-            self.spb.skip()
-        } else {
-            // Scrolled to the left; rewind
-            self.spb.rewind()
-        }
-
+        
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
         visibleRect.size = self.collectionView!.bounds.size
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
-        let indexPath: IndexPath? = collectionView?.indexPathForItem(at: visiblePoint)
-        print("SCROLLED TO: \(indexPath![1])")
+        let indexPath: IndexPath? = self.collectionView?.indexPathForItem(at: visiblePoint)
+        
+        
+        // Scrolled to the right; skip
+        if self.lastOffSet!.x < scrollView.contentOffset.x {
+            // TODO:: End if last indexPath
+//            self.spb.skip()
+        } else {
+            // Scrolled to the left; rewind
+//            self.spb.rewind()
+        }
+
+        if self.storyPosts[indexPath!.item].value(forKey: "videoAsset") != nil {
+            print("Video: \(indexPath![1])")
+            print("OBJECTID: \(self.storyPosts[indexPath!.item].objectId!)\n")
+        } else {
+            print("Not a video: \(indexPath![1])")
+        }
+        
 
     }
 

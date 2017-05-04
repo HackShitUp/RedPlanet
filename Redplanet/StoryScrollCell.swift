@@ -86,7 +86,7 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
     
     // MARK: - UIScrollView Delegate Methods
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.tableView!.contentOffset.y <= -90 {
+        if self.tableView!.contentOffset.y <= -12 {
             self.parentDelegate?.dismiss(animated: true, completion: nil)
         }
     }

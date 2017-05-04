@@ -2690,18 +2690,32 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="JdH-db-BaH">
+                        <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" image="Left_50" id="jc9-TY-Qrm">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="backButton:" destination="yaJ-ah-IQ2" id="VVD-6o-KCB"/>
                             </connections>
                         </barButtonItem>
+                        <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="cUJ-B1-3OO">
+                            <rect key="frame" x="58" y="7" width="259" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <nil key="textColor"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
+                            <connections>
+                                <outlet property="delegate" destination="yaJ-ah-IQ2" id="Ehb-yy-eDv"/>
+                            </connections>
+                        </textField>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="searchBar" destination="cUJ-B1-3OO" id="Yrg-7H-RVb"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ieo-Cd-TYk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2002" y="528"/>
+            <point key="canvasLocation" x="2001.5" y="527.5"/>
         </scene>
         <!--Chats-->
         <scene sceneID="3nD-Oc-X6H">

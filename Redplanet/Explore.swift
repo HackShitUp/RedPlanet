@@ -30,17 +30,22 @@ class Explore: UITableViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Configure UITableView
+        self.tableView.tableFooterView = UIView()
+        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        
         // Configure UITextField
         self.searchBar.delegate = self
-        self.searchBar.font = UIFont(name: "AvenirNext-Medium", size: 17)
+        self.searchBar.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
         self.searchBar.placeholder = "Search..."
         self.searchBar.leftViewMode = .always
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 20))
+        // Add search icon in UITextField
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "Search")
         self.searchBar.leftView = imageView
         self.searchBar.addSubview(imageView)
-        self.searchBar.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
@@ -48,10 +53,6 @@ class Explore: UITableViewController, UITextFieldDelegate {
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView.addSubview(refresher)
-
-        // Configure UITableView
-        self.tableView.tableFooterView = UIView()
-        self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         
         // MARK: - RPHelpers
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
