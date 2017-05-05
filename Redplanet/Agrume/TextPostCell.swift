@@ -130,8 +130,11 @@ class TextPostCell: UITableViewCell {
             rpHelpers.likeObject(forObject: self.postObject, notificationType: "like tp", activeButton: self.likeButton)
             rpHelpers.pushNotification(toUser: self.postObject!.value(forKey: "byUser") as! PFUser, activityType: "liked your Text Post")
         }
-        // Reload data
-        self.updateView(postObject: self.postObject!)
+        
+        DispatchQueue.main.async {
+            // Reload data
+            self.updateView(postObject: self.postObject!)
+        }
     }
     
     // Function to show likers

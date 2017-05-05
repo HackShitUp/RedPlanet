@@ -72,6 +72,15 @@ class StoryScrollCell: UICollectionViewCell, UITableViewDataSource, UITableViewD
             
             return tpCell
             
+        } else if self.postObject!.value(forKey: "contentType") as! String == "vi" {
+            let vCell = Bundle.main.loadNibNamed("VideoCell", owner: self, options: nil)?.first as! VideoCell
+
+            if let video = self.postObject!.value(forKey: "videoAsset") as? PFFile {
+                vCell.addVideo(videoURL: URL(string: video.url!)!)
+            }
+            
+            return vCell
+            
         } else {
             // Profile Photo
             let ppCell = Bundle.main.loadNibNamed("ProfilePhotoCell", owner: self, options: nil)?.first as! ProfilePhotoCell

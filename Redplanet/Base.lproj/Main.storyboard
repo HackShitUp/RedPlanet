@@ -767,7 +767,7 @@
                                         <state key="normal" image="ShareWhite"/>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.85281623010610086" green="0.85281623010610086" blue="0.85281623010610086" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -780,7 +780,13 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="kGM-Jb-BsL" id="udd-sm-Ptd"/>
+                        <outlet property="commentButton" destination="4aB-Q9-Edg" id="DSM-A1-WNi"/>
+                        <outlet property="likeButton" destination="bt3-hM-Jwa" id="ScC-s2-VNQ"/>
+                        <outlet property="numberOfComments" destination="nyW-uf-1oB" id="qGS-z4-uGN"/>
+                        <outlet property="numberOfLikes" destination="I4n-2h-G4k" id="XS4-mw-6KP"/>
+                        <outlet property="numberOfShares" destination="2gC-JG-cQv" id="9xV-bh-iWK"/>
                         <outlet property="reactView" destination="phO-qS-rKe" id="Kn1-NS-Svx"/>
+                        <outlet property="shareButton" destination="1eL-Lf-VIq" id="Hyl-Rw-Nll"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2d7-MS-XMF" userLabel="First Responder" sceneMemberID="firstResponder"/>

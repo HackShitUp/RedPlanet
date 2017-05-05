@@ -21,24 +21,6 @@ import SwipeNavigationController
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
-
-
-
-
-
-
-/*
- Playing video when scrolled to index
- (1) Instantiate global video player here?
- (2) Play video when cell is completely visible
- (3) Pause video when cell disappears?
- */
-
-
-
-
-
-
 class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
     
     // MARK: - SegmentedProgressBar
@@ -54,7 +36,17 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var storyPosts = [PFObject]()
     var likes = [PFObject]()
     
-    let scrollSets = ["tp", "pp", "sh", "sp", "vi"]
+    let scrollSets = ["tp", "pp", "vi", "sh", "sp"]
+    
+    @IBOutlet weak var numberOfLikes: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var numberOfComments: UIButton!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var numberOfShares: UIButton!
+    @IBOutlet weak var shareButton: UIButton!
+    
+    
+    
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var reactView: UIView!
@@ -68,8 +60,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
         newsfeeds.whereKey("objectId", containedIn: keys)
-        
-        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.order(byAscending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -164,6 +155,23 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Fetch Stories
         fetchStories()
+        
+        // Create corner radius for topLeft/topRight of UIView
+        let shape = CAShapeLayer()
+        shape.bounds = self.reactView.frame
+        shape.position = self.reactView.center
+        shape.path = UIBezierPath(roundedRect: self.reactView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
+        self.reactView.layer.mask = shape
+        self.reactView.clipsToBounds = true
+        
+        // Bring buttons to front
+        let buttons = [self.numberOfLikes, self.likeButton,
+                       self.numberOfComments, self.commentButton,
+                       self.numberOfShares, self.shareButton] as [Any]
+        for b in buttons {
+            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
+            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
+        }
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")

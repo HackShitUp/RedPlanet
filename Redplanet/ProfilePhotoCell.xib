@@ -65,7 +65,7 @@
                         <constraints>
                             <constraint firstAttribute="width" constant="359" id="nZ5-Vt-8VE"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
