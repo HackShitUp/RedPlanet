@@ -723,52 +723,6 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view alpha="0.25" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="phO-qS-rKe">
-                                <rect key="frame" x="0.0" y="597" width="375" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bt3-hM-Jwa">
-                                        <rect key="frame" x="50" y="44" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="WhiteLike"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aB-Q9-Edg">
-                                        <rect key="frame" x="175" y="44" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="WhiteComment"/>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I4n-2h-G4k">
-                                        <rect key="frame" x="0.0" y="6" width="125" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                        <state key="normal" title="likes">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nyW-uf-1oB">
-                                        <rect key="frame" x="125" y="6" width="125" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                        <state key="normal" title="comments">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2gC-JG-cQv">
-                                        <rect key="frame" x="250" y="6" width="125" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                                        <state key="normal" title="shares">
-                                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </state>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eL-Lf-VIq">
-                                        <rect key="frame" x="300" y="44" width="25" height="25"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="ShareWhite"/>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -780,18 +734,11 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="kGM-Jb-BsL" id="udd-sm-Ptd"/>
-                        <outlet property="commentButton" destination="4aB-Q9-Edg" id="DSM-A1-WNi"/>
-                        <outlet property="likeButton" destination="bt3-hM-Jwa" id="ScC-s2-VNQ"/>
-                        <outlet property="numberOfComments" destination="nyW-uf-1oB" id="qGS-z4-uGN"/>
-                        <outlet property="numberOfLikes" destination="I4n-2h-G4k" id="XS4-mw-6KP"/>
-                        <outlet property="numberOfShares" destination="2gC-JG-cQv" id="9xV-bh-iWK"/>
-                        <outlet property="reactView" destination="phO-qS-rKe" id="Kn1-NS-Svx"/>
-                        <outlet property="shareButton" destination="1eL-Lf-VIq" id="Hyl-Rw-Nll"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2d7-MS-XMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1941.5" y="-935.5"/>
+            <point key="canvasLocation" x="2002" y="-577"/>
         </scene>
         <!--Chats-->
         <scene sceneID="IlI-vH-jan">
@@ -5096,15 +5043,12 @@
         <image name="Settings" width="24" height="24"/>
         <image name="Share" width="47" height="48"/>
         <image name="ShareOP" width="75" height="75"/>
-        <image name="ShareWhite" width="47" height="48"/>
         <image name="Stickers" width="77" height="77"/>
         <image name="SwapCamera" width="243" height="256"/>
         <image name="User" width="48" height="48"/>
         <image name="User-48" width="24" height="24"/>
         <image name="UserAction" width="25" height="25"/>
         <image name="VolumeOn" width="290" height="256"/>
-        <image name="WhiteComment" width="48" height="48"/>
-        <image name="WhiteLike" width="51" height="51"/>
         <image name="iOSPhotos" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

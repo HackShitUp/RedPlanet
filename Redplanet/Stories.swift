@@ -38,29 +38,14 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     let scrollSets = ["tp", "pp", "vi", "sh", "sp"]
     
-    @IBOutlet weak var numberOfLikes: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var numberOfShares: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
-    
-    
-    
-    
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var reactView: UIView!
-    
+
     func fetchStories() {
-        
-        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE", "qvz1ATrnSO"]
-        
         let newsfeeds = PFQuery(className: "Newsfeeds")
-        //        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
-        
-        //        newsfeeds.whereKey("objectId", notEqualTo: "hBK4V32cHA")
-        newsfeeds.whereKey("objectId", containedIn: keys)
-        newsfeeds.order(byAscending: "createdAt")
+        newsfeeds.whereKey("byUser", equalTo: storyObjects.last!.value(forKey: "byUser") as! PFUser)
+//        let keys = ["DLnG0kTEdF", "hBK4V32cHA", "tFPeSVIQF1", "1I0ps1kceb", "Hema8xEngE", "qvz1ATrnSO"]        
+//        newsfeeds.whereKey("objectId", containedIn: keys)
+        newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
@@ -72,9 +57,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-                        //                        self.storyPosts.append(object)
+                        self.storyPosts.append(object)
                     }
-                    self.storyPosts.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
@@ -156,23 +140,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Fetch Stories
         fetchStories()
         
-        // Create corner radius for topLeft/topRight of UIView
-        let shape = CAShapeLayer()
-        shape.bounds = self.reactView.frame
-        shape.position = self.reactView.center
-        shape.path = UIBezierPath(roundedRect: self.reactView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 8, height: 8)).cgPath
-        self.reactView.layer.mask = shape
-        self.reactView.clipsToBounds = true
-        
-        // Bring buttons to front
-        let buttons = [self.numberOfLikes, self.likeButton,
-                       self.numberOfComments, self.commentButton,
-                       self.numberOfShares, self.shareButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
-            self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
-        
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
@@ -210,18 +177,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let cell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
-//        if self.collectionView?.cellForItem(at: indexPath) == cell {
-//            cell.rpVideoPlayer?.pause()
-//        } else {
-//            print("Ended Cell Type: \(cell)")
-//        }
-//        print("Ending displaying of cell: \(cell)\n")
-        
         if cell == self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo {
             self.rpVideoPlayer?.pause()
         }
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

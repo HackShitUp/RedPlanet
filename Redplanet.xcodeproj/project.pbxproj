@@ -671,14 +671,6 @@
 			name = MomentVideo;
 			sourceTree = "<group>";
 		};
-		7E8E540C1EB2F87D00292B8C /* RPPopUpVC */ = {
-			isa = PBXGroup;
-			children = (
-				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
-			);
-			name = RPPopUpVC;
-			sourceTree = "<group>";
-		};
 		7E9457F31EB7FF4D00035C08 /* ProfilePhotoCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1281,8 +1273,8 @@
 			children = (
 				7EDB846B1EB96D41005E805E /* RPExtensions.swift */,
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
+				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
 				7E43077F1DD021A100AA2413 /* RPVideoPlayer */,
-				7E8E540C1EB2F87D00292B8C /* RPPopUpVC */,
 				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
 				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
 			);
