@@ -149,8 +149,8 @@
     </objects>
     <resources>
         <image name="More" width="25" height="25"/>
-        <image name="ShareWhite" width="47" height="48"/>
-        <image name="WhiteComment" width="48" height="48"/>
-        <image name="WhiteLike" width="51" height="51"/>
+        <image name="ShareWhite" width="49" height="49"/>
+        <image name="WhiteComment" width="49" height="49"/>
+        <image name="WhiteLike" width="51" height="47"/>
     </resources>
 </document>

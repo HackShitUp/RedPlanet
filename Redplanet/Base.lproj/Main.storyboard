@@ -116,7 +116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1981" y="-4897"/>
+            <point key="canvasLocation" x="-2982" y="-3900"/>
         </scene>
         <!--Sign Up-->
         <scene sceneID="10P-Wq-oF8">
@@ -878,7 +878,88 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gok-15-Q2v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4088" y="-2346"/>
+            <point key="canvasLocation" x="4085" y="-2185"/>
+        </scene>
+        <!--Reactions-->
+        <scene sceneID="EDw-NG-fLC">
+            <objects>
+                <viewController storyboardIdentifier="reactionsVC" id="4CN-4G-udn" customClass="Reactions" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7jj-0e-ETO"/>
+                        <viewControllerLayoutGuide type="bottom" id="dBp-PD-kr9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YXt-Zy-bkH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="zKi-JK-Y7n">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="619"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udD-X0-VA5">
+                                <rect key="frame" x="0.0" y="619" width="375" height="48"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Say something..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bSo-2F-RF3">
+                                        <rect key="frame" x="8" y="3" width="326" height="45"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="326" id="ZlX-Ri-9d8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uIn-Vz-vbg">
+                                        <rect key="frame" x="342" y="13" width="25" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="25" id="CZi-MG-XtP"/>
+                                            <constraint firstAttribute="height" constant="25" id="RzS-KB-8rV"/>
+                                        </constraints>
+                                        <state key="normal" image="SentFilled"/>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="44Q-Pn-0p3">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="3"/>
+                                        <color key="backgroundColor" red="0.95759961969999996" green="0.95759961969999996" blue="0.95759961969999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="375" id="bch-oi-dD0"/>
+                                            <constraint firstAttribute="height" constant="3" id="lWe-IZ-YiC"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="uIn-Vz-vbg" firstAttribute="top" secondItem="44Q-Pn-0p3" secondAttribute="bottom" constant="10" id="3um-MD-Hgs"/>
+                                    <constraint firstItem="44Q-Pn-0p3" firstAttribute="leading" secondItem="udD-X0-VA5" secondAttribute="leading" id="512-Ih-ZMv"/>
+                                    <constraint firstAttribute="width" constant="375" id="ATy-Lf-8mg"/>
+                                    <constraint firstItem="bSo-2F-RF3" firstAttribute="leading" secondItem="udD-X0-VA5" secondAttribute="leading" constant="8" id="FA3-8j-Rpi"/>
+                                    <constraint firstAttribute="bottom" secondItem="uIn-Vz-vbg" secondAttribute="bottom" constant="10" id="GNf-Dl-UeM"/>
+                                    <constraint firstAttribute="trailing" secondItem="uIn-Vz-vbg" secondAttribute="trailing" constant="8" id="JVz-N6-iJq"/>
+                                    <constraint firstItem="bSo-2F-RF3" firstAttribute="top" secondItem="44Q-Pn-0p3" secondAttribute="bottom" id="VZ8-aU-wi5"/>
+                                    <constraint firstItem="uIn-Vz-vbg" firstAttribute="leading" secondItem="bSo-2F-RF3" secondAttribute="trailing" constant="8" id="ZY0-ni-j63"/>
+                                    <constraint firstItem="bSo-2F-RF3" firstAttribute="top" secondItem="44Q-Pn-0p3" secondAttribute="bottom" id="i1i-cy-XhY"/>
+                                    <constraint firstAttribute="trailing" secondItem="44Q-Pn-0p3" secondAttribute="trailing" id="oiK-x0-nlc"/>
+                                    <constraint firstItem="44Q-Pn-0p3" firstAttribute="top" secondItem="udD-X0-VA5" secondAttribute="top" id="q40-P0-AQr"/>
+                                    <constraint firstItem="uIn-Vz-vbg" firstAttribute="leading" secondItem="bSo-2F-RF3" secondAttribute="trailing" constant="8" id="sXW-wK-6Tf"/>
+                                    <constraint firstAttribute="bottom" secondItem="bSo-2F-RF3" secondAttribute="bottom" id="yku-KL-5i3"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="udD-X0-VA5" firstAttribute="leading" secondItem="YXt-Zy-bkH" secondAttribute="leading" id="5f2-O2-86L"/>
+                            <constraint firstItem="dBp-PD-kr9" firstAttribute="top" secondItem="udD-X0-VA5" secondAttribute="bottom" id="axv-Ns-ggK"/>
+                            <constraint firstAttribute="trailing" secondItem="udD-X0-VA5" secondAttribute="trailing" id="hyd-yF-W8J"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="oOW-YM-D7R"/>
+                    <connections>
+                        <outlet property="tableView" destination="zKi-JK-Y7n" id="Efw-R1-sGb"/>
+                        <outlet property="textView" destination="bSo-2F-RF3" id="X7z-Ml-ftp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I3s-za-TQN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4671.5" y="-5004.5"/>
         </scene>
         <!--New Space Post-->
         <scene sceneID="JLb-kO-b6Q">
@@ -999,7 +1080,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PiM-EQ-pRi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4101" y="-4062"/>
+            <point key="canvasLocation" x="4098" y="-3901"/>
         </scene>
         <!--Hash Tags-->
         <scene sceneID="HkH-96-SEE">
@@ -1230,7 +1311,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GE7-L2-u3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4531" y="-4059"/>
+            <point key="canvasLocation" x="4528" y="-3898"/>
         </scene>
         <!--Follow Requests-->
         <scene sceneID="mRB-yU-bPu">
@@ -1418,7 +1499,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SEX-zz-1xu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4518" y="-3208"/>
+            <point key="canvasLocation" x="4515" y="-3047"/>
         </scene>
         <!--Views-->
         <scene sceneID="cQ7-xm-GdP">
@@ -1451,7 +1532,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xEs-zC-cN5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4088" y="-3209"/>
+            <point key="canvasLocation" x="4085" y="-3048"/>
         </scene>
         <!--Selected Stories-->
         <scene sceneID="hWN-Ia-8km">
@@ -1689,7 +1770,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TR3-A7-3hc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5392" y="-4061"/>
+            <point key="canvasLocation" x="5389" y="-3900"/>
         </scene>
         <!--Share With-->
         <scene sceneID="zOq-a8-cuI">
@@ -1767,7 +1848,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jcw-0y-pFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4961" y="-4061"/>
+            <point key="canvasLocation" x="4958" y="-3900"/>
         </scene>
         <!--Likers-->
         <scene sceneID="syr-ml-sjG">
@@ -1800,7 +1881,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0I5-eO-lbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5392" y="-3208"/>
+            <point key="canvasLocation" x="5389" y="-3047"/>
         </scene>
         <!--Comments-->
         <scene sceneID="gnl-jw-HIQ">
@@ -1991,7 +2072,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aw3-XY-dHl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4949" y="-3209"/>
+            <point key="canvasLocation" x="4946" y="-3048"/>
         </scene>
         <!--Chat Room-->
         <scene sceneID="7Ix-ZG-dx1">
@@ -4638,7 +4719,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c9b-N0-z9J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4518" y="-2346"/>
+            <point key="canvasLocation" x="4515" y="-2185"/>
         </scene>
         <!--Following-->
         <scene sceneID="pPg-QP-SW5">
@@ -4671,7 +4752,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xyl-ST-BLt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4949" y="-2347"/>
+            <point key="canvasLocation" x="4946" y="-2186"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ovB-e4-hXB">
@@ -4691,7 +4772,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hGq-vG-vr5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2461" y="-4896"/>
+            <point key="canvasLocation" x="-3462" y="-3899"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="T7U-Wu-kR3">
@@ -5017,14 +5098,14 @@
         <image name="Camera" width="412" height="412"/>
         <image name="Chats" width="27" height="23"/>
         <image name="Comet" width="25" height="25"/>
-        <image name="Comment" width="48" height="48"/>
+        <image name="Comment" width="49" height="49"/>
         <image name="Contacts" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
         <image name="FlashOff" width="256" height="256"/>
         <image name="GenderNeutralUser" width="256" height="256"/>
         <image name="Left_100" width="50" height="50"/>
         <image name="Left_50" width="25" height="25"/>
-        <image name="Like" width="51" height="51"/>
+        <image name="Like" width="52" height="50"/>
         <image name="Mail" width="48" height="48"/>
         <image name="More" width="25" height="25"/>
         <image name="MoreBlack" width="50" height="50"/>
@@ -5040,8 +5121,9 @@
         <image name="SLRCamera" width="17" height="20"/>
         <image name="SaveWhite" width="261" height="256"/>
         <image name="Search" width="25" height="25"/>
+        <image name="SentFilled" width="50" height="50"/>
         <image name="Settings" width="24" height="24"/>
-        <image name="Share" width="47" height="48"/>
+        <image name="Share" width="48" height="49"/>
         <image name="ShareOP" width="75" height="75"/>
         <image name="Stickers" width="77" height="77"/>
         <image name="SwapCamera" width="243" height="256"/>

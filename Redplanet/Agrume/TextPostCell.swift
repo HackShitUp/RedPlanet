@@ -119,7 +119,7 @@ class TextPostCell: UITableViewCell {
     }
     
     // Function to like object
-    func like(sender: UIButton) {
+    func like() {
         // MARK: - RPHelpers
         let rpHelpers = RPHelpers()
         if self.likeButton.image(for: .normal) == UIImage(named: "LikeFilled") {
@@ -133,15 +133,49 @@ class TextPostCell: UITableViewCell {
         
         DispatchQueue.main.async {
             // Reload data
-            self.updateView(postObject: self.postObject!)
+//            self.updateView(postObject: self.postObject!)
+            // (4) Set likes
+            let likes = PFQuery(className: "Likes")
+            likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
+            likes.includeKey("fromUser")
+            likes.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
+                if error == nil {
+                    // Clear array
+                    self.likes.removeAll(keepingCapacity: false)
+                    for object in objects! {
+                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
+                    }
+                    
+                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                        self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
+                    } else {
+                        self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
+                    }
+                    
+                    // Count likes
+                    if self.likes.count == 0 {
+                        self.numberOfLikes.setTitle("likes", for: .normal)
+                    } else if self.likes.count == 1 {
+                        self.numberOfLikes.setTitle("1 like", for: .normal)
+                    } else {
+                        self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
+                    }
+                    
+                } else {
+                    print(error?.localizedDescription as Any)
+                }
+            })
         }
     }
     
     // Function to show likers
     func likers(sender: UIButton) {
-        likeObject.append(self.postObject!)
-        let likersVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
-        self.superDelegate?.navigationController?.pushViewController(likersVC, animated: true)
+//        likeObject.append(self.postObject!)
+//        let likersVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+//        self.superDelegate?.navigationController?.pushViewController(likersVC, animated: true)
+        reactionObject.append(self.postObject!)
+        let reactionsVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+        self.superDelegate?.navigationController?.pushViewController(reactionsVC, animated: true)
     }
     
     // Function to bind data
@@ -181,7 +215,6 @@ class TextPostCell: UITableViewCell {
                     self.likes.append(object.object(forKey: "fromUser") as! PFUser)
                 }
                 
-                // Set button
                 if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                     self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
                 } else {

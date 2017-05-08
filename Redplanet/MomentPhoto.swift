@@ -17,6 +17,9 @@ import SDWebImage
 
 class MomentPhoto: UICollectionViewCell {
     
+    // Initialize parent vc
+    var parentDelegate: UIViewController?
+    
     @IBOutlet weak var photoMoment: PFImageView!
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
@@ -47,7 +50,8 @@ class MomentPhoto: UICollectionViewCell {
         
         // (1) Views
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
-            
+            let viewsVC = self.parentDelegate?.storyboard?.instantiateViewController(withIdentifier: "viewsVC") as! Views
+            self.parentDelegate?.navigationController?.pushViewController(viewsVC, animated: true)
         })
         
 //        // (2) Delete
@@ -95,6 +99,13 @@ class MomentPhoto: UICollectionViewCell {
 //        }
     }
     
+    
+    // Function to like object
+    func like() {
+        let rpHelpers = RPHelpers()
+        
+    }
+    
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -102,6 +113,7 @@ class MomentPhoto: UICollectionViewCell {
         self.rpUsername.layer.applyShadow(layer: self.rpUsername.layer)
         self.time.layer.applyShadow(layer: self.time.layer)
         self.moreButton.layer.applyShadow(layer: self.moreButton.layer)
+        
     }
 
 }

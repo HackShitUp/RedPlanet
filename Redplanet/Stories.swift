@@ -47,6 +47,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
 //        newsfeeds.whereKey("objectId", containedIn: keys)
         newsfeeds.order(byDescending: "createdAt")
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
+        newsfeeds.limit = 10
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
@@ -57,8 +58,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-                        self.storyPosts.append(object)
+//                        self.storyPosts.append(object)
                     }
+                    self.storyPosts.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
@@ -67,7 +69,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
                 } else {
                     self.spb = SegmentedProgressBar(numberOfSegments: self.storyPosts.count, duration: 10)
                 }
-                self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 4)
+                self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
                 self.spb.topColor = UIColor.white
                 self.spb.layer.applyShadow(layer: self.spb.layer)
                 self.spb.padding = 2
@@ -123,7 +125,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // MARK: - AnimatedCollectionViewLayout; configure UICollectionView
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = ParallaxAttributesAnimator()
+        layout.animator = ZoomInOutAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -183,7 +185,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        print("CELL: \(cell)\n")
+        print("CELL: \(cell)\n")
     }
     
     
@@ -207,6 +209,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             return scrollCell
             
         } else if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+            
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
@@ -295,27 +298,24 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     
     
     // MARK: - UIScrollView Delegate Method
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         self.lastOffSet = scrollView.contentOffset
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        
         var visibleRect = CGRect()
         visibleRect.origin = self.collectionView!.contentOffset
         visibleRect.size = self.collectionView!.bounds.size
         let visiblePoint = CGPoint(x: CGFloat(visibleRect.midX), y: CGFloat(visibleRect.midY))
         let indexPath: IndexPath? = self.collectionView?.indexPathForItem(at: visiblePoint)
         
-        
         // Scrolled to the right; skip
         if self.lastOffSet!.x < scrollView.contentOffset.x {
             // TODO:: End if last indexPath
-//            self.spb.skip()
+            self.spb.skip()
         } else {
             // Scrolled to the left; rewind
-//            self.spb.rewind()
+            self.spb.rewind()
         }
 
         if self.storyPosts[indexPath!.item].value(forKey: "videoAsset") != nil {
@@ -324,8 +324,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         } else {
             print("Not a video: \(indexPath![1])")
         }
-        
-
     }
 
     

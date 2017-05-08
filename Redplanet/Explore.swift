@@ -106,7 +106,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         
         
         if indexPath.section == 1 && indexPath.row == 0 {
-            eCell.fetchType = "randoms"
+            eCell.fetchType = "people"
             eCell.fetchPeople({ (_: [PFObject]) in
                 eCell.collectionView.reloadData()
             })
@@ -114,7 +114,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
             eCell.fetchType = "geoCodes"
             eCell.fetchGeocodes()
         } else {
-//            print("?")
+            eCell.fetchType = "randoms"
+            eCell.fetchRandoms()
         }
         
 //        eCell.collectionView.reloadData()

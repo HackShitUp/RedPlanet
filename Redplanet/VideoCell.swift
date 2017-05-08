@@ -43,15 +43,8 @@ class VideoCell: UITableViewCell {
         rpVideoPlayer.playbackLoops = false
         //        rpVideoPlayer.play()
         
-        // Bring buttons to front
-        let buttons = [self.rpUsername, self.time, self.moreButton,
-                       self.numberOfLikes, self.likeButton,
-                       self.numberOfComments, self.commentButton,
-                       self.numberOfShares, self.shareButton] as [Any]
-        for b in buttons {
-            (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
-            self.contentView.bringSubview(toFront: (b as AnyObject) as! UIView)
-        }
+        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+        
     }
     
     

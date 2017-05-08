@@ -608,6 +608,15 @@
 			name = NewTextPost;
 			sourceTree = "<group>";
 		};
+		7E6E24BE1EBC5C6800D52490 /* RPCaption */ = {
+			isa = PBXGroup;
+			children = (
+				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
+				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
+			);
+			name = RPCaption;
+			sourceTree = "<group>";
+		};
 		7E7037C81DBD5FF100F03E0C /* NewChats */ = {
 			isa = PBXGroup;
 			children = (
@@ -684,7 +693,6 @@
 			isa = PBXGroup;
 			children = (
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
-				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
 				7E9351DC1EBAE2E60045DA48 /* Stories.swift */,
 				7EE697C61EAACABE004F4E24 /* NewsFeedCell */,
 				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
@@ -1108,6 +1116,7 @@
 				7EC5D1B01DB359F300437219 /* OTHERUSER */,
 				7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */,
 				7ED4A91F1DBEBE130016698F /* INTERACTIONS */,
+				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
 				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
 				7E4CFF951DB4393A0087454E /* POSTS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
@@ -1275,8 +1284,7 @@
 				7E1A12281EA813CB00663207 /* RPHelpers.swift */,
 				7EE35EAE1EB0073300C14FAD /* RPPopUpVC.swift */,
 				7E43077F1DD021A100AA2413 /* RPVideoPlayer */,
-				7EDEB9F21EA5684400EEE4E1 /* RPCaptionContainer.swift */,
-				7EDEB9F31EA5684400EEE4E1 /* RPTextView.swift */,
+				7E6E24BE1EBC5C6800D52490 /* RPCaption */,
 			);
 			name = RPCustomClasses;
 			sourceTree = "<group>";
