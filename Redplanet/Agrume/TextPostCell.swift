@@ -170,11 +170,9 @@ class TextPostCell: UITableViewCell {
     
     // Function to show likers
     func likers(sender: UIButton) {
-//        likeObject.append(self.postObject!)
-//        let likersVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
-//        self.superDelegate?.navigationController?.pushViewController(likersVC, animated: true)
         reactionObject.append(self.postObject!)
         let reactionsVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+        reactionsVC.reactionType = "likes"
         self.superDelegate?.navigationController?.pushViewController(reactionsVC, animated: true)
     }
     

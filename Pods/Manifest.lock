@@ -9,8 +9,8 @@ PODS:
   - DZNEmptyDataSet (1.8.1)
   - Heap (4.0.0)
   - KILabel (1.0.1)
-  - MarqueeLabel/Swift (3.0.3)
-  - NotificationBannerSwift (1.1.0):
+  - MarqueeLabel/Swift (3.0.5)
+  - NotificationBannerSwift (1.2.0):
     - MarqueeLabel/Swift
     - SnapKit (~> 3.2.0)
   - Onboard (2.3.1)
@@ -48,8 +48,8 @@ SPEC CHECKSUMS:
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Heap: 9ef15407ea1893c3af40a13bb4f4a450ec8af142
   KILabel: 4797807cdc0b4992dad8bf91175ddc973c3b569b
-  MarqueeLabel: 355b604a19c16a8736194a21327fadccc41b9160
-  NotificationBannerSwift: a80965dd87c39a15edc38a3adba352c4aa778088
+  MarqueeLabel: 8a25b2cf02cf52165022f01369e63536c58fcc00
+  NotificationBannerSwift: 77f96e1c418309600aad70b21247d9b3cbc360e3
   Onboard: b6871f25ac753175b2ab9a362fb2feb26a81a311
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e

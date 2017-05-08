@@ -12,7 +12,6 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
 import SDWebImage
 
 class MomentPhoto: UICollectionViewCell {
