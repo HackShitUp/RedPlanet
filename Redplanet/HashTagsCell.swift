@@ -46,12 +46,7 @@ class HashTagsCell: UITableViewCell {
     @IBOutlet weak var shareButton: UIButton!
     
     @IBAction func comment(_ sender: Any) {
-        // Append object
-        commentsObject.append(self.contentObject!)
         
-        // Push VC
-        let commentsVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "commentsVC") as! Comments
-        self.delegate?.navigationController?.pushViewController(commentsVC, animated: true)
     }
     
     // Function to go to user's profile
@@ -245,23 +240,23 @@ class HashTagsCell: UITableViewCell {
     
     // Function to show number of shares
     func showShares() {
-        // Append object
-        shareObject.append(self.contentObject!)
-        // Push VC
-        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
-        self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
+//        // Append object
+//        shareObject.append(self.contentObject!)
+//        // Push VC
+//        let sharesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "sharesVC") as! Shares
+//        self.delegate?.navigationController?.pushViewController(sharesVC, animated: true)
     }
     
     
     
     // Function to show number of likes
     func showLikes() {
-        // Append object
-        likeObject.append(self.contentObject!)
-        
-        // Push VC
-        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
-        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
+//        // Append object
+//        likeObject.append(self.contentObject!)
+//        
+//        // Push VC
+//        let likesVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "likersVC") as! Likers
+//        self.delegate?.navigationController?.pushViewController(likesVC, animated: true)
     }
     
     

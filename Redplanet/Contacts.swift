@@ -349,7 +349,6 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
-        label.textColor = UIColor.white
         label.backgroundColor = UIColor.white
         label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)

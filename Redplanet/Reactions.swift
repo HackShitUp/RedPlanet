@@ -31,6 +31,8 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     var keyboard = CGRect()
     // Pipeline method
     var page: Int = 50
+    // UIRefreshControl
+    var refresher: UIRefreshControl!
     // Array to hold reactionObjects
     var reactionObjects = [PFObject]()
     
@@ -39,9 +41,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     @IBOutlet weak var commentContainer: UIView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var sendButton: UIButton!
-
-    
-    
     @IBAction func back(_ sender: Any) {
         // Deallocate class array and variable
         reactionObject.removeAll(keepingCapacity: false)
@@ -50,15 +49,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func refresh(_ sender: Any) {
-        handleCase()
-    }
-    
     // Function to query objects based on Switch Case...
     func handleCase() {
         // Configure UI
+        self.refresher?.endRefreshing()
         self.textView.resignFirstResponder()
-        self.commentContainer.isHidden = true
         // Handle switched TwicketSegmentedControl
         switch segmentedControl.selectedSegmentIndex {
         case 0:
@@ -67,7 +62,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         case 1:
             fetchComments()
             reactionType = "comments"
-            self.commentContainer.isHidden = false
         case 2:
             fetchShares()
             reactionType = "shares"
@@ -106,6 +100,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             // Reload data in main thread
             DispatchQueue.main.async {
@@ -181,12 +178,87 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             // Reload data in main thread
             DispatchQueue.main.async {
                 self.tableView!.reloadData()
             }
         }
+    }
+    
+    // Function to send comment
+    func sendComment() {
+        if self.textView.text.isEmpty {
+            textView.resignFirstResponder()
+        } else {
+            // Get comment and clear UITextView
+            let commentText = self.textView.text!
+            self.textView.text!.removeAll()
+
+            // Save to Comments
+            let comments = PFObject(className: "Comments")
+            comments["byUser"] = PFUser.current()!
+            comments["byUsername"] = PFUser.current()!.username!
+            comments["commentOfContent"] = commentText
+            comments["forObjectId"] = reactionObject.last!.objectId!
+            comments["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
+            comments["to"] = reactionObject.last!.value(forKey: "username") as! String
+            comments.saveInBackground {
+                (success: Bool, error: Error?) in
+                if success {
+                    
+                    // Send notification
+                    let notifications = PFObject(className: "Notifications")
+                    notifications["fromUser"] = PFUser.current()!
+                    notifications["from"] = PFUser.current()!.username!
+                    notifications["toUser"] = reactionObject.last!.value(forKey: "byUser") as! PFUser
+                    notifications["to"] = reactionObject.last!.value(forKey: "username") as! String
+                    notifications["forObjectId"] = reactionObject.last!.objectId!
+                    notifications["type"] = "comment"
+                    notifications.saveInBackground(block: {
+                        (success: Bool, error: Error?) in
+                        if success {
+                            
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.checkTags(forObject: comments, forText: commentText)
+
+                            // Handle optional chaining for user object
+                            if let user = reactionObject.last!.value(forKey: "byUser") as? PFUser {
+                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                                if user.value(forKey: "apnsId") != nil {
+                                    let rpHelpers = RPHelpers()
+                                    _ = rpHelpers.pushNotification(toUser: user, activityType: "commented on your post")
+                                }
+                            }
+                            
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            
+                        }
+                    })
+                    
+                    // Reload data
+                    DispatchQueue.main.async {
+                        self.handleCase()
+                    }
+                } else {
+                    print(error?.localizedDescription as Any)
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.showError(withTitle: "Network Error")
+                    // Reload data
+                    DispatchQueue.main.async {
+                        self.handleCase()
+                    }
+                }
+            }
+        }
+
+        
     }
 
     // MARK: - TwicketSegmentedControl
@@ -302,6 +374,15 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView.tableFooterView = UIView()
+        // Register NIB
+        self.tableView.register(UINib(nibName: "ReactionsHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "ReactionsHeader")
+
+        // Configure UIRefreshControl
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
+        self.tableView.addSubview(refresher)
         
         // NotificationCenter: Add Observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -325,6 +406,35 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - UITableView Data Source Methods
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let reactionsHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ReactionsHeader") as! ReactionsHeader
+        reactionsHeader.contentView.backgroundColor = UIColor.white
+        reactionsHeader.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+        reactionsHeader.reactionType.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"
+            reactionsHeader.reactButton.isHidden = false
+            if reactionObjects.map({ $0.object(forKey: "fromUser") as! PFUser}).contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                reactionsHeader.reactButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
+            } else {
+                reactionsHeader.reactButton.setImage(UIImage(named: "Like"), for: .normal)
+            }
+        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Comments"
+            reactionsHeader.reactButton.isHidden = true
+        } else {
+            reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Shares"
+            reactionsHeader.reactButton.isHidden = false
+            reactionsHeader.reactButton.setImage(UIImage(named: "Share"), for: .normal)
+        }
+        
+        return reactionsHeader
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -361,9 +471,36 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             
         } else if self.segmentedControl.selectedSegmentIndex == 1 {
             // Comments
-            let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
+            let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
+            
+            // (1) Get user's data
+            if let user = self.reactionObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
+                // Set user's full name
+                cell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
+                // Set user's profile photo
+                if let proPic = user.value(forKey: "userProfilePicture") as? PFFile {
+                    // MARK: - SDWebImage
+                    cell.rpUserProPic.sd_setIndicatorStyle(.gray)
+                    cell.rpUserProPic.sd_showActivityIndicatorView()
+                    cell.rpUserProPic.sd_setImage(with: URL(string: proPic.url!)!, placeholderImage: UIImage(named: "GenderNeutralUser"))
+                    // MARK: - RPExtensions
+                    cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: 0.5, borderColor: UIColor.lightGray)
+                }
+            }
+            
+            // (2) Set time
+            let from = self.reactionObjects[indexPath.row].createdAt!
+            let now = Date()
+            let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
+            let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
+            // MARK: - RPHelpers
+            cell.time.text = difference.getFullTime(difference: difference, date: from)
+
+            // (3) Set comment
+            cell.comment.text = (self.reactionObjects[indexPath.row].value(forKey: "commentOfContent") as! String)
             
             return cell
+            
         } else {
             // Shares
             let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
@@ -408,13 +545,23 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - UITextViewDelegate Methods
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if self.segmentedControl.selectedSegmentIndex == 1 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.textView.text = ""
+        self.textView.textColor = UIColor.black
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             self.textView.resignFirstResponder()
+            self.sendComment()
         }
         return true
     }

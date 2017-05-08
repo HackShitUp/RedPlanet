@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="ReactionsHeader" customModule="Redplanet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Co6-wj-84H">
+                    <rect key="frame" x="16" y="5" width="310" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="310" id="DpM-k0-Kki"/>
+                        <constraint firstAttribute="height" constant="30" id="Ruo-Ps-iqI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBA-AI-3BP">
+                    <rect key="frame" x="334" y="8" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="9gs-o1-2oe"/>
+                        <constraint firstAttribute="width" constant="25" id="bBo-C2-dUf"/>
+                    </constraints>
+                    <state key="normal" image="Like"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Co6-wj-84H" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="3FA-r5-iUp"/>
+                <constraint firstAttribute="trailing" secondItem="ZBA-AI-3BP" secondAttribute="trailing" constant="16" id="3hQ-gs-BES"/>
+                <constraint firstAttribute="bottom" secondItem="ZBA-AI-3BP" secondAttribute="bottom" constant="7" id="OVU-eX-lcj"/>
+                <constraint firstItem="ZBA-AI-3BP" firstAttribute="leading" secondItem="Co6-wj-84H" secondAttribute="trailing" constant="8" id="VRY-bV-8Fg"/>
+                <constraint firstItem="ZBA-AI-3BP" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="ZEA-Iq-0WA"/>
+                <constraint firstAttribute="bottom" secondItem="Co6-wj-84H" secondAttribute="bottom" constant="5" id="b37-UA-Od1"/>
+                <constraint firstItem="Co6-wj-84H" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="l8K-hW-tZx"/>
+                <constraint firstItem="ZBA-AI-3BP" firstAttribute="leading" secondItem="Co6-wj-84H" secondAttribute="trailing" constant="8" id="oVY-Ng-BBo"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="reactButton" destination="ZBA-AI-3BP" id="bjx-2z-nuH"/>
+                <outlet property="reactionType" destination="Co6-wj-84H" id="w7D-8S-eKj"/>
+            </connections>
+            <point key="canvasLocation" x="96.5" y="66"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Like" width="52" height="50"/>
+    </resources>
+</document>

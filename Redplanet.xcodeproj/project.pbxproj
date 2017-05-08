@@ -130,14 +130,15 @@
 		7EA45CCC1DB6A1E500A466D9 /* OnboardFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */; };
 		7EA45CCE1DB6A1F200A466D9 /* OnBoardFollowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */; };
 		7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA4E4D41E738060000163AD /* BlockedUsers.swift */; };
+		7EA570B61EC01F3F00A57C70 /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */; };
+		7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */; };
+		7EA570BA1EC02C5400A57C70 /* ReactionsHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EA570B91EC02C5400A57C70 /* ReactionsHeader.xib */; };
+		7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
-		7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDC6611DC55E5D00DFCC28 /* Shares.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
-		7EC328CF1DBF460700344AFF /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC328CE1DBF460700344AFF /* Comments.swift */; };
-		7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC328D01DBF461500344AFF /* CommentsCell.swift */; };
 		7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */; };
 		7EC5D1381DB2FE4F00437219 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7EC5D1361DB2FE4F00437219 /* Main.storyboard */; };
 		7EC5D13B1DB2FE4F00437219 /* Redplanet.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7EC5D1391DB2FE4F00437219 /* Redplanet.xcdatamodeld */; };
@@ -161,9 +162,6 @@
 		7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */; };
 		7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */; };
 		7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */; };
-		7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A90F1DBEB4E70016698F /* RFollowers.swift */; };
-		7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9111DBEB4EE0016698F /* RFollowing.swift */; };
-		7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9161DBEBDDD0016698F /* Likers.swift */; };
 		7ED4A9191DBEBDEB0016698F /* ShareWith.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED4A9181DBEBDEB0016698F /* ShareWith.swift */; };
 		7EDB84691EB968F8005E805E /* TextPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EDB84671EB968F8005E805E /* TextPostCell.swift */; };
 		7EDB846A1EB968F8005E805E /* TextPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7EDB84681EB968F8005E805E /* TextPostCell.xib */; };
@@ -384,14 +382,15 @@
 		7EA45CCB1DB6A1E500A466D9 /* OnboardFollow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardFollow.swift; sourceTree = "<group>"; };
 		7EA45CCD1DB6A1F200A466D9 /* OnBoardFollowCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardFollowCell.swift; sourceTree = "<group>"; };
 		7EA4E4D41E738060000163AD /* BlockedUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsers.swift; sourceTree = "<group>"; };
+		7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
+		7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactionsHeader.swift; sourceTree = "<group>"; };
+		7EA570B91EC02C5400A57C70 /* ReactionsHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactionsHeader.xib; sourceTree = "<group>"; };
+		7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersFollowing.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
-		7EBDC6611DC55E5D00DFCC28 /* Shares.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shares.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
-		7EC328CE1DBF460700344AFF /* Comments.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
-		7EC328D01DBF461500344AFF /* CommentsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = CommentsCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EC5D12F1DB2FE4F00437219 /* Redplanet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Redplanet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7EC5D1371DB2FE4F00437219 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -422,9 +421,6 @@
 		7ED0DF9E1DD17D1800BC81A1 /* NewSpacePost.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSpacePost.swift; sourceTree = "<group>"; };
 		7ED20ECB1E2F5F4A00A6DC42 /* LICENSE.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = LICENSE.rtf; sourceTree = "<group>"; };
 		7ED43FA11DE6BB8E003A664B /* CurrentUserNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentUserNumber.swift; sourceTree = "<group>"; };
-		7ED4A90F1DBEB4E70016698F /* RFollowers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowers.swift; sourceTree = "<group>"; };
-		7ED4A9111DBEB4EE0016698F /* RFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RFollowing.swift; sourceTree = "<group>"; };
-		7ED4A9161DBEBDDD0016698F /* Likers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Likers.swift; sourceTree = "<group>"; };
 		7ED4A9181DBEBDEB0016698F /* ShareWith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareWith.swift; sourceTree = "<group>"; };
 		7EDB84671EB968F8005E805E /* TextPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TextPostCell.swift; path = Agrume/TextPostCell.swift; sourceTree = "<group>"; };
 		7EDB84681EB968F8005E805E /* TextPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TextPostCell.xib; path = Agrume/TextPostCell.xib; sourceTree = "<group>"; };
@@ -1061,15 +1057,6 @@
 			name = CurrentUser;
 			sourceTree = "<group>";
 		};
-		7EC328D21DBF461A00344AFF /* Comments */ = {
-			isa = PBXGroup;
-			children = (
-				7EC328CE1DBF460700344AFF /* Comments.swift */,
-				7EC328D01DBF461500344AFF /* CommentsCell.swift */,
-			);
-			name = Comments;
-			sourceTree = "<group>";
-		};
 		7EC5D1261DB2FE4F00437219 = {
 			isa = PBXGroup;
 			children = (
@@ -1115,9 +1102,8 @@
 				7E43833F1DD9139300337007 /* HASHTAGS */,
 				7EC5D1B01DB359F300437219 /* OTHERUSER */,
 				7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */,
-				7ED4A91F1DBEBE130016698F /* INTERACTIONS */,
-				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
-				7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */,
+				7ED4A91F1DBEBE130016698F /* REACTIONS */,
+				7EECEE6A1E3C7B7E003FA134 /* NIB: UserCell */,
 				7E4CFF951DB4393A0087454E /* POSTS */,
 				7EC5D1321DB2FE4F00437219 /* AppDelegate.swift */,
 				7E3626F01DB7369000AB14F4 /* Redplanet-Bridging-Header.h */,
@@ -1260,21 +1246,21 @@
 		7ED4A9131DBEB4F60016698F /* FOLLOWER/FOLLOWING */ = {
 			isa = PBXGroup;
 			children = (
-				7ED4A90F1DBEB4E70016698F /* RFollowers.swift */,
-				7ED4A9111DBEB4EE0016698F /* RFollowing.swift */,
+				7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */,
 			);
 			name = FOLLOWER/FOLLOWING;
 			sourceTree = "<group>";
 		};
-		7ED4A91F1DBEBE130016698F /* INTERACTIONS */ = {
+		7ED4A91F1DBEBE130016698F /* REACTIONS */ = {
 			isa = PBXGroup;
 			children = (
-				7ED4A9161DBEBDDD0016698F /* Likers.swift */,
-				7EC328D21DBF461A00344AFF /* Comments */,
-				7EBDC6611DC55E5D00DFCC28 /* Shares.swift */,
+				7E9351DE1EBAE9430045DA48 /* Reactions.swift */,
+				7EA570B71EC02C4A00A57C70 /* ReactionsHeader.swift */,
+				7EA570B91EC02C5400A57C70 /* ReactionsHeader.xib */,
+				7EA570B51EC01F3F00A57C70 /* CommentsCell.swift */,
 				7E7037CD1DBD7F9D00F03E0C /* Views.swift */,
 			);
-			name = INTERACTIONS;
+			name = REACTIONS;
 			sourceTree = "<group>";
 		};
 		7EDEB9F61EA5684D00EEE4E1 /* RPCustomClasses */ = {
@@ -1351,13 +1337,13 @@
 			name = SegmentedProgressBar;
 			sourceTree = "<group>";
 		};
-		7EECEE6A1E3C7B7E003FA134 /* NIB:UserCell */ = {
+		7EECEE6A1E3C7B7E003FA134 /* NIB: UserCell */ = {
 			isa = PBXGroup;
 			children = (
 				7EECEE661E3C7B6D003FA134 /* UserCell.swift */,
 				7EECEE671E3C7B6D003FA134 /* UserCell.xib */,
 			);
-			name = "NIB:UserCell";
+			name = "NIB: UserCell";
 			sourceTree = "<group>";
 		};
 		BB7594389EE4454566242CEE /* Pods */ = {
@@ -1520,6 +1506,7 @@
 				7ED20ECC1E2F5F4A00A6DC42 /* LICENSE.rtf in Resources */,
 				7E972FE01EA93E8B0047F4D4 /* NewsFeedCell.xib in Resources */,
 				7E01A5211EB81C8100CD7FBF /* StoryScrollCell.xib in Resources */,
+				7EA570BA1EC02C5400A57C70 /* ReactionsHeader.xib in Resources */,
 				7E6E24661EBBFC9300D52490 /* VideoCell.xib in Resources */,
 				7E41C7BA1E4056C90025129B /* OtherUserHeader.xib in Resources */,
 				7EE697B91EAAC1FB004F4E24 /* PhotoCell.xib in Resources */,
@@ -1707,7 +1694,6 @@
 				7EA45CCA1DB6A1B900A466D9 /* NewUser.swift in Sources */,
 				7E98E9401DB75057001B7329 /* CLBlurTool.m in Sources */,
 				7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */,
-				7EBDC6621DC55E5D00DFCC28 /* Shares.swift in Sources */,
 				7E274EBA1E31A822006B2D8B /* StickersCell.swift in Sources */,
 				7E3E4FBE1DC2E7F100A7B5FC /* NewProfilePhoto.swift in Sources */,
 				7E98E9581DB75057001B7329 /* CLGPUImageVignetteFilter.m in Sources */,
@@ -1719,9 +1705,9 @@
 				7E8CF1121EB666E20012C4FB /* ExploreCell.swift in Sources */,
 				7EE697B81EAAC1FB004F4E24 /* PhotoCell.swift in Sources */,
 				7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */,
+				7EA570B81EC02C4A00A57C70 /* ReactionsHeader.swift in Sources */,
 				7E8B55891E4EF67F004D3F31 /* SNSlider.swift in Sources */,
 				7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */,
-				7EC328D11DBF461500344AFF /* CommentsCell.swift in Sources */,
 				7E98E94C1DB75057001B7329 /* CLFilterBase.m in Sources */,
 				7E98E93F1DB75057001B7329 /* CLAdjustmentTool.m in Sources */,
 				7E98E94D1DB75057001B7329 /* CLFilterTool.m in Sources */,
@@ -1753,7 +1739,6 @@
 				7ED0DF9F1DD17D1800BC81A1 /* NewSpacePost.swift in Sources */,
 				7E8E540B1EB2ACD800292B8C /* RPVideoPlayer.swift in Sources */,
 				7E98E9441DB75057001B7329 /* CLGloomEffect.m in Sources */,
-				7EC328CF1DBF460700344AFF /* Comments.swift in Sources */,
 				7EC5D19C1DB3561100437219 /* ProfileEdit.swift in Sources */,
 				7EE35EAF1EB0073300C14FAD /* RPPopUpVC.swift in Sources */,
 				7E98E9481DB75057001B7329 /* CLPosterizeEffect.m in Sources */,
@@ -1762,6 +1747,7 @@
 				7E98E9531DB75057001B7329 /* CLImageEditorTheme+Private.m in Sources */,
 				7EE697CE1EAADBC2004F4E24 /* SpaceCell.swift in Sources */,
 				7EC5D1961DB353E000437219 /* Chats.swift in Sources */,
+				7EA570B61EC01F3F00A57C70 /* CommentsCell.swift in Sources */,
 				7EC5D1931DB33CD400437219 /* UserSettings.swift in Sources */,
 				7E98E94A1DB75057001B7329 /* CLEffectBase.m in Sources */,
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
@@ -1805,7 +1791,6 @@
 				7E98E9471DB75057001B7329 /* CLPixellateEffect.m in Sources */,
 				7EF2B7C41E23275F00D08FC2 /* CapturedStill.swift in Sources */,
 				7E9351DD1EBAE2E70045DA48 /* Stories.swift in Sources */,
-				7ED4A9121DBEB4EE0016698F /* RFollowing.swift in Sources */,
 				7E98E9411DB75057001B7329 /* CLClippingTool.m in Sources */,
 				7E98E9551DB75057001B7329 /* CLToolbarMenuItem.m in Sources */,
 				7EA4E4D51E738060000163AD /* BlockedUsers.swift in Sources */,
@@ -1825,6 +1810,7 @@
 				7E98E9611DB75057001B7329 /* CLTextTool.m in Sources */,
 				7ED43FA21DE6BB8E003A664B /* CurrentUserNumber.swift in Sources */,
 				7E6113D51DD157C2001CE98C /* EditContent.swift in Sources */,
+				7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */,
 				7E6A12EB1E4D524C00CF108B /* ImageDownloader.swift in Sources */,
 				7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */,
 				7E98E9501DB75057001B7329 /* CLToneCurveTool.m in Sources */,
@@ -1840,14 +1826,12 @@
 				7E9457F11EB7FF4700035C08 /* ProfilePhotoCell.swift in Sources */,
 				7E98E93C1DB75057001B7329 /* CLImageEditor.m in Sources */,
 				7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */,
-				7ED4A9171DBEBDDD0016698F /* Likers.swift in Sources */,
 				7EDEB9F51EA5684400EEE4E1 /* RPTextView.swift in Sources */,
 				7E8B558D1E4EF67F004D3F31 /* SNUtils.swift in Sources */,
 				7EDB84691EB968F8005E805E /* TextPostCell.swift in Sources */,
 				7E98E9421DB75057001B7329 /* CLDrawTool.m in Sources */,
 				7E6BA2781DBC8F2100DE364D /* NewTextPost.swift in Sources */,
 				7EC5D1A61DB357B400437219 /* SearchEngine.swift in Sources */,
-				7ED4A9101DBEB4E70016698F /* RFollowers.swift in Sources */,
 				7E79483E1EB5BD9D002DD324 /* Explore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

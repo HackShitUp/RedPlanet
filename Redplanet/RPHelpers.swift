@@ -74,6 +74,58 @@ class RPHelpers: NSObject {
                                     }
         }) .resume()
     }
+    
+    // MARK: - Parse; Function to check for #'s
+    open func checkHash(forObject: PFObject?, forText: String?) {
+
+    }
+    
+    open func checkTags(forObject: PFObject?, forText: String?) {
+        // Loop through words to check for @ prefixes
+        for var word in forText!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+            // Define @username
+            if word.hasPrefix("@") {
+                // Get username
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                // Look for user
+                let user = PFUser.query()!
+                user.whereKey("username", equalTo: word.lowercased())
+                user.findObjectsInBackground(block: {
+                    (objects: [PFObject]?, error: Error?) in
+                    if error == nil {
+                        for object in objects! {
+                            // Send mention to Parse server, class "Notifications"
+                            let notifications = PFObject(className: "Notifications")
+                            notifications["from"] = PFUser.current()!.username!
+                            notifications["fromUser"] = PFUser.current()!
+                            notifications["type"] = "tag co"
+                            notifications["forObjectId"] = forObject!.objectId!
+                            notifications["to"] = word
+                            notifications["toUser"] = object
+                            notifications.saveInBackground(block: {
+                                (success: Bool, error: Error?) in
+                                if success {
+                                    print("Successfully saved tag in notifications: \(notifications)")
+                                    
+                                    // MARK: - RPHelpers; send push notification if user's apnsId is not nil
+                                    if object.value(forKey: "apnsId") != nil {
+                                        let rpHelpers = RPHelpers()
+                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Comment")
+                                    }
+                                    
+                                } else {
+                                    print(error?.localizedDescription as Any)
+                                }
+                            })
+                        }
+                    } else {
+                        print(error?.localizedDescription as Any)
+                    }
+                })
+            }
+        }
+    }
 
     // MARK: -  Parse; Function to like object and save notification
     open func likeObject(forObject: PFObject?, notificationType: String?, activeButton: UIButton?) {

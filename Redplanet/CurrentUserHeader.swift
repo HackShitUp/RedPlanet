@@ -34,24 +34,26 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
 
     // Function to show followers
     func showFollowers() {
-        // Append to forFriends
-        forFollowers.append(PFUser.current()!)
-        forFollowers.append(PFUser.current()!)
+        // Append data
+        relationForUser.append(PFUser.current()!)
+        relationForUser.append(PFUser.current()!)
         
         // Push VC
-        let followersVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowersVC") as! RFollowers
-        self.delegate?.navigationController?.pushViewController(followersVC, animated: true)
+        let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.followersFollowing = "Followers"
+        self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
     // Function to show followers
     func showFollowing() {
-        // Append to forFriends
-        forFollowing.append(PFUser.current()!)
-        forFollowers.append(PFUser.current()!)
+        // Append data
+        relationForUser.append(PFUser.current()!)
+        relationForUser.append(PFUser.current()!)
         
         // Push VC
-        let followingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "rFollowingVC") as! RFollowing
-        self.delegate?.navigationController?.pushViewController(followingVC, animated: true)
+        let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
+        followersFollowingVC.followersFollowing = "Following"
+        self.delegate?.navigationController?.pushViewController(followersFollowingVC, animated: true)
     }
     
     
