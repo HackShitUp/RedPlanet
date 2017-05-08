@@ -77,10 +77,26 @@ class RPHelpers: NSObject {
     
     // MARK: - Parse; Function to check for #'s
     open func checkHash(forObject: PFObject?, forText: String?) {
-
+        // Loop through words to check for @ prefixes
+        for var word in forText!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
+            if word.hasPrefix("#") {
+                // Get username
+                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
+                word = word.trimmingCharacters(in: CharacterSet.symbols)
+                
+                // Save hashtag to server
+                let hashtags = PFObject(className: "Hashtags")
+                hashtags["hashtag"] = word.lowercased()
+                hashtags["userHash"] = "#" + word.lowercased()
+                hashtags["by"] = PFUser.current()!.username!
+                hashtags["pointUser"] = PFUser.current()!
+                hashtags["forObjectId"] =  forObject!.objectId!
+                hashtags.saveInBackground()
+            }
+        }
     }
     
-    open func checkTags(forObject: PFObject?, forText: String?) {
+    open func checkTags(forObject: PFObject?, forText: String?, postType: String?) {
         // Loop through words to check for @ prefixes
         for var word in forText!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
             // Define @username
@@ -111,7 +127,7 @@ class RPHelpers: NSObject {
                                     // MARK: - RPHelpers; send push notification if user's apnsId is not nil
                                     if object.value(forKey: "apnsId") != nil {
                                         let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Comment")
+                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a \(postType!)")
                                     }
                                     
                                 } else {

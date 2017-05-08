@@ -142,7 +142,7 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     // Configure UINavigationBar
     func configureView(title: String?) {
         // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17.0) {
+        if let navBarFont = UIFont(name: "AvenirNext-Demibold", size: 17) {
             let navBarAttributesDictionary: [String: AnyObject]? = [
                 NSForegroundColorAttributeName: UIColor.black,
                 NSFontAttributeName: navBarFont
@@ -374,6 +374,20 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
         self.tableView.backgroundView = UIView()
         // Reload data
         handleFetch()
+    }
+    
+    override func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y >= scrollView.contentSize.height - self.view.frame.size.height * 2 {
+            func loadMore() {
+                // If posts on server are > than shown
+                if page <= self.userObjects.count {
+                    // Increase page size to load more posts
+                    page = page + 50
+                    // Query friends
+                    handleFetch()
+                }
+            }
+        }
     }
     
     

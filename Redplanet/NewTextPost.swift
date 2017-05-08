@@ -154,62 +154,10 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     self.shareButton.isUserInteractionEnabled = true
                     self.shareButton.isEnabled = true
                     
-                    // Check for #'s and @'s
-                    for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                        
-                        if word.hasPrefix("#") {
-                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-                            
-                            // Save hashtag to server
-                            let hashtags = PFObject(className: "Hashtags")
-                            hashtags["hashtag"] = word.lowercased()
-                            hashtags["userHash"] = "#" + word.lowercased()
-                            hashtags["by"] = PFUser.current()!.username!
-                            hashtags["pointUser"] = PFUser.current()!
-                            hashtags["forObjectId"] =  newsfeeds.objectId!
-                            hashtags.saveInBackground()
-                        
-                        } else if word.hasPrefix("@") {
-                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-
-                            // Search for user
-                            let theUsername = PFUser.query()!
-                            theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                            let realName = PFUser.query()!
-                            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                            let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                            mention.findObjectsInBackground(block: {
-                                (objects: [PFObject]?, error: Error?) in
-                                if error == nil {
-                                    for object in objects! {
-                                        print("The user is:\(object)")
-                                        
-                                        // Send notification to user
-                                        let notifications = PFObject(className: "Notifications")
-                                        notifications["from"] = PFUser.current()!.username!
-                                        notifications["fromUser"] = PFUser.current()
-                                        notifications["to"] = word
-                                        notifications["toUser"] = object
-                                        notifications["type"] = "tag tp"
-                                        notifications["forObjectId"] = newsfeeds.objectId!
-                                        notifications.saveInBackground()
-                                        
-                                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                        if object["apnsId"] != nil {
-                                            let rpHelpers = RPHelpers()
-                                            _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Text Post.")
-                                        }
-                                        
-                                    }
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    print("Couldn't find the user...")
-                                }
-                            })
-                        } // END: looping through words
-                    }
+                    // MARK: - RPHelpers
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.checkHash(forObject: newsfeeds, forText: self.textView.text!)
+                    rpHelpers.checkTags(forObject: newsfeeds, forText: self.textView.text!, postType: "Text Post")
                     
                     // MARK: - HEAP
                     Heap.track("SharedTextPost", withProperties:

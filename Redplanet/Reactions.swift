@@ -224,7 +224,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                             
                             // MARK: - RPHelpers
                             let rpHelpers = RPHelpers()
-                            rpHelpers.checkTags(forObject: comments, forText: commentText)
+                            rpHelpers.checkTags(forObject: comments, forText: commentText, postType: "Comment")
 
                             // Handle optional chaining for user object
                             if let user = reactionObject.last!.value(forKey: "byUser") as? PFUser {
