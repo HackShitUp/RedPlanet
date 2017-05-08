@@ -62,7 +62,18 @@ class TextPostCell: UITableViewCell {
         
         // (1) Views
         let views = AZDialogAction(title: "Views", handler: { (dialog) -> (Void) in
+            // Append data and show views
             
+        })
+        
+        // (2) Edit
+        let edit = AZDialogAction(title: "Edit", handler: { (dialog) -> (Void) in
+            // Dismiss
+            dialog.dismiss()
+            // Append data and push vc
+            editObjects.append(self.postObject!)
+            let editVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "editVC") as! EditContent
+            self.superDelegate?.navigationController?.pushViewController(editVC, animated: true)
         })
         
         // (2) Delete
@@ -102,6 +113,7 @@ class TextPostCell: UITableViewCell {
         // Show options depending on user
         if (self.postObject!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
             dialogController.addAction(views)
+            dialogController.addAction(edit)
             dialogController.addAction(delete)
             dialogController.show(in: self.superDelegate!)
         } else {
@@ -288,16 +300,23 @@ class TextPostCell: UITableViewCell {
         likeTap.numberOfTapsRequired = 1
         self.likeButton.isUserInteractionEnabled = true
         self.likeButton.addGestureRecognizer(likeTap)
-        // Add more button tap
-        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
-        moreTap.numberOfTapsRequired = 1
-        self.moreButton.isUserInteractionEnabled = true
-        self.moreButton.addGestureRecognizer(moreTap)
         // Add numberOfLikestap
         let numberLikesTap = UITapGestureRecognizer(target: self, action: #selector(likers))
         numberLikesTap.numberOfTapsRequired = 1
         self.numberOfLikes.isUserInteractionEnabled = true
         self.numberOfLikes.addGestureRecognizer(numberLikesTap)
+        
+        // Add more button tap
+        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
+        moreTap.numberOfTapsRequired = 1
+        self.moreButton.isUserInteractionEnabled = true
+        self.moreButton.addGestureRecognizer(moreTap)
+        
+        // Add more button tap
+        let moreLong = UILongPressGestureRecognizer(target: self, action: #selector(doMore))
+        moreLong.minimumPressDuration = 0.15
+        self.contentView.isUserInteractionEnabled = true
+        self.contentView.addGestureRecognizer(moreLong)
     }
     
 }

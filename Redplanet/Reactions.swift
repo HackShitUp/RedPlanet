@@ -210,6 +210,10 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 (success: Bool, error: Error?) in
                 if success {
                     
+                    // MARK: - RPHelpers; check for Tags
+                    let rpHelpers = RPHelpers()
+                    rpHelpers.checkTags(forObject: comments, forText: commentText, postType: "co")
+                    
                     // Send notification
                     let notifications = PFObject(className: "Notifications")
                     notifications["fromUser"] = PFUser.current()!
@@ -221,10 +225,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                     notifications.saveInBackground(block: {
                         (success: Bool, error: Error?) in
                         if success {
-                            
-                            // MARK: - RPHelpers
-                            let rpHelpers = RPHelpers()
-                            rpHelpers.checkTags(forObject: comments, forText: commentText, postType: "Comment")
 
                             // Handle optional chaining for user object
                             if let user = reactionObject.last!.value(forKey: "byUser") as? PFUser {

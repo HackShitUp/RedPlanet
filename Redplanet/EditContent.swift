@@ -64,96 +64,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
         self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
     
-    
-    // Function to send save #'s or @ mentions
-    func checkNotifications() {
-        // Check for hashtags and user mentions
-        let words: [String] = self.textPost.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines)
-        
-        // Define #word
-        for var word in words {
-            
-            // #####################
-            if word.hasPrefix("#") {
-                // Cut all symbols
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
-                // Save hashtag to server
-                let hashtags = PFObject(className: "Hashtags")
-                hashtags["hashtag"] = word.lowercased()
-                hashtags["userHash"] = "#" + word.lowercased()
-                hashtags["by"] = PFUser.current()!.username!
-                hashtags["pointUser"] = PFUser.current()!
-                hashtags["forObjectId"] =  editObjects.last!.objectId!
-                hashtags.saveInBackground(block: {
-                    (success: Bool, error: Error?) in
-                    if success {
-                        
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
-            } else if word.hasPrefix("@") {
-                // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                
-                print("The user's username to notify is: \(word)")
-                // Search for user
-                let theUsername = PFUser.query()!
-                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                
-                let realName = PFUser.query()!
-                realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                
-                let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                mention.findObjectsInBackground(block: {
-                    (objects: [PFObject]?, error: Error?) in
-                    if error == nil {
-                        for object in objects! {
-                            
-                            // Send notification to user
-                            let notifications = PFObject(className: "Notifications")
-                            notifications["from"] = PFUser.current()!.username!
-                            notifications["fromUser"] = PFUser.current()
-                            notifications["to"] = word
-                            notifications["toUser"] = object
-                            notifications["type"] = "tag \(editObjects.last!.value(forKey: "contentType") as! String!)"
-                            notifications["forObjectId"] = object.objectId!
-                            notifications.saveEventually()
-                            
-                            print("Successfully sent notification: \(notifications)")
-                            
-                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                            if object["apnsId"] != nil {
-                                let rpHelpers = RPHelpers()
-                                if editObjects.last!.value(forKey: "contentType") as! String == "tp" {
-                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Text Post")
-                                } else if editObjects.last!.value(forKey: "contentType") as! String == "ph" {
-                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Photo")
-                                } else if editObjects.last!.value(forKey: "contentType") as! String == "pp" {
-                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Profile Photo")
-                                } else if editObjects.last!.value(forKey: "contentType") as! String == "vi" {
-                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
-                                } else if editObjects.last!.value(forKey: "contentType") as! String == "sp" {
-                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
-                                }
-                            }
-                            
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
-                        print("Couldn't find the user...")
-                    }
-                })
-                
-            } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
-        }// end for words
-        
-
-    }
-    
 
     // Function to save changes
     func saveChanges(sender: UIButton) {
@@ -220,6 +130,9 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
                             // MARK: - RPHelpers
                             let rpHelpers = RPHelpers()
                             rpHelpers.showSuccess(withTitle: "Edit Saved")
+                            // Check for @'s and #'s
+                            rpHelpers.checkHash(forObject: object!, forText: self.textPost.text!)
+                            rpHelpers.checkTags(forObject: object!, forText: self.textPost.text!, postType: (object!.value(forKey: "contentType") as! String))
                             
                             // Clear array and append object
                             editObjects.removeAll(keepingCapacity: false)
@@ -277,8 +190,6 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
 
             // Reload data
             self.reloadData()
-            // Check for hashtags and mentions
-            checkNotifications()
             // Clear array and pop vc
             editObjects.removeAll(keepingCapacity: false)
             _ = self.navigationController?.popViewController(animated: true)

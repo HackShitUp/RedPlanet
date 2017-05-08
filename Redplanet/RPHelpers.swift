@@ -115,7 +115,7 @@ class RPHelpers: NSObject {
                             let notifications = PFObject(className: "Notifications")
                             notifications["from"] = PFUser.current()!.username!
                             notifications["fromUser"] = PFUser.current()!
-                            notifications["type"] = "tag co"
+                            notifications["type"] = "tag \(postType!)"
                             notifications["forObjectId"] = forObject!.objectId!
                             notifications["to"] = word
                             notifications["toUser"] = object
@@ -126,8 +126,24 @@ class RPHelpers: NSObject {
                                     
                                     // MARK: - RPHelpers; send push notification if user's apnsId is not nil
                                     if object.value(forKey: "apnsId") != nil {
-                                        let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a \(postType!)")
+                                        switch postType! {
+                                            case "tp":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Text Post")
+                                            case "ph":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Photo")
+                                            case "pp":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Profile Photo")
+                                            case "vi":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Video")
+                                            case "sh":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Shared Post")
+                                            case "sp":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
+                                            case "co":
+                                            self.pushNotification(toUser: object, activityType: "tagged you in a Comment")
+                                        default:
+                                            break
+                                        }
                                     }
                                     
                                 } else {

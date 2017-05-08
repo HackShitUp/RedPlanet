@@ -157,7 +157,7 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
                     // MARK: - RPHelpers
                     let rpHelpers = RPHelpers()
                     rpHelpers.checkHash(forObject: newsfeeds, forText: self.textView.text!)
-                    rpHelpers.checkTags(forObject: newsfeeds, forText: self.textView.text!, postType: "Text Post")
+                    rpHelpers.checkTags(forObject: newsfeeds, forText: self.textView.text!, postType: "tp")
                     
                     // MARK: - HEAP
                     Heap.track("SharedTextPost", withProperties:

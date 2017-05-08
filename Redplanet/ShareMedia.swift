@@ -276,76 +276,10 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
             (success: Bool, error: Error?) in
             if success {
                 
-                // Define #word
-                for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                    // #####################
-                    if word.hasPrefix("#") {
-                        // Cut all symbols
-                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                        word = word.trimmingCharacters(in: CharacterSet.symbols)
-                        
-                        // Save hashtag to server
-                        let hashtags = PFObject(className: "Hashtags")
-                        hashtags["hashtag"] = word.lowercased()
-                        hashtags["userHash"] = "#" + word.lowercased()
-                        hashtags["by"] = PFUser.current()!.username!
-                        hashtags["pointUser"] = PFUser.current()!
-                        hashtags["forObjectId"] =  newsfeeds.objectId!
-                        hashtags.saveInBackground(block: {
-                            (success: Bool, error: Error?) in
-                            if success {
-                                print("#\(word) has been saved!")
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
-                        // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                    } else if word.hasPrefix("@") {
-                        // Cut all symbols
-                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                        word = word.trimmingCharacters(in: CharacterSet.symbols)
-                        
-                        // Search for user
-                        let theUsername = PFUser.query()!
-                        theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                        let realName = PFUser.query()!
-                        realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                        let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                        mention.findObjectsInBackground(block: {
-                            (objects: [PFObject]?, error: Error?) in
-                            if error == nil {
-                                for object in objects! {
-                                    
-                                    // Send notification to user
-                                    let notifications = PFObject(className: "Notifications")
-                                    notifications["from"] = PFUser.current()!.username!
-                                    notifications["fromUser"] = PFUser.current()
-                                    notifications["to"] = word
-                                    notifications["toUser"] = object
-                                    notifications["type"] = "tag vi"
-                                    notifications["forObjectId"] = newsfeeds.objectId!
-                                    notifications.saveInBackground(block: {
-                                        (success: Bool, error: Error?) in
-                                        if success {
-                                            
-                                            // MARK: - RPHelpers; send push notification if user's apnsId is not nil
-                                            if object["apnsId"] != nil {
-                                                // MARK: - RPHelpers; send push notification
-                                                let rpHelpers = RPHelpers()
-                                                _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
-                                            }
-                                            
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    })
-                                }
-                            } else {
-                                print(error?.localizedDescription as Any)
-                                print("Couldn't find the user...")
-                            }
-                        }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
-                }// end for loop for words
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.checkHash(forObject: newsfeeds, forText: self.mediaCaption.text)
+                rpHelpers.checkTags(forObject: newsfeeds, forText: self.mediaCaption.text, postType: "ph")
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -420,79 +354,16 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                     (success: Bool, error: Error?) in
                     if success {
                         
-                        // Check for #'s and @'s
-                        for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                            // #####################
-                            if word.hasPrefix("#") {
-                                // Cut all symbols
-                                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                
-                                // Save hashtag to server
-                                let hashtags = PFObject(className: "Hashtags")
-                                hashtags["hashtag"] = word.lowercased()
-                                hashtags["userHash"] = "#" + word.lowercased()
-                                hashtags["by"] = PFUser.current()!.username!
-                                hashtags["pointUser"] = PFUser.current()!
-                                hashtags["forObjectId"] =  newsfeeds.objectId!
-                                hashtags.saveInBackground(block: {
-                                    (success: Bool, error: Error?) in
-                                    if success {
-                                        print("#\(word) has been saved!")
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                                // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                            } else if word.hasPrefix("@") {
-                                // Cut all symbols
-                                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                
-                                // Search for user
-                                let theUsername = PFUser.query()!
-                                theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                                let realName = PFUser.query()!
-                                realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                                let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                                mention.findObjectsInBackground(block: {
-                                    (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            
-                                            // Send notification to user
-                                            let notifications = PFObject(className: "Notifications")
-                                            notifications["from"] = PFUser.current()!.username!
-                                            notifications["fromUser"] = PFUser.current()
-                                            notifications["to"] = word
-                                            notifications["toUser"] = object
-                                            notifications["type"] = "tag vi"
-                                            notifications["forObjectId"] = newsfeeds.objectId!
-                                            notifications.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    
-                                                    // MARK: - RPHelpers; send push notification if user's apnsId is not nil
-                                                    if object["apnsId"] != nil {
-                                                        let rpHelpers = RPHelpers()
-                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
-                                                    }
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                        print("Couldn't find the user...")
-                                    }
-                                }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
-                        }// end for loop for words
+                        // MARK: - RPHelpers; Check for #'s and @'s
+                        let rpHelpers = RPHelpers()
+                        rpHelpers.checkHash(forObject: newsfeeds, forText: self.mediaCaption.text!)
+                        rpHelpers.checkTags(forObject: newsfeeds, forText: self.mediaCaption.text!, postType: "vi")
+                        
                     } else {
                         print(error?.localizedDescription as Any)
                     }
                 })
+                
             case .failed:
                 break
             case .cancelled:
@@ -566,75 +437,11 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
                                                                 (success: Bool, error: Error?) in
                                                                 if success {
                                                                     
-                                                                    // (2) Check for #'s or @'s
-                                                                    for var word in self.mediaCaption.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                                                                        // #####################
-                                                                        if word.hasPrefix("#") {
-                                                                            // Cut all symbols
-                                                                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                                                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                                                            
-                                                                            // Save hashtag to server
-                                                                            let hashtags = PFObject(className: "Hashtags")
-                                                                            hashtags["hashtag"] = word.lowercased()
-                                                                            hashtags["userHash"] = "#" + word.lowercased()
-                                                                            hashtags["by"] = PFUser.current()!.username!
-                                                                            hashtags["pointUser"] = PFUser.current()!
-                                                                            hashtags["forObjectId"] =  newsfeeds.objectId!
-                                                                            hashtags.saveInBackground(block: {
-                                                                                (success: Bool, error: Error?) in
-                                                                                if success {
-                                                                                    print("#\(word) has been saved!")
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                }
-                                                                            })
-                                                                        } else if word.hasPrefix("@") {
-                                                                            // @@@@@@@@@@@@@@@@@@@@@@@@@@
-                                                                            // Cut all symbols
-                                                                            word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                                                            word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                                                            
-                                                                            // Search for user
-                                                                            let theUsername = PFUser.query()!
-                                                                            theUsername.whereKey("username", matchesRegex: "(?i)" + word)
-                                                                            let realName = PFUser.query()!
-                                                                            realName.whereKey("realNameOfUser", matchesRegex: "(?i)" + word)
-                                                                            let mention = PFQuery.orQuery(withSubqueries: [theUsername, realName])
-                                                                            mention.findObjectsInBackground(block: {
-                                                                                (objects: [PFObject]?, error: Error?) in
-                                                                                if error == nil {
-                                                                                    for object in objects! {
-                                                                                        
-                                                                                        // Send notification to user
-                                                                                        let notifications = PFObject(className: "Notifications")
-                                                                                        notifications["from"] = PFUser.current()!.username!
-                                                                                        notifications["fromUser"] = PFUser.current()
-                                                                                        notifications["to"] = word
-                                                                                        notifications["toUser"] = object
-                                                                                        notifications["type"] = "tag vi"
-                                                                                        notifications["forObjectId"] = newsfeeds.objectId!
-                                                                                        notifications.saveInBackground(block: {
-                                                                                            (success: Bool, error: Error?) in
-                                                                                            if success {
-                                                                                                
-                                                                                                // MARK: - RPHelpers; send push notification
-                                                                                                if object["apnsId"] != nil {
-                                                                                                    let rpHelpers = RPHelpers()
-                                                                                                    _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Video")
-                                                                                                }
-                                                                                                
-                                                                                            } else {
-                                                                                                print(error?.localizedDescription as Any)
-                                                                                            }
-                                                                                        })
-                                                                                    }
-                                                                                } else {
-                                                                                    print(error?.localizedDescription as Any)
-                                                                                    print("Couldn't find the user...")
-                                                                                }
-                                                                            }) } // END: @@@@@@@@@@@@@@@@@@@@@@@@@@@
-                                                                    }// end for loop for words
+                                                                    // MARK: - RPHelpers; Check for #'s and @'s
+                                                                    let rpHelpers = RPHelpers()
+                                                                    rpHelpers.checkHash(forObject: newsfeeds, forText: self.mediaCaption.text!)
+                                                                    rpHelpers.checkTags(forObject: newsfeeds, forText: self.mediaCaption.text!, postType: "vi")
+                                                                    
                                                                     
                                                                 } else {
                                                                     print(error?.localizedDescription as Any)

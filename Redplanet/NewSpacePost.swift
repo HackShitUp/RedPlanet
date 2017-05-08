@@ -130,6 +130,13 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
             if success {
                 print("Successfully shared Space Post: \(space)")
                 
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showSuccess(withTitle: "Shared")
+                // Check for Tags
+                rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
+                rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
+                
                 // (2) Send Notification
                 let notifications = PFObject(className: "Notifications")
                 notifications["fromUser"] = PFUser.current()!
@@ -142,61 +149,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if error == nil {
                         print("Sent Notification: \(notifications)")
-                        
-                        // MARK: - RPHelpers
-                        let rpHelpers = RPHelpers()
-                        rpHelpers.showSuccess(withTitle: "Shared")
-                        
-                        // Check for user mentions...
-                        // Loop through words to check for @ prefixes
-                        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                            
-                            // Define @username
-                            if word.hasPrefix("@") {
-                                // Get username
-                                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                
-                                // Look for user
-                                let user = PFUser.query()!
-                                user.whereKey("username", equalTo: word.lowercased())
-                                user.findObjectsInBackground(block: {
-                                    (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            
-                                            // Send mention to Parse server, class "Notifications"
-                                            let notifications = PFObject(className: "Notifications")
-                                            notifications["from"] = PFUser.current()!.username!
-                                            notifications["fromUser"] = PFUser.current()!
-                                            notifications["type"] = "tag sp"
-                                            notifications["forObjectId"] = space.objectId!
-                                            notifications["to"] = word
-                                            notifications["toUser"] = object
-                                            notifications.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved tag in notifications: \(notifications)")
-                                                    
-                                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                                    if object.value(forKey: "apnsId") != nil {
-                                                        let rpHelpers = RPHelpers()
-                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
-                                                    }
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                            
-                                        }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                                
-                            }
-                        }
                         
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
@@ -247,7 +199,10 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                 
                 // MARK: - RPHelpers
                 let rpHelpers = RPHelpers()
-                rpHelpers.showSuccess(withTitle: "Shared")
+                rpHelpers.showSuccess(withTitle: "Shared Space Post")
+                // Check for #'s and @'s
+                rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
+                rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
                 
                 // (2) Send Notification
                 let notifications = PFObject(className: "Notifications")
@@ -261,56 +216,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                     (success: Bool, error: Error?) in
                     if error == nil {
                         print("Sent Notification: \(notifications)")
-                        
-                        // Check for user mentions...
-                        // Loop through words to check for @ prefixes
-                        for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                            
-                            // Define @username
-                            if word.hasPrefix("@") {
-                                // Get username
-                                word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                
-                                // Look for user
-                                let user = PFUser.query()!
-                                user.whereKey("username", equalTo: word.lowercased())
-                                user.findObjectsInBackground(block: {
-                                    (objects: [PFObject]?, error: Error?) in
-                                    if error == nil {
-                                        for object in objects! {
-                                            
-                                            // Send mention to Parse server, class "Notifications"
-                                            let notifications = PFObject(className: "Notifications")
-                                            notifications["from"] = PFUser.current()!.username!
-                                            notifications["fromUser"] = PFUser.current()!
-                                            notifications["type"] = "tag sp"
-                                            notifications["forObjectId"] = space.objectId!
-                                            notifications["to"] = word
-                                            notifications["toUser"] = object
-                                            notifications.saveInBackground(block: {
-                                                (success: Bool, error: Error?) in
-                                                if success {
-                                                    print("Successfully saved tag in notifications: \(notifications)")
-                                                    
-                                                    // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                                    if object.value(forKey: "apnsId") != nil {
-                                                        let rpHelpers = RPHelpers()
-                                                        _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
-                                                    }
-                                                    
-                                                } else {
-                                                    print(error?.localizedDescription as Any)
-                                                }
-                                            })
-                                        }
-                                    } else {
-                                        print(error?.localizedDescription as Any)
-                                    }
-                                })
-                                
-                            }
-                        }
                         
                         // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                         if otherObject.last!.value(forKey: "apnsId") != nil {
@@ -381,6 +286,9 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         // MARK: - RPHelpers
                         let rpHelpers = RPHelpers()
                         rpHelpers.showSuccess(withTitle: "Shared")
+                        // Check for @'s and #'s
+                        rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
+                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sh")
                         
                         // Send Notification
                         let notifications = PFObject(className: "Notifications")
@@ -394,57 +302,6 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                             (success: Bool, error: Error?) in
                             if error == nil {
                                 print("Sent Notification: \(notifications)")
-                                
-                                // Check for user mentions...
-                                // Loop through words to check for @ prefixes
-                                for var word in self.textView.text!.components(separatedBy: CharacterSet.whitespacesAndNewlines) {
-                                    
-                                    // Define @username
-                                    if word.hasPrefix("@") {
-                                        // Get username
-                                        word = word.trimmingCharacters(in: CharacterSet.punctuationCharacters)
-                                        word = word.trimmingCharacters(in: CharacterSet.symbols)
-                                        
-                                        // Look for user
-                                        let user = PFUser.query()!
-                                        user.whereKey("username", equalTo: word.lowercased())
-                                        user.findObjectsInBackground(block: {
-                                            (objects: [PFObject]?, error: Error?) in
-                                            if error == nil {
-                                                for object in objects! {
-                                                    
-                                                    // Send mention to Parse server, class "Notifications"
-                                                    let notifications = PFObject(className: "Notifications")
-                                                    notifications["from"] = PFUser.current()!.username!
-                                                    notifications["fromUser"] = PFUser.current()!
-                                                    notifications["type"] = "tag sp"
-                                                    notifications["forObjectId"] = space.objectId!
-                                                    notifications["to"] = word
-                                                    notifications["toUser"] = object
-                                                    notifications.saveInBackground(block: {
-                                                        (success: Bool, error: Error?) in
-                                                        if success {
-                                                            print("Successfully saved tag in notifications: \(notifications)")
-                                                            
-                                                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                                            if object.value(forKey: "apnsId") != nil {
-                                                                let rpHelpers = RPHelpers()
-                                                                _ = rpHelpers.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
-                                                            }
-                                                            
-                                                        } else {
-                                                            print(error?.localizedDescription as Any)
-                                                        }
-                                                    })
-                                                    
-                                                }
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
-                                        
-                                    }
-                                }
                                 
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if otherObject.last!.value(forKey: "apnsId") != nil {
