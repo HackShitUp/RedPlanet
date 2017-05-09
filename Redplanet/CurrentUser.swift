@@ -64,9 +64,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.refresher?.endRefreshing()
         switch segmentedControl.selectedSegmentIndex {
         case 0:
-            fetchToday()
-        case 1:
             fetchActivity()
+        case 1:
+            fetchToday()
         case 2:
             fetchSaved()
         default:
@@ -352,7 +352,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         segmentedControl.delegate = self
         segmentedControl.frame = CGRect(x: 0, y: 0, width: self.view.frame.width - 16, height: 40)
         segmentedControl.isSliderShadowHidden = false
-        segmentedControl.setSegmentItems(["Today", "Activity", "Saved"])
+        segmentedControl.setSegmentItems(["Actvitiy", "Today", "Saved"])
         segmentedControl.defaultTextColor = UIColor.black
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
@@ -498,7 +498,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // TODAY'S POST
-        if self.segmentedControl.selectedSegmentIndex == 0 || self.segmentedControl.selectedSegmentIndex == 2 {
+        if self.segmentedControl.selectedSegmentIndex == 1 || self.segmentedControl.selectedSegmentIndex == 2 {
             let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
             
             // Set delegate

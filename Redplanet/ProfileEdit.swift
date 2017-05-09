@@ -24,7 +24,7 @@ var isNewProPic: Bool = false
 // Bool to determine whether caption has changed
 var didChangeCaption: Bool = false
 
-class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, CLImageEditorDelegate {
+class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UITextViewDelegate, CLImageEditorDelegate {
     
     
     @IBOutlet weak var rpUserProPic: PFImageView!
@@ -322,14 +322,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         // Send Notification to myProfile
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
     // Options for profile picture
     func changePhoto(sender: AnyObject) {
         
@@ -462,57 +455,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         }
     }
     
-    // MARK: - UIImagePickerController Delegate method
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
-        
-        // Edit changes
-        PFUser.current()!["proPicExists"] = true
-        PFUser.current()!.saveInBackground(block: {
-            (success: Bool, error: Error?) in
-            if success {
-                print("Saved Bool!")
-                // Set image
-                if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-                    // Set image
-                    self.rpUserProPic.image = chosenImage
-                    
-                    
-                    // Append image
-                    changedProPicImg.append(chosenImage)
-                    
-                    
-                    // Dismiss view controller
-                    self.dismiss(animated: true, completion: nil)
-                    
-                    // MARK: - CLImageEditor
-                    let editor = CLImageEditor(image: self.rpUserProPic.image!)
-                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
-                    editor?.delegate = self
-                    let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
-                    tool?.title = "Emoji"
-                    self.present(editor!, animated: true, completion: nil)
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-                // Dismiss view controller
-                self.dismiss(animated: true, completion: nil)
-            }
-        })
-        
-        // Set Bool
-        isNewProPic = true
-        // Return bool
-        return isNewProPic
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        // Save bool
-        PFUser.current()!["proPicExists"] = false
-        PFUser.current()!.saveInBackground()
-        // Dismiss view controller
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     // MARK: - CLImageEditor delegate methods
     func imageEditor(_ editor: CLImageEditor, didFinishEdittingWith image: UIImage) {
         // Set image
@@ -563,7 +505,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tabBarController?.tabBar.isHidden = true
     }
 
     override func viewDidLoad() {
@@ -576,17 +517,35 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         
         // Set maximum birthday
         self.userBirthday.maximumDate = Date()
-
-        // (A) Layout views
-        self.rpUserProPic.layoutIfNeeded()
-        self.rpUserProPic.layoutSubviews()
-        self.rpUserProPic.setNeedsLayout()
         
-        // Load user's current profile picture
-        self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-        self.rpUserProPic.layer.borderColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0).cgColor
-        self.rpUserProPic.layer.borderWidth = 3.00
-        self.rpUserProPic.clipsToBounds = true
+        // Configure textColor for rpUserBio
+        self.rpUserBio.textColor = UIColor.lightGray
+
+        // Add icons to UITextField
+        let userIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
+        userIcon.contentMode = .scaleAspectFit
+        userIcon.image = UIImage(named: "User_48")
+        self.rpUsername.leftViewMode = .always
+        self.rpUsername.leftView = userIcon
+        self.rpUsername.addSubview(userIcon)
+        
+        let nameIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
+        nameIcon.contentMode = .scaleAspectFit
+        nameIcon.image = UIImage(named: "Name")
+        self.rpName.leftViewMode = .always
+        self.rpName.leftView = nameIcon
+        self.rpName.addSubview(nameIcon)
+        
+        let emailIcon = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 15))
+        emailIcon.contentMode = .scaleAspectFit
+        emailIcon.image = UIImage(named: "Mail")
+        self.rpEmail.leftViewMode = .always
+        self.rpEmail.leftView = emailIcon
+        self.rpEmail.addSubview(emailIcon)
+        
+        // (A) Configure User's Profile Photo
+        // MARK: - RPExtensions
+        self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 3, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
         
         // (B) If there exists, a current user...
         if PFUser.current() != nil {
@@ -654,7 +613,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.tabBarController?.tabBar.isHidden = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -664,5 +622,73 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         URLCache.shared.removeAllCachedResponses()
         SDImageCache.shared().clearMemory()
         SDImageCache.shared().clearDisk()
+    }
+    
+    
+    // MARK: - UITextView Delegate Method
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        self.rpUserBio.textColor = UIColor.black
+        if self.rpUserBio.text == "Introduce yourself..." {
+            self.rpUserBio.text = ""
+        }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            self.rpUserBio.resignFirstResponder()
+        }
+        return true
+    }
+    
+    
+    // MARK: - UIImagePickerController Delegate method
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) -> Bool {
+        
+        // Edit changes
+        PFUser.current()!["proPicExists"] = true
+        PFUser.current()!.saveInBackground(block: {
+            (success: Bool, error: Error?) in
+            if success {
+                print("Saved Bool!")
+                // Set image
+                if let chosenImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+                    // Set image
+                    self.rpUserProPic.image = chosenImage
+                    
+                    
+                    // Append image
+                    changedProPicImg.append(chosenImage)
+                    
+                    
+                    // Dismiss view controller
+                    self.dismiss(animated: true, completion: nil)
+                    
+                    // MARK: - CLImageEditor
+                    let editor = CLImageEditor(image: self.rpUserProPic.image!)
+                    editor?.theme.toolbarTextFont = UIFont(name: "AvenirNext-Medium", size: 12.00)
+                    editor?.delegate = self
+                    let tool = editor?.toolInfo.subToolInfo(withToolName: "CLEmoticonTool", recursive: false)
+                    tool?.title = "Emoji"
+                    self.present(editor!, animated: true, completion: nil)
+                }
+            } else {
+                print(error?.localizedDescription as Any)
+                // Dismiss view controller
+                self.dismiss(animated: true, completion: nil)
+            }
+        })
+        
+        // Set Bool
+        isNewProPic = true
+        // Return bool
+        return isNewProPic
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        // Save bool
+        PFUser.current()!["proPicExists"] = false
+        PFUser.current()!.saveInBackground()
+        // Dismiss view controller
+        self.dismiss(animated: true, completion: nil)
     }
 }

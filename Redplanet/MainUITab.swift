@@ -12,6 +12,8 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
+
+import SDWebImage
 import SwipeNavigationController
 
 class MainUITab: UITabBarController, UITabBarControllerDelegate {
@@ -62,9 +64,20 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 11)!], for: .normal)
-        
+        // Add username to bottom of tab
         if let username = PFUser.current()!.value(forKey: "username") as? String {
             self.tabBar.items?[4].title = username.lowercased()
         }
     }
+    
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        PFQuery.clearAllCachedResults()
+        PFFile.clearAllCachedDataInBackground()
+        URLCache.shared.removeAllCachedResponses()
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
+    }
+    
 }
