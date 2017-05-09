@@ -27,19 +27,17 @@ class ActivityCell: UITableViewCell {
     // Inialize content object
     var contentObject: PFObject?
 
-    
     @IBOutlet weak var rpUserProPic: PFImageView!
-    @IBOutlet weak var rpUsername: UIButton!
+    @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var activity: UILabel!
     @IBOutlet weak var time: UILabel!
-    
     
     // Function to go to user's profile
     func goUser() {
         // Append user's object
         otherObject.append(self.userObject!)
         // Append user's name
-        otherName.append(self.rpUsername.titleLabel!.text!)
+        otherName.append(self.rpUsername.text!)
         
         // Push VC
         let otherVC = delegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser

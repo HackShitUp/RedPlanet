@@ -690,8 +690,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
                 // Scroll to bottom via main thread
                 DispatchQueue.main.async(execute: {
                     if self.messageObjects.count > 0 {
-                        let bot = CGPoint(x: 0, y: self.tableView!.contentSize.height - self.tableView!.bounds.size.height)
-                        self.tableView.setContentOffset(bot, animated: false)
+                        self.tableView!.scrollToRow(at: IndexPath(row: self.messageObjects.count - 1, section: 0), at: .bottom, animated: true)
                     }
                 })
             } else {

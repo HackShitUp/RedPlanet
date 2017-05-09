@@ -62,5 +62,9 @@ class MainUITab: UITabBarController, UITabBarControllerDelegate {
         UITabBarItem.appearance().setTitleTextAttributes(
             [NSFontAttributeName: UIFont(name: "AvenirNext-Demibold",
                                          size: 11)!], for: .normal)
+        
+        if let username = PFUser.current()!.value(forKey: "username") as? String {
+            self.tabBar.items?[4].title = username.lowercased()
+        }
     }
 }

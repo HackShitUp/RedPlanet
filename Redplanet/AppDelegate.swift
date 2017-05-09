@@ -302,7 +302,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             // MARK: - SwipeNavigationController
             let cameraVC = storyboard.instantiateViewController(withIdentifier: "center") as! UINavigationController
             let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
-            swipeNavigationController.topViewController = storyboard.instantiateViewController(withIdentifier: "top") as! UINavigationController
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
             swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab

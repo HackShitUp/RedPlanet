@@ -113,7 +113,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         
         // Hide UITabBar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        
     }
     
     override func viewDidLoad() {

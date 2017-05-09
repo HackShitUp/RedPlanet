@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CurrentUserHeader" customModule="Redplanet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="425"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YgB-fA-d26">
@@ -70,33 +69,44 @@
                     <rect key="frame" x="8" y="334" width="359" height="33"/>
                     <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="359" id="Af3-c0-oM2"/>
+                        <constraint firstAttribute="width" constant="359" id="3JK-CL-iiH"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NHd-9y-tn3">
+                    <rect key="frame" x="16" y="375" width="343" height="40"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="g4Q-gD-m4m"/>
+                        <constraint firstAttribute="width" constant="343" id="qz7-Sz-qCR"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="NHd-9y-tn3" firstAttribute="top" secondItem="hEu-lr-NsO" secondAttribute="bottom" constant="8" id="3YC-az-A4E"/>
+                <constraint firstItem="hEu-lr-NsO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="54Y-W0-dTH"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="cpC-g2-2H8" secondAttribute="bottom" constant="16" id="5mt-b2-nG6"/>
                 <constraint firstItem="cpC-g2-2H8" firstAttribute="top" secondItem="YgB-fA-d26" secondAttribute="bottom" constant="8" id="B8g-9a-pUv"/>
-                <constraint firstAttribute="bottom" secondItem="hEu-lr-NsO" secondAttribute="bottom" constant="8" id="BLN-2C-sUS"/>
                 <constraint firstAttribute="trailing" secondItem="cpC-g2-2H8" secondAttribute="trailing" id="Btk-Ns-t5e"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="o7e-g2-Wuc" secondAttribute="bottom" constant="16" id="DPu-M8-ZU7"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="EyE-RZ-hv6"/>
+                <constraint firstItem="NHd-9y-tn3" firstAttribute="top" secondItem="hEu-lr-NsO" secondAttribute="bottom" constant="8" id="HTW-qL-BR1"/>
+                <constraint firstAttribute="bottom" secondItem="NHd-9y-tn3" secondAttribute="bottom" constant="10" id="JHZ-Mw-P0q"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="Tfg-SD-JRh" secondAttribute="bottom" constant="16" id="Oae-OK-hfc"/>
+                <constraint firstItem="hEu-lr-NsO" firstAttribute="top" secondItem="fcI-96-jrp" secondAttribute="bottom" id="UMI-Pn-1Gx"/>
                 <constraint firstItem="Tfg-SD-JRh" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="V8I-b1-PhD"/>
                 <constraint firstItem="o7e-g2-Wuc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="VLX-OB-QFh"/>
-                <constraint firstAttribute="trailing" secondItem="hEu-lr-NsO" secondAttribute="trailing" constant="8" id="dEB-UZ-Kks"/>
                 <constraint firstItem="YgB-fA-d26" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="9" id="dfz-aA-fye"/>
-                <constraint firstItem="hEu-lr-NsO" firstAttribute="top" secondItem="fcI-96-jrp" secondAttribute="bottom" id="dp5-c6-muJ"/>
-                <constraint firstItem="hEu-lr-NsO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="eSg-rj-hFq"/>
+                <constraint firstItem="NHd-9y-tn3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="e8n-ST-mEW"/>
                 <constraint firstItem="Tfg-SD-JRh" firstAttribute="top" secondItem="YgB-fA-d26" secondAttribute="bottom" constant="8" id="gDM-wB-HbY"/>
-                <constraint firstItem="hEu-lr-NsO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="pPR-qA-gPY"/>
+                <constraint firstAttribute="trailing" secondItem="NHd-9y-tn3" secondAttribute="trailing" constant="16" id="kMN-Pf-KJb"/>
                 <constraint firstItem="fcI-96-jrp" firstAttribute="top" secondItem="Tfg-SD-JRh" secondAttribute="bottom" constant="16" id="qig-Dj-h5k"/>
                 <constraint firstItem="YgB-fA-d26" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="rnd-W6-3pc"/>
                 <constraint firstItem="o7e-g2-Wuc" firstAttribute="top" secondItem="YgB-fA-d26" secondAttribute="bottom" constant="8" id="u6h-EP-yTr"/>
+                <constraint firstAttribute="trailing" secondItem="hEu-lr-NsO" secondAttribute="trailing" constant="8" id="ycr-yo-Ipx"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -105,6 +115,7 @@
                 <outlet property="numberOfFollowers" destination="Tfg-SD-JRh" id="UC3-bY-7kb"/>
                 <outlet property="numberOfFollowing" destination="cpC-g2-2H8" id="sc8-tM-dtS"/>
                 <outlet property="numberOfPosts" destination="o7e-g2-Wuc" id="wwd-2R-MKn"/>
+                <outlet property="segmentView" destination="NHd-9y-tn3" id="bxW-ek-tBd"/>
                 <outlet property="userBio" destination="hEu-lr-NsO" id="92C-6j-Dm1"/>
             </connections>
             <point key="canvasLocation" x="28.5" y="172.5"/>

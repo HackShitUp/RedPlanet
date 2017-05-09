@@ -56,7 +56,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     // MARK: - SwipeNavigationController
     func showProfileUI() {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .top)
+        let currentUserVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserVC") as! CurrentUser
+        self.navigationController?.pushViewController(currentUserVC, animated: true)
     }
     
     // MARK: - SwiftyCam Delegate Methods
@@ -279,10 +280,8 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         
         // Set profile photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
-            self.rpUserProPic.layer.cornerRadius = self.rpUserProPic.frame.size.width/2
-            self.rpUserProPic.layer.borderColor = UIColor.white.cgColor
-            self.rpUserProPic.layer.borderWidth = 0.75
-            self.rpUserProPic.clipsToBounds = true
+            // MARK: - RPExtensions
+            self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.50, borderColor: UIColor.white)
             // MARK: - SDWebImage
             self.rpUserProPic.sd_setImage(with: URL(string: proPic.url!), placeholderImage: UIImage(named: "GenderNeutralUser"))
         }
@@ -331,7 +330,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         proPicTap.numberOfTapsRequired = 1
         self.rpUserProPic.isUserInteractionEnabled = true
         self.rpUserProPic.addGestureRecognizer(proPicTap)
-
         
         // Bring buttons to front
         let buttons = [self.rpUserProPic,

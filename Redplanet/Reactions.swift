@@ -144,9 +144,15 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
             }
-            // Reload data in main thread
+            // Main Thread
             DispatchQueue.main.async {
-                self.tableView!.reloadData()
+                // Reload data
+                self.tableView.reloadData()
+                // Scroll to bottom
+                if self.reactionObjects.count > 0 {
+                    self.tableView!.scrollToRow(at: IndexPath(row: self.reactionObjects.count - 1, section: 0), at: .bottom, animated: true)
+
+                }
             }
         })
     }
@@ -448,8 +454,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
         if self.segmentedControl.selectedSegmentIndex == 0 {
-            // Likes
+        // Likes
             let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
             
             // (1) Get user's data
@@ -470,7 +477,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             return cell
             
         } else if self.segmentedControl.selectedSegmentIndex == 1 {
-            // Comments
+        // Comments
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
             
             // (1) Get user's data
@@ -502,7 +509,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             return cell
             
         } else {
-            // Shares
+        // Shares
             let cell = Bundle.main.loadNibNamed("UserCell", owner: self, options: nil)?.first as! UserCell
             
             // (1) Get user's data
@@ -523,7 +530,34 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
             return cell
         }
     }
+
+    // MARK: - UITableView Delegate Methods
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Set segmented control
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            // Append data
+            otherObject.append(self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser)
+            otherName.append((self.reactionObjects[indexPath.item].value(forKey: "fromUser") as! PFUser).value(forKey: "username") as! String)
+            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherVC, animated: true)
+        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+            // Append data
+            otherObject.append(self.reactionObjects[indexPath.item].value(forKey: "byUser") as! PFUser)
+            otherName.append((self.reactionObjects[indexPath.item].value(forKey: "byUser") as! PFUser).value(forKey: "username") as! String)
+            let otherVC = self.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
+            self.navigationController?.pushViewController(otherVC, animated: true)
+        }
+    }
     
+    func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        // Change color
+        tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
+    }
+    
+    func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.white
+    }
+
     // MARK: - UIScrollViewDelegate Methods
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         // Resign first responder
@@ -545,17 +579,19 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - UITextViewDelegate Methods
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if self.segmentedControl.selectedSegmentIndex == 1 {
-            return true
-        } else {
-            return false
-        }
-    }
+//    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+//        if self.segmentedControl.selectedSegmentIndex == 1 {
+//            return true
+//        } else {
+//            return false
+//        }
+//    }
     
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.textView.text = ""
         self.textView.textColor = UIColor.black
+        // MARK: - TwicketSegmentedControl
+        self.segmentedControl.move(to: 1)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

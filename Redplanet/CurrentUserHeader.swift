@@ -31,13 +31,13 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
     @IBOutlet weak var numberOfFollowing: UIButton!
     @IBOutlet weak var fullName: UILabel!
     @IBOutlet weak var userBio: KILabel!
-
+    @IBOutlet weak var segmentView: UIView!
+    
     // Function to show followers
     func showFollowers() {
         // Append data
         relationForUser.append(PFUser.current()!)
         relationForUser.append(PFUser.current()!)
-        
         // Push VC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
         followersFollowingVC.followersFollowing = "Followers"
@@ -49,7 +49,6 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         // Append data
         relationForUser.append(PFUser.current()!)
         relationForUser.append(PFUser.current()!)
-        
         // Push VC
         let followersFollowingVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "followersFollowingVC") as! FollowersFollowing
         followersFollowingVC.followersFollowing = "Following"
@@ -102,21 +101,18 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
             ["byUserId": "\(PFUser.current()!.objectId!)",
                 "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
             ])
-        let editVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
-        self.delegate?.navigationController?.pushViewController(editVC, animated: true)
+        let profileEdit = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
+        self.delegate?.navigationController?.pushViewController(profileEdit, animated: true)
     }
-    
     
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Center text
+        // Center # of posts, followers, and following text
         numberOfPosts.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowers.titleLabel!.textAlignment = NSTextAlignment.center
         numberOfFollowing.titleLabel!.textAlignment = NSTextAlignment.center
-        // Configure view
-        self.contentView.backgroundColor = UIColor.white
         
         // (1) Add tap methods to show followers, and following
         // (A) Followers
@@ -212,6 +208,8 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
             self.delegate?.navigationController?.present(webVC, animated: true, completion: nil)
         }
         
-    }// end awakeFromNib
-
+    }
+    
+    
+    
 }
