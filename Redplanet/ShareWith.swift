@@ -409,8 +409,7 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - MainUITab
-        // Show button
+        // MARK: - MasterUI; show rpButton
         rpButton.isHidden = false
     }
     

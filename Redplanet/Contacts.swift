@@ -350,14 +350,15 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.backgroundColor = UIColor.white
-        label.font = UIFont(name: "AvenirNext-Bold", size: 12.00)
+        label.font = UIFont(name: "AvenirNext-Demibold", size: 12.00)
         label.textColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
+        label.textAlignment = .center
         
         if section == 0 {
-            label.text = "   REDPLANETERS IN CONTACTS"
+            label.text = "REDPLANETERS IN CONTACTS"
             return label
         } else {
-            label.text = "   FOLLOWING"
+            label.text = "FOLLOWING"
             return label
         }
     }

@@ -290,8 +290,10 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     
     // IBAction --> Show Stickers
     @IBAction func showStickers(_ sender: Any) {
+        let rpPopUpVC = RPPopUpVC()
         let stickersVC = self.storyboard?.instantiateViewController(withIdentifier: "stickersVC") as! Stickers
-        self.navigationController!.pushViewController(stickersVC, animated: true)
+        rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: stickersVC)
+        self.present(rpPopUpVC, animated: true, completion: nil)
     }
     
     
@@ -806,9 +808,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-        
-        // MARK: - MainUITab
-        // Hide button
+        // MARK: - MasterUI; hide rpButton
         rpButton.isHidden = true
     }
     
@@ -886,8 +886,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.removeObservers()
         // Set isTranslucent to FALSE
         self.navigationController?.tabBarController?.tabBar.isTranslucent = false
-        // MARK: - MainUITab
-        // Show button
+        // MARK: - MasterUI; hide rpButton
         rpButton.isHidden = false
     }
     

@@ -26,25 +26,36 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
     // Users you sent requests to
     var sentTo = [PFObject]()
     
+    // Initialized UIRefreshControl
+    var refresher: UIRefreshControl!
+    
     // MARK: - TwicketSegmentedControl
     var segmentedControl: TwicketSegmentedControl!
 
+    @IBAction func contactsAction(_ sender: Any) {
+        // Pop VC
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController?.pushViewController(contactsVC, animated: true)
+    }
+    
     @IBAction func backButton(_ sender: Any) {
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func refresh(_ sender: Any) {
-        // Reload data
-        if self.segmentedControl.selectedSegmentIndex == 0 {
-            // Followers
+    // Handle segmentedControl query
+    func handleCase() {
+        // Update UI
+        refresher?.endRefreshing()
+        // Fetch data
+        switch self.segmentedControl.selectedSegmentIndex {
+        case 0:
             fetchFollowers()
-        } else {
-            // Following
+        case 1:
             fetchSent()
+        default:
+            break
         }
-        // Reload data
-        self.collectionView!.reloadData()
     }
     
     // Query followers
@@ -159,7 +170,7 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
         segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0.00, blue: 0.31, alpha: 1)
-        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 12)!
+        segmentedControl.font = UIFont(name: "AvenirNext-Bold", size: 12)!
         self.navigationItem.titleView = segmentedControl
         
         // Set initial queries
@@ -171,8 +182,15 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
             fetchSent()
         }
         
+        // UIRefreshControl - Pull to refresh
+        refresher = UIRefreshControl()
+        refresher.backgroundColor = UIColor(red: 0.74, green: 0.06, blue: 0.88, alpha: 1)
+        refresher.tintColor = UIColor.white
+        refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
+        collectionView!.addSubview(refresher)
+        
         // Add Notification 
-        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: requestsNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleCase), name: requestsNotification, object: nil)
         
         // Configure UICollectionView
         let layout = UICollectionViewFlowLayout()
@@ -290,6 +308,6 @@ class FollowRequests: UICollectionViewController, UINavigationControllerDelegate
         
     
         return cell
-    } // end cellForRowAt
+    }
 
 }

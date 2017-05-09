@@ -50,14 +50,22 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         self.navigationController?.pushViewController(settingsVC, animated: true)
     }
     
-    // Function to show ShareUI
-    func showShareUI() {
-        DispatchQueue.main.async {
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
-        }
-    }
     
+    // Function to handle new follow requests
+    func handleRequests() {
+        // Query Relationships
+        _ = appDelegate.queryRelationships()
+        
+        // MARK: - NSBadge; set badge for follow requests
+        if myRequestedFollowers.count != 0 {
+            peopleButton.badge(text: "\(myRequestedFollowers.count)")
+        }
+        
+        // MARK: - MasterUI; reset UITabBar badge value and peopleButton badge
+        let masterUI = MasterUI()
+        masterUI.getNewRequests()
+    }
+
     // Handle segmentedControl query
     func handleCase() {
         // Update UI by ending UIRefreshControl
@@ -73,7 +81,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             break;
         }
     }
-    
     
     // Function to fetch my content
     func fetchToday() {
@@ -107,7 +114,11 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
+            
             // Reload data in main thread
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -134,6 +145,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 
             } else {
                 print(error?.localizedDescription as Any)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             // Reload data in main thread
             DispatchQueue.main.async {
@@ -320,6 +334,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewWillAppear(animated)
         // Stylize bar
         configureView()
+        // Handle Follow Requests
+        handleRequests()
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
@@ -328,10 +344,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewDidAppear(animated)
         // Stylize title
         configureView()
-        // MARK: - NSBadge; set badge for Relationship Requests...
-        if myRequestedFollowers.count != 0 {
-            peopleButton.badge(text: "\(myRequestedFollowers.count)")
-        }
     }
     
     override func viewDidLoad() {
@@ -339,7 +351,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // Fetch data
         handleCase()
-
         // Stylize and set title
         configureView()
         // Check for permissions
@@ -356,8 +367,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         segmentedControl.defaultTextColor = UIColor.black
         segmentedControl.highlightTextColor = UIColor.white
         segmentedControl.segmentsBackgroundColor = UIColor.white
-        segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0.00, blue: 0.31, alpha: 1)
-        segmentedControl.font = UIFont(name: "AvenirNext-Bold", size: 12)!
+        segmentedControl.sliderBackgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
+        segmentedControl.font = UIFont(name: "AvenirNext-Demibold", size: 13.5)!
         
         // Configure UITableview
         tableView.backgroundColor = UIColor.white
@@ -783,6 +794,5 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             }
         }
     }
-    
-    
+
 }

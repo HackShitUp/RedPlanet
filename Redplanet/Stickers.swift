@@ -12,15 +12,10 @@ import CoreData
 import Parse
 import ParseUI
 import Bolts
-
 import OneSignal
 
 class Stickers: UICollectionViewController, UINavigationControllerDelegate {
-    
-    @IBAction func dismiss(_ sender: Any) {
-        _ = self.navigationController?.popViewController(animated: true)
-    }
-
+    // Declare Stickers
     let stickers = ["Sun.png",
                     "Pineapple.png",
                         "9.png",
@@ -58,30 +53,12 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
                         ]
     
     
-    // Function to stylize and set title of navigation bar
-    func configureView() {
-        // Change the font and size of nav bar text
-        if let navBarFont = UIFont(name: "AvenirNext-Medium", size: 21.0) {
-            let navBarAttributesDictionary: [String: AnyObject]? = [
-                NSForegroundColorAttributeName: UIColor.black,
-                NSFontAttributeName: navBarFont
-            ]
-            navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
-            self.title = "Stickers"
-        }
-        
-        // Show tab bar and navigation bar and configure nav bar
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
-        
-        // MARK: - MainUITab
-        // Hide button
-        rpButton.isHidden = true
-    }
-    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Stylize UINavigationBar
-        configureView()
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = true
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func viewDidLoad() {
@@ -89,7 +66,7 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
         // Configure UICollectionView
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.itemSize = CGSize(width: 93.00, height: 93.00)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.size.width/4, height: UIScreen.main.bounds.size.width/4)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionView!.collectionViewLayout = layout
@@ -98,10 +75,10 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // MARK: - MainUITab
-        // Show button
-        rpButton.isHidden = false
+        // Configure UIStatusBar
+        UIApplication.shared.isStatusBarHidden = false
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
 
     override func didReceiveMemoryWarning() {
@@ -156,28 +133,17 @@ class Stickers: UICollectionViewController, UINavigationControllerDelegate {
                 // Reload data for Chats
                 NotificationCenter.default.post(name: rpChat, object: nil)
                 
-                _ = self.navigationController?.popViewController(animated: false)
+                // Dismiss VC
+                self.dismiss(animated: true, completion: nil)
                 
             } else {
                 print(error?.localizedDescription as Any)
-                
-                // Reload data for Chats
-                NotificationCenter.default.post(name: rpChat, object: nil)
-                
-                _ = self.navigationController?.popViewController(animated: false)
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         }
     }
-
-    
-    // ScrollView -- Pull To Pop
-    override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        if self.collectionView!.contentOffset.y < -80 {
-            // Pop view controller
-            _ = self.navigationController?.popViewController(animated: false)
-        }
-    }
     
     
-
 }

@@ -216,51 +216,46 @@ class FollowRequestsCell: UICollectionViewCell {
                                 (objects: [PFObject]?, error: Error?) in
                                 if error == nil {
                                     for object in objects! {
-                                        object.deleteInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully deleted notification: \(object)")
-                                                
-                                                // Send to Notifications: "followed" == started following
-                                                let notifications = PFObject(className: "Notifications")
-                                                notifications["from"] = self.rpUsername.text!
-                                                notifications["fromUser"] = self.userObject!
-                                                notifications["toUser"] = PFUser.current()!
-                                                notifications["to"] = PFUser.current()!.username!
-                                                notifications["forObjectId"] = PFUser.current()!.objectId!
-                                                notifications["type"] = "followed"
-                                                notifications.saveInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if error == nil {
-                                                        print("Successfully sent notification: \(notifications)")
-                                                        
-                                                        // Hide block button
-                                                        // Hide confirm button
-                                                        self.ignoreButton.isHidden = true
-                                                        self.confirmButton.isHidden = true
-                                                        
-                                                        // Unhide currentState button
-                                                        // Change title: "CONFIRMED"
-                                                        self.relationState.isHidden = false
-                                                        self.relationState.setTitle("Confirmed", for: .normal)
-
-                                                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                                        if self.userObject!.value(forKey: "apnsId") != nil {
-                                                            let rpHelpers = RPHelpers()
-                                                            _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "confirmed your follow request")
-                                                        }
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
-                                                
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
+                                        object.deleteInBackground()
                                     }
+                                    
+                                    // Send to Notifications: "followed" == started following
+                                    let notifications = PFObject(className: "Notifications")
+                                    notifications["from"] = self.rpUsername.text!
+                                    notifications["fromUser"] = self.userObject!
+                                    notifications["toUser"] = PFUser.current()!
+                                    notifications["to"] = PFUser.current()!.username!
+                                    notifications["forObjectId"] = PFUser.current()!.objectId!
+                                    notifications["type"] = "followed"
+                                    notifications.saveInBackground(block: {
+                                        (success: Bool, error: Error?) in
+                                        if error == nil {
+                                            print("Successfully sent notification: \(notifications)")
+                                            
+                                            // Hide block button
+                                            // Hide confirm button
+                                            self.ignoreButton.isHidden = true
+                                            self.confirmButton.isHidden = true
+                                            
+                                            // Unhide currentState button
+                                            // Change title: "CONFIRMED"
+                                            self.relationState.isHidden = false
+                                            self.relationState.setTitle("Confirmed", for: .normal)
+
+                                            // Post Notification
+                                            NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                            
+                                            // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                                            if self.userObject!.value(forKey: "apnsId") != nil {
+                                                let rpHelpers = RPHelpers()
+                                                _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "confirmed your follow request")
+                                            }
+                                            
+                                        } else {
+                                            print(error?.localizedDescription as Any)
+                                        }
+                                    })
+                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
                                 }
@@ -312,20 +307,16 @@ class FollowRequestsCell: UICollectionViewCell {
                                 (objects: [PFObject]?, error: Error?) in
                                 if error == nil {
                                     for object in objects! {
-                                        object.deleteInBackground(block: {
-                                            (success: Bool, error: Error?) in
-                                            if success {
-                                                print("Successfully deleted notification: \(object)")
-                                                
-                                                // Change button
-                                                self.relationState.isHidden = false
-                                                self.relationState.setTitle("Ignored", for: .normal)
-                                                
-                                            } else {
-                                                print(error?.localizedDescription as Any)
-                                            }
-                                        })
+                                        object.deleteInBackground()
                                     }
+                                    
+                                    // Change button
+                                    self.relationState.isHidden = false
+                                    self.relationState.setTitle("Ignored", for: .normal)
+                                    
+                                    // Post Notification
+                                    NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
                                 }
@@ -406,29 +397,19 @@ class FollowRequestsCell: UICollectionViewCell {
                                         (objects: [PFObject]?, error: Error?) in
                                         if error == nil {
                                             for object in objects! {
-                                                object.deleteInBackground(block: {
-                                                    (success: Bool, error: Error?) in
-                                                    if success {
-                                                        print("Successfully deleted notificaiton: \(object)")
-                                                        
-                                                        // Change Button's Title
-                                                        self.relationState.setTitle("Rescinded", for: .normal)
-                                                        
-                                                        
-                                                        // Post Notification
-                                                        NotificationCenter.default.post(name: requestsNotification, object: nil)
-                                                        
-                                                    } else {
-                                                        print(error?.localizedDescription as Any)
-                                                    }
-                                                })
+                                                object.deleteInBackground()
                                             }
+                                            
+                                            // Change Button's Title
+                                            self.relationState.setTitle("Rescinded", for: .normal)
+                                            
+                                            // Post Notification
+                                            NotificationCenter.default.post(name: requestsNotification, object: nil)
+                                            
                                         } else {
                                             print(error?.localizedDescription as Any)
                                         }
                                     })
-                                    
-                                    
                                 } else {
                                     print(error?.localizedDescription as Any)
                                 }

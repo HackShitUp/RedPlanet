@@ -100,7 +100,7 @@ class ContactsCell: UITableViewCell {
                                 // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                 if self.userObject!.value(forKey: "apnsId") != nil {
                                     let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "sent you a follow request")
+                                    _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
                                 }
                                 
                             } else {
@@ -391,7 +391,7 @@ class ContactsCell: UITableViewCell {
                                     // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
                                     if self.userObject!.value(forKey: "apnsId") != nil {
                                         let rpHelpers = RPHelpers()
-                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "sent you a follow request")
+                                        _ = rpHelpers.pushNotification(toUser: self.userObject!, activityType: "requested to follow you")
                                     }
                                     
                                     // Send to NotificationCenter

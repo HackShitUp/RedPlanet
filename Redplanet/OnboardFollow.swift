@@ -125,7 +125,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
         swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
         swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
-        swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab
+        swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "masterUI") as! MasterUI
         UIApplication.shared.keyWindow?.rootViewController = swipeNavigationController
         UIApplication.shared.keyWindow?.makeKeyAndVisible()
     }

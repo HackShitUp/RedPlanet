@@ -121,7 +121,7 @@
 		7E98E9671DB75057001B7329 /* _CLImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */; };
 		7E9955611DC975E5003D9D73 /* FollowRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955601DC975E5003D9D73 /* FollowRequests.swift */; };
 		7E9955651DC97791003D9D73 /* FollowRequestsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */; };
-		7E99CA081E90E42700661B78 /* MainUITab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MainUITab.swift */; };
+		7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E99CA071E90E42700661B78 /* MasterUI.swift */; };
 		7E9DA1881E14D9480001E8C0 /* NSBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E9DA1871E14D9480001E8C0 /* NSBadge.swift */; };
 		7EA1C74D1E5954E000FBE39B /* ShareWithCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA1C74C1E5954E000FBE39B /* ShareWithCell.swift */; };
 		7EA45CC81DB6A1A600A466D9 /* Birthday.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA45CC71DB6A1A600A466D9 /* Birthday.swift */; };
@@ -369,7 +369,7 @@
 		7E98E93A1DB75057001B7329 /* _CLImageEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = _CLImageEditorViewController.m; sourceTree = "<group>"; };
 		7E9955601DC975E5003D9D73 /* FollowRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequests.swift; sourceTree = "<group>"; };
 		7E9955641DC97791003D9D73 /* FollowRequestsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowRequestsCell.swift; sourceTree = "<group>"; };
-		7E99CA071E90E42700661B78 /* MainUITab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainUITab.swift; sourceTree = "<group>"; };
+		7E99CA071E90E42700661B78 /* MasterUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterUI.swift; sourceTree = "<group>"; };
 		7E9B889E1E808E5100FACAD0 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		7E9B889F1E808E5100FACAD0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7E9DA1871E14D9480001E8C0 /* NSBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSBadge.swift; sourceTree = "<group>"; };
@@ -1137,7 +1137,7 @@
 		7EC5D16E1DB32F3800437219 /* TABBAR_NAVIGATION */ = {
 			isa = PBXGroup;
 			children = (
-				7E99CA071E90E42700661B78 /* MainUITab.swift */,
+				7E99CA071E90E42700661B78 /* MasterUI.swift */,
 				7EFFCE1D1DC6CA320067D332 /* CustomTabBar.swift */,
 			);
 			name = TABBAR_NAVIGATION;
@@ -1738,7 +1738,7 @@
 				7E7E38BC1DD533CB00DEC27B /* Contacts.swift in Sources */,
 				7E8B558A1E4EF67F004D3F31 /* SNSliderDataSource.swift in Sources */,
 				7EC5D1981DB353F300437219 /* ChatsCell.swift in Sources */,
-				7E99CA081E90E42700661B78 /* MainUITab.swift in Sources */,
+				7E99CA081E90E42700661B78 /* MasterUI.swift in Sources */,
 				7E3E4FBB1DC2DDBE00A7B5FC /* ResetPassword.swift in Sources */,
 				7E98E9661DB75057001B7329 /* UIView+Frame.m in Sources */,
 				7EC5D1B81DB36EE900437219 /* ActivityCell.swift in Sources */,

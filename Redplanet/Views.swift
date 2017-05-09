@@ -57,8 +57,7 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
     
     // Query views
     func queryViews() {
-        // MARK: - MainUITab
-        // Hide button
+        // MARK: - MasterUI; hide rpButton
         rpButton.isHidden = true
         
         // Configure nav bar && show tab bar (last line)        
@@ -201,8 +200,7 @@ class Views: UITableViewController, UIGestureRecognizerDelegate, UINavigationCon
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // MARK: - MainUITab
-        // Show button
+        // MARK: - MasterUI; show rpButton
         rpButton.isHidden = false
     }
 

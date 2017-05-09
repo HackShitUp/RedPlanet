@@ -213,7 +213,7 @@ class BadgeLabel:UILabel{}
 public struct BadgeAppearnce {
     var textSize: CGFloat = 12
     var textAlignment: NSTextAlignment = .center
-    var backgroundColor = UIColor(red:0.29, green:0.56, blue:0.89, alpha:1.0)
+    var backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
     var textColor = UIColor.white
     var animate = true
     var duration = 0.2

@@ -624,7 +624,6 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         SDImageCache.shared().clearDisk()
     }
     
-    
     // MARK: - UITextView Delegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.rpUserBio.textColor = UIColor.black

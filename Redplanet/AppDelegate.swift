@@ -105,6 +105,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 // If PFUser.currentUser()! sent notification to self, do nothing
                                                 print("Received notification for the current user...")
                                                 
+                                            } else if fullMessage!.hasSuffix("requested to follow you") {
+                                                // Reload data
+                                                let masterUI = MasterUI()
+                                                masterUI.getNewRequests()
+                                            
                                             } else if chatUsername.count != 0 && chatUserObject.count != 0 {
                                                 if fullMessage!.hasPrefix("from") && fullMessage!.hasSuffix("\(chatUsername.last!.uppercased())") {
                                                     // if notificaiton titles: "from <Username>"
@@ -304,15 +309,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             let swipeNavigationController = SwipeNavigationController(centerViewController: cameraVC)
             swipeNavigationController.rightViewController = storyboard.instantiateViewController(withIdentifier: "right") as! UINavigationController
             swipeNavigationController.leftViewController = storyboard.instantiateViewController(withIdentifier: "left") as! UINavigationController
-            swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "mainUITab") as! MainUITab
+            swipeNavigationController.bottomViewController = storyboard.instantiateViewController(withIdentifier: "masterUI") as! MasterUI
             // Make rootVC
             self.window = UIWindow(frame: UIScreen.main.bounds)
             self.window?.rootViewController = swipeNavigationController
             self.window?.makeKeyAndVisible()
             // Call relationships function
             _ = queryRelationships()
-            // Check birthday
-//            checkBday()
             
         } else {
             // Login or Sign Up
@@ -324,8 +327,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
     }
     
     
-    // (2) Query Relationships
-    // --- Checks all of the current user's friends, followers, and followings, and blocked users
+    // Query Relationships --- Checks all of the current user's friends, followers, and followings, and blocked users
     func queryRelationships() {
         // (1) Query Following
         // && Users you've requested to Follow
@@ -409,80 +411,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                 }
             } else {
                 print(error?.localizedDescription as Any)
-            }
-        }
-    }// end QueryRelationships()
-    
-    
-    // Function to check birthday
-    func checkBday() {
-        if let usersBirthday = PFUser.current()!.value(forKey: "birthday") as? String {
-            // (1) Get user's birthday // MONTH DATE // 6 Characters Total
-            let bEndIndex = usersBirthday.startIndex
-            let bStartIndex = usersBirthday.index(bEndIndex, offsetBy: 6)
-            let r = Range(uncheckedBounds: (lower: bEndIndex, upper: bStartIndex))
-            let finalBday = usersBirthday[r]
-            
-            // (2) Change String to Date // Date()
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MMM dd"
-            let birthDate = dateFormatter.date(from: finalBday)
-            
-            // (3) Set up today's date as string // String
-            let date = Date()
-            let formatter = DateFormatter()
-            formatter.dateFormat = "MMM dd"
-            let todayString = formatter.string(from: date)
-            
-            // (4) Convert todayString to Date()
-            let todayFormat = DateFormatter()
-            todayFormat.dateFormat = "MMM dd"
-            let today = todayFormat.date(from: todayString)
-
-            // Send chat if it DOES NOT YET exist!!!
-            if today == birthDate {
-                
-                let chats = PFQuery(className: "Chats")
-                chats.includeKey("receiver")
-                chats.whereKey("senderUsername", equalTo: "teamrp")
-                chats.whereKey("receiver", equalTo: PFUser.current()!)
-                chats.whereKey("Message", equalTo: "Happy Birthday \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), hope you have a great birthday with the people you love!🎉🎂🎁\n\n❤, Team Redplanet")
-                chats.countObjectsInBackground(block: {
-                    (count: Int32, error: Error?) in
-                    if error == nil {
-                        if count == 0 {
-                            // Send user chat from TeamRP
-                            PFUser.query()!.getObjectInBackground(withId: "NgIJplW03t") {
-                                (object: PFObject?, error: Error?) in
-                                if error == nil {
-                                    let chats = PFObject(className: "Chats")
-                                    chats["sender"] = object!
-                                    chats["senderUsername"] = "teamrp"
-                                    chats["receiver"] = PFUser.current()!
-                                    chats["receiverUsername"] = PFUser.current()!.username!
-                                    chats["read"] = false
-                                    chats["saved"] = false
-                                    chats["Message"] = "Happy Birthday \(PFUser.current()!.value(forKey: "realNameOfUser") as! String), hope you have a great birthday with the people you love!🎉🎂🎁\n\n❤, Team Redplanet"
-                                    chats.saveInBackground(block: {
-                                        (success: Bool, error: Error?) in
-                                        if success {
-                                            // Set visible banner
-                                            
-                                        } else {
-                                            print(error?.localizedDescription as Any)
-                                        }
-                                    })
-                                } else {
-                                    print(error?.localizedDescription as Any)
-                                    // Set visible banner
-                                    
-                                }
-                            }
-                        }
-                    } else {
-                        print(error?.localizedDescription as Any)
-                    }
-                })
             }
         }
     }

@@ -640,10 +640,10 @@
             </objects>
             <point key="canvasLocation" x="-1520.5" y="-3898.5"/>
         </scene>
-        <!--MainUI Tab-->
+        <!--MasterUI-->
         <scene sceneID="CMz-wu-l20">
             <objects>
-                <tabBarController storyboardIdentifier="mainUITab" id="vfu-g2-YRN" customClass="MainUITab" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="masterUI" id="vfu-g2-YRN" customClass="MasterUI" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="PaQ-LV-Ovb" customClass="CustomTabBar" customModule="Redplanet" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1607,10 +1607,10 @@
                                 <action selector="backButton:" destination="WWE-KP-oje" id="ufD-zA-x0y"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="DUn-qC-9Bw">
+                        <barButtonItem key="rightBarButtonItem" image="Contacts" id="DUn-qC-9Bw">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="refresh:" destination="WWE-KP-oje" id="k2o-Aa-FzE"/>
+                                <action selector="contactsAction:" destination="WWE-KP-oje" id="mMe-uP-hXG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -2276,7 +2276,7 @@
         <scene sceneID="euc-qS-YC4">
             <objects>
                 <collectionViewController storyboardIdentifier="stickersVC" id="hJv-9K-JPO" customClass="Stickers" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="XHG-R4-OdI">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="XHG-R4-OdI">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2319,15 +2319,8 @@
                             <outlet property="delegate" destination="hJv-9K-JPO" id="RFn-hF-Lx0"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="Qka-lR-eC9">
-                        <barButtonItem key="leftBarButtonItem" image="Left_50" id="MZD-jt-2VM">
-                            <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="dismiss:" destination="hJv-9K-JPO" id="sKm-Tj-uDm"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationItem key="navigationItem" id="Qka-lR-eC9"/>
+                    <nil key="simulatedTopBarMetrics"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Kn-9w-ARE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4358,7 +4351,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="" id="Ivv-rt-4oK"/>
+                    <tabBarItem key="tabBarItem" title="" image="SLRCamera" id="Ivv-rt-4oK"/>
                     <navigationItem key="navigationItem" id="TMu-6q-WbQ"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-sj-gPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4768,6 +4761,7 @@
         <image name="Camera" width="412" height="412"/>
         <image name="Chats" width="27" height="23"/>
         <image name="Comment" width="49" height="49"/>
+        <image name="Contacts" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
         <image name="FlashOff" width="256" height="256"/>
         <image name="GenderNeutralUser" width="256" height="256"/>

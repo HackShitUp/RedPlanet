@@ -369,6 +369,8 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         return NSAttributedString(string: str, attributes: attributeDictionary)
     }
     
+    
+    // MARK: - UIView Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Set design of navigation bar
@@ -416,6 +418,9 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        // MARK: - MasterUI; Reset UITabBar Counts
+        let masterUI = MasterUI()
+        masterUI.fetchChatsQueue()
     }
     
     override func didReceiveMemoryWarning() {
