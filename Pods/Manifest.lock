@@ -20,6 +20,7 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
+  - Reactions (1.1.1)
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
@@ -38,6 +39,7 @@ DEPENDENCIES:
   - OneSignal
   - Parse
   - ParseUI
+  - Reactions
   - SDWebImage
   - SwiftyCam (= 2.2.2)
   - SwipeNavigationController
@@ -54,11 +56,12 @@ SPEC CHECKSUMS:
   OneSignal: 66d08b6b1e3c3858cbf28207ed20f1fa865ab2a2
   Parse: b0aa91d2c435e53d4a9af26e741e014c9b35c42e
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
+  Reactions: cd5ef33d43191125297e792d7c18dd2385a4aa98
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyCam: df41897397dac1a8ddf733e88bcd6ec658fb552e
   SwipeNavigationController: 592681599a3105a44484e5b7af9055cee7a0d7b9
 
-PODFILE CHECKSUM: bab1e8f2cf422454753273c9f940b4eb38eb384a
+PODFILE CHECKSUM: 34023ef5cce7d2b32f42f9ef0cafee7cd6bd9f2b
 
 COCOAPODS: 1.2.1

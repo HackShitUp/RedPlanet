@@ -62,6 +62,11 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         case 1:
             fetchComments()
             reactionType = "comments"
+            // Add long press method in tableView
+            let hold = UILongPressGestureRecognizer(target: self, action: #selector(handleComment))
+            hold.minimumPressDuration = 0.40
+            self.tableView.isUserInteractionEnabled = true
+            self.tableView.addGestureRecognizer(hold)
         case 2:
             fetchShares()
             reactionType = "shares"
@@ -131,7 +136,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                         self.reactionObjects.append(object)
                     }
                 }
-                
                 // MARK: - DZNEmptyDataSet
                 if self.reactionObjects.count == 0 {
                     self.tableView!.emptyDataSetSource = self
@@ -263,9 +267,162 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 }
             }
         }
-
-        
     }
+    
+    
+    // Function to handle comments, when segmentedControl's selected index is 2 ONLY
+    func handleComment(sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let touchedAt = sender.location(in: self.tableView)
+            if let indexPath = self.tableView.indexPathForRow(at: touchedAt) {
+                
+                // MARK: - AZDialogViewController
+                let dialogController = AZDialogViewController(title: "Options", message: nil)
+                dialogController.dismissDirection = .bottom
+                dialogController.dismissWithOutsideTouch = true
+                dialogController.showSeparator = true
+                
+                // Configure style
+                dialogController.buttonStyle = { (button,height,position) in
+                    button.setTitleColor(UIColor.white, for: .normal)
+                    button.layer.borderColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0).cgColor
+                    button.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.layer.masksToBounds = true
+                }
+                // Add Cancel button
+                dialogController.cancelButtonStyle = { (button,height) in
+                    button.tintColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+                    button.setTitle("CANCEL", for: [])
+                    return true
+                }
+                
+                
+                // (1) DELETE
+                let delete = AZDialogAction(title: "Delete", handler: { (dialog) -> (Void) in
+                    // Dismiss
+                    dialog.dismiss()
+                    
+                    // Delete Comment
+                    let comment = PFQuery(className: "Comments")
+                    comment.whereKey("byUser", equalTo: self.reactionObjects[indexPath.row].value(forKey: "byUser") as! PFUser)
+                    comment.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
+                    comment.whereKey("commentOfContent", equalTo: self.reactionObjects[indexPath.row].value(forKey: "commentOfContent") as! String)
+                    comment.findObjectsInBackground(block: {
+                        (objects: [PFObject]?, error: Error?) in
+                        if error == nil {
+                            for object in objects! {
+                                object.deleteInBackground(block: {
+                                    (success: Bool, error: Error?) in
+                                    if success {
+                                        print("Successfully deleted comment: \(object)")
+                                        
+                                        // Delete from Parse: "Notifications"
+                                        let notifications = PFQuery(className: "Notifications")
+                                        notifications.whereKey("fromUser", equalTo: PFUser.current()!)
+                                        notifications.whereKey("type", equalTo: "comment")
+                                        notifications.whereKey("forObjectId", equalTo: reactionObject.last!.objectId!)
+                                        notifications.findObjectsInBackground(block: {
+                                            (objects: [PFObject]?, error: Error?) in
+                                            if error == nil {
+                                                for object in objects! {
+                                                    object.deleteInBackground()
+                                                }
+                                                
+                                            } else {
+                                                print(error?.localizedDescription as Any)
+                                                // MARK: - RPHelpers
+                                                let rpHelpers = RPHelpers()
+                                                rpHelpers.showError(withTitle: "Network Error")
+                                            }
+                                        })
+                                    } else {
+                                        print(error?.localizedDescription as Any)
+                                        // MARK: - RPHelpers
+                                        let rpHelpers = RPHelpers()
+                                        rpHelpers.showError(withTitle: "Network Error")
+                                    }
+                                })
+                            }
+                        } else {
+                            print(error?.localizedDescription as Any)
+                            // MARK: - RPHelpers
+                            let rpHelpers = RPHelpers()
+                            rpHelpers.showError(withTitle: "Network Error")
+                        }
+                    })
+                    
+                    // Delete comment from table view
+                    self.reactionObjects.remove(at: indexPath.row)
+                    self.tableView!.deleteRows(at: [indexPath], with: .fade)
+                })
+                
+                // (2) REPLY
+                let reply = AZDialogAction(title: "Reply", handler: { (dialog) -> Void in
+                    // Dismiss
+                    dialog.dismiss()
+                    // Clear comment box
+                    if self.textView.text == "Share your comment!" {
+                        self.textView.textColor = UIColor.black
+                        self.textView.text! = ""
+                    }
+                    // Set username in newComment
+                    self.textView.text = "\(self.textView.text!)" + "@" + "\(self.reactionObjects[indexPath.row].value(forKey: "byUsername") as! String)" + " "
+                })
+                
+                // (3)
+                let report = AZDialogAction(title: "Report", handler: { (dialog) -> Void in
+                    // Show Report
+                    let alert = UIAlertController(title: "Report?",
+                                                  message: "Are you sure you'd like to report this comment and the user?",
+                                                  preferredStyle: .alert)
+                    
+                    let yes = UIAlertAction(title: "yes",
+                                            style: .destructive,
+                                            handler: { (alertAction: UIAlertAction!) -> Void in
+                                                // REPORT
+                                                let report = PFObject(className: "Reported")
+                                                report["byUser"] = PFUser.current()!
+                                                report["byUsername"] = PFUser.current()!.username!
+                                                report["toUser"] = self.reactionObjects[indexPath.row].value(forKey: "byUser") as! PFUser
+                                                report["toUsername"] = self.reactionObjects[indexPath.row].value(forKey: "byUsername") as! String
+                                                report["forObjectId"] = self.reactionObjects[indexPath.row].objectId!
+                                                report["reason"] = "Inappropriate comment."
+                                                report.saveInBackground()
+                                                // Dismiss
+                                                dialog.dismiss()
+                    })
+                    
+                    let no = UIAlertAction(title: "no",
+                                           style: .cancel,
+                                           handler: { (alertAction: UIAlertAction!) in
+                                            // Dismiss
+                                            dialog.dismiss()
+                    })
+                    alert.addAction(no)
+                    alert.addAction(yes)
+                    alert.view.tintColor = UIColor.black
+                    dialog.present(alert, animated: true, completion: nil)
+                })
+                
+                
+                // Determine which options to show dependent on user's objectId
+                if (self.reactionObjects[indexPath.row].object(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    dialogController.addAction(delete)
+                } else if (reactionObject.last!.value(forKey: "byUser") as! PFUser).objectId! == PFUser.current()!.objectId! {
+                    dialogController.addAction(delete)
+                    dialogController.addAction(reply)
+                    dialogController.addAction(report)
+                } else {
+                    dialogController.addAction(reply)
+                    dialogController.addAction(report)
+                }
+                
+                // Show
+                dialogController.show(in: self)
+            }
+        }
+    }
+    
 
     // MARK: - TwicketSegmentedControl
     func didSelect(_ segmentIndex: Int) {
@@ -323,7 +480,6 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
                 }
             }
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
@@ -479,6 +635,9 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         } else if self.segmentedControl.selectedSegmentIndex == 1 {
         // Comments
             let cell = self.tableView.dequeueReusableCell(withIdentifier: "commentsCell", for: indexPath) as! CommentsCell
+
+            // Set PFObject
+            cell.postObject = self.reactionObjects[indexPath.row]
             
             // (1) Get user's data
             if let user = self.reactionObjects[indexPath.row].value(forKey: "byUser") as? PFUser {
@@ -579,19 +738,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     }
     
     // MARK: - UITextViewDelegate Methods
-//    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-//        if self.segmentedControl.selectedSegmentIndex == 1 {
-//            return true
-//        } else {
-//            return false
-//        }
-//    }
-    
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.textView.text = ""
         self.textView.textColor = UIColor.black
         // MARK: - TwicketSegmentedControl
         self.segmentedControl.move(to: 1)
+        fetchComments()
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {

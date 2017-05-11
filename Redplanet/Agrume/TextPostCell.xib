@@ -44,8 +44,8 @@
                         <color key="textColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIL-e0-hX9" customClass="KILabel">
-                        <rect key="frame" x="56" y="76" width="278" height="92"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIL-e0-hX9" customClass="KILabel">
+                        <rect key="frame" x="56" y="76" width="278" height="166"/>
                         <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="278" id="WHh-gC-qdg"/>
@@ -62,121 +62,36 @@
                         </constraints>
                         <state key="normal" image="MoreBlack"/>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gg4-vh-RRJ">
-                        <rect key="frame" x="0.0" y="176" width="125" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="30" id="doe-ti-8JU"/>
-                            <constraint firstAttribute="width" constant="125" id="n1i-D2-Qcx"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="likes">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tTK-Kk-jXI">
-                        <rect key="frame" x="125" y="176" width="125" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="125" id="13q-Zn-EW0"/>
-                            <constraint firstAttribute="height" constant="30" id="f86-Wu-idt"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="comments">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LU9-wF-EHX">
-                        <rect key="frame" x="250" y="176" width="125" height="30"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="30" id="9pX-Hr-9as"/>
-                            <constraint firstAttribute="width" constant="125" id="BCX-UY-6TX"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <state key="normal" title="shares">
-                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        </state>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFq-hE-W8F">
-                        <rect key="frame" x="50" y="214" width="25" height="25"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="25" id="Vfv-XD-c2s"/>
-                            <constraint firstAttribute="width" constant="25" id="eus-gW-8nr"/>
-                        </constraints>
-                        <state key="normal" image="Like"/>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VUw-dO-LwT">
-                        <rect key="frame" x="175" y="214" width="25" height="25"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="25" id="6i0-pR-Qsn"/>
-                            <constraint firstAttribute="height" constant="25" id="X0Q-XP-dXg"/>
-                        </constraints>
-                        <state key="normal" image="Comment"/>
-                    </button>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pjg-h8-ATA">
-                        <rect key="frame" x="300" y="214" width="25" height="25"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="25" id="4gM-p3-nmM"/>
-                            <constraint firstAttribute="width" constant="25" id="UjF-JS-8LC"/>
-                        </constraints>
-                        <state key="normal" image="Share"/>
-                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="gg4-vh-RRJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="5Uo-Kt-tme"/>
                     <constraint firstItem="MoY-2h-J2b" firstAttribute="leading" secondItem="9lb-Yb-88Z" secondAttribute="trailing" constant="8" id="6mi-Dt-C5i"/>
-                    <constraint firstItem="fFq-hE-W8F" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="50" id="79b-bU-ZWz"/>
                     <constraint firstItem="vIL-e0-hX9" firstAttribute="top" secondItem="yY2-g0-mKO" secondAttribute="bottom" constant="8" id="9O3-th-nMq"/>
-                    <constraint firstItem="fFq-hE-W8F" firstAttribute="top" secondItem="gg4-vh-RRJ" secondAttribute="bottom" constant="8" id="Akc-tx-ga3"/>
                     <constraint firstAttribute="trailing" secondItem="Tby-ve-9Qw" secondAttribute="trailing" constant="8" id="B7l-m6-lQe"/>
-                    <constraint firstItem="LU9-wF-EHX" firstAttribute="top" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="8" id="CKi-Os-H3m"/>
-                    <constraint firstItem="LU9-wF-EHX" firstAttribute="top" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="8" id="CMG-JM-RB7"/>
-                    <constraint firstAttribute="bottom" secondItem="pjg-h8-ATA" secondAttribute="bottom" constant="10.5" id="Exm-tD-rat"/>
-                    <constraint firstItem="tTK-Kk-jXI" firstAttribute="top" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="8" id="FAS-VI-jjS"/>
                     <constraint firstItem="vIL-e0-hX9" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="56" id="HX2-d6-gDS"/>
-                    <constraint firstItem="tTK-Kk-jXI" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="Ivw-pD-qHJ"/>
-                    <constraint firstAttribute="trailing" secondItem="LU9-wF-EHX" secondAttribute="trailing" id="NM4-3w-osY"/>
-                    <constraint firstItem="VUw-dO-LwT" firstAttribute="top" secondItem="tTK-Kk-jXI" secondAttribute="bottom" constant="8" id="P3Z-ir-fEU"/>
                     <constraint firstItem="Tby-ve-9Qw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="PI0-65-WLL"/>
-                    <constraint firstAttribute="bottom" secondItem="VUw-dO-LwT" secondAttribute="bottom" constant="10.5" id="QQq-oq-Xhd"/>
-                    <constraint firstItem="fFq-hE-W8F" firstAttribute="top" secondItem="gg4-vh-RRJ" secondAttribute="bottom" constant="8" id="R15-I9-Moo"/>
                     <constraint firstItem="9lb-Yb-88Z" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="YB9-S4-g1J"/>
                     <constraint firstItem="MoY-2h-J2b" firstAttribute="leading" secondItem="9lb-Yb-88Z" secondAttribute="trailing" constant="8" id="YWP-aa-rAC"/>
-                    <constraint firstItem="pjg-h8-ATA" firstAttribute="top" secondItem="LU9-wF-EHX" secondAttribute="bottom" constant="8" id="ZyF-Ym-b2k"/>
-                    <constraint firstAttribute="bottom" secondItem="fFq-hE-W8F" secondAttribute="bottom" constant="10.5" id="d9i-UJ-HFd"/>
                     <constraint firstAttribute="trailing" secondItem="yY2-g0-mKO" secondAttribute="trailing" constant="41" id="dTR-9G-rq4"/>
-                    <constraint firstAttribute="trailing" secondItem="pjg-h8-ATA" secondAttribute="trailing" constant="50" id="e2X-MI-D8a"/>
                     <constraint firstItem="yY2-g0-mKO" firstAttribute="top" secondItem="MoY-2h-J2b" secondAttribute="bottom" id="fj5-0o-igW"/>
-                    <constraint firstItem="VUw-dO-LwT" firstAttribute="top" secondItem="tTK-Kk-jXI" secondAttribute="bottom" constant="8" id="iyV-Wk-Bmt"/>
                     <constraint firstItem="MoY-2h-J2b" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="jxL-x5-rsH"/>
                     <constraint firstItem="9lb-Yb-88Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="28" id="mrF-yu-kk9"/>
                     <constraint firstItem="yY2-g0-mKO" firstAttribute="leading" secondItem="9lb-Yb-88Z" secondAttribute="trailing" constant="8" id="nUp-aN-pM9"/>
                     <constraint firstAttribute="trailing" secondItem="vIL-e0-hX9" secondAttribute="trailing" constant="41" id="nXl-pj-Bzq"/>
-                    <constraint firstItem="VUw-dO-LwT" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="pkq-DV-zpJ"/>
-                    <constraint firstItem="pjg-h8-ATA" firstAttribute="top" secondItem="LU9-wF-EHX" secondAttribute="bottom" constant="8" id="uOl-Lx-R9b"/>
-                    <constraint firstItem="gg4-vh-RRJ" firstAttribute="top" secondItem="vIL-e0-hX9" secondAttribute="bottom" constant="8" id="vaH-Kx-hur"/>
                     <constraint firstItem="Tby-ve-9Qw" firstAttribute="leading" secondItem="MoY-2h-J2b" secondAttribute="trailing" constant="8" id="yOb-fI-bkN"/>
                     <constraint firstItem="Tby-ve-9Qw" firstAttribute="leading" secondItem="MoY-2h-J2b" secondAttribute="trailing" constant="8" id="zyb-0a-bzc"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="commentButton" destination="VUw-dO-LwT" id="48f-Sc-341"/>
-                <outlet property="likeButton" destination="fFq-hE-W8F" id="1ef-kD-WVf"/>
                 <outlet property="moreButton" destination="Tby-ve-9Qw" id="UcN-8d-egy"/>
-                <outlet property="numberOfComments" destination="tTK-Kk-jXI" id="lu0-bm-VZd"/>
-                <outlet property="numberOfLikes" destination="gg4-vh-RRJ" id="EiE-lC-FRX"/>
-                <outlet property="numberOfShares" destination="LU9-wF-EHX" id="EBj-ub-lKm"/>
                 <outlet property="rpUserProPic" destination="9lb-Yb-88Z" id="D4E-Ft-wW1"/>
                 <outlet property="rpUsername" destination="MoY-2h-J2b" id="fn5-vk-wKt"/>
-                <outlet property="shareButton" destination="pjg-h8-ATA" id="yoy-ys-RFv"/>
                 <outlet property="textPost" destination="vIL-e0-hX9" id="0q3-WT-zb7"/>
                 <outlet property="time" destination="yY2-g0-mKO" id="XO2-1y-SbL"/>
             </connections>
-            <point key="canvasLocation" x="33.5" y="53.5"/>
+            <point key="canvasLocation" x="33.5" y="53"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Comment" width="49" height="49"/>
-        <image name="Like" width="52" height="50"/>
         <image name="MoreBlack" width="50" height="50"/>
-        <image name="Share" width="48" height="49"/>
     </resources>
 </document>

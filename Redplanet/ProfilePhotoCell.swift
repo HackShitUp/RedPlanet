@@ -30,12 +30,6 @@ class ProfilePhotoCell: UITableViewCell {
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var largeProPic: PFImageView!
     @IBOutlet weak var textPost: KILabel!
-    @IBOutlet weak var numberOfLikes: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var numberOfShares: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
     
     
     // Function to go to user's profile
@@ -45,22 +39,7 @@ class ProfilePhotoCell: UITableViewCell {
         let otherUserVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "otherUser") as! OtherUser
         self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
-    
-    // Function to like object
-    func like(sender: UIButton) {
-        // MARK: - RPHelpers
-        let rpHelpers = RPHelpers()
-        if self.likeButton.image(for: .normal) == UIImage(named: "LikeFilled") {
-            // Unlike object
-            rpHelpers.unlikeObject(forObject: self.postObject!, activeButton: self.likeButton)
-        } else if self.likeButton.image(for: .normal) == UIImage(named: "Like") {
-            // Like object/send push notification
-            rpHelpers.likeObject(forObject: self.postObject, notificationType: "like pp", activeButton: self.likeButton)
-            rpHelpers.pushNotification(toUser: self.postObject!.value(forKey: "byUser") as! PFUser, activityType: "liked your Profile Photo")
-        }
-        // Reload data
-        self.updateView(postObject: self.postObject!)
-    }
+
     
     // Function to update view
     func updateView(postObject: PFObject?) {
@@ -93,76 +72,6 @@ class ProfilePhotoCell: UITableViewCell {
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         // MARK: - RPHelpers
         self.time.text = "Updated their profile photo \(difference.getFullTime(difference: difference, date: from))"
-        
-        // (4) Get likes
-        let likes = PFQuery(className: "Likes")
-        likes.whereKey("forObjectId", equalTo: self.postObject!)
-        likes.includeKey("fromUser")
-        likes.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
-            if error == nil {
-                // Clear array
-                self.likes.removeAll(keepingCapacity: false)
-                for object in objects! {
-                    self.likes.append(object.object(forKey: "fromUser") as! PFUser)
-                }
-                
-                // Set like button
-                if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                    self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
-                } else {
-                    self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
-                }
-                
-                // Count likes
-                if self.likes.count == 0 {
-                    self.numberOfLikes.setTitle("likes", for: .normal)
-                } else if self.likes.count == 1 {
-                    self.numberOfLikes.setTitle("1 like", for: .normal)
-                } else {
-                    self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
-                }
-                
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        }
-        
-        // (5) Count Comments
-        let comments = PFQuery(className: "Comments")
-        comments.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-        comments.countObjectsInBackground(block: {
-            (count: Int32, error: Error?) in
-            if error == nil {
-                if count == 0 {
-                    self.numberOfComments.setTitle("comments", for: .normal)
-                } else if count == 1 {
-                    self.numberOfComments.setTitle("1 comment", for: .normal)
-                } else {
-                    self.numberOfComments.setTitle("\(count) comments", for: .normal)
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
-        
-        // (6) Count Shares
-        let shares = PFQuery(className: "Newsfeeds")
-        shares.whereKey("contentType", equalTo: "sh")
-        shares.whereKey("pointObject", equalTo: self.postObject!)
-        shares.countObjectsInBackground(block: {
-            (count: Int32, error: Error?) in
-            if error == nil {
-                if count == 0 {
-                    self.numberOfShares.setTitle("shares", for: .normal)
-                } else if count == 1 {
-                    self.numberOfShares.setTitle("1 share", for: .normal)
-                } else {
-                    self.numberOfShares.setTitle("\(count) shares", for: .normal)
-                }
-            } else {
-                print(error?.localizedDescription as Any)
-            }
-        })
     }
     
     override func awakeFromNib() {
@@ -177,11 +86,6 @@ class ProfilePhotoCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-        // Add like tap
-        let likeTap = UITapGestureRecognizer(target: self, action: #selector(like))
-        likeTap.numberOfTapsRequired = 1
-        self.likeButton.isUserInteractionEnabled = true
-        self.likeButton.addGestureRecognizer(likeTap)
     }
-    
+
 }

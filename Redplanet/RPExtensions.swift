@@ -32,13 +32,11 @@ extension UIView {
     // Function to add rpButton
     func setButton(container: UIView?) {
         // Add button to bottom/center of UITabBar
-        var buttonFrame = rpButton.frame
-        buttonFrame.origin.y = container!.bounds.height - buttonFrame.height
-        buttonFrame.origin.x = container!.bounds.width/2 - buttonFrame.size.width/2
-        rpButton.frame = buttonFrame
-        rpButton.setImage(UIImage(named: "Cam"), for: .normal)
-        rpButton.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-        //        rpButton.layer.applyShadow(layer: rpButton.layer)
+        // Increase current # to place it higher on the y axis
+        rpButton.frame.origin.y = container!.bounds.height - 60
+        rpButton.frame.origin.x = container!.bounds.width/2 - rpButton.frame.size.width/2
+        rpButton.setImage(UIImage(named: "SLRCamera"), for: .normal)
+        rpButton.backgroundColor = UIColor.clear
         container!.addSubview(rpButton)
     }
     
@@ -70,17 +68,26 @@ extension UIView {
     }
 }
 
-// MARK: - UINavigationBar design configuration
-/*
- 'Whitens-out' the UINavigationbar and removes the lower grey line border
- • Shows the UINavigationBar; Set UIImage() instance as background
- • Apply UIImage to UINavigationBar; Makes it NOT translucent
- */
+// MARK: - UINavigationBar design configurations
 extension UINavigationBar {
+    /*
+     'Whitens-out' the UINavigationbar and removes the lower grey line border
+     • Shows the UINavigationBar; Set UIImage() instance as background
+     • Apply UIImage to UINavigationBar; Makes it NOT translucent
+     */
     func whitenBar(navigator: UINavigationController?) {
         navigator?.setNavigationBarHidden(false, animated: false)
         navigator?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigator?.navigationBar.shadowImage = UIImage()
+        navigator?.navigationBar.isTranslucent = false
+    }
+    
+    // Resets UINavigationBar to Default
+    func normalizeBar(navigator: UINavigationController?) {
+        navigator?.setNavigationBarHidden(false, animated: false)
+        navigator?.navigationBar.tintColor = UIColor.white
+        navigator?.navigationBar.setBackgroundImage(nil, for: .default)
+        navigator?.navigationBar.shadowImage = nil
         navigator?.navigationBar.isTranslucent = false
     }
 }

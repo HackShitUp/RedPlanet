@@ -311,10 +311,12 @@ open class SwiftyCamViewController: UIViewController {
 			case .configurationFailed:
 				// Unknown Error
 				DispatchQueue.main.async(execute: { [unowned self] in
+                    /*
 					let message = NSLocalizedString("Unable to capture media", comment: "Alert message when something goes wrong during capture session configuration")
 					let alertController = UIAlertController(title: "AVCam", message: message, preferredStyle: .alert)
 					alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Alert OK button"), style: .cancel, handler: nil))
 					self.present(alertController, animated: true, completion: nil)
+                    */
 				})
 			}
 		}
@@ -914,8 +916,7 @@ open class SwiftyCamViewController: UIViewController {
 
 		do{
 			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-			                                                with: [.duckOthers, .defaultToSpeaker])
-
+			                                                with: [.duckOthers, .mixWithOthers])
 			session.automaticallyConfiguresApplicationAudioSession = false
 		}
 		catch {

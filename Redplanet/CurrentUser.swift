@@ -15,13 +15,15 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import OneSignal
 import SDWebImage
+import SwipeNavigationController
 
 // Define identifier
 let myProfileNotification = Notification.Name("myProfile")
 
-class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, UINavigationControllerDelegate, TwicketSegmentedControlDelegate, OSPermissionObserver, OSSubscriptionObserver {
+class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, UINavigationControllerDelegate, TwicketSegmentedControlDelegate, OSPermissionObserver, OSSubscriptionObserver, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // AppDelegate
     let appDelegate: AppDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -112,6 +114,12 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     }
                 }
                 
+                // MARK: - DZNEmptyDataSet
+                if self.relativeObjects.count == 0 {
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
+                }
+                
             } else {
                 print(error?.localizedDescription as Any)
                 // MARK: - RPHelpers
@@ -141,6 +149,12 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 self.relativeObjects.removeAll(keepingCapacity: false)
                 for object in objects! {
                     self.relativeObjects.append(object)
+                }
+                
+                // MARK: - DZNEmptyDataSet
+                if self.relativeObjects.count == 0 {
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
                 }
                 
             } else {
@@ -181,6 +195,12 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                     } else {
                         self.skipped.append(object)
                     }
+                }
+                
+                // MARK: - DZNEmptyDataSet
+                if self.relativeObjects.count == 0 {
+                    self.tableView.emptyDataSetSource = self
+                    self.tableView.emptyDataSetDelegate = self
                 }
                 
             } else {
@@ -289,6 +309,59 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             
             dialogController.show(in: self)
         }
+    }
+    
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.relativeObjects.count == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        var str: String?
+        if self.segmentedControl.selectedSegmentIndex == 0 {
+            str = "💩 No Activity Today."
+        } else if self.segmentedControl.selectedSegmentIndex == 1 {
+            str = "💩 No Posts Today."
+        } else {
+            str = "No Saved Posts."
+        }
+        let font = UIFont(name: "AvenirNext-Medium", size: 15)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!]
+        return NSAttributedString(string: str!, attributes: attributeDictionary)
+    }
+    
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView!, for state: UIControlState) -> NSAttributedString! {
+        // Title for button
+        let str = "Launch Camera"
+        let font = UIFont(name: "AvenirNext-Bold", size: 12)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0),
+            NSFontAttributeName: font!
+        ]
+        return NSAttributedString(string: str, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return self.tableView!.headerView(forSection: 0)!.frame.size.height/2
+    }
+    
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return 3
+    }
+    
+    func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
+        // MARK: - SwipeNavigationController
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .center)
     }
     
     
@@ -494,7 +567,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     

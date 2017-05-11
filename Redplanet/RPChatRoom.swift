@@ -800,8 +800,8 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.title = "\(chatUserObject.last!.value(forKey: "realNameOfUser") as! String)"
         }
-        // Extension: UINavigationBar && hide UITabBar
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        // Extension: UINavigationBar Normalization && hide UITabBar
+        self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
         self.navigationController?.tabBarController?.tabBar.isHidden = true
         self.navigationController?.tabBarController?.tabBar.isTranslucent = true
         // Configure UIStatusBar
@@ -837,14 +837,15 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         self.tableView.isUserInteractionEnabled = true
         self.tableView.addGestureRecognizer(hold)
         
-        // Draw cornerRadius for cameraButton and photosButton
-        self.cameraButton.layer.borderColor = UIColor(red:0.80, green:0.80, blue:0.80, alpha:1.0).cgColor
-        self.cameraButton.layer.borderWidth = 3.50
-        self.cameraButton.layer.cornerRadius = 33/2
-        self.cameraButton.clipsToBounds = true
-        self.photosButton.layer.cornerRadius = 6.00
-        self.photosButton.clipsToBounds = true
-        
+        // Configure UIButtons
+        // MARK: - RPExtensions
+        cameraButton.backgroundColor = UIColor.white
+        cameraButton.makeCircular(forView: self.cameraButton, borderWidth: 3.50, borderColor: UIColor(red: 0.80, green :0.80, blue: 0.80, alpha: 1))
+        photosButton.backgroundColor = UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
+        photosButton.roundAllCorners(sender: self.photosButton)
+        stickersButton.backgroundColor = UIColor.white
+        stickersButton.makeCircular(forView: self.stickersButton, borderWidth: 2, borderColor: UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1))
+
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right

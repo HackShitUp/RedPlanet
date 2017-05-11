@@ -56,8 +56,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     // MARK: - SwipeNavigationController
     func showProfileUI() {
-        let currentUserVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserVC") as! CurrentUser
-        self.navigationController?.pushViewController(currentUserVC, animated: true)
+        // TODO
+        // (1) ProfilEditVC?
+        // (2) CurrentUserVC?
+        // (3) Idk....
     }
     
     // MARK: - SwiftyCam Delegate Methods
@@ -263,7 +265,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         self.containerSwipeNavigationController?.shouldShowRightViewController = true
         self.containerSwipeNavigationController?.shouldShowLeftViewController = true
         self.containerSwipeNavigationController?.shouldShowBottomViewController = true
-        self.containerSwipeNavigationController?.shouldShowTopViewController = true
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {

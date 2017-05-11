@@ -148,8 +148,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // (2) Set cover photo
         if let urlToImage = self.articleObjects[indexPath.item].value(forKey: "urlToImage") as? String {
             // MARK: - SDWebImage
-            cell.coverPhoto.sd_setIndicatorStyle(.gray)
             cell.coverPhoto.sd_showActivityIndicatorView()
+            cell.coverPhoto.sd_setIndicatorStyle(.gray)
             cell.coverPhoto.sd_setImage(with: URL(string: urlToImage)!)
         }
         // (3) Set author

@@ -261,7 +261,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         // ====================================================================
             if indexPath.row == 0 {
             // Edit Profile
-                let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "editProfileVC") as! ProfileEdit
+                let editProfileVC = self.storyboard?.instantiateViewController(withIdentifier: "profileEditVC") as! ProfileEdit
                 self.navigationController?.pushViewController(editProfileVC, animated: true)
             } else if indexPath.row == 1 {
             // Relationship Requests

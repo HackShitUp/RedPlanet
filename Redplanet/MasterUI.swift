@@ -92,9 +92,9 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // MARK: - RPHelpers; add rpButton to center bottom of UIView
-//        self.view.setButton(container: self.view)
-//        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
+        // MARK: - RPExtension; add rpButton to center bottom of UIView
+        self.view.setButton(container: self.view)
+        rpButton.addTarget(self, action: #selector(showShareUI), for: .touchUpInside)
         
         // Create corner radius for topLeft/topRight of UIView
         let shape = CAShapeLayer()
@@ -128,7 +128,7 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         
         // Set username to 4th UITabBar item
         if let username = PFUser.current()!.value(forKey: "username") as? String {
-            self.tabBar.items?[4].title = username.lowercased()
+            self.tabBar.items?[4].title = username.uppercased()
         }
     }
     
@@ -151,6 +151,4 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
     
     
     // MARK: - UITabBarController Delegate Method
-    
-    
 }

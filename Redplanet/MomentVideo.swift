@@ -22,12 +22,6 @@ class MomentVideo: UICollectionViewCell {
     @IBOutlet weak var rpUsername: UIButton!
     @IBOutlet weak var time: UILabel!
     @IBOutlet weak var moreButton: UIButton!
-    @IBOutlet weak var numberOfLikes: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var numberOfShares: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
     
     func addVideo(videoURL: URL?) {
         // MARK: - RPVideoPlayerView
@@ -39,10 +33,7 @@ class MomentVideo: UICollectionViewCell {
 //        rpVideoPlayer.play()
         
         // Bring buttons to front
-        let buttons = [self.rpUsername, self.time, self.moreButton,
-                       self.numberOfLikes, self.likeButton,
-                       self.numberOfComments, self.commentButton,
-                       self.numberOfShares, self.shareButton] as [Any]
+        let buttons = [self.rpUsername, self.time, self.moreButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
             self.contentView.bringSubview(toFront: (b as AnyObject) as! UIView)
@@ -51,10 +42,7 @@ class MomentVideo: UICollectionViewCell {
     
     func updateView() {
         // Bring buttons to front
-        let buttons = [self.rpUsername, self.time, self.moreButton,
-                       self.numberOfLikes, self.likeButton,
-                       self.numberOfComments, self.commentButton,
-                       self.numberOfShares, self.shareButton] as [Any]
+        let buttons = [self.rpUsername, self.time, self.moreButton] as [Any]
         for b in buttons {
             (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer!)
             self.contentView.bringSubview(toFront: (b as AnyObject) as! UIView)

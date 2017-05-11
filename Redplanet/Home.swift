@@ -248,15 +248,15 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         segmentedControl.font = UIFont(name: "AvenirNext-Bold", size: 12)!
         self.navigationController?.navigationBar.topItem?.titleView = segmentedControl
         
+        // MARK: - RPHelpers
+        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+
         // Fetch Friends' or Following's Stories depending on index
         if segmentedControl.selectedSegmentIndex == 0 {
             fetchFriends()
         } else {
             fetchFollowing()
         }
-        
-        // MARK: - RPHelpers
-        self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
         
         // Set UITabBarController Delegate
         self.tabBarController?.delegate = self
@@ -395,6 +395,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
     }
     
+    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor.white
+    }
     
     
 }

@@ -15,6 +15,7 @@ target 'Redplanet' do
 	pod ‘OneSignal’
 	pod ‘Parse’
 	pod ‘ParseUI’
+	pod 'Reactions'
 	pod ‘SDWebImage’
 	pod ‘SwiftyCam’, ‘2.2.2’
 	pod 'SwipeNavigationController'

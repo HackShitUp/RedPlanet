@@ -17,14 +17,24 @@ import Bolts
 
 import AnimatedCollectionViewLayout
 import SwipeNavigationController
+import Reactions
 
 // Array to hold storyObjects
 var storyObjects = [PFObject]()
 
-class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate {
+class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate, UINavigationControllerDelegate, SegmentedProgressBarDelegate, ReactionFeedbackDelegate {
     
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
+    
+    // MARK: - Reactions
+    let reactButton = ReactionButton()
+    let reactionSelector = ReactionSelector()
+    // (1) Create Reactions
+    let reactions = [Reaction(id: "id", title: "More", color: .black, icon: UIImage(named: "MoreBlack")!),
+                     Reaction(id: "id", title: "Like", color: .black, icon: UIImage(named: "LikeFilled")!),
+                     Reaction(id: "id", title: "Comment", color: .black, icon: UIImage(named: "BubbleFilled")!),
+                     Reaction(id: "id", title: "Share", color: .black, icon: UIImage(named: "SentFilled")!)]
     
     // MARK: - RPVideoPlayerView
     var rpVideoPlayer: RPVideoPlayerView!
@@ -32,8 +42,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
     
-    // Array to hold storyPosts/likes
-    var storyPosts = [PFObject]()
+    // Array to hold stories/likes
+    var stories = [PFObject]()
     var likes = [PFObject]()
     
     let scrollSets = ["tp", "pp", "vi", "sh", "sp"]
@@ -52,22 +62,22 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear array
-                self.storyPosts.removeAll(keepingCapacity: false)
+                self.stories.removeAll(keepingCapacity: false)
                 for object in objects! {
                     // Ephemeral content
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
                     if difference.hour! < 24 {
-//                        self.storyPosts.append(object)
+//                        self.stories.append(object)
                     }
-                    self.storyPosts.append(object)
+                    self.stories.append(object)
                 }
                 
                 // MARK: - SegmentedProgressBar
-                if self.storyPosts.count == 0 {
+                if self.stories.count == 0 {
                     self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
                 } else {
-                    self.spb = SegmentedProgressBar(numberOfSegments: self.storyPosts.count, duration: 10)
+                    self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
                 }
                 self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
                 self.spb.topColor = UIColor.white
@@ -102,6 +112,17 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         return true
     }
     
+    
+    func reactionDidChanged(_ sender: AnyObject) {
+//        print(reactionSelector.selectedReaction)
+    }
+    
+    func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
+        // .slideFingerAcross, .releaseToCancel, .tapToSelectAReaction
+    }
+    
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // MARK: - RPButton
@@ -118,13 +139,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Fetch Stories
+        fetchStories()
+        
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = false
         
         // MARK: - AnimatedCollectionViewLayout; configure UICollectionView
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
-        layout.animator = ZoomInOutAttributesAnimator()
+        layout.animator = ParallaxAttributesAnimator()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.estimatedItemSize = self.view.bounds.size
         layout.minimumInteritemSpacing = 0
@@ -137,15 +161,38 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         collectionView!.frame = self.view.bounds
         collectionView!.backgroundColor = UIColor.black
         collectionView!.showsHorizontalScrollIndicator = false
+
+        // MARK: - Reactions
+        // (2) Create ReactionSelector and add Reactions from <1>
+        reactionSelector.feedbackDelegate = self
+        reactionSelector.setReactions(reactions, sizeToFit: true)
+        // (3) Configure ReactionSelector
+        reactionSelector.config = ReactionSelectorConfig {
+            $0.spacing = 8
+            $0.iconSize = 35
+            $0.stickyReaction = true
+        }
+        // (4) Set ReactionSelector
+        reactButton.reactionSelector = reactionSelector
+        // (5) Configure reactButton
+        reactButton.config = ReactionButtonConfig() {
+            $0.iconMarging = 8
+            $0.spacing = 8
+            $0.alignment = .centerLeft
+            $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
+            $0.neutralTintColor = UIColor.black
+        }
+        reactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        reactButton.frame.origin.y = self.view.bounds.height - 60
+        reactButton.frame.origin.x = self.view.bounds.width/2 - 30
+        reactButton.layer.applyShadow(layer: reactButton.layer)
+        self.view.addSubview(reactButton)
+        self.view.bringSubview(toFront: reactButton)
         
-        // Fetch Stories
-        fetchStories()
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
         self.collectionView?.register(UINib(nibName: "MomentVideo", bundle: nil), forCellWithReuseIdentifier: "MomentVideo")
-        self.collectionView?.register(UINib(nibName: "TextPostCell", bundle: nil), forCellWithReuseIdentifier: "TextPostCell")
-        self.collectionView?.register(UINib(nibName: "PhotoCell", bundle: nil), forCellWithReuseIdentifier: "PhotoCell")
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
     
@@ -169,7 +216,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.storyPosts.count
+        return self.stories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -184,35 +231,35 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        print("CELL: \(cell)\n")
+//        print("CELL: \(cell)\n")
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         // Configure initial setup for time
-        let from = self.storyPosts[indexPath.item].createdAt!
+        let from = self.stories[indexPath.item].createdAt!
         let now = Date()
         let components : NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         
         // Text Posts, Profile Photo
-        if self.scrollSets.contains(self.storyPosts[indexPath.item].value(forKey: "contentType") as! String) {
+        if self.scrollSets.contains(self.stories[indexPath.item].value(forKey: "contentType") as! String) {
             let scrollCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "StoryScrollCell", for: indexPath) as! StoryScrollCell
             
             // Set PFObject
-            scrollCell.postObject = self.storyPosts[indexPath.item]
+            scrollCell.postObject = self.stories[indexPath.item]
             // Set parentDelegate
             scrollCell.parentDelegate = self
             
             return scrollCell
             
-        } else if self.storyPosts[indexPath.row].value(forKey: "contentType") as! String == "ph" {
+        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "ph" {
             
             let pCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
             
             // (1) Get user's object
-            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
                 // Set user's fullName; "realNameOfUser"
                 pCell.rpUsername.text = (user.value(forKey: "realNameOfUser") as! String)
                 // Set user's profile photo
@@ -228,7 +275,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             pCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let photo = self.storyPosts[indexPath.row].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.stories[indexPath.row].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 pCell.photo.sd_showActivityIndicatorView()
                 pCell.photo.sd_setIndicatorStyle(.gray)
@@ -236,18 +283,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             }
             
             // (4) Set caption
-            if let textPost = self.storyPosts[indexPath.item].value(forKey: "textPost") as? String {
+            if let textPost = self.stories[indexPath.item].value(forKey: "textPost") as? String {
                 pCell.caption.text = textPost
             }
             
             return pCell
             
-        } else if self.storyPosts[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.storyPosts[indexPath.item].value(forKey: "photoAsset") != nil {
+        } else if self.stories[indexPath.item].value(forKey: "contentType") as! String == "itm" && self.stories[indexPath.item].value(forKey: "photoAsset") != nil {
             // MOMENT PHOTO
             let mpCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentPhoto", for: indexPath) as! MomentPhoto
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.storyPosts[indexPath.item].value(forKey: "byUser") as? PFUser {
+            if let user = self.stories[indexPath.item].value(forKey: "byUser") as? PFUser {
                 mpCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -255,7 +302,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             mpCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set photo
-            if let photo = self.storyPosts[indexPath.item].value(forKey: "photoAsset") as? PFFile {
+            if let photo = self.stories[indexPath.item].value(forKey: "photoAsset") as? PFFile {
                 // MARK: - SDWebImage
                 mpCell.photoMoment.sd_showActivityIndicatorView()
                 mpCell.photoMoment.sd_setIndicatorStyle(.gray)
@@ -270,7 +317,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             let mvCell = self.collectionView?.dequeueReusableCell(withReuseIdentifier: "MomentVideo", for: indexPath) as! MomentVideo
             
             // (1) Set user's full name; "realNameOfUser"
-            if let user = self.storyPosts[indexPath.row].value(forKey: "byUser") as? PFUser {
+            if let user = self.stories[indexPath.row].value(forKey: "byUser") as? PFUser {
                 mvCell.rpUsername.setTitle((user.value(forKey: "realNameOfUser") as! String), for: .normal)
             }
             
@@ -278,7 +325,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             mvCell.time.text = difference.getFullTime(difference: difference, date: from)
             
             // (3) Set video
-            if let video = self.storyPosts[indexPath.row].value(forKey: "videoAsset") as? PFFile {
+            if let video = self.stories[indexPath.row].value(forKey: "videoAsset") as? PFFile {
                 // MARK: - RPVideoPlayerView
                 self.rpVideoPlayer = RPVideoPlayerView(frame: mvCell.contentView.bounds)
                 self.rpVideoPlayer.setupVideo(videoURL: URL(string: video.url!)!)
@@ -317,9 +364,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             self.spb.rewind()
         }
 
-        if self.storyPosts[indexPath!.item].value(forKey: "videoAsset") != nil {
+        if self.stories[indexPath!.item].value(forKey: "videoAsset") != nil {
             print("Video: \(indexPath![1])")
-            print("OBJECTID: \(self.storyPosts[indexPath!.item].objectId!)\n")
+            print("OBJECTID: \(self.stories[indexPath!.item].objectId!)\n")
         } else {
             print("Not a video: \(indexPath![1])")
         }

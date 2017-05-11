@@ -117,9 +117,7 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
     
     
     
-    // MARK: DZNEmptyDataSet Framework
-    
-    // DataSource Methods
+    // MARK: - DZNEmptyDataSet
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if blockedUsers.count == 0 {
             return true
@@ -128,9 +126,12 @@ class BlockedUsers: UITableViewController, UINavigationControllerDelegate, DZNEm
         }
     }
     
-    // Title for EmptyDataSet
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "Stickers")
+    }
+    
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        let str = "☮\nYou're a peace maker. You haven't blocked anyone yet."
+        let str = "You're a peace maker. You haven't blocked anyone yet."
         let font = UIFont(name: "AvenirNext-Medium", size: 25.00)
         let attributeDictionary: [String: AnyObject]? = [
             NSForegroundColorAttributeName: UIColor.black,
