@@ -57,10 +57,10 @@ import SDWebImage
 
 // User's relationships
 // Followers, Following, Received Follow Requests, and Sent Follow Requests
-var myFollowers = [PFObject]()
-var myFollowing = [PFObject]()
-var myRequestedFollowers = [PFObject]()
-var myRequestedFollowing = [PFObject]()
+var currentFollowers = [PFObject]()
+var currentFollowing = [PFObject]()
+var currentRequestedFollowers = [PFObject]()
+var currentRequestedFollowing = [PFObject]()
 var blockedUsers = [PFObject]()
 
 @UIApplicationMain
@@ -339,17 +339,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
                 // Clear arrays
-                myFollowing.removeAll(keepingCapacity: false)
-                myRequestedFollowing.removeAll(keepingCapacity: false)
+                currentFollowing.removeAll(keepingCapacity: false)
+                currentRequestedFollowing.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     
                     // Append currently following accounts
                     if object.value(forKey: "isFollowing") as! Bool == true {
-                        myFollowing.append(object.object(forKey: "following") as! PFUser)
+                        currentFollowing.append(object.object(forKey: "following") as! PFUser)
                     } else {
                         // Append requested following accounts
-                        myRequestedFollowing.append(object.object(forKey: "following") as! PFUser)
+                        currentRequestedFollowing.append(object.object(forKey: "following") as! PFUser)
                     }
                 }
                 
@@ -369,16 +369,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
             if error == nil {
                 
                 // Clear arrays
-                myFollowers.removeAll(keepingCapacity: false)
-                myRequestedFollowers.removeAll(keepingCapacity: false)
+                currentFollowers.removeAll(keepingCapacity: false)
+                currentRequestedFollowers.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
                     // Append current followers
                     if object.value(forKey: "isFollowing") as! Bool == true {
-                        myFollowers.append(object.object(forKey: "follower") as! PFUser)
+                        currentFollowers.append(object.object(forKey: "follower") as! PFUser)
                     } else {
                     // Append accounts requested to follow you
-                        myRequestedFollowers.append(object.object(forKey: "follower") as! PFUser)
+                        currentRequestedFollowers.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
                 

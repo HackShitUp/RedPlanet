@@ -75,7 +75,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.friends.append(PFUser.current()!)
                 
                 for object in objects! {
-                    if myFollowing.contains(where: {$0.objectId! == (object.object(forKey: "follower") as! PFUser).objectId!}) {
+                    if currentFollowing.contains(where: {$0.objectId! == (object.object(forKey: "follower") as! PFUser).objectId!}) {
                         self.friends.append(object.object(forKey: "follower") as! PFUser)
                     }
                 }
@@ -107,7 +107,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 // Clear array
                 self.following.removeAll(keepingCapacity: false)
                 for object in objects! {
-                    if !myFollowers.contains(where: {$0.objectId! == (object.object(forKey: "following") as! PFUser).objectId!}) {
+                    if !currentFollowers.contains(where: {$0.objectId! == (object.object(forKey: "following") as! PFUser).objectId!}) {
                         self.following.append(object.object(forKey: "following") as! PFUser)
                     }
                 }

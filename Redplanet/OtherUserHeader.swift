@@ -610,14 +610,14 @@ class OtherUserHeader: UITableViewHeaderFooterView {
             
 
             // CONFIRM/IGNORE REQUEST
-            if myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+            if currentRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 dialogController.addAction(confirm)
                 dialogController.addAction(ignore)
                 dialogController.show(in: self.delegate!)
             }
             
             // RESCIND
-            if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+            if currentRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
                 dialogController.addAction(rescind)
                 dialogController.show(in: self.delegate!)
             }
@@ -788,7 +788,7 @@ class OtherUserHeader: UITableViewHeaderFooterView {
         // (6) Add tap method to show profile photo
         // Show Profile photo if... 
         // FOLLOWER && FOLLOWING
-        if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
+        if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && otherObject.last!.value(forKey: "proPicExists") as! Bool == true {
             let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProPic))
             proPicTap.numberOfTapsRequired = 1
             self.rpUserProPic.isUserInteractionEnabled = true

@@ -80,11 +80,11 @@ class MasterUI: UITabBarController, UITabBarControllerDelegate {
         // MARK: - AppDelegate Query Relationships
         appDelegate.queryRelationships()
         // Set UITabBar badge icon
-        if myRequestedFollowers.count != 0 {
+        if currentRequestedFollowers.count != 0 {
             if #available(iOS 10.0, *) {
                 self.tabBar.items?[4].badgeColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
             }
-            self.tabBar.items?[4].badgeValue = "\(myRequestedFollowers.count)"
+            self.tabBar.items?[4].badgeValue = "\(currentRequestedFollowers.count)"
         }
     }
     

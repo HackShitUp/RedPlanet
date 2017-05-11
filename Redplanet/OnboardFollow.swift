@@ -247,7 +247,7 @@ class OnboardFollow: UITableViewController, UINavigationControllerDelegate {
         }
         
         
-        if myFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
+        if currentFollowing.contains(where: {$0.objectId! == self.followObjects[indexPath.row].objectId!}) {
             // FOLLOWING
             // Set button's title and design
             cell.followButton.setTitle("Following", for: .normal)

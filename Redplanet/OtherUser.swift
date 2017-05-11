@@ -15,6 +15,7 @@ import Parse
 import ParseUI
 import Bolts
 
+import DZNEmptyDataSet
 import SDWebImage
 
 // Global variable to hold other user's object
@@ -26,7 +27,7 @@ var otherName = [String]()
 // Define identifier
 let otherNotification = Notification.Name("otherUser")
 
-class OtherUser: UITableViewController {
+class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // App Delegate
     let appDelegate = AppDelegate()
@@ -36,14 +37,14 @@ class OtherUser: UITableViewController {
     // Handle skipped objects for Pipeline
     var skipped = [PFObject]()
     
-    // Refresher
+    // Initialize UIRefreshControl
     var refresher: UIRefreshControl!
-    
-    // Page size
+    // PFQuery limit --> Pipeline Method
     var page: Int = 50
     
-    // View to cover tableView when hidden swift
-    let cover = UIButton()
+    // MARK: - DZNEmtpyDataSet 
+    var dznType: String? = ""
+    
     
     @IBAction func backButton(_ sender: Any) {
         // Remove last
@@ -316,8 +317,12 @@ class OtherUser: UITableViewController {
             self.blockUser(fromVC: dialog)
         })
 
+        
+        
+        
+        
         // IF FOLLOWING AND FOLLOWER == SPACE
-        if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        if currentFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
             dialogController.addAction(space)
             dialogController.addAction(chat)
             dialogController.addAction(report)
@@ -334,22 +339,20 @@ class OtherUser: UITableViewController {
     // Function to refresh
     func refresh() {
         // Query Content
-        queryContent()
+        fetchPosts()
         // End refresher
         self.refresher.endRefreshing()
         // Reload data
         self.tableView!.reloadData()
     }
 
-    // Function to query other user's content
-    func queryContent() {
-        // User's Posts
+    
+    func fetchPosts() {
+        // Fetch all posts
         let byUser = PFQuery(className: "Newsfeeds")
         byUser.whereKey("byUser", equalTo: otherObject.last!)
-        // User's Space Posts
         let toUser = PFQuery(className:  "Newsfeeds")
         toUser.whereKey("toUser", equalTo: otherObject.last!)
-        // Both
         let newsfeeds = PFQuery.orQuery(withSubqueries: [byUser, toUser])
         newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
         newsfeeds.limit = self.page
@@ -357,11 +360,9 @@ class OtherUser: UITableViewController {
         newsfeeds.findObjectsInBackground {
             (objects: [PFObject]?, error: Error?) in
             if error == nil {
-                
-                // clear array
+                // Clear arrays
                 self.stories.removeAll(keepingCapacity: false)
                 self.skipped.removeAll(keepingCapacity: false)
-                
                 for object in objects! {
                     // Set time constraints
                     let components : NSCalendar.Unit = .hour
@@ -374,76 +375,72 @@ class OtherUser: UITableViewController {
                 }
                 
                 
-                // Check Privacy; add cover relatively
+                
+                // PRIVATE ACCOUNT
                 if otherObject.last!.value(forKey: "private") as! Bool == true {
-                    // PRIVATE ACCOUNT
-                    // Any logic that contains a print statement DOES NOT place a cover
-                    
-                    if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                    // FOLLOWER ONLY
-                        self.cover.setTitle("🔒 Private Account", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = false
+                    // (1) Follower
+                    if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                        // MARK: - DZNEmptyDataSet
+                        self.dznType = "🔒 Private Account"
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
                         
-                    } else if myRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                    // CONFIRM FOLLOW REQUEST
-                        self.cover.setTitle("🔒 Private Account", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = false
-                        
-                    } else if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                    // FOLLOWING
+                    } else if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                        // (2) Following
                         if self.stories.count == 0 {
-                            self.cover.setTitle("💩 No Posts Today", for: .normal)
-                            self.tableView!.addSubview(self.cover)
-                            self.tableView!.allowsSelection = false
-                            self.tableView!.isScrollEnabled = true
+                            // MARK: - DZNEmptyDataSet
+                            self.dznType = "💩 No Posts Today"
+                            self.tableView.emptyDataSetSource = self
+                            self.tableView.emptyDataSetDelegate = self
                         }
                         
-                    } else if myRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
-                    // FOLLOW REQUESTED
-                        self.cover.setTitle("🔒 Private Account", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = false
+                    } else if currentRequestedFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+                        // (3) Follower Requested
+                        // MARK: - DZNEmptyDataSet
+                        self.dznType = "🔒 Private Account"
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
                         
-                    } else if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
-                    // FOLLOWER & FOLLOWING == FOLLOWING
+                    } else if currentRequestedFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+                        // (4) Sent Follow Request
+                        // MARK : -DZNEmptyDataSet
+                        self.dznType = "🔒 Private Account"
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
+                        
+                    } else if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+                        // (5) Follower AND Following (AKA: Friends)
                         if self.stories.count == 0 {
-                            self.cover.setTitle("💩 No Posts Today", for: .normal)
-                            self.tableView!.addSubview(self.cover)
-                            self.tableView!.allowsSelection = false
-                            self.tableView!.isScrollEnabled = true
+                            // MARK: - DZNEmptyDataSet
+                            self.dznType = "💩 No Posts Today"
+                            self.tableView.emptyDataSetSource = self
+                            self.tableView.emptyDataSetDelegate = self
                         }
                         
                     } else {
-                    // NOT CONNECTED
-                        self.cover.setTitle("🔒 Private Account", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = false
+                        // (6) Not yet following
+                        self.dznType = "🔒 Private Account"
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
                     }
                     
                 } else {
                     // PUBLIC ACCOUNT
                     if self.stories.count == 0 {
-                        self.cover.setTitle("💩 No Posts Today", for: .normal)
-                        self.tableView!.addSubview(self.cover)
-                        self.tableView!.allowsSelection = false
-                        self.tableView!.isScrollEnabled = true
+                        self.dznType = "💩 No Posts Today"
+                        self.tableView.emptyDataSetSource = self
+                        self.tableView.emptyDataSetDelegate = self
                     }
-                    
-                    self.tableView!.isScrollEnabled = true
                 }
+                
                 
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
-            // Reload data
-            self.tableView!.reloadData()
+            // Reload data in main thread
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -473,21 +470,54 @@ class OtherUser: UITableViewController {
         return false
     }
     
+    
+    // MARK: - DZNEmptyDataSet
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if self.dznType != "" {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let font = UIFont(name: "AvenirNext-Medium", size: 15)
+        let attributeDictionary: [String: AnyObject]? = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: font!]
+        return NSAttributedString(string: self.dznType!, attributes: attributeDictionary)
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return self.tableView!.headerView(forSection: 0)!.frame.size.height/2
+    }
+    
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return 3
+    }
+    
+    
     // MARK: - UIView Lifecycle Hierarchy
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title again
         configureView()
-        // Fetch data
-        queryContent()
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Stylize title again
+        configureView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Stylize and set title
-        configureView()
 
         // Track Who's Profile user lands on
         Heap.track("ViewedProfile", withProperties:
@@ -496,7 +526,10 @@ class OtherUser: UITableViewController {
                 "OtherUserID": "\(otherObject.last!.objectId!)",
                 "OtherUsername": "\(otherObject.last!.value(forKey: "username") as! String)"
             ])
- 
+        
+        
+        // Fetch data
+        fetchPosts()
         
         // Configure table view
         self.tableView?.backgroundColor = UIColor.white
@@ -504,19 +537,17 @@ class OtherUser: UITableViewController {
         self.tableView?.rowHeight = UITableViewAutomaticDimension
         self.tableView?.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView?.tableFooterView = UIView()
+        // Register NIB
+        self.tableView?.register(UINib(nibName: "OtherUserHeader", bundle: nil), forHeaderFooterViewReuseIdentifier: "OtherUserHeader")
         
         // Register to receive notification
         NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: otherNotification, object: nil)
         
-        // Register NIB
-        let nib = UINib(nibName: "OtherUserHeader", bundle: nil)
-        tableView?.register(nib, forHeaderFooterViewReuseIdentifier: "OtherUserHeader")
-        
         // Back swipe implementation
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(backSwipe)
-//        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        view.addGestureRecognizer(backSwipe)
+        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
         
         // Pull to refresh action
         refresher = UIRefreshControl()
@@ -524,12 +555,6 @@ class OtherUser: UITableViewController {
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView!.addSubview(refresher)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Stylize title again
-        configureView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -600,25 +625,25 @@ class OtherUser: UITableViewController {
         header.newSpaceButton.isUserInteractionEnabled = false
         
 
-        if myFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        if currentFollowers.contains(where: {$0.objectId == otherObject.last!.objectId!}) && !currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOWER
             header.relationType.isHidden = false
             header.relationType.setTitle("Follower", for: .normal)
         }
         
-        if myFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        if currentFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
         }
         
-        if myRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
+        if currentRequestedFollowing.contains(where: {$0.objectId! == otherObject.last!.objectId!}) || currentRequestedFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) {
         // FOLLOW REQUESTED
             header.relationType.isHidden = false
             header.relationType.setTitle("Requested", for: .normal)
         }
         
-        if myFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && myFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
+        if currentFollowers.contains(where: {$0.objectId! == otherObject.last!.objectId!}) && currentFollowing.contains(where: {$0.objectId == otherObject.last!.objectId!}) {
         // FOLLOWER & FOLLOWING == FOLLOWING
             header.relationType.isHidden = false
             header.relationType.setTitle("Following", for: .normal)
@@ -673,20 +698,7 @@ class OtherUser: UITableViewController {
             // Set Full name
             label.text = "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
         }
-        
         label.sizeToFit()
-        
-        // Add cover
-        self.cover.frame = CGRect(x: 0, y: CGFloat(425 + label.frame.size.height), width: self.tableView!.frame.size.width, height: self.tableView!.frame.size.height+425+label.frame.size.height)
-        self.cover.isUserInteractionEnabled = false
-        self.cover.isEnabled = false
-        self.cover.titleLabel!.lineBreakMode = .byWordWrapping
-        self.cover.contentVerticalAlignment = .top
-        self.cover.contentHorizontalAlignment = .center
-        self.cover.titleLabel!.textAlignment = .center
-        self.cover.titleLabel!.font = UIFont(name: "AvenirNext-Demibold", size: 15)
-        self.cover.setTitleColor(UIColor.darkGray, for: .normal)
-        self.cover.backgroundColor = UIColor.white
         
         return CGFloat(425 + label.frame.size.height)
     }
@@ -791,7 +803,7 @@ class OtherUser: UITableViewController {
                 // Increase page size to load more posts
                 page = page + 50
                 // Query content
-                self.queryContent()
+                self.fetchPosts()
             }
         }
     }

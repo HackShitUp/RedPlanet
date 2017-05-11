@@ -61,33 +61,36 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITex
     }
     
     
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Show navigation bar
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+        // Make first responder
+        searchBar.becomeFirstResponder()
+        // MARK: - RPExtensions
+        self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        // Fetch relationships
+        _ = appDelegate.queryRelationships()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Fetch relationships
-        _ = appDelegate.queryRelationships()
-        
-        // Make first responder
-        searchBar.becomeFirstResponder()
-        
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        // MARK: - DZNEmptyDataSet
-        self.tableView!.emptyDataSetSource = self
         
         // Configure UITableView
         self.tableView.separatorColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
         self.tableView!.tableFooterView = UIView()
+        // MARK: - DZNEmptyDataSet
+        self.tableView!.emptyDataSetSource = self
         
         // Configure UISearchBar
         searchBar.delegate = self
-        searchBar.frame = CGRect(x: 58, y: 7, width: self.view.frame.size.width - 68, height: 30)
+        searchBar.frame = CGRect(x: 58, y: 7, width: self.view.frame.size.width - 100, height: 30)
         searchBar.tintColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
         searchBar.font = UIFont(name: "AvenirNext-Medium", size: 15)
         searchBar.textColor = UIColor.black
@@ -99,18 +102,12 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITex
         self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        // Fetch relationships
-        _ = appDelegate.queryRelationships()
-        // Show navigation bar
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.searchHashes.removeAll(keepingCapacity: false)
         self.searchObjects.removeAll(keepingCapacity: false)
+        // Resign first responder
+        self.searchBar.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {

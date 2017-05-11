@@ -145,7 +145,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 self.notFollowing.removeAll(keepingCapacity: false)
                 
                 for object in objects! {
-                    if myFollowing.contains(where: {$0.objectId! == object.objectId!}) {
+                    if currentFollowing.contains(where: {$0.objectId! == object.objectId!}) {
                         self.following.append(object)
                     } else {
                         self.notFollowing.append(object)
@@ -394,7 +394,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
             
             
             // Configure buttons
-            if myRequestedFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) || myRequestedFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
+            if currentRequestedFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) || currentRequestedFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
             // REQUESTED: Follower OR Following
                 // Change button's title and design
                 cell.followButton.setTitle("Requested", for: .normal)
@@ -402,7 +402,7 @@ class Contacts: UITableViewController, UINavigationControllerDelegate, DZNEmptyD
                 cell.followButton.backgroundColor = UIColor(red:1.00, green:0.00, blue:0.31, alpha:1.0)
                 cell.followButton.layer.cornerRadius = 22.00
                 cell.followButton.clipsToBounds = true
-            } else if myFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) && !myFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
+            } else if currentFollowers.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) && !currentFollowing.contains(where: {$0.objectId! == notABCFollowing[indexPath.row].objectId!}) {
             // FOLLOWER
                 // Change button's title and design
                 cell.followButton.setTitle("Follower", for: .normal)

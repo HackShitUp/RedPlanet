@@ -59,8 +59,8 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         _ = appDelegate.queryRelationships()
         
         // MARK: - NSBadge; set badge for follow requests
-        if myRequestedFollowers.count != 0 {
-            peopleButton.badge(text: "\(myRequestedFollowers.count)")
+        if currentRequestedFollowers.count != 0 {
+            peopleButton.badge(text: "\(currentRequestedFollowers.count)")
         }
         
         // MARK: - MasterUI; reset UITabBar badge value and peopleButton badge
@@ -529,20 +529,20 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             }
         }
         // Count Followers
-        if myFollowers.count == 0 {
+        if currentFollowers.count == 0 {
             header.numberOfFollowers.setTitle("\nfollowers", for: .normal)
-        } else if myFollowers.count == 0 {
+        } else if currentFollowers.count == 0 {
             header.numberOfFollowers.setTitle("1\nfollower", for: .normal)
         } else {
-            header.numberOfFollowers.setTitle("\(myFollowers.count)\nfollowers", for: .normal)
+            header.numberOfFollowers.setTitle("\(currentFollowers.count)\nfollowers", for: .normal)
         }
         // Count Following
-        if myFollowing.count == 0 {
+        if currentFollowing.count == 0 {
             header.numberOfFollowing.setTitle("\nfollowing", for: .normal)
-        } else if myFollowing.count == 1 {
+        } else if currentFollowing.count == 1 {
             header.numberOfFollowing.setTitle("1\nfollowing", for: .normal)
         } else {
-            header.numberOfFollowing.setTitle("\(myFollowing.count)\nfollowing", for: .normal)
+            header.numberOfFollowing.setTitle("\(currentFollowing.count)\nfollowing", for: .normal)
         }
         
         return header

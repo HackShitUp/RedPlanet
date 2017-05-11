@@ -520,7 +520,7 @@ class ContactsCell: UITableViewCell {
             })
             
             // Show options dependent if user is following
-            if !myFollowing.contains(where: { $0.objectId! == self.userObject!.objectId! }) {
+            if !currentFollowing.contains(where: { $0.objectId! == self.userObject!.objectId! }) {
                 // IF NOT FOLLOWING
                 dialogController.addAction(removeFollower)
                 dialogController.addAction(followBack)
@@ -542,7 +542,7 @@ class ContactsCell: UITableViewCell {
             // ========================================================================================================================
             // SENT FOLLOW REQUEST ====================================================================================================
             // ========================================================================================================================
-            if myRequestedFollowing.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
+            if currentRequestedFollowing.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
                 
                 
                 // MARK: - AZDialogViewController
@@ -669,7 +669,7 @@ class ContactsCell: UITableViewCell {
             // ========================================================================================================================
             // RECEIVED FOLLOW REQUEST ================================================================================================
             // ========================================================================================================================
-            if myRequestedFollowers.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
+            if currentRequestedFollowers.contains(where: {$0.objectId! == self.userObject!.objectId!}) {
                 
                 // Disable buttons to prevent duplicate data entry
                 self.followButton.isUserInteractionEnabled = false
