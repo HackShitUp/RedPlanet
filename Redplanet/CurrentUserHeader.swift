@@ -202,7 +202,7 @@ class CurrentUserHeader: UITableViewHeaderFooterView {
         // Handle http: tap
         userBio.urlLinkTapHandler = { label, handle, range in
             // MARK: - SafariServices
-            let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: true)
+            let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
             webVC.view.layer.cornerRadius = 8.00
             webVC.view.clipsToBounds = true
             self.delegate?.navigationController?.present(webVC, animated: true, completion: nil)

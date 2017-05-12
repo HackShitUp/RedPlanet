@@ -74,7 +74,7 @@ class CommentsCell: UITableViewCell {
         // Handle http: tap
         comment.urlLinkTapHandler = { label, handle, range in
             // MARK: - SafariServices
-            let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: true)
+            let webVC = SFSafariViewController(url: URL(string: handle)!, entersReaderIfAvailable: false)
             // MARK: - RPHelpers
             webVC.view.roundTopCorners(sender: webVC.view)
             self.delegate?.present(webVC, animated: true, completion: nil)

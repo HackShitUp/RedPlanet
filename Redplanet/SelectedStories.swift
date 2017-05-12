@@ -71,7 +71,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     // Function to show API
     func showAPIUsage() {
         // MARK: - SafariServices
-        let webVC = SFSafariViewController(url: URL(string: "https://newsapi.org/")!, entersReaderIfAvailable: true)
+        let webVC = SFSafariViewController(url: URL(string: "https://newsapi.org/")!, entersReaderIfAvailable: false)
         // MARK: - RPHelpers
         webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)

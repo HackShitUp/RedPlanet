@@ -428,7 +428,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             if indexPath.row == 0 {
                 // ABOUT US
                 // MARK: - SafariServices
-                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/about/")!, entersReaderIfAvailable: true)
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/about/")!, entersReaderIfAvailable: false)
                 webVC.view.layer.cornerRadius = 8.00
                 webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
@@ -442,7 +442,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
                     ])
                 
                 // MARK: - SafariServices
-                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/licenses/")!, entersReaderIfAvailable: true)
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/licenses/")!, entersReaderIfAvailable: false)
                 webVC.view.layer.cornerRadius = 8.00
                 webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
@@ -450,14 +450,14 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             } else if indexPath.row == 2 {
                 // TOS
                 // MARK: - SafariServices
-                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/terms-of-service/")!, entersReaderIfAvailable: true)
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/terms-of-service/")!, entersReaderIfAvailable: false)
                 webVC.view.layer.cornerRadius = 8.00
                 webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
             } else {
                 // PRIVACY POLICY
                 // MARK: - SafariServices
-                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: true)
+                let webVC = SFSafariViewController(url: URL(string: "https://redplanetapp.com/privacy-policy/")!, entersReaderIfAvailable: false)
                 webVC.view.layer.cornerRadius = 8.00
                 webVC.view.clipsToBounds = true
                 self.present(webVC, animated: true, completion: nil)
