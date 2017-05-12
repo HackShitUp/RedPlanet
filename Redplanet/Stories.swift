@@ -30,10 +30,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton()
     let reactionSelector = ReactionSelector()
-    let reactions = [Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!),
-                     Reaction(id: "Like", title: "", color: .lightGray, icon: UIImage(named: "Like")!),
-                     Reaction(id: "Comment", title: "", color: .lightGray, icon: UIImage(named: "Comment")!),
-                     Reaction(id: "Share", title: "", color: .lightGray, icon: UIImage(named: "Share")!)]
+    let reactions = [Reaction(id: "ReactMore", title: "More", color: .lightGray, icon: UIImage(named: "ReactMore")!),
+                     Reaction(id: "Like", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
+                     Reaction(id: "Comment", title: "Comment", color: .lightGray, icon: UIImage(named: "Comment")!),
+                     Reaction(id: "Share", title: "Share", color: .lightGray, icon: UIImage(named: "Share")!)]
     
     // MARK: - RPVideoPlayerView
     var rpVideoPlayer: RPVideoPlayerView!
@@ -187,7 +187,6 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.iconSize = 35
             $0.stickyReaction = true
         }
-        
         // (4) Set ReactionSelector
         reactButton.reactionSelector = reactionSelector
         // (5) Configure reactButton
@@ -198,12 +197,13 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.font = UIFont(name: "AvenirNext-Medium", size: 15)
             $0.neutralTintColor = UIColor.black
         }
+        reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
         reactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         reactButton.frame.origin.y = self.view.bounds.height - 60
         reactButton.frame.origin.x = self.view.bounds.width/2 - 30
         self.view.addSubview(reactButton)
         self.view.bringSubview(toFront: reactButton)
-        reactButton.presentReactionSelector()
+
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")

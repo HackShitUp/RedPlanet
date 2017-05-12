@@ -29,15 +29,8 @@ class TextPostCell: UITableViewCell {
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
     @IBOutlet weak var time: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var textPost: KILabel!
-    @IBOutlet weak var numberOfLikes: UIButton!
-    @IBOutlet weak var likeButton: UIButton!
-    @IBOutlet weak var numberOfComments: UIButton!
-    @IBOutlet weak var commentButton: UIButton!
-    @IBOutlet weak var numberOfShares: UIButton!
-    @IBOutlet weak var shareButton: UIButton!
-
+    
     // More button function
     func doMore(sender: UIButton) {
         // MARK: - AZDialogViewController
@@ -130,63 +123,6 @@ class TextPostCell: UITableViewCell {
         self.superDelegate?.navigationController?.pushViewController(otherUserVC, animated: true)
     }
     
-    // Function to like object
-    func like() {
-        // MARK: - RPHelpers
-        let rpHelpers = RPHelpers()
-        if self.likeButton.image(for: .normal) == UIImage(named: "LikeFilled") {
-            // Unlike object
-            rpHelpers.unlikeObject(forObject: self.postObject!, activeButton: self.likeButton)
-        } else if self.likeButton.image(for: .normal) == UIImage(named: "Like") {
-            // Like object/send push notification
-            rpHelpers.likeObject(forObject: self.postObject, notificationType: "like tp", activeButton: self.likeButton)
-            rpHelpers.pushNotification(toUser: self.postObject!.value(forKey: "byUser") as! PFUser, activityType: "liked your Text Post")
-        }
-        
-        DispatchQueue.main.async {
-            // Reload data
-//            self.updateView(postObject: self.postObject!)
-            // (4) Set likes
-            let likes = PFQuery(className: "Likes")
-            likes.whereKey("forObjectId", equalTo: self.postObject!.objectId!)
-            likes.includeKey("fromUser")
-            likes.findObjectsInBackground(block: { (objects: [PFObject]?, error: Error?) in
-                if error == nil {
-                    // Clear array
-                    self.likes.removeAll(keepingCapacity: false)
-                    for object in objects! {
-                        self.likes.append(object.object(forKey: "fromUser") as! PFUser)
-                    }
-                    
-                    if self.likes.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
-                        self.likeButton.setImage(UIImage(named: "LikeFilled"), for: .normal)
-                    } else {
-                        self.likeButton.setImage(UIImage(named: "Like"), for: .normal)
-                    }
-                    
-                    // Count likes
-                    if self.likes.count == 0 {
-                        self.numberOfLikes.setTitle("likes", for: .normal)
-                    } else if self.likes.count == 1 {
-                        self.numberOfLikes.setTitle("1 like", for: .normal)
-                    } else {
-                        self.numberOfLikes.setTitle("\(self.likes.count) likes", for: .normal)
-                    }
-                    
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            })
-        }
-    }
-    
-    // Function to show likers
-    func likers(sender: UIButton) {
-        reactionObject.append(self.postObject!)
-        let reactionsVC = self.superDelegate?.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
-        reactionsVC.reactionType = "likes"
-        self.superDelegate?.navigationController?.pushViewController(reactionsVC, animated: true)
-    }
     
     // Function to bind data
     func updateView(postObject: PFObject?) {
@@ -227,18 +163,6 @@ class TextPostCell: UITableViewCell {
         nameTap.numberOfTapsRequired = 1
         self.rpUsername.isUserInteractionEnabled = true
         self.rpUsername.addGestureRecognizer(nameTap)
-        
-        // Add more button tap
-        let moreTap = UITapGestureRecognizer(target: self, action: #selector(doMore))
-        moreTap.numberOfTapsRequired = 1
-        self.moreButton.isUserInteractionEnabled = true
-        self.moreButton.addGestureRecognizer(moreTap)
-        
-        // Add more button tap
-        let moreLong = UILongPressGestureRecognizer(target: self, action: #selector(doMore))
-        moreLong.minimumPressDuration = 0.15
-        self.contentView.isUserInteractionEnabled = true
-        self.contentView.addGestureRecognizer(moreLong)
     }
     
 }

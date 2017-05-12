@@ -738,7 +738,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2d7-MS-XMF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1981" y="-556"/>
+            <point key="canvasLocation" x="-1981.5" y="-556.5"/>
         </scene>
         <!--Chats-->
         <scene sceneID="IlI-vH-jan">

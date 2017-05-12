@@ -582,7 +582,7 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         
         // TODAY'S POST
         if self.segmentedControl.selectedSegmentIndex == 1 || self.segmentedControl.selectedSegmentIndex == 2 {
-            let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
+            let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
             
             // Set delegate
             cell.delegate = self

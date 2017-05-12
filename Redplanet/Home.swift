@@ -320,7 +320,7 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = Bundle.main.loadNibNamed("NewsFeedCell", owner: self, options: nil)?.first as! NewsFeedCell
+        let cell = Bundle.main.loadNibNamed("StoryCell", owner: self, options: nil)?.first as! StoryCell
         
         // MARK: - RPHelpers extension
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)

@@ -1,5 +1,5 @@
 //
-//  NewsFeedCell.swift
+//  StoryCell.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 4/20/17.
@@ -7,12 +7,12 @@
 //
 
 import UIKit
-
 import Parse
 import ParseUI
 import Bolts
+import KILabel
 
-class NewsFeedCell: UITableViewCell {
+class StoryCell: UITableViewCell {
     
     // Parent VC
     var delegate: UIViewController?
@@ -20,7 +20,7 @@ class NewsFeedCell: UITableViewCell {
     // PFObject
     var postObject: PFObject?
 
-    @IBOutlet weak var textPreview: UILabel!
+    @IBOutlet weak var textPreview: KILabel!
     @IBOutlet weak var mediaPreview: PFImageView!
     @IBOutlet weak var rpUserProPic: PFImageView!
     @IBOutlet weak var rpUsername: UILabel!
