@@ -571,7 +571,7 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let reactionsHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ReactionsHeader") as! ReactionsHeader
         reactionsHeader.contentView.backgroundColor = UIColor.white
-        reactionsHeader.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 15)
+        reactionsHeader.reactionType.font = UIFont(name: "AvenirNext-Demibold", size: 12)
         reactionsHeader.reactionType.textColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         if self.segmentedControl.selectedSegmentIndex == 0 {
             reactionsHeader.reactionType.text = "\(self.reactionObjects.count) Likes"

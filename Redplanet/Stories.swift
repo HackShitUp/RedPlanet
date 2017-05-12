@@ -27,21 +27,18 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
     
-    // MARK: - Reactions
+    // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
     let reactButton = ReactionButton()
     let reactionSelector = ReactionSelector()
-    // (1) Create Reactions
-    let reactions = [Reaction(id: "id", title: "More", color: .black, icon: UIImage(named: "MoreBlack")!),
-                     Reaction(id: "id", title: "Like", color: .black, icon: UIImage(named: "LikeFilled")!),
-                     Reaction(id: "id", title: "Comment", color: .black, icon: UIImage(named: "BubbleFilled")!),
-                     Reaction(id: "id", title: "Share", color: .black, icon: UIImage(named: "SentFilled")!)]
+    let reactions = [Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!),
+                     Reaction(id: "Like", title: "", color: .lightGray, icon: UIImage(named: "Like")!),
+                     Reaction(id: "Comment", title: "", color: .lightGray, icon: UIImage(named: "Comment")!),
+                     Reaction(id: "Share", title: "", color: .lightGray, icon: UIImage(named: "Share")!)]
     
     // MARK: - RPVideoPlayerView
     var rpVideoPlayer: RPVideoPlayerView!
-    
     // Used for skipping/rewinding segments
     var lastOffSet: CGPoint?
-    
     // Array to hold stories/likes
     var stories = [PFObject]()
     var likes = [PFObject]()
@@ -113,25 +110,43 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     }
     
     
-    func reactionDidChanged(_ sender: AnyObject) {
-//        print(reactionSelector.selectedReaction)
-    }
-    
+    // MARK: - Reactions
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
-        // .slideFingerAcross, .releaseToCancel, .tapToSelectAReaction
+        // More
+        if reactionSelector.selectedReaction?.id == "ReactMore" {
+            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+
+        } else if reactionSelector.selectedReaction?.id == "Like" {
+        // Like
+            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "Like", title: "", color: .lightGray, icon: UIImage(named: "Like")!)
+            
+        } else if reactionSelector.selectedReaction?.id == "Comment" {
+        // Comment
+            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+            
+            reactionObject.append(self.stories.last!)
+            let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+            self.navigationController?.pushViewController(reactionsVC, animated: true)
+            
+        } else if reactionSelector.selectedReaction?.id == "Share" {
+        // Share
+            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+            
+            reactionObject.append(self.stories.last!)
+            let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+            self.navigationController?.pushViewController(reactionsVC, animated: true)
+        }
     }
-    
+
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // MARK: - RPButton
         rpButton.isHidden = true
-        
         // Hide UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
-        
         // Hide UITabBar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -168,10 +183,11 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         reactionSelector.setReactions(reactions, sizeToFit: true)
         // (3) Configure ReactionSelector
         reactionSelector.config = ReactionSelectorConfig {
-            $0.spacing = 8
+            $0.spacing = 12
             $0.iconSize = 35
             $0.stickyReaction = true
         }
+        
         // (4) Set ReactionSelector
         reactButton.reactionSelector = reactionSelector
         // (5) Configure reactButton
@@ -185,10 +201,9 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         reactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         reactButton.frame.origin.y = self.view.bounds.height - 60
         reactButton.frame.origin.x = self.view.bounds.width/2 - 30
-        reactButton.layer.applyShadow(layer: reactButton.layer)
         self.view.addSubview(reactButton)
         self.view.bringSubview(toFront: reactButton)
-        
+        reactButton.presentReactionSelector()
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")

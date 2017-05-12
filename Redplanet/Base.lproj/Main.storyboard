@@ -4788,7 +4788,7 @@
         <image name="NumberPad" width="24" height="24"/>
         <image name="Pen" width="90" height="90"/>
         <image name="PhotosRoll" width="90" height="90"/>
-        <image name="RPLogo" width="307" height="307"/>
+        <image name="RPLogo" width="100" height="100"/>
         <image name="Redplanet" width="74" height="74"/>
         <image name="SLRCamera" width="17" height="20"/>
         <image name="SaveWhite" width="261" height="256"/>

@@ -326,7 +326,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         cell.rpUserProPic.makeCircular(forView: cell.rpUserProPic, borderWidth: CGFloat(0.5), borderColor: UIColor.lightGray)
         
         // Set delegate
-//        cell.delegate = self.navigationController
         cell.delegate = self
         
         // Set PFObject
@@ -392,12 +391,11 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
     
     // MARK: - UITableView Delegate Methods
     override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
-        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor(red:0.96, green:0.95, blue:0.95, alpha:1.0)
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
     }
     
     override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
-        self.tableView!.cellForRow(at: indexPath)?.backgroundColor = UIColor.white
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.white
     }
-    
     
 }

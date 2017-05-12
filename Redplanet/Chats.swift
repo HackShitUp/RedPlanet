@@ -636,14 +636,12 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             }
         }
         
-        
         return cell
     }
 
     // MARK: - UITableView Delegate Method
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        // If user is searching...
+        // SEARCHED
         if searchActive == true && searchBar.text != "" {
             // Append to <chatUserObject>
             // and <chatUsername>
@@ -652,11 +650,7 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             // Append user's username
             chatUsername.append(self.searchObjects[indexPath.row].value(forKey: "realNameOfUser") as! String)
         } else {
-            /*
-             Append Data
-             • chatUserObject: PFObject
-             • chatUserName: String
-            */
+        // CURRENT CHATS
             // RECEIVER
             if (self.chatObjects[indexPath.row].value(forKey: "sender") as! PFUser).objectId! == PFUser.current()!.objectId! {
                 chatUserObject.append(self.chatObjects[indexPath.row].object(forKey: "receiver") as! PFUser)
@@ -669,6 +663,14 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
         }
         // Push VC
         self.showChatRoom()
+    }
+    
+    override func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
+    }
+    
+    override func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        self.tableView.cellForRow(at: indexPath)?.contentView.backgroundColor = UIColor.white
     }
 
     // MARK: - UIScrollView Delegate Methods
