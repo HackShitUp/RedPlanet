@@ -317,6 +317,7 @@ open class SwiftyCamViewController: UIViewController {
                     let settings = UIAlertAction(title: "Settings",
                                                  style: .default,
                                                  handler: { (alertAction: UIAlertAction!) in
+                                                    UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
                     })
                     let later = UIAlertAction(title: "Later", style: .cancel, handler: nil)
                     alert.addAction(settings)

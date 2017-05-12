@@ -624,6 +624,14 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
         SDImageCache.shared().clearDisk()
     }
     
+    // MARK: - UITextField Delegate Method
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.rpUsername?.resignFirstResponder()
+        self.rpName?.resignFirstResponder()
+        self.rpEmail?.resignFirstResponder()
+        return true
+    }
+    
     // MARK: - UITextView Delegate Method
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.rpUserBio.textColor = UIColor.black

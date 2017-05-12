@@ -22,7 +22,7 @@ var chatCamera: Bool = false
 // Bool to determine camera side
 var isRearCam: Bool?
 
-class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
+class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
     
     // MARK: - CoreLocation
     let manager = CLLocationManager()
@@ -56,11 +56,34 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     // MARK: - SwipeNavigationController
     func showProfileUI() {
-        // TODO
-        // (1) ProfilEditVC?
-        // (2) CurrentUserVC?
-        // (3) Idk....
+        let currentUserVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserVC") as! CurrentUser
+        currentUserVC.modalPresentationStyle = .popover
+        currentUserVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
+        let popOverVC = currentUserVC.popoverPresentationController
+        popOverVC?.permittedArrowDirections = .any
+        popOverVC?.delegate = self
+        popOverVC?.sourceView = self.rpUserProPic
+        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        self.navigationController?.present(currentUserVC, animated: true, completion: nil)
     }
+    
+    // MARK: - UIPopoverPresentationControllerDelegate
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "popOver" {
+            let currentUserVC = segue.destination as! CurrentUser
+            currentUserVC.modalPresentationStyle = .popover
+            currentUserVC.preferredContentSize = CGSize(width: 300, height: 300)
+            let controller = currentUserVC.popoverPresentationController
+            if controller != nil {
+                controller?.delegate = self
+            }
+        }
+    }
+    
     
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
