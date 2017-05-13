@@ -162,8 +162,10 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 let rpHelpers = RPHelpers()
                 rpHelpers.showError(withTitle: "Network Error")
             }
-            // Reload data
-            self.tableView!.reloadData()
+            // Reload data in main thread
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     

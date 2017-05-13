@@ -170,5 +170,18 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // MARK: - RPHelpers
         webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
+        
+        
+//        // MARK: - RPPopUpVC
+//        let rpPopUpVC = RPPopUpVC()
+//        rpPopUpVC.topDismissable = true
+//        rpPopUpVC.draggableToSides = true
+//        rpPopUpVC.appearFromTop = true
+//        rpPopUpVC.bottomDismissible = false
+//        rpPopUpVC.appearOffset = CGFloat(20)
+//        rpPopUpVC.setUpScrollView()
+//        rpPopUpVC.addToScrollViewNewController(webBrowser)
+//        self.present(rpPopUpVC, animated: true, completion: nil)
+        
     }
 }

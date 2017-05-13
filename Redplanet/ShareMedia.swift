@@ -243,12 +243,9 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
     
     // MARK: - SwipeNavigationController
     func swipeNavigationController(_ controller: SwipeNavigationController, didShowEmbeddedViewForPosition position: Position) {
+
     }
-    
-    
-    
-    
-    
+
     // Function to share photo data
     func sharePhotoData() {
         

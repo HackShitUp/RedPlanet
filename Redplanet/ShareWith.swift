@@ -169,8 +169,6 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         if self.navigationController?.viewControllers.count == 3 {
             let viewControllers = self.navigationController!.viewControllers as [UIViewController]
             _ = self.navigationController!.popToViewController(viewControllers[viewControllers.count - 3], animated: false)
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         } else {
             _ = self.navigationController?.popViewController(animated: true)
         }

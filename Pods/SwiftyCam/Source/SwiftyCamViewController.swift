@@ -376,7 +376,8 @@ open class SwiftyCamViewController: UIViewController {
 			flashView?.alpha = 0.0
 			flashView?.backgroundColor = UIColor.white
 			previewLayer.addSubview(flashView!)
-
+            
+            // CRITICAL MODIFICATION: Flash configuration animation --> withDuration: 0.20, delay: 0.15
 			UIView.animate(withDuration: 0.20, delay: 0.15, options: .curveEaseInOut, animations: {
 				self.flashView?.alpha = 1.0
 
@@ -921,9 +922,10 @@ open class SwiftyCamViewController: UIViewController {
 		}
 
 		do{
-			try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
-			                                                with: [.duckOthers, .mixWithOthers])
-			session.automaticallyConfiguresApplicationAudioSession = false
+            // CRITICAL MODIFICATION: Audio configuration --> .allowBluetooth, and .mixWithOthers
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord,
+                                                            with: [.allowBluetooth, .mixWithOthers])
+            session.automaticallyConfiguresApplicationAudioSession = false
 		}
 		catch {
 			print("[SwiftyCam]: Failed to set background audio preference")
