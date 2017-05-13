@@ -135,7 +135,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
                                                 banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 15)
                                                 banner.titleLabel?.textColor = UIColor.black
                                                 banner.subtitleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 15)
-                                                banner.subtitleLabel?.textColor = UIColor.black
+                                                banner.subtitleLabel?.textColor = UIColor.darkGray
                                                 banner.roundAllCorners(sender: banner)
                                                 banner.backgroundColor = UIColor.white
                                                 banner.show()

@@ -135,6 +135,7 @@
 		7EA570BC1EC03ADE00A57C70 /* FollowersFollowing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */; };
 		7EAB4EAF1DB4607100059DB1 /* RPChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */; };
 		7EAB4EB31DB4AB0300059DB1 /* RPChatMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */; };
+		7EB40B5B1EC6618A0034E8AF /* SingleStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB40B5A1EC6618A0034E8AF /* SingleStory.swift */; };
 		7EBDCB261E72251000E319A0 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB251E72251000E319A0 /* Library.swift */; };
 		7EBDCB281E72273A00E319A0 /* LibraryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EBDCB271E72273A00E319A0 /* LibraryCell.swift */; };
 		7EC005781E8CD95A00405530 /* AZDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC005771E8CD95A00405530 /* AZDialogViewController.swift */; };
@@ -385,6 +386,7 @@
 		7EA570BB1EC03ADE00A57C70 /* FollowersFollowing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersFollowing.swift; sourceTree = "<group>"; };
 		7EAB4EAE1DB4607100059DB1 /* RPChatRoomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RPChatRoomCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		7EAB4EB21DB4AB0300059DB1 /* RPChatMediaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RPChatMediaCell.swift; sourceTree = "<group>"; };
+		7EB40B5A1EC6618A0034E8AF /* SingleStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleStory.swift; sourceTree = "<group>"; };
 		7EBDCB251E72251000E319A0 /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		7EBDCB271E72273A00E319A0 /* LibraryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryCell.swift; sourceTree = "<group>"; };
 		7EC005771E8CD95A00405530 /* AZDialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZDialogViewController.swift; sourceTree = "<group>"; };
@@ -686,6 +688,7 @@
 			children = (
 				7E80352D1EB4102700C9BA63 /* Home.swift */,
 				7E9351DC1EBAE2E60045DA48 /* Stories.swift */,
+				7EB40B5A1EC6618A0034E8AF /* SingleStory.swift */,
 				7EE697C61EAACABE004F4E24 /* StoryCell */,
 				7E01A5221EB81E3B00CD7FBF /* StoryScrollCell */,
 			);
@@ -1709,6 +1712,7 @@
 				7EC5D1331DB2FE4F00437219 /* AppDelegate.swift in Sources */,
 				7E41C7BC1E4057000025129B /* OtherUserHeader.swift in Sources */,
 				7E7037C51DBD5E6400F03E0C /* NewChats.swift in Sources */,
+				7EB40B5B1EC6618A0034E8AF /* SingleStory.swift in Sources */,
 				7EC7690D1EB6657A00507911 /* EHeaderCell.swift in Sources */,
 				7E98E9621DB75057001B7329 /* CLClassList.m in Sources */,
 				7E98E94F1DB75057001B7329 /* CLRotateTool.m in Sources */,

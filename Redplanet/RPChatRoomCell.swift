@@ -68,8 +68,8 @@ class RPChatRoomCell: UITableViewCell {
             var mention = handle
             mention = String(mention.characters.dropFirst())
             hashtags.append(mention.lowercased())
-            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
-            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
+//            let hashTags = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "hashtagsVC") as! HashTags
+//            self.delegate?.navigationController?.pushViewController(hashTags, animated: true)
 
         }
         

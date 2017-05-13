@@ -924,7 +924,7 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
-        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
+//        NotificationCenter.default.removeObserver(self, name: rpChat, object: nil)
     }
     
     

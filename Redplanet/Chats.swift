@@ -190,9 +190,10 @@ class Chats: UITableViewController, UISearchBarDelegate, UITabBarControllerDeleg
             } else {
                 print(error?.localizedDescription as Any)
             }
-            
-            // Reload data
-            self.tableView.reloadData()
+            // Reload data in main thread
+            DispatchQueue.main.async {
+                self.tableView?.reloadData()
+            }
         })
     }
 

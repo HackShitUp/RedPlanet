@@ -140,7 +140,15 @@ class TextPostCell: UITableViewCell {
         }
         
         // (2) Set text post
-        self.textPost.text = (self.postObject!.value(forKey: "textPost") as! String)
+        if let text = self.postObject!.value(forKey: "textPost") as? String {
+            // Manipulate font size depending on character count
+            if text.characters.count < 100 {
+                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 21)
+            } else {
+                self.textPost.font = UIFont(name: "AvenirNext-Medium", size: 17)
+            }
+            self.textPost.text = text
+        }
         
         // (3) Set time
         let from = self.postObject!.createdAt!
@@ -148,7 +156,6 @@ class TextPostCell: UITableViewCell {
         let components: NSCalendar.Unit = [.second, .minute, .hour, .day, .weekOfMonth]
         let difference = (Calendar.current as NSCalendar).components(components, from: from, to: now, options: [])
         self.time.text = difference.getFullTime(difference: difference, date: from)
-        
     }
     
     override func awakeFromNib() {
