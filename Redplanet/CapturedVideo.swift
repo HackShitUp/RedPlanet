@@ -87,7 +87,7 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
             capturedURLS.removeAll(keepingCapacity: false)
             // Reload data and push to bottom
             DispatchQueue.main.async {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                 self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
             }
             
@@ -318,10 +318,8 @@ class CapturedVideo: UIViewController, SwipeNavigationControllerDelegate, SwipeV
                            self.saveButton,
                            self.continueButton] as [Any]
             for b in buttons {
-                (b as AnyObject).layer.shadowColor = UIColor.black.cgColor
-                (b as AnyObject).layer.shadowOffset = CGSize(width: 1, height: 1)
-                (b as AnyObject).layer.shadowRadius = 3
-                (b as AnyObject).layer.shadowOpacity = 0.5
+                // MARK: - RPExtension
+                (b as AnyObject).layer.applyShadow(layer: (b as AnyObject).layer)
                 self.view.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.swipeView.bringSubview(toFront: (b as AnyObject) as! UIView)
                 self.swipeView.bringSubview(toFront: rpVideoPlayer)

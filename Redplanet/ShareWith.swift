@@ -22,6 +22,9 @@ var shareWithObject = [PFObject]()
 
 class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearchBarDelegate {
     
+    // MARK: - Class Variables
+    open var createdPost: Bool? = false
+    
     // AppDelegate
     let appDelegate = AppDelegate()
 
@@ -46,8 +49,119 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     @IBOutlet weak var doneButton: UIBarButtonItem!
     @IBAction func doneAction(_ sender: Any) {
         if self.usersToShareWith.count != 0 {
-            // Share with people
-            // Or post to news feed?
+            // Disable button
+            self.doneButton.isEnabled = false
+            
+            // Save to <Newsfeeds>
+            if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
+                // Save in background
+                shareWithObject.last!.saveInBackground()
+                // Send Notification
+                NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+            }
+            
+            // Send to individual people
+            for user in self.usersToShareWith {
+                if user.objectId! != PFUser.current()!.objectId! {
+                    // Switch Statement...
+                    switch shareWithObject.last!.value(forKey: "contentType") as! String {
+                    case "tp":
+                    // TEXT POST
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] = PFUser.current()!.username!
+                        chats["receiver"] = user
+                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                        chats["read"] = false
+                        chats["saved"] = false
+                        chats["Message"] = shareWithObject.last!.value(forKey: "textPost") as! String
+                        chats.saveInBackground()
+                        
+                        // MARK: - RPHelpers; update chatsQueue
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
+                    case "ph":
+                    // PHOTO
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] = PFUser.current()!.username!
+                        chats["receiver"] = user
+                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                        chats["read"] = false
+                        chats["saved"] = false
+                        chats["mediaType"] = "ph"
+                        chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
+                        chats.saveInBackground()
+                        
+                        // MARK: - RPHelpers; update chatsQueue
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
+                    case "vi":
+                    // VIDEO
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] = PFUser.current()!.username!
+                        chats["receiver"] = user
+                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                        chats["read"] = false
+                        chats["saved"] = false
+                        chats["mediaType"] = "vi"
+                        chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
+                        chats.saveInBackground()
+                        
+                        // MARK: - RPHelpers; update chatsQueue
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
+                    // TODO::
+                    // SPACE POST?
+                        
+                    case "itm":
+                    // MOMENT
+                        let chats = PFObject(className: "Chats")
+                        chats["sender"] = PFUser.current()!
+                        chats["senderUsername"] = PFUser.current()!.username!
+                        chats["receiver"] = user
+                        chats["receiverUsername"] = user.value(forKey: "username") as! String
+                        chats["mediaType"] = "itm"
+                        chats["read"] = false
+                        chats["saved"] = false
+                        if shareWithObject.last!.value(forKey: "photoAsset") != nil {
+                            chats["photoAsset"] = shareWithObject.last!.value(forKey: "photoAsset") as! PFFile
+                        } else {
+                            chats["videoAsset"] = shareWithObject.last!.value(forKey: "videoAsset") as! PFFile
+                        }
+                        chats.saveInBackground()
+                        
+                        // MARK: - RPHelpers; update chatsQueue
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.updateQueue(chatQueue: chats, userObject: user)
+                        
+                    default:
+                        break
+                    }
+                    
+                    // MARK: - RPHelpers; send push notification
+                    if user.value(forKey: "apnsId") != nil {
+                        let rpHelpers = RPHelpers()
+                        _ = rpHelpers.pushNotification(toUser: user, activityType: "from")
+                    }
+                }
+            }
+
+            
+            // MARK: - RPHelpers
+            let rpHelpers = RPHelpers()
+            rpHelpers.showSuccess(withTitle: "Successfully Sent")
+            
+            // Deallocate CapturedStill.swift
+            let capturedStill = CapturedStill()
+            capturedStill.clearArrays()
+            
+            // Clear arrays
+            self.usersToShareWith.removeAll(keepingCapacity: false)
         }
         
         
@@ -274,11 +388,21 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        // If post was NOT created, hide "Everyone" option
+        if createdPost == false && section == 0 {
+            return 0
+        } else {
+            return 35
+        }
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        // If post was NOT created, hide "Everyone" option
+        if createdPost == false && indexPath.row == 0 {
+            return 0
+        } else {
+            return 50
+        }
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -295,11 +419,10 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
         switch self.tableView.numberOfSections {
         case 2:
         // FOLLOWING
-            
             if indexPath.section == 0 && indexPath.row == 0 {
-            // Everyone
+            // Everyone -- Post
                 cell.rpUserProPic.image = UIImage(named: "ShareOP")
-                cell.rpFullName.text! = "Everyone"
+                cell.rpFullName.text! = "Post"
                 // Configure selected state
                 if self.usersToShareWith.contains(where: {$0.objectId! == PFUser.current()!.objectId!}) {
                     cell.accessoryType = .checkmark
@@ -308,8 +431,8 @@ class ShareWith: UITableViewController, UINavigationControllerDelegate, UISearch
                 }
                 
             } else {
-            // One - Many Person(s)
                 
+            // One - Many Person(s)
                 // Sort following in abcOrder
                 let abcFollowing = self.following.sorted{ ($0.value(forKey: "realNameOfUser") as! String) < ($1.value(forKey: "realNameOfUser") as! String)}
                 

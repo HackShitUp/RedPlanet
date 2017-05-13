@@ -33,7 +33,7 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     var stories = [PFObject]()
     var likes = [PFObject]()
     
-    let scrollSets = ["tp", "pp", "vi", "sh", "sp"]
+    let scrollSets = ["tp", "pp", "vi", "sp"]
     
     @IBOutlet weak var collectionView: UICollectionView!
     

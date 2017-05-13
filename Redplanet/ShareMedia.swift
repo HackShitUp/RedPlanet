@@ -236,7 +236,7 @@ class ShareMedia: UIViewController, UITextViewDelegate, UINavigationControllerDe
         mediaType = nil
         instanceVideoData = nil
         // Reload data
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }

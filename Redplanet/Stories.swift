@@ -43,7 +43,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var stories = [PFObject]()
     var likes = [PFObject]()
     
-    let scrollSets = ["tp", "pp", "vi", "sh", "sp"]
+    let scrollSets = ["tp", "pp", "vi", "sp"]
     
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -132,9 +132,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Share
             self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
             
-            reactionObject.append(self.stories.last!)
-            let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
-            self.navigationController?.pushViewController(reactionsVC, animated: true)
+            shareWithObject.append(self.stories.last!)
+            let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+            shareWithVC.createdPost = false
+            self.navigationController?.pushViewController(shareWithVC, animated: true)
         }
     }
 

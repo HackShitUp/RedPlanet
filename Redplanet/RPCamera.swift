@@ -22,7 +22,7 @@ var chatCamera: Bool = false
 // Bool to determine camera side
 var isRearCam: Bool?
 
-class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate {
+class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate {
     
     // MARK: - CoreLocation
     let manager = CLLocationManager()
@@ -37,16 +37,16 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     @IBOutlet weak var flashButton: UIButton!
     @IBOutlet weak var libraryButton: UIButton!
     @IBOutlet weak var newTextButton: UIButton!
-    @IBOutlet weak var homeButton: UIButton!
+    @IBOutlet weak var searchButton: UIButton!
 
-    // MARK: - SwipeNavigationController
-    @IBAction func showLibraryUI(_ sender: Any) {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
+    @IBAction func searchAction(_ sender: Any) {
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! Search
+        self.navigationController?.pushViewController(searchVC, animated: true)
     }
     
     // MARK: - SwipeNavigationController
-    @IBAction func showMainUI(_ sender: Any) {
-        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+    @IBAction func showLibraryUI(_ sender: Any) {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .left)
     }
     
     // MARK: - SwipeNavigationController
@@ -55,36 +55,10 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     }
     
     // MARK: - SwipeNavigationController
-    func showProfileUI() {
-        let currentUserVC = self.storyboard?.instantiateViewController(withIdentifier: "currentUserVC") as! CurrentUser
-        currentUserVC.modalPresentationStyle = .popover
-        currentUserVC.preferredContentSize = CGSize(width: self.view.frame.size.width, height: self.view.frame.size.width)
-        let popOverVC = currentUserVC.popoverPresentationController
-        popOverVC?.permittedArrowDirections = .any
-        popOverVC?.delegate = self
-        popOverVC?.sourceView = self.rpUserProPic
-        popOverVC?.sourceRect = CGRect(x: 0, y: 0, width: 1, height: 1)
-        self.navigationController?.present(currentUserVC, animated: true, completion: nil)
+    func showMainUI() {
+        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
     }
-    
-    // MARK: - UIPopoverPresentationControllerDelegate
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .none
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "popOver" {
-            let currentUserVC = segue.destination as! CurrentUser
-            currentUserVC.modalPresentationStyle = .popover
-            currentUserVC.preferredContentSize = CGSize(width: 300, height: 300)
-            let controller = currentUserVC.popoverPresentationController
-            if controller != nil {
-                controller?.delegate = self
-            }
-        }
-    }
-    
-    
+
     // MARK: - SwiftyCam Delegate Methods
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didTake photo: UIImage) {
         stillImages.append(photo)
@@ -94,7 +68,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didBeginRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         self.libraryButton.isHidden = true
-        self.homeButton.isHidden = true
         self.newTextButton.isHidden = true
         self.rpUserProPic.isHidden = true
         
@@ -109,7 +82,6 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
     
     func swiftyCam(_ swiftyCam: SwiftyCamViewController, didFinishRecordingVideo camera: SwiftyCamViewController.CameraSelection) {
         self.libraryButton.isHidden = false
-        self.homeButton.isHidden = false
         self.newTextButton.isHidden = false
         self.rpUserProPic.isHidden = false
         // MARK: - SegmentedProgressBar
@@ -138,7 +110,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         } else if camera == .front {
             isRearCam = false
             self.swapCameraButton.setImage(nil, for: .normal)
-            self.swapCameraButton.setTitle("😜", for: .normal)
+            self.swapCameraButton.setImage(UIImage(named: "Stickers"), for: .normal)
         }
     }
     
@@ -302,7 +274,7 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
         // Authorization
         authorizeLocation()
         
-        // Set profile photo
+        // Set Profile Photo
         if let proPic = PFUser.current()!.value(forKey: "userProfilePicture") as? PFFile {
             // MARK: - RPExtensions
             self.rpUserProPic.makeCircular(forView: self.rpUserProPic, borderWidth: 0.50, borderColor: UIColor.white)
@@ -334,33 +306,39 @@ class RPCamera: SwiftyCamViewController, SwiftyCamViewControllerDelegate, CLLoca
             isRearCam = true
         }
         
-        // MARK: - RPHelpers
-        self.homeButton.makeCircular(forView: self.homeButton, borderWidth: 2, borderColor: UIColor(red: 1, green: 0, blue: 0.31, alpha: 1))
+        // Hide buttons if camera is via Chats...
+        if chatCamera == true {
+            newTextButton.isHidden = true
+            libraryButton.isHidden = true
+        } else {
+            newTextButton.isHidden = false
+            libraryButton.isHidden = false
+        }
         
         // Tap button to take photo
         let captureTap = UITapGestureRecognizer(target: self, action: #selector(takePhoto))
         captureTap.numberOfTapsRequired = 1
-        self.captureButton.isUserInteractionEnabled = true
-        self.captureButton.addGestureRecognizer(captureTap)
+        captureButton.isUserInteractionEnabled = true
+        captureButton.addGestureRecognizer(captureTap)
         
         // Hold button to take record video
         let holdRecord = UILongPressGestureRecognizer(target: self, action: #selector(startVideoRecording))
         holdRecord.minimumPressDuration = 1.50
-        self.captureButton.isUserInteractionEnabled = true
-        self.captureButton.addGestureRecognizer(holdRecord)
+        captureButton.isUserInteractionEnabled = true
+        captureButton.addGestureRecognizer(holdRecord)
 
         // Tap to show ProfileUI
-        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showProfileUI))
+        let proPicTap = UITapGestureRecognizer(target: self, action: #selector(showMainUI))
         proPicTap.numberOfTapsRequired = 1
-        self.rpUserProPic.isUserInteractionEnabled = true
-        self.rpUserProPic.addGestureRecognizer(proPicTap)
+        rpUserProPic.isUserInteractionEnabled = true
+        rpUserProPic.addGestureRecognizer(proPicTap)
         
         // Bring buttons to front
         let buttons = [self.rpUserProPic,
                        self.flashButton,
+                       self.searchButton,
                        self.swapCameraButton,
                        self.libraryButton,
-                       self.homeButton,
                        self.newTextButton] as [Any]
         for b in buttons {
             // MARK: - RPHelpers

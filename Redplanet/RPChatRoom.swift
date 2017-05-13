@@ -59,9 +59,11 @@ class RPChatRoom: UIViewController, UINavigationControllerDelegate, UITableViewD
     @IBOutlet weak var stickersButton: UIButton!
     
     @IBAction func backButton(_ sender: AnyObject) {
+        // Set bool
+        chatCamera = false
         // Clear arrays
-        chatUserObject.removeLast()
-        chatUsername.removeLast()
+        chatUserObject.removeAll(keepingCapacity: false)
+        chatUsername.removeAll(keepingCapacity: false)
         // Pop view controller
         if self.navigationController?.viewControllers.count == 3 {
             let viewControllers = self.navigationController!.viewControllers as [UIViewController]

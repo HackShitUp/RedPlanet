@@ -24,11 +24,7 @@ var currentGeoFence = [CLPlacemark]()
 var temperature = [String]()
 
 class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavigationControllerDelegate {
-    
-    
-    
 
-    
     // MARK: - SnapSliderFilters
     let filterView = SNSlider(frame: UIScreen.main.bounds)
     let textField = SNTextField(y: SNUtils.screenSize.height/2, width: SNUtils.screenSize.width, heightOfScreen: SNUtils.screenSize.height)
@@ -78,66 +74,26 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
     
     @IBOutlet weak var continueButton: UIButton!
     @IBAction func continueButton(_ sender: Any) {
-        // Disable button
-        self.continueButton.isUserInteractionEnabled = false
-        
-        
-        let newsfeeds = PFObject(className: "Newsfeeds")
-        newsfeeds["byUser"] = PFUser.current()!
-        newsfeeds["username"] = PFUser.current()!.username!
-        newsfeeds["contentType"] = "itm"
-        newsfeeds["saved"] = false
-        newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
-        shareWithObject.append(newsfeeds)
-        let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-        self.navigationController?.pushViewController(shareWithVC, animated: true)
-        
-        
-//        // MARK: - HEAP
-//        Heap.track("SharedMoment", withProperties:
-//            ["byUserId": "\(PFUser.current()!.objectId!)",
-//                "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-//            ])
-//        
-//        // Re-enable buttons
-//        self.continueButton.isUserInteractionEnabled = true
-//        // Send Notification
-//        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-//        // Clear arrrays
-//        clearArrays()
-//        // MARK: - SwipeNavigationController
-//        self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-        
-        
-        
-        /*
         // MOMENT
         if chatCamera == false {
-            let newsfeeds = PFObject(className: "Newsfeeds")
-            newsfeeds["byUser"] = PFUser.current()!
-            newsfeeds["username"] = PFUser.current()!.username!
-            newsfeeds["contentType"] = "itm"
-            newsfeeds["saved"] = false
-            newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
-            newsfeeds.saveInBackground()
-            
-            // MARK: - HEAP
-            Heap.track("SharedMoment", withProperties:
-                ["byUserId": "\(PFUser.current()!.objectId!)",
-                    "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                ])
-            
-            // Re-enable buttons
-            self.continueButton.isUserInteractionEnabled = true
-            // Send Notification
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-            // Clear arrrays
-            clearArrays()
-            // MARK: - SwipeNavigationController
-            self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
+            // Create PFObject
+            let itmPhoto = PFObject(className: "Newsfeeds")
+            itmPhoto["byUser"] = PFUser.current()!
+            itmPhoto["username"] = PFUser.current()!.username!
+            itmPhoto["contentType"] = "itm"
+            itmPhoto["saved"] = false
+            itmPhoto["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
+            // Show ShareWith View Controller
+            shareWithObject.append(itmPhoto)
+            let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+            shareWithVC.createdPost = true
+            self.navigationController?.pushViewController(shareWithVC, animated: true)
             
         } else {
         // CHATS
+            // Disable button
+            self.continueButton.isUserInteractionEnabled = false
+            
             let chats = PFObject(className: "Chats")
             chats["sender"] = PFUser.current()!
             chats["senderUsername"] = PFUser.current()!.username!
@@ -184,7 +140,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
             // MARK: - SwipeNavigationController
             self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
         }
- */
+ 
     }
     
     

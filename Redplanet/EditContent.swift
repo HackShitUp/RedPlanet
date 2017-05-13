@@ -43,7 +43,7 @@ class EditContent: UIViewController, UITextViewDelegate, UITableViewDelegate, UI
     
     // Function to reload data
     func reloadData() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
         NotificationCenter.default.post(name: myProfileNotification, object: nil)
     }
     

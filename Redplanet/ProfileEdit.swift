@@ -73,7 +73,7 @@ class ProfileEdit: UIViewController, UINavigationControllerDelegate, UIPopoverPr
             // Re-enable backButton
             self.backButton.isEnabled = true
             // Send Notification to friendsNewsfeed
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
             // Send Notification to myProfile
             NotificationCenter.default.post(name: myProfileNotification, object: nil)
             // Pop view controller

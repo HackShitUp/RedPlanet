@@ -159,7 +159,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)
                         // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                         // Pop View Controller
                         _ = self.navigationController?.popViewController(animated: true)
                     } else {
@@ -226,7 +226,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         // Send Notification to otherUser's Profile
                         NotificationCenter.default.post(name: otherNotification, object: nil)
                         // Send Notification to News Feeds
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                         // Pop View Controller
                         _ = self.navigationController?.popViewController(animated: true)
                     } else {
@@ -288,7 +288,7 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         rpHelpers.showSuccess(withTitle: "Shared")
                         // Check for @'s and #'s
                         rpHelpers.checkHash(forObject: space, forText: self.textView.text!)
-                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sh")
+                        rpHelpers.checkTags(forObject: space, forText: self.textView.text!, postType: "sp")
                         
                         // Send Notification
                         let notifications = PFObject(className: "Notifications")
@@ -298,27 +298,20 @@ class NewSpacePost: UIViewController, UIImagePickerControllerDelegate, UINavigat
                         notifications["to"] = otherName.last!
                         notifications["type"] = "space"
                         notifications["forObjectId"] = space.objectId!
-                        notifications.saveInBackground(block: {
-                            (success: Bool, error: Error?) in
-                            if error == nil {
-                                print("Sent Notification: \(notifications)")
-                                
-                                // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
-                                if otherObject.last!.value(forKey: "apnsId") != nil {
-                                    let rpHelpers = RPHelpers()
-                                    _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
-                                }
-                                
-                                // Send Notification to otherUser's Profile
-                                NotificationCenter.default.post(name: otherNotification, object: nil)
-                                // Send Notification to News Feeds
-                                NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                                // Pop View Controller
-                                _ = self.navigationController?.popViewController(animated: true)
-                            } else {
-                                print(error?.localizedDescription as Any)
-                            }
-                        })
+                        notifications.saveInBackground()
+                        
+                        // MARK: - RPHelpers; send push notification if user's apnsId is NOT nil
+                        if otherObject.last!.value(forKey: "apnsId") != nil {
+                            let rpHelpers = RPHelpers()
+                            _ = rpHelpers.pushNotification(toUser: otherObject.last!, activityType: "shared on your Space")
+                        }
+                        
+                        // Send Notification to otherUser's Profile
+                        NotificationCenter.default.post(name: otherNotification, object: nil)
+                        // Send Notification to News Feeds
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
+                        // Pop View Controller
+                        _ = self.navigationController?.popViewController(animated: true)
                         
                     } else {
                         print(error?.localizedDescription as Any)

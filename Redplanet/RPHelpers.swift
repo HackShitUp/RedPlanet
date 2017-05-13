@@ -59,14 +59,15 @@ class RPHelpers: NSObject {
                                         // Traverse JSON data to "Mutable Containers"
                                         let json = try(JSONSerialization.jsonObject(with: data!, options: .mutableContainers))
                                         
-                                        let main = (json as AnyObject).value(forKey: "main") as! NSDictionary
-                                        let kelvin = main["temp"] as! Double
-                                        let farenheit = (kelvin * 1.8) - 459.67
-                                        let celsius = kelvin - 273.15
-                                        let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
-                                        
-                                        // Append Temperature as String
-                                        temperature.append(both)
+                                        // Optionally chain NSDictionary value to prevent from crashing...
+                                        if let main = (json as AnyObject).value(forKey: "main") as? NSDictionary {
+                                            let kelvin = main["temp"] as! Double
+                                            let farenheit = (kelvin * 1.8) - 459.67
+                                            let celsius = kelvin - 273.15
+                                            let both = "\(Int(farenheit))°F\n\(Int(celsius))°C"
+                                            // Append Temperature as String
+                                            temperature.append(both)
+                                        }
                                         
                                     } catch let error {
                                         print(error.localizedDescription as Any)
@@ -135,8 +136,6 @@ class RPHelpers: NSObject {
                                             self.pushNotification(toUser: object, activityType: "tagged you in a Profile Photo")
                                             case "vi":
                                             self.pushNotification(toUser: object, activityType: "tagged you in a Video")
-                                            case "sh":
-                                            self.pushNotification(toUser: object, activityType: "tagged you in a Shared Post")
                                             case "sp":
                                             self.pushNotification(toUser: object, activityType: "tagged you in a Space Post")
                                             case "co":

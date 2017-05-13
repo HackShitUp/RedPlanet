@@ -759,9 +759,6 @@ class OtherUser: UITableViewController, UINavigationControllerDelegate, DZNEmpty
         if self.stories[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             cell.textPreview.text = "\(self.stories[indexPath.row].value(forKey: "textPost") as! String)"
             cell.textPreview.isHidden = false
-        } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            cell.mediaPreview.image = UIImage(named: "SharedPostIcon")
-            cell.mediaPreview.isHidden = false
         } else if self.stories[indexPath.row].value(forKey: "contentType") as! String == "sp" {
             cell.mediaPreview.image = UIImage(named: "CSpacePost")
             cell.mediaPreview.isHidden = false

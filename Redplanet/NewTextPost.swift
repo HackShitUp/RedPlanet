@@ -76,7 +76,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             
             dialogController.show(in: self)
             
-            
         } else if self.textView.text! == "What are you doing?" || self.textView.text! == "Thoughts are preludes to revoltuionary movements..." {
             
             // Vibrate device
@@ -100,7 +99,6 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             dialogController.addAction(AZDialogAction(title: "Ok", handler: { (dialog) -> (Void) in
                 // Dismiss
                 dialog.dismiss()
-                
             }))
             
             dialogController.show(in: self)
@@ -135,46 +133,19 @@ class NewTextPost: UIViewController, UINavigationControllerDelegate, UITextViewD
             dialogController.show(in: self)
 
         } else {
+            // Create PFObject
+            let textPost = PFObject(className: "Newsfeeds")
+            textPost["byUser"]  = PFUser.current()!
+            textPost["username"] = PFUser.current()!.username!
+            textPost["textPost"] = self.textView!.text!
+            textPost["contentType"] = "tp"
+            textPost["saved"] = false
             
-            // Disable button
-            self.shareButton.isUserInteractionEnabled = false
-            self.shareButton.isEnabled = false
-            
-            let newsfeeds = PFObject(className: "Newsfeeds")
-            newsfeeds["byUser"]  = PFUser.current()!
-            newsfeeds["username"] = PFUser.current()!.username!
-            newsfeeds["textPost"] = self.textView!.text!
-            newsfeeds["contentType"] = "tp"
-            newsfeeds["saved"] = false
-            newsfeeds.saveInBackground {
-                (success: Bool, error: Error?) in
-                if error == nil {
-                    
-                    // Enable button
-                    self.shareButton.isUserInteractionEnabled = true
-                    self.shareButton.isEnabled = true
-                    
-                    // MARK: - RPHelpers
-                    let rpHelpers = RPHelpers()
-                    rpHelpers.checkHash(forObject: newsfeeds, forText: self.textView.text!)
-                    rpHelpers.checkTags(forObject: newsfeeds, forText: self.textView.text!, postType: "tp")
-                    
-                    // MARK: - HEAP
-                    Heap.track("SharedTextPost", withProperties:
-                        ["byUserId": "\(PFUser.current()!.objectId!)",
-                            "Name": "\(PFUser.current()!.value(forKey: "realNameOfUser") as! String)"
-                        ])
-                    
-                    // Completed executing
-                    self.textView.resignFirstResponder()
-                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
-                    self.textView.text! = "What are you doing?"
-                    // MARK: - SwipeNavigationController
-                    self.containerSwipeNavigationController?.showEmbeddedView(position: .bottom)
-                } else {
-                    print(error?.localizedDescription as Any)
-                }
-            }
+            // Show ShareWith View Controller
+            shareWithObject.append(textPost)
+            let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+            shareWithVC.createdPost = true
+            self.navigationController?.pushViewController(shareWithVC, animated: true)
         }
     }
     

@@ -1,5 +1,5 @@
 //
-//  SearchEngine.swift
+//  Search.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 10/16/16.
@@ -16,7 +16,7 @@ import Bolts
 import DZNEmptyDataSet
 import SDWebImage
 
-class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITextFieldDelegate, DZNEmptyDataSetSource {
+class Search: UITableViewController, UINavigationControllerDelegate, UITextFieldDelegate, DZNEmptyDataSetSource {
 
     // App Delegate
     let appDelegate = AppDelegate()
@@ -71,6 +71,9 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITex
         searchBar.becomeFirstResponder()
         // MARK: - RPExtensions
         self.navigationController?.navigationBar.normalizeBar(navigator: self.navigationController)
+        // Configure UIStatusBar
+        UIApplication.shared.statusBarStyle = .default
+        self.setNeedsStatusBarAppearanceUpdate()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -99,7 +102,7 @@ class SearchEngine: UITableViewController, UINavigationControllerDelegate, UITex
         let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(backButton))
         backSwipe.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(backSwipe)
-        self.navigationController!.interactivePopGestureRecognizer!.delegate = nil
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {

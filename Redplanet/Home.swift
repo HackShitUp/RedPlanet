@@ -83,11 +83,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.fetchFirstPosts(forGroup: self.friends)
                 
             } else {
-                // MARK: - NotificationBannerSwift
-                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                banner.show()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         })
     }
@@ -115,11 +113,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 self.fetchFirstPosts(forGroup: self.following)
                 
             } else {
-                // MARK: - NotificationBannerSwift
-                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                banner.show()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
         }
     }
@@ -162,11 +158,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
                 
             } else {
                 print(error?.localizedDescription as Any)
-                // MARK: - NotificationBannerSwift
-                let banner = StatusBarNotificationBanner(title: "Network Error", style: .success)
-                banner.titleLabel?.font = UIFont(name: "AvenirNext-Demibold", size: 12)
-                banner.backgroundColor = UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
-                banner.show()
+                // MARK: - RPHelpers
+                let rpHelpers = RPHelpers()
+                rpHelpers.showError(withTitle: "Network Error")
             }
             // Reload data
             self.tableView!.reloadData()
@@ -257,6 +251,9 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         } else {
             fetchFollowing()
         }
+        
+        // Define Notification to reload data
+        NotificationCenter.default.addObserver(self, selector: #selector(refresh), name: Notification.Name(rawValue: "home"), object: nil)
         
         // Set UITabBarController Delegate
         self.tabBarController?.delegate = self
@@ -359,9 +356,6 @@ class Home: UITableViewController, UINavigationControllerDelegate, UITabBarContr
         if self.posts[indexPath.row].value(forKey: "contentType") as! String == "tp" {
             cell.textPreview.text = "\(self.posts[indexPath.row].value(forKey: "textPost") as! String)"
             cell.textPreview.isHidden = false
-        } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-            cell.mediaPreview.image = UIImage(named: "SharedPostIcon")
-            cell.mediaPreview.isHidden = false
         } else if self.posts[indexPath.row].value(forKey: "contentType") as! String == "sp" {
             cell.mediaPreview.image = UIImage(named: "CSpacePost")
             cell.mediaPreview.isHidden = false

@@ -124,7 +124,7 @@ class StoryCell: UITableViewCell {
                                     rpHelpers.showSuccess(withTitle: "Deleted")
                                     
                                     // Send FriendsNewsfeeds Notification
-                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "friendsNewsfeed"), object: nil)
+                                    NotificationCenter.default.post(name: Notification.Name(rawValue: "home"), object: nil)
                                     // Send MyProfile Notification
                                     NotificationCenter.default.post(name: myProfileNotification, object: nil)
                                     

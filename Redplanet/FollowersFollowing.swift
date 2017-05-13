@@ -190,8 +190,8 @@ class FollowersFollowing: UITableViewController, UISearchBarDelegate, DZNEmptyDa
     }
     
     func emptyDataSet(_ scrollView: UIScrollView!, didTap button: UIButton!) {
-        let search = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
-        self.navigationController!.pushViewController(search, animated: true)
+        let contactsVC = self.storyboard?.instantiateViewController(withIdentifier: "contactsVC") as! Contacts
+        self.navigationController!.pushViewController(contactsVC, animated: true)
     }
     
 

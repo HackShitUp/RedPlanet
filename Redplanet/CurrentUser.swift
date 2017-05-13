@@ -417,6 +417,11 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
         super.viewDidAppear(animated)
         // Stylize title
         configureView()
+        // MARK: - RPHelpers; hide rpButton
+        rpButton.isHidden = false
+        // Set UITabBar isTranslucent boolean
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
     }
     
     override func viewDidLoad() {
@@ -618,9 +623,6 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
             if self.relativeObjects[indexPath.row].value(forKey: "contentType") as! String == "tp" {
                 cell.textPreview.text = "\(self.relativeObjects[indexPath.row].value(forKey: "textPost") as! String)"
                 cell.textPreview.isHidden = false
-            } else if self.relativeObjects[indexPath.row].value(forKey: "contentType") as! String == "sh" {
-                cell.mediaPreview.image = UIImage(named: "SharedPostIcon")
-                cell.mediaPreview.isHidden = false
             } else if self.relativeObjects[indexPath.row].value(forKey: "contentType") as! String == "sp" {
                 cell.mediaPreview.image = UIImage(named: "CSpacePost")
                 cell.mediaPreview.isHidden = false
@@ -785,9 +787,9 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 cell.activity.text = "tagged you in a comment"
             }
             
-            // ------------------------------------------------------------------------------------------------------------
-            // ==================== C O M M E N T -------------------------------------------------------------------------
-            // ------------------------------------------------------------------------------------------------------------
+            // -------------------------------------------------------------------------------------------
+            // ==================== C O M M E N T --------------------------------------------------------
+            // -------------------------------------------------------------------------------------------
             
             if relativeObjects[indexPath.row].value(forKey: "type") as! String == "comment" {
                 cell.activity.text = "commented on your post"
@@ -817,17 +819,12 @@ class CurrentUser: UIViewController, UITableViewDataSource, UITableViewDelegate,
                 cell.activity.text = "shared your Space Post"
             }
             
-            // (5) Share
-            if relativeObjects[indexPath.row].value(forKey: "type") as! String == "share sh" {
-                cell.activity.text = "re-shared your Shared Post"
-            }
-            
-            // (6) Moment
+            // (5) Moment
             if relativeObjects[indexPath.row].value(forKey: "type") as! String == "share itm" {
                 cell.activity.text = "shared your Moment"
             }
             
-            // (7) Video
+            // (6) Video
             if relativeObjects[indexPath.row].value(forKey: "type") as! String == "share vi" {
                 cell.activity.text = "shared your Video"
             }

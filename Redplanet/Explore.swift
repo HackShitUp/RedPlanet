@@ -69,8 +69,8 @@ class Explore: UITableViewController, UITextFieldDelegate {
     
     // MARK: - UITextField Delegate Methods
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Push to SearchEngine
-        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! SearchEngine
+        // Push to Search
+        let searchVC = self.storyboard?.instantiateViewController(withIdentifier: "searchVC") as! Search
         self.navigationController?.pushViewController(searchVC, animated: true)
     }
 

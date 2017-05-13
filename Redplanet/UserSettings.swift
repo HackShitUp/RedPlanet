@@ -25,6 +25,11 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
 
     @IBOutlet weak var privacy: UISwitch!
     @IBAction func backButton(_ sender: AnyObject) {
+        // MARK: - RPHelpers; hide rpButton
+        rpButton.isHidden = false
+        // Set UITabBar isTranslucent boolean
+        self.navigationController?.tabBarController?.tabBar.isHidden = false
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = false
         // Pop view controller
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -55,13 +60,16 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
             self.navigationController?.title = "Settings"
         }
+        // MARK: - RPHelpers; hide rpButton
+        rpButton.isHidden = true
         // Configure UINavigationBar via extension
         self.navigationController?.navigationBar.whitenBar(navigator: self.navigationController)
+        self.navigationController?.tabBarController?.tabBar.isHidden = true
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
         // Configure UIStatusBar
         UIApplication.shared.isStatusBarHidden = false
         UIApplication.shared.statusBarStyle = .default
         self.setNeedsStatusBarAppearanceUpdate()
-        
     }
 
     // Function to set privacy
@@ -162,6 +170,8 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
     }
     /**/
     
+    
+    // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Stylize title
@@ -198,7 +208,7 @@ class UserSettings: UITableViewController, MFMailComposeViewControllerDelegate, 
         title.textColor = UIColor.black
         title.backgroundColor = UIColor.white
         title.numberOfLines = 0
-        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NYC."
+        title.text = "Redplanet version \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as! String)\nMade with ❤ in NYC.\n🗽 rp 🌉"
         title.textAlignment = .center
         versionView.addSubview(title)
         self.tableView.tableFooterView = versionView
