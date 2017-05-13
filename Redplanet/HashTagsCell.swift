@@ -65,12 +65,11 @@ class HashTagsCell: UITableViewCell {
     
     // Function to share
     func shareOptions() {
-        // Append to contentObject
-        shareObject.append(self.contentObject!)
-        
-        // Share to chats
-        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-        self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
+//        // Append to contentObject
+//        shareObject.append(self.contentObject!)
+//        // Share to chats
+//        let shareToVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+//        self.delegate?.navigationController?.pushViewController(shareToVC, animated: true)
     }
     
     

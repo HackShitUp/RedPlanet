@@ -88,13 +88,7 @@ class CapturedStill: UIViewController, UINavigationControllerDelegate, SwipeNavi
         newsfeeds["contentType"] = "itm"
         newsfeeds["saved"] = false
         newsfeeds["photoAsset"] = PFFile(data: UIImageJPEGRepresentation(SNUtils.screenShot(self.stillPhoto)!, 0.5)!)
-
-        if chatCamera == false {
-            createdObject.append(newsfeeds)
-        } else {
-            shareObject.append(newsfeeds)
-        }
-        
+        shareWithObject.append(newsfeeds)
         let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
         self.navigationController?.pushViewController(shareWithVC, animated: true)
         

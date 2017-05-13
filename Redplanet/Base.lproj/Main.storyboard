@@ -1719,19 +1719,19 @@
                         <barButtonItem key="leftBarButtonItem" image="Left_50" id="flz-Jn-6YX">
                             <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="backButton:" destination="Fd5-Xf-hwZ" id="SDQ-Kt-XZK"/>
+                                <action selector="backAction:" destination="Fd5-Xf-hwZ" id="DGR-1X-snO"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="icB-xU-SLW">
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <action selector="shareAction:" destination="Fd5-Xf-hwZ" id="Sta-Bi-Lzj"/>
+                                <action selector="doneAction:" destination="Fd5-Xf-hwZ" id="JBF-ri-0jf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="shareButton" destination="icB-xU-SLW" id="c6M-Hy-llK"/>
+                        <outlet property="doneButton" destination="icB-xU-SLW" id="wKq-PN-pOx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jcw-0y-pFG" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2652,6 +2652,7 @@
                         <textField key="titleView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="7V5-Wi-I5H">
                             <rect key="frame" x="22.5" y="7" width="330" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                             <color key="tintColor" red="1" green="0.0061413068040000003" blue="0.31150354260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -4581,7 +4582,7 @@
     <resources>
         <image name="AddUser" width="24" height="24"/>
         <image name="Camera" width="412" height="412"/>
-        <image name="Chats" width="27" height="23"/>
+        <image name="Chats" width="25" height="25"/>
         <image name="Contacts" width="25" height="25"/>
         <image name="Exit" width="750" height="750"/>
         <image name="FlashOff" width="256" height="256"/>
@@ -4600,9 +4601,9 @@
         <image name="SLRCamera" width="17" height="20"/>
         <image name="SaveWhite" width="261" height="256"/>
         <image name="Search" width="25" height="25"/>
-        <image name="SentFilled" width="50" height="50"/>
+        <image name="SentFilled" width="47" height="47"/>
         <image name="Settings" width="24" height="24"/>
-        <image name="ShareOP" width="75" height="75"/>
+        <image name="ShareOP" width="70" height="70"/>
         <image name="Stickers" width="76" height="76"/>
         <image name="SwapCamera" width="243" height="256"/>
         <image name="UserAction" width="25" height="25"/>
