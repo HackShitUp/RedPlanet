@@ -49,7 +49,7 @@ class Explore: UITableViewController, UITextFieldDelegate {
         
         // Configure UIRefreshControl
         refresher = UIRefreshControl()
-        refresher.backgroundColor = UIColor(red:0.74, green:0.06, blue:0.88, alpha:1.0)
+        refresher.backgroundColor = UIColor(red: 0, green: 0.63, blue: 1, alpha: 1)
         refresher.tintColor = UIColor.white
         refresher.addTarget(self, action: #selector(refresh), for: .valueChanged)
         self.tableView.addSubview(refresher)

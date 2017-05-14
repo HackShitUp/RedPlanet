@@ -73,7 +73,7 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
         // MARK: - SafariServices
         let webVC = SFSafariViewController(url: URL(string: "https://newsapi.org/")!, entersReaderIfAvailable: false)
         // MARK: - RPHelpers
-        webVC.view.roundAllCorners(sender: webVC.view)
+        webVC.view.roundTopCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
     }
     
@@ -94,7 +94,6 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         // MARK: - AnimatedCollectionViewLayout
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
@@ -167,21 +166,8 @@ class SelectedStories: UIViewController, UINavigationControllerDelegate, UIColle
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         // MARK: - SafariServices
         let webVC = SFSafariViewController(url: URL(string: self.articleObjects[indexPath.row].value(forKey: "url") as! String)!, entersReaderIfAvailable: false)
-        // MARK: - RPHelpers
-        webVC.view.roundAllCorners(sender: webVC.view)
         self.present(webVC, animated: true, completion: nil)
-        
-        
-//        // MARK: - RPPopUpVC
-//        let rpPopUpVC = RPPopUpVC()
-//        rpPopUpVC.topDismissable = true
-//        rpPopUpVC.draggableToSides = true
-//        rpPopUpVC.appearFromTop = true
-//        rpPopUpVC.bottomDismissible = false
-//        rpPopUpVC.appearOffset = CGFloat(20)
-//        rpPopUpVC.setUpScrollView()
-//        rpPopUpVC.addToScrollViewNewController(webBrowser)
-//        self.present(rpPopUpVC, animated: true, completion: nil)
-        
     }
+    
+    
 }
