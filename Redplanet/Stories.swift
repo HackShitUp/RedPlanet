@@ -28,7 +28,7 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
     var spb: SegmentedProgressBar!
     
     // MARK: - Reactions; Initialize (1) ReactionButton, (2) ReactionSelector, (3) Reactions
-    let reactButton = ReactionButton()
+    let reactButton = ReactionButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
     let reactionSelector = ReactionSelector()
     let reactions = [Reaction(id: "ReactMore", title: "More", color: .lightGray, icon: UIImage(named: "ReactMore")!),
                      Reaction(id: "Like", title: "Like", color: .lightGray, icon: UIImage(named: "Like")!),
@@ -109,36 +109,39 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         return true
     }
     
-    
     // MARK: - Reactions
     func reactionFeedbackDidChanged(_ feedback: ReactionFeedback?) {
-        // More
-        if reactionSelector.selectedReaction?.id == "ReactMore" {
+        if feedback == nil || feedback == .tapToSelectAReaction {
+            // More
+            if reactionSelector.selectedReaction?.id == "ReactMore" {
+                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                
+            } else if reactionSelector.selectedReaction?.id == "Like" {
+                // Like
+                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "LikeFilled", title: "", color: .lightGray, icon: UIImage(named: "LikeFilled")!)
+                
+            } else if reactionSelector.selectedReaction?.id == "Comment" {
+                // Comment
+                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                
+                reactionObject.append(self.stories.last!)
+                let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
+                self.navigationController?.pushViewController(reactionsVC, animated: true)
+                
+            } else if reactionSelector.selectedReaction?.id == "Share" {
+                // Share
+                self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
+                
+                shareWithObject.append(self.stories.last!)
+                let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
+                shareWithVC.createdPost = false
+                self.navigationController?.pushViewController(shareWithVC, animated: true)
+            }
+        } else {
+            // Share
             self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-
-        } else if reactionSelector.selectedReaction?.id == "Like" {
-        // Like
-            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "Like", title: "", color: .lightGray, icon: UIImage(named: "Like")!)
-            
-        } else if reactionSelector.selectedReaction?.id == "Comment" {
-        // Comment
-            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-            
-            reactionObject.append(self.stories.last!)
-            let reactionsVC = self.storyboard?.instantiateViewController(withIdentifier: "reactionsVC") as! Reactions
-            self.navigationController?.pushViewController(reactionsVC, animated: true)
-            
-        } else if reactionSelector.selectedReaction?.id == "Share" {
-        // Share
-            self.reactButton.reactionSelector?.selectedReaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-            
-            shareWithObject.append(self.stories.last!)
-            let shareWithVC = self.storyboard?.instantiateViewController(withIdentifier: "shareWithVC") as! ShareWith
-            shareWithVC.createdPost = false
-            self.navigationController?.pushViewController(shareWithVC, animated: true)
         }
     }
-
     
     // MARK: - UIView Life Cycle
     override func viewWillAppear(_ animated: Bool) {
@@ -148,6 +151,8 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         // Hide UIStatusBar
         UIApplication.shared.isStatusBarHidden = true
         self.setNeedsStatusBarAppearanceUpdate()
+        // MARK: - RPExtensions
+        self.navigationController?.view.straightenCorners(sender: self.navigationController?.view)
         // Hide UITabBar
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -199,12 +204,10 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
             $0.neutralTintColor = UIColor.black
         }
         reactButton.reaction = Reaction(id: "ReactMore", title: "", color: .lightGray, icon: UIImage(named: "ReactMore")!)
-        reactButton.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
-        reactButton.frame.origin.y = self.view.bounds.height - 60
-        reactButton.frame.origin.x = self.view.bounds.width/2 - 30
+        reactButton.frame.origin.y = self.view.bounds.height - 75
+        reactButton.frame.origin.x = self.view.bounds.width/2 - reactButton.frame.size.width/2
         self.view.addSubview(reactButton)
         self.view.bringSubview(toFront: reactButton)
-
         
         // Register NIBS
         self.collectionView?.register(UINib(nibName: "MomentPhoto", bundle: nil), forCellWithReuseIdentifier: "MomentPhoto")
@@ -213,11 +216,16 @@ class Stories: UIViewController, UICollectionViewDelegate, UICollectionViewDataS
         self.collectionView?.register(UINib(nibName: "StoryScrollCell", bundle: nil), forCellWithReuseIdentifier: "StoryScrollCell")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         // MARK: - SwipeNavigationController
         self.containerSwipeNavigationController?.shouldShowCenterViewController = true
-        // Show rpButton
+        // MARK: - RPExtensions; rpButton
         rpButton.isHidden = false
     }
     

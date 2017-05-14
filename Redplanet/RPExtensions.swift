@@ -56,6 +56,12 @@ extension UIView {
         sender!.clipsToBounds = true
     }
     
+    // Function to straighten corners of UIView
+    func straightenCorners(sender: UIView?) {
+        sender!.layer.cornerRadius = 0
+        sender!.clipsToBounds = true
+    }
+    
     // Function to make the view circular
     func makeCircular(forView: UIView?, borderWidth: CGFloat?, borderColor: UIColor?) {
         forView!.layoutIfNeeded()

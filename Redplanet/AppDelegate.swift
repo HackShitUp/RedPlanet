@@ -5,20 +5,22 @@
 //  Created by Joshua Choi on 10/15/16.
 //  Copyright © 2016 Redplanet Media, LLC. All rights reserved.
 //
-
-
-
 /*
-                                                            How does it feel?
- 
-                                                            How does it feel?
- 
-                                                            To be without a home?
- 
-                                                            Like a complete unknown?
- 
-                                                            Like a rolling stone ?
+  
+  "Have I not commanded you? Be strong and courageous. 
+  Do not be afraid; do not be discouraged, for the Lord
+  your God will be with you wherever you go.”
+  - Joshua 1:9
+  
+  How does it feel?
+  How does it feel?
+  To be without a home?
+  Like a complete unknown?
+  Like a rolling stone ?
+  - Bob Dylan
 
+  
+  
 RED:
 • UIColor(red: 1, green: 0, blue: 0.31, alpha: 1)
 • #FF0050
@@ -34,13 +36,13 @@ BLUE:
 GOOD GRAY
 • UIColor(red: 0.80, green: 0.80, blue: 0.80, alpha: 1)
 • #CCCCCC
- 
+
 SUPER LIGHT GREY
 • UIColor(red: 0.96, green: 0.95, blue: 0.95, alpha: 1)
 
 YELLOW:
 • UIColor(red: 1, green: 0.86, blue: 0, alpha: 1)
- */
+*/
 
 import UIKit
 import CoreData
@@ -75,10 +77,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, OSSubscriptionObserver, O
         Parse.enableLocalDatastore()
         
         /*
-         MARK: - Parse
-         • Client Configuration with 
-         • AWS EC2 Instance Server hosted on 
-         • MLAB
+         MARK: - Parse; Client Configuration
+         • AWS EC2 Instance Server
+         • Database hosted on MLAB
         */
         let configuration = ParseClientConfiguration {
             $0.applicationId = "mvFumzoAGYENJ0vOKjKB4icwSCiRiXqbYeFs29zk"

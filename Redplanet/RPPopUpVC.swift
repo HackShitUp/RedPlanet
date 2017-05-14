@@ -19,9 +19,9 @@ extension RPPopUpVC {
     func setupView(vc: RPPopUpVC?, popOverVC: UIViewController?) {
         vc?.topDismissable = true
         vc?.draggableToSides = false
-        vc?.appearFromTop = false
+        vc?.appearFromTop = true
         vc?.bottomDismissible = false
-        vc?.appearOffset = CGFloat(202)
+        vc?.appearOffset = CGFloat(20)
         vc?.setUpScrollView()
         vc?.addToScrollViewNewController(popOverVC!)
     }
@@ -90,19 +90,7 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         createMantleViewController()
         initScrollView()
     }
-    
-    
-    
-    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        //
-        print("fired?")
-    }
-    
-    public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
-        //
-    }
-    
-    
+
     override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -136,7 +124,6 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         let bottom = NSLayoutConstraint(item: scrollView, attribute: .bottom, relatedBy: .equal, toItem: view, attribute: .bottom, multiplier: 1.0, constant: 0)
         let leading = NSLayoutConstraint(item: scrollView, attribute: .leading, relatedBy: .equal, toItem: view, attribute: .leading, multiplier: 1.0, constant: 0)
         let trailing = NSLayoutConstraint(item: scrollView, attribute: .trailing, relatedBy: .equal, toItem: view, attribute: .trailing, multiplier: 1.0, constant: 0)
-        
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -223,12 +210,8 @@ open class RPPopUpVC: UIViewController, UIScrollViewDelegate, UINavigationContro
         // Finally adding the controller in the list of controllers
         controllers.append(controller)
      
-        // Make view background clear
-//        controller.view.backgroundColor = UIColor.clear
+        // Make view background randomColor
         contentView.backgroundColor = UIColor.randomColor()
-//        scrollView.backgroundColor = UIColor.clear
-//        self.view.backgroundColor = UIColor.clear
-//        self.view.isOpaque = false
     }
     
     open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
