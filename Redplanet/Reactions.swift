@@ -546,6 +546,12 @@ class Reactions: UIViewController, UITableViewDataSource, UITableViewDelegate, U
         refresher.addTarget(self, action: #selector(handleCase), for: .valueChanged)
         self.tableView.addSubview(refresher)
         
+        // Implement back swipe method
+        let backSwipe = UISwipeGestureRecognizer(target: self, action: #selector(back))
+        backSwipe.direction = .right
+        self.view.addGestureRecognizer(backSwipe)
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        
         // NotificationCenter: Add Observers
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)

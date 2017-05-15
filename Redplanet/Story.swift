@@ -1,5 +1,5 @@
 //
-//  SingleStory.swift
+//  Story.swift
 //  Redplanet
 //
 //  Created by Joshua Choi on 5/12/17.
@@ -16,10 +16,13 @@ import Bolts
 import AnimatedCollectionViewLayout
 import SDWebImage
 
-class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate {
+class Story: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SegmentedProgressBarDelegate {
     
     // MARK: - Class Variable; Used to get object
     open var singleStory: PFObject?
+    
+    // Used to determine whether to fetch CHAT MOMENT or SINGLE STORY INCLUDING
+    open var chatOrStory: String?
 
     // MARK: - SegmentedProgressBar
     var spb: SegmentedProgressBar!
@@ -37,9 +40,8 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    func fetchData() {
+    func fetchChat() {
         let chats = PFQuery(className: "Chats")
-//        chats.whereKey("objectId", equalTo: self.singleStory.objectId!)
         chats.whereKey("mediaType", equalTo: "itm")
         chats.order(byDescending: "createdAt")
         chats.findObjectsInBackground { (objects: [PFObject]?, error: Error?) in
@@ -50,10 +52,13 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
                     // Ephemeral content
                     let components: NSCalendar.Unit = .hour
                     let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
-                    if difference.hour! < 24 {
+                    if difference.hour! < 24 || (difference.hour! < 24 && object.value(forKey: "saved") as! Bool == true) {
                         self.stories.append(object)
                     }
                 }
+                
+                // Configure SegmentedProgressBar
+                self.configureSPB(posts: self.stories)
                 
             } else {
                 print(error?.localizedDescription as Any)
@@ -62,8 +67,59 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
             DispatchQueue.main.async {
                 self.collectionView!.reloadData()
             }
-            
         }
+    }
+    
+    // Function to fetch 1 story...
+    func fetchSingle() {
+        let newsfeeds = PFQuery(className: "Newsfeeds")
+        newsfeeds.whereKey("objectId", equalTo: self.singleStory!.objectId!)
+        newsfeeds.order(byDescending: "createdAt")
+        newsfeeds.includeKeys(["byUser", "toUser", "pointObject"])
+        newsfeeds.limit = 10
+        newsfeeds.findObjectsInBackground {
+            (objects: [PFObject]?, error: Error?) in
+            if error == nil {
+                // Clear array
+                self.stories.removeAll(keepingCapacity: false)
+                for object in objects! {
+                    // Ephemeral content
+                    let components: NSCalendar.Unit = .hour
+                    let difference = (Calendar.current as NSCalendar).components(components, from: object.createdAt!, to: Date(), options: [])
+                    if difference.hour! < 24 {
+//                        self.stories.append(object)
+                    }
+                    self.stories.append(object)
+                }
+                
+                // Configure SPB
+                self.configureSPB(posts: self.stories)
+            } else {
+                print(error?.localizedDescription as Any)
+            }
+            // Reload data in main thread
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
+    
+    // Function to configure SegmentedProgressBar (MARK: - SegmentedProgressBar)
+    func configureSPB(posts: [PFObject]) {
+        // MARK: - SegmentedProgressBar
+        if posts.count == 1 {
+            self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
+        } else {
+            self.spb = SegmentedProgressBar(numberOfSegments: self.stories.count, duration: 10)
+        }
+        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
+        self.spb.topColor = UIColor.white
+        self.spb.layer.applyShadow(layer: self.spb.layer)
+        self.spb.padding = 2
+        self.spb.delegate = self
+        self.view.addSubview(self.spb)
+        self.spb.startAnimation()
     }
     
     
@@ -92,16 +148,6 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // MARK: - SegmentedProgressBar
-        self.spb = SegmentedProgressBar(numberOfSegments: 1, duration: 10)
-        self.spb.frame = CGRect(x: 8, y: 8, width: self.view.frame.width - 16, height: 3)
-        self.spb.topColor = UIColor.white
-        self.spb.layer.applyShadow(layer: self.spb.layer)
-        self.spb.padding = 2
-        self.spb.delegate = self
-        self.view.addSubview(self.spb)
-        self.spb.startAnimation()
-        
         // MARK: - AnimatedCollectionViewLayout; configure UICollectionView
         let layout = AnimatedCollectionViewLayout()
         layout.scrollDirection = .horizontal
@@ -128,8 +174,13 @@ class SingleStory: UIViewController, UICollectionViewDataSource, UICollectionVie
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // Fetch data
-        fetchData()
+        // Fetch Chat
+        if self.chatOrStory == "Chat" {
+            fetchChat()
+        } else {
+        // Fetch Single Story
+            fetchSingle()
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -58,11 +58,11 @@ class RPChatMediaCell: UITableViewCell {
     
     // Moment --> "itm" --> SingleStory
     func showStory() {
-        print("Fired?")
         // MARK: - RPPopUpVC
         let rpPopUpVC = RPPopUpVC()
-        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! SingleStory
+        let storyVC = self.delegate?.storyboard?.instantiateViewController(withIdentifier: "storyVC") as! Story
         storyVC.singleStory = self.mediaObject!
+        storyVC.chatOrStory = "Chat"
         rpPopUpVC.setupView(vc: rpPopUpVC, popOverVC: storyVC)
         self.delegate?.present(rpPopUpVC, animated: true, completion: nil)
     }

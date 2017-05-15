@@ -1738,10 +1738,10 @@
             </objects>
             <point key="canvasLocation" x="4958" y="-3898"/>
         </scene>
-        <!--Single Story-->
+        <!--Story-->
         <scene sceneID="T6E-lV-HEM">
             <objects>
-                <viewController storyboardIdentifier="storyVC" id="Z28-5z-g7K" customClass="SingleStory" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="storyVC" id="Z28-5z-g7K" customClass="Story" customModule="Redplanet" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9zn-4Z-cEZ"/>
                         <viewControllerLayoutGuide type="bottom" id="Z8r-uF-yWX"/>
@@ -2525,21 +2525,21 @@
                                                                     <constraint firstAttribute="height" constant="170" id="dgg-5y-B3O"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-45-UuW">
-                                                                <rect key="frame" x="8" y="8" width="109" height="41"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gt7-45-UuW">
+                                                                <rect key="frame" x="8" y="2" width="109" height="62"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="109" id="Kbd-lI-6DV"/>
-                                                                    <constraint firstAttribute="height" constant="41" id="qwi-qp-HyS"/>
+                                                                    <constraint firstAttribute="height" constant="62" id="qwi-qp-HyS"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="15"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFq-5f-3b0">
-                                                                <rect key="frame" x="8" y="85" width="109" height="82"/>
+                                                                <rect key="frame" x="8" y="96" width="109" height="71"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="109" id="BkH-cR-oQj"/>
-                                                                    <constraint firstAttribute="height" constant="82" id="LbA-vv-Qhb"/>
+                                                                    <constraint firstAttribute="height" constant="71" id="LbA-vv-Qhb"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="12.989999771118164"/>
                                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -2552,7 +2552,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="vFq-5f-3b0" secondAttribute="trailing" constant="8" id="RVN-jF-Idg"/>
                                                         <constraint firstItem="V2G-vQ-4pW" firstAttribute="leading" secondItem="GUv-Tw-uVt" secondAttribute="leading" constant="2" id="U8t-6d-Jg4"/>
                                                         <constraint firstItem="V2G-vQ-4pW" firstAttribute="top" secondItem="GUv-Tw-uVt" secondAttribute="top" constant="2" id="WU3-EE-86M"/>
-                                                        <constraint firstItem="Gt7-45-UuW" firstAttribute="top" secondItem="GUv-Tw-uVt" secondAttribute="top" constant="8" id="XFr-5m-yVJ"/>
+                                                        <constraint firstItem="Gt7-45-UuW" firstAttribute="top" secondItem="GUv-Tw-uVt" secondAttribute="top" constant="2" id="XFr-5m-yVJ"/>
                                                         <constraint firstAttribute="bottom" secondItem="vFq-5f-3b0" secondAttribute="bottom" constant="8" id="aO5-jo-8dP"/>
                                                         <constraint firstItem="vFq-5f-3b0" firstAttribute="leading" secondItem="GUv-Tw-uVt" secondAttribute="leading" constant="8" id="cg3-9O-ODa"/>
                                                         <constraint firstAttribute="trailing" secondItem="V2G-vQ-4pW" secondAttribute="trailing" constant="3" id="jJ1-IE-TLx"/>
@@ -2673,7 +2673,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iz3-F0-9iJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1521" y="448"/>
+            <point key="canvasLocation" x="-1521.5" y="447.5"/>
         </scene>
         <!--New Text Post-->
         <scene sceneID="yYO-cS-sPc">
